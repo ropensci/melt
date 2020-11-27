@@ -1,0 +1,13 @@
+Package: bayesELcpp
+Type: Package
+Title: Bayesian Empicial Likelihood(cpp)
+Version: 0.1.0
+Date: 2020-11-27
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+Imports: Rcpp (>= 1.0.5)
+LinkingTo: Rcpp, RcppArmadillo
+Encoding: UTF-8
+RoxygenNote: 7.1.1
