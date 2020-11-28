@@ -5,6 +5,7 @@
 #' @param x a vector of data for one  group.
 #' @param y a vector of data for the other  group.
 #' @param b a momentum parameter for minimization. Defaults to .1.
+#' @param alpha an optinal step size.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
@@ -15,10 +16,8 @@
 #'
 #' @importFrom stats setNames
 #' @export
-test2sample <- function(x, y, b = .1, maxit = 1000,  abstol = 1e-8) {
-  ### argument check(numeric, vector, not all same, etc...)
-
-  ###
+test2sample <- function(x, y, b = .1, alpha = NULL,
+                        maxit = 1000,  abstol = 1e-8) {
   result <- setNames(vector("list", 4),
                      c("par", "nlogLR", "iterations", "convergence"))
 
@@ -35,8 +34,10 @@ test2sample <- function(x, y, b = .1, maxit = 1000,  abstol = 1e-8) {
   par <- (lb + ub) / 2
   nx <- length(x)
   ny <- length(y)
-  N <- nx + ny
-  alpha <- 1 / N
+  if (is.null(alpha)) {
+    alpha <- (ub - lb) / (nx + ny)
+  }
+
   convergence <- F
   iterations <- 0
   v <- 0
@@ -59,7 +60,6 @@ test2sample <- function(x, y, b = .1, maxit = 1000,  abstol = 1e-8) {
     # direction change reverts momentum
     if (sign(d) != sign(v)) {
       v <- 0
-      alpha <- 1 / N
     }
 
     # lb, ub update

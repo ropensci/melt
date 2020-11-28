@@ -36,7 +36,7 @@ test2sample2 <- function(x, y, b = .1, maxit = 1000, abstol = 1e-8) {
   nx <- length(x)
   ny <- length(y)
   N <- nx + ny
-  alpha <- 1 / N
+  alpha <- ub - lb
   convergence <- F
   iterations <- 0
   v <- 0

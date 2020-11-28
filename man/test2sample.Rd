@@ -4,7 +4,7 @@
 \alias{test2sample}
 \title{Two sample test for equal mean}
 \usage{
-test2sample(x, y, b = 0.1, maxit = 1000, abstol = 1e-08)
+test2sample(x, y, b = 0.1, alpha = NULL, maxit = 1000, abstol = 1e-08)
 }
 \arguments{
 \item{x}{a vector of data for one  group.}
@@ -12,6 +12,8 @@ test2sample(x, y, b = 0.1, maxit = 1000, abstol = 1e-08)
 \item{y}{a vector of data for the other  group.}
 
 \item{b}{a momentum parameter for minimization. Defaults to .1.}
+
+\item{alpha}{an optinal step size.}
 
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 

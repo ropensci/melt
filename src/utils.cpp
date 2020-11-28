@@ -153,8 +153,8 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
   double par = (lb + ub) / 2;
   int nx = x.n_elem;
   int ny = y.n_elem;
-  int N = nx + ny;
-  double alpha = pow(N, -1);
+  // int N = nx + ny;
+  double alpha = (ub - lb) / (nx + ny);
   int iterations = 0;
   int convergence = 0;
   double v = 0;
@@ -175,7 +175,7 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
     d = dfp1dcpp(grad);
     // direction change reverts momentum
     if (sign(d) != sign(v)) {
-      v = -v;
+      v = 0;
     }
     // lb, ub update
     if (sign(d) > 0) {
@@ -191,7 +191,7 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
       // step halving to satisfy convex hull constraint
       v = b * v + d;
       while (par + alpha * v <= lb || par + alpha * v >= ub) {
-        v = v / 2;
+        alpha = alpha / 2;
       }
       par = par + alpha * v;
       if(iterations == maxit) {
