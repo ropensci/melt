@@ -3,7 +3,6 @@
 using namespace Rcpp;
 using namespace arma;
 
-// [[Rcpp::export]]
 arma::vec plogcpp(arma::vec x, double threshold) {
   arma::vec result(x.n_rows);
   for (uword i = 0; i < result.n_rows; i++) {
@@ -16,7 +15,6 @@ arma::vec plogcpp(arma::vec x, double threshold) {
   }
   return result;
 }
-// [[Rcpp::export]]
 arma::vec dplogcpp(arma::vec x, double threshold) {
   arma::vec result(x.n_rows);
   for (uword i = 0; i < result.n_rows; i++) {
@@ -28,7 +26,6 @@ arma::vec dplogcpp(arma::vec x, double threshold) {
   }
   return result;
 }
-// [[Rcpp::export]]
 arma::vec d2plogcpp(arma::vec x, double threshold) {
   arma::vec result(x.n_rows);
   for (uword i = 0; i < result.n_rows; i++) {
@@ -40,7 +37,6 @@ arma::vec d2plogcpp(arma::vec x, double threshold) {
   }
   return result;
 }
-// [[Rcpp::export]]
 double dfp1dcpp(arma::vec gr) {
   arma::mat LHS = {{1, 0, 1}, {0, 1, -1}, {1, -1, 0}};
   arma::vec RHS = zeros<vec>(3);
@@ -50,6 +46,17 @@ double dfp1dcpp(arma::vec gr) {
 }
 
 
+
+
+//' Compute empirical likelihood for mean
+//'
+//' Compute empirical likelihood for mean
+//'
+//' @param theta a vector of parameters to be tested.
+//' @param x a matrix or vector of data. Each row is an observation vector.
+//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+//' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
+//' @export
 // [[Rcpp::export]]
 List elMeancpp(arma::rowvec theta, arma::mat x,
                int maxit = 100, double abstol = 1e-8) {
@@ -111,6 +118,24 @@ List elMeancpp(arma::rowvec theta, arma::mat x,
 }
 
 
+
+//' Two sample test for equal mean
+//'
+//' Two sample test for equal mean
+//'
+//' @param x a vector of data for one  group.
+//' @param y a vector of data for the other  group.
+//' @param b a momentum parameter for minimization. Defaults to .1.
+//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+//'
+//' @examples
+//' x <- rnorm(100)
+//' y <- rnorm(100)
+//' test2sample2(x, y)
+//'
+//' @importFrom stats setNames
+//' @export
 // [[Rcpp::export]]
 List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
                      int maxit = 1000, double abstol = 1e-8) {

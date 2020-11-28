@@ -14,7 +14,7 @@
 #' x <- rnorm(100)
 #' el.mean(theta, x)
 #'
-#' @import Matrix
+#' @importFrom Matrix rankMatrix
 #' @export
 el.mean <- function(theta, x, abstol = 1e-8, maxit = 50) {
   ## Data

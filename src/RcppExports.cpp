@@ -6,96 +6,6 @@
 
 using namespace Rcpp;
 
-// rcpparma_hello_world
-arma::mat rcpparma_hello_world();
-RcppExport SEXP _bayesELcpp_rcpparma_hello_world() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpparma_hello_world());
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcpparma_outerproduct
-arma::mat rcpparma_outerproduct(const arma::colvec& x);
-RcppExport SEXP _bayesELcpp_rcpparma_outerproduct(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_outerproduct(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcpparma_innerproduct
-double rcpparma_innerproduct(const arma::colvec& x);
-RcppExport SEXP _bayesELcpp_rcpparma_innerproduct(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_innerproduct(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcpparma_bothproducts
-Rcpp::List rcpparma_bothproducts(const arma::colvec& x);
-RcppExport SEXP _bayesELcpp_rcpparma_bothproducts(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_bothproducts(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// plogcpp
-arma::vec plogcpp(arma::vec x, double threshold);
-RcppExport SEXP _bayesELcpp_plogcpp(SEXP xSEXP, SEXP thresholdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(plogcpp(x, threshold));
-    return rcpp_result_gen;
-END_RCPP
-}
-// dplogcpp
-arma::vec dplogcpp(arma::vec x, double threshold);
-RcppExport SEXP _bayesELcpp_dplogcpp(SEXP xSEXP, SEXP thresholdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(dplogcpp(x, threshold));
-    return rcpp_result_gen;
-END_RCPP
-}
-// d2plogcpp
-arma::vec d2plogcpp(arma::vec x, double threshold);
-RcppExport SEXP _bayesELcpp_d2plogcpp(SEXP xSEXP, SEXP thresholdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(d2plogcpp(x, threshold));
-    return rcpp_result_gen;
-END_RCPP
-}
-// dfp1dcpp
-double dfp1dcpp(arma::vec gr);
-RcppExport SEXP _bayesELcpp_dfp1dcpp(SEXP grSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type gr(grSEXP);
-    rcpp_result_gen = Rcpp::wrap(dfp1dcpp(gr));
-    return rcpp_result_gen;
-END_RCPP
-}
 // elMeancpp
 List elMeancpp(arma::rowvec theta, arma::mat x, int maxit, double abstol);
 RcppExport SEXP _bayesELcpp_elMeancpp(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
@@ -127,14 +37,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_bayesELcpp_rcpparma_hello_world", (DL_FUNC) &_bayesELcpp_rcpparma_hello_world, 0},
-    {"_bayesELcpp_rcpparma_outerproduct", (DL_FUNC) &_bayesELcpp_rcpparma_outerproduct, 1},
-    {"_bayesELcpp_rcpparma_innerproduct", (DL_FUNC) &_bayesELcpp_rcpparma_innerproduct, 1},
-    {"_bayesELcpp_rcpparma_bothproducts", (DL_FUNC) &_bayesELcpp_rcpparma_bothproducts, 1},
-    {"_bayesELcpp_plogcpp", (DL_FUNC) &_bayesELcpp_plogcpp, 2},
-    {"_bayesELcpp_dplogcpp", (DL_FUNC) &_bayesELcpp_dplogcpp, 2},
-    {"_bayesELcpp_d2plogcpp", (DL_FUNC) &_bayesELcpp_d2plogcpp, 2},
-    {"_bayesELcpp_dfp1dcpp", (DL_FUNC) &_bayesELcpp_dfp1dcpp, 1},
     {"_bayesELcpp_elMeancpp", (DL_FUNC) &_bayesELcpp_elMeancpp, 4},
     {"_bayesELcpp_test2sample_cpp", (DL_FUNC) &_bayesELcpp_test2sample_cpp, 5},
     {NULL, NULL, 0}

@@ -1,5 +1,4 @@
-#' @export
-# direction finding function 1 dimension
+#' @noRd
 dfp1d <- function(gradient) {
   Q <- diag(1, nrow = 2, ncol = 2)
   A <- c(1, -1)

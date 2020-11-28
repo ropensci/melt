@@ -1,4 +1,4 @@
-#' @export
+#' @noRd
 plog <- function(x, threshold) {
   if(anyNA(x) == T) stop("NA input found in plog function")
   output <- vector(mode = "numeric", length = length(x))

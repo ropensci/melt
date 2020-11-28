@@ -1,4 +1,4 @@
-#' @export
+#' @noRd
 plog.dprime <- function(x, threshold) {
   if(anyNA(x) == T) stop("NA input found in plog_dprime function")
   output <- vector(mode = "numeric", length = length(x))
