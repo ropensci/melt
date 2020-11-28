@@ -153,7 +153,6 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
   double par = (lb + ub) / 2;
   int nx = x.n_elem;
   int ny = y.n_elem;
-  // int N = nx + ny;
   double alpha = (ub - lb) / (nx + ny);
   int iterations = 0;
   int convergence = 0;

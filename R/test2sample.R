@@ -84,7 +84,7 @@ test2sample <- function(x, y, b = .1, alpha = NULL,
         break
       # try harder..
       if (iterations > maxit / 2)
-        b <- .99
+        b <- .9
     }
   }
 
