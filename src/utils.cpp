@@ -174,7 +174,7 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
     d = dfp1dcpp(grad);
     // direction change reverts momentum
     if (sign(d) != sign(v)) {
-      v = 0;
+      v = 0; alpha = alpha / 2;
     }
     // lb, ub update
     if (sign(d) > 0) {

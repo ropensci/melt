@@ -60,6 +60,7 @@ test2sample <- function(x, y, b = .1, alpha = NULL,
     # direction change reverts momentum
     if (sign(d) != sign(v)) {
       v <- 0
+      alpha <- alpha / 2
     }
 
     # lb, ub update
