@@ -29,7 +29,6 @@ elMeancpp <- function(theta, x, maxit = 100L, abstol = 1e-8) {
 #' y <- rnorm(100)
 #' test2sample2(x, y)
 #'
-#' @importFrom stats setNames
 #' @export
 test2sample_cpp <- function(x, y, b = .1, maxit = 1000L, abstol = 1e-8) {
     .Call(`_bayesELcpp_test2sample_cpp`, x, y, b, maxit, abstol)

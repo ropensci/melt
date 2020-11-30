@@ -21,7 +21,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // test2sample_cpp
-List test2sample_cpp(arma::vec x, arma::vec y, double b, int maxit, double abstol);
+List test2sample_cpp(arma::vec x, arma::vec y, double b, unsigned int maxit, double abstol);
 RcppExport SEXP _bayesELcpp_test2sample_cpp(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -29,7 +29,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
     Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
     rcpp_result_gen = Rcpp::wrap(test2sample_cpp(x, y, b, maxit, abstol));
     return rcpp_result_gen;

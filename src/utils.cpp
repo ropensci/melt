@@ -134,11 +134,10 @@ List elMeancpp(arma::rowvec theta, arma::mat x,
 //' y <- rnorm(100)
 //' test2sample2(x, y)
 //'
-//' @importFrom stats setNames
 //' @export
 // [[Rcpp::export]]
 List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
-                     int maxit = 1000, double abstol = 1e-8) {
+                     unsigned int maxit = 1000, double abstol = 1e-8) {
   List result;
   double ub = std::min(x.max(), y.max());
   // colvec ub2 = conv_to< colvec >::from(ub);
@@ -151,10 +150,10 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
 
   // initialization
   double par = (lb + ub) / 2;
-  int nx = x.n_elem;
-  int ny = y.n_elem;
+  unsigned int nx = x.n_elem;
+  unsigned int ny = y.n_elem;
   double alpha = (ub - lb) / (nx + ny);
-  int iterations = 0;
+  unsigned int iterations = 0;
   int convergence = 0;
   double v = 0;
   double lx;

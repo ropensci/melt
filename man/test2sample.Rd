@@ -13,7 +13,7 @@ test2sample(x, y, b = 0.1, alpha = NULL, maxit = 1000, abstol = 1e-08)
 
 \item{b}{a momentum parameter for minimization. Defaults to .1.}
 
-\item{alpha}{an optinal step size.}
+\item{alpha}{an optional step size.}
 
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 
