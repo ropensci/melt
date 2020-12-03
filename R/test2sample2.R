@@ -5,6 +5,7 @@
 #' @param x a vector of data for one  group.
 #' @param y a vector of data for the other  group.
 #' @param b a momentum parameter for minimization. Defaults to .1.
+#' @param alpha an optional step size.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
@@ -15,16 +16,16 @@
 #'
 #' @importFrom stats setNames
 #' @export
-test2sample2 <- function(x, y, b = .1, maxit = 1000, abstol = 1e-8) {
-  ### argument check(numeric, vector, not all same, etc...)
-
-  ###
+test2sample2 <- function(x, y, b = 0, alpha = NULL,
+                         maxit = 1000,  abstol = 1e-8) {
   result <- setNames(vector("list", 4),
                      c("par", "nlogLR", "iterations", "convergence"))
 
   # check convex hull constraint
-  ub <- min(max(x), max(y))
-  lb <- max(min(x), min(y))
+  xbar <- mean(x)
+  ybar <- mean(y)
+  ub <- min(max(x), max(y), max(xbar, ybar))
+  lb <- max(min(x), min(y), min(xbar, ybar))
   if (ub <= lb) {
     result$nlogLR <- Inf
     result$convergence <- -1
@@ -35,14 +36,15 @@ test2sample2 <- function(x, y, b = .1, maxit = 1000, abstol = 1e-8) {
   par <- (lb + ub) / 2
   nx <- length(x)
   ny <- length(y)
-  N <- nx + ny
-  alpha <- ub - lb
-  convergence <- F
+  if (is.null(alpha)) {
+    alpha <- (ub - lb) / 2
+  }
+  convergence <- 0
   iterations <- 0
   v <- 0
 
   # minimization
-  while (convergence == F) {
+  while (convergence == 0) {
     # lambda update
     #### separate function for lambda!!!
     lx <- el.mean(par, x)$lambda
@@ -58,7 +60,7 @@ test2sample2 <- function(x, y, b = .1, maxit = 1000, abstol = 1e-8) {
 
     # direction change reverts momentum
     if (sign(d) != sign(v)) {
-      v <- -v
+      v <- 0
     }
 
     # lb, ub update
@@ -70,13 +72,13 @@ test2sample2 <- function(x, y, b = .1, maxit = 1000, abstol = 1e-8) {
 
     # convergence check & parameter update
     if (abs(d * sum(grad)) < abstol | ub - lb < abstol) {
-      convergence = T
+      convergence <- 1
     } else {
       iterations <- iterations + 1
       # step halving to satisfy convex hull constraint
       v <- b * v + d
       while (par + alpha * v <= lb | par + alpha * v >= ub) {
-        v <- v / 2
+        alpha <- alpha / 2
       }
       par <- par + alpha * v
       if (iterations == maxit)
@@ -86,8 +88,8 @@ test2sample2 <- function(x, y, b = .1, maxit = 1000, abstol = 1e-8) {
 
   # result
   result$par <- par
-  result$nlogLR <- el.mean(par, x)$nlogLR + el.mean(par, y)$nlogLR
+  result$nlogLR <- sum(log(1 + (x - par) * lx)) + sum(log(1 + (y - par) * ly))
   result$iterations <- iterations
-  result$convergence <- ifelse(convergence, 1, 0)
+  result$convergence <- convergence
   result
 }

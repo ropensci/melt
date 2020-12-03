@@ -4,7 +4,7 @@
 \alias{test2sample}
 \title{Two sample test for equal mean}
 \usage{
-test2sample(x, y, b = 0.1, alpha = NULL, maxit = 1000, abstol = 1e-08)
+test2sample(x, y, b = 0, alpha = NULL, maxit = 1000, abstol = 1e-08)
 }
 \arguments{
 \item{x}{a vector of data for one  group.}

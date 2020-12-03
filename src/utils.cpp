@@ -3,8 +3,8 @@
 using namespace Rcpp;
 using namespace arma;
 
-arma::vec plogcpp(arma::vec x, double threshold) {
-  arma::vec result(x.n_rows);
+vec plogcpp(vec x, double threshold) {
+  vec result(x.n_rows);
   for (uword i = 0; i < result.n_rows; i++) {
     if(x(i) >= threshold) {
       result(i) = log(x(i));
@@ -15,8 +15,8 @@ arma::vec plogcpp(arma::vec x, double threshold) {
   }
   return result;
 }
-arma::vec dplogcpp(arma::vec x, double threshold) {
-  arma::vec result(x.n_rows);
+vec dplogcpp(vec x, double threshold) {
+  vec result(x.n_rows);
   for (uword i = 0; i < result.n_rows; i++) {
     if(x(i) >= threshold) {
       result(i) = pow(x(i), -1);
@@ -26,8 +26,8 @@ arma::vec dplogcpp(arma::vec x, double threshold) {
   }
   return result;
 }
-arma::vec d2plogcpp(arma::vec x, double threshold) {
-  arma::vec result(x.n_rows);
+vec d2plogcpp(vec x, double threshold) {
+  vec result(x.n_rows);
   for (uword i = 0; i < result.n_rows; i++) {
     if(x(i) >= threshold) {
       result(i) = -pow(x(i), -2);
@@ -37,11 +37,11 @@ arma::vec d2plogcpp(arma::vec x, double threshold) {
   }
   return result;
 }
-double dfp1dcpp(arma::vec gr) {
-  arma::mat LHS = {{1, 0, 1}, {0, 1, -1}, {1, -1, 0}};
-  arma::vec RHS = zeros<vec>(3);
+double dfp1dcpp(vec gr) {
+  mat LHS = {{1, 0, 1}, {0, 1, -1}, {1, -1, 0}};
+  vec RHS = zeros<vec>(3);
   RHS.subvec(0, 1) = -gr;
-  arma::vec sol = solve(LHS, RHS);
+  vec sol = solve(LHS, RHS);
   return sol(0);
 }
 
@@ -64,16 +64,16 @@ List elMeancpp(arma::rowvec theta, arma::mat x,
   int n = x.n_rows;
   int p = theta.n_elem;
   // estimating equation
-  arma::mat g = x;
+  mat g = x;
   g.each_row() -= theta;
 
   // minimization
-  arma::vec l; l.zeros(p);
-  arma::vec lc;
-  arma::vec y;
-  arma::mat J;
-  arma::mat Q;
-  arma::mat R;
+  vec l; l.zeros(p);
+  vec lc;
+  vec y;
+  mat J;
+  mat Q;
+  mat R;
   double f0;
   double f1;
   int iterations = 0;
@@ -158,7 +158,7 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .1,
   double v = 0;
   double lx;
   double ly;
-  arma::vec grad;
+  vec grad;
   double d;
 
   // minimization

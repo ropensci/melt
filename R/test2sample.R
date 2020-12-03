@@ -16,7 +16,7 @@
 #'
 #' @importFrom stats setNames
 #' @export
-test2sample <- function(x, y, b = .1, alpha = NULL,
+test2sample <- function(x, y, b = 0, alpha = NULL,
                         maxit = 1000,  abstol = 1e-8) {
   result <- setNames(vector("list", 4),
                      c("par", "nlogLR", "iterations", "convergence"))
