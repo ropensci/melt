@@ -4,8 +4,8 @@
 #'
 #' @param x a vector of data for one  group.
 #' @param y a vector of data for the other  group.
-#' @param b a momentum parameter for minimization. Defaults to .1.
-#' @param alpha an optional step size.
+#' @param b a momentum parameter for minimization. Defaults to .9.
+#' @param alpha an optional step size. Defaults to 1.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
@@ -14,12 +14,11 @@
 #' y <- rnorm(100)
 #' test2sample2(x, y)
 #'
-#' @importFrom stats setNames
 #' @export
-test2sample2 <- function(x, y, b = 0, alpha = NULL,
+test2sample2 <- function(x, y, b = 0.9, alpha = 1,
                          maxit = 1000,  abstol = 1e-8) {
-  result <- setNames(vector("list", 4),
-                     c("par", "nlogLR", "iterations", "convergence"))
+  result <- vector("list", 4)
+  names(result) <- c("par", "nlogLR", "iterations", "convergence")
 
   # check convex hull constraint
   xbar <- mean(x)
@@ -36,15 +35,13 @@ test2sample2 <- function(x, y, b = 0, alpha = NULL,
   par <- (lb + ub) / 2
   nx <- length(x)
   ny <- length(y)
-  if (is.null(alpha)) {
-    alpha <- (ub - lb) / 2
-  }
+  N <- max(nx, ny)
   convergence <- 0
   iterations <- 0
   v <- 0
 
   # minimization
-  while (convergence == 0) {
+  while (convergence == 0 & iterations >= 0) {
     # lambda update
     #### separate function for lambda!!!
     lx <- el.mean(par, x)$lambda
@@ -53,7 +50,7 @@ test2sample2 <- function(x, y, b = 0, alpha = NULL,
     # gradient
     grad <-
       c(sum(plog.prime(1 + lx * (x - par), threshold = 1 / nx)) * (-lx),
-        sum(plog.prime(1 + ly * (y - par), threshold = 1 / ny)) * (-ly))
+        sum(plog.prime(1 + ly * (y - par), threshold = 1 / ny)) * (-ly)) / N
 
     # direction
     d <- dfp1d(grad)

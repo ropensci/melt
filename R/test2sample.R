@@ -14,12 +14,11 @@
 #' y <- rnorm(100)
 #' test2sample2(x, y)
 #'
-#' @importFrom stats setNames
 #' @export
 test2sample <- function(x, y, b = 0, alpha = NULL,
                         maxit = 1000,  abstol = 1e-8) {
-  result <- setNames(vector("list", 4),
-                     c("par", "nlogLR", "iterations", "convergence"))
+  result <- vector("list", 4)
+  names(result) <- c("par", "nlogLR", "iterations", "convergence")
 
   # check convex hull constraint
   ub <- min(max(x), max(y))
