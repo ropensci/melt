@@ -41,34 +41,28 @@ test2sample2 <- function(x, y, b = 0.9, alpha = 1,
   v <- 0
 
   # minimization
-  while (convergence == 0 & iterations >= 0) {
+  while (convergence == 0) {
     # lambda update
-    #### separate function for lambda!!!
     lx <- el.mean(par, x)$lambda
     ly <- el.mean(par, y)$lambda
-
     # gradient
     grad <-
       c(sum(plog.prime(1 + lx * (x - par), threshold = 1 / nx)) * (-lx),
         sum(plog.prime(1 + ly * (y - par), threshold = 1 / ny)) * (-ly)) / N
-
     # direction
     d <- dfp1d(grad)
-
     # direction change reverts momentum
     if (sign(d) != sign(v)) {
       v <- 0
     }
-
     # lb, ub update
     if (sign(d) > 0) {
       lb <- par
     } else {
       ub <- par
     }
-
     # convergence check & parameter update
-    if (abs(d * sum(grad)) < abstol | ub - lb < abstol) {
+    if ((abs(d * sum(grad)) < abstol | ub - lb < abstol) & iterations > 0) {
       convergence <- 1
     } else {
       iterations <- iterations + 1
