@@ -30,7 +30,27 @@ elMeancpp <- function(theta, x, maxit = 100L, abstol = 1e-8) {
 #' test2sample2(x, y)
 #'
 #' @export
-test2sample_cpp <- function(x, y, b = .1, maxit = 1000L, abstol = 1e-8) {
+test2sample_cpp <- function(x, y, b = .9, maxit = 1000L, abstol = 1e-8) {
     .Call(`_bayesELcpp_test2sample_cpp`, x, y, b, maxit, abstol)
+}
+
+#' Two sample test for equal mean
+#'
+#' Two sample test for equal mean
+#'
+#' @param x a vector of data for one  group.
+#' @param y a vector of data for the other  group.
+#' @param b a momentum parameter for minimization. Defaults to .1.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#'
+#' @examples
+#' x <- rnorm(100)
+#' y <- rnorm(100)
+#' test2sample2(x, y)
+#'
+#' @export
+test2sample2_cpp <- function(x, y, b = .9, alpha = 1, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_bayesELcpp_test2sample2_cpp`, x, y, b, alpha, maxit, abstol)
 }
 

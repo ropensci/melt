@@ -4,7 +4,7 @@
 \alias{test2sample_cpp}
 \title{Two sample test for equal mean}
 \usage{
-test2sample_cpp(x, y, b = 0.1, maxit = 1000L, abstol = 1e-08)
+test2sample_cpp(x, y, b = 0.9, maxit = 1000L, abstol = 1e-08)
 }
 \arguments{
 \item{x}{a vector of data for one  group.}
