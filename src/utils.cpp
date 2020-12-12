@@ -150,9 +150,9 @@ List test2sample_cpp(arma::vec x, arma::vec y, double b = .9,
   unsigned int nx = x.n_elem;
   unsigned int ny = y.n_elem;
   double alpha = (ub - lb) / (nx + ny);
-  unsigned int iterations = 0;
-  int convergence = 0;
-  double v = 0;
+  unsigned int iterations{};
+  int convergence{};
+  double v{};
   double lx;
   double ly;
   vec grad;
@@ -242,9 +242,9 @@ List test2sample2_cpp(arma::vec x, arma::vec y, double b = .9, double alpha = 1,
   unsigned int nx = x.n_elem;
   unsigned int ny = y.n_elem;
   unsigned int N = std::max(nx, ny);
-  unsigned int iterations = 0;
-  int convergence = 0;
-  double v = 0;
+  unsigned int iterations{};
+  int convergence{};
+  double v{};
   double lx;
   double ly;
   vec grad;
