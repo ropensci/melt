@@ -40,20 +40,20 @@ test2sample777 <- function(x, y, b = 0.9, alpha = 1,
   iterations <- 0
   v <- 0
 
-  # linearization
+  # linear approximation
   par0 <- par
   lx0 <- el.mean(par, x)$lambda
   ly0 <- el.mean(par, y)$lambda
-  mx <- -sum(1 / (1 + lx0 * (x - par))^2) /
-    sum((x - par)^2 / (1 + lx0 * (x - par))^2)
-  my <- -sum(1 / (1 + ly0 * (y - par))^2) /
-    sum((y - par)^2 / (1 + ly0 * (y - par))^2)
+  mx <- -sum((1 + lx0 * (x - par))^-2) /
+    sum((x - par)^2 * (1 + lx0 * (x - par))^-2)
+  my <- -sum((1 + ly0 * (y - par))^-2) /
+    sum((y - par)^2 * (1 + ly0 * (y - par))^-2)
 
   # minimization
   while (convergence == 0) {
     # lambda update
-    lx <- mx * (par - par0) + lx0
-    ly <- my * (par - par0) + ly0
+    lx <- lx0 + mx * (par - par0)
+    ly <- ly0 + my * (par - par0)
     # gradient
     grad <-
       c(sum(plog.prime(1 + lx * (x - par), threshold = 1 / nx)) * (-lx),
