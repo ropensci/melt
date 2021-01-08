@@ -125,7 +125,7 @@ List test2sample2_cpp(NumericVector x, NumericVector y, double b = .9, double al
   double v{};
   double lx;
   double ly;
-  Rcpp::NumericVector grad;
+  arma::vec grad;
   double d;
 
 
@@ -219,7 +219,7 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
   double v{};
   double lx;
   double ly;
-  Rcpp::NumericVector grad;
+  arma::vec grad;
   double d;
 
   // linearization
@@ -277,3 +277,4 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
       Rcpp::Named("convergence") = convergence
   );
 }
+//

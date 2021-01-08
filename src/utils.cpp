@@ -42,7 +42,7 @@ Rcpp::NumericVector d2plogcpp(Rcpp::NumericVector x, double threshold) {
   return out;
 }
 
-double dfp1dcpp(Rcpp::NumericVector gr) {
+double dfp1dcpp(arma::vec gr) {
   /* This function can be modified to for a general direction finding problem
      in higher dimensions
   */
