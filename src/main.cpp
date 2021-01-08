@@ -1,5 +1,6 @@
-#include "utils.h"
 #include <RcppArmadillo.h>
+#include "utils.h"
+
 // [[Rcpp::depends(RcppArmadillo)]]
 using namespace Rcpp;
 using namespace arma;
@@ -124,7 +125,7 @@ List test2sample2_cpp(NumericVector x, NumericVector y, double b = .9, double al
   double v{};
   double lx;
   double ly;
-  vec grad;
+  Rcpp::NumericVector grad;
   double d;
 
 
@@ -218,7 +219,7 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
   double v{};
   double lx;
   double ly;
-  vec grad;
+  Rcpp::NumericVector grad;
   double d;
 
   // linearization
