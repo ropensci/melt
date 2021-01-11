@@ -25,5 +25,4 @@ Compute empirical likelihood for mean
 theta <- 0
 x <- rnorm(100)
 el.mean(theta, x)
-
 }

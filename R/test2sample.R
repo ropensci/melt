@@ -13,10 +13,9 @@
 #' x <- rnorm(100)
 #' y <- rnorm(100)
 #' test2sample2(x, y)
-#'
 #' @export
 test2sample <- function(x, y, b = 0, alpha = NULL,
-                        maxit = 1000,  abstol = 1e-8) {
+                        maxit = 1000, abstol = 1e-8) {
   result <- vector("list", 4)
   names(result) <- c("par", "nlogLR", "iterations", "convergence")
 
@@ -50,8 +49,10 @@ test2sample <- function(x, y, b = 0, alpha = NULL,
 
     # gradient
     grad <-
-      c(sum(plog.prime(1 + lx * (x - par), threshold = 1 / nx)) * (-lx),
-        sum(plog.prime(1 + ly * (y - par), threshold = 1 / ny)) * (-ly))
+      c(
+        sum(plog.prime(1 + lx * (x - par), threshold = 1 / nx)) * (-lx),
+        sum(plog.prime(1 + ly * (y - par), threshold = 1 / ny)) * (-ly)
+      )
 
     # direction
     d <- dfp1d(grad)
@@ -80,11 +81,13 @@ test2sample <- function(x, y, b = 0, alpha = NULL,
         alpha <- alpha / 2
       }
       par <- par + alpha * v
-      if (iterations == maxit)
+      if (iterations == maxit) {
         break
+      }
       # try harder..
-      if (iterations > maxit / 2)
+      if (iterations > maxit / 2) {
         b <- .9
+      }
     }
   }
 

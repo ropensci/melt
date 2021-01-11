@@ -2,11 +2,11 @@ Package: bayesELcpp
 Type: Package
 Title: Bayesian Empicial Likelihood(cpp test)
 Version: 0.1.0
-Date: 2020-11-27
+Date: 2021-01-11
 Authors@R: person("Eunseop", "Kim", email = "markean625@gmail.com", role = c("aut", "cre"))
 Description: Bayesian Empicial Likelihood
     Bayesian Empicial Likelihood.
-License: GPL
+License: LGPL (>= 3)
 Imports: 
     Matrix,
     Rcpp,
@@ -14,3 +14,6 @@ Imports:
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

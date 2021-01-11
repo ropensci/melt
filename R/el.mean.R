@@ -13,16 +13,17 @@
 #' theta <- 0
 #' x <- rnorm(100)
 #' el.mean(theta, x)
-#'
 #' @importFrom Matrix rankMatrix
 #' @export
 el.mean <- function(theta, x, abstol = 1e-8, maxit = 50) {
   ## Data
   x <- as.matrix(x)
-  if (length(theta) != ncol(x))
+  if (length(theta) != ncol(x)) {
     stop("length(theta) != ncol(x)")
-  if (rankMatrix(x) != ncol(x))
+  }
+  if (rankMatrix(x) != ncol(x)) {
     stop("model matrix must have full column rank")
+  }
   colnames(x) <- NULL
   n <- nrow(x)
   p <- ncol(x)
@@ -77,8 +78,8 @@ el.mean <- function(theta, x, abstol = 1e-8, maxit = 50) {
   result$hessian <- -crossprod(z, plog.dprime(1 + z %*% lambda, threshold = 1 / n) * z)
   result$iterations <- iterations
   result$message <- ifelse(all.equal(sum(result$w), 1) == T,
-                           "convex hull constraint satisfied",
-                           "something wrong"
+    "convex hull constraint satisfied",
+    "something wrong"
   )
   result
 }

@@ -26,5 +26,4 @@ Two sample test for equal mean
 x <- rnorm(100)
 y <- rnorm(100)
 test2sample777(x, y)
-
 }
