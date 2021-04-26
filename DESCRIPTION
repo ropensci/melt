@@ -1,11 +1,11 @@
 Package: bayesELcpp
 Type: Package
-Title: Bayesian Empicial Likelihood(cpp test)
+Title: Empicial Likelihood
 Version: 0.1.0
-Date: 2021-01-11
-Authors@R: person("Eunseop", "Kim", email = "markean625@gmail.com", role = c("aut", "cre"))
-Description: Bayesian Empicial Likelihood
-    Bayesian Empicial Likelihood.
+Date: 2021-04-26
+Authors@R: person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre"))
+Description: Empicial Likelihood
+    Empicial Likelihood.
 License: LGPL (>= 3)
 Imports: 
     Matrix,

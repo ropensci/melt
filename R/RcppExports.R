@@ -56,3 +56,18 @@ test2sample777_cpp <- function(x, y, b = .9, alpha = 1, maxit = 1000L, abstol = 
     .Call(`_bayesELcpp_test2sample777_cpp`, x, y, b, alpha, maxit, abstol)
 }
 
+#' Two sample test for BIBD
+#'
+#' Two sample test for BIBD
+#'
+#' @param x a matrix of data .
+#' @param c an incidence matrix.
+#' @param pair a pair of index for parameters to be tested.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#'
+#' @export
+test_bibd <- function(x, c, pair, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_bayesELcpp_test_bibd`, x, c, pair, maxit, abstol)
+}
+

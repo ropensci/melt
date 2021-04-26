@@ -52,11 +52,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test_bibd
+List test_bibd(const arma::mat& x, const arma::mat& c, const Rcpp::IntegerVector& pair, int maxit, double abstol);
+RcppExport SEXP _bayesELcpp_test_bibd(SEXP xSEXP, SEXP cSEXP, SEXP pairSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type pair(pairSEXP);
+    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(test_bibd(x, c, pair, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bayesELcpp_elMeancpp", (DL_FUNC) &_bayesELcpp_elMeancpp, 4},
     {"_bayesELcpp_test2sample2_cpp", (DL_FUNC) &_bayesELcpp_test2sample2_cpp, 6},
     {"_bayesELcpp_test2sample777_cpp", (DL_FUNC) &_bayesELcpp_test2sample777_cpp, 6},
+    {"_bayesELcpp_test_bibd", (DL_FUNC) &_bayesELcpp_test_bibd, 5},
     {NULL, NULL, 0}
 };
 
