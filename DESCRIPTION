@@ -1,5 +1,5 @@
 Package: elmulttest
-Title: Empicial Likelihood for multiple hypotheses testing
+Title: Empicial Likelihood for multiple hypotheses testings
 Version: 0.1.0
 Date: 2021-04-26
 Authors@R: person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre"))
