@@ -6,6 +6,6 @@
 src/*.o
 src/*.so
 src/*.dll
-bayesELcpp.Rproj
-Read-and-delete-me
+elmulttest.Rproj
 .Rbuildignore
+cran-comments.md
