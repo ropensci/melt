@@ -4,7 +4,7 @@ Version: 0.1.0
 Date: 2021-04-26
 Authors@R: person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre"))
 Description: Empicial Likelihood
-    Empicial Likelihood.
+    Empicial Likelihood for multiple hypothesis testing.
 License: LGPL (>= 3)
 Depends: R (>= 3.0.2)
 Imports: 
