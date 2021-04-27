@@ -16,7 +16,7 @@ using namespace arma;
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
 //' @export
 // [[Rcpp::export]]
-List elMeancpp(arma::rowvec theta, arma::mat x,
+List el_mean(arma::rowvec theta, arma::mat x,
                int maxit = 100, double abstol = 1e-8) {
   // ncol must be same as p
   int n = x.n_rows;
@@ -132,8 +132,8 @@ List test2sample2_cpp(NumericVector x, NumericVector y, double b = .9, double al
   // minimization
   while (convergence == 0) {
     // lambda update
-    lx = elMeancpp({par}, x)["lambda"];
-    ly = elMeancpp({par}, y)["lambda"];
+    lx = el_mean({par}, x)["lambda"];
+    ly = el_mean({par}, y)["lambda"];
     // gradient
     grad = {sum(dplog(1 + lx * (x - par), 1 / nx)) * (-lx) / N,
             sum(dplog(1 + ly * (y - par), 1 / ny)) * (-ly) / N};
@@ -224,8 +224,8 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
 
   // linearization
   double par0 = par;
-  double lx0 = elMeancpp({par}, x)["lambda"];
-  double ly0 = elMeancpp({par}, y)["lambda"];
+  double lx0 = el_mean({par}, x)["lambda"];
+  double ly0 = el_mean({par}, y)["lambda"];
   double mx = -sum(1 / pow(1 + lx0 * (x - par), 2)) /
     sum(pow(x - par, 2) / pow(1 + lx0 * (x - par), 2));
   double my = -sum(1 / pow(1 + ly0 * (y - par) , 2)) /

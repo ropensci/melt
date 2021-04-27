@@ -10,8 +10,8 @@
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
 #' @export
-elMeancpp <- function(theta, x, maxit = 100L, abstol = 1e-8) {
-    .Call(`_elmulttest_elMeancpp`, theta, x, maxit, abstol)
+el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
+    .Call(`_elmulttest_el_mean`, theta, x, maxit, abstol)
 }
 
 #' Two sample test for equal mean
