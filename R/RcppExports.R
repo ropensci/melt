@@ -11,7 +11,7 @@
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
 #' @export
 elMeancpp <- function(theta, x, maxit = 100L, abstol = 1e-8) {
-    .Call(`_bayesELcpp_elMeancpp`, theta, x, maxit, abstol)
+    .Call(`_elmulttest_elMeancpp`, theta, x, maxit, abstol)
 }
 
 #' Two sample test for equal mean
@@ -32,7 +32,7 @@ elMeancpp <- function(theta, x, maxit = 100L, abstol = 1e-8) {
 #'
 #' @export
 test2sample2_cpp <- function(x, y, b = .9, alpha = 1, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_bayesELcpp_test2sample2_cpp`, x, y, b, alpha, maxit, abstol)
+    .Call(`_elmulttest_test2sample2_cpp`, x, y, b, alpha, maxit, abstol)
 }
 
 #' Two sample test for equal mean
@@ -53,7 +53,7 @@ test2sample2_cpp <- function(x, y, b = .9, alpha = 1, maxit = 1000L, abstol = 1e
 #'
 #' @export
 test2sample777_cpp <- function(x, y, b = .9, alpha = 1, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_bayesELcpp_test2sample777_cpp`, x, y, b, alpha, maxit, abstol)
+    .Call(`_elmulttest_test2sample777_cpp`, x, y, b, alpha, maxit, abstol)
 }
 
 #' Two sample test for BIBD
@@ -68,6 +68,6 @@ test2sample777_cpp <- function(x, y, b = .9, alpha = 1, maxit = 1000L, abstol = 
 #'
 #' @export
 test_bibd <- function(x, c, pair, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_bayesELcpp_test_bibd`, x, c, pair, maxit, abstol)
+    .Call(`_elmulttest_test_bibd`, x, c, pair, maxit, abstol)
 }
 

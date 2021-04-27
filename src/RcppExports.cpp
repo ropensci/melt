@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // elMeancpp
 List elMeancpp(arma::rowvec theta, arma::mat x, int maxit, double abstol);
-RcppExport SEXP _bayesELcpp_elMeancpp(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+RcppExport SEXP _elmulttest_elMeancpp(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -22,7 +22,7 @@ END_RCPP
 }
 // test2sample2_cpp
 List test2sample2_cpp(NumericVector x, NumericVector y, double b, double alpha, unsigned int maxit, double abstol);
-RcppExport SEXP _bayesELcpp_test2sample2_cpp(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP, SEXP alphaSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+RcppExport SEXP _elmulttest_test2sample2_cpp(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP, SEXP alphaSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -38,7 +38,7 @@ END_RCPP
 }
 // test2sample777_cpp
 List test2sample777_cpp(NumericVector x, NumericVector y, double b, double alpha, unsigned int maxit, double abstol);
-RcppExport SEXP _bayesELcpp_test2sample777_cpp(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP, SEXP alphaSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+RcppExport SEXP _elmulttest_test2sample777_cpp(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP, SEXP alphaSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -54,7 +54,7 @@ END_RCPP
 }
 // test_bibd
 List test_bibd(const arma::mat& x, const arma::mat& c, const Rcpp::IntegerVector& pair, int maxit, double abstol);
-RcppExport SEXP _bayesELcpp_test_bibd(SEXP xSEXP, SEXP cSEXP, SEXP pairSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+RcppExport SEXP _elmulttest_test_bibd(SEXP xSEXP, SEXP cSEXP, SEXP pairSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -69,14 +69,14 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_bayesELcpp_elMeancpp", (DL_FUNC) &_bayesELcpp_elMeancpp, 4},
-    {"_bayesELcpp_test2sample2_cpp", (DL_FUNC) &_bayesELcpp_test2sample2_cpp, 6},
-    {"_bayesELcpp_test2sample777_cpp", (DL_FUNC) &_bayesELcpp_test2sample777_cpp, 6},
-    {"_bayesELcpp_test_bibd", (DL_FUNC) &_bayesELcpp_test_bibd, 5},
+    {"_elmulttest_elMeancpp", (DL_FUNC) &_elmulttest_elMeancpp, 4},
+    {"_elmulttest_test2sample2_cpp", (DL_FUNC) &_elmulttest_test2sample2_cpp, 6},
+    {"_elmulttest_test2sample777_cpp", (DL_FUNC) &_elmulttest_test2sample777_cpp, 6},
+    {"_elmulttest_test_bibd", (DL_FUNC) &_elmulttest_test_bibd, 5},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_bayesELcpp(DllInfo *dll) {
+RcppExport void R_init_elmulttest(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
