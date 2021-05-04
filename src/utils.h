@@ -16,5 +16,8 @@ void lambda2theta_bibd(arma::rowvec &theta, arma::vec lambda,
                        Rcpp::IntegerVector pair, double gamma,
                        const int &n, const int &p,
                        int maxit = 100, double abstol = 1e-8);
+std::vector<std::vector<int>> all_pairs(const int &p);
+arma::mat cov_estimator(const arma::mat &x,
+                        const arma::mat &c);
 
 #endif

@@ -143,3 +143,33 @@ void lambda2theta_bibd(arma::rowvec &theta, arma::vec lambda,
   theta.at(pair(1) - 1) = avg;
 }
 
+std::vector<std::vector<int>> all_pairs(const int &p) {
+  // initialize a vector of vectors
+  std::vector<std::vector<int>> pairs;
+  // the size of vector is p choose 2
+  pairs.reserve(p * (p - 1) / 2);
+  // fill in each elements(pairs)
+  for(int i = 1; i < p + 1; i++)
+  {
+    for(int j = i + 1; j < p + 1; j++)
+    {
+      pairs.emplace_back(std::vector<int> {i, j});
+    }
+  }
+  return pairs;
+}
+
+arma::mat cov_estimator(const arma::mat &x,
+                        const arma::mat &c) {
+  // number of blocks
+  int n = x.n_rows;
+  // number of points(parameters)
+  int p = x.n_cols;
+  // estimator(global minimizer)
+  arma::rowvec theta_hat = n / accu(x.col(0) != 0) * mean(x, 0);
+  // estimating function
+  arma::mat g = x - c.each_row() % theta_hat;
+  // covariance estimate
+  arma::mat vhat = (trans(g) * (g)) / n;
+  return vhat;
+}
