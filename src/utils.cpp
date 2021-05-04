@@ -119,7 +119,7 @@ void theta2lambda_bibd(const arma::rowvec &theta,
 
 void lambda2theta_bibd(arma::rowvec &theta, arma::vec lambda,
                        const arma::mat &x, const arma::mat &c,
-                       Rcpp::IntegerVector pair, double gamma,
+                       const std::vector<int> &pair, double gamma,
                        const int &n, const int &p,
                        int maxit, double abstol) {
   // estimating function
@@ -138,9 +138,9 @@ void lambda2theta_bibd(arma::rowvec &theta, arma::vec lambda,
   theta = theta - gamma * gradient;
 
   //projection
-  double avg = (theta(pair(0) - 1) + theta((pair(1) - 1))) / 2;
-  theta.at(pair(0) - 1) = avg;
-  theta.at(pair(1) - 1) = avg;
+  double avg = (theta(pair[0] - 1) + theta((pair[1] - 1))) / 2;
+  theta.at(pair[0] - 1) = avg;
+  theta.at(pair[1] - 1) = avg;
 }
 
 std::vector<std::vector<int>> all_pairs(const int &p) {

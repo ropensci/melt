@@ -293,29 +293,29 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
 // [[Rcpp::export]]
 List test_bibd(const arma::mat &x,
                const arma::mat &c,
-               const Rcpp::IntegerVector &pair,
+               const std::vector<int> &pair,
                int maxit = 1000,
                double abstol = 1e-8) {
   /// index pair validation ///
-  // number of points(parameters)
-  int p = x.n_cols;
+  int p = x.n_cols;   // number of points(parameters)
   // vector for entire points
   Rcpp::IntegerVector points = Rcpp::seq(1, p);
   // union of pair and points
-  Rcpp::IntegerVector total = Rcpp::union_(pair, points);
-  if (pair.length() != 2 ||
-      sum(duplicated(pair)) ||
+  Rcpp::IntegerVector pair_Rcpp = Rcpp::wrap(pair);
+  Rcpp::IntegerVector total = Rcpp::union_(pair_Rcpp, points);
+  if (pair.size() != 2 ||
+      sum(duplicated(pair_Rcpp)) ||
       !Rcpp::setequal(points, total)) {
       stop("'pair' must be a vector of two distinct integers ranging from one to the total number of points.");
   }
 
   /// convex hull check(necessary condition) ///
   // upper bound for the common parameter value
-  double ub = std::min(arma::max(x.col(pair(0) - 1)),
-                       arma::max(x.col(pair(1) - 1)));
+  double ub = std::min(arma::max(x.col(pair[0] - 1)),
+                       arma::max(x.col(pair[1] - 1)));
   // lower bound form the commom parameter value
-  double lb = std::max(arma::min(x.col(pair(0) - 1)),
-                       arma::min(x.col(pair(1) - 1)));
+  double lb = std::max(arma::min(x.col(pair[0] - 1)),
+                       arma::min(x.col(pair[1] - 1)));
   if (ub <= lb) {
     return Rcpp::List::create(
       Rcpp::Named("nlogLR") = datum::inf,
@@ -327,9 +327,9 @@ List test_bibd(const arma::mat &x,
   // initial parameter value set as column means multiplied by b / r
   arma::rowvec theta = n / accu(x.col(0) != 0) * mean(x, 0);
   // equality constraint imposed on the initial value
-  double avg = (theta(pair(0) - 1) + theta((pair(1) - 1))) / 2;
-  theta.at(pair(0) - 1) = avg;
-  theta.at(pair(1) - 1) = avg;
+  double avg = (theta(pair[0] - 1) + theta((pair[1] - 1))) / 2;
+  theta.at(pair[0] - 1) = avg;
+  theta.at(pair[1] - 1) = avg;
   bool convex_hull_check;   // for checking convex hull constraint
   double f0;    // for current function value(-logLR)
   double f1;    // for updated function value
