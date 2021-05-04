@@ -67,7 +67,7 @@ test2sample777_cpp <- function(x, y, b = .9, alpha = 1, maxit = 1000L, abstol = 
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-test_bibd <- function(x, c, pair, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_test_bibd`, x, c, pair, maxit, abstol)
+test_pair <- function(x, c, pair, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_elmulttest_test_pair`, x, c, pair, maxit, abstol)
 }
 

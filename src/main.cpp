@@ -291,7 +291,7 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
 //'
 //' @export
 // [[Rcpp::export]]
-List test_bibd(const arma::mat &x,
+List test_pair(const arma::mat &x,
                const arma::mat &c,
                const std::vector<int> &pair,
                int maxit = 1000,
