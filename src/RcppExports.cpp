@@ -81,6 +81,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pairwise_threshold
+List pairwise_threshold(const arma::mat& x, const arma::mat& c, const int& B, const double& alpha);
+RcppExport SEXP _elmulttest_pairwise_threshold(SEXP xSEXP, SEXP cSEXP, SEXP BSEXP, SEXP alphaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< const int& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha(alphaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pairwise_threshold(x, c, B, alpha));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
@@ -88,6 +102,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_test2sample777_cpp", (DL_FUNC) &_elmulttest_test2sample777_cpp, 6},
     {"_elmulttest_test_pair", (DL_FUNC) &_elmulttest_test_pair, 5},
     {"_elmulttest_pairwise_test", (DL_FUNC) &_elmulttest_pairwise_test, 4},
+    {"_elmulttest_pairwise_threshold", (DL_FUNC) &_elmulttest_pairwise_threshold, 4},
     {NULL, NULL, 0}
 };
 

@@ -421,3 +421,53 @@ List pairwise_test(const arma::mat &x,
   return Rcpp::List::create(
     Rcpp::Named("statistics") = pairs_2nlogLR);
 }
+
+//' Computes threshold of pairwise comparison for BIBD
+//'
+//' Computes threshold using parametric bootstrap
+//'
+//' @param x a matrix of data .
+//' @param c an incidence matrix.
+//' @param B an integer value for the number of bootstrap replicates.
+//' @param alpha a significance level.
+//'
+//' @export
+// [[Rcpp::export]]
+List pairwise_threshold(const arma::mat &x,
+                        const arma::mat &c,
+                        const int &B,
+                        const double &alpha) {
+  /// parameters ///
+  const int n = x.n_rows;   // number of blocks
+  const int p = x.n_cols;   // number of points(treatments)
+  const int m = p * (p - 1) / 2;    // number of hypotheses
+  const arma::vec level = {1 - alpha};    // confidence level
+
+  /// A hat matrices ///
+  arma::cube A_hat(p, p, m);
+  // covariance estimate
+  const arma::mat V_hat = cov_estimator(x, c);
+  // vector of pairs
+  const std::vector<std::vector<int>> pairs = all_pairs(p);
+  for (int i = 0; i < m; i++) {
+    arma::rowvec R(p);
+    R.fill(0);
+    R(pairs[i][0] - 1) = 1;
+    R(pairs[i][1] - 1) = -1;
+    A_hat.slice(i) = (trans(R) * R) / as_scalar(R * V_hat * trans(R));
+  }
+
+  // U hat matrices
+  const arma::mat U_hat = arma::mvnrnd(arma::zeros(p), V_hat, B);
+
+  // B bootstrap replicates(B x m matrix)
+  arma::mat bootstrap_sample(B, m);
+  for (int i = 0; i < m; i++) {
+    bootstrap_sample.col(i) =
+      arma::diagvec(arma::trans(U_hat) * A_hat.slice(i) * U_hat);
+  }
+
+  return Rcpp::List::create(
+    Rcpp::Named("threshold") =
+      arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1), level)));
+}
