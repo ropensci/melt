@@ -53,14 +53,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // test_pair
-List test_pair(const arma::mat& x, const arma::mat& c, const std::vector<int>& pair, int maxit, double abstol);
+List test_pair(arma::mat const& x, arma::mat const& c, std::vector<int> const& pair, int maxit, double abstol);
 RcppExport SEXP _elmulttest_test_pair(SEXP xSEXP, SEXP cSEXP, SEXP pairSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
-    Rcpp::traits::input_parameter< const std::vector<int>& >::type pair(pairSEXP);
+    Rcpp::traits::input_parameter< arma::mat const& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::mat const& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> const& >::type pair(pairSEXP);
     Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
     rcpp_result_gen = Rcpp::wrap(test_pair(x, c, pair, maxit, abstol));
@@ -68,13 +68,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // pairwise_test
-List pairwise_test(const arma::mat& x, const arma::mat& c, int maxit, double abstol);
+List pairwise_test(arma::mat const& x, arma::mat const& c, int maxit, double abstol);
 RcppExport SEXP _elmulttest_pairwise_test(SEXP xSEXP, SEXP cSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< arma::mat const& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::mat const& >::type c(cSEXP);
     Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
     rcpp_result_gen = Rcpp::wrap(pairwise_test(x, c, maxit, abstol));

@@ -291,9 +291,9 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
 //'
 //' @export
 // [[Rcpp::export]]
-List test_pair(const arma::mat &x,
-               const arma::mat &c,
-               const std::vector<int> &pair,
+List test_pair(arma::mat const &x,
+               arma::mat const &c,
+               std::vector<int> const &pair,
                int maxit = 1000,
                double abstol = 1e-8) {
   /// index pair validation ///
@@ -397,8 +397,8 @@ List test_pair(const arma::mat &x,
 //'
 //' @export
 // [[Rcpp::export]]
-List pairwise_test(const arma::mat &x,
-                   const arma::mat &c,
+List pairwise_test(arma::mat const &x,
+                   arma::mat const &c,
                    int maxit = 1000,
                    double abstol = 1e-8) {
   // number of points(parameters)
@@ -409,7 +409,7 @@ List pairwise_test(const arma::mat &x,
   int m = pairs.size();
   // test statistics(-2logLR)
   Rcpp::NumericVector pairs_2nlogLR(m);
-  for (int i = 0; i < m; i++) {
+  for (unsigned i = 0; i < m; i++) {
     double nlogLR = test_pair(x, c, pairs[i], maxit, abstol)["nlogLR"];
     pairs_2nlogLR(i) = 2 * nlogLR;
   }
@@ -449,7 +449,7 @@ List pairwise_threshold(const arma::mat &x,
   const arma::mat V_hat = cov_estimator(x, c);
   // vector of pairs
   const std::vector<std::vector<int>> pairs = all_pairs(p);
-  for (int i = 0; i < m; i++) {
+  for (unsigned i = 0; i < m; i++) {
     arma::rowvec R(p);
     R.fill(0);
     R(pairs[i][0] - 1) = 1;
@@ -462,7 +462,7 @@ List pairwise_threshold(const arma::mat &x,
 
   // B bootstrap replicates(B x m matrix)
   arma::mat bootstrap_sample(B, m);
-  for (int i = 0; i < m; i++) {
+  for (unsigned i = 0; i < m; i++) {
     bootstrap_sample.col(i) =
       arma::diagvec(arma::trans(U_hat) * A_hat.slice(i) * U_hat);
   }
