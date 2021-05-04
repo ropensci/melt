@@ -385,3 +385,39 @@ List test_pair(const arma::mat &x,
     Rcpp::Named("iterations") = iterations,
     Rcpp::Named("convergence") = convergence);
 }
+
+//' Pairwise comparison for BIBD
+//'
+//' Pairwise comparison for BIBD
+//'
+//' @param x a matrix of data .
+//' @param c an incidence matrix.
+//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+//'
+//' @export
+// [[Rcpp::export]]
+List pairwise_test(const arma::mat &x,
+                   const arma::mat &c,
+                   int maxit = 1000,
+                   double abstol = 1e-8) {
+  // number of points(parameters)
+  int p = x.n_cols;
+  // all pairs
+  std::vector<std::vector<int>> pairs = all_pairs(p);
+  // number of hypotheses
+  int m = pairs.size();
+  // test statistics(-2logLR)
+  Rcpp::NumericVector pairs_2nlogLR(m);
+  for (int i = 0; i < m; i++) {
+    double nlogLR = test_pair(x, c, pairs[i], maxit, abstol)["nlogLR"];
+    pairs_2nlogLR(i) = 2 * nlogLR;
+  }
+  // std::vector<double> pairs_2nlogLR(m);
+  // for (int i = 0; i < m; i++) {
+  //   double nlogLR = test_pair(x, c, pairs[i], maxit, abstol)["nlogLR"];
+  //   pairs_2nlogLR[i] = 2 * nlogLR;
+  // }
+  return Rcpp::List::create(
+    Rcpp::Named("statistics") = pairs_2nlogLR);
+}

@@ -2,6 +2,7 @@
 
 export(el.mean)
 export(el_mean)
+export(pairwise_test)
 export(test2sample)
 export(test2sample2)
 export(test2sample2_cpp)

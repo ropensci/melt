@@ -71,3 +71,17 @@ test_pair <- function(x, c, pair, maxit = 1000L, abstol = 1e-8) {
     .Call(`_elmulttest_test_pair`, x, c, pair, maxit, abstol)
 }
 
+#' Pairwise comparison for BIBD
+#'
+#' Pairwise comparison for BIBD
+#'
+#' @param x a matrix of data .
+#' @param c an incidence matrix.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#'
+#' @export
+pairwise_test <- function(x, c, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_test`, x, c, maxit, abstol)
+}
+

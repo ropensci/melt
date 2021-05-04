@@ -67,12 +67,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pairwise_test
+List pairwise_test(const arma::mat& x, const arma::mat& c, int maxit, double abstol);
+RcppExport SEXP _elmulttest_pairwise_test(SEXP xSEXP, SEXP cSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(pairwise_test(x, c, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
     {"_elmulttest_test2sample2_cpp", (DL_FUNC) &_elmulttest_test2sample2_cpp, 6},
     {"_elmulttest_test2sample777_cpp", (DL_FUNC) &_elmulttest_test2sample777_cpp, 6},
     {"_elmulttest_test_pair", (DL_FUNC) &_elmulttest_test_pair, 5},
+    {"_elmulttest_pairwise_test", (DL_FUNC) &_elmulttest_pairwise_test, 4},
     {NULL, NULL, 0}
 };
 
