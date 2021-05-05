@@ -291,9 +291,9 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
 //'
 //' @export
 // [[Rcpp::export]]
-List test_pair(arma::mat const &x,
-               arma::mat const &c,
-               std::vector<int> const &pair,
+List test_pair(const arma::mat &x,
+               const arma::mat &c,
+               const std::vector<int> &pair,
                int maxit = 1000,
                double abstol = 1e-8) {
   /// index pair validation ///
@@ -397,8 +397,8 @@ List test_pair(arma::mat const &x,
 //'
 //' @export
 // [[Rcpp::export]]
-List pairwise_test(arma::mat const &x,
-                   arma::mat const &c,
+List pairwise_test(const arma::mat &x,
+                   const arma::mat &c,
                    int maxit = 1000,
                    double abstol = 1e-8) {
   // number of points(parameters)
