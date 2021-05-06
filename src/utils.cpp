@@ -163,8 +163,6 @@ arma::mat cov_estimator(const arma::mat &x,
                         const arma::mat &c) {
   // number of blocks
   int n = x.n_rows;
-  // number of points(parameters)
-  int p = x.n_cols;
   // estimator(global minimizer)
   arma::rowvec theta_hat = n / accu(x.col(0) != 0) * mean(x, 0);
   // estimating function
@@ -172,4 +170,38 @@ arma::mat cov_estimator(const arma::mat &x,
   // covariance estimate
   arma::mat vhat = (trans(g) * (g)) / n;
   return vhat;
+}
+
+arma::mat g_mean(const arma::vec &theta,
+                 arma::mat x) {
+  // estimating function
+  x.each_row() -= theta.t();
+  return x;
+}
+
+arma::mat g_ibd(const arma::vec& theta,
+                const arma::mat& x,
+                const arma::mat& c) {
+  return x - c.each_row() % theta.t();
+}
+
+arma::vec linear_projection(const arma::vec &theta,
+                            const arma::mat &L,
+                            const arma::vec &rhs) {
+  return theta - L.t() * inv_sympd(L * L.t()) * (L * theta - rhs);
+}
+
+arma::vec lambda2theta_ibd(const arma::vec &lambda,
+                           const arma::vec &theta,
+                           const arma::mat &g,
+                           const arma::mat &c,
+                           const double &gamma) {
+  arma::vec arg = 1 + g * lambda;
+  arma::vec dplog_vec = dplog(Rcpp::wrap(arg), 1 / g.n_rows);
+  // gradient
+  arma::vec gradient = -arma::sum(arma::diagmat(dplog_vec) * c, 0).t() % lambda;
+  // update theta by GD with lambda fixed
+  arma::vec theta_hat = theta - gamma * gradient;
+
+  return theta_hat;
 }

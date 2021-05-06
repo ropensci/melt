@@ -19,5 +19,14 @@ void lambda2theta_bibd(arma::rowvec &theta, arma::vec lambda,
 std::vector<std::vector<int>> all_pairs(const int &p);
 arma::mat cov_estimator(const arma::mat &x,
                         const arma::mat &c);
-
+arma::mat g_mean(const arma::vec &theta, arma::mat x);
+arma::mat g_ibd(const arma::vec& theta, const arma::mat& x, const arma::mat& c);
+arma::vec linear_projection(const arma::vec &theta,
+                            const arma::mat &L,
+                            const arma::vec &rhs);
+arma::vec lambda2theta_ibd(const arma::vec &lambda,
+                           const arma::vec &theta,
+                           const arma::mat &g,
+                           const arma::mat &c,
+                           const double &gamma);
 #endif
