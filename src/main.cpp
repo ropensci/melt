@@ -97,7 +97,7 @@ Rcpp::List el_mean2(const arma::vec& theta,
                     const int& maxit = 100,
                     const double& abstol = 1e-8) {
   if (arma::rank(x) != x.n_cols) {
-    Rcpp::stop("Design matrix x must have full rank.");
+    Rcpp::stop("Design matrix x must have full rankf.");
   }
   // estimating function for mean parameters
   arma::mat g = g_mean(theta, x);
