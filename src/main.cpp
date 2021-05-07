@@ -18,6 +18,9 @@ using namespace arma;
 // [[Rcpp::export]]
 Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
                int maxit = 100, double abstol = 1e-8) {
+  if (arma::rank(x) != x.n_cols) {
+    Rcpp::stop("Design matrix x must have full rank.");
+  }
   // ncol must be same as p
   int n = x.n_rows;
   int p = theta.n_elem;
@@ -109,10 +112,10 @@ Rcpp::List el_mean2(const arma::vec& theta,
     Rcpp::Named("nlogLR") = result.nlogLR,
     Rcpp::Named("lambda") =
       Rcpp::NumericVector(result.lambda.begin(), result.lambda.end()),
-      Rcpp::Named("gradient") =
-        Rcpp::NumericVector(result.gradient.begin(), result.gradient.end()),
-        Rcpp::Named("iterations") = result.iterations,
-        Rcpp::Named("convergence") = result.convergence);
+    Rcpp::Named("gradient") =
+      Rcpp::NumericVector(result.gradient.begin(), result.gradient.end()),
+    Rcpp::Named("iterations") = result.iterations,
+    Rcpp::Named("convergence") = result.convergence);
 }
 
 
