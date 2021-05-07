@@ -42,6 +42,68 @@ Rcpp::NumericVector d2plog(Rcpp::NumericVector x, double threshold) {
   return out;
 }
 
+EL getEL(const arma::mat& g,
+         const int& maxit,
+         const double& abstol) {
+  const int n = g.n_rows;
+  const int p = g.n_cols;
+
+  // minimization
+  arma::vec l; l.zeros(p);
+  arma::vec lc;
+  arma::vec arg = 1 + g * l;
+  arma::vec y;
+  arma::mat J;
+  arma::mat Q;
+  arma::mat R;
+  double f0;
+  double f1;
+  int iterations = 0;
+  bool convergence = false;
+  while (convergence == false) {
+    // function evaluation(initial)
+    f0 = -Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+    // J matrix & y vector
+    arma::vec v1(Rcpp::sqrt(-d2plog(Rcpp::wrap(arg), 1 / n)));
+    arma::vec v2(dplog(Rcpp::wrap(arg), 1 / n));
+    J = g.each_col() % v1;
+    y = v2 / v1;
+    // update lambda by NR method with least square & step halving
+    arma::qr_econ(Q, R, J);
+    lc = l + arma::solve(R, Q.t() * y);
+    double alpha = 1;
+    while(-Rcpp::sum(plog(Rcpp::wrap(1 + g * lc), 1 / n)) > f0) {
+      alpha = alpha / 2;
+      lc = l + alpha * solve(R, arma::trans(Q) * y);
+    }
+    // update function value
+    l = lc;
+    arg = 1 + g * l;
+    f1 = -Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+    // convergence check & parameter update
+    if (f0 - f1 < abstol) {
+      arma::vec v1(Rcpp::sqrt(-d2plog(Rcpp::wrap(arg), 1 / n)));
+      arma::vec v2(dplog(Rcpp::wrap(arg), 1 / n));
+      J = g.each_col() % v1;
+      y = v2 / v1;
+      convergence = true;
+    } else {
+      if(iterations == maxit) {
+        break;
+      }
+      iterations++;
+    }
+  }
+
+  EL result;
+  result.nlogLR = -f1;
+  result.lambda = l;
+  result.gradient = -J.t() * y;
+  result.iterations = iterations;
+  result.convergence = convergence;
+  return result;
+}
+
 double dfp1dcpp(arma::vec gr) {
   /* This function can be modified to for a general direction finding problem
      in higher dimensions
@@ -176,6 +238,7 @@ arma::mat g_mean(const arma::vec &theta,
                  arma::mat x) {
   // estimating function
   x.each_row() -= theta.t();
+
   return x;
 }
 
@@ -191,11 +254,11 @@ arma::vec linear_projection(const arma::vec &theta,
   return theta - L.t() * inv_sympd(L * L.t()) * (L * theta - rhs);
 }
 
-arma::vec lambda2theta_ibd(const arma::vec &lambda,
-                           const arma::vec &theta,
-                           const arma::mat &g,
-                           const arma::mat &c,
-                           const double &gamma) {
+arma::vec lambda2theta_ibd(const arma::vec& lambda,
+                           const arma::vec& theta,
+                           const arma::mat& g,
+                           const arma::mat& c,
+                           const double& gamma) {
   arma::vec arg = 1 + g * lambda;
   arma::vec dplog_vec = dplog(Rcpp::wrap(arg), 1 / g.n_rows);
   // gradient

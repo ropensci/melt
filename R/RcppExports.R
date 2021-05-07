@@ -14,6 +14,19 @@ el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
     .Call(`_elmulttest_el_mean`, theta, x, maxit, abstol)
 }
 
+#' Compute empirical likelihood for mean
+#'
+#' Compute empirical likelihood for mean
+#'
+#' @param theta a vector of parameters to be tested.
+#' @param x a matrix or vector of data. Each row is an observation vector.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
+#' @export
+el_mean2 <- function(theta, x, maxit = 100L, abstol = 1e-8) {
+    .Call(`_elmulttest_el_mean2`, theta, x, maxit, abstol)
+}
+
 #' Two sample test for equal mean
 #'
 #' Two sample test for equal mean
@@ -97,5 +110,20 @@ pairwise_test <- function(x, c, maxit = 1000L, abstol = 1e-8) {
 #' @export
 pairwise_threshold <- function(x, c, B, alpha) {
     .Call(`_elmulttest_pairwise_threshold`, x, c, B, alpha)
+}
+
+#' Hypothesis test for incomplete block design
+#'
+#' Hypothesis test for incomplete block design
+#'
+#' @param x a matrix of data .
+#' @param c an incidence matrix.
+#' @param L a linear hypothesis matrix.
+#' @param rhs right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#' @export
+test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_elmulttest_test_ibd`, x, c, L, rhs, maxit, abstol)
 }
 

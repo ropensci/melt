@@ -16,7 +16,7 @@ using namespace arma;
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
 //' @export
 // [[Rcpp::export]]
-List el_mean(arma::rowvec theta, arma::mat x,
+Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
                int maxit = 100, double abstol = 1e-8) {
   // ncol must be same as p
   int n = x.n_rows;
@@ -40,28 +40,28 @@ List el_mean(arma::rowvec theta, arma::mat x,
   bool convergence = false;
   while (convergence == false) {
     // function evaluation(initial)
-    f0 = -sum(plog(wrap(arg), 1 / n));
+    f0 = -sum(plog(Rcpp::wrap(arg), 1 / n));
     // J matrix & y vector
-    arma::vec v1(Rcpp::sqrt(-d2plog(wrap(arg), 1 / n)));
-    arma::vec v2(dplog(wrap(arg), 1 / n));
+    arma::vec v1(Rcpp::sqrt(-d2plog(Rcpp::wrap(arg), 1 / n)));
+    arma::vec v2(dplog(Rcpp::wrap(arg), 1 / n));
     J = g.each_col() % v1;
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
     arma::qr_econ(Q, R, J);
     lc = l + arma::solve(R, trans(Q) * y);
     double alpha = 1;
-    while(-sum(plog(wrap(1 + g * lc), 1 / n)) > f0) {
+    while(-sum(plog(Rcpp::wrap(1 + g * lc), 1 / n)) > f0) {
       alpha = alpha / 2;
       lc = l + alpha * solve(R, trans(Q) * y);
     }
     // update function value
     l = lc;
     arg = 1 + g * l;
-    f1 = -sum(plog(wrap(arg), 1 / n));
+    f1 = -sum(plog(Rcpp::wrap(arg), 1 / n));
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
-      arma::vec v1(Rcpp::sqrt(-d2plog(wrap(arg), 1 / n)));
-      arma::vec v2(dplog(wrap(arg), 1 / n));
+      arma::vec v1(Rcpp::sqrt(-d2plog(Rcpp::wrap(arg), 1 / n)));
+      arma::vec v2(dplog(Rcpp::wrap(arg), 1 / n));
       J = g.each_col() % v1;
       y = v2 / v1;
       convergence = true;
@@ -76,10 +76,40 @@ List el_mean(arma::rowvec theta, arma::mat x,
   // result
   return Rcpp::List::create(
     Rcpp::Named("nlogLR") = -f1,
-    Rcpp::Named("lambda") = NumericVector(l.begin(), l.end()),
-    Rcpp::Named("grad") = as<std::vector<double>>(wrap(-trans(J) * y)),
+    Rcpp::Named("lambda") = Rcpp::NumericVector(l.begin(), l.end()),
+    Rcpp::Named("grad") = Rcpp::as<std::vector<double>>(Rcpp::wrap(-trans(J) * y)),
     Rcpp::Named("iterations") = iterations,
     Rcpp::Named("convergence") = convergence);
+}
+
+//' Compute empirical likelihood for mean
+//'
+//' Compute empirical likelihood for mean
+//'
+//' @param theta a vector of parameters to be tested.
+//' @param x a matrix or vector of data. Each row is an observation vector.
+//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+//' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
+//' @export
+// [[Rcpp::export]]
+Rcpp::List el_mean2(const arma::vec& theta,
+                    const arma::mat& x,
+                    const int& maxit = 100,
+                    const double& abstol = 1e-8) {
+  // estimating function for mean parameters
+  arma::mat g = g_mean(theta, x);
+
+  // compute EL
+  EL result = getEL(g, maxit, abstol);
+
+  return Rcpp::List::create(
+    Rcpp::Named("nlogLR") = result.nlogLR,
+    Rcpp::Named("lambda") =
+      Rcpp::NumericVector(result.lambda.begin(), result.lambda.end()),
+      Rcpp::Named("gradient") =
+        Rcpp::NumericVector(result.gradient.begin(), result.gradient.end()),
+        Rcpp::Named("iterations") = result.iterations,
+        Rcpp::Named("convergence") = result.convergence);
 }
 
 
@@ -101,9 +131,9 @@ List el_mean(arma::rowvec theta, arma::mat x,
 //'
 //' @export
 // [[Rcpp::export]]
-List test2sample2_cpp(NumericVector x, NumericVector y, double b = .9, double alpha = 1,
-                      unsigned int maxit = 1000, double abstol = 1e-8) {
-  List result;
+Rcpp::List test2sample2_cpp(Rcpp::NumericVector x, Rcpp::NumericVector y, double b = .9, double alpha = 1,
+                       int maxit = 1000, double abstol = 1e-8) {
+  Rcpp::List result;
   vec sample_mean = {mean(x), mean(y)};
   vec ub_vec = {max(x), max(y), max(sample_mean)};
   vec lb_vec = {min(x), min(y), min(sample_mean)};
@@ -117,10 +147,10 @@ List test2sample2_cpp(NumericVector x, NumericVector y, double b = .9, double al
 
   // initialization
   double par = (lb + ub) / 2;
-  unsigned int nx = x.size();
-  unsigned int ny = y.size();
-  unsigned int N = std::max(nx, ny);
-  unsigned int iterations{};
+  int nx = x.size();
+  int ny = y.size();
+  int N = std::max(nx, ny);
+  int iterations{};
   int convergence{};
   double v{};
   double lx;
@@ -195,12 +225,12 @@ List test2sample2_cpp(NumericVector x, NumericVector y, double b = .9, double al
 //'
 //' @export
 // [[Rcpp::export]]
-List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double alpha = 1,
-                        unsigned int maxit = 1000, double abstol = 1e-8) {
-  List result;
-  vec sample_mean = {mean(x), mean(y)};
-  vec ub_vec = {max(x), max(y), max(sample_mean)};
-  vec lb_vec = {min(x), min(y), min(sample_mean)};
+Rcpp::List test2sample777_cpp(Rcpp::NumericVector x, Rcpp::NumericVector y, double b = .9, double alpha = 1,
+                       int maxit = 1000, double abstol = 1e-8) {
+  Rcpp::List result;
+  arma::vec sample_mean = {mean(x), mean(y)};
+  arma::vec ub_vec = {max(x), max(y), max(sample_mean)};
+  arma::vec lb_vec = {min(x), min(y), min(sample_mean)};
   double ub = min(ub_vec);
   double lb = max(lb_vec);
   if(ub <= lb) {
@@ -211,10 +241,10 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
 
   // initialization
   double par = (lb + ub) / 2;
-  unsigned int nx = x.size();
-  unsigned int ny = y.size();
-  unsigned int N = std::max(nx, ny);
-  unsigned int iterations{};
+   int nx = x.size();
+   int ny = y.size();
+   int N = std::max(nx, ny);
+   int iterations{};
   int convergence{};
   double v{};
   double lx;
@@ -291,7 +321,7 @@ List test2sample777_cpp(NumericVector x, NumericVector y, double b = .9, double 
 //'
 //' @export
 // [[Rcpp::export]]
-List test_pair(const arma::mat &x,
+Rcpp::List test_pair(const arma::mat &x,
                const arma::mat &c,
                const std::vector<int> &pair,
                int maxit = 1000,
@@ -306,7 +336,7 @@ List test_pair(const arma::mat &x,
   if (pair.size() != 2 ||
       sum(duplicated(pair_Rcpp)) ||
       !Rcpp::setequal(points, total)) {
-      stop("'pair' must be a vector of two distinct integers ranging from one to the total number of points.");
+      Rcpp::stop("'pair' must be a vector of two distinct integers ranging from one to the total number of points.");
   }
 
   /// convex hull check(necessary condition) ///
@@ -339,10 +369,10 @@ List test_pair(const arma::mat &x,
   // If the convex hull constraint is not satisfied at the initial value, stop.
   // Otherwise, compute initial function value.
   if (!convex_hull_check) {
-    stop("convex hull constraint not satisfied at the initial value.");
+    Rcpp::stop("convex hull constraint not satisfied at the initial value.");
   } else {
     arg = 1 + (x - c.each_row() % theta) * lambda;
-    f0 = sum(plog(wrap(arg), 1 / n));
+    f0 = sum(plog(Rcpp::wrap(arg), 1 / n));
     f1 = f0;
   }
 
@@ -361,14 +391,14 @@ List test_pair(const arma::mat &x,
       // update function value
       f0 = f1;
       arg = 1 + (x - c.each_row() % theta) * lambda;
-      f1 = sum(plog(wrap(arg), 1 / n));
+      f1 = sum(plog(Rcpp::wrap(arg), 1 / n));
       // step halving to ensure that the updated function value be
       // strinctly less than the current function value
       while (f0 <= f1) {
         gamma = gamma / 2;
         lambda2theta_bibd(theta, lambda, x, c, pair, gamma, n, p, 100, 1e-8);
         arg = 1 + (x - c.each_row() % theta) * lambda;
-        f1 = sum(plog(wrap(arg), 1 / n));
+        f1 = sum(plog(Rcpp::wrap(arg), 1 / n));
       }
       iterations++;
       if (iterations == maxit) {
@@ -379,8 +409,8 @@ List test_pair(const arma::mat &x,
 
   // result
   return Rcpp::List::create(
-    Rcpp::Named("theta") = NumericVector(theta.begin(), theta.end()),
-    Rcpp::Named("lambda") = NumericVector(lambda.begin(), lambda.end()),
+    Rcpp::Named("theta") = Rcpp::NumericVector(theta.begin(), theta.end()),
+    Rcpp::Named("lambda") = Rcpp::NumericVector(lambda.begin(), lambda.end()),
     Rcpp::Named("nlogLR") = f1,
     Rcpp::Named("iterations") = iterations,
     Rcpp::Named("convergence") = convergence);
@@ -397,7 +427,7 @@ List test_pair(const arma::mat &x,
 //'
 //' @export
 // [[Rcpp::export]]
-List pairwise_test(const arma::mat &x,
+Rcpp::List pairwise_test(const arma::mat &x,
                    const arma::mat &c,
                    int maxit = 1000,
                    double abstol = 1e-8) {
@@ -409,7 +439,7 @@ List pairwise_test(const arma::mat &x,
   int m = pairs.size();
   // test statistics(-2logLR)
   Rcpp::NumericVector pairs_2nlogLR(m);
-  for (unsigned i = 0; i < m; i++) {
+  for (int i = 0; i < m; i++) {
     double nlogLR = test_pair(x, c, pairs[i], maxit, abstol)["nlogLR"];
     pairs_2nlogLR(i) = 2 * nlogLR;
   }
@@ -433,12 +463,11 @@ List pairwise_test(const arma::mat &x,
 //'
 //' @export
 // [[Rcpp::export]]
-List pairwise_threshold(const arma::mat &x,
+Rcpp::List pairwise_threshold(const arma::mat &x,
                         const arma::mat &c,
                         const int &B,
                         const double &alpha) {
   /// parameters ///
-  const int n = x.n_rows;   // number of blocks
   const int p = x.n_cols;   // number of points(treatments)
   const int m = p * (p - 1) / 2;    // number of hypotheses
   const arma::vec level = {1 - alpha};    // confidence level
@@ -449,7 +478,7 @@ List pairwise_threshold(const arma::mat &x,
   const arma::mat V_hat = cov_estimator(x, c);
   // vector of pairs
   const std::vector<std::vector<int>> pairs = all_pairs(p);
-  for (unsigned i = 0; i < m; i++) {
+  for (int i = 0; i < m; i++) {
     arma::rowvec R(p);
     R.fill(0);
     R(pairs[i][0] - 1) = 1;
@@ -462,7 +491,7 @@ List pairwise_threshold(const arma::mat &x,
 
   // B bootstrap replicates(B x m matrix)
   arma::mat bootstrap_sample(B, m);
-  for (unsigned i = 0; i < m; i++) {
+  for (int i = 0; i < m; i++) {
     bootstrap_sample.col(i) =
       arma::diagvec(arma::trans(U_hat) * A_hat.slice(i) * U_hat);
   }
@@ -470,4 +499,119 @@ List pairwise_threshold(const arma::mat &x,
   return Rcpp::List::create(
     Rcpp::Named("threshold") =
       arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1), level)));
+}
+
+
+
+//' Hypothesis test for incomplete block design
+//'
+//' Hypothesis test for incomplete block design
+//'
+//' @param x a matrix of data .
+//' @param c an incidence matrix.
+//' @param L a linear hypothesis matrix.
+//' @param rhs right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.
+//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+//' @export
+// [[Rcpp::export]]
+Rcpp::List test_ibd(const arma::mat& x,
+                    const arma::mat& c,
+                    const arma::mat& L,
+                    const arma::vec& rhs,
+                    const int& maxit = 1000,
+                    const double& abstol = 1e-8) {
+  /// initialization ///
+  const int n = x.n_rows;
+  if (arma::rank(L) != L.n_rows) {
+    Rcpp::stop("Hypothesis matrix L must have full rank.");
+  }
+  if (L.n_rows != rhs.n_elem) {
+    Rcpp::stop("Dimensions of L and rhs do not match.");
+  }
+  // initial parameter value set as group means
+  arma::vec theta = arma::trans(n * arma::mean(x, 0) / arma::sum(c, 0));
+  // constraint imposed on the initial value by projection
+  theta = linear_projection(theta, L, rhs);
+  // estimating function
+  arma::mat g = g_ibd(theta, x, c);
+  // evaluation
+  EL eval = getEL(g);
+  arma::vec lambda = eval.lambda;
+  // If the convex hull constraint is not satisfied at the initial value, stop.
+  // Otherwise, compute initial function value.
+  if (!eval.convergence) {
+    Rcpp::stop("convex hull constraint not satisfied at the initial value.");
+  }
+  arma::vec arg = 1 + g * lambda;
+  // for current function value(-logLR)
+  double f0 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+  // for updated function value
+  double f1 = f0;
+
+
+  /// minimization(projected gradient descent) ///
+  double gamma = std::pow(arma::mean(arma::sum(c, 0)), -1);    // step size
+  int convergence = 0;
+  int iterations = 0;
+  // proposed value for theta
+  arma::vec theta_tmp;
+  arma::vec lambda_tmp;
+  arma::mat g_tmp;
+  while (convergence == 0) {
+    if (f0 - f1 < abstol && iterations > 0) {
+      convergence = 1;
+    } else {
+      // update parameter by GD with lambda fixed
+      theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+      // projection
+      theta_tmp = linear_projection(theta_tmp, L, rhs);
+      // update g
+      g_tmp = g_ibd(theta_tmp, x, c);
+      // update lambda
+      eval = getEL(g_tmp);
+      lambda_tmp = eval.lambda;
+      if (!eval.convergence) {
+        Rcpp::stop("convex hull constraint not satisfied during optimization.");
+      }
+      // update function value
+      f0 = f1;
+      arg = 1 + g_tmp * lambda_tmp;
+      f1 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+      // step halving to ensure that the updated function value be
+      // strinctly less than the current function value
+      while (f0 <= f1) {
+        // reduce step size
+        gamma /= 2;
+        // propose new theta
+        theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+        theta_tmp = linear_projection(theta_tmp, L, rhs);
+        // propose new lambda
+        g_tmp = g_ibd(theta_tmp, x, c);
+        eval = getEL(g_tmp);
+        lambda_tmp = eval.lambda;
+        if (!eval.convergence) {
+          Rcpp::stop("convex hull constraint not satisfied during step halving.");
+        }
+        // propose new function value
+        arg = 1 + g_tmp * lambda_tmp;
+        f1 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+      }
+      // update parameters
+      theta = theta_tmp;
+      lambda = lambda_tmp;
+      g = g_tmp;
+      if (iterations == maxit) {
+        break;
+      }
+      iterations++;
+    }
+  }
+
+  return Rcpp::List::create(
+    Rcpp::Named("theta") = Rcpp::NumericVector(theta.begin(), theta.end()),
+    Rcpp::Named("lambda") = Rcpp::NumericVector(lambda.begin(), lambda.end()),
+    Rcpp::Named("nlogLR") = f1,
+    Rcpp::Named("iterations") = iterations,
+    Rcpp::Named("convergence") = convergence);
 }
