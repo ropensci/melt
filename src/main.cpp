@@ -468,18 +468,17 @@ Rcpp::List test_ibd(const arma::mat& x,
   // for updated function value
   double f1 = f0;
 
-
   /// minimization(projected gradient descent) ///
   double gamma = std::pow(arma::mean(arma::sum(c, 0)), -1);    // step size
-  int convergence = 0;
+  bool convergence = false;
   int iterations = 0;
   // proposed value for theta
   arma::vec theta_tmp;
   arma::vec lambda_tmp;
   arma::mat g_tmp;
-  while (convergence == 0) {
+  while (convergence == false) {
     if (f0 - f1 < abstol && iterations > 0) {
-      convergence = 1;
+      convergence = true;
     } else {
       // update parameter by GD with lambda fixed
       theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
