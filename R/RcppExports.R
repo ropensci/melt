@@ -84,6 +84,21 @@ test_pair <- function(x, c, pair, maxit = 1000L, abstol = 1e-8) {
     .Call(`_elmulttest_test_pair`, x, c, pair, maxit, abstol)
 }
 
+#' Hypothesis test for incomplete block design
+#'
+#' Hypothesis test for incomplete block design
+#'
+#' @param x a matrix of data .
+#' @param c an incidence matrix.
+#' @param L a linear hypothesis matrix.
+#' @param rhs right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#' @export
+test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_elmulttest_test_ibd`, x, c, L, rhs, maxit, abstol)
+}
+
 #' Pairwise comparison for BIBD
 #'
 #' Pairwise comparison for BIBD
@@ -94,8 +109,8 @@ test_pair <- function(x, c, pair, maxit = 1000L, abstol = 1e-8) {
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_test <- function(x, c, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_test`, x, c, maxit, abstol)
+pairwise_ibd <- function(x, c, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_ibd`, x, c, maxit, abstol)
 }
 
 #' Computes threshold of pairwise comparison for BIBD
@@ -110,20 +125,5 @@ pairwise_test <- function(x, c, maxit = 1000L, abstol = 1e-8) {
 #' @export
 pairwise_threshold <- function(x, c, B, alpha) {
     .Call(`_elmulttest_pairwise_threshold`, x, c, B, alpha)
-}
-
-#' Hypothesis test for incomplete block design
-#'
-#' Hypothesis test for incomplete block design
-#'
-#' @param x a matrix of data .
-#' @param c an incidence matrix.
-#' @param L a linear hypothesis matrix.
-#' @param rhs right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.
-#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-#' @export
-test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_test_ibd`, x, c, L, rhs, maxit, abstol)
 }
 

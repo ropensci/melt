@@ -422,93 +422,6 @@ Rcpp::List test_pair(const arma::mat &x,
     Rcpp::Named("convergence") = convergence);
 }
 
-//' Pairwise comparison for BIBD
-//'
-//' Pairwise comparison for BIBD
-//'
-//' @param x a matrix of data .
-//' @param c an incidence matrix.
-//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-//'
-//' @export
-// [[Rcpp::export]]
-Rcpp::List pairwise_test(const arma::mat &x,
-                   const arma::mat &c,
-                   int maxit = 1000,
-                   double abstol = 1e-8) {
-  // number of points(parameters)
-  int p = x.n_cols;
-  // all pairs
-  std::vector<std::vector<int>> pairs = all_pairs(p);
-  // number of hypotheses
-  int m = pairs.size();
-  // test statistics(-2logLR)
-  Rcpp::NumericVector pairs_2nlogLR(m);
-  for (int i = 0; i < m; i++) {
-    double nlogLR = test_pair(x, c, pairs[i], maxit, abstol)["nlogLR"];
-    pairs_2nlogLR(i) = 2 * nlogLR;
-  }
-  // std::vector<double> pairs_2nlogLR(m);
-  // for (int i = 0; i < m; i++) {
-  //   double nlogLR = test_pair(x, c, pairs[i], maxit, abstol)["nlogLR"];
-  //   pairs_2nlogLR[i] = 2 * nlogLR;
-  // }
-  return Rcpp::List::create(
-    Rcpp::Named("statistics") = pairs_2nlogLR);
-}
-
-//' Computes threshold of pairwise comparison for BIBD
-//'
-//' Computes threshold using parametric bootstrap
-//'
-//' @param x a matrix of data .
-//' @param c an incidence matrix.
-//' @param B an integer value for the number of bootstrap replicates.
-//' @param alpha a significance level.
-//'
-//' @export
-// [[Rcpp::export]]
-Rcpp::List pairwise_threshold(const arma::mat &x,
-                        const arma::mat &c,
-                        const int &B,
-                        const double &alpha) {
-  /// parameters ///
-  const int p = x.n_cols;   // number of points(treatments)
-  const int m = p * (p - 1) / 2;    // number of hypotheses
-  const arma::vec level = {1 - alpha};    // confidence level
-
-  /// A hat matrices ///
-  arma::cube A_hat(p, p, m);
-  // covariance estimate
-  const arma::mat V_hat = cov_estimator(x, c);
-  // vector of pairs
-  const std::vector<std::vector<int>> pairs = all_pairs(p);
-  for (int i = 0; i < m; i++) {
-    arma::rowvec R(p);
-    R.fill(0);
-    R(pairs[i][0] - 1) = 1;
-    R(pairs[i][1] - 1) = -1;
-    A_hat.slice(i) = (trans(R) * R) / as_scalar(R * V_hat * trans(R));
-  }
-
-  // U hat matrices
-  const arma::mat U_hat = arma::mvnrnd(arma::zeros(p), V_hat, B);
-
-  // B bootstrap replicates(B x m matrix)
-  arma::mat bootstrap_sample(B, m);
-  for (int i = 0; i < m; i++) {
-    bootstrap_sample.col(i) =
-      arma::diagvec(arma::trans(U_hat) * A_hat.slice(i) * U_hat);
-  }
-
-  return Rcpp::List::create(
-    Rcpp::Named("threshold") =
-      arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1), level)));
-}
-
-
-
 //' Hypothesis test for incomplete block design
 //'
 //' Hypothesis test for incomplete block design
@@ -620,4 +533,93 @@ Rcpp::List test_ibd(const arma::mat& x,
     Rcpp::Named("nlogLR") = f1,
     Rcpp::Named("iterations") = iterations,
     Rcpp::Named("convergence") = convergence);
+}
+
+//' Pairwise comparison for BIBD
+//'
+//' Pairwise comparison for BIBD
+//'
+//' @param x a matrix of data .
+//' @param c an incidence matrix.
+//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+//'
+//' @export
+// [[Rcpp::export]]
+Rcpp::List pairwise_ibd(const arma::mat& x,
+                        const arma::mat& c,
+                        int maxit = 1000,
+                        double abstol = 1e-8) {
+  int p = x.n_cols;
+  // all pairs
+  std::vector<std::vector<int>> pairs = all_pairs(p);
+  // number of hypotheses
+  int m = pairs.size();
+  // test statistics(-2logLR)
+  Rcpp::NumericVector pairs_2nlogLR(m);
+  for(arma::uword i = 0; i < m; i++) {
+    arma::rowvec L = arma::zeros(1, p);
+    L(pairs[i][0] - 1) = 1;
+    L(pairs[i][1] - 1) = -1;
+    Rcpp::List pairwise_result =
+      test_ibd(x, c, L, arma::zeros(1), maxit, abstol);
+    bool convergence = pairwise_result["convergence"];
+    if (!convergence) {
+      Rcpp::warning("Test for pair (%i,%i) failed. \n",
+                    pairs[i][0], pairs[i][1]);
+    }
+    double nlogLR = pairwise_result["nlogLR"];
+    pairs_2nlogLR(i) = 2 * nlogLR;
+  }
+
+  return Rcpp::List::create(Rcpp::Named("statistics") = pairs_2nlogLR);
+}
+
+//' Computes threshold of pairwise comparison for BIBD
+//'
+//' Computes threshold using parametric bootstrap
+//'
+//' @param x a matrix of data .
+//' @param c an incidence matrix.
+//' @param B an integer value for the number of bootstrap replicates.
+//' @param alpha a significance level.
+//'
+//' @export
+// [[Rcpp::export]]
+Rcpp::List pairwise_threshold(const arma::mat &x,
+                              const arma::mat &c,
+                              const int &B,
+                              const double &alpha) {
+  /// parameters ///
+  const int p = x.n_cols;   // number of points(treatments)
+  const int m = p * (p - 1) / 2;    // number of hypotheses
+  const arma::vec level = {1 - alpha};    // confidence level
+
+  /// A hat matrices ///
+  arma::cube A_hat(p, p, m);
+  // covariance estimate
+  const arma::mat V_hat = cov_estimator(x, c);
+  // vector of pairs
+  const std::vector<std::vector<int>> pairs = all_pairs(p);
+  for (int i = 0; i < m; i++) {
+    arma::rowvec R(p);
+    R.fill(0);
+    R(pairs[i][0] - 1) = 1;
+    R(pairs[i][1] - 1) = -1;
+    A_hat.slice(i) = (trans(R) * R) / as_scalar(R * V_hat * trans(R));
+  }
+
+  // U hat matrices
+  const arma::mat U_hat = arma::mvnrnd(arma::zeros(p), V_hat, B);
+
+  // B bootstrap replicates(B x m matrix)
+  arma::mat bootstrap_sample(B, m);
+  for (int i = 0; i < m; i++) {
+    bootstrap_sample.col(i) =
+      arma::diagvec(arma::trans(U_hat) * A_hat.slice(i) * U_hat);
+  }
+
+  return Rcpp::List::create(
+    Rcpp::Named("threshold") =
+      arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1), level)));
 }
