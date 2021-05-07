@@ -19,7 +19,7 @@ using namespace arma;
 Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
                int maxit = 100, double abstol = 1e-8) {
   if (arma::rank(x) != x.n_cols) {
-    Rcpp::stop("Design matrix x must have full rank.");
+    Rcpp::stop("Design matrix x must have full rank.f");
   }
   // ncol must be same as p
   int n = x.n_rows;
