@@ -221,16 +221,16 @@ std::vector<std::vector<int>> all_pairs(const int &p) {
   return pairs;
 }
 
-arma::mat cov_estimator(const arma::mat &x,
-                        const arma::mat &c) {
+arma::mat cov_ibd(const arma::mat& x, const arma::mat& c) {
   // number of blocks
   int n = x.n_rows;
   // estimator(global minimizer)
-  arma::rowvec theta_hat = n / accu(x.col(0) != 0) * mean(x, 0);
+  arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
   // estimating function
-  arma::mat g = x - c.each_row() % theta_hat;
+  arma::mat g = x - c.each_row() % theta_hat.t();
   // covariance estimate
-  arma::mat vhat = (trans(g) * (g)) / n;
+  arma::mat vhat = (g.t() * (g)) / n;
+
   return vhat;
 }
 

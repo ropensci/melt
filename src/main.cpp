@@ -2,6 +2,7 @@
 #include "utils.h"
 
 // [[Rcpp::depends(RcppArmadillo)]]
+using namespace Rcpp;
 using namespace arma;
 
 
@@ -448,7 +449,7 @@ Rcpp::List test_ibd(const arma::mat& x,
     Rcpp::stop("Dimensions of L and rhs do not match.");
   }
   // initial parameter value set as group means
-  arma::vec theta = arma::trans(n * arma::mean(x, 0) / arma::sum(c, 0));
+  arma::vec theta = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
   // constraint imposed on the initial value by projection
   theta = linear_projection(theta, L, rhs);
   // estimating function
@@ -596,7 +597,7 @@ Rcpp::List pairwise_threshold(const arma::mat &x,
   /// A hat matrices ///
   arma::cube A_hat(p, p, m);
   // covariance estimate
-  const arma::mat V_hat = cov_estimator(x, c);
+  const arma::mat V_hat = cov_ibd(x, c);
   // vector of pairs
   const std::vector<std::vector<int>> pairs = all_pairs(p);
   for (int i = 0; i < m; i++) {
