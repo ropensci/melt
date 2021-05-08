@@ -457,10 +457,19 @@ Rcpp::List test_ibd(const arma::mat& x,
   // evaluation
   EL eval = getEL(g);
   arma::vec lambda = eval.lambda;
-  // If the convex hull constraint is not satisfied at the initial value, stop.
-  // Otherwise, compute initial function value.
+  // If the convex hull constraint is not satisfied at the initial value, end.
   if (!eval.convergence) {
-    Rcpp::stop("convex hull constraint not satisfied at the initial value.");
+    // int iterations = 0;
+    // bool convergence = false;
+    // arma::vec arg = 1 + g * lambda;
+    // double f0 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+    // Rcpp::warning("convex hull constraint not satisfied at the initial value.");
+    // return Rcpp::List::create(
+    //   Rcpp::Named("theta") = Rcpp::NumericVector(theta.begin(), theta.end()),
+    //   Rcpp::Named("lambda") = Rcpp::NumericVector(lambda.begin(), lambda.end()),
+    //   Rcpp::Named("nlogLR") = f0,
+    //   Rcpp::Named("iterations") = iterations,
+    //   Rcpp::Named("convergence") = convergence);
   }
   arma::vec arg = 1 + g * lambda;
   // for current function value(-logLR)
@@ -489,8 +498,11 @@ Rcpp::List test_ibd(const arma::mat& x,
       // update lambda
       eval = getEL(g_tmp);
       lambda_tmp = eval.lambda;
-      if (!eval.convergence) {
-        Rcpp::stop("convex hull constraint not satisfied during optimization.");
+      if (!eval.convergence && iterations > 9) {
+        theta = theta_tmp;
+        lambda = lambda_tmp;
+        Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+        break;
       }
       // update function value
       f0 = f1;
@@ -508,8 +520,16 @@ Rcpp::List test_ibd(const arma::mat& x,
         g_tmp = g_ibd(theta_tmp, x, c);
         eval = getEL(g_tmp);
         lambda_tmp = eval.lambda;
-        if (!eval.convergence) {
-          Rcpp::stop("convex hull constraint not satisfied during step halving.");
+        if (gamma < abstol) {
+          theta = theta_tmp;
+          lambda = lambda_tmp;
+          Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+          return Rcpp::List::create(
+            Rcpp::Named("theta") = Rcpp::NumericVector(theta.begin(), theta.end()),
+            Rcpp::Named("lambda") = Rcpp::NumericVector(lambda.begin(), lambda.end()),
+            Rcpp::Named("nlogLR") = f1,
+            Rcpp::Named("iterations") = iterations,
+            Rcpp::Named("convergence") = convergence);
         }
         // propose new function value
         arg = 1 + g_tmp * lambda_tmp;

@@ -70,11 +70,13 @@ EL getEL(const arma::mat& g,
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
     arma::qr_econ(Q, R, J);
-    lc = l + arma::solve(R, Q.t() * y);
+    lc = l + arma::solve(arma::trimatu(R), Q.t() * y,
+                         arma::solve_opts::fast);
     double alpha = 1;
     while(-Rcpp::sum(plog(Rcpp::wrap(1 + g * lc), 1 / n)) > f0) {
       alpha = alpha / 2;
-      lc = l + alpha * solve(R, arma::trans(Q) * y);
+      lc = l + alpha * arma::solve(arma::trimatu(R), Q.t() * y,
+                                   arma::solve_opts::fast);
     }
     // update function value
     l = lc;
