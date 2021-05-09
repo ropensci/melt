@@ -306,3 +306,4 @@ double threshold_pairwise_ibd(const arma::mat& x,
   return
     arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1), conf_level));
 }
+

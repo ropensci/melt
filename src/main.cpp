@@ -554,6 +554,62 @@ Rcpp::List test_ibd(const arma::mat& x,
     Rcpp::Named("convergence") = convergence);
 }
 
+std::vector<double> pair_confidence_interval(const arma::mat& x,
+                                             const arma::mat& c,
+                                             const arma::mat& L,
+                                             const double& init,
+                                             const double& threshold) {
+  // upper endpoint
+  double upper;
+  double upper_lb = init;
+  double upper_size = 1;
+  double upper_ub = init + upper_size;
+  double upper_eval = test_ibd(x, c, L, arma::vec{upper_ub})["nlogLR"];
+  // upper bound for upper endpoint
+  while (2 * upper_eval <= threshold) {
+    upper_size *= 2;
+    upper_ub = init + upper_size;
+    upper_eval = test_ibd(x, c, L, arma::vec{upper_ub})["nlogLR"];
+  }
+  // approximate upper bound by numerical search
+  while (upper_ub - upper_lb >= 1e-04) {
+    upper_eval =
+      test_ibd(x, c, L, arma::vec {(upper_lb + upper_ub) / 2})["nlogLR"];
+    if (2 * upper_eval <= threshold) {
+      upper_lb = (upper_lb + upper_ub) / 2;
+    } else {
+      upper_ub = (upper_lb + upper_ub) / 2;
+    }
+  }
+
+  // lower endpoint
+  double lower;
+  double lower_ub = init;
+  double lower_size = 1;
+  double lower_lb = init - lower_size;
+  double lower_eval = test_ibd(x, c, L, arma::vec{lower_lb})["nlogLR"];
+  // lower bound for lower endpoint
+  while (2 * lower_eval <= threshold) {
+    lower_size *= 2;
+    lower_lb = init - lower_size;
+    lower_eval = test_ibd(x, c, L, arma::vec{lower_lb})["nlogLR"];
+  }
+  // approximate lower bound by numerical search
+  while (lower_ub - lower_lb >= 1e-04) {
+    lower_eval =
+      test_ibd(x, c, L, arma::vec {(lower_lb + lower_ub) / 2})["nlogLR"];
+    if (2 * lower_eval <= threshold) {
+      lower_ub = (lower_lb + lower_ub) / 2;
+    } else {
+      lower_lb = (lower_lb + lower_ub) / 2;
+    }
+  }
+
+  std::vector<double> confidence_inverval{lower_ub, upper_lb};
+  return confidence_inverval;
+}
+
+
 //' Pairwise comparison for BIBD
 //'
 //' Pairwise comparison for BIBD
