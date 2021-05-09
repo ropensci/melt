@@ -458,19 +458,6 @@ Rcpp::List test_ibd(const arma::mat& x,
   EL eval = getEL(g);
   arma::vec lambda = eval.lambda;
   // If the convex hull constraint is not satisfied at the initial value, end.
-  if (!eval.convergence) {
-    // int iterations = 0;
-    // bool convergence = false;
-    // arma::vec arg = 1 + g * lambda;
-    // double f0 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
-    // Rcpp::warning("convex hull constraint not satisfied at the initial value.");
-    // return Rcpp::List::create(
-    //   Rcpp::Named("theta") = Rcpp::NumericVector(theta.begin(), theta.end()),
-    //   Rcpp::Named("lambda") = Rcpp::NumericVector(lambda.begin(), lambda.end()),
-    //   Rcpp::Named("nlogLR") = f0,
-    //   Rcpp::Named("iterations") = iterations,
-    //   Rcpp::Named("convergence") = convergence);
-  }
   arma::vec arg = 1 + g * lambda;
   // for current function value(-logLR)
   double f0 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
