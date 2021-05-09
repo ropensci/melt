@@ -113,17 +113,3 @@ pairwise_ibd <- function(x, c, maxit = 1000L, abstol = 1e-8) {
     .Call(`_elmulttest_pairwise_ibd`, x, c, maxit, abstol)
 }
 
-#' Computes threshold of pairwise comparison for BIBD
-#'
-#' Computes threshold using parametric bootstrap
-#'
-#' @param x a matrix of data .
-#' @param c an incidence matrix.
-#' @param B an integer value for the number of bootstrap replicates.
-#' @param alpha a significance level.
-#'
-#' @export
-pairwise_threshold <- function(x, c, B, alpha) {
-    .Call(`_elmulttest_pairwise_threshold`, x, c, B, alpha)
-}
-

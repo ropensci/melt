@@ -270,3 +270,39 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
 
   return theta_hat;
 }
+
+double threshold_pairwise_ibd(const arma::mat& x,
+                              const arma::mat& c,
+                              const int& B,
+                              const double& level) {
+  /// parameters ///
+  const int p = x.n_cols;   // number of points(treatments)
+  const int m = p * (p - 1) / 2;    // number of hypotheses
+  const arma::vec conf_level = {level};    // confidence level
+
+  /// A hat matrices ///
+  arma::cube A_hat(p, p, m);
+  // covariance estimate
+  const arma::mat V_hat = cov_ibd(x, c);
+  // vector of pairs
+  const std::vector<std::vector<int>> pairs = all_pairs(p);
+  for (int i = 0; i < m; i++) {
+    arma::rowvec R = arma::zeros(1, p);
+    R(pairs[i][0] - 1) = 1;
+    R(pairs[i][1] - 1) = -1;
+    A_hat.slice(i) = (R.t() * R) / arma::as_scalar(R * V_hat * R.t());
+  }
+
+  // U hat matrices
+  const arma::mat U_hat = arma::mvnrnd(arma::zeros(p), V_hat, B);
+
+  // B bootstrap replicates(B x m matrix)
+  arma::mat bootstrap_sample(B, m);
+  for (int i = 0; i < m; i++) {
+    bootstrap_sample.col(i) =
+      arma::diagvec(arma::trans(U_hat) * A_hat.slice(i) * U_hat);
+  }
+
+  return
+    arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1), conf_level));
+}

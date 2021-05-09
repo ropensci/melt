@@ -39,5 +39,8 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
                            const arma::mat& g,
                            const arma::mat& c,
                            const double& gamma);
-
+double threshold_pairwise_ibd(const arma::mat& x,
+                              const arma::mat& c,
+                              const int& B,
+                              const double& level);
 #endif
