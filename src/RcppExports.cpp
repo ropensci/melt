@@ -98,16 +98,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // pairwise_ibd
-Rcpp::List pairwise_ibd(const arma::mat& x, const arma::mat& c, int maxit, double abstol);
-RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List pairwise_ibd(const arma::mat& x, const arma::mat& c, const bool& interval, const int& B, const double& level, const int& maxit, const double& abstol);
+RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP intervalSEXP, SEXP BSEXP, SEXP levelSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, maxit, abstol));
+    Rcpp::traits::input_parameter< const bool& >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< const int& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const double& >::type level(levelSEXP);
+    Rcpp::traits::input_parameter< const int& >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double& >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, interval, B, level, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -119,7 +122,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_test2sample777_cpp", (DL_FUNC) &_elmulttest_test2sample777_cpp, 6},
     {"_elmulttest_test_pair", (DL_FUNC) &_elmulttest_test_pair, 5},
     {"_elmulttest_test_ibd", (DL_FUNC) &_elmulttest_test_ibd, 6},
-    {"_elmulttest_pairwise_ibd", (DL_FUNC) &_elmulttest_pairwise_ibd, 4},
+    {"_elmulttest_pairwise_ibd", (DL_FUNC) &_elmulttest_pairwise_ibd, 7},
     {NULL, NULL, 0}
 };
 

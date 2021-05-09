@@ -603,6 +603,9 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
 //'
 //' @param x a matrix of data .
 //' @param c an incidence matrix.
+//' @param interval whether to compute interval.
+//' @param B number of bootstrap replicate.
+//' @param level confidence level.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //'
@@ -610,29 +613,100 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
 // [[Rcpp::export]]
 Rcpp::List pairwise_ibd(const arma::mat& x,
                         const arma::mat& c,
-                        int maxit = 1000,
-                        double abstol = 1e-8) {
-  int p = x.n_cols;
+                        const bool& interval = false,
+                        const int& B = 1e5,
+                        const double& level = 0.95,
+                        const int& maxit = 1e3,
+                        const double& abstol = 1e-8) {
+  const int n = x.n_rows;
+  const int p = x.n_cols;
   // all pairs
   std::vector<std::vector<int>> pairs = all_pairs(p);
   // number of hypotheses
-  int m = pairs.size();
-  // test statistics(-2logLR)
-  Rcpp::NumericVector pairs_2nlogLR(m);
-  for(arma::uword i = 0; i < m; i++) {
-    arma::rowvec L = arma::zeros(1, p);
-    L(pairs[i][0] - 1) = 1;
-    L(pairs[i][1] - 1) = -1;
-    Rcpp::List pairwise_result =
-      test_ibd(x, c, L, arma::zeros(1), maxit, abstol);
-    bool convergence = pairwise_result["convergence"];
-    if (!convergence) {
-      Rcpp::warning("Test for pair (%i,%i) failed. \n",
-                    pairs[i][0], pairs[i][1]);
-    }
-    double nlogLR = pairwise_result["nlogLR"];
-    pairs_2nlogLR(i) = 2 * nlogLR;
-  }
+  const int m = pairs.size();
+  // global minimizer
+  arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
+  // estimate
+  Rcpp::NumericVector estimate(m);
+  // statistics(-2logLR)
+  Rcpp::NumericVector statistic(m);
 
-  return Rcpp::List::create(Rcpp::Named("statistics") = pairs_2nlogLR);
+  if (interval) {
+    if (level < 0 || level > 1) {
+      Rcpp::stop("level must be betwweeeeeen 0 and 1.");
+    }
+    double threshold = threshold_pairwise_ibd(x, c, B, level);
+    Rcpp::List CI(m);
+    for(arma::uword i = 0; i < m; i++) {
+      // estimates
+      estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
+
+      // statistics
+      arma::rowvec L = arma::zeros(1, p);
+      L(pairs[i][0] - 1) = 1;
+      L(pairs[i][1] - 1) = -1;
+      Rcpp::List pairwise_result =
+        test_ibd(x, c, L, arma::zeros(1), maxit, abstol);
+      bool convergence = pairwise_result["convergence"];
+      if (!convergence) {
+        Rcpp::warning("Test for pair (%i,%i) failed. \n",
+                      pairs[i][0], pairs[i][1]);
+      }
+      double nlogLR = pairwise_result["nlogLR"];
+      statistic(i) = 2 * nlogLR;
+
+      // CI(optional)
+      if (interval) {
+        CI(i) = pair_confidence_interval(x, c, L, estimate(i), threshold);
+      }
+    }
+    Rcpp::List model_info =
+      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
+                         Rcpp::Named("incidence.matrix") = c);
+    Rcpp::List result =
+      Rcpp::List::create(
+        Rcpp::Named("estimate") = estimate,
+        Rcpp::Named("statistic") = statistic,
+        Rcpp::Named("CI") = CI,
+        Rcpp::Named("level") = level,
+        Rcpp::Named("threshold") = threshold,
+        Rcpp::Named("num.bootstrap") = B,
+        Rcpp::Named("model.info") = model_info);
+    result.attr("class") = "pairwise.ibd";
+    return result;
+
+  } else {
+    double threshold = threshold_pairwise_ibd(x, c, B, level);
+    for(arma::uword i = 0; i < m; i++) {
+      // estimates
+      estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
+
+      // statistics
+      arma::rowvec L = arma::zeros(1, p);
+      L(pairs[i][0] - 1) = 1;
+      L(pairs[i][1] - 1) = -1;
+      Rcpp::List pairwise_result =
+        test_ibd(x, c, L, arma::zeros(1), maxit, abstol);
+      bool convergence = pairwise_result["convergence"];
+      if (!convergence) {
+        Rcpp::warning("Test for pair (%i,%i) failed. \n",
+                      pairs[i][0], pairs[i][1]);
+      }
+      double nlogLR = pairwise_result["nlogLR"];
+      statistic(i) = 2 * nlogLR;
+    }
+    Rcpp::List model_info =
+      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
+                         Rcpp::Named("incidence.matrix") = c);
+    Rcpp::List result =
+      Rcpp::List::create(
+        Rcpp::Named("estimate") = estimate,
+        Rcpp::Named("statistic") = statistic,
+        Rcpp::Named("level") = level,
+        Rcpp::Named("threshold") = threshold,
+        Rcpp::Named("num.bootstrap") = B,
+        Rcpp::Named("model.info") = model_info);
+    result.attr("class") = "pairwise.ibd";
+    return result;
+  }
 }

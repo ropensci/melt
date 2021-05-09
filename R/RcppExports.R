@@ -105,11 +105,14 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #'
 #' @param x a matrix of data .
 #' @param c an incidence matrix.
+#' @param interval whether to compute interval.
+#' @param B number of bootstrap replicate.
+#' @param level confidence level.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, maxit, abstol)
+pairwise_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.95, maxit = 1e3L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, maxit, abstol)
 }
 

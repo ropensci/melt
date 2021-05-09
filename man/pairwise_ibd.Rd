@@ -4,12 +4,26 @@
 \alias{pairwise_ibd}
 \title{Pairwise comparison for BIBD}
 \usage{
-pairwise_ibd(x, c, maxit = 1000L, abstol = 1e-08)
+pairwise_ibd(
+  x,
+  c,
+  interval = FALSE,
+  B = 100000L,
+  level = 0.95,
+  maxit = 1000L,
+  abstol = 1e-08
+)
 }
 \arguments{
 \item{x}{a matrix of data .}
 
 \item{c}{an incidence matrix.}
+
+\item{interval}{whether to compute interval.}
+
+\item{B}{number of bootstrap replicate.}
+
+\item{level}{confidence level.}
 
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 
