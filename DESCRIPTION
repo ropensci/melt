@@ -2,7 +2,7 @@ Package: elmulttest
 Title: Empicial Likelihood for Multiple Hypothesis Testing
 Version: 0.1.0
 Date: 2021-04-26
-Authors@R: c(person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre")), person("Peruggia", "Mario", email = "peruggia@stat.osu.edu", role = c("aut")), person("MacEachern", "Steve", email = "snm@stat.osu.edu", role = c("aut")))
+Authors@R: c(person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre")))
 Description: Empicial Likelihood
     Empicial likelihood for multiple hypothesis testing.
 Depends: R (>= 3.3.0)

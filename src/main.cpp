@@ -547,7 +547,6 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
                                              const double& init,
                                              const double& threshold) {
   // upper endpoint
-  double upper;
   double upper_lb = init;
   double upper_size = 1;
   double upper_ub = init + upper_size;
@@ -570,7 +569,6 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
   }
 
   // lower endpoint
-  double lower;
   double lower_ub = init;
   double lower_size = 1;
   double lower_lb = init - lower_size;
@@ -633,11 +631,11 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
 
   if (interval) {
     if (level < 0 || level > 1) {
-      Rcpp::stop("level must be betwweeeeeen 0 and 1.");
+      Rcpp::stop("level must be between 0 and 1.");
     }
     double threshold = threshold_pairwise_ibd(x, c, B, level);
     Rcpp::List CI(m);
-    for(arma::uword i = 0; i < m; i++) {
+    for(int i = 0; i < m; i++) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
 
@@ -677,7 +675,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
 
   } else {
     double threshold = threshold_pairwise_ibd(x, c, B, level);
-    for(arma::uword i = 0; i < m; i++) {
+    for(int i = 0; i < m; i++) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
 
