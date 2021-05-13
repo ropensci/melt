@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{el_mean2}
 \alias{el_mean2}
-\title{Compute empirical likelihood for mean}
+\title{Empirical likelihood test for mean}
 \usage{
 el_mean2(theta, x, maxit = 100L, abstol = 1e-08)
 }

@@ -41,28 +41,28 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
   bool convergence = false;
   while (convergence == false) {
     // function evaluation(initial)
-    f0 = -sum(plog(Rcpp::wrap(arg), 1 / n));
+    f0 = -arma::sum(plog(arg, 1 / n));
     // J matrix & y vector
-    arma::vec v1(Rcpp::sqrt(-d2plog(Rcpp::wrap(arg), 1 / n)));
-    arma::vec v2(dplog(Rcpp::wrap(arg), 1 / n));
+    arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
+    arma::vec v2 = dplog(arg, 1 / n);
     J = g.each_col() % v1;
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
     arma::qr_econ(Q, R, J);
     lc = l + arma::solve(R, trans(Q) * y);
     double alpha = 1;
-    while(-sum(plog(Rcpp::wrap(1 + g * lc), 1 / n)) > f0) {
+    while(-arma::sum(plog(1 + g * lc, 1 / n)) > f0) {
       alpha = alpha / 2;
       lc = l + alpha * solve(R, trans(Q) * y);
     }
     // update function value
     l = lc;
     arg = 1 + g * l;
-    f1 = -sum(plog(Rcpp::wrap(arg), 1 / n));
+    f1 = -arma::sum(plog(arg, 1 / n));
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
-      arma::vec v1(Rcpp::sqrt(-d2plog(Rcpp::wrap(arg), 1 / n)));
-      arma::vec v2(dplog(Rcpp::wrap(arg), 1 / n));
+      arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
+      arma::vec v2 = dplog(arg, 1 / n);
       J = g.each_col() % v1;
       y = v2 / v1;
       convergence = true;
@@ -154,7 +154,7 @@ Rcpp::List test_ibd(const arma::mat& x,
   // If the convex hull constraint is not satisfied at the initial value, end.
   arma::vec arg = 1 + g * lambda;
   // for current function value(-logLR)
-  double f0 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+  double f0 = arma::sum(plog(arg, 1 / n));
   // for updated function value
   double f1 = f0;
 
@@ -188,7 +188,7 @@ Rcpp::List test_ibd(const arma::mat& x,
       // update function value
       f0 = f1;
       arg = 1 + g_tmp * lambda_tmp;
-      f1 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+      f1 = arma::sum(plog(arg, 1 / n));
       // step halving to ensure that the updated function value be
       // strinctly less than the current function value
       while (f0 <= f1) {
@@ -214,7 +214,7 @@ Rcpp::List test_ibd(const arma::mat& x,
         }
         // propose new function value
         arg = 1 + g_tmp * lambda_tmp;
-        f1 = Rcpp::sum(plog(Rcpp::wrap(arg), 1 / n));
+        f1 = arma::sum(plog(arg, 1 / n));
       }
       // update parameters
       theta = theta_tmp;

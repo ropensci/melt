@@ -1,20 +1,7 @@
 #include "utils.h"
 
 // [[Rcpp::depends(RcppArmadillo)]]
-Rcpp::NumericVector plog(Rcpp::NumericVector x, double threshold) {
-  int n = x.size();
-  Rcpp::NumericVector out(n);
-  for(int i = 0; i < n; ++i) {
-    if(x[i] >= threshold) {
-      out[i] = std::log(x[i]);
-    } else {
-      out[i] = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x[i] -
-        std::pow(x[i] / threshold, 2) / 2;
-    }
-  }
-  return out;
-}
-arma::vec plog2(const arma::vec& x, double threshold) {
+arma::vec plog(const arma::vec& x, double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
   for(int i = 0; i < n; ++i) {
@@ -27,20 +14,21 @@ arma::vec plog2(const arma::vec& x, double threshold) {
   }
   return out;
 }
-
-Rcpp::NumericVector dplog(Rcpp::NumericVector x, double threshold) {
+Rcpp::NumericVector plog_old(Rcpp::NumericVector x, double threshold) {
   int n = x.size();
   Rcpp::NumericVector out(n);
   for(int i = 0; i < n; ++i) {
     if(x[i] >= threshold) {
-      out[i] = std::pow(x[i], -1);
+      out[i] = std::log(x[i]);
     } else {
-      out[i] = 2 * std::pow(threshold, -1) - x[i] * std::pow(threshold, -2);
+      out[i] = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x[i] -
+        std::pow(x[i] / threshold, 2) / 2;
     }
   }
   return out;
 }
-arma::vec dplog2(const arma::vec& x, double threshold) {
+
+arma::vec dplog(const arma::vec& x, double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
   for(int i = 0; i < n; ++i) {
@@ -52,20 +40,20 @@ arma::vec dplog2(const arma::vec& x, double threshold) {
   }
   return out;
 }
-
-Rcpp::NumericVector d2plog(Rcpp::NumericVector x, double threshold) {
+Rcpp::NumericVector dplog_old(Rcpp::NumericVector x, double threshold) {
   int n = x.size();
   Rcpp::NumericVector out(n);
   for(int i = 0; i < n; ++i) {
     if(x[i] >= threshold) {
-      out[i] = -std::pow(x[i], -2);
+      out[i] = std::pow(x[i], -1);
     } else {
-      out[i] = -std::pow(threshold, -2);
+      out[i] = 2 * std::pow(threshold, -1) - x[i] * std::pow(threshold, -2);
     }
   }
   return out;
 }
-arma::vec d2plog2(const arma::vec& x, double threshold) {
+
+arma::vec d2plog(const arma::vec& x, double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
   for(int i = 0; i < n; ++i) {
@@ -73,6 +61,18 @@ arma::vec d2plog2(const arma::vec& x, double threshold) {
       out(i) = -std::pow(x(i), -2);
     } else {
       out(i) = -std::pow(threshold, -2);
+    }
+  }
+  return out;
+}
+Rcpp::NumericVector d2plog_old(Rcpp::NumericVector x, double threshold) {
+  int n = x.size();
+  Rcpp::NumericVector out(n);
+  for(int i = 0; i < n; ++i) {
+    if(x[i] >= threshold) {
+      out[i] = -std::pow(x[i], -2);
+    } else {
+      out[i] = -std::pow(threshold, -2);
     }
   }
   return out;
@@ -98,10 +98,10 @@ EL getEL(const arma::mat& g,
   bool convergence = false;
   while (convergence == false) {
     // function evaluation(initial)
-    f0 = -arma::sum(plog2(arg, 1 / n));
+    f0 = -arma::sum(plog(arg, 1 / n));
     // J matrix & y vector
-    arma::vec v1 = arma::sqrt(-d2plog2(arg, 1 / n));
-    arma::vec v2 = dplog2(arg, 1 / n);
+    arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
+    arma::vec v2 = dplog(arg, 1 / n);
     J = g.each_col() % v1;
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
@@ -109,7 +109,7 @@ EL getEL(const arma::mat& g,
     lc = l + arma::solve(arma::trimatu(R), Q.t() * y,
                          arma::solve_opts::fast);
     double alpha = 1;
-    while(-arma::sum(plog2(1 + g * lc, 1 / n)) > f0) {
+    while(-arma::sum(plog(1 + g * lc, 1 / n)) > f0) {
       alpha = alpha / 2;
       lc = l + alpha * arma::solve(arma::trimatu(R), Q.t() * y,
                                    arma::solve_opts::fast);
@@ -117,11 +117,11 @@ EL getEL(const arma::mat& g,
     // update function value
     l = lc;
     arg = 1 + g * l;
-    f1 = -arma::sum(plog2(arg, 1 / n));
+    f1 = -arma::sum(plog(arg, 1 / n));
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
-      arma::vec v1 = arma::sqrt(-d2plog2(arg, 1 / n));
-      arma::vec v2 = dplog2(arg, 1 / n);
+      arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
+      arma::vec v2 = dplog(arg, 1 / n);
       J = g.each_col() % v1;
       y = v2 / v1;
       convergence = true;
@@ -197,7 +197,7 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
                            const arma::mat& c,
                            const double& gamma) {
   arma::vec arg = 1 + g * lambda;
-  arma::vec dplog_vec = dplog2(arg, 1 / g.n_rows);
+  arma::vec dplog_vec = dplog(arg, 1 / g.n_rows);
   // gradient
   arma::vec gradient = -arma::sum(arma::diagmat(dplog_vec) * c, 0).t() % lambda;
   // update theta by GD with lambda fixed

@@ -14,7 +14,7 @@ el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
     .Call(`_elmulttest_el_mean`, theta, x, maxit, abstol)
 }
 
-#' Compute empirical likelihood for mean
+#' Empirical likelihood test for mean
 #'
 #' Compute empirical likelihood for mean
 #'
