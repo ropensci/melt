@@ -9,6 +9,13 @@ struct EL {
   int iterations;
   bool convergence;
 };
+struct minEL {
+  arma::vec theta;
+  arma::vec lambda;
+  double nlogLR;
+  int iterations;
+  bool convergence;
+};
 
 arma::vec plog(const arma::vec& x, double threshold);
 Rcpp::NumericVector plog_old(Rcpp::NumericVector x, double threshold);

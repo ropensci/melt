@@ -235,6 +235,116 @@ Rcpp::List test_ibd(const arma::mat& x,
     Rcpp::Named("convergence") = convergence);
 }
 
+minEL test_ibd_EL(const arma::mat& x,
+                  const arma::mat& c,
+                  const arma::mat& L,
+                  const arma::vec& rhs,
+                  const int& maxit = 1000,
+                  const double& abstol = 1e-8) {
+  /// initialization ///
+  const int n = x.n_rows;
+  if (arma::rank(L) != L.n_rows) {
+    Rcpp::stop("Hypothesis matrix L must have full rank.");
+  }
+  if (L.n_rows != rhs.n_elem) {
+    Rcpp::stop("Dimensions of L and rhs do not match.");
+  }
+  // initial parameter value set as group means
+  arma::vec theta = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
+  // constraint imposed on the initial value by projection
+  theta = linear_projection(theta, L, rhs);
+  // estimating function
+  arma::mat g = g_ibd(theta, x, c);
+  // evaluation
+  EL eval = getEL(g);
+  arma::vec lambda = eval.lambda;
+  // If the convex hull constraint is not satisfied at the initial value, end.
+  arma::vec arg = 1 + g * lambda;
+  // for current function value(-logLR)
+  double f0 = arma::sum(plog(arg, 1 / n));
+  // for updated function value
+  double f1 = f0;
+
+  /// minimization(projected gradient descent) ///
+  double gamma = std::pow(arma::mean(arma::sum(c, 0)), -1);    // step size
+  bool convergence = false;
+  int iterations = 0;
+  // proposed value for theta
+  arma::vec theta_tmp;
+  arma::vec lambda_tmp;
+  arma::mat g_tmp;
+  while (convergence == false) {
+    if (f0 - f1 < abstol && iterations > 0) {
+      convergence = true;
+    } else {
+      // update parameter by GD with lambda fixed
+      theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+      // projection
+      theta_tmp = linear_projection(theta_tmp, L, rhs);
+      // update g
+      g_tmp = g_ibd(theta_tmp, x, c);
+      // update lambda
+      eval = getEL(g_tmp);
+      lambda_tmp = eval.lambda;
+      if (!eval.convergence && iterations > 9) {
+        theta = theta_tmp;
+        lambda = lambda_tmp;
+        Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+        break;
+      }
+      // update function value
+      f0 = f1;
+      arg = 1 + g_tmp * lambda_tmp;
+      f1 = arma::sum(plog(arg, 1 / n));
+      // step halving to ensure that the updated function value be
+      // strinctly less than the current function value
+      while (f0 <= f1) {
+        // reduce step size
+        gamma /= 2;
+        // propose new theta
+        theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+        theta_tmp = linear_projection(theta_tmp, L, rhs);
+        // propose new lambda
+        g_tmp = g_ibd(theta_tmp, x, c);
+        eval = getEL(g_tmp);
+        lambda_tmp = eval.lambda;
+        if (gamma < abstol) {
+          theta = theta_tmp;
+          lambda = lambda_tmp;
+          Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+
+          minEL result;
+          result.theta = theta;
+          result.lambda = lambda;
+          result.nlogLR = f1;
+          result.iterations = iterations;
+          result.convergence = convergence;
+          return result;
+        }
+        // propose new function value
+        arg = 1 + g_tmp * lambda_tmp;
+        f1 = arma::sum(plog(arg, 1 / n));
+      }
+      // update parameters
+      theta = theta_tmp;
+      lambda = lambda_tmp;
+      g = g_tmp;
+      if (iterations == maxit) {
+        break;
+      }
+      iterations++;
+    }
+  }
+
+  minEL result;
+  result.theta = theta;
+  result.lambda = lambda;
+  result.nlogLR = f1;
+  result.iterations = iterations;
+  result.convergence = convergence;
+  return result;
+}
+
 std::vector<double> pair_confidence_interval(const arma::mat& x,
                                              const arma::mat& c,
                                              const arma::mat& L,
@@ -244,17 +354,17 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
   double upper_lb = init;
   double upper_size = 1;
   double upper_ub = init + upper_size;
-  double upper_eval = test_ibd(x, c, L, arma::vec{upper_ub})["nlogLR"];
+  double upper_eval = test_ibd_EL(x, c, L, arma::vec{upper_ub}).nlogLR;
   // upper bound for upper endpoint
   while (2 * upper_eval <= threshold) {
     upper_size *= 2;
     upper_ub = init + upper_size;
-    upper_eval = test_ibd(x, c, L, arma::vec{upper_ub})["nlogLR"];
+    upper_eval = test_ibd_EL(x, c, L, arma::vec{upper_ub}).nlogLR;
   }
   // approximate upper bound by numerical search
   while (upper_ub - upper_lb >= 1e-04) {
     upper_eval =
-      test_ibd(x, c, L, arma::vec {(upper_lb + upper_ub) / 2})["nlogLR"];
+      test_ibd_EL(x, c, L, arma::vec {(upper_lb + upper_ub) / 2}).nlogLR;
     if (2 * upper_eval <= threshold) {
       upper_lb = (upper_lb + upper_ub) / 2;
     } else {
@@ -266,17 +376,17 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
   double lower_ub = init;
   double lower_size = 1;
   double lower_lb = init - lower_size;
-  double lower_eval = test_ibd(x, c, L, arma::vec{lower_lb})["nlogLR"];
+  double lower_eval = test_ibd_EL(x, c, L, arma::vec{lower_lb}).nlogLR;
   // lower bound for lower endpoint
   while (2 * lower_eval <= threshold) {
     lower_size *= 2;
     lower_lb = init - lower_size;
-    lower_eval = test_ibd(x, c, L, arma::vec{lower_lb})["nlogLR"];
+    lower_eval = test_ibd_EL(x, c, L, arma::vec{lower_lb}).nlogLR;
   }
   // approximate lower bound by numerical search
   while (lower_ub - lower_lb >= 1e-04) {
     lower_eval =
-      test_ibd(x, c, L, arma::vec {(lower_lb + lower_ub) / 2})["nlogLR"];
+      test_ibd_EL(x, c, L, arma::vec {(lower_lb + lower_ub) / 2}).nlogLR;
     if (2 * lower_eval <= threshold) {
       lower_ub = (lower_lb + lower_ub) / 2;
     } else {
@@ -336,14 +446,14 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[i][0] - 1) = 1;
       L(pairs[i][1] - 1) = -1;
-      Rcpp::List pairwise_result =
-        test_ibd(x, c, L, arma::zeros(1), maxit, abstol);
-      bool convergence = pairwise_result["convergence"];
+      minEL pairwise_result =
+        test_ibd_EL(x, c, L, arma::zeros(1), maxit, abstol);
+      bool convergence = pairwise_result.convergence;
       if (!convergence) {
         Rcpp::warning("Test for pair (%i,%i) failed. \n",
                       pairs[i][0], pairs[i][1]);
       }
-      double nlogLR = pairwise_result["nlogLR"];
+      double nlogLR = pairwise_result.nlogLR;
       statistic(i) = 2 * nlogLR;
 
       // CI(optional)
@@ -376,14 +486,13 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[i][0] - 1) = 1;
       L(pairs[i][1] - 1) = -1;
-      Rcpp::List pairwise_result =
-        test_ibd(x, c, L, arma::zeros(1), maxit, abstol);
-      bool convergence = pairwise_result["convergence"];
+      minEL pairwise_result = test_ibd_EL(x, c, L, arma::zeros(1), maxit, abstol);
+      bool convergence = pairwise_result.convergence;
       if (!convergence) {
         Rcpp::warning("Test for pair (%i,%i) failed. \n",
                       pairs[i][0], pairs[i][1]);
       }
-      double nlogLR = pairwise_result["nlogLR"];
+      double nlogLR = pairwise_result.nlogLR;
       statistic(i) = 2 * nlogLR;
     }
     Rcpp::List model_info =
