@@ -1,4 +1,3 @@
-#include <RcppArmadillo.h>
 #include "utils.h"
 
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -84,7 +83,7 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
     Rcpp::Named("convergence") = convergence);
 }
 
-//' Compute empirical likelihood for mean
+//' Empirical likelihood test for mean
 //'
 //' Compute empirical likelihood for mean
 //'

@@ -11,8 +11,11 @@ struct EL {
 };
 
 Rcpp::NumericVector plog(Rcpp::NumericVector x, double threshold);
+arma::vec plog2(const arma::vec& x, double threshold);
 Rcpp::NumericVector dplog(Rcpp::NumericVector x, double threshold);
+arma::vec dplog2(const arma::vec& x, double threshold);
 Rcpp::NumericVector d2plog(Rcpp::NumericVector x, double threshold);
+arma::vec d2plog2(const arma::vec& x, double threshold);
 EL getEL(const arma::mat& g,
          const int& maxit = 100,
          const double& abstol = 1e-8);
