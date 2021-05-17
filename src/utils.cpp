@@ -152,7 +152,8 @@ std::vector<std::vector<int>> all_pairs(const int &p) {
   {
     for(int j = i + 1; j < p + 1; j++)
     {
-      pairs.emplace_back(std::vector<int> {i, j});
+      pairs.emplace_back(std::vector<int> {j, i});
+      // pairs.emplace_back(std::vector<int> {i, j});
     }
   }
   return pairs;

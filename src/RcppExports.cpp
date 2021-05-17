@@ -21,21 +21,21 @@ BEGIN_RCPP
 END_RCPP
 }
 // el_mean2
-Rcpp::List el_mean2(const arma::vec& theta, const arma::mat& x, const int& maxit, const double& abstol);
+Rcpp::List el_mean2(const arma::vec& theta, const arma::mat& x, const int maxit, const double& abstol);
 RcppExport SEXP _elmulttest_el_mean2(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::vec& >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const int& >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double& >::type abstol(abstolSEXP);
     rcpp_result_gen = Rcpp::wrap(el_mean2(theta, x, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
 // test_ibd
-Rcpp::List test_ibd(const arma::mat& x, const arma::mat& c, const arma::mat& L, const arma::vec& rhs, const int& maxit, const double& abstol);
+Rcpp::List test_ibd(const arma::mat& x, const arma::mat& c, const arma::mat& L, const arma::vec& rhs, const int maxit, const double& abstol);
 RcppExport SEXP _elmulttest_test_ibd(SEXP xSEXP, SEXP cSEXP, SEXP LSEXP, SEXP rhsSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -44,14 +44,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type L(LSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type rhs(rhsSEXP);
-    Rcpp::traits::input_parameter< const int& >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double& >::type abstol(abstolSEXP);
     rcpp_result_gen = Rcpp::wrap(test_ibd(x, c, L, rhs, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
 // pairwise_ibd
-Rcpp::List pairwise_ibd(const arma::mat& x, const arma::mat& c, const bool& interval, const int& B, const double& level, const int& maxit, const double& abstol);
+Rcpp::List pairwise_ibd(const arma::mat& x, const arma::mat& c, const bool& interval, const int B, const double& level, const int maxit, const double& abstol);
 RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP intervalSEXP, SEXP BSEXP, SEXP levelSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -59,9 +59,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
     Rcpp::traits::input_parameter< const bool& >::type interval(intervalSEXP);
-    Rcpp::traits::input_parameter< const int& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const int >::type B(BSEXP);
     Rcpp::traits::input_parameter< const double& >::type level(levelSEXP);
-    Rcpp::traits::input_parameter< const int& >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double& >::type abstol(abstolSEXP);
     rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, interval, B, level, maxit, abstol));
     return rcpp_result_gen;

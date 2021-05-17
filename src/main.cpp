@@ -95,7 +95,7 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
 // [[Rcpp::export]]
 Rcpp::List el_mean2(const arma::vec& theta,
                     const arma::mat& x,
-                    const int& maxit = 100,
+                    const int maxit = 100,
                     const double& abstol = 1e-8) {
   if (arma::rank(x) != x.n_cols) {
     Rcpp::stop("Design matrix x must have full rank.");
@@ -132,7 +132,7 @@ Rcpp::List test_ibd(const arma::mat& x,
                     const arma::mat& c,
                     const arma::mat& L,
                     const arma::vec& rhs,
-                    const int& maxit = 1000,
+                    const int maxit = 1000,
                     const double& abstol = 1e-8) {
   /// initialization ///
   const int n = x.n_rows;
@@ -239,7 +239,7 @@ minEL test_ibd_EL(const arma::mat& x,
                   const arma::mat& c,
                   const arma::mat& L,
                   const arma::vec& rhs,
-                  const int& maxit = 1000,
+                  const int maxit = 1000,
                   const double& abstol = 1e-8) {
   /// initialization ///
   const int n = x.n_rows;
@@ -415,9 +415,9 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
 Rcpp::List pairwise_ibd(const arma::mat& x,
                         const arma::mat& c,
                         const bool& interval = false,
-                        const int& B = 1e5,
+                        const int B = 1e5,
                         const double& level = 0.95,
-                        const int& maxit = 1e3,
+                        const int maxit = 1e3,
                         const double& abstol = 1e-8) {
   const int n = x.n_rows;
   const int p = x.n_cols;
