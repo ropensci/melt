@@ -29,7 +29,7 @@ EL getEL(const arma::mat& g,
 std::vector<std::vector<int>> all_pairs(const int& p);
 arma::mat g_mean(const arma::vec& theta, arma::mat x);
 arma::mat g_ibd(const arma::vec& theta, const arma::mat& x, const arma::mat& c);
-arma::mat cov_ibd(const arma::mat& x, const arma::mat& c);
+arma::mat cov_ibd(const arma::mat& x, const arma::mat& c, const bool adjust);
 arma::vec linear_projection(const arma::vec& theta,
                             const arma::mat& L,
                             const arma::vec& rhs);
@@ -41,5 +41,6 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
 double threshold_pairwise_ibd(const arma::mat& x,
                               const arma::mat& c,
                               const int& B,
-                              const double& level);
+                              const double& level,
+                              const bool adjust);
 #endif

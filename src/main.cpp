@@ -417,6 +417,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
                         const bool& interval = false,
                         const int B = 1e5,
                         const double& level = 0.95,
+                        const bool vcov_adj = false,
                         const int maxit = 1e3,
                         const double& abstol = 1e-8) {
   const int n = x.n_rows;
@@ -436,7 +437,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
     if (level < 0 || level > 1) {
       Rcpp::stop("level must be between 0 and 1.");
     }
-    double threshold = threshold_pairwise_ibd(x, c, B, level);
+    double threshold = threshold_pairwise_ibd(x, c, B, level, vcov_adj);
     Rcpp::List CI(m);
     for(int i = 0; i < m; i++) {
       // estimates
@@ -477,7 +478,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
     return result;
 
   } else {
-    double threshold = threshold_pairwise_ibd(x, c, B, level);
+    double threshold = threshold_pairwise_ibd(x, c, B, level, vcov_adj);
     for(int i = 0; i < m; i++) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);

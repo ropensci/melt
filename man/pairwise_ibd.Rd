@@ -10,6 +10,7 @@ pairwise_ibd(
   interval = FALSE,
   B = 100000L,
   level = 0.95,
+  vcov_adj = FALSE,
   maxit = 1000L,
   abstol = 1e-08
 )

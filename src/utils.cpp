@@ -159,15 +159,22 @@ std::vector<std::vector<int>> all_pairs(const int &p) {
   return pairs;
 }
 
-arma::mat cov_ibd(const arma::mat& x, const arma::mat& c) {
+arma::mat cov_ibd(const arma::mat& x,
+                  const arma::mat& c,
+                  const bool adjust) {
   // number of blocks
   int n = x.n_rows;
   // estimator(global minimizer)
   arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
   // estimating function
   arma::mat g = x - c.each_row() % theta_hat.t();
-  // covariance estimate
-  arma::mat vhat = (g.t() * (g)) / n;
+  // covariance estimate(optional adjustment)
+  arma::mat vhat;
+  if (adjust) {
+    vhat = ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
+  } else {
+    vhat = (g.t() * (g)) / n;
+  }
 
   return vhat;
 }
@@ -210,13 +217,14 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
 double threshold_pairwise_ibd(const arma::mat& x,
                               const arma::mat& c,
                               const int& B,
-                              const double& level) {
+                              const double& level,
+                              const bool adjust) {
   /// parameters ///
   const int p = x.n_cols;   // number of points(treatments)
   const std::vector<std::vector<int>> pairs = all_pairs(p);   // vector of pairs
   const int m = pairs.size();   // number of hypotheses
   const arma::vec conf_level = {level};    // confidence level
-  const arma::mat V_hat = cov_ibd(x, c);    // covariance estimate
+  const arma::mat V_hat = cov_ibd(x, c, adjust);    // covariance estimate
 
   /// A hat matrices ///
   arma::cube A_hat(p, p, m);
