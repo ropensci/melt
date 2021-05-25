@@ -56,11 +56,26 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.95, vcov_adj = FALSE, maxit = 1e3L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, vcov_adj, maxit, abstol)
+pairwise_PB_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.05, vcov_adj = FALSE, maxit = 1e3L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_PB_ibd`, x, c, interval, B, level, vcov_adj, maxit, abstol)
 }
 
-cutoff_pairwise_NPB_ibd <- function(x, B, level, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_cutoff_pairwise_NPB_ibd`, x, B, level, maxit, abstol)
+#' Pairwise comparison for Incomplete Block Design
+#'
+#' Pairwise comparison for Incomplete Block Design
+#'
+#' @param x a matrix of data .
+#' @param c an incidence matrix.
+#' @param interval whether to compute interval. Defaults to FALSE.
+#' @param B number of bootstrap replicates.
+#' @param level level.
+#' @param method the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.
+#' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#'
+#' @export
+pairwise_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.05, method = "PB", vcov_adj = FALSE, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, vcov_adj, maxit, abstol)
 }
 

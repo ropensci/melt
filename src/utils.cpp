@@ -159,26 +159,6 @@ std::vector<std::vector<int>> all_pairs(const int &p) {
   return pairs;
 }
 
-arma::mat cov_ibd(const arma::mat& x,
-                  const arma::mat& c,
-                  const bool adjust) {
-  // number of blocks
-  int n = x.n_rows;
-  // estimator(global minimizer)
-  arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
-  // estimating function
-  arma::mat g = x - c.each_row() % theta_hat.t();
-  // covariance estimate(optional adjustment)
-  arma::mat vhat;
-  if (adjust) {
-    vhat = ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
-  } else {
-    vhat = (g.t() * (g)) / n;
-  }
-
-  return vhat;
-}
-
 arma::mat g_mean(const arma::vec &theta,
                  arma::mat x) {
   // estimating function
@@ -187,66 +167,10 @@ arma::mat g_mean(const arma::vec &theta,
   return x;
 }
 
-arma::mat g_ibd(const arma::vec& theta,
-                const arma::mat& x,
-                const arma::mat& c) {
-  return x - c.each_row() % theta.t();
-}
-
 arma::vec linear_projection(const arma::vec &theta,
                             const arma::mat &L,
                             const arma::vec &rhs) {
   return theta - L.t() * inv_sympd(L * L.t()) * (L * theta - rhs);
-}
-
-arma::vec lambda2theta_ibd(const arma::vec& lambda,
-                           const arma::vec& theta,
-                           const arma::mat& g,
-                           const arma::mat& c,
-                           const double& gamma) {
-  arma::vec arg = 1 + g * lambda;
-  arma::vec dplog_vec = dplog(arg, 1 / g.n_rows);
-  // gradient
-  arma::vec gradient = -arma::sum(arma::diagmat(dplog_vec) * c, 0).t() % lambda;
-  // update theta by GD with lambda fixed
-  arma::vec theta_hat = theta - gamma * gradient;
-
-  return theta_hat;
-}
-
-double threshold_pairwise_ibd(const arma::mat& x,
-                              const arma::mat& c,
-                              const int& B,
-                              const double& level,
-                              const bool adjust) {
-  /// parameters ///
-  const int p = x.n_cols;   // number of points(treatments)
-  const std::vector<std::vector<int>> pairs = all_pairs(p);   // vector of pairs
-  const int m = pairs.size();   // number of hypotheses
-  const arma::vec conf_level = {level};    // confidence level
-  const arma::mat V_hat = cov_ibd(x, c, adjust);    // covariance estimate
-
-  /// A hat matrices ///
-  arma::cube A_hat(p, p, m);
-  for (int i = 0; i < m; ++i) {
-    arma::rowvec R = arma::zeros(1, p);
-    R(pairs[i][0] - 1) = 1;
-    R(pairs[i][1] - 1) = -1;
-    A_hat.slice(i) = (R.t() * R) / arma::as_scalar(R * V_hat * R.t());
-  }
-
-  // U hat matrices
-  const arma::mat U_hat = arma::mvnrnd(arma::zeros(p), V_hat, B);
-
-  // B bootstrap replicates(B x m matrix)
-  arma::mat bootstrap_sample(B, m);
-  for (int i = 0; i < m; ++i) {
-    bootstrap_sample.col(i) =
-      arma::diagvec(U_hat.t() * A_hat.slice(i) * U_hat);
-  }
-
-  return
-    arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1), conf_level));
 }
 
 arma::mat bootstrap_sample(const arma::mat& x)
