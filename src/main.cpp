@@ -67,7 +67,7 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
       y = v2 / v1;
       convergence = true;
     } else {
-      iterations++;
+      ++iterations;
       if(iterations == maxit) {
         break;
       }
@@ -223,7 +223,7 @@ Rcpp::List test_ibd(const arma::mat& x,
       if (iterations == maxit) {
         break;
       }
-      iterations++;
+      ++iterations;
     }
   }
 
@@ -332,7 +332,7 @@ minEL test_ibd_EL(const arma::mat& x,
       if (iterations == maxit) {
         break;
       }
-      iterations++;
+      ++iterations;
     }
   }
 
@@ -439,7 +439,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
     }
     double threshold = threshold_pairwise_ibd(x, c, B, level, vcov_adj);
     Rcpp::List CI(m);
-    for(int i = 0; i < m; i++) {
+    for(int i = 0; i < m; ++i) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
 
@@ -479,7 +479,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
 
   } else {
     double threshold = threshold_pairwise_ibd(x, c, B, level, vcov_adj);
-    for(int i = 0; i < m; i++) {
+    for(int i = 0; i < m; ++i) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
 

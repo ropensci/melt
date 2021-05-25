@@ -129,7 +129,7 @@ EL getEL(const arma::mat& g,
       if(iterations == maxit) {
         break;
       }
-      iterations++;
+      ++iterations;
     }
   }
 
@@ -148,9 +148,9 @@ std::vector<std::vector<int>> all_pairs(const int &p) {
   // the size of vector is p choose 2
   pairs.reserve(p * (p - 1) / 2);
   // fill in each elements(pairs)
-  for(int i = 1; i < p + 1; i++)
+  for(int i = 1; i < p + 1; ++i)
   {
-    for(int j = i + 1; j < p + 1; j++)
+    for(int j = i + 1; j < p + 1; ++j)
     {
       pairs.emplace_back(std::vector<int> {j, i});
       // pairs.emplace_back(std::vector<int> {i, j});
@@ -228,7 +228,7 @@ double threshold_pairwise_ibd(const arma::mat& x,
 
   /// A hat matrices ///
   arma::cube A_hat(p, p, m);
-  for (int i = 0; i < m; i++) {
+  for (int i = 0; i < m; ++i) {
     arma::rowvec R = arma::zeros(1, p);
     R(pairs[i][0] - 1) = 1;
     R(pairs[i][1] - 1) = -1;
@@ -240,7 +240,7 @@ double threshold_pairwise_ibd(const arma::mat& x,
 
   // B bootstrap replicates(B x m matrix)
   arma::mat bootstrap_sample(B, m);
-  for (int i = 0; i < m; i++) {
+  for (int i = 0; i < m; ++i) {
     bootstrap_sample.col(i) =
       arma::diagvec(U_hat.t() * A_hat.slice(i) * U_hat);
   }
