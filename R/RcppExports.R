@@ -48,9 +48,10 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #'
 #' @param x a matrix of data .
 #' @param c an incidence matrix.
-#' @param interval whether to compute interval.
+#' @param interval whether to compute interval. Defaults to FALSE.
 #' @param B number of bootstrap replicate.
 #' @param level confidence level.
+#' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'

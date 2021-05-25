@@ -43,4 +43,5 @@ double threshold_pairwise_ibd(const arma::mat& x,
                               const int& B,
                               const double& level,
                               const bool adjust);
+arma::mat bootstrap_sample(const arma::mat& x);
 #endif

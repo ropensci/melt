@@ -404,9 +404,10 @@ std::vector<double> pair_confidence_interval(const arma::mat& x,
 //'
 //' @param x a matrix of data .
 //' @param c an incidence matrix.
-//' @param interval whether to compute interval.
+//' @param interval whether to compute interval. Defaults to FALSE.
 //' @param B number of bootstrap replicate.
 //' @param level confidence level.
+//' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //'

@@ -20,11 +20,13 @@ pairwise_ibd(
 
 \item{c}{an incidence matrix.}
 
-\item{interval}{whether to compute interval.}
+\item{interval}{whether to compute interval. Defaults to FALSE.}
 
 \item{B}{number of bootstrap replicate.}
 
 \item{level}{confidence level.}
+
+\item{vcov_adj}{whether to adjust for the covariance estimate. Defaults to FALSE.}
 
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 
