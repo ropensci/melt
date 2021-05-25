@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "utils_ibd.h"
 
 // [[Rcpp::depends(RcppArmadillo)]]
 using namespace arma;
@@ -511,4 +512,44 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
     result.attr("class") = "pairwise.ibd";
     return result;
   }
+}
+
+// [[Rcpp::export]]
+double cutoff_pairwise_NPB_ibd(const arma::mat& x,
+                               const int B,
+                               const double level,
+                               const int maxit = 1e4,
+                               const double abstol = 1e-8)
+{
+  // centered matrix
+  arma::mat x_centered = centering_ibd(x);
+
+  const int p = x.n_cols;
+  const std::vector<std::vector<int>> pairs = all_pairs(p);   // vector of pairs
+  const int m = pairs.size();   // number of hypotheses
+
+
+  // B bootstrap test statistics(B x m matrix)
+  arma::mat bootstrap_statistics(B, m);
+  for (int b = 0; b < B; ++b) {
+    arma::mat sample_b = bootstrap_sample(x_centered);
+    arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
+    for(int j = 0; j < m; ++j)
+    {
+      arma::rowvec L = arma::zeros(1, p);
+      L(pairs[j][0] - 1) = 1;
+      L(pairs[j][1] - 1) = -1;
+      minEL pairwise_result =
+        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), maxit, abstol);
+      if (!pairwise_result.convergence) {
+        Rcpp::warning("Test for pair (%i,%i) failed. \n",
+                      pairs[j][0], pairs[j][1]);
+      }
+      bootstrap_statistics(b, j) = 2 * pairwise_result.nlogLR;
+    }
+  }
+
+  return
+    arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 1),
+                                   arma::vec{level}));
 }

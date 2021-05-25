@@ -60,3 +60,7 @@ pairwise_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.95, vcov_ad
     .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, vcov_adj, maxit, abstol)
 }
 
+cutoff_pairwise_NPB_ibd <- function(x, B, level, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_cutoff_pairwise_NPB_ibd`, x, B, level, maxit, abstol)
+}
+

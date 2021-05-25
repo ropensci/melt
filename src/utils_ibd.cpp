@@ -1,7 +1,7 @@
 #include "utils_ibd.h"
 
 // [[Rcpp::depends(RcppArmadillo)]]
-arma::mat centering_ibd(arma::mat x, const arma::umat& c)
+arma::mat centering_ibd(arma::mat x)
 {
   // centering with nonzero elements
   x.each_col([](arma::vec& v) {

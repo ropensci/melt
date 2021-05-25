@@ -68,12 +68,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cutoff_pairwise_NPB_ibd
+double cutoff_pairwise_NPB_ibd(const arma::mat& x, const int B, const double level, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_cutoff_pairwise_NPB_ibd(SEXP xSEXP, SEXP BSEXP, SEXP levelSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const int >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const double >::type level(levelSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(cutoff_pairwise_NPB_ibd(x, B, level, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
     {"_elmulttest_el_mean2", (DL_FUNC) &_elmulttest_el_mean2, 4},
     {"_elmulttest_test_ibd", (DL_FUNC) &_elmulttest_test_ibd, 6},
     {"_elmulttest_pairwise_ibd", (DL_FUNC) &_elmulttest_pairwise_ibd, 8},
+    {"_elmulttest_cutoff_pairwise_NPB_ibd", (DL_FUNC) &_elmulttest_cutoff_pairwise_NPB_ibd, 5},
     {NULL, NULL, 0}
 };
 
