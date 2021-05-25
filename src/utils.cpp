@@ -182,7 +182,7 @@ arma::mat bootstrap_sample(const arma::mat& x)
     arma::randi<arma::vec>(n, arma::distr_param(0, n - 1));
 
   // resampling with replacement
-  arma::mat bootstrap_sample = arma::mat(n, p);
+  arma::mat bootstrap_sample(n, p);
   for(int i = 0; i < n; ++i) {
     bootstrap_sample.row(i) = x.row(boostrap_index(i));
   }
