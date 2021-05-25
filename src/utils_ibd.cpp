@@ -283,6 +283,10 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       }
       bootstrap_statistics(b, j) = 2 * pairwise_result.nlogLR;
     }
+    if (b % 100 == 0)
+    {
+      Rcpp::checkUserInterrupt();
+    }
   }
 
   return
