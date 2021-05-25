@@ -25,12 +25,11 @@ minEL test_ibd_EL(const arma::mat& x,
 std::vector<double> pair_confidence_interval_ibd(const arma::mat& x,
                                                  const arma::mat& c,
                                                  const arma::mat& L,
-                                                 const double& init,
-                                                 const double& threshold);
+                                                 const double init,
+                                                 const double threshold);
 double cutoff_pairwise_NPB_ibd(const arma::mat& x,
                                const int B,
                                const double level,
                                const int maxit,
                                const double abstol);
-
 #endif

@@ -96,8 +96,8 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
 // [[Rcpp::export]]
 Rcpp::List el_mean2(const arma::vec& theta,
                     const arma::mat& x,
-                    const int maxit = 100,
-                    const double& abstol = 1e-8) {
+                    int maxit = 100,
+                    double abstol = 1e-8) {
   if (arma::rank(x) != x.n_cols) {
     Rcpp::stop("Design matrix x must have full rank.");
   }
@@ -371,7 +371,7 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
 Rcpp::List pairwise_ibd(const arma::mat& x,
                         const arma::mat& c,
                         const bool interval = false,
-                        const int B = 1e5,
+                        const int B = 1e4,
                         const double level = 0.05,
                         std::string method = "PB",
                         const bool vcov_adj = false,

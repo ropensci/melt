@@ -8,7 +8,7 @@ pairwise_ibd(
   x,
   c,
   interval = FALSE,
-  B = 100000L,
+  B = 10000L,
   level = 0.05,
   method = "PB",
   vcov_adj = FALSE,

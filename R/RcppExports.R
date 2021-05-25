@@ -75,7 +75,7 @@ pairwise_PB_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.05, vcov
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.05, method = "PB", vcov_adj = FALSE, maxit = 1e4L, abstol = 1e-8) {
+pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", vcov_adj = FALSE, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, vcov_adj, maxit, abstol)
 }
 

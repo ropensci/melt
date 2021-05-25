@@ -201,8 +201,8 @@ minEL test_ibd_EL(const arma::mat& x,
 std::vector<double> pair_confidence_interval_ibd(const arma::mat& x,
                                                  const arma::mat& c,
                                                  const arma::mat& L,
-                                                 const double& init,
-                                                 const double& threshold) {
+                                                 const double init,
+                                                 const double threshold) {
   // upper endpoint
   double upper_lb = init;
   double upper_size = 1;
@@ -270,7 +270,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   for (int b = 0; b < B; ++b) {
     arma::mat sample_b = bootstrap_sample(x_centered);
     arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
-    for(int j = 0; j < m; ++j)
+    for (int j = 0; j < m; ++j)
     {
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[j][0] - 1) = 1;
@@ -293,3 +293,4 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
     arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 1),
                                    arma::vec{1 - level}));
 }
+
