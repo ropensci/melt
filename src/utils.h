@@ -13,6 +13,7 @@ struct minEL {
   arma::vec theta;
   arma::vec lambda;
   double nlogLR;
+  double p_value;
   int iterations;
   bool convergence;
 };

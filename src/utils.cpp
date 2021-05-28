@@ -98,18 +98,18 @@ EL getEL(const arma::mat& g,
   bool convergence = false;
   while (convergence == false) {
     // function evaluation(initial)
-    f0 = -arma::sum(plog(arg, 1 / n));
+    f0 = -arma::sum(plog(arg, 1.0 / n));
     // J matrix & y vector
-    arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
-    arma::vec v2 = dplog(arg, 1 / n);
+    arma::vec v1 = arma::sqrt(-d2plog(arg, 1.0 / n));
+    arma::vec v2 = dplog(arg, 1.0 / n);
     J = g.each_col() % v1;
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
     arma::qr_econ(Q, R, J);
     lc = l + arma::solve(arma::trimatu(R), Q.t() * y,
                          arma::solve_opts::fast);
-    double alpha = 1;
-    while(-arma::sum(plog(1 + g * lc, 1 / n)) > f0) {
+    double alpha = 1.0;
+    while(-arma::sum(plog(1 + g * lc, 1.0 / n)) > f0) {
       alpha = alpha / 2;
       lc = l + alpha * arma::solve(arma::trimatu(R), Q.t() * y,
                                    arma::solve_opts::fast);
@@ -117,11 +117,11 @@ EL getEL(const arma::mat& g,
     // update function value
     l = lc;
     arg = 1 + g * l;
-    f1 = -arma::sum(plog(arg, 1 / n));
+    f1 = -arma::sum(plog(arg, 1.0 / n));
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
-      arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
-      arma::vec v2 = dplog(arg, 1 / n);
+      arma::vec v1 = arma::sqrt(-d2plog(arg, 1.0 / n));
+      arma::vec v2 = dplog(arg, 1.0 / n);
       J = g.each_col() % v1;
       y = v2 / v1;
       convergence = true;

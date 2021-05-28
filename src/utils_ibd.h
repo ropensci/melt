@@ -9,7 +9,7 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
                            const arma::vec& theta,
                            const arma::mat& g,
                            const arma::mat& c,
-                           const double& gamma);
+                           const double gamma);
 double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const arma::mat& c,
                               const int B,
@@ -32,4 +32,9 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
                                const double level,
                                const int maxit,
                                const double abstol);
+double quantile_pairwise_NPB_ibd(const arma::mat& x,
+                                 const int B,
+                                 const double level,
+                                 const int maxit,
+                                 const double abstol);
 #endif

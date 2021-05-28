@@ -32,9 +32,10 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
                            const arma::vec& theta,
                            const arma::mat& g,
                            const arma::mat& c,
-                           const double& gamma) {
-  arma::vec arg = 1 + g * lambda;
-  arma::vec dplog_vec = dplog(arg, 1 / g.n_rows);
+                           const double gamma) {
+  // arma::vec arg = 1 + g * lambda;
+  // arma::vec dplog_vec = dplog(arg, 1 / g.n_rows);
+  arma::vec dplog_vec = dplog(1 + g * lambda, 1.0 / g.n_rows);
   // gradient
   arma::vec gradient = -arma::sum(arma::diagmat(dplog_vec) * c, 0).t() % lambda;
   // update theta by GD with lambda fixed
@@ -96,7 +97,8 @@ minEL test_ibd_EL(const arma::mat& x,
                   const double abstol) {
   /// initialization ///
   const int n = x.n_rows;
-  if (arma::rank(L) != L.n_rows) {
+  const int r = arma::rank(L);
+  if (r != L.n_rows) {
     Rcpp::stop("Hypothesis matrix L must have full rank.");
   }
   if (L.n_rows != rhs.n_elem) {
@@ -193,6 +195,9 @@ minEL test_ibd_EL(const arma::mat& x,
   result.theta = theta;
   result.lambda = lambda;
   result.nlogLR = f1;
+  // F-calibration
+  result.p_value =
+    R::pf(2.0 * f1 * (n - r) / (r * (n - 1)), r, n - r, false, false);
   result.iterations = iterations;
   result.convergence = convergence;
   return result;
@@ -252,10 +257,10 @@ std::vector<double> pair_confidence_interval_ibd(const arma::mat& x,
 }
 
 double cutoff_pairwise_NPB_ibd(const arma::mat& x,
-                               const int B,
-                               const double level,
-                               const int maxit,
-                               const double abstol)
+                                const int B,
+                                const double level,
+                                const int maxit,
+                                const double abstol)
 {
   // centered matrix
   arma::mat x_centered = centering_ibd(x);
@@ -265,8 +270,8 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   const int m = pairs.size();   // number of hypotheses
 
 
-  // B bootstrap test statistics(B x m matrix)
-  arma::mat bootstrap_statistics(B, m);
+  // B bootstrap test statistics(m x B matrix)
+  arma::mat bootstrap_statistics(m, B);
   for (int b = 0; b < B; ++b) {
     arma::mat sample_b = bootstrap_sample(x_centered);
     arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
@@ -275,13 +280,13 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[j][0] - 1) = 1;
       L(pairs[j][1] - 1) = -1;
-      minEL pairwise_result =
+      const minEL& pairwise_result =
         test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), maxit, abstol);
       if (!pairwise_result.convergence) {
         Rcpp::warning("Test for pair (%i,%i) failed in %i bootstrap sample. \n",
                       pairs[j][0], pairs[j][1], b);
       }
-      bootstrap_statistics(b, j) = 2 * pairwise_result.nlogLR;
+      bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
     }
     if (b % 100 == 0)
     {
@@ -290,7 +295,51 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   }
 
   return
-    arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 1),
+    arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 0),
                                    arma::vec{1 - level}));
 }
 
+double quantile_pairwise_NPB_ibd(const arma::mat& x,
+                                 const int B,
+                                 const double level,
+                                 const int maxit,
+                                 const double abstol)
+{
+  // centered matrix(null transformation)
+  arma::mat x_centered = centering_ibd(x);
+  const int n = x.n_rows;
+  const int p = x.n_cols;
+  const std::vector<std::vector<int>> pairs = all_pairs(p);   // vector of pairs
+  const int m = pairs.size();   // number of hypotheses
+
+  // B bootstrap test statistics(m x B matrix)
+  arma::mat bootstrap_pvalue_unadjusted(m, B);
+  for (int b = 0; b < B; ++b) {
+    arma::mat sample_b = bootstrap_sample(x_centered);
+    arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
+    for (int j = 0; j < m; ++j)
+    {
+      arma::rowvec L = arma::zeros(1, p);
+      L(pairs[j][0] - 1) = 1;
+      L(pairs[j][1] - 1) = -1;
+      const minEL& pairwise_result =
+        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), maxit, abstol);
+      if (!pairwise_result.convergence) {
+        Rcpp::warning("Test for pair (%i,%i) failed in %i bootstrap sample. \n",
+                      pairs[j][0], pairs[j][1], b);
+      }
+      // F-calibration(df1 = 1, df2 = n - 1, lowr = false, log = false)
+      bootstrap_pvalue_unadjusted(j, b) =
+        R::pf(2.0 * pairwise_result.nlogLR, 1, n - 1, false, false);
+
+    }
+    if (b % 100 == 0)
+    {
+      Rcpp::checkUserInterrupt();
+    }
+  }
+
+  return
+    arma::as_scalar(arma::quantile(arma::min(bootstrap_pvalue_unadjusted, 0),
+                                   arma::vec{level}));
+}
