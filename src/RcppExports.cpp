@@ -104,6 +104,34 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// tt
+arma::mat tt(const arma::mat& x, const int B, const double level, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_tt(SEXP xSEXP, SEXP BSEXP, SEXP levelSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const int >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const double >::type level(levelSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(tt(x, B, level, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ff
+Rcpp::List ff(const arma::mat& x, const arma::mat& c, const arma::vec& theta);
+RcppExport SEXP _elmulttest_ff(SEXP xSEXP, SEXP cSEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type theta(thetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(ff(x, c, theta));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
@@ -112,6 +140,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_pairwise_PB_ibd", (DL_FUNC) &_elmulttest_pairwise_PB_ibd, 8},
     {"_elmulttest_pairwise_ibd", (DL_FUNC) &_elmulttest_pairwise_ibd, 9},
     {"_elmulttest_minP_pairwise_ibd", (DL_FUNC) &_elmulttest_minP_pairwise_ibd, 7},
+    {"_elmulttest_tt", (DL_FUNC) &_elmulttest_tt, 5},
+    {"_elmulttest_ff", (DL_FUNC) &_elmulttest_ff, 3},
     {NULL, NULL, 0}
 };
 

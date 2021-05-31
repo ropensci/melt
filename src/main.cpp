@@ -537,6 +537,7 @@ Rcpp::List minP_pairwise_ibd(const arma::mat& x,
   // common quantile value
   double quantile = quantile_pairwise_NPB_ibd(x, B, level, maxit, abstol);
 
+
   if (!interval)
   {
     for(int i = 0; i < m; ++i)
@@ -615,4 +616,105 @@ Rcpp::List minP_pairwise_ibd(const arma::mat& x,
 
     return result;
   }
+}
+
+
+
+//' @export
+// [[Rcpp::export]]
+arma::mat tt(const arma::mat& x,
+                                 const int B,
+                                 const double level,
+                                 const int maxit,
+                                 const double abstol)
+{
+  // centered matrix(null transformation)
+  arma::mat x_centered = centering_ibd(x);
+  const int n = x.n_rows;
+  const int p = x.n_cols;
+  const std::vector<std::vector<int>> pairs = all_pairs(p);   // vector of pairs
+  const int m = pairs.size();   // number of hypotheses
+
+  // B bootstrap test statistics(B x m matrix)
+  arma::mat bootstrap_statistics(B, m);
+  for (int b = 0; b < B; ++b) {
+    arma::mat sample_b = bootstrap_sample(x_centered);
+    arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
+    for (int j = 0; j < m; ++j)
+    {
+      arma::rowvec L = arma::zeros(1, p);
+      L(pairs[j][0] - 1) = 1;
+      L(pairs[j][1] - 1) = -1;
+      const minEL& pairwise_result =
+        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), maxit, abstol);
+      if (!pairwise_result.convergence) {
+        Rcpp::warning("Test for pair (%i,%i) failed in %i bootstrap sample. \n",
+                      pairs[j][0], pairs[j][1], b);
+      }
+      bootstrap_statistics(b, j) = 2 * pairwise_result.nlogLR;
+    }
+    if (b % 100 == 0)
+    {
+      Rcpp::checkUserInterrupt();
+    }
+  }
+
+  // bootstrap unadjusted p-values based on rank of statistics
+  arma::mat bootstrap_pvalue_unadjusted(B, m);
+  for (int j = 0; j < m; ++j)
+  {
+    bootstrap_pvalue_unadjusted.col(j) =
+      (arma::conv_to<arma::vec>::from(
+          arma::sort_index(
+            arma::sort_index(bootstrap_statistics.col(j), "descend"),
+            "ascend") + 1)) / B;
+    // note that we add 1
+  }
+  // // F-calibration(df1 = 1, df2 = n - 1, lower = false, log = false)
+  //
+  // bootstrap_pvalue_unadjusted(b, j) =
+  //   R::pf(2.0 * pairwise_result.nlogLR, 1, n - 1, false, false);
+  // return
+  // arma::as_scalar(bootstrap_pvalue_unadjusted(0,0));
+  return bootstrap_pvalue_unadjusted;
+  // return
+  // arma::as_scalar(arma::quantile(arma::min(bootstrap_pvalue_unadjusted, 1),
+  // arma::vec{level}));
+}
+
+//' @export
+// [[Rcpp::export]]
+Rcpp::List ff(const arma::mat& x, const arma::mat& c,
+              const arma::vec& theta) {
+  // update g
+  arma::mat g = g_ibd(theta, x, c);
+  // update lambda
+  const EL eval = getEL(g, 100, 1e-8);
+  arma::vec lambda = eval.lambda;
+  arma::vec arg = 1 + g * lambda;
+
+  // LHS
+  arma::mat LHS = g.t() * (g.each_col() / arma::pow(arg, 2));
+
+
+  // RHS
+  arma::mat I_RHS =
+    arma::diagmat(
+      arma::sum(
+        c.each_col() / arg,
+        0));
+
+  // arma::rowvec multiplier = arma::trans(lambda % theta);
+  arma::mat J = c.each_row() % arma::trans(lambda % theta);
+  //
+  // arma::mat dd = c.each_row() % (lambda % theta);
+  J.each_col() /= arma::pow(arg, 2);
+  arma::mat J_RHS = g.t() * J;
+  arma::mat RHS = -I_RHS + J_RHS;
+
+  return Rcpp::List::create(
+    Rcpp::Named("theta0") = x.n_rows * arma::trans(arma::mean(x, 0) / arma::sum(c, 0)),
+    Rcpp::Named("LHS") = LHS,
+    Rcpp::Named("RHS") = RHS,
+    Rcpp::Named("sol") = solve(LHS, RHS));
 }

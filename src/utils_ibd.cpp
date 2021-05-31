@@ -12,20 +12,18 @@ arma::mat cov_ibd(const arma::mat& x,
                   const arma::mat& c,
                   const bool adjust) {
   // number of blocks
-  int n = x.n_rows;
+  const int n = x.n_rows;
   // estimator(global minimizer)
   arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
   // estimating function
   arma::mat g = x - c.each_row() % theta_hat.t();
   // covariance estimate(optional adjustment)
-  arma::mat vhat;
+  // arma::mat vhat;
   if (adjust) {
-    vhat = ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
+    return ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
   } else {
-    vhat = (g.t() * (g)) / n;
+    return (g.t() * (g)) / n;
   }
-
-  return vhat;
 }
 
 arma::vec lambda2theta_ibd(const arma::vec& lambda,
@@ -39,9 +37,9 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
   // gradient
   arma::vec gradient = -arma::sum(arma::diagmat(dplog_vec) * c, 0).t() % lambda;
   // update theta by GD with lambda fixed
-  arma::vec theta_hat = theta - gamma * gradient;
+  // arma::vec theta_hat = theta - gamma * gradient;
 
-  return theta_hat;
+  return theta - gamma * gradient;
 }
 
 double cutoff_pairwise_PB_ibd(const arma::mat& x,
@@ -113,10 +111,8 @@ minEL test_ibd_EL(const arma::mat& x,
   // evaluation
   EL eval = getEL(g);
   arma::vec lambda = eval.lambda;
-  // If the convex hull constraint is not satisfied at the initial value, end.
-  arma::vec arg = 1 + g * lambda;
   // for current function value(-logLR)
-  double f0 = arma::sum(plog(arg, 1 / n));
+  double f0 = arma::sum(plog(1 + g * lambda, 1.0 / n));
   // for updated function value
   double f1 = f0;
 
@@ -149,8 +145,7 @@ minEL test_ibd_EL(const arma::mat& x,
       }
       // update function value
       f0 = f1;
-      arg = 1 + g_tmp * lambda_tmp;
-      f1 = arma::sum(plog(arg, 1 / n));
+      f1 = arma::sum(plog(1 + g_tmp * lambda_tmp, 1.0 / n));
       // step halving to ensure that the updated function value be
       // strinctly less than the current function value
       while (f0 <= f1) {
@@ -177,8 +172,7 @@ minEL test_ibd_EL(const arma::mat& x,
           return result;
         }
         // propose new function value
-        arg = 1 + g_tmp * lambda_tmp;
-        f1 = arma::sum(plog(arg, 1 / n));
+        f1 = arma::sum(plog(1 + g_tmp * lambda_tmp, 1.0 / n));
       }
       // update parameters
       theta = theta_tmp;
@@ -312,8 +306,8 @@ double quantile_pairwise_NPB_ibd(const arma::mat& x,
   const std::vector<std::vector<int>> pairs = all_pairs(p);   // vector of pairs
   const int m = pairs.size();   // number of hypotheses
 
-  // B bootstrap test statistics(m x B matrix)
-  arma::mat bootstrap_pvalue_unadjusted(m, B);
+  // B bootstrap test statistics(B x m matrix)
+  arma::mat bootstrap_statistics(B, m);
   for (int b = 0; b < B; ++b) {
     arma::mat sample_b = bootstrap_sample(x_centered);
     arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
@@ -328,10 +322,7 @@ double quantile_pairwise_NPB_ibd(const arma::mat& x,
         Rcpp::warning("Test for pair (%i,%i) failed in %i bootstrap sample. \n",
                       pairs[j][0], pairs[j][1], b);
       }
-      // F-calibration(df1 = 1, df2 = n - 1, lowr = false, log = false)
-      bootstrap_pvalue_unadjusted(j, b) =
-        R::pf(2.0 * pairwise_result.nlogLR, 1, n - 1, false, false);
-
+      bootstrap_statistics(b, j) = 2 * pairwise_result.nlogLR;
     }
     if (b % 100 == 0)
     {
@@ -339,7 +330,22 @@ double quantile_pairwise_NPB_ibd(const arma::mat& x,
     }
   }
 
+  // bootstrap unadjusted p-values based on rank of statistics
+  arma::mat bootstrap_pvalue_unadjusted(B, m);
+  for (int j = 0; j < m; ++j)
+  {
+    bootstrap_pvalue_unadjusted.col(j) =
+      (arma::conv_to<arma::vec>::from(
+          arma::sort_index(
+            arma::sort_index(bootstrap_statistics.col(j), "descend"),
+            "ascend") + 1)) / B;
+    // note that we add 1
+  }
+  // // F-calibration(df1 = 1, df2 = n - 1, lower = false, log = false)
+  //
+  // bootstrap_pvalue_unadjusted(b, j) =
+  //   R::pf(2.0 * pairwise_result.nlogLR, 1, n - 1, false, false);
   return
-    arma::as_scalar(arma::quantile(arma::min(bootstrap_pvalue_unadjusted, 0),
+    arma::as_scalar(arma::quantile(arma::min(bootstrap_pvalue_unadjusted, 1),
                                    arma::vec{level}));
 }

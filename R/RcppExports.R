@@ -98,3 +98,13 @@ minP_pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, ma
     .Call(`_elmulttest_minP_pairwise_ibd`, x, c, interval, B, level, maxit, abstol)
 }
 
+#' @export
+tt <- function(x, B, level, maxit, abstol) {
+    .Call(`_elmulttest_tt`, x, B, level, maxit, abstol)
+}
+
+#' @export
+ff <- function(x, c, theta) {
+    .Call(`_elmulttest_ff`, x, c, theta)
+}
+
