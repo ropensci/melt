@@ -257,6 +257,7 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
                            const int B = 1e5,
                            const double& level = 0.05,
                            const bool vcov_adj = false,
+                           const bool approx_lambda = false,
                            const int maxit = 1e3,
                            const double& abstol = 1e-8) {
   const int n = x.n_rows;
@@ -276,7 +277,8 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
     if (level <= 0 || level >= 1) {
       Rcpp::stop("level must be between 0 and 1.");
     }
-    double cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
+    double cutoff =
+      cutoff_pairwise_PB_ibd(x, c, B, level, approx_lambda, vcov_adj);
     Rcpp::List CI(m);
     for(int i = 0; i < m; ++i) {
       // estimates
@@ -298,7 +300,8 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
 
       // CI(optional)
       if (interval) {
-        CI(i) = pair_confidence_interval_ibd(x, c, L, estimate(i), cutoff);
+        CI(i) =
+          pair_confidence_interval_ibd(x, c, L, approx_lambda, estimate(i), cutoff);
       }
     }
     Rcpp::List model_info =
@@ -317,7 +320,7 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
     return result;
 
   } else {
-    double cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
+    double cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, approx_lambda, vcov_adj);
     for(int i = 0; i < m; ++i) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
@@ -375,6 +378,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
                         const double level = 0.05,
                         std::string method = "PB",
                         const bool vcov_adj = false,
+                        const bool approx_lambda = true,
                         const int maxit = 1e4,
                         const double abstol = 1e-8) {
   if (level <= 0 || level >= 1)
@@ -405,11 +409,11 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   double cutoff;
   if (method == "NPB")
   {
-    cutoff = cutoff_pairwise_NPB_ibd(x, B, level, maxit, abstol);
+    cutoff = cutoff_pairwise_NPB_ibd(x, B, level, maxit, abstol, approx_lambda);
   }
   else
   {
-    cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
+    cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, approx_lambda, vcov_adj);
   }
 
   if (!interval)
@@ -471,7 +475,8 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
       statistic(i) = 2 * pairwise_result.nlogLR;
 
       // confidence interval(optional)
-      CI(i) = pair_confidence_interval_ibd(x, c, L, estimate(i), cutoff);
+      CI(i) =
+        pair_confidence_interval_ibd(x, c, L, approx_lambda, estimate(i), cutoff);
     }
     Rcpp::List model_info =
       Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
@@ -684,17 +689,32 @@ arma::mat tt(const arma::mat& x,
 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List ff(const arma::mat& x, const arma::mat& c,
-              const arma::vec& theta) {
+Rcpp::List fast_lambda_ibd(const arma::mat& x, const arma::mat& c,
+              const arma::vec& thetat, const arma::mat& L0, const arma::vec& rhs0,
+              const double gamma) {
+  // originally non existent
+  // initial parameter value set as group means
+  arma::vec theta0 = x.n_rows * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
+  // constraint imposed on the initial value by projection
+  theta0 = linear_projection(theta0, L0, rhs0);
+  // estimating function
+  arma::mat g0 = g_ibd(theta0, x, c);
+  // evaluation
+  const EL eval0 = getEL(g0);
+  arma::vec lambda0 = eval0.lambda;
+
+  // actually given as argument
+  arma::vec theta1 = lambda2theta_ibd(lambda0, theta0, g0, c, gamma);
+  theta1 = linear_projection(theta1, L0, rhs0);
+
+  // real start... with theta1, lambda0. we get lambda1!
+
   // update g
-  arma::mat g = g_ibd(theta, x, c);
-  // update lambda
-  const EL eval = getEL(g, 100, 1e-8);
-  arma::vec lambda = eval.lambda;
-  arma::vec arg = 1 + g * lambda;
+  arma::mat g1 = g_ibd(theta1, x, c);
+  arma::vec arg = 1 + g1 * lambda0;
 
   // LHS
-  arma::mat LHS = g.t() * (g.each_col() / arma::pow(arg, 2));
+  arma::mat LHS = g1.t() * (g1.each_col() / arma::pow(arg, 2));
 
 
   // RHS
@@ -704,17 +724,28 @@ Rcpp::List ff(const arma::mat& x, const arma::mat& c,
         c.each_col() / arg,
         0));
 
-  // arma::rowvec multiplier = arma::trans(lambda % theta);
-  arma::mat J = c.each_row() % arma::trans(lambda % theta);
+  // arma::rowvec multiplier = arma::trans(lambda);
+  arma::mat J = c.each_row() % arma::trans(lambda0);
   //
   // arma::mat dd = c.each_row() % (lambda % theta);
   J.each_col() /= arma::pow(arg, 2);
-  arma::mat J_RHS = g.t() * J;
+  arma::mat J_RHS = g1.t() * J;
   arma::mat RHS = -I_RHS + J_RHS;
 
+
+
+  arma::mat jacobian = arma::solve(LHS, RHS);
+
+  EL eval = getEL(g1);
+  arma::vec lambda1 = eval.lambda;
+
   return Rcpp::List::create(
-    Rcpp::Named("theta0") = x.n_rows * arma::trans(arma::mean(x, 0) / arma::sum(c, 0)),
+    Rcpp::Named("theta0") = theta0,
+    Rcpp::Named("lambda0") = lambda0,
+    Rcpp::Named("theta1") = theta1,
     Rcpp::Named("LHS") = LHS,
     Rcpp::Named("RHS") = RHS,
-    Rcpp::Named("sol") = solve(LHS, RHS));
+    Rcpp::Named("Jacobian") = jacobian,
+    Rcpp::Named("lambda1") = lambda1,
+    Rcpp::Named("lambda1t") = lambda0 + jacobian * (theta1 - theta0));
 }

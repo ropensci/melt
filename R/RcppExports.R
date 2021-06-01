@@ -56,8 +56,8 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_PB_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.05, vcov_adj = FALSE, maxit = 1e3L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_PB_ibd`, x, c, interval, B, level, vcov_adj, maxit, abstol)
+pairwise_PB_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.05, vcov_adj = FALSE, approx_lambda = FALSE, maxit = 1e3L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_PB_ibd`, x, c, interval, B, level, vcov_adj, approx_lambda, maxit, abstol)
 }
 
 #' Pairwise comparison for Incomplete Block Design
@@ -75,8 +75,8 @@ pairwise_PB_ibd <- function(x, c, interval = FALSE, B = 1e5L, level = 0.05, vcov
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", vcov_adj = FALSE, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, vcov_adj, maxit, abstol)
+pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", vcov_adj = FALSE, approx_lambda = TRUE, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, vcov_adj, approx_lambda, maxit, abstol)
 }
 
 #' Pairwise comparison for Incomplete Block Design
@@ -104,7 +104,7 @@ tt <- function(x, B, level, maxit, abstol) {
 }
 
 #' @export
-ff <- function(x, c, theta) {
-    .Call(`_elmulttest_ff`, x, c, theta)
+fast_lambda_ibd <- function(x, c, thetat, L0, rhs0, gamma) {
+    .Call(`_elmulttest_fast_lambda_ibd`, x, c, thetat, L0, rhs0, gamma)
 }
 

@@ -3,7 +3,7 @@
 export(el.mean)
 export(el_mean)
 export(el_mean2)
-export(ff)
+export(fast_lambda_ibd)
 export(minP_pairwise_ibd)
 export(pairwise_PB_ibd)
 export(pairwise_ibd)

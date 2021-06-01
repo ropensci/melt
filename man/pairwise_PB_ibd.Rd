@@ -11,6 +11,7 @@ pairwise_PB_ibd(
   B = 100000L,
   level = 0.05,
   vcov_adj = FALSE,
+  approx_lambda = FALSE,
   maxit = 1000L,
   abstol = 1e-08
 )
