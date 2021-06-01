@@ -236,21 +236,153 @@ Rcpp::List test_ibd(const arma::mat& x,
     Rcpp::Named("convergence") = convergence);
 }
 
-//' Pairwise comparison for BIBD
+//' Pairwise comparison for Incomplete Block Design
 //'
-//' Pairwise comparison for BIBD
+//' Pairwise comparison for Incomplete Block Design
 //'
 //' @param x a matrix of data .
 //' @param c an incidence matrix.
 //' @param interval whether to compute interval. Defaults to FALSE.
-//' @param B number of bootstrap replicate.
-//' @param level confidence level.
+//' @param B number of bootstrap replicates.
+//' @param level level.
+//' @param method the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.
 //' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //'
 //' @export
 // [[Rcpp::export]]
+Rcpp::List pairwise_ibd(const arma::mat& x,
+                        const arma::mat& c,
+                        const bool interval = false,
+                        const int B = 1e4,
+                        const double level = 0.05,
+                        std::string method = "PB",
+                        const bool vcov_adj = false,
+                        const bool approx_lambda = false,
+                        const int maxit = 1e4,
+                        const double abstol = 1e-8) {
+  if (level <= 0 || level >= 1)
+  {
+    Rcpp::stop("level must be between 0 and 1.");
+  }
+  if (method != "PB" && method != "NPB")
+  {
+    Rcpp::warning
+    ("method '%s' is not supported. Using 'PB' as default.",
+     method);
+    method = "PB";
+  }
+
+  const int n = x.n_rows;
+  const int p = x.n_cols;
+  // all pairs
+  std::vector<std::vector<int>> pairs = all_pairs(p);
+  // number of hypotheses
+  const int m = pairs.size();
+  // global minimizer
+  arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
+  // estimate
+  Rcpp::NumericVector estimate(m);
+  // statistics(-2logLR)
+  Rcpp::NumericVector statistic(m);
+  // cutoff value
+  double cutoff;
+  if (method == "NPB")
+  {
+    cutoff = cutoff_pairwise_NPB_ibd(x, B, level, approx_lambda, maxit, abstol);
+  }
+  else
+  {
+    cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
+  }
+
+  if (!interval)
+  {
+    for(int i = 0; i < m; ++i)
+    {
+      // estimates
+      estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
+
+      // statistics
+      arma::rowvec L = arma::zeros(1, p);
+      L(pairs[i][0] - 1) = 1;
+      L(pairs[i][1] - 1) = -1;
+      minEL pairwise_result =
+        test_ibd_EL(x, c, L, arma::zeros(1), false, maxit, abstol);
+      if (!pairwise_result.convergence) {
+        Rcpp::warning("Test for pair (%i,%i) failed. \n",
+                      pairs[i][0], pairs[i][1]);
+      }
+      double nlogLR = pairwise_result.nlogLR;
+      statistic(i) = 2 * pairwise_result.nlogLR;
+    }
+
+    Rcpp::List model_info =
+      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
+                         Rcpp::Named("incidence.matrix") = c);
+    Rcpp::List result =
+      Rcpp::List::create(
+        Rcpp::Named("estimate") = estimate,
+        Rcpp::Named("statistic") = statistic,
+        Rcpp::Named("level") = level,
+        Rcpp::Named("cutoff") = cutoff,
+        Rcpp::Named("method") = method,
+        Rcpp::Named("num.bootstrap") = B,
+        Rcpp::Named("model.info") = model_info);
+    result.attr("class") = "pairwise.ibd";
+
+    return result;
+  }
+  else
+  {
+    Rcpp::List CI(m);
+    for(int i = 0; i < m; ++i)
+    {
+      // estimates
+      estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
+
+      // statistics
+      arma::rowvec L = arma::zeros(1, p);
+      L(pairs[i][0] - 1) = 1;
+      L(pairs[i][1] - 1) = -1;
+      minEL pairwise_result =
+        test_ibd_EL(x, c, L, arma::zeros(1), false, maxit, abstol);
+      if (!pairwise_result.convergence) {
+        Rcpp::warning("Test for pair (%i,%i) failed. \n",
+                      pairs[i][0], pairs[i][1]);
+      }
+      double nlogLR = pairwise_result.nlogLR;
+      statistic(i) = 2 * pairwise_result.nlogLR;
+
+      // confidence interval(optional)
+      CI(i) =
+        pair_confidence_interval_ibd(x, c, L, approx_lambda, estimate(i), cutoff);
+    }
+    Rcpp::List model_info =
+      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
+                         Rcpp::Named("incidence.matrix") = c);
+    Rcpp::List result =
+      Rcpp::List::create(
+        Rcpp::Named("estimate") = estimate,
+        Rcpp::Named("statistic") = statistic,
+        Rcpp::Named("CI") = CI,
+        Rcpp::Named("level") = level,
+        Rcpp::Named("cutoff") = cutoff,
+        Rcpp::Named("method") = method,
+        Rcpp::Named("num.bootstrap") = B,
+        Rcpp::Named("model.info") = model_info);
+    result.attr("class") = "pairwise.ibd";
+
+    return result;
+  }
+}
+
+
+
+
+
+//
 Rcpp::List pairwise_PB_ibd(const arma::mat& x,
                            const arma::mat& c,
                            const bool& interval = false,
@@ -278,7 +410,7 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
       Rcpp::stop("level must be between 0 and 1.");
     }
     double cutoff =
-      cutoff_pairwise_PB_ibd(x, c, B, level, approx_lambda, vcov_adj);
+      cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
     Rcpp::List CI(m);
     for(int i = 0; i < m; ++i) {
       // estimates
@@ -320,7 +452,7 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
     return result;
 
   } else {
-    double cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, approx_lambda, vcov_adj);
+    double cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
     for(int i = 0; i < m; ++i) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
@@ -355,169 +487,12 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
   }
 }
 
-//' Pairwise comparison for Incomplete Block Design
-//'
-//' Pairwise comparison for Incomplete Block Design
-//'
-//' @param x a matrix of data .
-//' @param c an incidence matrix.
-//' @param interval whether to compute interval. Defaults to FALSE.
-//' @param B number of bootstrap replicates.
-//' @param level level.
-//' @param method the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.
-//' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
-//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-//'
-//' @export
-// [[Rcpp::export]]
-Rcpp::List pairwise_ibd(const arma::mat& x,
-                        const arma::mat& c,
-                        const bool interval = false,
-                        const int B = 1e4,
-                        const double level = 0.05,
-                        std::string method = "PB",
-                        const bool vcov_adj = false,
-                        const bool approx_lambda = true,
-                        const int maxit = 1e4,
-                        const double abstol = 1e-8) {
-  if (level <= 0 || level >= 1)
-  {
-    Rcpp::stop("level must be between 0 and 1.");
-  }
-  if (method != "PB" && method != "NPB")
-  {
-    Rcpp::warning
-    ("method '%s' is not supported. Using 'PB' as default.",
-     method);
-    method = "PB";
-  }
-
-  const int n = x.n_rows;
-  const int p = x.n_cols;
-  // all pairs
-  std::vector<std::vector<int>> pairs = all_pairs(p);
-  // number of hypotheses
-  const int m = pairs.size();
-  // global minimizer
-  arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
-  // estimate
-  Rcpp::NumericVector estimate(m);
-  // statistics(-2logLR)
-  Rcpp::NumericVector statistic(m);
-  // cutoff value
-  double cutoff;
-  if (method == "NPB")
-  {
-    cutoff = cutoff_pairwise_NPB_ibd(x, B, level, maxit, abstol, approx_lambda);
-  }
-  else
-  {
-    cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, approx_lambda, vcov_adj);
-  }
-
-  if (!interval)
-  {
-    for(int i = 0; i < m; ++i)
-    {
-      // estimates
-      estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
-
-      // statistics
-      arma::rowvec L = arma::zeros(1, p);
-      L(pairs[i][0] - 1) = 1;
-      L(pairs[i][1] - 1) = -1;
-      minEL pairwise_result =
-        test_ibd_EL(x, c, L, arma::zeros(1), maxit, abstol);
-      if (!pairwise_result.convergence) {
-        Rcpp::warning("Test for pair (%i,%i) failed. \n",
-                      pairs[i][0], pairs[i][1]);
-      }
-      double nlogLR = pairwise_result.nlogLR;
-      statistic(i) = 2 * pairwise_result.nlogLR;
-    }
-
-    Rcpp::List model_info =
-      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
-                         Rcpp::Named("incidence.matrix") = c);
-    Rcpp::List result =
-      Rcpp::List::create(
-        Rcpp::Named("estimate") = estimate,
-        Rcpp::Named("statistic") = statistic,
-        Rcpp::Named("level") = level,
-        Rcpp::Named("cutoff") = cutoff,
-        Rcpp::Named("method") = method,
-        Rcpp::Named("num.bootstrap") = B,
-        Rcpp::Named("model.info") = model_info);
-    result.attr("class") = "pairwise.ibd";
-
-    return result;
-  }
-  else
-  {
-    Rcpp::List CI(m);
-    for(int i = 0; i < m; ++i)
-    {
-      // estimates
-      estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
-
-      // statistics
-      arma::rowvec L = arma::zeros(1, p);
-      L(pairs[i][0] - 1) = 1;
-      L(pairs[i][1] - 1) = -1;
-      minEL pairwise_result =
-        test_ibd_EL(x, c, L, arma::zeros(1), maxit, abstol);
-      if (!pairwise_result.convergence) {
-        Rcpp::warning("Test for pair (%i,%i) failed. \n",
-                      pairs[i][0], pairs[i][1]);
-      }
-      double nlogLR = pairwise_result.nlogLR;
-      statistic(i) = 2 * pairwise_result.nlogLR;
-
-      // confidence interval(optional)
-      CI(i) =
-        pair_confidence_interval_ibd(x, c, L, approx_lambda, estimate(i), cutoff);
-    }
-    Rcpp::List model_info =
-      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
-                         Rcpp::Named("incidence.matrix") = c);
-    Rcpp::List result =
-      Rcpp::List::create(
-        Rcpp::Named("estimate") = estimate,
-        Rcpp::Named("statistic") = statistic,
-        Rcpp::Named("CI") = CI,
-        Rcpp::Named("level") = level,
-        Rcpp::Named("cutoff") = cutoff,
-        Rcpp::Named("method") = method,
-        Rcpp::Named("num.bootstrap") = B,
-        Rcpp::Named("model.info") = model_info);
-    result.attr("class") = "pairwise.ibd";
-
-    return result;
-  }
-}
-
-//' Pairwise comparison for Incomplete Block Design
-//'
-//' Pairwise comparison for Incomplete Block Design
-//'
-//' @param x a matrix of data .
-//' @param c an incidence matrix.
-//' @param interval whether to compute interval. Defaults to FALSE.
-//' @param B number of bootstrap replicates.
-//' @param level level.
-//' @param method the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.
-//' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
-//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-//'
-//' @export
-// [[Rcpp::export]]
 Rcpp::List minP_pairwise_ibd(const arma::mat& x,
                         const arma::mat& c,
                         const bool interval = false,
                         const int B = 1e4,
                         const double level = 0.05,
+                        const bool approx_lambda = false,
                         const int maxit = 1e4,
                         const double abstol = 1e-8) {
   if (level <= 0 || level >= 1)
@@ -540,7 +515,8 @@ Rcpp::List minP_pairwise_ibd(const arma::mat& x,
   // p-values(F-calibrated)
   Rcpp::NumericVector p_value(m);
   // common quantile value
-  double quantile = quantile_pairwise_NPB_ibd(x, B, level, maxit, abstol);
+  double quantile =
+    quantile_pairwise_NPB_ibd(x, B, level, maxit, abstol);
 
 
   if (!interval)
@@ -623,10 +599,6 @@ Rcpp::List minP_pairwise_ibd(const arma::mat& x,
   }
 }
 
-
-
-//' @export
-// [[Rcpp::export]]
 arma::mat tt(const arma::mat& x,
                                  const int B,
                                  const double level,
@@ -685,67 +657,4 @@ arma::mat tt(const arma::mat& x,
   // return
   // arma::as_scalar(arma::quantile(arma::min(bootstrap_pvalue_unadjusted, 1),
   // arma::vec{level}));
-}
-
-//' @export
-// [[Rcpp::export]]
-Rcpp::List fast_lambda_ibd(const arma::mat& x, const arma::mat& c,
-              const arma::vec& thetat, const arma::mat& L0, const arma::vec& rhs0,
-              const double gamma) {
-  // originally non existent
-  // initial parameter value set as group means
-  arma::vec theta0 = x.n_rows * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
-  // constraint imposed on the initial value by projection
-  theta0 = linear_projection(theta0, L0, rhs0);
-  // estimating function
-  arma::mat g0 = g_ibd(theta0, x, c);
-  // evaluation
-  const EL eval0 = getEL(g0);
-  arma::vec lambda0 = eval0.lambda;
-
-  // actually given as argument
-  arma::vec theta1 = lambda2theta_ibd(lambda0, theta0, g0, c, gamma);
-  theta1 = linear_projection(theta1, L0, rhs0);
-
-  // real start... with theta1, lambda0. we get lambda1!
-
-  // update g
-  arma::mat g1 = g_ibd(theta1, x, c);
-  arma::vec arg = 1 + g1 * lambda0;
-
-  // LHS
-  arma::mat LHS = g1.t() * (g1.each_col() / arma::pow(arg, 2));
-
-
-  // RHS
-  arma::mat I_RHS =
-    arma::diagmat(
-      arma::sum(
-        c.each_col() / arg,
-        0));
-
-  // arma::rowvec multiplier = arma::trans(lambda);
-  arma::mat J = c.each_row() % arma::trans(lambda0);
-  //
-  // arma::mat dd = c.each_row() % (lambda % theta);
-  J.each_col() /= arma::pow(arg, 2);
-  arma::mat J_RHS = g1.t() * J;
-  arma::mat RHS = -I_RHS + J_RHS;
-
-
-
-  arma::mat jacobian = arma::solve(LHS, RHS);
-
-  EL eval = getEL(g1);
-  arma::vec lambda1 = eval.lambda;
-
-  return Rcpp::List::create(
-    Rcpp::Named("theta0") = theta0,
-    Rcpp::Named("lambda0") = lambda0,
-    Rcpp::Named("theta1") = theta1,
-    Rcpp::Named("LHS") = LHS,
-    Rcpp::Named("RHS") = RHS,
-    Rcpp::Named("Jacobian") = jacobian,
-    Rcpp::Named("lambda1") = lambda1,
-    Rcpp::Named("lambda1t") = lambda0 + jacobian * (theta1 - theta0));
 }

@@ -42,11 +42,37 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
   return theta - gamma * gradient;
 }
 
+arma::vec approx_lambda_ibd(const arma::mat& x,
+                            const arma::mat& c,
+                            const arma::vec& theta0,
+                            const arma::vec& theta1,
+                            const arma::vec& lambda0)
+{
+  arma::mat g0 = g_ibd(theta0, x, c);
+  arma::vec arg = 1 + g0 * lambda0;
+
+  // LHS
+  arma::mat LHS = g0.t() * (g0.each_col() / arma::pow(arg, 2));
+
+  // RHS
+  arma::mat I_RHS = arma::diagmat(arma::sum((c.each_col() / arg), 0));
+  arma::mat J = c.each_row() % arma::trans(lambda0);
+  J.each_col() /= arma::pow(arg, 2);
+  arma::mat J_RHS = g0.t() * J;
+  arma::mat RHS = -I_RHS + J_RHS;
+
+  // Jacobian matrix
+  arma::mat jacobian = arma::solve(LHS, RHS, arma::solve_opts::fast);
+
+  // linear approximation for lambda1
+  return lambda0 + jacobian * (theta1 - theta0);
+}
+
 double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const arma::mat& c,
                               const int B,
                               const double level,
-                              const bool approx_lambda,
+                              // const bool approx_lambda,
                               const bool adjust) {
   /// parameters ///
   const int p = x.n_cols;   // number of points(treatments)
@@ -136,14 +162,22 @@ minEL test_ibd_EL(const arma::mat& x,
       theta_tmp = linear_projection(theta_tmp, L, rhs);
       // update g
       g_tmp = g_ibd(theta_tmp, x, c);
-      // update lambda
-      eval = getEL(g_tmp);
-      lambda_tmp = eval.lambda;
-      if (!eval.convergence && iterations > 9) {
-        theta = theta_tmp;
-        lambda = lambda_tmp;
-        Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
-        break;
+      if (approx_lambda && iterations > 1)
+      {
+        // update lambda
+        lambda_tmp = approx_lambda_ibd(x, c, theta, theta_tmp, lambda);
+      }
+      else
+      {
+        // update lambda
+        eval = getEL(g_tmp);
+        lambda_tmp = eval.lambda;
+        if (!eval.convergence && iterations > 9) {
+          theta = theta_tmp;
+          lambda = lambda_tmp;
+          Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+          break;
+        }
       }
       // update function value
       f0 = f1;
@@ -158,16 +192,21 @@ minEL test_ibd_EL(const arma::mat& x,
         theta_tmp = linear_projection(theta_tmp, L, rhs);
         // propose new lambda
         g_tmp = g_ibd(theta_tmp, x, c);
-        eval = getEL(g_tmp);
-        lambda_tmp = eval.lambda;
-        if (gamma < abstol) {
-          theta = theta_tmp;
-          lambda = lambda_tmp;
-          Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+        if (approx_lambda && iterations > 1)
+        {
+          lambda_tmp = approx_lambda_ibd(x, c, theta, theta_tmp, lambda);
+        }
+        else
+        {
+          eval = getEL(g_tmp);
+          lambda_tmp = eval.lambda;
+        }
 
+        if (gamma < abstol) {
+          // Rcpp::warning("Convex hull constraint not satisfied during step halving.");
           minEL result;
-          result.theta = theta;
-          result.lambda = lambda;
+          result.theta = theta_tmp;
+          result.lambda = lambda_tmp;
           result.nlogLR = f1;
           result.iterations = iterations;
           result.convergence = convergence;
@@ -180,7 +219,8 @@ minEL test_ibd_EL(const arma::mat& x,
       theta = theta_tmp;
       lambda = lambda_tmp;
       g = g_tmp;
-      if (iterations == maxit) {
+      if (iterations == maxit)
+      {
         break;
       }
       ++iterations;
@@ -192,8 +232,8 @@ minEL test_ibd_EL(const arma::mat& x,
   result.lambda = lambda;
   result.nlogLR = f1;
   // F-calibration
-  result.p_value =
-    R::pf(2.0 * f1 * (n - r) / (r * (n - 1)), r, n - r, false, false);
+  // result.p_value =
+    // R::pf(2.0 * f1 * (n - r) / (r * (n - 1)), r, n - r, false, false);
   result.iterations = iterations;
   result.convergence = convergence;
   return result;
@@ -258,11 +298,11 @@ std::vector<double> pair_confidence_interval_ibd(const arma::mat& x,
 }
 
 double cutoff_pairwise_NPB_ibd(const arma::mat& x,
-                                const int B,
-                                const double level,
-                                const bool approx_lambda,
-                                const int maxit,
-                                const double abstol)
+                               const int B,
+                               const double level,
+                               const bool approx_lambda,
+                               const int maxit,
+                               const double abstol)
 {
   // centered matrix
   arma::mat x_centered = centering_ibd(x);
@@ -282,11 +322,11 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[j][0] - 1) = 1;
       L(pairs[j][1] - 1) = -1;
-      const minEL& pairwise_result =
-        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), maxit, abstol);
+      const minEL pairwise_result =
+        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), approx_lambda, maxit, abstol);
       if (!pairwise_result.convergence) {
-        Rcpp::warning("Test for pair (%i,%i) failed in %i bootstrap sample. \n",
-                      pairs[j][0], pairs[j][1], b);
+        Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
+                      pairs[j][0], pairs[j][1], b + 1);
       }
       bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
     }
@@ -304,6 +344,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
 double quantile_pairwise_NPB_ibd(const arma::mat& x,
                                  const int B,
                                  const double level,
+                                 // const bool approx_lambda,
                                  const int maxit,
                                  const double abstol)
 {

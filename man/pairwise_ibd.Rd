@@ -12,7 +12,7 @@ pairwise_ibd(
   level = 0.05,
   method = "PB",
   vcov_adj = FALSE,
-  approx_lambda = TRUE,
+  approx_lambda = FALSE,
   maxit = 10000L,
   abstol = 1e-08
 )

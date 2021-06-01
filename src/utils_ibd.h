@@ -10,11 +10,16 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
                            const arma::mat& g,
                            const arma::mat& c,
                            const double gamma);
+arma::vec approx_lambda_ibd(const arma::mat& x,
+                            const arma::mat& c,
+                            const arma::vec& theta0,
+                            const arma::vec& theta1,
+                            const arma::vec& lambda0);
 double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const arma::mat& c,
                               const int B,
                               const double level,
-                              const bool approx_lambda,
+                              // const bool approx_lambda,
                               const bool adjust);
 arma::mat centering_ibd(arma::mat x);
 minEL test_ibd_EL(const arma::mat& x,
@@ -39,6 +44,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
 double quantile_pairwise_NPB_ibd(const arma::mat& x,
                                  const int B,
                                  const double level,
+                                 // const bool approx_lambda,
                                  const int maxit,
                                  const double abstol);
 #endif
