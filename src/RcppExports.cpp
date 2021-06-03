@@ -6,34 +6,6 @@
 
 using namespace Rcpp;
 
-// el_mean
-Rcpp::List el_mean(arma::rowvec theta, arma::mat x, int maxit, double abstol);
-RcppExport SEXP _elmulttest_el_mean(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::rowvec >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(el_mean(theta, x, maxit, abstol));
-    return rcpp_result_gen;
-END_RCPP
-}
-// el_mean2
-Rcpp::List el_mean2(const arma::vec& theta, const arma::mat& x, int maxit, double abstol);
-RcppExport SEXP _elmulttest_el_mean2(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(el_mean2(theta, x, maxit, abstol));
-    return rcpp_result_gen;
-END_RCPP
-}
 // test_ibd
 Rcpp::List test_ibd(const arma::mat& x, const arma::mat& c, const arma::mat& L, const arma::vec& rhs, const int maxit, const double& abstol);
 RcppExport SEXP _elmulttest_test_ibd(SEXP xSEXP, SEXP cSEXP, SEXP LSEXP, SEXP rhsSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
@@ -70,12 +42,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// el_mean
+Rcpp::List el_mean(arma::rowvec theta, arma::mat x, int maxit, double abstol);
+RcppExport SEXP _elmulttest_el_mean(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::rowvec >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(el_mean(theta, x, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// el_mean2
+Rcpp::List el_mean2(const arma::vec& theta, const arma::mat& x, int maxit, double abstol);
+RcppExport SEXP _elmulttest_el_mean2(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(el_mean2(theta, x, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
-    {"_elmulttest_el_mean2", (DL_FUNC) &_elmulttest_el_mean2, 4},
     {"_elmulttest_test_ibd", (DL_FUNC) &_elmulttest_test_ibd, 6},
     {"_elmulttest_pairwise_ibd", (DL_FUNC) &_elmulttest_pairwise_ibd, 10},
+    {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
+    {"_elmulttest_el_mean2", (DL_FUNC) &_elmulttest_el_mean2, 4},
     {NULL, NULL, 0}
 };
 
