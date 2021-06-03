@@ -658,3 +658,4 @@ arma::mat tt(const arma::mat& x,
   // arma::as_scalar(arma::quantile(arma::min(bootstrap_pvalue_unadjusted, 1),
   // arma::vec{level}));
 }
+

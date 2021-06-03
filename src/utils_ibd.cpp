@@ -239,15 +239,15 @@ minEL test_ibd_EL(const arma::mat& x,
   return result;
 }
 
-std::vector<double> pair_confidence_interval_ibd(const arma::mat& x,
-                                                 const arma::mat& c,
-                                                 const arma::mat& L,
-                                                 const bool approx_lambda,
-                                                 const double init,
-                                                 const double threshold) {
+std::array<double, 2> pair_confidence_interval_ibd(const arma::mat& x,
+                                                   const arma::mat& c,
+                                                   const arma::mat& L,
+                                                   const bool approx_lambda,
+                                                   const double init,
+                                                   const double threshold) {
   // upper endpoint
   double upper_lb = init;
-  double upper_size = 1;
+  double upper_size = 0.5;
   double upper_ub = init + upper_size;
   double upper_eval =
     test_ibd_EL(x, c, L, arma::vec{upper_ub}, approx_lambda).nlogLR;
@@ -259,19 +259,19 @@ std::vector<double> pair_confidence_interval_ibd(const arma::mat& x,
       test_ibd_EL(x, c, L, arma::vec{upper_ub}, approx_lambda).nlogLR;
   }
   // approximate upper bound by numerical search
-  while (upper_ub - upper_lb >= 1e-04) {
+  while (upper_ub - upper_lb > 1e-04) {
     upper_eval =
       test_ibd_EL(x, c, L, arma::vec{(upper_lb + upper_ub) / 2}, approx_lambda).nlogLR;
-    if (2 * upper_eval <= threshold) {
-      upper_lb = (upper_lb + upper_ub) / 2;
-    } else {
+    if (2 * upper_eval > threshold) {
       upper_ub = (upper_lb + upper_ub) / 2;
+    } else {
+      upper_lb = (upper_lb + upper_ub) / 2;
     }
   }
 
   // lower endpoint
   double lower_ub = init;
-  double lower_size = 1;
+  double lower_size = 0.5;
   double lower_lb = init - lower_size;
   double lower_eval =
     test_ibd_EL(x, c, L, arma::vec{lower_lb}, approx_lambda).nlogLR;
@@ -283,18 +283,17 @@ std::vector<double> pair_confidence_interval_ibd(const arma::mat& x,
       test_ibd_EL(x, c, L, arma::vec{lower_lb}, approx_lambda).nlogLR;
   }
   // approximate lower bound by numerical search
-  while (lower_ub - lower_lb >= 1e-04) {
+  while (lower_ub - lower_lb > 1e-04) {
     lower_eval =
       test_ibd_EL(x, c, L, arma::vec{(lower_lb + lower_ub) / 2}, approx_lambda).nlogLR;
-    if (2 * lower_eval <= threshold) {
-      lower_ub = (lower_lb + lower_ub) / 2;
-    } else {
+    if (2 * lower_eval > threshold) {
       lower_lb = (lower_lb + lower_ub) / 2;
+    } else {
+      lower_ub = (lower_lb + lower_ub) / 2;
     }
   }
 
-  std::vector<double> confidence_inverval{lower_ub, upper_lb};
-  return confidence_inverval;
+  return std::array<double, 2>{lower_ub, upper_lb};
 }
 
 double cutoff_pairwise_NPB_ibd(const arma::mat& x,
