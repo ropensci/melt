@@ -3,6 +3,8 @@
 
 #include "utils.h"
 #include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
 arma::mat g_ibd(const arma::vec& theta, const arma::mat& x, const arma::mat& c);
 arma::mat cov_ibd(const arma::mat& x, const arma::mat& c, const bool adjust);
 arma::vec lambda2theta_ibd(const arma::vec& lambda,

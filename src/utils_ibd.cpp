@@ -1,6 +1,5 @@
 #include "utils_ibd.h"
 
-// [[Rcpp::depends(RcppArmadillo)]]
 arma::mat g_ibd(const arma::vec& theta,
                 const arma::mat& x,
                 const arma::mat& c) {

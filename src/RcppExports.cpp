@@ -7,7 +7,7 @@
 using namespace Rcpp;
 
 // test_ibd
-Rcpp::List test_ibd(const arma::mat& x, const arma::mat& c, const arma::mat& L, const arma::vec& rhs, const int maxit, const double& abstol);
+Rcpp::List test_ibd(const arma::mat& x, const arma::mat& c, const arma::mat& L, const arma::vec& rhs, const int maxit, const double abstol);
 RcppExport SEXP _elmulttest_test_ibd(SEXP xSEXP, SEXP cSEXP, SEXP LSEXP, SEXP rhsSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -17,7 +17,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::mat& >::type L(LSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type rhs(rhsSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double& >::type abstol(abstolSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
     rcpp_result_gen = Rcpp::wrap(test_ibd(x, c, L, rhs, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP

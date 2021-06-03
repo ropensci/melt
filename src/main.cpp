@@ -1,5 +1,4 @@
 #include "utils.h"
-// [[Rcpp::depends(RcppArmadillo)]]
 
 //' Compute empirical likelihood for mean
 //'

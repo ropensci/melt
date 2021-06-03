@@ -1,6 +1,5 @@
 #include "utils.h"
 
-// [[Rcpp::depends(RcppArmadillo)]]
 arma::vec plog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
   for(int i = 0; i < x.n_elem; ++i) {

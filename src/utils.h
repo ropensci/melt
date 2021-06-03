@@ -2,6 +2,8 @@
 #define EL_UTILS_H_
 
 #include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
 struct EL {
   double nlogLR;
   arma::vec lambda;
