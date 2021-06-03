@@ -79,8 +79,8 @@ arma::vec d2plog_old(const arma::vec& x, const double threshold) {
 
 
 EL getEL(const arma::mat& g,
-         const int& maxit,
-         const double& abstol) {
+         const int maxit,
+         const double abstol) {
   const int n = g.n_rows;
   const int p = g.n_cols;
 
@@ -167,9 +167,9 @@ arma::mat g_mean(const arma::vec &theta,
   return x;
 }
 
-arma::vec linear_projection(const arma::vec &theta,
-                            const arma::mat &L,
-                            const arma::vec &rhs) {
+arma::vec linear_projection(const arma::vec& theta,
+                            const arma::mat& L,
+                            const arma::vec& rhs) {
   return theta - L.t() * inv_sympd(L * L.t()) * (L * theta - rhs);
 }
 

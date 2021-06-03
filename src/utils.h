@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef EL_UTILS_H_
+#define EL_UTILS_H_
 
 #include <RcppArmadillo.h>
 struct EL {
@@ -25,8 +25,8 @@ arma::vec dplog_old(const arma::vec& x, const double threshold);
 arma::vec d2plog(const arma::vec& x, const double threshold);
 arma::vec d2plog_old(const arma::vec& x, const double threshold);
 EL getEL(const arma::mat& g,
-         const int& maxit = 100,
-         const double& abstol = 1e-8);
+         const int maxit = 100,
+         const double abstol = 1e-8);
 std::vector<std::array<int, 2>> all_pairs(const int p);
 arma::mat g_mean(const arma::vec& theta, arma::mat x);
 arma::vec linear_projection(const arma::vec& theta,
