@@ -311,10 +311,11 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       L(pairs[j][1] - 1) = -1;
       const minEL pairwise_result =
         test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), approx_lambda, maxit, abstol);
-      if (!pairwise_result.convergence) {
-        Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
-                      pairs[j][0], pairs[j][1], b + 1);
-      }
+      // We do not check the convex hull constraint when NPB is used.
+      // if (!pairwise_result.convergence) {
+      //   Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
+      //                 pairs[j][0], pairs[j][1], b + 1);
+      // }
       bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
     }
     if (b % 100 == 0) {
