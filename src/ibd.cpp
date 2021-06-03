@@ -146,12 +146,10 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
                         const bool approx_lambda = false,
                         const int maxit = 1e4,
                         const double abstol = 1e-8) {
-  if (level <= 0 || level >= 1)
-  {
+  if (level <= 0 || level >= 1) {
     Rcpp::stop("level must be between 0 and 1.");
   }
-  if (method != "PB" && method != "NPB")
-  {
+  if (method != "PB" && method != "NPB") {
     Rcpp::warning
     ("method '%s' is not supported. Using 'PB' as default.",
      method);
@@ -174,8 +172,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   double cutoff;
   if (method == "NPB") {
     cutoff = cutoff_pairwise_NPB_ibd(x, B, level, approx_lambda, maxit, abstol);
-  }
-  else {
+  } else {
     cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
   }
 
@@ -194,7 +191,6 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
         Rcpp::warning("Test for pair (%i,%i) failed. \n",
                       pairs[i][0], pairs[i][1]);
       }
-      double nlogLR = pairwise_result.nlogLR;
       statistic(i) = 2 * pairwise_result.nlogLR;
     }
 
@@ -229,7 +225,6 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
         Rcpp::warning("Test for pair (%i,%i) failed. \n",
                       pairs[i][0], pairs[i][1]);
       }
-      double nlogLR = pairwise_result.nlogLR;
       statistic(i) = 2 * pairwise_result.nlogLR;
 
       // confidence interval(optional)
