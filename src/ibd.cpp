@@ -194,9 +194,6 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
       statistic(i) = 2 * pairwise_result.nlogLR;
     }
 
-    Rcpp::List model_info =
-      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
-                         Rcpp::Named("incidence.matrix") = c);
     Rcpp::List result =
       Rcpp::List::create(
         Rcpp::Named("estimate") = estimate,
@@ -205,7 +202,9 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
         Rcpp::Named("cutoff") = cutoff,
         Rcpp::Named("method") = method,
         Rcpp::Named("num.bootstrap") = B,
-        Rcpp::Named("model.info") = model_info);
+        Rcpp::Named("model.info") =
+          Rcpp::List::create(Rcpp::Named("model.matrix") = x,
+                             Rcpp::Named("incidence.matrix") = c));
     result.attr("class") = "pairwise.ibd";
 
     return result;
@@ -229,11 +228,10 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
 
       // confidence interval(optional)
       CI(i) =
-        pair_confidence_interval_ibd(x, c, L, approx_lambda, estimate(i), cutoff);
+        pair_confidence_interval_ibd(
+          x, c, L, approx_lambda, estimate(i), cutoff);
     }
-    Rcpp::List model_info =
-      Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
-                         Rcpp::Named("incidence.matrix") = c);
+
     Rcpp::List result =
       Rcpp::List::create(
         Rcpp::Named("estimate") = estimate,
@@ -243,7 +241,9 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
         Rcpp::Named("cutoff") = cutoff,
         Rcpp::Named("method") = method,
         Rcpp::Named("num.bootstrap") = B,
-        Rcpp::Named("model.info") = model_info);
+        Rcpp::Named("model.info") =
+          Rcpp::List::create(Rcpp::Named("model.matrix") = x ,
+                             Rcpp::Named("incidence.matrix") = c));
     result.attr("class") = "pairwise.ibd";
 
     return result;
