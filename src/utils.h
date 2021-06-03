@@ -18,12 +18,12 @@ struct minEL {
   bool convergence;
 };
 
-arma::vec plog(const arma::vec& x, double threshold);
-Rcpp::NumericVector plog_old(Rcpp::NumericVector x, double threshold);
-arma::vec dplog(const arma::vec& x, double threshold);
-Rcpp::NumericVector dplog_old(Rcpp::NumericVector x, double threshold);
-arma::vec d2plog(const arma::vec& x, double threshold);
-Rcpp::NumericVector d2plog_old(Rcpp::NumericVector x, double threshold);
+arma::vec plog(const arma::vec& x, const double threshold);
+arma::vec plog_old(const arma::vec& x, const double threshold);
+arma::vec dplog(const arma::vec& x, const double threshold);
+arma::vec dplog_old(const arma::vec& x, const double threshold);
+arma::vec d2plog(const arma::vec& x, const double threshold);
+arma::vec d2plog_old(const arma::vec& x, const double threshold);
 EL getEL(const arma::mat& g,
          const int& maxit = 100,
          const double& abstol = 1e-8);

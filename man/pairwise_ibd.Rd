@@ -32,6 +32,8 @@ pairwise_ibd(
 
 \item{vcov_adj}{whether to adjust for the covariance estimate. Defaults to FALSE.}
 
+\item{approx_lambda}{whether to use the approximation for lambda. Defaults to FALSE.}
+
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 
 \item{abstol}{an optional value for the absolute convergence tolerance. Defaults to 1e-8.}

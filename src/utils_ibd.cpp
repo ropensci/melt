@@ -162,13 +162,10 @@ minEL test_ibd_EL(const arma::mat& x,
       theta_tmp = linear_projection(theta_tmp, L, rhs);
       // update g
       g_tmp = g_ibd(theta_tmp, x, c);
-      if (approx_lambda && iterations > 1)
-      {
+      if (approx_lambda && iterations > 1) {
         // update lambda
         lambda_tmp = approx_lambda_ibd(x, c, theta, theta_tmp, lambda);
-      }
-      else
-      {
+      } else {
         // update lambda
         eval = getEL(g_tmp);
         lambda_tmp = eval.lambda;
@@ -192,12 +189,9 @@ minEL test_ibd_EL(const arma::mat& x,
         theta_tmp = linear_projection(theta_tmp, L, rhs);
         // propose new lambda
         g_tmp = g_ibd(theta_tmp, x, c);
-        if (approx_lambda && iterations > 1)
-        {
+        if (approx_lambda && iterations > 1) {
           lambda_tmp = approx_lambda_ibd(x, c, theta, theta_tmp, lambda);
-        }
-        else
-        {
+        } else {
           eval = getEL(g_tmp);
           lambda_tmp = eval.lambda;
         }
@@ -219,8 +213,7 @@ minEL test_ibd_EL(const arma::mat& x,
       theta = theta_tmp;
       lambda = lambda_tmp;
       g = g_tmp;
-      if (iterations == maxit)
-      {
+      if (iterations == maxit) {
         break;
       }
       ++iterations;
@@ -231,9 +224,6 @@ minEL test_ibd_EL(const arma::mat& x,
   result.theta = theta;
   result.lambda = lambda;
   result.nlogLR = f1;
-  // F-calibration
-  // result.p_value =
-    // R::pf(2.0 * f1 * (n - r) / (r * (n - 1)), r, n - r, false, false);
   result.iterations = iterations;
   result.convergence = convergence;
   return result;
@@ -316,8 +306,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   for (int b = 0; b < B; ++b) {
     arma::mat sample_b = bootstrap_sample(x_centered);
     arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
-    for (int j = 0; j < m; ++j)
-    {
+    for (int j = 0; j < m; ++j) {
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[j][0] - 1) = 1;
       L(pairs[j][1] - 1) = -1;
@@ -329,8 +318,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       }
       bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
     }
-    if (b % 100 == 0)
-    {
+    if (b % 100 == 0) {
       Rcpp::checkUserInterrupt();
     }
   }
@@ -338,62 +326,4 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   return
     arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 0),
                                    arma::vec{1 - level}));
-}
-
-double quantile_pairwise_NPB_ibd(const arma::mat& x,
-                                 const int B,
-                                 const double level,
-                                 // const bool approx_lambda,
-                                 const int maxit,
-                                 const double abstol)
-{
-  // centered matrix(null transformation)
-  arma::mat x_centered = centering_ibd(x);
-  const int n = x.n_rows;
-  const int p = x.n_cols;
-  const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
-  const int m = pairs.size();   // number of hypotheses
-
-  // B bootstrap test statistics(B x m matrix)
-  arma::mat bootstrap_statistics(B, m);
-  for (int b = 0; b < B; ++b) {
-    arma::mat sample_b = bootstrap_sample(x_centered);
-    arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
-    for (int j = 0; j < m; ++j)
-    {
-      arma::rowvec L = arma::zeros(1, p);
-      L(pairs[j][0] - 1) = 1;
-      L(pairs[j][1] - 1) = -1;
-      const minEL& pairwise_result =
-        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), maxit, abstol);
-      if (!pairwise_result.convergence) {
-        Rcpp::warning("Test for pair (%i,%i) failed in %i bootstrap sample. \n",
-                      pairs[j][0], pairs[j][1], b);
-      }
-      bootstrap_statistics(b, j) = 2 * pairwise_result.nlogLR;
-    }
-    if (b % 100 == 0)
-    {
-      Rcpp::checkUserInterrupt();
-    }
-  }
-
-  // bootstrap unadjusted p-values based on rank of statistics
-  arma::mat bootstrap_pvalue_unadjusted(B, m);
-  for (int j = 0; j < m; ++j)
-  {
-    bootstrap_pvalue_unadjusted.col(j) =
-      (arma::conv_to<arma::vec>::from(
-          arma::sort_index(
-            arma::sort_index(bootstrap_statistics.col(j), "descend"),
-            "ascend") + 1)) / B;
-    // note that we add 1
-  }
-  // // F-calibration(df1 = 1, df2 = n - 1, lower = false, log = false)
-  //
-  // bootstrap_pvalue_unadjusted(b, j) =
-  //   R::pf(2.0 * pairwise_result.nlogLR, 1, n - 1, false, false);
-  return
-    arma::as_scalar(arma::quantile(arma::min(bootstrap_pvalue_unadjusted, 1),
-                                   arma::vec{level}));
 }

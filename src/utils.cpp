@@ -1,11 +1,23 @@
 #include "utils.h"
 
 // [[Rcpp::depends(RcppArmadillo)]]
-arma::vec plog(const arma::vec& x, double threshold) {
+arma::vec plog(const arma::vec& x, const double threshold) {
+  arma::vec out(x.n_elem);
+  for(int i = 0; i < x.n_elem; ++i) {
+    if (x.at(i) < threshold) {
+      out.at(i) = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x.at(i) -
+        std::pow(x.at(i) / threshold, 2) / 2;
+    } else {
+      out.at(i) = std::log(x.at(i));
+    }
+  }
+  return out;
+}
+arma::vec plog_old(const arma::vec& x, const double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
   for(int i = 0; i < n; ++i) {
-    if(x(i) >= threshold) {
+    if (x(i) >= threshold) {
       out(i) = std::log(x(i));
     } else {
       out(i) = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x(i) -
@@ -14,25 +26,24 @@ arma::vec plog(const arma::vec& x, double threshold) {
   }
   return out;
 }
-Rcpp::NumericVector plog_old(Rcpp::NumericVector x, double threshold) {
-  int n = x.size();
-  Rcpp::NumericVector out(n);
-  for(int i = 0; i < n; ++i) {
-    if(x[i] >= threshold) {
-      out[i] = std::log(x[i]);
+
+
+arma::vec dplog(const arma::vec& x, const double threshold) {
+  arma::vec out(x.n_elem);
+  for(int i = 0; i < x.n_elem; ++i) {
+    if (x.at(i) < threshold) {
+      out.at(i) = 2 * std::pow(threshold, -1) - x.at(i) * std::pow(threshold, -2);
     } else {
-      out[i] = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x[i] -
-        std::pow(x[i] / threshold, 2) / 2;
+      out.at(i) = std::pow(x.at(i), -1);
     }
   }
   return out;
 }
-
-arma::vec dplog(const arma::vec& x, double threshold) {
+arma::vec dplog_old(const arma::vec& x, const double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
   for(int i = 0; i < n; ++i) {
-    if(x(i) >= threshold) {
+    if (x(i) >= threshold) {
       out(i) = std::pow(x(i), -1);
     } else {
       out(i) = 2 * std::pow(threshold, -1) - x(i) * std::pow(threshold, -2);
@@ -40,24 +51,24 @@ arma::vec dplog(const arma::vec& x, double threshold) {
   }
   return out;
 }
-Rcpp::NumericVector dplog_old(Rcpp::NumericVector x, double threshold) {
-  int n = x.size();
-  Rcpp::NumericVector out(n);
-  for(int i = 0; i < n; ++i) {
-    if(x[i] >= threshold) {
-      out[i] = std::pow(x[i], -1);
+
+
+arma::vec d2plog(const arma::vec& x, const double threshold) {
+  arma::vec out(x.n_elem);
+  for(int i = 0; i < x.n_elem; ++i) {
+    if (x.at(i) < threshold) {
+      out.at(i) = -std::pow(threshold, -2);
     } else {
-      out[i] = 2 * std::pow(threshold, -1) - x[i] * std::pow(threshold, -2);
+      out.at(i) = -std::pow(x.at(i), -2);
     }
   }
   return out;
 }
-
-arma::vec d2plog(const arma::vec& x, double threshold) {
+arma::vec d2plog_old(const arma::vec& x, const double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
   for(int i = 0; i < n; ++i) {
-    if(x(i) >= threshold) {
+    if (x(i) >= threshold) {
       out(i) = -std::pow(x(i), -2);
     } else {
       out(i) = -std::pow(threshold, -2);
@@ -65,18 +76,7 @@ arma::vec d2plog(const arma::vec& x, double threshold) {
   }
   return out;
 }
-Rcpp::NumericVector d2plog_old(Rcpp::NumericVector x, double threshold) {
-  int n = x.size();
-  Rcpp::NumericVector out(n);
-  for(int i = 0; i < n; ++i) {
-    if(x[i] >= threshold) {
-      out[i] = -std::pow(x[i], -2);
-    } else {
-      out[i] = -std::pow(threshold, -2);
-    }
-  }
-  return out;
-}
+
 
 EL getEL(const arma::mat& g,
          const int& maxit,
@@ -109,7 +109,7 @@ EL getEL(const arma::mat& g,
     lc = l + arma::solve(arma::trimatu(R), Q.t() * y,
                          arma::solve_opts::fast);
     double alpha = 1.0;
-    while(-arma::sum(plog(1 + g * lc, 1.0 / n)) > f0) {
+    while (-arma::sum(plog(1 + g * lc, 1.0 / n)) > f0) {
       alpha = alpha / 2;
       lc = l + alpha * arma::solve(arma::trimatu(R), Q.t() * y,
                                    arma::solve_opts::fast);
@@ -126,7 +126,7 @@ EL getEL(const arma::mat& g,
       y = v2 / v1;
       convergence = true;
     } else {
-      if(iterations == maxit) {
+      if (iterations == maxit) {
         break;
       }
       ++iterations;
