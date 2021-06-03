@@ -180,8 +180,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   }
 
   if (!interval) {
-    for(int i = 0; i < m; ++i)
-    {
+    for(int i = 0; i < m; ++i) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
 
@@ -216,8 +215,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
     return result;
   } else {
     Rcpp::List CI(m);
-    for(int i = 0; i < m; ++i)
-    {
+    for (int i = 0; i < m; ++i) {
       // estimates
       estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
 

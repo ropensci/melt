@@ -2,7 +2,7 @@
 
 arma::vec plog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
-  for(int i = 0; i < x.n_elem; ++i) {
+  for (int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
       out.at(i) = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x.at(i) -
         std::pow(x.at(i) / threshold, 2) / 2;
@@ -15,7 +15,7 @@ arma::vec plog(const arma::vec& x, const double threshold) {
 arma::vec plog_old(const arma::vec& x, const double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
-  for(int i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     if (x(i) >= threshold) {
       out(i) = std::log(x(i));
     } else {
@@ -29,7 +29,7 @@ arma::vec plog_old(const arma::vec& x, const double threshold) {
 
 arma::vec dplog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
-  for(int i = 0; i < x.n_elem; ++i) {
+  for (int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
       out.at(i) = 2 * std::pow(threshold, -1) - x.at(i) * std::pow(threshold, -2);
     } else {
@@ -41,7 +41,7 @@ arma::vec dplog(const arma::vec& x, const double threshold) {
 arma::vec dplog_old(const arma::vec& x, const double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
-  for(int i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     if (x(i) >= threshold) {
       out(i) = std::pow(x(i), -1);
     } else {
@@ -54,7 +54,7 @@ arma::vec dplog_old(const arma::vec& x, const double threshold) {
 
 arma::vec d2plog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
-  for(int i = 0; i < x.n_elem; ++i) {
+  for (int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
       out.at(i) = -std::pow(threshold, -2);
     } else {
@@ -66,7 +66,7 @@ arma::vec d2plog(const arma::vec& x, const double threshold) {
 arma::vec d2plog_old(const arma::vec& x, const double threshold) {
   const int n = x.n_elem;
   arma::vec out(n);
-  for(int i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     if (x(i) >= threshold) {
       out(i) = -std::pow(x(i), -2);
     } else {
@@ -147,10 +147,8 @@ std::vector<std::array<int, 2>> all_pairs(const int p) {
   // the size of vector is p choose 2
   pairs.reserve(p * (p - 1) / 2);
   // fill in each elements(pairs)
-  for(int i = 1; i < p + 1; ++i)
-  {
-    for(int j = i + 1; j < p + 1; ++j)
-    {
+  for (int i = 1; i < p + 1; ++i) {
+    for (int j = i + 1; j < p + 1; ++j) {
       pairs.emplace_back(std::array<int, 2>{j, i});
       // pairs.emplace_back(std::vector<int> {i, j});
     }
@@ -182,7 +180,7 @@ arma::mat bootstrap_sample(const arma::mat& x)
 
   // resampling with replacement
   arma::mat bootstrap_sample(n, p);
-  for(int i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     bootstrap_sample.row(i) = x.row(boostrap_index(i));
   }
 
