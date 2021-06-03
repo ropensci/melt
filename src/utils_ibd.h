@@ -36,6 +36,7 @@ std::array<double, 2> pair_confidence_interval_ibd(const arma::mat& x,
                                                    const bool approx_lambda,
                                                    const double init,
                                                    const double threshold);
+
 minEL test_ibd_EL(const arma::mat& x,
                   const arma::mat& c,
                   const arma::mat& L,
