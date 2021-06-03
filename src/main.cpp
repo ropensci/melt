@@ -277,7 +277,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   const int n = x.n_rows;
   const int p = x.n_cols;
   // all pairs
-  std::vector<std::vector<int>> pairs = all_pairs(p);
+  std::vector<std::array<int, 2>> pairs = all_pairs(p);
   // number of hypotheses
   const int m = pairs.size();
   // global minimizer
@@ -395,7 +395,7 @@ Rcpp::List pairwise_PB_ibd(const arma::mat& x,
   const int n = x.n_rows;
   const int p = x.n_cols;
   // all pairs
-  std::vector<std::vector<int>> pairs = all_pairs(p);
+  std::vector<std::array<int, 2>> pairs = all_pairs(p);
   // number of hypotheses
   const int m = pairs.size();
   // global minimizer
@@ -503,7 +503,7 @@ Rcpp::List minP_pairwise_ibd(const arma::mat& x,
   const int n = x.n_rows;
   const int p = x.n_cols;
   // all pairs
-  std::vector<std::vector<int>> pairs = all_pairs(p);
+  std::vector<std::array<int, 2>> pairs = all_pairs(p);
   // number of hypotheses
   const int m = pairs.size();
   // global minimizer
@@ -609,7 +609,7 @@ arma::mat tt(const arma::mat& x,
   arma::mat x_centered = centering_ibd(x);
   const int n = x.n_rows;
   const int p = x.n_cols;
-  const std::vector<std::vector<int>> pairs = all_pairs(p);   // vector of pairs
+  const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
   const int m = pairs.size();   // number of hypotheses
 
   // B bootstrap test statistics(B x m matrix)

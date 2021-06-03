@@ -27,7 +27,7 @@ Rcpp::NumericVector d2plog_old(Rcpp::NumericVector x, double threshold);
 EL getEL(const arma::mat& g,
          const int& maxit = 100,
          const double& abstol = 1e-8);
-std::vector<std::vector<int>> all_pairs(const int& p);
+std::vector<std::array<int, 2>> all_pairs(const int p);
 arma::mat g_mean(const arma::vec& theta, arma::mat x);
 arma::vec linear_projection(const arma::vec& theta,
                             const arma::mat& L,

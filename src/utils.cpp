@@ -142,9 +142,9 @@ EL getEL(const arma::mat& g,
   return result;
 }
 
-std::vector<std::vector<int>> all_pairs(const int &p) {
+std::vector<std::array<int, 2>> all_pairs(const int p) {
   // initialize a vector of vectors
-  std::vector<std::vector<int>> pairs;
+  std::vector<std::array<int, 2>> pairs;
   // the size of vector is p choose 2
   pairs.reserve(p * (p - 1) / 2);
   // fill in each elements(pairs)
@@ -152,7 +152,7 @@ std::vector<std::vector<int>> all_pairs(const int &p) {
   {
     for(int j = i + 1; j < p + 1; ++j)
     {
-      pairs.emplace_back(std::vector<int> {j, i});
+      pairs.emplace_back(std::array<int, 2>{j, i});
       // pairs.emplace_back(std::vector<int> {i, j});
     }
   }
