@@ -131,6 +131,7 @@ Rcpp::List test_ibd(const arma::mat& x,
 //' @param method the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.
 //' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
 //' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
+//' @param ncores number of cores(threads) to use. Defaults to 1.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //'
@@ -144,6 +145,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
                         std::string method = "PB",
                         const bool vcov_adj = false,
                         const bool approx_lambda = false,
+                        const int ncores = 1,
                         const int maxit = 1e4,
                         const double abstol = 1e-8) {
   if (level <= 0 || level >= 1) {
@@ -171,7 +173,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   // cutoff value
   double cutoff;
   if (method == "NPB") {
-    cutoff = cutoff_pairwise_NPB_ibd(x, B, level, approx_lambda, maxit, abstol);
+    cutoff = cutoff_pairwise_NPB_ibd(x, B, level, approx_lambda, ncores, maxit, abstol);
   } else {
     cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj);
   }

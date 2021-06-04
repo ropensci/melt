@@ -1,4 +1,5 @@
 #include "utils_ibd.h"
+#include <RcppArmadilloExtensions/sample.h>
 
 arma::mat g_ibd(const arma::vec& theta,
                 const arma::mat& x,
@@ -289,39 +290,81 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
                                const int B,
                                const double level,
                                const bool approx_lambda,
+                               const int ncores,
                                const int maxit,
                                const double abstol)
 {
-  // centered matrix
-  arma::mat x_centered = centering_ibd(x);
-
+  const int n = x.n_rows;
   const int p = x.n_cols;
   const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
   const int m = pairs.size();   // number of hypotheses
 
+  // centered matrix
+  const arma::mat x_centered = centering_ibd(x);
+
+  // index matrix for boostrap(n by B matrix)
+  const arma::umat bootstrap_index =
+    arma::reshape(
+      Rcpp::RcppArmadillo::sample(
+        arma::linspace<arma::uvec>(0, n - 1, n), n * B, true), n, B);
 
   // B bootstrap test statistics(m x B matrix)
   arma::mat bootstrap_statistics(m, B);
+  #pragma omp parallel for num_threads(ncores) default(none) shared(B, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
   for (int b = 0; b < B; ++b) {
-    arma::mat sample_b = bootstrap_sample(x_centered);
-    arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
+    const arma::mat sample_b = x_centered.rows(bootstrap_index.col(b));
+    const arma::mat incidence_mat_b =
+      arma::conv_to<arma::mat>::from(sample_b != 0);
+    arma::vec statistics_b(m);
     for (int j = 0; j < m; ++j) {
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[j][0] - 1) = 1;
       L(pairs[j][1] - 1) = -1;
-      const minEL pairwise_result =
-        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), approx_lambda, maxit, abstol);
+      const minEL& pairwise_result =
+        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1),
+                    approx_lambda, maxit, abstol);
       // We do not check the convex hull constraint when NPB is used.
       // if (!pairwise_result.convergence) {
       //   Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
       //                 pairs[j][0], pairs[j][1], b + 1);
       // }
-      bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
+      // bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
+      statistics_b(j) = 2 * pairwise_result.nlogLR;
     }
-    if (b % 100 == 0) {
-      Rcpp::checkUserInterrupt();
-    }
+    bootstrap_statistics.col(b) = statistics_b;
+    // if (b % 100 == 0) {
+    //   Rcpp::checkUserInterrupt();
+    // }
   }
+
+
+
+  // // B bootstrap test statistics(m x B matrix)
+  // arma::mat bootstrap_statistics(m, B);
+  // // omp_set_num_threads(ncores);
+  // // #pragma omp parallel num_threads(ncores)
+  // // int b, j;
+  // // #pragma omp parallel for default(none) shared(B, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_statistics) private(b, j) schedule(auto)
+  // for (int b = 0; b < B; ++b) {
+  //   arma::mat sample_b = bootstrap_sample(x_centered);
+  //   arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
+  //   for (int j = 0; j < m; ++j) {
+  //     arma::rowvec L = arma::zeros(1, p);
+  //     L(pairs[j][0] - 1) = 1;
+  //     L(pairs[j][1] - 1) = -1;
+  //     const minEL pairwise_result =
+  //       test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), approx_lambda, maxit, abstol);
+  //     // We do not check the convex hull constraint when NPB is used.
+  //     // if (!pairwise_result.convergence) {
+  //     //   Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
+  //     //                 pairs[j][0], pairs[j][1], b + 1);
+  //     // }
+  //     bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
+  //   }
+  //   // if (b % 100 == 0) {
+  //   //   Rcpp::checkUserInterrupt();
+  //   // }
+  // }
 
   return
     arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 0),

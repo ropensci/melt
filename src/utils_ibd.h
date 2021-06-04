@@ -4,6 +4,8 @@
 #include "utils.h"
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::plugins(openmp)]]
+#include <omp.h>
 
 arma::mat g_ibd(const arma::vec& theta, const arma::mat& x, const arma::mat& c);
 arma::mat cov_ibd(const arma::mat& x, const arma::mat& c, const bool adjust);
@@ -29,6 +31,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
                                const int B,
                                const double level,
                                const bool approx_lambda,
+                               const int ncores,
                                const int maxit,
                                const double abstol);
 

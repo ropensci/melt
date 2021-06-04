@@ -28,12 +28,13 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #' @param method the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.
 #' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
 #' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
+#' @param ncores number of cores(threads) to use. Defaults to 1.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", vcov_adj = FALSE, approx_lambda = FALSE, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, vcov_adj, approx_lambda, maxit, abstol)
+pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", vcov_adj = FALSE, approx_lambda = FALSE, ncores = 1L, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, vcov_adj, approx_lambda, ncores, maxit, abstol)
 }
 
 #' Compute empirical likelihood for mean

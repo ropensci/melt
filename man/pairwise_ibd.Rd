@@ -13,6 +13,7 @@ pairwise_ibd(
   method = "PB",
   vcov_adj = FALSE,
   approx_lambda = FALSE,
+  ncores = 1L,
   maxit = 10000L,
   abstol = 1e-08
 )
@@ -33,6 +34,8 @@ pairwise_ibd(
 \item{vcov_adj}{whether to adjust for the covariance estimate. Defaults to FALSE.}
 
 \item{approx_lambda}{whether to use the approximation for lambda. Defaults to FALSE.}
+
+\item{ncores}{number of cores(threads) to use. Defaults to 1.}
 
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 
