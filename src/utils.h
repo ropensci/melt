@@ -1,8 +1,8 @@
 #ifndef EL_UTILS_H_
 #define EL_UTILS_H_
 
+#include "armadillo_config.h"
 #include <RcppArmadillo.h>
-// [[Rcpp::depends(RcppArmadillo)]]
 
 struct EL {
   double nlogLR;

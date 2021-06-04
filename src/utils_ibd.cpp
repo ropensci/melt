@@ -313,6 +313,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   arma::vec bootstrap_statistics(B);
   #pragma omp parallel for num_threads(ncores) default(none) shared(B, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
   for (int b = 0; b < B; ++b) {
+    // const arma::mat sample_b = bootstrap_sample(x_centered);
     const arma::mat sample_b = x_centered.rows(bootstrap_index.col(b));
     const arma::mat incidence_mat_b =
       arma::conv_to<arma::mat>::from(sample_b != 0);
@@ -345,10 +346,6 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
 
   // // B bootstrap test statistics(m x B matrix)
   // arma::mat bootstrap_statistics(m, B);
-  // // omp_set_num_threads(ncores);
-  // // #pragma omp parallel num_threads(ncores)
-  // // int b, j;
-  // // #pragma omp parallel for default(none) shared(B, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_statistics) private(b, j) schedule(auto)
   // for (int b = 0; b < B; ++b) {
   //   arma::mat sample_b = bootstrap_sample(x_centered);
   //   arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);

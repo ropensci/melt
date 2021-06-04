@@ -3,8 +3,6 @@
 
 #include "utils.h"
 #include <RcppArmadillo.h>
-// [[Rcpp::depends(RcppArmadillo)]]
-// [[Rcpp::plugins(openmp)]]
 #include <omp.h>
 
 arma::mat g_ibd(const arma::vec& theta, const arma::mat& x, const arma::mat& c);
