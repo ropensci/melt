@@ -308,8 +308,9 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       Rcpp::RcppArmadillo::sample(
         arma::linspace<arma::uvec>(0, n - 1, n), n * B, true), n, B);
 
-  // B bootstrap test statistics(m x B matrix)
-  arma::mat bootstrap_statistics(m, B);
+  // B bootstrap results(we only need maximum statistics)
+  // arma::mat bootstrap_statistics(m, B);
+  arma::vec bootstrap_statistics(B);
   #pragma omp parallel for num_threads(ncores) default(none) shared(B, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
   for (int b = 0; b < B; ++b) {
     const arma::mat sample_b = x_centered.rows(bootstrap_index.col(b));
@@ -331,13 +332,16 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       // bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
       statistics_b(j) = 2 * pairwise_result.nlogLR;
     }
-    bootstrap_statistics.col(b) = statistics_b;
+    // need to generalize later for k-FWER control
+    bootstrap_statistics(b) = arma::max(statistics_b);
+
+    // Currently it does not work with parallelization.
+    // Perhaps due to thread safety issue.
+    // bootstrap_statistics.col(b) = statistics_b;
     // if (b % 100 == 0) {
     //   Rcpp::checkUserInterrupt();
     // }
   }
-
-
 
   // // B bootstrap test statistics(m x B matrix)
   // arma::mat bootstrap_statistics(m, B);
@@ -366,7 +370,10 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   //   // }
   // }
 
+  // return
+  //   arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 0),
+  //                                  arma::vec{1 - level}));
+
   return
-    arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 0),
-                                   arma::vec{1 - level}));
+    arma::as_scalar(arma::quantile(bootstrap_statistics, arma::vec{1 - level}));
 }
