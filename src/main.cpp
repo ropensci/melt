@@ -16,8 +16,8 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
     Rcpp::stop("Design matrix x must have full rank.");
   }
   // ncol must be same as p
-  int n = x.n_rows;
-  int p = theta.n_elem;
+  const int n = x.n_rows;
+  const int p = theta.n_elem;
 
   // estimating equation
   arma::mat g = x;
@@ -91,16 +91,16 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
 // [[Rcpp::export]]
 Rcpp::List el_mean2(const arma::vec& theta,
                     const arma::mat& x,
-                    int maxit = 100,
-                    double abstol = 1e-8) {
+                    const int maxit = 100,
+                    const double abstol = 1e-8) {
   if (arma::rank(x) != x.n_cols) {
     Rcpp::stop("Design matrix x must have full rank.");
   }
   // estimating function for mean parameters
-  arma::mat g = g_mean(theta, x);
+  const arma::mat g = g_mean(theta, x);
 
   // compute EL
-  EL result = getEL(g, maxit, abstol);
+  const EL result = getEL(g, maxit, abstol);
 
   return Rcpp::List::create(
     Rcpp::Named("nlogLR") = result.nlogLR,

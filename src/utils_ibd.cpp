@@ -142,15 +142,14 @@ minEL test_ibd_EL(const arma::mat& x,
                   const int maxit,
                   const double abstol) {
   /// initialization ///
-  const int n = x.n_rows;
-  const int r = arma::rank(L);
-  if (r != L.n_rows) {
+  if (arma::rank(L) != L.n_rows) {
     Rcpp::stop("Hypothesis matrix L must have full rank.");
   }
   if (L.n_rows != rhs.n_elem) {
     Rcpp::stop("Dimensions of L and rhs do not match.");
   }
   // initial parameter value set as group means
+  const int n = x.n_rows;
   arma::vec theta = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
   // constraint imposed on the initial value by projection
   theta = linear_projection(theta, L, rhs);

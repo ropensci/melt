@@ -2,7 +2,7 @@
 
 arma::vec plog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
-  for (int i = 0; i < x.n_elem; ++i) {
+  for (unsigned int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
       out.at(i) = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x.at(i) -
         std::pow(x.at(i) / threshold, 2) / 2;
@@ -29,7 +29,7 @@ arma::vec plog_old(const arma::vec& x, const double threshold) {
 
 arma::vec dplog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
-  for (int i = 0; i < x.n_elem; ++i) {
+  for (unsigned int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
       out.at(i) = 2 * std::pow(threshold, -1) - x.at(i) * std::pow(threshold, -2);
     } else {
@@ -54,7 +54,7 @@ arma::vec dplog_old(const arma::vec& x, const double threshold) {
 
 arma::vec d2plog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
-  for (int i = 0; i < x.n_elem; ++i) {
+  for (unsigned int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
       out.at(i) = -std::pow(threshold, -2);
     } else {
