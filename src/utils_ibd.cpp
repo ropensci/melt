@@ -10,19 +10,39 @@ arma::mat g_ibd(const arma::vec& theta,
 
 arma::mat cov_ibd(const arma::mat& x,
                   const arma::mat& c,
-                  const bool adjust) {
+                  const bool adjust,
+                  const bool cheat) {
   // number of blocks
   const int n = x.n_rows;
+  const int p = x.n_cols;
   // estimator(global minimizer)
   arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
   // estimating function
   arma::mat g = x - c.each_row() % theta_hat.t();
   // covariance estimate(optional adjustment)
-  // arma::mat vhat;
+  arma::mat vhat;
   if (adjust) {
-    return ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
+    vhat = ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
+    // return ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
   } else {
-    return (g.t() * (g)) / n;
+    vhat = (g.t() * (g)) / n;
+    // return (g.t() * (g)) / n;
+  }
+
+  if (cheat) {
+    // vhat matrix assuming compound symmetry
+    arma::mat vhat_c = vhat;
+    // diagonal average
+    double diag_mean = arma::mean(vhat_c.diag());
+    // offdiagonal average
+    vhat_c.diag().fill(0);
+    double offdiag_mean = arma::accu(vhat_c) / (p * p - p);
+    // result
+    vhat_c.fill(offdiag_mean);
+    vhat_c.diag().fill(diag_mean);
+    return vhat_c;
+  } else {
+    return vhat;
   }
 }
 
@@ -72,13 +92,13 @@ double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const arma::mat& c,
                               const int B,
                               const double level,
-                              // const bool approx_lambda,
-                              const bool adjust) {
+                              const bool adjust,
+                              const bool cheat) {
   /// parameters ///
   const int p = x.n_cols;   // number of points(treatments)
-  const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
+  const std::vector<std::array<int, 2>> pairs = all_pairs(p); // vector of pairs
   const int m = pairs.size();   // number of hypotheses
-  const arma::mat V_hat = cov_ibd(x, c, adjust);    // covariance estimate
+  const arma::mat V_hat = cov_ibd(x, c, adjust, cheat); // covariance estimate
 
   /// A hat matrices ///
   arma::cube A_hat(p, p, m);

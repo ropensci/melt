@@ -12,6 +12,7 @@ pairwise_ibd(
   level = 0.05,
   method = "PB",
   vcov_adj = FALSE,
+  cheat = FALSE,
   approx_lambda = FALSE,
   ncores = 1L,
   maxit = 10000L,
