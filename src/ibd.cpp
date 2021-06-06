@@ -172,12 +172,10 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   // statistics(-2logLR)
   Rcpp::NumericVector statistic(m);
   // cutoff value
-  double cutoff;
-  if (method == "NPB") {
-    cutoff = cutoff_pairwise_NPB_ibd(x, B, level, approx_lambda, ncores, maxit, abstol);
-  } else {
-    cutoff = cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj, cheat);
-  }
+  const double cutoff =
+    method == "NPB" ?
+    cutoff_pairwise_NPB_ibd(x, B, level, approx_lambda, ncores, maxit, abstol) :
+    cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj, cheat);
 
   if (!interval) {
     for (int i = 0; i < m; ++i) {
@@ -188,7 +186,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[i][0] - 1) = 1;
       L(pairs[i][1] - 1) = -1;
-      minEL pairwise_result =
+      const minEL pairwise_result =
         test_ibd_EL(x, c, L, arma::zeros(1), false, maxit, abstol);
       if (!pairwise_result.convergence) {
         Rcpp::warning("Test for pair (%i,%i) failed. \n",

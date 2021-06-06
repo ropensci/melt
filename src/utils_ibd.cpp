@@ -20,7 +20,7 @@ arma::mat cov_ibd(const arma::mat& x,
   // estimating function
   arma::mat g = x - c.each_row() % theta_hat.t();
   // covariance estimate(optional adjustment)
-  arma::mat vhat;
+  arma::mat vhat(p, p);
   if (adjust) {
     vhat = ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
     // return ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
