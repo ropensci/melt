@@ -166,7 +166,8 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   // number of hypotheses
   const int m = pairs.size();
   // global minimizer
-  arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
+  const arma::vec theta_hat =
+    n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
   // estimate
   Rcpp::NumericVector estimate(m);
   // statistics(-2logLR)
@@ -219,7 +220,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
       arma::rowvec L = arma::zeros(1, p);
       L(pairs[i][0] - 1) = 1;
       L(pairs[i][1] - 1) = -1;
-      minEL pairwise_result =
+      const minEL pairwise_result =
         test_ibd_EL(x, c, L, arma::zeros(1), false, maxit, abstol);
       if (!pairwise_result.convergence) {
         Rcpp::warning("Test for pair (%i,%i) failed. \n",
