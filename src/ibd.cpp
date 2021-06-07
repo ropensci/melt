@@ -74,7 +74,7 @@ Rcpp::List test_ibd(const arma::mat& x,
       arg = 1 + g_tmp * lambda_tmp;
       f1 = arma::sum(plog(arg, 1 / n));
       // step halving to ensure that the updated function value be
-      // strinctly less than the current function value
+      // strictly less than the current function value
       while (f0 <= f1) {
         // reduce step size
         gamma /= 2;
