@@ -145,6 +145,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
                         std::string method = "PB",
                         const bool vcov_adj = false,
                         const bool cheat = false,
+                        const bool block_bootstrap = false,
                         const bool approx_lambda = false,
                         const int ncores = 1,
                         const int maxit = 1e4,
@@ -175,7 +176,7 @@ Rcpp::List pairwise_ibd(const arma::mat& x,
   // cutoff value
   const double cutoff =
     method == "NPB" ?
-    cutoff_pairwise_NPB_ibd(x, B, level, approx_lambda, ncores, maxit, abstol) :
+    cutoff_pairwise_NPB_ibd(x, B, level, block_bootstrap, approx_lambda, ncores, maxit, abstol) :
     cutoff_pairwise_PB_ibd(x, c, B, level, vcov_adj, cheat);
 
   if (!interval) {

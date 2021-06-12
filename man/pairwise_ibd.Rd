@@ -13,6 +13,7 @@ pairwise_ibd(
   method = "PB",
   vcov_adj = FALSE,
   cheat = FALSE,
+  block_bootstrap = FALSE,
   approx_lambda = FALSE,
   ncores = 1L,
   maxit = 10000L,
