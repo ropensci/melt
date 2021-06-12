@@ -394,3 +394,34 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   return
     arma::as_scalar(arma::quantile(bootstrap_statistics, arma::vec{1 - level}));
 }
+
+arma::umat block_bootstrap_index(const arma::mat& x, const int B) {
+  // incidence matrix
+  const arma::umat incidence_mat = x != 0;
+  const unsigned int n = incidence_mat.n_rows;
+  const unsigned int p = incidence_mat.n_cols;
+
+  // tmp for calculation(double * unsisgned int)
+  arma::vec tmp(n);
+  for (unsigned int i = 0; i < n; ++i) {
+    for (unsigned int j = 0; j < p; ++j) {
+      tmp(i) += std::pow(2, j) * incidence_mat(i, j);
+    }
+  }
+
+  // block types
+  const arma::uvec type_index = arma::conv_to<arma::uvec>::from(tmp);
+  const arma::uvec types = arma::unique(type_index);
+
+  // resampling with replacement within the same block type
+  arma::umat block_bootstrap_index(n, B);
+  for (unsigned int i = 0; i < types.n_elem; ++i) {
+    arma::uvec replace = arma::find(type_index == types(i));
+    block_bootstrap_index.rows(replace) =
+      arma::reshape(
+        Rcpp::RcppArmadillo::sample(replace, B * replace.n_elem, true),
+        replace.n_elem,B);
+  }
+
+  return block_bootstrap_index;
+}
