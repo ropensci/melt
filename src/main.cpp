@@ -97,10 +97,9 @@ Rcpp::List el_mean2(const arma::vec& theta,
     Rcpp::stop("Design matrix x must have full rank.");
   }
   // estimating function for mean parameters
-  const arma::mat g = g_mean(theta, x);
-
+  // const arma::mat g = g_mean(theta, x);
   // compute EL
-  const EL result = getEL(g, maxit, abstol);
+  const EL result = getEL(g_mean(theta, x), maxit, abstol);
 
   return Rcpp::List::create(
     Rcpp::Named("nlogLR") = result.nlogLR,
