@@ -312,10 +312,11 @@ arma::umat block_bootstrap_index(const arma::mat& x, const int B) {
   const unsigned int p = incidence_mat.n_cols;
 
   // tmp for calculation(double * unsisgned int)
-  arma::vec tmp(n);
+  std::vector<int> tmp(n);
   for (unsigned int i = 0; i < n; ++i) {
     for (unsigned int j = 0; j < p; ++j) {
-      tmp(i) += std::pow(2, j) * incidence_mat(i, j);
+      // tmp(i) += std::pow(2, j) * incidence_mat(i, j);
+      tmp[i] += std::pow(2, j) * incidence_mat(i, j);
     }
   }
 
