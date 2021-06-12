@@ -142,12 +142,6 @@ minEL test_ibd_EL(const arma::mat& x,
                   const int maxit,
                   const double abstol) {
   /// initialization ///
-  if (arma::rank(L) != L.n_rows) {
-    Rcpp::stop("Hypothesis matrix L must have full rank.");
-  }
-  if (L.n_rows != rhs.n_elem) {
-    Rcpp::stop("Dimensions of L and rhs do not match.");
-  }
   // initial parameter value set as group means
   const int n = x.n_rows;
   arma::vec theta = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
@@ -191,7 +185,7 @@ minEL test_ibd_EL(const arma::mat& x,
         if (!eval.convergence && iterations > 9) {
           theta = theta_tmp;
           lambda = lambda_tmp;
-          Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+          // Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
           break;
         }
       }
