@@ -305,6 +305,37 @@ std::array<double, 2> pair_confidence_interval_ibd(const arma::mat& x,
   return std::array<double, 2>{lower_ub, upper_lb};
 }
 
+arma::umat block_bootstrap_index(const arma::mat& x, const int B) {
+  // incidence matrix
+  const arma::umat incidence_mat = x != 0;
+  const unsigned int n = incidence_mat.n_rows;
+  const unsigned int p = incidence_mat.n_cols;
+
+  // tmp for calculation(double * unsisgned int)
+  arma::vec tmp(n);
+  for (unsigned int i = 0; i < n; ++i) {
+    for (unsigned int j = 0; j < p; ++j) {
+      tmp(i) += std::pow(2, j) * incidence_mat(i, j);
+    }
+  }
+
+  // block types
+  const arma::uvec type_index = arma::conv_to<arma::uvec>::from(tmp);
+  const arma::uvec types = arma::unique(type_index);
+
+  // resampling with replacement within the same block type
+  arma::umat block_bootstrap_index(n, B);
+  for (unsigned int i = 0; i < types.n_elem; ++i) {
+    arma::uvec replace = arma::find(type_index == types(i));
+    block_bootstrap_index.rows(replace) =
+      arma::reshape(
+        Rcpp::RcppArmadillo::sample(replace, B * replace.n_elem, true),
+        replace.n_elem,B);
+  }
+
+  return block_bootstrap_index;
+}
+
 double cutoff_pairwise_NPB_ibd(const arma::mat& x,
                                const int B,
                                const double level,
@@ -323,7 +354,13 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   const arma::mat x_centered = centering_ibd(x);
 
   // index matrix for boostrap(n by B matrix)
+  // const arma::umat bootstrap_index =
+  //   arma::reshape(
+  //     Rcpp::RcppArmadillo::sample(
+  //       arma::linspace<arma::uvec>(0, n - 1, n), n * B, true), n, B);
   const arma::umat bootstrap_index =
+    block_bootstrap ?
+    block_bootstrap_index(x, B) :
     arma::reshape(
       Rcpp::RcppArmadillo::sample(
         arma::linspace<arma::uvec>(0, n - 1, n), n * B, true), n, B);
@@ -395,33 +432,3 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
     arma::as_scalar(arma::quantile(bootstrap_statistics, arma::vec{1 - level}));
 }
 
-arma::umat block_bootstrap_index(const arma::mat& x, const int B) {
-  // incidence matrix
-  const arma::umat incidence_mat = x != 0;
-  const unsigned int n = incidence_mat.n_rows;
-  const unsigned int p = incidence_mat.n_cols;
-
-  // tmp for calculation(double * unsisgned int)
-  arma::vec tmp(n);
-  for (unsigned int i = 0; i < n; ++i) {
-    for (unsigned int j = 0; j < p; ++j) {
-      tmp(i) += std::pow(2, j) * incidence_mat(i, j);
-    }
-  }
-
-  // block types
-  const arma::uvec type_index = arma::conv_to<arma::uvec>::from(tmp);
-  const arma::uvec types = arma::unique(type_index);
-
-  // resampling with replacement within the same block type
-  arma::umat block_bootstrap_index(n, B);
-  for (unsigned int i = 0; i < types.n_elem; ++i) {
-    arma::uvec replace = arma::find(type_index == types(i));
-    block_bootstrap_index.rows(replace) =
-      arma::reshape(
-        Rcpp::RcppArmadillo::sample(replace, B * replace.n_elem, true),
-        replace.n_elem,B);
-  }
-
-  return block_bootstrap_index;
-}
