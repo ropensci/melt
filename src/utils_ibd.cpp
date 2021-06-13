@@ -68,21 +68,25 @@ arma::vec approx_lambda_ibd(const arma::mat& x,
                             const arma::vec& theta1,
                             const arma::vec& lambda0)
 {
-  arma::mat g0 = g_ibd(theta0, x, c);
-  arma::vec arg = 1 + g0 * lambda0;
+  const arma::mat g0 = g_ibd(theta0, x, c);
+  const arma::vec arg = 1 + g0 * lambda0;
+  const arma::vec denominator = arma::pow(arg, 2);
 
   // LHS
-  arma::mat LHS = g0.t() * (g0.each_col() / arma::pow(arg, 2));
+  const arma::mat LHS = g0.t() * (g0.each_col() / denominator);
 
   // RHS
-  arma::mat I_RHS = arma::diagmat(arma::sum((c.each_col() / arg), 0));
-  arma::mat J = c.each_row() % arma::trans(lambda0);
-  J.each_col() /= arma::pow(arg, 2);
-  arma::mat J_RHS = g0.t() * J;
-  arma::mat RHS = -I_RHS + J_RHS;
+  const arma::mat I_RHS = arma::diagmat(arma::sum((c.each_col() / arg), 0));
+  // arma::mat J = c.each_row() % arma::trans(lambda0);
+  // J.each_col() /= denominator;
+  // arma::mat J_RHS = g0.t() * J;
+  const arma::mat J_RHS =
+    arma::trans(g0.each_col() / denominator) * (c.each_row() % lambda0.t());
+  const arma::mat RHS = -I_RHS + J_RHS;
+
 
   // Jacobian matrix
-  arma::mat jacobian = arma::solve(LHS, RHS, arma::solve_opts::fast);
+  const arma::mat jacobian = arma::solve(LHS, RHS, arma::solve_opts::fast);
 
   // linear approximation for lambda1
   return lambda0 + jacobian * (theta1 - theta0);
@@ -193,7 +197,7 @@ minEL test_ibd_EL(const arma::mat& x,
       f0 = f1;
       f1 = arma::sum(plog(1 + g_tmp * lambda_tmp, 1.0 / n));
       // step halving to ensure that the updated function value be
-      // strinctly less than the current function value
+      // strictly less than the current function value
       while (f0 <= f1) {
         // reduce step size
         gamma /= 2;
