@@ -84,18 +84,18 @@ EL getEL(const arma::mat& g,
   const int p = g.n_cols;
 
   // minimization
-  arma::vec l; l.zeros(p);
-  arma::vec lc;
+  arma::vec l(p, arma::fill::zeros);
+  arma::vec lc(p);
   arma::vec arg = 1 + g * l;
-  arma::vec y;
-  arma::mat J;
-  arma::mat Q;
-  arma::mat R;
+  arma::vec y(n);
+  arma::mat J(n, p);
+  arma::mat Q(n, n);
+  arma::mat R(p, p);
   double f0;
   double f1;
   int iterations = 0;
   bool convergence = false;
-  while (convergence == false) {
+  while (!convergence) {
     // function evaluation(initial)
     f0 = -arma::sum(plog(arg, 1.0 / n));
     // J matrix & y vector
@@ -105,13 +105,13 @@ EL getEL(const arma::mat& g,
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
     arma::qr_econ(Q, R, J);
-    lc = l + arma::solve(arma::trimatu(R), Q.t() * y,
-                         arma::solve_opts::fast);
+    arma::vec update =
+      arma::solve(arma::trimatu(R), Q.t() * y, arma::solve_opts::fast);
+    lc = l + update;
     double alpha = 1.0;
     while (-arma::sum(plog(1 + g * lc, 1.0 / n)) > f0) {
       alpha = alpha / 2;
-      lc = l + alpha * arma::solve(arma::trimatu(R), Q.t() * y,
-                                   arma::solve_opts::fast);
+      lc = l + alpha * update;
     }
     // update function value
     l = lc;
