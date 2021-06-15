@@ -8,8 +8,7 @@
 arma::mat g_ibd(const arma::vec& theta, const arma::mat& x, const arma::mat& c);
 arma::mat cov_ibd(const arma::mat& x,
                   const arma::mat& c,
-                  const bool adjust,
-                  const bool cheat);
+                  const bool adjust);
 arma::vec lambda2theta_ibd(const arma::vec& lambda,
                            const arma::vec& theta,
                            const arma::mat& g,
@@ -28,8 +27,7 @@ double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const arma::mat& c,
                               const int B,
                               const double level,
-                              const bool adjust,
-                              const bool cheat);
+                              const bool adjust);
 double cutoff_pairwise_NPB_ibd(const arma::mat& x,
                                const int B,
                                const double level,
