@@ -40,7 +40,7 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
     f0 = -arma::sum(plog(arg));
     // J matrix & y vector
     arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
-    arma::vec v2 = dplog(arg, 1 / n);
+    arma::vec v2 = dplog(arg);
     J = g.each_col() % v1;
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
@@ -58,7 +58,7 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
       arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
-      arma::vec v2 = dplog(arg, 1 / n);
+      arma::vec v2 = dplog(arg);
       J = g.each_col() % v1;
       y = v2 / v1;
       convergence = true;

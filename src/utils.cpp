@@ -28,7 +28,21 @@ arma::vec plog_old(const arma::vec& x, const double threshold) {
   return out;
 }
 
-arma::vec dplog(const arma::vec& x, const double threshold) {
+arma::vec dplog(const arma::vec& x) {
+  const unsigned int n = x.n_elem;
+  const double a1 = 2.0 * n;
+  const double a2 = 1.0 * n * n;
+  arma::vec out(n);
+  for (unsigned int i = 0; i < n; ++i) {
+    if (n * x.at(i) < 1) {
+      out.at(i) = a1 - a2 * x.at(i);
+    } else {
+      out.at(i) = 1.0 / x.at(i);
+    }
+  }
+  return out;
+}
+arma::vec dplog_old(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
   for (unsigned int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
@@ -39,19 +53,6 @@ arma::vec dplog(const arma::vec& x, const double threshold) {
   }
   return out;
 }
-arma::vec dplog_old(const arma::vec& x, const double threshold) {
-  const int n = x.n_elem;
-  arma::vec out(n);
-  for (int i = 0; i < n; ++i) {
-    if (x(i) >= threshold) {
-      out(i) = std::pow(x(i), -1);
-    } else {
-      out(i) = 2 * std::pow(threshold, -1) - x(i) * std::pow(threshold, -2);
-    }
-  }
-  return out;
-}
-
 
 arma::vec d2plog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
@@ -101,7 +102,7 @@ EL getEL(const arma::mat& g,
     f0 = -arma::sum(plog(arg));
     // J matrix & y vector
     arma::vec v1 = arma::sqrt(-d2plog(arg, 1.0 / n));
-    arma::vec v2 = dplog(arg, 1.0 / n);
+    arma::vec v2 = dplog(arg);
     J = g.each_col() % v1;
     y = v2 / v1;
     // update lambda by NR method with least square & step halving
@@ -121,7 +122,7 @@ EL getEL(const arma::mat& g,
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
       arma::vec v1 = arma::sqrt(-d2plog(arg, 1.0 / n));
-      arma::vec v2 = dplog(arg, 1.0 / n);
+      arma::vec v2 = dplog(arg);
       J = g.each_col() % v1;
       y = v2 / v1;
       convergence = true;

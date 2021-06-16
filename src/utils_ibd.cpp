@@ -52,7 +52,7 @@ arma::vec lambda2theta_ibd(const arma::vec& lambda,
                            const double gamma) {
   // arma::vec arg = 1 + g * lambda;
   // arma::vec dplog_vec = dplog(arg, 1 / g.n_rows);
-  arma::vec dplog_vec = dplog(1 + g * lambda, 1.0 / g.n_rows);
+  arma::vec dplog_vec = dplog(1 + g * lambda);
   // gradient
   arma::vec gradient = -arma::sum(arma::diagmat(dplog_vec) * c, 0).t() % lambda;
   // update theta by GD with lambda fixed
