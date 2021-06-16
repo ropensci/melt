@@ -39,7 +39,7 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
     // function evaluation(initial)
     f0 = -arma::sum(plog(arg));
     // J matrix & y vector
-    arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
+    arma::vec v1 = arma::sqrt(-d2plog(arg));
     arma::vec v2 = dplog(arg);
     J = g.each_col() % v1;
     y = v2 / v1;
@@ -57,7 +57,7 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
     f1 = -arma::sum(plog(arg));
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
-      arma::vec v1 = arma::sqrt(-d2plog(arg, 1 / n));
+      arma::vec v1 = arma::sqrt(-d2plog(arg));
       arma::vec v2 = dplog(arg);
       J = g.each_col() % v1;
       y = v2 / v1;

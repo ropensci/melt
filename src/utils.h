@@ -24,7 +24,7 @@ arma::vec plog(const arma::vec& x);
 arma::vec plog_old(const arma::vec& x, const double threshold);
 arma::vec dplog(const arma::vec& x);
 arma::vec dplog_old(const arma::vec& x, const double threshold);
-arma::vec d2plog(const arma::vec& x, const double threshold);
+arma::vec d2plog(const arma::vec& x);
 arma::vec d2plog_old(const arma::vec& x, const double threshold);
 EL getEL(const arma::mat& g,
          const int maxit = 100,
