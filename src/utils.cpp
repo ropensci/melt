@@ -1,6 +1,21 @@
 #include "utils.h"
 
-arma::vec plog(const arma::vec& x, const double threshold) {
+arma::vec plog(const arma::vec& x) {
+  const unsigned int n = x.n_elem;
+  const double a1 = -std::log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = 0.5 * n * n;
+  arma::vec out(n);
+  for (unsigned int i = 0; i < n; ++i) {
+    if (n * x.at(i) < 1) {
+      out.at(i) = a1 + a2 * x.at(i) - a3 * x.at(i) * x.at(i);
+    } else {
+      out.at(i) = std::log(x.at(i));
+    }
+  }
+  return out;
+}
+arma::vec plog_old(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
   for (unsigned int i = 0; i < x.n_elem; ++i) {
     if (x.at(i) < threshold) {
@@ -12,20 +27,6 @@ arma::vec plog(const arma::vec& x, const double threshold) {
   }
   return out;
 }
-arma::vec plog_old(const arma::vec& x, const double threshold) {
-  const int n = x.n_elem;
-  arma::vec out(n);
-  for (int i = 0; i < n; ++i) {
-    if (x(i) >= threshold) {
-      out(i) = std::log(x(i));
-    } else {
-      out(i) = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x(i) -
-        std::pow(x(i) / threshold, 2) / 2;
-    }
-  }
-  return out;
-}
-
 
 arma::vec dplog(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
@@ -97,7 +98,7 @@ EL getEL(const arma::mat& g,
   bool convergence = false;
   while (!convergence) {
     // function evaluation(initial)
-    f0 = -arma::sum(plog(arg, 1.0 / n));
+    f0 = -arma::sum(plog(arg));
     // J matrix & y vector
     arma::vec v1 = arma::sqrt(-d2plog(arg, 1.0 / n));
     arma::vec v2 = dplog(arg, 1.0 / n);
@@ -109,14 +110,14 @@ EL getEL(const arma::mat& g,
       arma::solve(arma::trimatu(R), Q.t() * y, arma::solve_opts::fast);
     lc = l + update;
     double alpha = 1.0;
-    while (-arma::sum(plog(1 + g * lc, 1.0 / n)) > f0) {
+    while (-arma::sum(plog(1 + g * lc)) > f0) {
       alpha = alpha / 2;
       lc = l + alpha * update;
     }
     // update function value
     l = lc;
     arg = 1 + g * l;
-    f1 = -arma::sum(plog(arg, 1.0 / n));
+    f1 = -arma::sum(plog(arg));
     // convergence check & parameter update
     if (f0 - f1 < abstol) {
       arma::vec v1 = arma::sqrt(-d2plog(arg, 1.0 / n));

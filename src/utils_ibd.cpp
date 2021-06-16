@@ -155,7 +155,7 @@ minEL test_ibd_EL(const arma::mat& x,
   EL eval = getEL(g);
   arma::vec lambda = eval.lambda;
   // for current function value(-logLR)
-  double f0 = arma::sum(plog(1 + g * lambda, 1.0 / n));
+  double f0 = arma::sum(plog(1 + g * lambda));
   // for updated function value
   double f1 = f0;
 
@@ -193,7 +193,7 @@ minEL test_ibd_EL(const arma::mat& x,
       }
       // update function value
       f0 = f1;
-      f1 = arma::sum(plog(1 + g_tmp * lambda_tmp, 1.0 / n));
+      f1 = arma::sum(plog(1 + g_tmp * lambda_tmp));
       // step halving to ensure that the updated function value be
       // strictly less than the current function value
       while (f0 <= f1) {
@@ -222,7 +222,7 @@ minEL test_ibd_EL(const arma::mat& x,
           return result;
         }
         // propose new function value
-        f1 = arma::sum(plog(1 + g_tmp * lambda_tmp, 1.0 / n));
+        f1 = arma::sum(plog(1 + g_tmp * lambda_tmp));
       }
       // update parameters
       theta = theta_tmp;
