@@ -7,10 +7,11 @@ arma::vec plog(const arma::vec& x) {
   const double a3 = -0.5 * n * n;
   arma::vec out(n);
   for (unsigned int i = 0; i < n; ++i) {
-    out.at(i) =
-      n * x.at(i) < 1 ?
-      a1 + a2 * x.at(i) + a3 * x.at(i) * x.at(i) :
-      std::log(x.at(i));
+    if (n * x.at(i) < 1) {
+      out.at(i) = a1 + a2 * x.at(i) + a3 * x.at(i) * x.at(i);
+    } else {
+      out.at(i) = std::log(x.at(i));
+    }
   }
   return out;
 }
@@ -30,11 +31,11 @@ arma::vec plog_old(const arma::vec& x, const double threshold) {
 arma::vec dplog(const arma::vec& x) {
   const unsigned int n = x.n_elem;
   const double a1 = 2.0 * n;
-  const double a2 = 1.0 * n * n;
+  const double a2 = -1.0 * n * n;
   arma::vec out(n);
   for (unsigned int i = 0; i < n; ++i) {
     if (n * x.at(i) < 1) {
-      out.at(i) = a1 - a2 * x.at(i);
+      out.at(i) = a1 + a2 * x.at(i);
     } else {
       out.at(i) = 1.0 / x.at(i);
     }
@@ -59,7 +60,11 @@ arma::vec dplog2(const arma::vec& x) {
   const double a2 = -1.0 * n * n;
   arma::vec out(n);
   for (unsigned int i = 0; i < n; ++i) {
-    out.at(i) = n * x.at(i) < 1 ? a1 + a2 * x.at(i) : 1.0 / x.at(i);
+    if (n * x.at(i) < 1) {
+      out.at(i) = a2;
+    } else {
+      out.at(i) = -1.0 / (x.at(i) * x.at(i));
+    }
   }
   return out;
 }
