@@ -10,3 +10,4 @@ src/.vscode
 elmulttest.Rproj
 .Rbuildignore
 cran-comments.md
+.vscode

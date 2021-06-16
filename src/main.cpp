@@ -16,7 +16,6 @@ Rcpp::List el_mean(arma::rowvec theta, arma::mat x,
     Rcpp::stop("Design matrix x must have full rank.");
   }
   // ncol must be same as p
-  const int n = x.n_rows;
   const int p = theta.n_elem;
 
   // estimating equation

@@ -54,9 +54,8 @@ arma::vec dplog_old(const arma::vec& x, const double threshold) {
   return out;
 }
 
-arma::vec dplog2(const arma::vec& x) {
+arma::vec d2plog(const arma::vec& x) {
   const unsigned int n = x.n_elem;
-  const double a1 = 2.0 * n;
   const double a2 = -1.0 * n * n;
   arma::vec out(n);
   for (unsigned int i = 0; i < n; ++i) {
