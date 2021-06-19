@@ -87,19 +87,17 @@ EL getEL(const arma::mat& g,
 
   // minimization
   arma::vec l(p, arma::fill::zeros);
-  arma::vec lc(p);
   arma::vec arg = 1 + g * l;
   arma::vec y(n);
   arma::mat J(n, p);
   arma::mat Q(n, n);
   arma::mat R(p, p);
-  double f0;
   double f1;
   int iterations = 0;
   bool convergence = false;
   while (!convergence) {
     // function evaluation(initial)
-    f0 = -arma::sum(plog(arg));
+    double f0 = arma::sum(plog(arg));
     // J matrix & y vector
     arma::vec v1 = arma::sqrt(-d2plog(arg));
     arma::vec v2 = dplog(arg);
@@ -109,18 +107,18 @@ EL getEL(const arma::mat& g,
     arma::qr_econ(Q, R, J);
     arma::vec update =
       arma::solve(arma::trimatu(R), Q.t() * y, arma::solve_opts::fast);
-    lc = l + update;
+    arma::vec l_tmp = l + update;
     double alpha = 1.0;
-    while (-arma::sum(plog(1 + g * lc)) > f0) {
+    while (arma::sum(plog(1 + g * l_tmp)) < f0) {
       alpha = alpha / 2;
-      lc = l + alpha * update;
+      l_tmp = l + alpha * update;
     }
     // update function value
-    l = lc;
+    l = l_tmp;
     arg = 1 + g * l;
-    f1 = -arma::sum(plog(arg));
+    f1 = arma::sum(plog(arg));
     // convergence check & parameter update
-    if (f0 - f1 < abstol) {
+    if (f1 - f0 < abstol) {
       arma::vec v1 = arma::sqrt(-d2plog(arg));
       arma::vec v2 = dplog(arg);
       J = g.each_col() % v1;
@@ -135,7 +133,7 @@ EL getEL(const arma::mat& g,
   }
 
   EL result;
-  result.nlogLR = -f1;
+  result.nlogLR = f1;
   result.lambda = l;
   result.gradient = -J.t() * y;
   result.iterations = iterations;
