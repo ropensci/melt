@@ -6,5 +6,5 @@
 #define ARMA_DONT_USE_OPENMP
 
 // Disable all run-time checks, such as bounds checking.
-// #define ARMA_NO_DEBUG
+#define ARMA_NO_DEBUG
 #endif

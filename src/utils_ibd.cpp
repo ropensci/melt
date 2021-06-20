@@ -379,10 +379,13 @@ double cutoff_pairwise_NB_ibd(const arma::mat& x,
   // B bootstrap results(we only need maximum statistics)
   // arma::mat bootstrap_statistics(m, B);
   arma::vec bootstrap_statistics(B);
-  #pragma omp parallel for num_threads(ncores) default(none) shared(B, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
+  #pragma omp parallel for num_threads(ncores) default(none) shared(x, B, block_bootstrap, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
   for (int b = 0; b < B; ++b) {
     // const arma::mat sample_b = bootstrap_sample(x_centered);
-    const arma::mat sample_b = x_centered.rows(bootstrap_index.col(b));
+    const arma::mat sample_b =
+      block_bootstrap ?
+      x.rows(bootstrap_index.col(b)) :
+      x_centered.rows(bootstrap_index.col(b));
     const arma::mat incidence_mat_b =
       arma::conv_to<arma::mat>::from(sample_b != 0);
     arma::vec statistics_b(m);
