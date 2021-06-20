@@ -21,7 +21,12 @@ arma::vec approx_lambda_ibd(const arma::mat& x,
                             const arma::vec& lambda0);
 arma::mat centering_ibd(arma::mat x);
 
-arma::umat block_bootstrap_index(const arma::mat& x, const int B);
+arma::umat block_bootstrap_index(const arma::mat& x,
+                                 const arma::mat& c,
+                                 const int B,
+                                 const bool approx_lambda,
+                                 const int maxit,
+                                 const double abstol);
 
 double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const arma::mat& c,
@@ -29,6 +34,7 @@ double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const double level,
                               const bool adjust);
 double cutoff_pairwise_NPB_ibd(const arma::mat& x,
+                               const arma::mat& c,
                                const int B,
                                const double level,
                                const bool block_bootstrap,
