@@ -346,7 +346,7 @@ arma::umat block_bootstrap_index(const arma::mat& x,
   return block_bootstrap_index;
 }
 
-double cutoff_pairwise_NPB_ibd(const arma::mat& x,
+double cutoff_pairwise_NB_ibd(const arma::mat& x,
                                const arma::mat& c,
                                const int B,
                                const double level,
@@ -393,7 +393,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
       const minEL& pairwise_result =
         test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1),
                     approx_lambda, maxit, abstol);
-      // We do not check the convex hull constraint when NPB is used.
+      // We do not check the convex hull constraint when NB is used.
       // if (!pairwise_result.convergence) {
       //   Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
       //                 pairs[j][0], pairs[j][1], b + 1);
@@ -423,7 +423,7 @@ double cutoff_pairwise_NPB_ibd(const arma::mat& x,
   //     L(pairs[j][1] - 1) = -1;
   //     const minEL pairwise_result =
   //       test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), approx_lambda, maxit, abstol);
-  //     // We do not check the convex hull constraint when NPB is used.
+  //     // We do not check the convex hull constraint when NB is used.
   //     // if (!pairwise_result.convergence) {
   //     //   Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
   //     //                 pairs[j][0], pairs[j][1], b + 1);

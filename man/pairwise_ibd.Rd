@@ -30,7 +30,7 @@ pairwise_ibd(
 
 \item{level}{level.}
 
-\item{method}{the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.}
+\item{method}{the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.}
 
 \item{vcov_adj}{whether to adjust for the covariance estimate. Defaults to FALSE.}
 

@@ -33,7 +33,7 @@ double cutoff_pairwise_PB_ibd(const arma::mat& x,
                               const int B,
                               const double level,
                               const bool adjust);
-double cutoff_pairwise_NPB_ibd(const arma::mat& x,
+double cutoff_pairwise_NB_ibd(const arma::mat& x,
                                const arma::mat& c,
                                const int B,
                                const double level,

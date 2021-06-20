@@ -25,7 +25,7 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #' @param interval whether to compute interval. Defaults to FALSE.
 #' @param B number of bootstrap replicates.
 #' @param level level.
-#' @param method the method to be used; either 'PB' or 'NPB' is supported. Defaults to 'PB'.
+#' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
 #' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
 #' @param block_bootstrap whether to use blocked bootstrap. Defaults to FALSE.
 #' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
