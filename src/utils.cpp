@@ -15,6 +15,17 @@ arma::vec plog(const arma::vec& x) {
   }
   return out;
 }
+double plog_sum(const arma::vec& x) {
+  const unsigned int n = x.n_elem;
+  const double a1 = -std::log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
+  double out = 0;
+  for (unsigned int i = 0; i < n; ++i) {
+    out += n * x.at(i) < 1 ? a1 + a2 * x.at(i) + a3 * x.at(i) * x.at(i) : std::log(x.at(i));
+  }
+  return out;
+}
 arma::vec plog_old(const arma::vec& x, const double threshold) {
   arma::vec out(x.n_elem);
   for (unsigned int i = 0; i < x.n_elem; ++i) {
@@ -97,7 +108,8 @@ EL getEL(const arma::mat& g,
   bool convergence = false;
   while (!convergence) {
     // function evaluation(initial)
-    double f0 = arma::sum(plog(arg));
+    double f0 = plog_sum(arg);
+    // double f0 = arma::sum(plog(arg));
     // J matrix & y vector
     arma::vec v1 = arma::sqrt(-d2plog(arg));
     arma::vec v2 = dplog(arg);
@@ -116,7 +128,8 @@ EL getEL(const arma::mat& g,
     // update function value
     l = l_tmp;
     arg = 1 + g * l;
-    f1 = arma::sum(plog(arg));
+    f1 = plog_sum(arg);
+    // f1 = arma::sum(plog(arg));
     // convergence check & parameter update
     if (f1 - f0 < abstol) {
       arma::vec v1 = arma::sqrt(-d2plog(arg));

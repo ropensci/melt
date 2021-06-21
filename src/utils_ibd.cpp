@@ -155,7 +155,7 @@ minEL test_ibd_EL(const arma::mat& x,
   EL eval = getEL(g);
   arma::vec lambda = eval.lambda;
   // for current function value(-logLR)
-  double f0 = arma::sum(plog(1 + g * lambda));
+  double f0 = plog_sum(1 + g * lambda);
   // for updated function value
   double f1 = f0;
 
@@ -193,7 +193,7 @@ minEL test_ibd_EL(const arma::mat& x,
       }
       // update function value
       f0 = f1;
-      f1 = arma::sum(plog(1 + g_tmp * lambda_tmp));
+      f1 = plog_sum(1 + g_tmp * lambda_tmp);
       // step halving to ensure that the updated function value be
       // strictly less than the current function value
       while (f0 <= f1) {
@@ -222,7 +222,7 @@ minEL test_ibd_EL(const arma::mat& x,
           return result;
         }
         // propose new function value
-        f1 = arma::sum(plog(1 + g_tmp * lambda_tmp));
+        f1 = plog_sum(1 + g_tmp * lambda_tmp);
       }
       // update parameters
       theta = theta_tmp;
@@ -377,7 +377,6 @@ double cutoff_pairwise_NB_ibd(const arma::mat& x,
         arma::linspace<arma::uvec>(0, n - 1, n), n * B, true), n, B);
 
   // B bootstrap results(we only need maximum statistics)
-  // arma::mat bootstrap_statistics(m, B);
   arma::vec bootstrap_statistics(B);
   #pragma omp parallel for num_threads(ncores) default(none) shared(x, B, block_bootstrap, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
   for (int b = 0; b < B; ++b) {

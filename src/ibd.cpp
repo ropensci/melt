@@ -38,7 +38,7 @@ Rcpp::List test_ibd(const arma::mat& x,
   // If the convex hull constraint is not satisfied at the initial value, end.
   arma::vec arg = 1 + g * lambda;
   // for current function value(-logLR)
-  double f0 = arma::sum(plog(arg));
+  double f0 = plog_sum(arg);
   // for updated function value
   double f1 = f0;
 
@@ -72,7 +72,7 @@ Rcpp::List test_ibd(const arma::mat& x,
       // update function value
       f0 = f1;
       arg = 1 + g_tmp * lambda_tmp;
-      f1 = arma::sum(plog(arg));
+      f1 = plog_sum(arg);
       // step halving to ensure that the updated function value be
       // strictly less than the current function value
       while (f0 <= f1) {
@@ -98,7 +98,7 @@ Rcpp::List test_ibd(const arma::mat& x,
         }
         // propose new function value
         arg = 1 + g_tmp * lambda_tmp;
-        f1 = arma::sum(plog(arg));
+        f1 = plog_sum(arg);
       }
       // update parameters
       theta = theta_tmp;
