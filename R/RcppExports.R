@@ -7,13 +7,14 @@
 #'
 #' @param x a matrix of data .
 #' @param c an incidence matrix.
-#' @param L a linear hypothesis matrix.
+#' @param lhs a linear hypothesis matrix.
 #' @param rhs right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.
+#' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #' @export
-test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_test_ibd`, x, c, L, rhs, maxit, abstol)
+test_ibd <- function(x, c, lhs, rhs, approx_lambda = FALSE, maxit = 1000L, abstol = 1e-8) {
+    .Call('_elmulttest_test_ibd', PACKAGE = 'elmulttest', x, c, lhs, rhs, approx_lambda, maxit, abstol)
 }
 
 #' Pairwise comparison for Incomplete Block Design
@@ -26,7 +27,6 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #' @param B number of bootstrap replicates.
 #' @param level level.
 #' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-#' @param vcov_adj whether to adjust for the covariance estimate. Defaults to FALSE.
 #' @param block_bootstrap whether to use blocked bootstrap. Defaults to FALSE.
 #' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
 #' @param ncores number of cores(threads) to use. Defaults to 1.
@@ -34,21 +34,8 @@ test_ibd <- function(x, c, L, rhs, maxit = 1000L, abstol = 1e-8) {
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", vcov_adj = FALSE, block_bootstrap = FALSE, approx_lambda = FALSE, ncores = 1L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, vcov_adj, block_bootstrap, approx_lambda, ncores, maxit, abstol)
-}
-
-#' Compute empirical likelihood for mean
-#'
-#' Compute empirical likelihood for mean
-#'
-#' @param theta a vector of parameters to be tested.
-#' @param x a matrix or vector of data. Each row is an observation vector.
-#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-#' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
-#' @export
-el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
-    .Call(`_elmulttest_el_mean`, theta, x, maxit, abstol)
+pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", block_bootstrap = FALSE, approx_lambda = FALSE, ncores = 1L, maxit = 1e4L, abstol = 1e-8) {
+    .Call('_elmulttest_pairwise_ibd', PACKAGE = 'elmulttest', x, c, interval, B, level, method, block_bootstrap, approx_lambda, ncores, maxit, abstol)
 }
 
 #' Empirical likelihood test for mean
@@ -60,7 +47,7 @@ el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
 #' @export
-el_mean2 <- function(theta, x, maxit = 100L, abstol = 1e-8) {
-    .Call(`_elmulttest_el_mean2`, theta, x, maxit, abstol)
+el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
+    .Call('_elmulttest_el_mean', PACKAGE = 'elmulttest', theta, x, maxit, abstol)
 }
 

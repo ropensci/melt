@@ -2,56 +2,72 @@
 #define EL_UTILS_IBD_H_
 
 #include "utils.h"
-#include <RcppArmadillo.h>
 #include <omp.h>
 
-arma::mat g_ibd(const arma::vec& theta, const arma::mat& x, const arma::mat& c);
-arma::mat cov_ibd(const arma::mat& x,
-                  const arma::mat& c,
-                  const bool adjust);
-arma::vec lambda2theta_ibd(const arma::vec& lambda,
-                           const arma::vec& theta,
-                           const arma::mat& g,
-                           const arma::mat& c,
-                           const double gamma);
-arma::vec approx_lambda_ibd(const arma::mat& x,
-                            const arma::mat& c,
-                            const arma::vec& theta0,
-                            const arma::vec& theta1,
-                            const arma::vec& lambda0);
-arma::mat centering_ibd(arma::mat x);
+Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
+                      const Eigen::Ref<const Eigen::MatrixXd>& x,
+                      const Eigen::Ref<const Eigen::MatrixXd>& c);
 
-arma::umat block_bootstrap_index(const arma::mat& x,
-                                 const arma::mat& c,
-                                 const int B,
-                                 const bool approx_lambda,
-                                 const int maxit,
-                                 const double abstol);
+Eigen::MatrixXd cov_ibd( const Eigen::Ref<const Eigen::MatrixXd>& x,
+                         const Eigen::Ref<const Eigen::MatrixXd>& c);
 
-double cutoff_pairwise_PB_ibd(const arma::mat& x,
-                              const arma::mat& c,
+
+Eigen::VectorXd lambda2theta_ibd(const Eigen::Ref<const Eigen::VectorXd>& lambda,
+                                 const Eigen::Ref<const Eigen::VectorXd>& theta,
+                                 const Eigen::Ref<const Eigen::MatrixXd>& g,
+                                 const Eigen::Ref<const Eigen::MatrixXd>& c,
+                                 const double gamma);
+
+Eigen::VectorXd approx_lambda_ibd(
+        const Eigen::Ref<const Eigen::MatrixXd>& g0,
+        const Eigen::Ref<const Eigen::MatrixXd>& c,
+        const Eigen::Ref<const Eigen::VectorXd>& theta0,
+        const Eigen::Ref<const Eigen::VectorXd>& theta1,
+        const Eigen::Ref<const Eigen::VectorXd>& lambda0);
+
+std::array<double, 2> pair_confidence_interval_ibd(
+    const Eigen::Ref<const Eigen::VectorXd>& theta0,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::MatrixXd>& c,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const bool approx_lambda,
+    const double init,
+    const double threshold);
+
+Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                              const Eigen::Ref<const Eigen::MatrixXd>& c);
+
+Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n);
+
+double cutoff_pairwise_PB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                              const Eigen::Ref<const Eigen::MatrixXd>& c,
+                              const std::vector<std::array<int, 2>>& pairs,
+                              const int B,
+                              const double level);
+double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                              const Eigen::Ref<const Eigen::MatrixXd>& c,
                               const int B,
                               const double level,
-                              const bool adjust);
-double cutoff_pairwise_NB_ibd(const arma::mat& x,
-                               const arma::mat& c,
-                               const int B,
-                               const double level,
-                               const bool block_bootstrap,
-                               const bool approx_lambda,
-                               const int ncores,
-                               const int maxit,
-                               const double abstol);
-std::array<double, 2> pair_confidence_interval_ibd(const arma::mat& x,
-                                                   const arma::mat& c,
-                                                   const arma::mat& L,
-                                                   const bool approx_lambda,
-                                                   const double init,
-                                                   const double threshold);
-minEL test_ibd_EL(const arma::mat& x,
-                  const arma::mat& c,
-                  const arma::mat& L,
-                  const arma::vec& rhs,
+                              const bool block_bootstrap,
+                              const bool approx_lambda,
+                              const int ncores,
+                              const int maxit,
+                              const double abstol);
+
+// initial value given
+minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                  const bool approx_lambda,
+                  const int maxit = 1000,
+                  const double abstol = 1e-8);
+// initial value not given
+minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
                   const bool approx_lambda,
                   const int maxit = 1000,
                   const double abstol = 1e-8);

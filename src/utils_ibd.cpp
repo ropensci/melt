@@ -1,236 +1,425 @@
 #include "utils_ibd.h"
-#include <RcppArmadilloExtensions/sample.h>
 
-arma::mat g_ibd(const arma::vec& theta,
-                const arma::mat& x,
-                const arma::mat& c) {
-  return x - c.each_row() % theta.t();
+Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
+                             const Eigen::Ref<const Eigen::MatrixXd>& x,
+                             const Eigen::Ref<const Eigen::MatrixXd>& c) {
+  return x - (c.array().rowwise() * theta.array().transpose()).matrix();
 }
 
-
-arma::mat cov_ibd(const arma::mat& x,
-                  const arma::mat& c,
-                  const bool adjust) {
-  // number of blocks
-  const int n = x.n_rows;
-  const int p = x.n_cols;
-  // estimator(global minimizer)
-  arma::vec theta_hat = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
+Eigen::MatrixXd cov_ibd( const Eigen::Ref<const Eigen::MatrixXd>& x,
+                         const Eigen::Ref<const Eigen::MatrixXd>& c) {
+  // // estimator(global minimizer)
+  // const Eigen::VectorXd theta_hat =
+  //   x.array().colwise().sum() / c.array().colwise().sum();
   // estimating function
-  arma::mat g = x - c.each_row() % theta_hat.t();
-  // covariance estimate(optional adjustment)
-  arma::mat vhat(p, p);
-  if (adjust) {
-    // vhat = ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
-    return ((g.t() * (g)) / n) % ((c.t() * c) / (c.t() * c - 1));
-  } else {
-    // vhat = (g.t() * (g)) / n;
-    return (g.t() * (g)) / n;
-  }
-
-  // if (cheat) {
-  //   // vhat matrix assuming compound symmetry
-  //   arma::mat vhat_c = vhat;
-  //   // diagonal average
-  //   double diag_mean = arma::mean(vhat_c.diag());
-  //   // offdiagonal average
-  //   vhat_c.diag().fill(0);
-  //   double offdiag_mean = arma::accu(vhat_c) / (p * p - p);
-  //   // result
-  //   vhat_c.fill(offdiag_mean);
-  //   vhat_c.diag().fill(diag_mean);
-  //   return vhat_c;
-  // } else {
-  //   return vhat;
-  // }
+  const Eigen::MatrixXd g =
+    g_ibd(x.array().colwise().sum() / c.array().colwise().sum(), x, c);
+  // covariance estimate
+  return (g.transpose() * g) / x.rows();
 }
 
-arma::vec lambda2theta_ibd(const arma::vec& lambda,
-                           const arma::vec& theta,
-                           const arma::mat& g,
-                           const arma::mat& c,
-                           const double gamma) {
-  // arma::vec arg = 1 + g * lambda;
-  // arma::vec dplog_vec = dplog(arg, 1 / g.n_rows);
-  arma::vec dplog_vec = dplog(1 + g * lambda);
-  // gradient
-  arma::vec gradient = -arma::sum(arma::diagmat(dplog_vec) * c, 0).t() % lambda;
-  // update theta by GD with lambda fixed
-  // arma::vec theta_hat = theta - gamma * gradient;
+Eigen::VectorXd lambda2theta_ibd(
+    const Eigen::Ref<const Eigen::VectorXd>& lambda,
+    const Eigen::Ref<const Eigen::VectorXd>& theta,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& c,
+    const double gamma) {
+  // Eigen::VectorXd dplog_vec =
+  //   dplog(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
+  // // gradient
+  // Eigen::VectorXd gradient =
+  //   -(dplog_vec.asDiagonal() * c).array().colwise().sum().transpose() * lambda.array();
+  // // update theta by GD with lambda fixed
+  // return theta - gamma * gradient;
 
-  return theta - gamma * gradient;
+  Eigen::VectorXd&& ngradient =
+    (dplog(Eigen::VectorXd::Ones(g.rows()) + g * lambda).matrix().asDiagonal() * c)
+  .array().colwise().sum().transpose() * lambda.array();
+  return theta + gamma * ngradient;
 }
 
-arma::vec approx_lambda_ibd(const arma::mat& x,
-                            const arma::mat& c,
-                            const arma::vec& theta0,
-                            const arma::vec& theta1,
-                            const arma::vec& lambda0)
-{
-  const arma::mat g0 = g_ibd(theta0, x, c);
-  const arma::vec arg = 1 + g0 * lambda0;
-  const arma::vec denominator = arma::pow(arg, 2);
+Eigen::VectorXd approx_lambda_ibd(
+    const Eigen::Ref<const Eigen::MatrixXd>& g0,
+    const Eigen::Ref<const Eigen::MatrixXd>& c,
+    const Eigen::Ref<const Eigen::VectorXd>& theta0,
+    const Eigen::Ref<const Eigen::VectorXd>& theta1,
+    const Eigen::Ref<const Eigen::VectorXd>& lambda0) {
+  Eigen::ArrayXd&& arg = Eigen::VectorXd::Ones(g0.rows()) + g0 * lambda0;
+  Eigen::ArrayXd&& denominator = Eigen::pow(arg, 2);
 
   // LHS
-  const arma::mat LHS = g0.t() * (g0.each_col() / denominator);
+  Eigen::MatrixXd&& LHS = g0.transpose() * (g0.array().colwise() / denominator).matrix();
 
   // RHS
-  const arma::mat I_RHS = arma::diagmat(arma::sum((c.each_col() / arg), 0));
-  // arma::mat J = c.each_row() % arma::trans(lambda0);
-  // J.each_col() /= denominator;
-  // arma::mat J_RHS = g0.t() * J;
-  const arma::mat J_RHS =
-    arma::trans(g0.each_col() / denominator) * (c.each_row() % lambda0.t());
-  const arma::mat RHS = -I_RHS + J_RHS;
-
+  const Eigen::MatrixXd I_RHS =
+    ((c.array().colwise() / arg).colwise().sum()).matrix().asDiagonal();
+  const Eigen::MatrixXd J_RHS =
+    (g0.array().colwise() / denominator).matrix().transpose() *
+    (c.array().rowwise() * lambda0.array().transpose()).matrix();
+  Eigen::MatrixXd&& RHS = -I_RHS + J_RHS;
 
   // Jacobian matrix
-  const arma::mat jacobian = arma::solve(LHS, RHS, arma::solve_opts::fast);
+  Eigen::MatrixXd&& jacobian = LHS.ldlt().solve(RHS);
 
   // linear approximation for lambda1
   return lambda0 + jacobian * (theta1 - theta0);
 }
 
-double cutoff_pairwise_PB_ibd(const arma::mat& x,
-                              const arma::mat& c,
-                              const int B,
-                              const double level,
-                              const bool adjust) {
-  /// parameters ///
-  const int p = x.n_cols;   // number of points(treatments)
-  const std::vector<std::array<int, 2>> pairs = all_pairs(p); // vector of pairs
-  const int m = pairs.size();   // number of hypotheses
-  const arma::mat V_hat = cov_ibd(x, c, adjust); // covariance estimate
-
-  /// A hat matrices ///
-  arma::cube A_hat(p, p, m);
-  for (int i = 0; i < m; ++i) {
-    arma::rowvec R = arma::zeros(1, p);
-    R(pairs[i][0] - 1) = 1;
-    R(pairs[i][1] - 1) = -1;
-    A_hat.slice(i) = (R.t() * R) / arma::as_scalar(R * V_hat * R.t());
+std::array<double, 2> pair_confidence_interval_ibd(
+    const Eigen::Ref<const Eigen::VectorXd>& theta0,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::MatrixXd>& c,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const bool approx_lambda,
+    const double init,
+    const double threshold) {
+  // upper endpoint
+  double upper_lb = init;
+  double upper_size = 0.5;
+  double upper_ub = init + upper_size;
+  // upper bound for upper endpoint
+  while (2 * test_ibd_EL(theta0, x, c,
+                         lhs, Eigen::Matrix<double, 1, 1>(upper_ub),
+                         approx_lambda).nlogLR <= threshold) {
+    upper_size *= 2;
+    upper_ub = init + upper_size;
   }
+  // approximate upper bound by numerical search
+  while (upper_ub - upper_lb > 1e-04) {
+    if (2 * test_ibd_EL(theta0, x, c, lhs,
+                        Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2),
+                        approx_lambda).nlogLR > threshold) {
+      upper_ub = (upper_lb + upper_ub) / 2;
+    } else {
+      upper_lb = (upper_lb + upper_ub) / 2;
+    }
+  }
+
+  // lower endpoint
+  double lower_ub = init;
+  double lower_size = 0.5;
+  double lower_lb = init - lower_size;
+  // lower bound for lower endpoint
+  while (2 * test_ibd_EL(theta0, x, c,
+                         lhs, Eigen::Matrix<double, 1, 1>(lower_lb),
+                         approx_lambda).nlogLR <= threshold) {
+    lower_size *= 2;
+    lower_lb = init - lower_size;
+  }
+  // approximate lower bound by numerical search
+  while (lower_ub - lower_lb > 1e-04) {
+    if (2 * test_ibd_EL(theta0, x, c, lhs,
+                        Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2),
+                        approx_lambda).nlogLR > threshold) {
+      lower_lb = (lower_lb + lower_ub) / 2;
+    } else {
+      lower_ub = (lower_lb + lower_ub) / 2;
+    }
+  }
+
+  return std::array<double, 2>{lower_ub, upper_lb};
+}
+
+Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                              const Eigen::Ref<const Eigen::MatrixXd>& c) {
+  return x -
+    (c.array().rowwise() *
+    (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
+}
+
+Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n) {
+  // generate standard multivariate gaussian random vectors(n by p matrix)
+  Eigen::MatrixXd I(n, x.cols());
+  for (int j = 0; j < x.cols(); ++j) {
+    for (int i = 0; i < n; ++i) {
+      I(i, j) = R::rnorm(0, 1.0);
+    }
+  }
+  // get the square root matrix of the covariance matrix
+  const Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(x);
+  // return the target normal random vectors(n by p matrix)
+  return I * es.operatorSqrt();
+}
+
+double cutoff_pairwise_PB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                              const Eigen::Ref<const Eigen::MatrixXd>& c,
+                              const std::vector<std::array<int, 2>>& pairs,
+                              const int B,
+                              const double level) {
+  const Eigen::MatrixXd V_hat = cov_ibd(x, c); // covariance estimate
 
   // U hat matrices
-  const arma::mat U_hat = arma::mvnrnd(arma::zeros(p), V_hat, B);
+  const Eigen::MatrixXd U_hat = rmvn(cov_ibd(x, c), B);
 
-  // B bootstrap replicates(B x m matrix)
-  arma::mat bootstrap_sample(B, m);
-  for (int i = 0; i < m; ++i) {
-    bootstrap_sample.col(i) =
-      arma::diagvec(U_hat.t() * A_hat.slice(i) * U_hat);
+  // B bootstrap statistics(B x m matrix)
+  Eigen::MatrixXd bootstrap_statistics(B, pairs.size());
+  for (int j = 0; j < pairs.size(); ++j) {
+    Eigen::RowVectorXd R = Eigen::RowVectorXd::Zero(1, x.cols());
+    R(pairs[j][0] - 1) = 1;
+    R(pairs[j][1] - 1) = -1;
+    Eigen::MatrixXd A_hat = (R.transpose() * R) / (R * V_hat * R.transpose());
+    bootstrap_statistics.col(j) =
+      (U_hat * A_hat * U_hat.transpose()).diagonal();
   }
 
+  // cutoff(we only need maximum statistics)
+  Rcpp::Function quantile("quantile");
   return
-    arma::as_scalar(arma::quantile(arma::max(bootstrap_sample, 1),
-                                   arma::vec{1 - level}));
+    Rcpp::as<double>(quantile(bootstrap_statistics.rowwise().maxCoeff(),
+                              Rcpp::Named("probs") = 1 - level));
 }
 
-arma::mat centering_ibd(arma::mat x)
-{
-  // centering with nonzero elements
-  x.each_col([](arma::vec& v) {
-    v.elem(arma::find(v)) -= arma::mean(v.elem(arma::find(v)));
-  });
+double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                              const Eigen::Ref<const Eigen::MatrixXd>& c,
+                              const int B,
+                              const double level,
+                              const bool block_bootstrap,
+                              const bool approx_lambda,
+                              const int ncores,
+                              const int maxit,
+                              const double abstol) {
+  const int n = x.rows();
+  const int p = x.cols();
+  const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
+  const int m = pairs.size();   // number of hypotheses
 
-  return x;
+  // centered matrix
+  Eigen::MatrixXd&& x_centered = centering_ibd(x, c);
+
+  // index vector for boostrap(length n * B)
+  // generate index to sample(Rcpp) -> transform to std::vector ->
+  // reshape to ArrayXXi(Eigen)
+  Eigen::ArrayXXi&& bootstrap_index =
+    Eigen::Map<Eigen::ArrayXXi, Eigen::Unaligned>(
+        (Rcpp::as<std::vector<int>>(
+            Rcpp::sample(Rcpp::IntegerVector(Rcpp::seq(0, n - 1)), n * B, true)))
+    .data(), n, B);
+
+  // B bootstrap results(we only need maximum statistics)
+  Eigen::VectorXd bootstrap_statistics(B);
+  #pragma omp parallel for num_threads(ncores) default(none) shared(block_bootstrap, B, approx_lambda, maxit, abstol, pairs, x_centered, c, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
+  for (int b = 0; b < B; ++b) {
+    /// const Eigen::MatrixXd sample_b =
+    ///   bootstrap_sample(x_centered, bootstrap_index.col(b));
+    /// const Eigen::MatrixXd incidence_mat_b =
+    ///   bootstrap_sample(c, bootstrap_index.col(b));
+    Eigen::VectorXd statistics_b(m);
+    for (int j = 0; j < m; ++j) {
+      Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
+      lhs(pairs[j][0] - 1) = 1;
+      lhs(pairs[j][1] - 1) = -1;
+      statistics_b(j) = block_bootstrap?
+      2 * test_ibd_EL(
+        rowsetmat(bootstrap_sample(x_centered, bootstrap_index.col(b)), c),
+        c,
+        lhs, Eigen::Matrix<double, 1, 1>(0),
+        approx_lambda, maxit, abstol).nlogLR :
+      2 * test_ibd_EL(bootstrap_sample(x_centered, bootstrap_index.col(b)),
+                      bootstrap_sample(c, bootstrap_index.col(b)),
+                      lhs, Eigen::Matrix<double, 1, 1>(0),
+                      approx_lambda, maxit, abstol).nlogLR;
+      // statistics_b(j) =
+      //   2 * test_ibd_EL(bootstrap_sample(x_centered, bootstrap_index.col(b)),
+      //                   bootstrap_sample(c, bootstrap_index.col(b)),
+      //                   lhs, Eigen::Matrix<double, 1, 1>(0),
+      //                   approx_lambda, maxit, abstol).nlogLR;
+    }
+    // need to generalize later for k-FWER control
+    bootstrap_statistics(b) = statistics_b.maxCoeff();
+  }
+
+  // // B bootstrap results(we only need maximum statistics)
+  // Eigen::VectorXd bootstrap_statistics(B);
+  // for (int b = 0; b < B; ++b) {
+  //   // index vector for boostrap(length n)
+  //   // generate index to sample(Rcpp) -> transform to std::vector ->
+  //   // reshape to ArrayXi(Eigen)
+  //   Eigen::ArrayXi&& bootstrap_index =
+  //     Eigen::Map<Eigen::ArrayXi, Eigen::Unaligned>(
+  //         (Rcpp::as<std::vector<int>>(
+  //             Rcpp::sample(Rcpp::IntegerVector(
+  //                 Rcpp::seq(0, n - 1)), n, true))).data(), n);
+  //
+  //   Eigen::VectorXd statistics_b(m);
+  //   for (int j = 0; j < m; ++j) {
+  //     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
+  //     lhs(pairs[j][0] - 1) = 1;
+  //     lhs(pairs[j][1] - 1) = -1;
+  //     statistics_b(j) =
+  //       2 * test_ibd_EL(bootstrap_sample(x_centered, bootstrap_index),
+  //                       bootstrap_sample(c, bootstrap_index),
+  //                       lhs, Eigen::Matrix<double, 1, 1>(0),
+  //                       approx_lambda, maxit, abstol).nlogLR;
+  //   }
+  //   // need to generalize later for k-FWER control
+  //   bootstrap_statistics(b) = statistics_b.maxCoeff();
+  // }
+
+  // quantile function needed!
+  Rcpp::Function quantile("quantile");
+  return
+    Rcpp::as<double>(quantile(bootstrap_statistics,
+                              Rcpp::Named("probs") = 1 - level));
 }
 
-minEL test_ibd_EL(const arma::mat& x,
-                  const arma::mat& c,
-                  const arma::mat& L,
-                  const arma::vec& rhs,
+minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
                   const bool approx_lambda,
                   const int maxit,
                   const double abstol) {
   /// initialization ///
-  // initial parameter value set as group means
-  const int n = x.n_rows;
-  arma::vec theta = n * arma::trans(arma::mean(x, 0) / arma::sum(c, 0));
-  // constraint imposed on the initial value by projection
-  theta = linear_projection(theta, L, rhs);
+  // Constraint imposed on the initial value by projection.
+  // The initial value is given as treatment means.
+  Eigen::VectorXd theta =
+    linear_projection(theta0, lhs, rhs);
+
   // estimating function
-  arma::mat g = g_ibd(theta, x, c);
+  Eigen::MatrixXd g = g_ibd(theta, x, c);
   // evaluation
   EL eval = getEL(g);
-  arma::vec lambda = eval.lambda;
+  Eigen::VectorXd lambda = eval.lambda;
   // for current function value(-logLR)
-  double f0 = plog_sum(1 + g * lambda);
+  double f0 = plog_sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
   // for updated function value
   double f1 = f0;
 
   /// minimization(projected gradient descent) ///
-  double gamma = std::pow(arma::mean(arma::sum(c, 0)), -1);    // step size
+  double gamma = 1.0 / (c.array().colwise().sum().mean());    // step size
   bool convergence = false;
   int iterations = 0;
   // proposed value for theta
-  arma::vec theta_tmp;
-  arma::vec lambda_tmp;
-  arma::mat g_tmp;
-  while (convergence == false) {
+  // Eigen::VectorXd theta_tmp(theta.size());
+  // Eigen::VectorXd lambda_tmp(theta.size());
+  // Eigen::MatrixXd g_tmp(g.rows(), g.cols());
+  /// while (!convergence) {
+  //   if (f0 - f1 < abstol && iterations > 0) {
+  //     convergence = true;
+  //   } else {
+  //     // update parameter by GD with lambda fixed
+  //     theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+  //     // projection
+  //     theta_tmp = linear_projection(theta_tmp, lhs, rhs);
+  //     // update g
+  //     g_tmp = g_ibd(theta_tmp, x, c);
+  //     if (approx_lambda && iterations > 1) {
+  //       // update lambda
+  //       lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+  //     } else {
+  //       // update lambda
+  //       eval = getEL(g_tmp);
+  //       lambda_tmp = eval.lambda;
+  //       if (!eval.convergence && iterations > 9) {
+  //         theta = theta_tmp;
+  //         lambda = lambda_tmp;
+  //         Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+  //         break;
+  //       }
+  //     }
+  //     // update function value
+  //     f0 = f1;
+  //     f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+  //     // step halving to ensure that the updated function value be
+  //     // strictly less than the current function value
+  //     while (f0 <= f1) {
+  //       // reduce step size
+  //       gamma /= 2;
+  //       // propose new theta
+  //       theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+  //       theta_tmp = linear_projection(theta_tmp, lhs, rhs);
+  //       // propose new lambda
+  //       g_tmp = g_ibd(theta_tmp, x, c);
+  //       if (approx_lambda && iterations > 1) {
+  //         lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+  //       } else {
+  //         eval = getEL(g_tmp);
+  //         lambda_tmp = eval.lambda;
+  //       }
+  //       if (gamma < abstol) {
+  //         theta = theta_tmp;
+  //         lambda = lambda_tmp;
+  //         Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+  //         break;
+  //       }
+  //       // propose new function value
+  //       f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+  //     }
+  //     // update parameters
+  //     theta = theta_tmp;
+  //     lambda = lambda_tmp;
+  //     g = std::move(g_tmp);
+  //     if (iterations == maxit) {
+  //       break;
+  //     }
+  //     ++iterations;
+  //   }
+  // }
+
+  while (!convergence && iterations != maxit) {
+    // update parameter by GD with lambda fixed -> projection
+    Eigen::VectorXd theta_tmp =
+      linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
+    // update g
+    Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
+
+    Eigen::VectorXd lambda_tmp(theta.size());
+    if (approx_lambda && iterations > 1) {
+      // update lambda
+      lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+    } else {
+      // update lambda
+      eval = getEL(g_tmp);
+      lambda_tmp = eval.lambda;
+      if (!eval.convergence && iterations > 9) {
+        theta = theta_tmp;
+        lambda = lambda_tmp;
+        Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+        break;
+      }
+    }
+
+    // update function value
+    f0 = f1;
+    f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+
+    // step halving to ensure that the updated function value be
+    // strictly less than the current function value
+    while (f0 <= f1) {
+      // reduce step size
+      gamma /= 2;
+      // propose new theta
+      theta_tmp =
+        linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma),
+                          lhs, rhs);
+      // propose new lambda
+      g_tmp = g_ibd(theta_tmp, x, c);
+      if (approx_lambda && iterations > 1) {
+        lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+      } else {
+        eval = getEL(g_tmp);
+        lambda_tmp = eval.lambda;
+      }
+      if (gamma < abstol) {
+        theta = theta_tmp;
+        lambda = lambda_tmp;
+        Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+        break;
+      }
+      // propose new function value
+      f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    }
+
+    // update parameters
+    theta = std::move(theta_tmp);
+    lambda = std::move(lambda_tmp);
+    g = std::move(g_tmp);
+
+    // convergence check
     if (f0 - f1 < abstol && iterations > 0) {
       convergence = true;
     } else {
-      // update parameter by GD with lambda fixed
-      theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
-      // projection
-      theta_tmp = linear_projection(theta_tmp, L, rhs);
-      // update g
-      g_tmp = g_ibd(theta_tmp, x, c);
-      if (approx_lambda && iterations > 1) {
-        // update lambda
-        lambda_tmp = approx_lambda_ibd(x, c, theta, theta_tmp, lambda);
-      } else {
-        // update lambda
-        eval = getEL(g_tmp);
-        lambda_tmp = eval.lambda;
-        if (!eval.convergence && iterations > 9) {
-          theta = theta_tmp;
-          lambda = lambda_tmp;
-          // Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
-          break;
-        }
-      }
-      // update function value
-      f0 = f1;
-      f1 = plog_sum(1 + g_tmp * lambda_tmp);
-      // step halving to ensure that the updated function value be
-      // strictly less than the current function value
-      while (f0 <= f1) {
-        // reduce step size
-        gamma /= 2;
-        // propose new theta
-        theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
-        theta_tmp = linear_projection(theta_tmp, L, rhs);
-        // propose new lambda
-        g_tmp = g_ibd(theta_tmp, x, c);
-        if (approx_lambda && iterations > 1) {
-          lambda_tmp = approx_lambda_ibd(x, c, theta, theta_tmp, lambda);
-        } else {
-          eval = getEL(g_tmp);
-          lambda_tmp = eval.lambda;
-        }
-
-        if (gamma < abstol) {
-          // Rcpp::warning("Convex hull constraint not satisfied during step halving.");
-          minEL result;
-          result.theta = theta_tmp;
-          result.lambda = lambda_tmp;
-          result.nlogLR = f1;
-          result.iterations = iterations;
-          result.convergence = convergence;
-          return result;
-        }
-        // propose new function value
-        f1 = plog_sum(1 + g_tmp * lambda_tmp);
-      }
-      // update parameters
-      theta = theta_tmp;
-      lambda = lambda_tmp;
-      g = g_tmp;
-      if (iterations == maxit) {
-        break;
-      }
       ++iterations;
     }
   }
@@ -244,204 +433,173 @@ minEL test_ibd_EL(const arma::mat& x,
   return result;
 }
 
-std::array<double, 2> pair_confidence_interval_ibd(const arma::mat& x,
-                                                   const arma::mat& c,
-                                                   const arma::mat& L,
-                                                   const bool approx_lambda,
-                                                   const double init,
-                                                   const double threshold) {
-  // upper endpoint
-  double upper_lb = init;
-  double upper_size = 0.5;
-  double upper_ub = init + upper_size;
-  double upper_eval =
-    test_ibd_EL(x, c, L, arma::vec{upper_ub}, approx_lambda).nlogLR;
-  // upper bound for upper endpoint
-  while (2 * upper_eval <= threshold) {
-    upper_size *= 2;
-    upper_ub = init + upper_size;
-    upper_eval =
-      test_ibd_EL(x, c, L, arma::vec{upper_ub}, approx_lambda).nlogLR;
-  }
-  // approximate upper bound by numerical search
-  while (upper_ub - upper_lb > 1e-04) {
-    upper_eval =
-      test_ibd_EL(x, c, L, arma::vec{(upper_lb + upper_ub) / 2}, approx_lambda).nlogLR;
-    if (2 * upper_eval > threshold) {
-      upper_ub = (upper_lb + upper_ub) / 2;
-    } else {
-      upper_lb = (upper_lb + upper_ub) / 2;
-    }
-  }
+minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                  const bool approx_lambda,
+                  const int maxit,
+                  const double abstol) {
+  /// initialization ///
+  // Constraint imposed on the initial value by projection.
+  // The initial value is given as treatment means.
+  Eigen::VectorXd theta =
+    linear_projection(x.array().colwise().sum() / c.array().colwise().sum(),
+                      lhs, rhs);
 
-  // lower endpoint
-  double lower_ub = init;
-  double lower_size = 0.5;
-  double lower_lb = init - lower_size;
-  double lower_eval =
-    test_ibd_EL(x, c, L, arma::vec{lower_lb}, approx_lambda).nlogLR;
-  // lower bound for lower endpoint
-  while (2 * lower_eval <= threshold) {
-    lower_size *= 2;
-    lower_lb = init - lower_size;
-    lower_eval =
-      test_ibd_EL(x, c, L, arma::vec{lower_lb}, approx_lambda).nlogLR;
-  }
-  // approximate lower bound by numerical search
-  while (lower_ub - lower_lb > 1e-04) {
-    lower_eval =
-      test_ibd_EL(x, c, L, arma::vec{(lower_lb + lower_ub) / 2}, approx_lambda).nlogLR;
-    if (2 * lower_eval > threshold) {
-      lower_lb = (lower_lb + lower_ub) / 2;
-    } else {
-      lower_ub = (lower_lb + lower_ub) / 2;
-    }
-  }
+  // estimating function
+  Eigen::MatrixXd g = g_ibd(theta, x, c);
+  // evaluation
+  EL eval = getEL(g);
+  Eigen::VectorXd lambda = eval.lambda;
+  // for current function value(-logLR)
+  double f0 = plog_sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
+  // for updated function value
+  double f1 = f0;
 
-  return std::array<double, 2>{lower_ub, upper_lb};
-}
-
-arma::umat block_bootstrap_index(const arma::mat& x,
-                                 const arma::mat& c,
-                                 const int B,
-                                 const bool approx_lambda,
-                                 const int maxit,
-                                 const double abstol) {
-  const unsigned int n = x.n_rows;
-  const unsigned int p = x.n_cols;
-
-  const arma::mat LHS =
-    arma::join_horiz(arma::ones(p - 1), -arma::eye(p - 1, p - 1));
-
-  const minEL result =
-    test_ibd_EL(x, c, LHS, arma::zeros(p - 1), approx_lambda, maxit, abstol);
-
-  const arma::vec weights =
-    1 / (n + n * g_ibd(result.theta, x, c) * result.lambda);
-
-  // tmp for calculation(double * unsisgned int)
-  std::vector<int> tmp(n);
-  for (unsigned int i = 0; i < n; ++i) {
-    for (unsigned int j = 0; j < p; ++j) {
-      // tmp(i) += std::pow(2, j) * incidence_mat(i, j);
-      tmp[i] += std::pow(2, j) * c(i, j);
-    }
-  }
-
-  // block types
-  const arma::uvec type_index = arma::conv_to<arma::uvec>::from(tmp);
-  const arma::uvec types = arma::unique(type_index);
-
-  // resampling with replacement within the same block type
-  arma::umat block_bootstrap_index(n, B);
-  for (unsigned int i = 0; i < types.n_elem; ++i) {
-    arma::uvec replace = arma::find(type_index == types(i));
-    block_bootstrap_index.rows(replace) =
-      arma::reshape(
-        Rcpp::RcppArmadillo::sample(
-          replace, B * replace.n_elem, true, weights(replace)),
-          replace.n_elem, B);
-  }
-
-  return block_bootstrap_index;
-}
-
-double cutoff_pairwise_NB_ibd(const arma::mat& x,
-                               const arma::mat& c,
-                               const int B,
-                               const double level,
-                               const bool block_bootstrap,
-                               const bool approx_lambda,
-                               const int ncores,
-                               const int maxit,
-                               const double abstol)
-{
-  const int n = x.n_rows;
-  const int p = x.n_cols;
-  const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
-  const int m = pairs.size();   // number of hypotheses
-
-  // centered matrix
-  const arma::mat x_centered = centering_ibd(x);
-
-  // index matrix for boostrap(n by B matrix)
-  // const arma::umat bootstrap_index =
-  //   arma::reshape(
-  //     Rcpp::RcppArmadillo::sample(
-  //       arma::linspace<arma::uvec>(0, n - 1, n), n * B, true), n, B);
-  const arma::umat bootstrap_index =
-    block_bootstrap ?
-    block_bootstrap_index(x, c, B, approx_lambda, maxit, abstol) :
-    arma::reshape(
-      Rcpp::RcppArmadillo::sample(
-        arma::linspace<arma::uvec>(0, n - 1, n), n * B, true), n, B);
-
-  // B bootstrap results(we only need maximum statistics)
-  arma::vec bootstrap_statistics(B);
-  #pragma omp parallel for num_threads(ncores) default(none) shared(x, B, block_bootstrap, maxit, abstol, approx_lambda, pairs, x_centered, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
-  for (int b = 0; b < B; ++b) {
-    // const arma::mat sample_b = bootstrap_sample(x_centered);
-    const arma::mat sample_b =
-      block_bootstrap ?
-      x.rows(bootstrap_index.col(b)) :
-      x_centered.rows(bootstrap_index.col(b));
-    const arma::mat incidence_mat_b =
-      arma::conv_to<arma::mat>::from(sample_b != 0);
-    arma::vec statistics_b(m);
-    for (int j = 0; j < m; ++j) {
-      arma::rowvec L = arma::zeros(1, p);
-      L(pairs[j][0] - 1) = 1;
-      L(pairs[j][1] - 1) = -1;
-      const minEL& pairwise_result =
-        test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1),
-                    approx_lambda, maxit, abstol);
-      // We do not check the convex hull constraint when NB is used.
-      // if (!pairwise_result.convergence) {
-      //   Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
-      //                 pairs[j][0], pairs[j][1], b + 1);
-      // }
-      // bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
-      statistics_b(j) = 2 * pairwise_result.nlogLR;
-    }
-    // need to generalize later for k-FWER control
-    bootstrap_statistics(b) = arma::max(statistics_b);
-
-    // Currently it does not work with parallelization.
-    // Perhaps due to thread safety issue.
-    // bootstrap_statistics.col(b) = statistics_b;
-    // if (b % 100 == 0) {
-    //   Rcpp::checkUserInterrupt();
-    // }
-  }
-
-  // // B bootstrap test statistics(m x B matrix)
-  // arma::mat bootstrap_statistics(m, B);
-  // for (int b = 0; b < B; ++b) {
-  //   arma::mat sample_b = bootstrap_sample(x_centered);
-  //   arma::mat incidence_mat_b = arma::conv_to<arma::mat>::from(sample_b != 0);
-  //   for (int j = 0; j < m; ++j) {
-  //     arma::rowvec L = arma::zeros(1, p);
-  //     L(pairs[j][0] - 1) = 1;
-  //     L(pairs[j][1] - 1) = -1;
-  //     const minEL pairwise_result =
-  //       test_ibd_EL(sample_b, incidence_mat_b, L, arma::zeros(1), approx_lambda, maxit, abstol);
-  //     // We do not check the convex hull constraint when NB is used.
-  //     // if (!pairwise_result.convergence) {
-  //     //   Rcpp::warning("Test for pair (%i,%i) failed in bootstrap sample %i. \n",
-  //     //                 pairs[j][0], pairs[j][1], b + 1);
-  //     // }
-  //     bootstrap_statistics(j, b) = 2 * pairwise_result.nlogLR;
+  /// minimization(projected gradient descent) ///
+  double gamma = 1.0 / (c.array().colwise().sum().mean());    // step size
+  bool convergence = false;
+  int iterations = 0;
+  // proposed value for theta
+  // Eigen::VectorXd theta_tmp(theta.size());
+  // Eigen::VectorXd lambda_tmp(theta.size());
+  // Eigen::MatrixXd g_tmp(g.rows(), g.cols());
+  /// while (!convergence) {
+  //   if (f0 - f1 < abstol && iterations > 0) {
+  //     convergence = true;
+  //   } else {
+  //     // update parameter by GD with lambda fixed
+  //     theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+  //     // projection
+  //     theta_tmp = linear_projection(theta_tmp, lhs, rhs);
+  //     // update g
+  //     g_tmp = g_ibd(theta_tmp, x, c);
+  //     if (approx_lambda && iterations > 1) {
+  //       // update lambda
+  //       lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+  //     } else {
+  //       // update lambda
+  //       eval = getEL(g_tmp);
+  //       lambda_tmp = eval.lambda;
+  //       if (!eval.convergence && iterations > 9) {
+  //         theta = theta_tmp;
+  //         lambda = lambda_tmp;
+  //         Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+  //         break;
+  //       }
+  //     }
+  //     // update function value
+  //     f0 = f1;
+  //     f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+  //     // step halving to ensure that the updated function value be
+  //     // strictly less than the current function value
+  //     while (f0 <= f1) {
+  //       // reduce step size
+  //       gamma /= 2;
+  //       // propose new theta
+  //       theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
+  //       theta_tmp = linear_projection(theta_tmp, lhs, rhs);
+  //       // propose new lambda
+  //       g_tmp = g_ibd(theta_tmp, x, c);
+  //       if (approx_lambda && iterations > 1) {
+  //         lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+  //       } else {
+  //         eval = getEL(g_tmp);
+  //         lambda_tmp = eval.lambda;
+  //       }
+  //       if (gamma < abstol) {
+  //         theta = theta_tmp;
+  //         lambda = lambda_tmp;
+  //         Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+  //         break;
+  //       }
+  //       // propose new function value
+  //       f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+  //     }
+  //     // update parameters
+  //     theta = theta_tmp;
+  //     lambda = lambda_tmp;
+  //     g = std::move(g_tmp);
+  //     if (iterations == maxit) {
+  //       break;
+  //     }
+  //     ++iterations;
   //   }
-  //   // if (b % 100 == 0) {
-  //   //   Rcpp::checkUserInterrupt();
-  //   // }
   // }
 
-  // return
-  //   arma::as_scalar(arma::quantile(arma::max(bootstrap_statistics, 0),
-  //                                  arma::vec{1 - level}));
+  while (!convergence && iterations != maxit) {
+    // update parameter by GD with lambda fixed -> projection
+    Eigen::VectorXd theta_tmp =
+      linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
+    // update g
+    Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
 
-  return
-    arma::as_scalar(arma::quantile(bootstrap_statistics, arma::vec{1 - level}));
+    Eigen::VectorXd lambda_tmp(theta.size());
+    if (approx_lambda && iterations > 1) {
+      // update lambda
+      lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+    } else {
+      // update lambda
+      eval = getEL(g_tmp);
+      lambda_tmp = eval.lambda;
+      if (!eval.convergence && iterations > 9) {
+        theta = theta_tmp;
+        lambda = lambda_tmp;
+        Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+        break;
+      }
+    }
+
+    // update function value
+    f0 = f1;
+    f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+
+    // step halving to ensure that the updated function value be
+    // strictly less than the current function value
+    while (f0 <= f1) {
+      // reduce step size
+      gamma /= 2;
+      // propose new theta
+      theta_tmp =
+        linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma),
+                          lhs, rhs);
+      // propose new lambda
+      g_tmp = g_ibd(theta_tmp, x, c);
+      if (approx_lambda && iterations > 1) {
+        lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+      } else {
+        eval = getEL(g_tmp);
+        lambda_tmp = eval.lambda;
+      }
+      if (gamma < abstol) {
+        theta = theta_tmp;
+        lambda = lambda_tmp;
+        Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+        break;
+      }
+      // propose new function value
+      f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    }
+
+    // update parameters
+    theta = std::move(theta_tmp);
+    lambda = std::move(lambda_tmp);
+    g = std::move(g_tmp);
+
+    // convergence check
+    if (f0 - f1 < abstol && iterations > 0) {
+      convergence = true;
+    } else {
+      ++iterations;
+    }
+  }
+
+  minEL result;
+  result.theta = theta;
+  result.lambda = lambda;
+  result.nlogLR = f1;
+  result.iterations = iterations;
+  result.convergence = convergence;
+  return result;
 }
-

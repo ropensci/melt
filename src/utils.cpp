@@ -1,154 +1,158 @@
 #include "utils.h"
 
-arma::vec plog(const arma::vec& x) {
-  const unsigned int n = x.n_elem;
-  const double a1 = -std::log(n) - 1.5;
-  const double a2 = 2.0 * n;
-  const double a3 = -0.5 * n * n;
-  arma::vec out(n);
-  for (unsigned int i = 0; i < n; ++i) {
-    if (n * x.at(i) < 1) {
-      out.at(i) = a1 + a2 * x.at(i) + a3 * x.at(i) * x.at(i);
-    } else {
-      out.at(i) = std::log(x.at(i));
-    }
-  }
-  return out;
-}
-double plog_sum(const arma::vec& x) {
-  const unsigned int n = x.n_elem;
+double plog_sum(const Eigen::Ref<const Eigen::VectorXd>& x) {
+  const unsigned int n = x.size();
   const double a1 = -std::log(n) - 1.5;
   const double a2 = 2.0 * n;
   const double a3 = -0.5 * n * n;
   double out = 0;
   for (unsigned int i = 0; i < n; ++i) {
-    out += n * x.at(i) < 1 ? a1 + a2 * x.at(i) + a3 * x.at(i) * x.at(i) : std::log(x.at(i));
+    out += n * x[i] < 1 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : std::log(x[i]);
   }
   return out;
 }
-arma::vec plog_old(const arma::vec& x, const double threshold) {
-  arma::vec out(x.n_elem);
-  for (unsigned int i = 0; i < x.n_elem; ++i) {
-    if (x.at(i) < threshold) {
-      out.at(i) = std::log(threshold) - 1.5 + 2 * std::pow(threshold, -1) * x.at(i) -
-        std::pow(x.at(i) / threshold, 2) / 2;
-    } else {
-      out.at(i) = std::log(x.at(i));
-    }
-  }
-  return out;
-}
-
-arma::vec dplog(const arma::vec& x) {
-  const unsigned int n = x.n_elem;
+Eigen::ArrayXd dplog(const Eigen::Ref<const Eigen::VectorXd>& x) {
+  const unsigned int n = x.size();
   const double a1 = 2.0 * n;
   const double a2 = -1.0 * n * n;
-  arma::vec out(n);
+  Eigen::ArrayXd out(n);
   for (unsigned int i = 0; i < n; ++i) {
-    if (n * x.at(i) < 1) {
-      out.at(i) = a1 + a2 * x.at(i);
+    if (n * x[i] < 1) {
+      out[i] = a1 + a2 * x[i];
     } else {
-      out.at(i) = 1.0 / x.at(i);
+      out[i] = 1.0 / x[i];
     }
   }
   return out;
 }
-arma::vec dplog_old(const arma::vec& x, const double threshold) {
-  arma::vec out(x.n_elem);
-  for (unsigned int i = 0; i < x.n_elem; ++i) {
-    if (x.at(i) < threshold) {
-      out.at(i) = 2 * std::pow(threshold, -1) - x.at(i) * std::pow(threshold, -2);
+Eigen::ArrayXd sqrt_neg_d2plog(const Eigen::Ref<const Eigen::VectorXd>& x) {
+  const unsigned int n = x.size();
+  const double a2 = 1.0 * n;
+  // const double a2 = 1.0 * n * n;
+  Eigen::ArrayXd out(n);
+  for (unsigned int i = 0; i < n; ++i) {
+    if (n * x[i] < 1) {
+      out[i] = a2;
     } else {
-      out.at(i) = std::pow(x.at(i), -1);
+      out[i] = 1.0 / x[i];
     }
   }
   return out;
 }
 
-arma::vec d2plog(const arma::vec& x) {
-  const unsigned int n = x.n_elem;
-  const double a2 = -1.0 * n * n;
-  arma::vec out(n);
+// PSEUDO_LOG pseudo_log(const Eigen::Ref<const Eigen::VectorXd>& x) {
+//   const unsigned int n = x.size();
+//   const double a1 = -std::log(n) - 1.5;
+//   const double a2 = 2.0 * n;
+//   const double a3 = -0.5 * n * n;
+//
+//   double plog_sum = 0;
+//   Eigen::ArrayXd dplog(n);
+//   Eigen::ArrayXd sqrt_neg_d2plog(n);
+//
+//   for (unsigned int i = 0; i < n; ++i) {
+//     if (n * x[i] < 1) {
+//       plog_sum += a1 + a2 * x[i] + a3 * x[i] * x[i];
+//       dplog[i] = a2 + 2 * a3 * x[i];
+//       sqrt_neg_d2plog[i] = a2 / 2;
+//     } else {
+//       plog_sum += std::log(x[i]);
+//       dplog[i] = 1.0 / x[i];
+//       sqrt_neg_d2plog[i] = 1.0 / x[i];
+//     }
+//   }
+//
+//   PSEUDO_LOG result;
+//   result.plog_sum = plog_sum;
+//   result.dplog = dplog;
+//   result.sqrt_neg_d2plog = sqrt_neg_d2plog;
+//   return result;
+// }
+
+PSEUDO_LOG::PSEUDO_LOG(const Eigen::Ref<const Eigen::VectorXd>& x) {
+  const unsigned int n = x.size();
+  const double a1 = -std::log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
+
+  double plog_sum_t = 0;
+  Eigen::ArrayXd dplog_t(n);
+  Eigen::ArrayXd sqrt_neg_d2plog_t(n);
+
   for (unsigned int i = 0; i < n; ++i) {
-    if (n * x.at(i) < 1) {
-      out.at(i) = a2;
+    if (n * x[i] < 1) {
+      plog_sum_t += a1 + a2 * x[i] + a3 * x[i] * x[i];
+      dplog_t[i] = a2 + 2 * a3 * x[i];
+      sqrt_neg_d2plog_t[i] = a2 / 2;
     } else {
-      out.at(i) = -1.0 / (x.at(i) * x.at(i));
+      plog_sum_t += std::log(x[i]);
+      dplog_t[i] = 1.0 / x[i];
+      sqrt_neg_d2plog_t[i] = 1.0 / x[i];
     }
   }
-  return out;
-}
-arma::vec d2plog_old(const arma::vec& x, const double threshold) {
-  arma::vec out(x.n_elem);
-  for (unsigned int i = 0; i < x.n_elem; ++i) {
-    if (x.at(i) < threshold) {
-      out.at(i) = -std::pow(threshold, -2);
-    } else {
-      out.at(i) = -std::pow(x.at(i), -2);
-    }
-  }
-  return out;
+
+  plog_sum = plog_sum_t;
+  dplog = dplog_t;
+  sqrt_neg_d2plog = sqrt_neg_d2plog_t;
 }
 
-EL getEL(const arma::mat& g,
+EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
          const int maxit,
          const double abstol) {
-  const int n = g.n_rows;
-  const int p = g.n_cols;
-
-  // minimization
-  arma::vec l(p, arma::fill::zeros);
-  arma::vec arg = 1 + g * l;
-  arma::vec y(n);
-  arma::mat J(n, p);
-  arma::mat Q(n, n);
-  arma::mat R(p, p);
+  // maximization
+  Eigen::VectorXd lambda = Eigen::VectorXd::Zero(g.cols());
   double f1;
   int iterations = 0;
   bool convergence = false;
-  while (!convergence) {
-    // function evaluation(initial)
-    double f0 = plog_sum(arg);
-    // double f0 = arma::sum(plog(arg));
-    // J matrix & y vector
-    arma::vec v1 = arma::sqrt(-d2plog(arg));
-    arma::vec v2 = dplog(arg);
-    J = g.each_col() % v1;
-    y = v2 / v1;
-    // update lambda by NR method with least square & step halving
-    arma::qr_econ(Q, R, J);
-    arma::vec update =
-      arma::solve(arma::trimatu(R), Q.t() * y, arma::solve_opts::fast);
-    arma::vec l_tmp = l + update;
-    double alpha = 1.0;
-    while (arma::sum(plog(1 + g * l_tmp)) < f0) {
-      alpha = alpha / 2;
-      l_tmp = l + alpha * update;
-    }
+  while (!convergence && iterations != maxit) {
+    // plog class
+    PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
+
+    // // function evaluation
+    // const double f0 = log_tmp.plog_sum;
+
+    // J matrix
+    const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
+
+    // // J matrix & y vector
+    // Eigen::ArrayXd v1 = log_tmp.sqrt_neg_d2plog;
+    // Eigen::ArrayXd v2 = log_tmp.dplog;
+    // Eigen::MatrixXd J = g.array().colwise() * v1;
+    /// Eigen::VectorXd y = v2 / v1;
+
+    // prpose new lambda by NR method with least square
+    Eigen::VectorXd step =
+      (J.transpose() * J).ldlt().solve(
+          J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+
     // update function value
-    l = l_tmp;
-    arg = 1 + g * l;
-    f1 = plog_sum(arg);
-    // f1 = arma::sum(plog(arg));
-    // convergence check & parameter update
-    if (f1 - f0 < abstol) {
-      arma::vec v1 = arma::sqrt(-d2plog(arg));
-      arma::vec v2 = dplog(arg);
-      J = g.each_col() % v1;
-      y = v2 / v1;
+    f1 = plog_sum(Eigen::VectorXd::Ones(g.rows()) + g * (lambda + step));
+
+    // step halving to ensure validity
+    while (f1 < log_tmp.plog_sum) {
+      step /= 2;
+      f1 = plog_sum(Eigen::VectorXd::Ones(g.rows()) + g * (lambda + step));
+    }
+
+    // update lambda
+    lambda += step;
+
+    // convergence check
+    if (f1 - log_tmp.plog_sum < abstol) {
+      // Eigen::ArrayXd v1 = log_tmp.sqrt_neg_d2plog;
+      // Eigen::ArrayXd v2 = log_tmp.dplog;
+      // Eigen::MatrixXd J = g.array().colwise() * v1;
+      // Eigen::VectorXd y = v2 / v1;
       convergence = true;
     } else {
-      if (iterations == maxit) {
-        break;
-      }
       ++iterations;
     }
   }
 
   EL result;
   result.nlogLR = f1;
-  result.lambda = l;
-  result.gradient = -J.t() * y;
+  result.lambda = lambda;
+  // result.gradient = -J.transpose() * y;
   result.iterations = iterations;
   result.convergence = convergence;
   return result;
@@ -169,33 +173,55 @@ std::vector<std::array<int, 2>> all_pairs(const int p) {
   return pairs;
 }
 
-arma::mat g_mean(const arma::vec &theta,
-                 arma::mat x) {
-  // estimating function
-  x.each_row() -= theta.t();
+// Eigen::VectorXd linear_projection(const Eigen::Ref<const Eigen::VectorXd>& theta,
+//                                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+//                                   const Eigen::Ref<const Eigen::VectorXd>& rhs) {
+//   return theta -
+//     lhs.transpose() * (lhs * lhs.transpose()).inverse() * (lhs * theta - rhs);
+// }
 
-  return x;
-}
-
-arma::vec linear_projection(const arma::vec& theta,
-                            const arma::mat& L,
-                            const arma::vec& rhs) {
-  return theta - L.t() * inv_sympd(L * L.t()) * (L * theta - rhs);
-}
-
-arma::mat bootstrap_sample(const arma::mat& x)
-{
-  const int n = x.n_rows;
-  const int p = x.n_cols;
-  // uniform random sample of index integers
-  arma::vec boostrap_index =
-    arma::randi<arma::vec>(n, arma::distr_param(0, n - 1));
-
-  // resampling with replacement
-  arma::mat bootstrap_sample(n, p);
-  for (int i = 0; i < n; ++i) {
-    bootstrap_sample.row(i) = x.row(boostrap_index(i));
+Eigen::MatrixXd bootstrap_sample(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                                 const Eigen::Ref<const Eigen::ArrayXi>& index) {
+  Eigen::MatrixXd out(x.rows(), x.cols());
+  for (int i = 0; i < x.rows(); ++i) {
+    out.row(i) = x.row(index(i));
   }
-
-  return bootstrap_sample;
+  return out;
 }
+
+
+
+
+
+// these are tmp
+Eigen::RowVectorXd rowset(const Eigen::Ref<const Eigen::RowVectorXd>& x,
+                          const Eigen::Ref<const Eigen::RowVectorXd>& c) {
+  // first select nonzero elements from x
+  std::vector<double> nonzeros;
+  for (int j = 0; j < x.size(); ++j) {
+    if (x[j] != 0) {
+      nonzeros.push_back(x[j]);
+    }
+  }
+  Eigen::RowVectorXd result = c;
+  std::vector<double>::iterator it = nonzeros.begin();
+  for (int j = 0; j < x.size(); ++j) {
+    if (result[j] != 0) {
+      result[j] = nonzeros[0];
+      nonzeros.erase(it);
+    }
+  }
+  return result;
+}
+Eigen::MatrixXd rowsetmat(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                          const Eigen::Ref<const Eigen::MatrixXd>& c) {
+  Eigen::MatrixXd out(x.rows(), x.cols());
+  for (int i = 0; i < x.rows(); ++i) {
+    out.row(i) = rowset(x.row(i), c.row(i));
+  }
+  return out;
+}
+
+
+
+

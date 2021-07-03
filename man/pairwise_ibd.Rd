@@ -11,7 +11,6 @@ pairwise_ibd(
   B = 10000L,
   level = 0.05,
   method = "PB",
-  vcov_adj = FALSE,
   block_bootstrap = FALSE,
   approx_lambda = FALSE,
   ncores = 1L,
@@ -31,8 +30,6 @@ pairwise_ibd(
 \item{level}{level.}
 
 \item{method}{the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.}
-
-\item{vcov_adj}{whether to adjust for the covariance estimate. Defaults to FALSE.}
 
 \item{block_bootstrap}{whether to use blocked bootstrap. Defaults to FALSE.}
 
