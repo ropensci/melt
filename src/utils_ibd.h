@@ -8,9 +8,8 @@ Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
                       const Eigen::Ref<const Eigen::MatrixXd>& x,
                       const Eigen::Ref<const Eigen::MatrixXd>& c);
 
-Eigen::MatrixXd cov_ibd( const Eigen::Ref<const Eigen::MatrixXd>& x,
-                         const Eigen::Ref<const Eigen::MatrixXd>& c);
-
+Eigen::MatrixXd cov_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                        const Eigen::Ref<const Eigen::MatrixXd>& c);
 
 Eigen::VectorXd lambda2theta_ibd(const Eigen::Ref<const Eigen::VectorXd>& lambda,
                                  const Eigen::Ref<const Eigen::VectorXd>& theta,

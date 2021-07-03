@@ -6,8 +6,8 @@ Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
   return x - (c.array().rowwise() * theta.array().transpose()).matrix();
 }
 
-Eigen::MatrixXd cov_ibd( const Eigen::Ref<const Eigen::MatrixXd>& x,
-                         const Eigen::Ref<const Eigen::MatrixXd>& c) {
+Eigen::MatrixXd cov_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                        const Eigen::Ref<const Eigen::MatrixXd>& c) {
   // // estimator(global minimizer)
   // const Eigen::VectorXd theta_hat =
   //   x.array().colwise().sum() / c.array().colwise().sum();
