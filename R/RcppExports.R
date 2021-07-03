@@ -14,7 +14,7 @@
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #' @export
 test_ibd <- function(x, c, lhs, rhs, approx_lambda = FALSE, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_test_ibd`, x, c, lhs, rhs, approx_lambda, maxit, abstol)
+    .Call('_elmulttest_test_ibd', PACKAGE = 'elmulttest', x, c, lhs, rhs, approx_lambda, maxit, abstol)
 }
 
 #' Pairwise comparison for Incomplete Block Design
@@ -35,7 +35,7 @@ test_ibd <- function(x, c, lhs, rhs, approx_lambda = FALSE, maxit = 1000L, absto
 #'
 #' @export
 pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", block_bootstrap = FALSE, approx_lambda = FALSE, ncores = 1L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, block_bootstrap, approx_lambda, ncores, maxit, abstol)
+    .Call('_elmulttest_pairwise_ibd', PACKAGE = 'elmulttest', x, c, interval, B, level, method, block_bootstrap, approx_lambda, ncores, maxit, abstol)
 }
 
 #' Empirical likelihood test for mean
@@ -48,6 +48,6 @@ pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method 
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
 #' @export
 el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
-    .Call(`_elmulttest_el_mean`, theta, x, maxit, abstol)
+    .Call('_elmulttest_el_mean', PACKAGE = 'elmulttest', theta, x, maxit, abstol)
 }
 
