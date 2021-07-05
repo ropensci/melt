@@ -1,86 +1,97 @@
 #include "utils.h"
 
-double plog_sum(const Eigen::Ref<const Eigen::VectorXd>& x) {
-  const unsigned int n = x.size();
+double plog_sum(Eigen::VectorXd&& x) {
+  const double n = static_cast<double>(x.size());
   const double a1 = -std::log(n) - 1.5;
   const double a2 = 2.0 * n;
   const double a3 = -0.5 * n * n;
   double out = 0;
-  for (unsigned int i = 0; i < n; ++i) {
-    out += n * x[i] < 1 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : std::log(x[i]);
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    out += n * x[i] < 1.0 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : std::log(x[i]);
   }
   return out;
 }
-Eigen::ArrayXd dplog(const Eigen::Ref<const Eigen::VectorXd>& x) {
-  const unsigned int n = x.size();
+Eigen::ArrayXd dplog(Eigen::VectorXd&& x) {
+  const double n = static_cast<double>(x.size());
   const double a1 = 2.0 * n;
   const double a2 = -1.0 * n * n;
-  Eigen::ArrayXd out(n);
-  for (unsigned int i = 0; i < n; ++i) {
-    if (n * x[i] < 1) {
-      out[i] = a1 + a2 * x[i];
+  // Eigen::ArrayXd out(n);
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    if (n * x[i] < 1.0) {
+      x[i] = a1 + a2 * x[i];
     } else {
-      out[i] = 1.0 / x[i];
+      x[i] = 1.0 / x[i];
     }
   }
-  return out;
+  return x;
 }
-Eigen::ArrayXd sqrt_neg_d2plog(const Eigen::Ref<const Eigen::VectorXd>& x) {
-  const unsigned int n = x.size();
-  const double a2 = 1.0 * n;
-  // const double a2 = 1.0 * n * n;
-  Eigen::ArrayXd out(n);
-  for (unsigned int i = 0; i < n; ++i) {
-    if (n * x[i] < 1) {
-      out[i] = a2;
-    } else {
-      out[i] = 1.0 / x[i];
-    }
-  }
-  return out;
-}
-
-// PSEUDO_LOG pseudo_log(const Eigen::Ref<const Eigen::VectorXd>& x) {
+// Eigen::ArrayXd sqrt_neg_d2plog(const Eigen::Ref<const Eigen::VectorXd>& x) {
 //   const unsigned int n = x.size();
-//   const double a1 = -std::log(n) - 1.5;
-//   const double a2 = 2.0 * n;
-//   const double a3 = -0.5 * n * n;
-//
-//   double plog_sum = 0;
-//   Eigen::ArrayXd dplog(n);
-//   Eigen::ArrayXd sqrt_neg_d2plog(n);
-//
+//   const double a2 = 1.0 * n;
+//   // const double a2 = 1.0 * n * n;
+//   Eigen::ArrayXd out(n);
 //   for (unsigned int i = 0; i < n; ++i) {
 //     if (n * x[i] < 1) {
-//       plog_sum += a1 + a2 * x[i] + a3 * x[i] * x[i];
-//       dplog[i] = a2 + 2 * a3 * x[i];
-//       sqrt_neg_d2plog[i] = a2 / 2;
+//       out[i] = a2;
 //     } else {
-//       plog_sum += std::log(x[i]);
-//       dplog[i] = 1.0 / x[i];
-//       sqrt_neg_d2plog[i] = 1.0 / x[i];
+//       out[i] = 1.0 / x[i];
 //     }
 //   }
-//
-//   PSEUDO_LOG result;
-//   result.plog_sum = plog_sum;
-//   result.dplog = dplog;
-//   result.sqrt_neg_d2plog = sqrt_neg_d2plog;
-//   return result;
+//   return out;
 // }
 
+TEST::TEST(const Eigen::Ref<const Eigen::MatrixXd>& g,
+           const int maxit,
+           const double abstol) {
+  // maximization
+  Eigen::VectorXd lambda_t = Eigen::VectorXd::Zero(g.cols());
+  double f1;
+  int iterations_t = 0;
+  bool convergence_t = false;
+  while (!convergence_t && iterations_t != maxit) {
+    // plog class
+    PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(g.rows()) + g * lambda_t);
+    // J matrix
+    const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
+    // prpose new lambda by NR method with least square
+    Eigen::VectorXd step =
+      (J.transpose() * J).ldlt().solve(
+          J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+    // update function value
+    f1 = plog_sum(Eigen::VectorXd::Ones(g.rows()) + g * (lambda_t + step));
+    // step halving to ensure validity
+    while (f1 < log_tmp.plog_sum) {
+      step /= 2;
+      f1 = plog_sum(Eigen::VectorXd::Ones(g.rows()) + g * (lambda_t + step));
+    }
+    // update lambda
+    lambda_t += step;
+    // convergence check
+    if (f1 - log_tmp.plog_sum < abstol) {
+      convergence_t = true;
+    } else {
+      ++iterations_t;
+    }
+  }
+
+  nlogLR = f1;
+  lambda = lambda_t;
+  iterations = iterations_t;
+  convergence = convergence_t;
+}
+
 PSEUDO_LOG::PSEUDO_LOG(const Eigen::Ref<const Eigen::VectorXd>& x) {
-  const unsigned int n = x.size();
+  const double n = static_cast<double>(x.size());
   const double a1 = -std::log(n) - 1.5;
   const double a2 = 2.0 * n;
   const double a3 = -0.5 * n * n;
 
   double plog_sum_t = 0;
-  Eigen::ArrayXd dplog_t(n);
-  Eigen::ArrayXd sqrt_neg_d2plog_t(n);
+  Eigen::ArrayXd dplog_t(x.size());
+  Eigen::ArrayXd sqrt_neg_d2plog_t(x.size());
 
-  for (unsigned int i = 0; i < n; ++i) {
-    if (n * x[i] < 1) {
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    if (n * x[i] < 1.0) {
       plog_sum_t += a1 + a2 * x[i] + a3 * x[i] * x[i];
       dplog_t[i] = a2 + 2 * a3 * x[i];
       sqrt_neg_d2plog_t[i] = a2 / 2;
@@ -149,13 +160,7 @@ EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
     }
   }
 
-  EL result;
-  result.nlogLR = f1;
-  result.lambda = lambda;
-  // result.gradient = -J.transpose() * y;
-  result.iterations = iterations;
-  result.convergence = convergence;
-  return result;
+  return {f1, lambda, iterations, convergence};
 }
 
 std::vector<std::array<int, 2>> all_pairs(const int p) {

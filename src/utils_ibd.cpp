@@ -371,10 +371,11 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
     } else {
       // update lambda
       eval = getEL(g_tmp);
+      // const TEST eval2(g_tmp);
       lambda_tmp = eval.lambda;
       if (!eval.convergence && iterations > 9) {
-        theta = theta_tmp;
-        lambda = lambda_tmp;
+        theta = std::move(theta_tmp);
+        lambda = std::move(lambda_tmp);
         Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
         break;
       }
@@ -386,7 +387,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
 
     // step halving to ensure that the updated function value be
     // strictly less than the current function value
-    while (f0 <= f1) {
+    while (f0 < f1) {
       // reduce step size
       gamma /= 2;
       // propose new theta
@@ -402,8 +403,8 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
         lambda_tmp = eval.lambda;
       }
       if (gamma < abstol) {
-        theta = theta_tmp;
-        lambda = lambda_tmp;
+        theta = std::move(theta_tmp);
+        lambda = std::move(lambda_tmp);
         Rcpp::warning("Convex hull constraint not satisfied during step halving.");
         break;
       }
@@ -424,13 +425,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
     }
   }
 
-  minEL result;
-  result.theta = theta;
-  result.lambda = lambda;
-  result.nlogLR = f1;
-  result.iterations = iterations;
-  result.convergence = convergence;
-  return result;
+  return {theta, lambda, f1, iterations, convergence};
 }
 
 minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
@@ -461,72 +456,6 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
   double gamma = 1.0 / (c.array().colwise().sum().mean());    // step size
   bool convergence = false;
   int iterations = 0;
-  // proposed value for theta
-  // Eigen::VectorXd theta_tmp(theta.size());
-  // Eigen::VectorXd lambda_tmp(theta.size());
-  // Eigen::MatrixXd g_tmp(g.rows(), g.cols());
-  /// while (!convergence) {
-  //   if (f0 - f1 < abstol && iterations > 0) {
-  //     convergence = true;
-  //   } else {
-  //     // update parameter by GD with lambda fixed
-  //     theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
-  //     // projection
-  //     theta_tmp = linear_projection(theta_tmp, lhs, rhs);
-  //     // update g
-  //     g_tmp = g_ibd(theta_tmp, x, c);
-  //     if (approx_lambda && iterations > 1) {
-  //       // update lambda
-  //       lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
-  //     } else {
-  //       // update lambda
-  //       eval = getEL(g_tmp);
-  //       lambda_tmp = eval.lambda;
-  //       if (!eval.convergence && iterations > 9) {
-  //         theta = theta_tmp;
-  //         lambda = lambda_tmp;
-  //         Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
-  //         break;
-  //       }
-  //     }
-  //     // update function value
-  //     f0 = f1;
-  //     f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-  //     // step halving to ensure that the updated function value be
-  //     // strictly less than the current function value
-  //     while (f0 <= f1) {
-  //       // reduce step size
-  //       gamma /= 2;
-  //       // propose new theta
-  //       theta_tmp = lambda2theta_ibd(lambda, theta, g, c, gamma);
-  //       theta_tmp = linear_projection(theta_tmp, lhs, rhs);
-  //       // propose new lambda
-  //       g_tmp = g_ibd(theta_tmp, x, c);
-  //       if (approx_lambda && iterations > 1) {
-  //         lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
-  //       } else {
-  //         eval = getEL(g_tmp);
-  //         lambda_tmp = eval.lambda;
-  //       }
-  //       if (gamma < abstol) {
-  //         theta = theta_tmp;
-  //         lambda = lambda_tmp;
-  //         Rcpp::warning("Convex hull constraint not satisfied during step halving.");
-  //         break;
-  //       }
-  //       // propose new function value
-  //       f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-  //     }
-  //     // update parameters
-  //     theta = theta_tmp;
-  //     lambda = lambda_tmp;
-  //     g = std::move(g_tmp);
-  //     if (iterations == maxit) {
-  //       break;
-  //     }
-  //     ++iterations;
-  //   }
-  // }
 
   while (!convergence && iterations != maxit) {
     // update parameter by GD with lambda fixed -> projection
@@ -544,8 +473,8 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
       eval = getEL(g_tmp);
       lambda_tmp = eval.lambda;
       if (!eval.convergence && iterations > 9) {
-        theta = theta_tmp;
-        lambda = lambda_tmp;
+        theta = std::move(theta_tmp);
+        lambda = std::move(lambda_tmp);
         Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
         break;
       }
@@ -557,7 +486,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
     // step halving to ensure that the updated function value be
     // strictly less than the current function value
-    while (f0 <= f1) {
+    while (f0 < f1) {
       // reduce step size
       gamma /= 2;
       // propose new theta
@@ -573,8 +502,8 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
         lambda_tmp = eval.lambda;
       }
       if (gamma < abstol) {
-        theta = theta_tmp;
-        lambda = lambda_tmp;
+        theta = std::move(theta_tmp);
+        lambda = std::move(lambda_tmp);
         Rcpp::warning("Convex hull constraint not satisfied during step halving.");
         break;
       }
@@ -595,11 +524,5 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
     }
   }
 
-  minEL result;
-  result.theta = theta;
-  result.lambda = lambda;
-  result.nlogLR = f1;
-  result.iterations = iterations;
-  result.convergence = convergence;
-  return result;
+  return {theta, lambda, f1, iterations, convergence};
 }

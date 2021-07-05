@@ -4,6 +4,17 @@
 #include "eigen_config.h"
 #include <RcppEigen.h>
 
+
+class TEST {
+public:
+  double nlogLR;
+  Eigen::VectorXd lambda;
+  int iterations;
+  bool convergence;
+  TEST (const Eigen::Ref<const Eigen::MatrixXd>& g,
+        const int maxit = 100,
+        const double abstol = 1e-8);
+};
 struct EL {
   double nlogLR;
   Eigen::VectorXd lambda;
@@ -33,15 +44,8 @@ public:
   // Constructor with parameters
   PSEUDO_LOG (const Eigen::Ref<const Eigen::VectorXd>& x);
 };
-double plog_sum(const Eigen::Ref<const Eigen::VectorXd>& x);
-Eigen::ArrayXd dplog(const Eigen::Ref<const Eigen::VectorXd>& x);
-Eigen::ArrayXd sqrt_neg_d2plog(const Eigen::Ref<const Eigen::VectorXd>& x);
-
-
-
-
-
-
+double plog_sum(Eigen::VectorXd&& x);
+Eigen::ArrayXd dplog(Eigen::VectorXd&& x);
 
 
 EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
