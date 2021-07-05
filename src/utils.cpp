@@ -132,7 +132,7 @@ EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
     /// Eigen::VectorXd y = v2 / v1;
 
     // prpose new lambda by NR method with least square
-    Eigen::VectorXd step =
+    Eigen::VectorXd&& step =
       (J.transpose() * J).ldlt().solve(
           J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
 
@@ -178,10 +178,24 @@ std::vector<std::array<int, 2>> all_pairs(const int p) {
   return pairs;
 }
 
-// Eigen::VectorXd linear_projection(const Eigen::Ref<const Eigen::VectorXd>& theta,
-//                                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-//                                   const Eigen::Ref<const Eigen::VectorXd>& rhs) {
-//   return theta -
+Eigen::VectorXd linear_projection(
+    const Eigen::Ref<const Eigen::VectorXd>& theta,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const Eigen::Ref<const Eigen::VectorXd>& rhs) {
+  return theta -
+    lhs.transpose() * (lhs * lhs.transpose()).inverse() * (lhs * theta - rhs);
+}
+Eigen::VectorXd linear_projection_rref(
+    Eigen::VectorXd&& theta,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const Eigen::Ref<const Eigen::VectorXd>& rhs) {
+  return theta -
+    lhs.transpose() * (lhs * lhs.transpose()).inverse() * (lhs * theta - rhs);
+}
+// void linear_projection2(Eigen::Ref<Eigen::VectorXd> theta,
+//                         const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+//                         const Eigen::Ref<const Eigen::VectorXd>& rhs) {
+//   theta -=
 //     lhs.transpose() * (lhs * lhs.transpose()).inverse() * (lhs * theta - rhs);
 // }
 

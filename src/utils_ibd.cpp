@@ -1,8 +1,8 @@
 #include "utils_ibd.h"
 
 Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
-                             const Eigen::Ref<const Eigen::MatrixXd>& x,
-                             const Eigen::Ref<const Eigen::MatrixXd>& c) {
+                      const Eigen::Ref<const Eigen::MatrixXd>& x,
+                      const Eigen::Ref<const Eigen::MatrixXd>& c) {
   return x - (c.array().rowwise() * theta.array().transpose()).matrix();
 }
 
@@ -12,7 +12,7 @@ Eigen::MatrixXd cov_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
   // const Eigen::VectorXd theta_hat =
   //   x.array().colwise().sum() / c.array().colwise().sum();
   // estimating function
-  const Eigen::MatrixXd g =
+  Eigen::MatrixXd&& g =
     g_ibd(x.array().colwise().sum() / c.array().colwise().sum(), x, c);
   // covariance estimate
   return (g.transpose() * g) / x.rows();
@@ -48,7 +48,8 @@ Eigen::VectorXd approx_lambda_ibd(
   Eigen::ArrayXd&& denominator = Eigen::pow(arg, 2);
 
   // LHS
-  Eigen::MatrixXd&& LHS = g0.transpose() * (g0.array().colwise() / denominator).matrix();
+  Eigen::MatrixXd&& LHS =
+    g0.transpose() * (g0.array().colwise() / denominator).matrix();
 
   // RHS
   const Eigen::MatrixXd I_RHS =
@@ -75,14 +76,14 @@ std::array<double, 2> pair_confidence_interval_ibd(
     const double threshold) {
   // upper endpoint
   double upper_lb = init;
-  double upper_size = 0.5;
+  double upper_size = 1;
   double upper_ub = init + upper_size;
   // upper bound for upper endpoint
   while (2 * test_ibd_EL(theta0, x, c,
                          lhs, Eigen::Matrix<double, 1, 1>(upper_ub),
                          approx_lambda).nlogLR <= threshold) {
-    upper_size *= 2;
-    upper_ub = init + upper_size;
+    upper_lb = upper_ub;
+    upper_ub += upper_size;
   }
   // approximate upper bound by numerical search
   while (upper_ub - upper_lb > 1e-04) {
@@ -96,15 +97,15 @@ std::array<double, 2> pair_confidence_interval_ibd(
   }
 
   // lower endpoint
-  double lower_ub = init;
-  double lower_size = 0.5;
+  double lower_ub;
+  double lower_size = upper_ub - init;
   double lower_lb = init - lower_size;
   // lower bound for lower endpoint
   while (2 * test_ibd_EL(theta0, x, c,
                          lhs, Eigen::Matrix<double, 1, 1>(lower_lb),
                          approx_lambda).nlogLR <= threshold) {
-    lower_size *= 2;
-    lower_lb = init - lower_size;
+    lower_ub = lower_lb;
+    lower_lb -= lower_size / 2;
   }
   // approximate lower bound by numerical search
   while (lower_ub - lower_lb > 1e-04) {
@@ -184,7 +185,10 @@ double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
   const int m = pairs.size();   // number of hypotheses
 
   // centered matrix
-  Eigen::MatrixXd&& x_centered = centering_ibd(x, c);
+  // Eigen::MatrixXd&& x_centered = centering_ibd(x, c);
+  const Eigen::MatrixXd x_centered =
+    x - (c.array().rowwise() *
+    (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
 
   // index vector for boostrap(length n * B)
   // generate index to sample(Rcpp) -> transform to std::vector ->
@@ -208,21 +212,21 @@ double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
       lhs(pairs[j][0] - 1) = 1;
       lhs(pairs[j][1] - 1) = -1;
-      statistics_b(j) = block_bootstrap?
-      2 * test_ibd_EL(
-        rowsetmat(bootstrap_sample(x_centered, bootstrap_index.col(b)), c),
-        c,
-        lhs, Eigen::Matrix<double, 1, 1>(0),
-        approx_lambda, maxit, abstol).nlogLR :
-      2 * test_ibd_EL(bootstrap_sample(x_centered, bootstrap_index.col(b)),
-                      bootstrap_sample(c, bootstrap_index.col(b)),
-                      lhs, Eigen::Matrix<double, 1, 1>(0),
-                      approx_lambda, maxit, abstol).nlogLR;
-      // statistics_b(j) =
-      //   2 * test_ibd_EL(bootstrap_sample(x_centered, bootstrap_index.col(b)),
-      //                   bootstrap_sample(c, bootstrap_index.col(b)),
-      //                   lhs, Eigen::Matrix<double, 1, 1>(0),
-      //                   approx_lambda, maxit, abstol).nlogLR;
+      // statistics_b(j) = block_bootstrap?
+      // 2 * test_ibd_EL(
+      //   rowsetmat(bootstrap_sample(x_centered, bootstrap_index.col(b)), c),
+      //   c,
+      //   lhs, Eigen::Matrix<double, 1, 1>(0),
+      //   approx_lambda, maxit, abstol).nlogLR :
+      // 2 * test_ibd_EL(bootstrap_sample(x_centered, bootstrap_index.col(b)),
+      //                 bootstrap_sample(c, bootstrap_index.col(b)),
+      //                 lhs, Eigen::Matrix<double, 1, 1>(0),
+      //                 approx_lambda, maxit, abstol).nlogLR;
+      statistics_b(j) =
+        2 * test_ibd_EL(bootstrap_sample(x_centered, bootstrap_index.col(b)),
+                        bootstrap_sample(c, bootstrap_index.col(b)),
+                        lhs, Eigen::Matrix<double, 1, 1>(0),
+                        approx_lambda, maxit, abstol).nlogLR;
     }
     // need to generalize later for k-FWER control
     bootstrap_statistics(b) = statistics_b.maxCoeff();
@@ -360,7 +364,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
   while (!convergence && iterations != maxit) {
     // update parameter by GD with lambda fixed -> projection
     Eigen::VectorXd theta_tmp =
-      linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
+      linear_projection_rref(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
     // update g
     Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
 
@@ -392,7 +396,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
       gamma /= 2;
       // propose new theta
       theta_tmp =
-        linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma),
+        linear_projection_rref(lambda2theta_ibd(lambda, theta, g, c, gamma),
                           lhs, rhs);
       // propose new lambda
       g_tmp = g_ibd(theta_tmp, x, c);
@@ -439,7 +443,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
   // Constraint imposed on the initial value by projection.
   // The initial value is given as treatment means.
   Eigen::VectorXd theta =
-    linear_projection(x.array().colwise().sum() / c.array().colwise().sum(),
+    linear_projection_rref(x.array().colwise().sum() / c.array().colwise().sum(),
                       lhs, rhs);
 
   // estimating function
@@ -460,7 +464,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
   while (!convergence && iterations != maxit) {
     // update parameter by GD with lambda fixed -> projection
     Eigen::VectorXd theta_tmp =
-      linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
+      linear_projection_rref(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
     // update g
     Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
 
@@ -491,7 +495,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
       gamma /= 2;
       // propose new theta
       theta_tmp =
-        linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma),
+        linear_projection_rref(lambda2theta_ibd(lambda, theta, g, c, gamma),
                           lhs, rhs);
       // propose new lambda
       g_tmp = g_ibd(theta_tmp, x, c);

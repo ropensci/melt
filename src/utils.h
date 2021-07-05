@@ -56,12 +56,20 @@ std::vector<std::array<int, 2>> all_pairs(const int p);
 // Eigen::VectorXd linear_projection(const Eigen::Ref<const Eigen::VectorXd>& theta,
 //                                   const Eigen::Ref<const Eigen::MatrixXd>& L,
 //                                   const Eigen::Ref<const Eigen::VectorXd>& rhs);
-inline Eigen::VectorXd linear_projection(const Eigen::Ref<const Eigen::VectorXd>& theta,
-                                         const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-                                         const Eigen::Ref<const Eigen::VectorXd>& rhs) {
-  return theta -
-    lhs.transpose() * (lhs * lhs.transpose()).inverse() * (lhs * theta - rhs);
-}
+
+
+Eigen::VectorXd linear_projection(
+    const Eigen::Ref<const Eigen::VectorXd>& theta,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const Eigen::Ref<const Eigen::VectorXd>& rhs);
+Eigen::VectorXd linear_projection_rref(
+    Eigen::VectorXd&& theta,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const Eigen::Ref<const Eigen::VectorXd>& rhs);
+
+// void linear_projection2(Eigen::Ref<Eigen::VectorXd> theta,
+//                         const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+//                         const Eigen::Ref<const Eigen::VectorXd>& rhs);
 
 Eigen::MatrixXd bootstrap_sample(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const Eigen::Ref<const Eigen::ArrayXi>& index);
