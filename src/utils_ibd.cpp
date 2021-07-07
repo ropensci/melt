@@ -12,7 +12,7 @@ Eigen::MatrixXd cov_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
   // const Eigen::VectorXd theta_hat =
   //   x.array().colwise().sum() / c.array().colwise().sum();
   // estimating function
-  Eigen::MatrixXd&& g =
+  Eigen::MatrixXd g =
     g_ibd(x.array().colwise().sum() / c.array().colwise().sum(), x, c);
   // covariance estimate
   return (g.transpose() * g) / x.rows();
@@ -193,7 +193,7 @@ double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
   // index vector for boostrap(length n * B)
   // generate index to sample(Rcpp) -> transform to std::vector ->
   // reshape to ArrayXXi(Eigen)
-  Eigen::ArrayXXi&& bootstrap_index =
+  const Eigen::ArrayXXi bootstrap_index =
     Eigen::Map<Eigen::ArrayXXi, Eigen::Unaligned>(
         (Rcpp::as<std::vector<int>>(
             Rcpp::sample(Rcpp::IntegerVector(Rcpp::seq(0, n - 1)), n * B, true)))
@@ -207,7 +207,7 @@ double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
     ///   bootstrap_sample(x_centered, bootstrap_index.col(b));
     /// const Eigen::MatrixXd incidence_mat_b =
     ///   bootstrap_sample(c, bootstrap_index.col(b));
-    Eigen::VectorXd statistics_b(m);
+    Eigen::ArrayXd statistics_b(m);
     for (int j = 0; j < m; ++j) {
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
       lhs(pairs[j][0] - 1) = 1;

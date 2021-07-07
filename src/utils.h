@@ -41,7 +41,6 @@ public:
   double plog_sum;
   Eigen::ArrayXd dplog;
   Eigen::ArrayXd sqrt_neg_d2plog;
-  // Constructor with parameters
   PSEUDO_LOG (const Eigen::Ref<const Eigen::VectorXd>& x);
 };
 double plog_sum(Eigen::VectorXd&& x);
@@ -53,10 +52,6 @@ EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
          const double abstol = 1e-8);
 
 std::vector<std::array<int, 2>> all_pairs(const int p);
-// Eigen::VectorXd linear_projection(const Eigen::Ref<const Eigen::VectorXd>& theta,
-//                                   const Eigen::Ref<const Eigen::MatrixXd>& L,
-//                                   const Eigen::Ref<const Eigen::VectorXd>& rhs);
-
 
 Eigen::VectorXd linear_projection(
     const Eigen::Ref<const Eigen::VectorXd>& theta,

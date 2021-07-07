@@ -86,32 +86,29 @@ PSEUDO_LOG::PSEUDO_LOG(const Eigen::Ref<const Eigen::VectorXd>& x) {
   const double a2 = 2.0 * n;
   const double a3 = -0.5 * n * n;
 
-  double plog_sum_t = 0;
-  Eigen::ArrayXd dplog_t(x.size());
-  Eigen::ArrayXd sqrt_neg_d2plog_t(x.size());
+  plog_sum = 0;
+  dplog.resize(x.size());
+  sqrt_neg_d2plog.resize(x.size());
 
   for (unsigned int i = 0; i < x.size(); ++i) {
     if (n * x[i] < 1.0) {
-      plog_sum_t += a1 + a2 * x[i] + a3 * x[i] * x[i];
-      dplog_t[i] = a2 + 2 * a3 * x[i];
-      sqrt_neg_d2plog_t[i] = a2 / 2;
+      plog_sum += a1 + a2 * x[i] + a3 * x[i] * x[i];
+      dplog[i] = a2 + 2 * a3 * x[i];
+      sqrt_neg_d2plog[i] = a2 / 2;
     } else {
-      plog_sum_t += std::log(x[i]);
-      dplog_t[i] = 1.0 / x[i];
-      sqrt_neg_d2plog_t[i] = 1.0 / x[i];
+      plog_sum += std::log(x[i]);
+      dplog[i] = 1.0 / x[i];
+      sqrt_neg_d2plog[i] = 1.0 / x[i];
     }
   }
-
-  plog_sum = plog_sum_t;
-  dplog = dplog_t;
-  sqrt_neg_d2plog = sqrt_neg_d2plog_t;
 }
 
 EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
          const int maxit,
          const double abstol) {
   // maximization
-  Eigen::VectorXd lambda = Eigen::VectorXd::Zero(g.cols());
+  // Eigen::VectorXd lambda = Eigen::VectorXd::Zero(g.cols());
+  Eigen::VectorXd lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
   double f1;
   int iterations = 0;
   bool convergence = false;
