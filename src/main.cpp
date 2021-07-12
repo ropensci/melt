@@ -19,9 +19,9 @@ Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta,
     Rcpp::stop("Design matrix x must have full rank.");
   }
   // compute EL
-  const EL& result = getEL(x.rowwise() - theta.transpose(), maxit, abstol);
+  const EL result = getEL(x.rowwise() - theta.transpose(), maxit, abstol);
 
-  // const TEST result(x.rowwise() - theta.transpose(), maxit, abstol);
+  // const EL2 result(x.rowwise() - theta.transpose(), maxit, abstol);
 
   return Rcpp::List::create(
     Rcpp::Named("nlogLR") = result.nlogLR,

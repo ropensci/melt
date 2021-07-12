@@ -11,7 +11,7 @@ pairwise_ibd(
   B = 10000L,
   level = 0.05,
   method = "PB",
-  block_bootstrap = FALSE,
+  correction = FALSE,
   approx_lambda = FALSE,
   ncores = 1L,
   maxit = 10000L,
@@ -31,7 +31,7 @@ pairwise_ibd(
 
 \item{method}{the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.}
 
-\item{block_bootstrap}{whether to use blocked bootstrap. Defaults to FALSE.}
+\item{correction}{whether to use blocked bootstrap. Defaults to FALSE.}
 
 \item{approx_lambda}{whether to use the approximation for lambda. Defaults to FALSE.}
 

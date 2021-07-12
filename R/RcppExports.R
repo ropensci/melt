@@ -27,15 +27,15 @@ test_ibd <- function(x, c, lhs, rhs, approx_lambda = FALSE, maxit = 1000L, absto
 #' @param B number of bootstrap replicates.
 #' @param level level.
 #' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-#' @param block_bootstrap whether to use blocked bootstrap. Defaults to FALSE.
+#' @param correction whether to use blocked bootstrap. Defaults to FALSE.
 #' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
 #' @param ncores number of cores(threads) to use. Defaults to 1.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", block_bootstrap = FALSE, approx_lambda = FALSE, ncores = 1L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, block_bootstrap, approx_lambda, ncores, maxit, abstol)
+pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method = "PB", correction = FALSE, approx_lambda = FALSE, ncores = 1L, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, correction, approx_lambda, ncores, maxit, abstol)
 }
 
 #' Empirical likelihood test for mean

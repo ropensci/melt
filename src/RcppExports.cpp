@@ -24,8 +24,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // pairwise_ibd
-Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const bool interval, const int B, const double level, std::string method, const bool block_bootstrap, const bool approx_lambda, const int ncores, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP intervalSEXP, SEXP BSEXP, SEXP levelSEXP, SEXP methodSEXP, SEXP block_bootstrapSEXP, SEXP approx_lambdaSEXP, SEXP ncoresSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const bool interval, const int B, const double level, std::string method, const bool correction, const bool approx_lambda, const int ncores, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP intervalSEXP, SEXP BSEXP, SEXP levelSEXP, SEXP methodSEXP, SEXP correctionSEXP, SEXP approx_lambdaSEXP, SEXP ncoresSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,12 +35,12 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type B(BSEXP);
     Rcpp::traits::input_parameter< const double >::type level(levelSEXP);
     Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const bool >::type block_bootstrap(block_bootstrapSEXP);
+    Rcpp::traits::input_parameter< const bool >::type correction(correctionSEXP);
     Rcpp::traits::input_parameter< const bool >::type approx_lambda(approx_lambdaSEXP);
     Rcpp::traits::input_parameter< const int >::type ncores(ncoresSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, interval, B, level, method, block_bootstrap, approx_lambda, ncores, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, interval, B, level, method, correction, approx_lambda, ncores, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }

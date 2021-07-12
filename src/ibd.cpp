@@ -48,7 +48,7 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
 //' @param B number of bootstrap replicates.
 //' @param level level.
 //' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-//' @param block_bootstrap whether to use blocked bootstrap. Defaults to FALSE.
+//' @param correction whether to use blocked bootstrap. Defaults to FALSE.
 //' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
 //' @param ncores number of cores(threads) to use. Defaults to 1.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
@@ -62,7 +62,7 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
                         const int B = 1e4,
                         const double level = 0.05,
                         std::string method = "PB",
-                        const bool block_bootstrap = false,
+                        const bool correction = false,
                         const bool approx_lambda = false,
                         const int ncores = 1,
                         const int maxit = 1e4,
@@ -96,9 +96,9 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
     lhs(pairs[i][0] - 1) = 1;
     lhs(pairs[i][1] - 1) = -1;
-    minEL&& pairwise_result =
+    minEL pairwise_result =
       test_ibd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
-                  false, maxit, abstol);
+                  maxit, abstol);
     if (!pairwise_result.convergence) {
       Rcpp::warning("Test for pair (%i,%i) failed. \n",
                     pairs[i][0], pairs[i][1]);
@@ -109,8 +109,8 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   // cutoff value
   const double cutoff =
     method == "NB" ?
-    cutoff_pairwise_NB_ibd(x, c, B, level, block_bootstrap, approx_lambda, ncores, maxit, abstol) :
-    cutoff_pairwise_PB_ibd(x, c, pairs, B, level);
+    cutoff_pairwise_NB_ibd(x, c, B, level, approx_lambda, ncores, maxit, abstol) :
+    cutoff_pairwise_PB_ibd(x, c, pairs, B, level, correction);
 
   // result
   Rcpp::List result;

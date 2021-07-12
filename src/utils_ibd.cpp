@@ -146,7 +146,8 @@ double cutoff_pairwise_PB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
                               const Eigen::Ref<const Eigen::MatrixXd>& c,
                               const std::vector<std::array<int, 2>>& pairs,
                               const int B,
-                              const double level) {
+                              const double level,
+                              const bool correction) {
   const Eigen::MatrixXd V_hat = cov_ibd(x, c); // covariance estimate
 
   // U hat matrices
@@ -165,16 +166,26 @@ double cutoff_pairwise_PB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
   // cutoff(we only need maximum statistics)
   Rcpp::Function quantile("quantile");
-  return
+  const double cutoff =
     Rcpp::as<double>(quantile(bootstrap_statistics.rowwise().maxCoeff(),
                               Rcpp::Named("probs") = 1 - level));
+  if (correction) {
+    const double n = static_cast<double>(x.rows());
+    const double p = static_cast<double>(x.cols());
+    const double a = p * p + p / 2;
+    return cutoff * (1 + a / n);
+  } else {
+    return cutoff;
+  }
+  // return
+  //   Rcpp::as<double>(quantile(bootstrap_statistics.rowwise().maxCoeff(),
+  //                             Rcpp::Named("probs") = 1 - level));
 }
 
 double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
                               const Eigen::Ref<const Eigen::MatrixXd>& c,
                               const int B,
                               const double level,
-                              const bool block_bootstrap,
                               const bool approx_lambda,
                               const int ncores,
                               const int maxit,
@@ -201,7 +212,7 @@ double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
   // B bootstrap results(we only need maximum statistics)
   Eigen::VectorXd bootstrap_statistics(B);
-  #pragma omp parallel for num_threads(ncores) default(none) shared(block_bootstrap, B, approx_lambda, maxit, abstol, pairs, x_centered, c, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
+  #pragma omp parallel for num_threads(ncores) default(none) shared(B, approx_lambda, maxit, abstol, pairs, x_centered, c, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
   for (int b = 0; b < B; ++b) {
     /// const Eigen::MatrixXd sample_b =
     ///   bootstrap_sample(x_centered, bootstrap_index.col(b));
@@ -264,6 +275,93 @@ double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
   return
     Rcpp::as<double>(quantile(bootstrap_statistics,
                               Rcpp::Named("probs") = 1 - level));
+}
+
+
+minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                  const int maxit,
+                  const double abstol) {
+  /// initialization ///
+  // Constraint imposed on the initial value by projection.
+  // The initial value is given as treatment means.
+  Eigen::VectorXd theta =
+    linear_projection(theta0, lhs, rhs);
+  // estimating function
+  Eigen::MatrixXd g = g_ibd(theta, x, c);
+  // evaluation
+  EL eval = getEL(g);
+  Eigen::VectorXd lambda = eval.lambda;
+  // for current function value(-logLR)
+  double f0 = plog_sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
+  // for updated function value
+  double f1 = f0;
+
+  /// minimization(projected gradient descent) ///
+  double gamma = 1.0 / (c.array().colwise().sum().mean());    // step size
+  bool convergence = false;
+  int iterations = 0;
+  // proposed value for theta
+  while (!convergence && iterations != maxit) {
+    // update parameter by GD with lambda fixed -> projection
+    Eigen::VectorXd theta_tmp =
+      linear_projection_rref(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
+    // update g
+    Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
+    // update lambda
+    EL2 eval(g_tmp);
+    Eigen::VectorXd& lambda_tmp = eval.lambda;
+    if (!eval.convergence && iterations > 9) {
+      theta = std::move(theta_tmp);
+      lambda = std::move(lambda_tmp);
+      Rcpp::warning("Convex hull constraint not satisfied during optimization. Optimization halted.");
+      break;
+    }
+
+    // update function value
+    f0 = f1;
+    f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+
+    // step halving to ensure that the updated function value be
+    // strictly less than the current function value
+    while (f0 < f1) {
+      // reduce step size
+      gamma /= 2;
+      // propose new theta
+      theta_tmp =
+        linear_projection_rref(lambda2theta_ibd(lambda, theta, g, c, gamma),
+                               lhs, rhs);
+      // propose new lambda
+      g_tmp = g_ibd(theta_tmp, x, c);
+      EL2 eval(g_tmp);
+      lambda_tmp = eval.lambda;
+      if (gamma < abstol) {
+        theta = std::move(theta_tmp);
+        lambda = std::move(lambda_tmp);
+        Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+        break;
+      }
+      // propose new function value
+      f1 = plog_sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    }
+
+    // update parameters
+    theta = std::move(theta_tmp);
+    lambda = std::move(lambda_tmp);
+    g = std::move(g_tmp);
+
+    // convergence check
+    if (f0 - f1 < abstol && iterations > 0) {
+      convergence = true;
+    } else {
+      ++iterations;
+    }
+  }
+
+  return {theta, lambda, f1, iterations, convergence};
 }
 
 minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,

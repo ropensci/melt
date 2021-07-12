@@ -42,17 +42,26 @@ double cutoff_pairwise_PB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
                               const Eigen::Ref<const Eigen::MatrixXd>& c,
                               const std::vector<std::array<int, 2>>& pairs,
                               const int B,
-                              const double level);
+                              const double level,
+                              const bool correction);
 double cutoff_pairwise_NB_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
                               const Eigen::Ref<const Eigen::MatrixXd>& c,
                               const int B,
                               const double level,
-                              const bool block_bootstrap,
                               const bool approx_lambda,
                               const int ncores,
                               const int maxit,
                               const double abstol);
 
+
+// initial value given & no approximation
+minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                  const int maxit = 1000,
+                  const double abstol = 1e-8);
 // initial value given
 minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                   const Eigen::Ref<const Eigen::MatrixXd>& x,
