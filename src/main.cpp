@@ -1,3 +1,4 @@
+#include "EL.h"
 #include "utils.h"
 //' Empirical likelihood test for mean
 //'

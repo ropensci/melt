@@ -28,7 +28,7 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
     Rcpp::stop("Dimensions of L and rhs do not match.");
   }
 
-  minEL result = test_ibd_EL(x, c, lhs, rhs, approx_lambda, maxit, abstol);
+  minEL result = test_ibd_EL(x, c, lhs, rhs, maxit, abstol);
 
   return Rcpp::List::create(
     Rcpp::Named("theta") = result.theta,
@@ -70,19 +70,29 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   if (level <= 0 || level >= 1) {
     Rcpp::stop("level must be between 0 and 1.");
   }
-  if (method != "PB" && method != "NB") {
+  // all pairs
+  std::vector<std::array<int, 2>> pairs = all_pairs(x.cols());
+  // cutoff value
+  double cutoff;
+  if (method == "PB") {
+    cutoff = cutoff_pairwise_PB(x, c, pairs, B, level, correction);
+  } else if (method != "NB") {
     Rcpp::warning
     ("method '%s' is not supported. Using 'PB' as default.",
      method);
     method = "PB";
+    cutoff = cutoff_pairwise_PB(x, c, pairs, B, level, correction);
+  } else if (approx_lambda) {
+    cutoff = cutoff_pairwise_NB_approx(x, c, B, level, ncores, maxit, abstol);
+  } else {
+    cutoff = cutoff_pairwise_NB(x, c, B, level, ncores, maxit, abstol);
   }
-  // all pairs
-  std::vector<std::array<int, 2>> pairs = all_pairs(x.cols());
-  // number of hypotheses
-  const int m = pairs.size();
   // global minimizer
   const Eigen::VectorXd theta_hat =
     x.array().colwise().sum() / c.array().colwise().sum();
+  // number of hypotheses
+  const int m = pairs.size();
+
 
   // estimates
   Rcpp::NumericVector estimate(m);
@@ -106,11 +116,15 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
     statistic(i) = 2 * pairwise_result.nlogLR;
   }
 
-  // cutoff value
-  const double cutoff =
-    method == "NB" ?
-    cutoff_pairwise_NB_ibd(x, c, B, level, approx_lambda, ncores, maxit, abstol) :
-    cutoff_pairwise_PB_ibd(x, c, pairs, B, level, correction);
+  // // cutoff value
+  // double cutoff;
+  // if (method == "PB") {
+  //   cutoff = cutoff_pairwise_PB(x, c, pairs, B, level, correction);
+  // } else if (approx_lambda) {
+  //   cutoff = cutoff_pairwise_NB_approx(x, c, B, level, ncores, maxit, abstol);
+  // } else {
+  //   cutoff = cutoff_pairwise_NB(x, c, B, level, ncores, maxit, abstol);
+  // }
 
   // result
   Rcpp::List result;
@@ -124,8 +138,7 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
       lhs(pairs[i][0] - 1) = 1;
       lhs(pairs[i][1] - 1) = -1;
       CI(i) =
-        pair_confidence_interval_ibd(theta_hat, x, c, lhs, approx_lambda,
-                                     estimate(i), cutoff);
+        pair_confidence_interval_ibd(theta_hat, x, c, lhs, estimate(i), cutoff);
     }
     result["CI"] = CI;
   }
