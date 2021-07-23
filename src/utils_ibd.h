@@ -51,6 +51,7 @@ double cutoff_pairwise_PB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const int B,
                           const double level,
                           const bool correction);
+
 double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const Eigen::Ref<const Eigen::MatrixXd>& c,
                           const int B,
@@ -58,6 +59,7 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const int ncores,
                           const int maxit,
                           const double abstol);
+
 double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const Eigen::Ref<const Eigen::MatrixXd>& c,
                                  const int B,
@@ -67,31 +69,32 @@ double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const double abstol);
 
 
-// initial value & no approximation
-minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
-                  const Eigen::Ref<const Eigen::MatrixXd>& x,
-                  const Eigen::Ref<const Eigen::MatrixXd>& c,
-                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                  const int maxit = 1000,
-                  const double abstol = 1e-8);
 // no approximation
-minEL test_ibd_EL(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                  const Eigen::Ref<const Eigen::MatrixXd>& c,
-                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                  const int maxit = 1000,
-                  const double abstol = 1e-8);
-// initial value given
 minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                   const Eigen::Ref<const Eigen::MatrixXd>& x,
                   const Eigen::Ref<const Eigen::MatrixXd>& c,
                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                  const bool approx_lambda,
                   const int maxit = 1000,
                   const double abstol = 1e-8);
-// initial value not given
+
+double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+                   const Eigen::Ref<const Eigen::MatrixXd>& x,
+                   const Eigen::Ref<const Eigen::MatrixXd>& c,
+                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                   const int maxit = 1000,
+                   const double abstol = 1e-8);
+
+double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                   const Eigen::Ref<const Eigen::MatrixXd>& c,
+                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                   const int maxit = 1000,
+                   const double abstol = 1e-8);
+
+// working...
+// approximation
 minEL test_ibd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                          const Eigen::Ref<const Eigen::MatrixXd>& c,
                          const Eigen::Ref<const Eigen::MatrixXd>& lhs,

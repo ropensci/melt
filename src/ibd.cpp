@@ -27,8 +27,9 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
   if (lhs.rows() != rhs.rows()) {
     Rcpp::stop("Dimensions of L and rhs do not match.");
   }
-
-  minEL result = test_ibd_EL(x, c, lhs, rhs, maxit, abstol);
+  minEL result =
+    test_ibd_EL(x.array().colwise().sum() / c.array().colwise().sum(),
+                x, c, lhs, rhs, maxit, abstol);
 
   return Rcpp::List::create(
     Rcpp::Named("theta") = result.theta,
@@ -146,6 +147,63 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   result["cutoff"] = cutoff;
   result["method"] = method;
   result["num.bootstrap"] = B;
+  result.attr("class") = "pairwise.ibd";
+  return result;
+}
+
+//
+//
+//
+//' Pairwise comparison for Incomplete Block Design
+//'
+//' Pairwise comparison for Incomplete Block Design
+//'
+//' @param x a matrix of data .
+//' @param c an incidence matrix.
+//' @param interval whether to compute interval. Defaults to FALSE.
+//' @param B number of bootstrap replicates.
+//' @param level level.
+//' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
+//' @param correction whether to use blocked bootstrap. Defaults to FALSE.
+//' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
+//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+//'
+//' @export
+// [[Rcpp::export]]
+Rcpp::List tt(const Eigen::MatrixXd& x,
+                        const Eigen::MatrixXd& c,
+                        const int maxit = 1e4,
+                        const double abstol = 1e-8) {
+  // all pairs
+  std::vector<std::array<int, 2>> pairs = all_pairs(x.cols());
+
+  // global minimizer
+  const Eigen::VectorXd theta_hat =
+    x.array().colwise().sum() / c.array().colwise().sum();
+  // number of hypotheses
+  const int m = pairs.size();
+
+  // statistics(-2logLR)
+  Rcpp::NumericVector statistic(m);
+  for (int i = 0; i < m; ++i) {
+    // statistics
+    Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
+    lhs(pairs[i][0] - 1) = 1;
+    lhs(pairs[i][1] - 1) = -1;
+    minEL pairwise_result =
+      test_ibd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
+                  maxit, abstol);
+    if (!pairwise_result.convergence) {
+      Rcpp::warning("Test for pair (%i,%i) failed. \n",
+                    pairs[i][0], pairs[i][1]);
+    }
+    statistic(i) = 2 * pairwise_result.nlogLR;
+  }
+
+  // result
+  Rcpp::List result;
+  result["statistic"] = statistic;
   result.attr("class") = "pairwise.ibd";
   return result;
 }

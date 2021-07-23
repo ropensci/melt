@@ -38,6 +38,26 @@ pairwise_ibd <- function(x, c, interval = FALSE, B = 1e4L, level = 0.05, method 
     .Call(`_elmulttest_pairwise_ibd`, x, c, interval, B, level, method, correction, approx_lambda, ncores, maxit, abstol)
 }
 
+#' Pairwise comparison for Incomplete Block Design
+#'
+#' Pairwise comparison for Incomplete Block Design
+#'
+#' @param x a matrix of data .
+#' @param c an incidence matrix.
+#' @param interval whether to compute interval. Defaults to FALSE.
+#' @param B number of bootstrap replicates.
+#' @param level level.
+#' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
+#' @param correction whether to use blocked bootstrap. Defaults to FALSE.
+#' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
+#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
+#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
+#'
+#' @export
+tt <- function(x, c, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_tt`, x, c, maxit, abstol)
+}
+
 #' Empirical likelihood test for mean
 #'
 #' Compute empirical likelihood for mean
