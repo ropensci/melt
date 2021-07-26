@@ -102,17 +102,17 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   Rcpp::NumericVector statistic(m);
   for (int i = 0; i < m; ++i) {
     // estimates
-    estimate(i) = theta_hat(pairs[i][0] - 1) - theta_hat(pairs[i][1] - 1);
+    estimate(i) = theta_hat(pairs[i][0]) - theta_hat(pairs[i][1]);
     // statistics
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
-    lhs(pairs[i][0] - 1) = 1;
-    lhs(pairs[i][1] - 1) = -1;
+    lhs(pairs[i][0]) = 1;
+    lhs(pairs[i][1]) = -1;
     minEL pairwise_result =
       test_ibd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
                   maxit, abstol);
     if (!pairwise_result.convergence) {
       Rcpp::warning("test for pair (%i,%i) failed. \n",
-                    pairs[i][0], pairs[i][1]);
+                    pairs[i][0] + 1, pairs[i][1] + 1);
     }
     statistic(i) = 2 * pairwise_result.nlogLR;
   }
@@ -136,8 +136,8 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
     Rcpp::List CI(m);
     for (int i = 0; i < m; ++i) {
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
-      lhs(pairs[i][0] - 1) = 1;
-      lhs(pairs[i][1] - 1) = -1;
+      lhs(pairs[i][0]) = 1;
+      lhs(pairs[i][1]) = -1;
       CI(i) =
         pair_confidence_interval_ibd(theta_hat, x, c, lhs, estimate(i), cutoff);
     }
@@ -190,14 +190,14 @@ Rcpp::List tt(const Eigen::MatrixXd& x,
   for (int i = 0; i < m; ++i) {
     // statistics
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
-    lhs(pairs[i][0] - 1) = 1;
-    lhs(pairs[i][1] - 1) = -1;
+    lhs(pairs[i][0]) = 1;
+    lhs(pairs[i][1]) = -1;
     minEL pairwise_result =
       test_ibd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
                   maxit, abstol);
     if (!pairwise_result.convergence) {
       Rcpp::warning("Test for pair (%i,%i) failed. \n",
-                    pairs[i][0], pairs[i][1]);
+                    pairs[i][0] + 1, pairs[i][1] + 1);
     }
     statistic(i) = 2 * pairwise_result.nlogLR;
   }

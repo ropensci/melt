@@ -6,19 +6,19 @@ std::vector<std::array<int, 2>> all_pairs(const int p) {
   // the size of vector is p choose 2
   pairs.reserve(p * (p - 1) / 2);
   // fill in each elements(pairs)
-  for (int i = 1; i < p + 1; ++i) {
-    for (int j = i + 1; j < p + 1; ++j) {
-      // pairs.emplace_back(std::array<int, 2>{j, i});
-      pairs.emplace_back(std::array<int, 2>{i, j});
-
-    }
-  }
-  // for (int i = 0; i < p - 1; ++i) {
-  //   for (int j = i + 1; j < p; ++j) {
+  // for (int i = 1; i < p + 1; ++i) {
+  //   for (int j = i + 1; j < p + 1; ++j) {
+  //     // pairs.emplace_back(std::array<int, 2>{j, i});
   //     pairs.emplace_back(std::array<int, 2>{i, j});
   //
   //   }
   // }
+  for (int i = 0; i < p - 1; ++i) {
+    for (int j = i + 1; j < p; ++j) {
+      pairs.emplace_back(std::array<int, 2>{i, j});
+
+    }
+  }
   return pairs;
 }
 

@@ -177,8 +177,8 @@ double cutoff_pairwise_PB(const Eigen::Ref<const Eigen::MatrixXd>& x,
   Eigen::MatrixXd bootstrap_statistics(B, pairs.size());
   for (int j = 0; j < pairs.size(); ++j) {
     Eigen::RowVectorXd R = Eigen::RowVectorXd::Zero(1, x.cols());
-    R(pairs[j][0] - 1) = 1;
-    R(pairs[j][1] - 1) = -1;
+    R(pairs[j][0]) = 1;
+    R(pairs[j][1]) = -1;
     Eigen::MatrixXd A_hat = (R.transpose() * R) / (R * V_hat * R.transpose());
     bootstrap_statistics.col(j) =
       (U_hat * A_hat * U_hat.transpose()).diagonal();
@@ -236,8 +236,8 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
     Eigen::ArrayXd statistics_b(m);
     for (int j = 0; j < m; ++j) {
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
-      lhs(pairs[j][0] - 1) = 1;
-      lhs(pairs[j][1] - 1) = -1;
+      lhs(pairs[j][0]) = 1;
+      lhs(pairs[j][1]) = -1;
       statistics_b(j) =
         2 * test_nlogLR(bootstrap_sample(x_centered, bootstrap_index.col(b)),
                         bootstrap_sample(c, bootstrap_index.col(b)),
@@ -289,8 +289,8 @@ double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
     Eigen::ArrayXd statistics_b(m);
     for (int j = 0; j < m; ++j) {
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
-      lhs(pairs[j][0] - 1) = 1;
-      lhs(pairs[j][1] - 1) = -1;
+      lhs(pairs[j][0]) = 1;
+      lhs(pairs[j][1]) = -1;
       statistics_b(j) =
         2 * test_ibd_EL_approx(
             bootstrap_sample(x_centered, bootstrap_index.col(b)),
