@@ -13,6 +13,12 @@ std::vector<std::array<int, 2>> all_pairs(const int p) {
 
     }
   }
+  // for (int i = 0; i < p - 1; ++i) {
+  //   for (int j = i + 1; j < p; ++j) {
+  //     pairs.emplace_back(std::array<int, 2>{i, j});
+  //
+  //   }
+  // }
   return pairs;
 }
 

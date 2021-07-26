@@ -6,4 +6,5 @@
 ## enable compilation with C++11 (or even C++14) where available
 CXX_STD = CXX11
 
-PKG_CXXFLAGS = -fopenmp
+PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS)
+PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS)

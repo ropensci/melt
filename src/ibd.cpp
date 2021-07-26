@@ -146,6 +146,7 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   result["level"] = level;
   result["cutoff"] = cutoff;
   result["method"] = method;
+  result["type"] = "pairwise";
   // result["num.bootstrap"] = nbootstrap;
   result.attr("class") = "elmulttest";
   return result;
