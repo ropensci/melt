@@ -1,7 +1,3 @@
-export(el.mean)
-export(test2sample)
-export(test2sample2)
-export(test2sample777)
 importFrom(Matrix,rankMatrix)
 useDynLib(elmulttest, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
