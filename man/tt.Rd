@@ -25,7 +25,7 @@ tt(x, c, maxit = 10000L, abstol = 1e-08)
 
 \item{correction}{whether to use blocked bootstrap. Defaults to FALSE.}
 
-\item{approx_lambda}{whether to use the approximation for lambda. Defaults to FALSE.}
+\item{approx}{whether to use the approximation for lambda. Defaults to FALSE.}
 }
 \description{
 Pairwise comparison for Incomplete Block Design

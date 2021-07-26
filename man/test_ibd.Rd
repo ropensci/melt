@@ -4,7 +4,7 @@
 \alias{test_ibd}
 \title{Hypothesis test for incomplete block design}
 \usage{
-test_ibd(x, c, lhs, rhs, approx_lambda = FALSE, maxit = 1000L, abstol = 1e-08)
+test_ibd(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-08)
 }
 \arguments{
 \item{x}{a matrix of data .}
@@ -15,7 +15,7 @@ test_ibd(x, c, lhs, rhs, approx_lambda = FALSE, maxit = 1000L, abstol = 1e-08)
 
 \item{rhs}{right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.}
 
-\item{approx_lambda}{whether to use the approximation for lambda. Defaults to FALSE.}
+\item{approx}{whether to use the approximation for lambda. Defaults to FALSE.}
 
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 

@@ -8,7 +8,7 @@
 //' @param c an incidence matrix.
 //' @param lhs a linear hypothesis matrix.
 //' @param rhs right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.
-//' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
+//' @param approx whether to use the approximation for lambda. Defaults to FALSE.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //' @export
@@ -17,7 +17,7 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
                     const Eigen::MatrixXd& c,
                     const Eigen::MatrixXd& lhs,
                     const Eigen::VectorXd& rhs,
-                    const bool approx_lambda = false,
+                    const bool approx = false,
                     const int maxit = 1000,
                     const double abstol = 1e-8) {
   /// initialization ///
@@ -46,12 +46,12 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
 //' @param x a matrix of data .
 //' @param c an incidence matrix.
 //' @param interval whether to compute interval. Defaults to FALSE.
-//' @param B number of bootstrap replicates.
+//' @param nbootstrap number of bootstrap replicates.
 //' @param level level.
 //' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
 //' @param correction whether to use blocked bootstrap. Defaults to FALSE.
-//' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
-//' @param ncores number of cores(threads) to use. Defaults to 1.
+//' @param approx whether to use the approximation for lambda. Defaults to FALSE.
+//' @param nthread number of cores(threads) to use. Defaults to 1.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //'
@@ -60,12 +60,12 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
 Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
                         const Eigen::MatrixXd& c,
                         const bool interval = false,
-                        const int B = 1e4,
+                        const int nbootstrap = 1e4,
                         const double level = 0.05,
                         std::string method = "PB",
                         const bool correction = false,
-                        const bool approx_lambda = false,
-                        const int ncores = 1,
+                        const bool approx = false,
+                        const int nthread = 1,
                         const int maxit = 1e4,
                         const double abstol = 1e-8) {
   if (level <= 0 || level >= 1) {
@@ -76,17 +76,17 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   // cutoff value
   double cutoff;
   if (method == "PB") {
-    cutoff = cutoff_pairwise_PB(x, c, pairs, B, level, correction);
+    cutoff = cutoff_pairwise_PB(x, c, pairs, nbootstrap, level, correction);
   } else if (method != "NB") {
     Rcpp::warning
     ("method '%s' is not supported. Using 'PB' as default.",
      method);
     method = "PB";
-    cutoff = cutoff_pairwise_PB(x, c, pairs, B, level, correction);
-  } else if (approx_lambda) {
-    cutoff = cutoff_pairwise_NB_approx(x, c, B, level, ncores, maxit, abstol);
+    cutoff = cutoff_pairwise_PB(x, c, pairs, nbootstrap, level, correction);
+  } else if (approx) {
+    cutoff = cutoff_pairwise_NB_approx(x, c, nbootstrap, level, nthread, maxit, abstol);
   } else {
-    cutoff = cutoff_pairwise_NB(x, c, B, level, ncores, maxit, abstol);
+    cutoff = cutoff_pairwise_NB(x, c, nbootstrap, level, nthread, maxit, abstol);
   }
   // global minimizer
   const Eigen::VectorXd theta_hat =
@@ -111,7 +111,7 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
       test_ibd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
                   maxit, abstol);
     if (!pairwise_result.convergence) {
-      Rcpp::warning("Test for pair (%i,%i) failed. \n",
+      Rcpp::warning("test for pair (%i,%i) failed. \n",
                     pairs[i][0], pairs[i][1]);
     }
     statistic(i) = 2 * pairwise_result.nlogLR;
@@ -120,11 +120,11 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   // // cutoff value
   // double cutoff;
   // if (method == "PB") {
-  //   cutoff = cutoff_pairwise_PB(x, c, pairs, B, level, correction);
-  // } else if (approx_lambda) {
-  //   cutoff = cutoff_pairwise_NB_approx(x, c, B, level, ncores, maxit, abstol);
+  //   cutoff = cutoff_pairwise_PB(x, c, pairs, nbootstrap, level, correction);
+  // } else if (approx) {
+  //   cutoff = cutoff_pairwise_NB_approx(x, c, nbootstrap, level, nthread, maxit, abstol);
   // } else {
-  //   cutoff = cutoff_pairwise_NB(x, c, B, level, ncores, maxit, abstol);
+  //   cutoff = cutoff_pairwise_NB(x, c, nbootstrap, level, nthread, maxit, abstol);
   // }
 
   // result
@@ -146,8 +146,8 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
   result["level"] = level;
   result["cutoff"] = cutoff;
   result["method"] = method;
-  result["num.bootstrap"] = B;
-  result.attr("class") = "pairwise.ibd";
+  // result["num.bootstrap"] = nbootstrap;
+  result.attr("class") = "elmulttest";
   return result;
 }
 
@@ -165,7 +165,7 @@ Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x,
 //' @param level level.
 //' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
 //' @param correction whether to use blocked bootstrap. Defaults to FALSE.
-//' @param approx_lambda whether to use the approximation for lambda. Defaults to FALSE.
+//' @param approx whether to use the approximation for lambda. Defaults to FALSE.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //'

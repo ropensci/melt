@@ -8,8 +8,9 @@ std::vector<std::array<int, 2>> all_pairs(const int p) {
   // fill in each elements(pairs)
   for (int i = 1; i < p + 1; ++i) {
     for (int j = i + 1; j < p + 1; ++j) {
-      pairs.emplace_back(std::array<int, 2>{j, i});
-      // pairs.emplace_back(std::vector<int> {i, j});
+      // pairs.emplace_back(std::array<int, 2>{j, i});
+      pairs.emplace_back(std::array<int, 2>{i, j});
+
     }
   }
   return pairs;

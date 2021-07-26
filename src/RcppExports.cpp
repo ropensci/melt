@@ -7,8 +7,8 @@
 using namespace Rcpp;
 
 // test_ibd
-Rcpp::List test_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const Eigen::MatrixXd& lhs, const Eigen::VectorXd& rhs, const bool approx_lambda, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_test_ibd(SEXP xSEXP, SEXP cSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP approx_lambdaSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List test_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const Eigen::MatrixXd& lhs, const Eigen::VectorXd& rhs, const bool approx, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_test_ibd(SEXP xSEXP, SEXP cSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP approxSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -16,31 +16,31 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type c(cSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type lhs(lhsSEXP);
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type rhs(rhsSEXP);
-    Rcpp::traits::input_parameter< const bool >::type approx_lambda(approx_lambdaSEXP);
+    Rcpp::traits::input_parameter< const bool >::type approx(approxSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(test_ibd(x, c, lhs, rhs, approx_lambda, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(test_ibd(x, c, lhs, rhs, approx, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
 // pairwise_ibd
-Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const bool interval, const int B, const double level, std::string method, const bool correction, const bool approx_lambda, const int ncores, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP intervalSEXP, SEXP BSEXP, SEXP levelSEXP, SEXP methodSEXP, SEXP correctionSEXP, SEXP approx_lambdaSEXP, SEXP ncoresSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const bool interval, const int nbootstrap, const double level, std::string method, const bool correction, const bool approx, const int nthread, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP intervalSEXP, SEXP nbootstrapSEXP, SEXP levelSEXP, SEXP methodSEXP, SEXP correctionSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type c(cSEXP);
     Rcpp::traits::input_parameter< const bool >::type interval(intervalSEXP);
-    Rcpp::traits::input_parameter< const int >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const int >::type nbootstrap(nbootstrapSEXP);
     Rcpp::traits::input_parameter< const double >::type level(levelSEXP);
     Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
     Rcpp::traits::input_parameter< const bool >::type correction(correctionSEXP);
-    Rcpp::traits::input_parameter< const bool >::type approx_lambda(approx_lambdaSEXP);
-    Rcpp::traits::input_parameter< const int >::type ncores(ncoresSEXP);
+    Rcpp::traits::input_parameter< const bool >::type approx(approxSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthread(nthreadSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, interval, B, level, method, correction, approx_lambda, ncores, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, interval, nbootstrap, level, method, correction, approx, nthread, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }

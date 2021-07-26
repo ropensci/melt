@@ -8,12 +8,12 @@ pairwise_ibd(
   x,
   c,
   interval = FALSE,
-  B = 10000L,
+  nbootstrap = 10000L,
   level = 0.05,
   method = "PB",
   correction = FALSE,
-  approx_lambda = FALSE,
-  ncores = 1L,
+  approx = FALSE,
+  nthread = 1L,
   maxit = 10000L,
   abstol = 1e-08
 )
@@ -25,7 +25,7 @@ pairwise_ibd(
 
 \item{interval}{whether to compute interval. Defaults to FALSE.}
 
-\item{B}{number of bootstrap replicates.}
+\item{nbootstrap}{number of bootstrap replicates.}
 
 \item{level}{level.}
 
@@ -33,9 +33,9 @@ pairwise_ibd(
 
 \item{correction}{whether to use blocked bootstrap. Defaults to FALSE.}
 
-\item{approx_lambda}{whether to use the approximation for lambda. Defaults to FALSE.}
+\item{approx}{whether to use the approximation for lambda. Defaults to FALSE.}
 
-\item{ncores}{number of cores(threads) to use. Defaults to 1.}
+\item{nthread}{number of cores(threads) to use. Defaults to 1.}
 
 \item{maxit}{an optional value for the maximum number of iterations. Defaults to 1000.}
 
