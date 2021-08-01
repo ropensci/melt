@@ -4,7 +4,7 @@
 \alias{tt}
 \title{Pairwise comparison for Incomplete Block Design}
 \usage{
-tt(x, c, maxit = 10000L, abstol = 1e-08)
+tt(x, c, control = 0L, maxit = 10000L, abstol = 1e-08)
 }
 \arguments{
 \item{x}{a matrix of data .}

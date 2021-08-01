@@ -137,7 +137,6 @@ std::array<double, 2> pair_confidence_interval_ibd(
       lower_ub = (lower_lb + lower_ub) / 2;
     }
   }
-
   return std::array<double, 2>{lower_ub, upper_lb};
 }
 
@@ -204,6 +203,7 @@ double cutoff_pairwise_PB(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
 double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const Eigen::Ref<const Eigen::MatrixXd>& c,
+                          const std::vector<std::array<int, 2>>& pairs,
                           const int B,
                           const double level,
                           const int ncores,
@@ -211,7 +211,6 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const double abstol) {
   const int n = x.rows();
   const int p = x.cols();
-  const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
   const int m = pairs.size();   // number of hypotheses
 
   // centered matrix
@@ -257,6 +256,7 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
 double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                                 const std::vector<std::array<int, 2>>& pairs,
                                  const int B,
                                  const double level,
                                  const int ncores,
@@ -264,7 +264,6 @@ double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const double abstol) {
   const int n = x.rows();
   const int p = x.cols();
-  const std::vector<std::array<int, 2>> pairs = all_pairs(p);   // vector of pairs
   const int m = pairs.size();   // number of hypotheses
 
   // centered matrix

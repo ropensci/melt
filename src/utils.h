@@ -3,7 +3,8 @@
 
 #include <RcppEigen.h>
 
-std::vector<std::array<int, 2>> all_pairs(const int p);
+std::vector<std::array<int, 2>> comparison_pairs(
+        const int p, const int control);
 
 Eigen::VectorXd linear_projection(
     const Eigen::Ref<const Eigen::VectorXd>& theta,

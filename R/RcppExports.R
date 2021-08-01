@@ -34,8 +34,8 @@ test_ibd <- function(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-pairwise_ibd <- function(x, c, interval = FALSE, nbootstrap = 1e4L, level = 0.05, method = "PB", correction = FALSE, approx = FALSE, nthread = 1L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_pairwise_ibd`, x, c, interval, nbootstrap, level, method, correction, approx, nthread, maxit, abstol)
+el_pairwise <- function(x, c, control = 0L, interval = TRUE, nbootstrap = 1e4L, level = 0.05, method = "PB", correction = FALSE, approx = FALSE, nthread = 1L, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_el_pairwise`, x, c, control, interval, nbootstrap, level, method, correction, approx, nthread, maxit, abstol)
 }
 
 #' Pairwise comparison for Incomplete Block Design
@@ -54,8 +54,8 @@ pairwise_ibd <- function(x, c, interval = FALSE, nbootstrap = 1e4L, level = 0.05
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-tt <- function(x, c, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_tt`, x, c, maxit, abstol)
+tt <- function(x, c, control = 0L, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_tt`, x, c, control, maxit, abstol)
 }
 
 #' Empirical likelihood test for mean

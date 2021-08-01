@@ -23,14 +23,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// pairwise_ibd
-Rcpp::List pairwise_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const bool interval, const int nbootstrap, const double level, std::string method, const bool correction, const bool approx, const int nthread, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_pairwise_ibd(SEXP xSEXP, SEXP cSEXP, SEXP intervalSEXP, SEXP nbootstrapSEXP, SEXP levelSEXP, SEXP methodSEXP, SEXP correctionSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+// el_pairwise
+Rcpp::List el_pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const bool interval, const int nbootstrap, const double level, std::string method, const bool correction, const bool approx, const int nthread, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_el_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP intervalSEXP, SEXP nbootstrapSEXP, SEXP levelSEXP, SEXP methodSEXP, SEXP correctionSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< const int >::type control(controlSEXP);
     Rcpp::traits::input_parameter< const bool >::type interval(intervalSEXP);
     Rcpp::traits::input_parameter< const int >::type nbootstrap(nbootstrapSEXP);
     Rcpp::traits::input_parameter< const double >::type level(levelSEXP);
@@ -40,21 +41,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type nthread(nthreadSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(pairwise_ibd(x, c, interval, nbootstrap, level, method, correction, approx, nthread, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(el_pairwise(x, c, control, interval, nbootstrap, level, method, correction, approx, nthread, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
 // tt
-Rcpp::List tt(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_tt(SEXP xSEXP, SEXP cSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List tt(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_tt(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< const int >::type control(controlSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(tt(x, c, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(tt(x, c, control, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -75,8 +77,8 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_test_ibd", (DL_FUNC) &_elmulttest_test_ibd, 7},
-    {"_elmulttest_pairwise_ibd", (DL_FUNC) &_elmulttest_pairwise_ibd, 11},
-    {"_elmulttest_tt", (DL_FUNC) &_elmulttest_tt, 4},
+    {"_elmulttest_el_pairwise", (DL_FUNC) &_elmulttest_el_pairwise, 12},
+    {"_elmulttest_tt", (DL_FUNC) &_elmulttest_tt, 5},
     {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
     {NULL, NULL, 0}
 };
