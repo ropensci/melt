@@ -49,7 +49,6 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
 //' @param nbootstrap number of bootstrap replicates.
 //' @param level level.
 //' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-//' @param correction whether to use blocked bootstrap. Defaults to FALSE.
 //' @param approx whether to use the approximation for lambda. Defaults to FALSE.
 //' @param nthread number of cores(threads) to use. Defaults to 1.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
@@ -60,11 +59,11 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
 Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
                        const Eigen::MatrixXd& c,
                        const int control = 0,
+                       const int k = 1,
                        const bool interval = true,
                        const int nbootstrap = 1e4,
                        const double level = 0.05,
                        std::string method = "PB",
-                       const bool correction = false,
                        const bool approx = false,
                        const int nthread = 1,
                        const int maxit = 1e4,
@@ -77,12 +76,12 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   // cutoff value
   double cutoff;
   if (method == "PB") {
-    cutoff = cutoff_pairwise_PB(x, c, pairs, nbootstrap, level, correction);
+    cutoff = cutoff_pairwise_PB(x, c, k, pairs, nbootstrap, level);
   } else if (approx) {
-    cutoff = cutoff_pairwise_NB_approx(x, c, pairs, nbootstrap,
+    cutoff = cutoff_pairwise_NB_approx(x, c, k, pairs, nbootstrap,
                                        level, nthread, maxit, abstol);
   } else {
-    cutoff = cutoff_pairwise_NB(x, c, pairs, nbootstrap,
+    cutoff = cutoff_pairwise_NB(x, c, k, pairs, nbootstrap,
                                 level, nthread, maxit, abstol);
   }
   // global minimizer
@@ -153,7 +152,6 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
 //' @param B number of bootstrap replicates.
 //' @param level level.
 //' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-//' @param correction whether to use blocked bootstrap. Defaults to FALSE.
 //' @param approx whether to use the approximation for lambda. Defaults to FALSE.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
@@ -163,6 +161,7 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
 Rcpp::List tt(const Eigen::MatrixXd& x,
               const Eigen::MatrixXd& c,
               const int control = 0,
+              const int k = 1,
               const int maxit = 1e4,
               const double abstol = 1e-8) {
   // all pairs

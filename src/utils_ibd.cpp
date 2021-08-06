@@ -163,18 +163,21 @@ Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n) {
 
 double cutoff_pairwise_PB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const Eigen::Ref<const Eigen::MatrixXd>& c,
+                          const int k,
                           const std::vector<std::array<int, 2>>& pairs,
                           const int B,
-                          const double level,
-                          const bool correction) {
-  const Eigen::MatrixXd V_hat = cov_ibd(x, c); // covariance estimate
-
+                          const double level) {
+  // covariance estimate
+  const Eigen::MatrixXd V_hat = cov_ibd(x, c);
   // U hat matrices
-  const Eigen::MatrixXd U_hat = rmvn(cov_ibd(x, c), B);
+  const Eigen::MatrixXd U_hat = rmvn(V_hat, B);
+  // number of hypotheses
+  const int m = pairs.size();
 
   // B bootstrap statistics(B x m matrix)
-  Eigen::MatrixXd bootstrap_statistics(B, pairs.size());
-  for (int j = 0; j < pairs.size(); ++j) {
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
+                Eigen::RowMajor> bootstrap_statistics(B, m);
+  for (int j = 0; j < m; ++j) {
     Eigen::RowVectorXd R = Eigen::RowVectorXd::Zero(1, x.cols());
     R(pairs[j][0]) = 1;
     R(pairs[j][1]) = -1;
@@ -183,26 +186,22 @@ double cutoff_pairwise_PB(const Eigen::Ref<const Eigen::MatrixXd>& x,
       (U_hat * A_hat * U_hat.transpose()).diagonal();
   }
 
-  // cutoff(we only need maximum statistics)
-  Rcpp::Function quantile("quantile");
-  const double cutoff =
-    Rcpp::as<double>(quantile(bootstrap_statistics.rowwise().maxCoeff(),
-                              Rcpp::Named("probs") = 1 - level));
-  if (correction) {
-    const double n = static_cast<double>(x.rows());
-    const double p = static_cast<double>(x.cols());
-    const double a = p * p + p / 2;
-    return cutoff * (1 + a / n);
-  } else {
-    return cutoff;
+  // rowwise sort
+  for (int b = 0; b < B; ++b) {
+    std::sort(bootstrap_statistics.row(b).data(),
+              bootstrap_statistics.row(b).data() + m);
   }
-  // return
-  //   Rcpp::as<double>(quantile(bootstrap_statistics.rowwise().maxCoeff(),
-  //                             Rcpp::Named("probs") = 1 - level));
+
+  // cutoff(from the kth largest statistics)
+  Rcpp::Function quantile("quantile");
+  return
+    Rcpp::as<double>(quantile(bootstrap_statistics.col(m - k),
+                              Rcpp::Named("probs") = 1 - level));
 }
 
 double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const Eigen::Ref<const Eigen::MatrixXd>& c,
+                          const int k,
                           const std::vector<std::array<int, 2>>& pairs,
                           const int B,
                           const double level,
@@ -230,7 +229,7 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
   // B bootstrap results(we only need maximum statistics)
   std::vector<double> k_bootstrap_statistic(B);
-  #pragma omp parallel for num_threads(ncores) default(none) shared(B, maxit, abstol, pairs, x_centered, c, p, m, bootstrap_index, k_bootstrap_statistic) schedule(auto)
+  #pragma omp parallel for num_threads(ncores) default(none) shared(x_centered, c, k, pairs, B, maxit, abstol, p, m, bootstrap_index, k_bootstrap_statistic) schedule(auto)
   for (int b = 0; b < B; ++b) {
     std::vector<double> bootstrap_statistics(m);
     for (int j = 0; j < m; ++j) {
@@ -243,9 +242,9 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
                         lhs, Eigen::Matrix<double, 1, 1>(0),
                         maxit, abstol);
     }
-    // need to generalize later for k-FWER control
+    // kth largest
     std::sort(bootstrap_statistics.begin(), bootstrap_statistics.end());
-    k_bootstrap_statistic[b] = bootstrap_statistics[m - 1];
+    k_bootstrap_statistic[b] = bootstrap_statistics[m - k];
   }
 
   // quantile function needed!
@@ -257,6 +256,7 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
 double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                                 const int k,
                                  const std::vector<std::array<int, 2>>& pairs,
                                  const int B,
                                  const double level,

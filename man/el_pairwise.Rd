@@ -8,11 +8,11 @@ el_pairwise(
   x,
   c,
   control = 0L,
+  k = 1L,
   interval = TRUE,
   nbootstrap = 10000L,
   level = 0.05,
   method = "PB",
-  correction = FALSE,
   approx = FALSE,
   nthread = 1L,
   maxit = 10000L,
@@ -31,8 +31,6 @@ el_pairwise(
 \item{level}{level.}
 
 \item{method}{the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.}
-
-\item{correction}{whether to use blocked bootstrap. Defaults to FALSE.}
 
 \item{approx}{whether to use the approximation for lambda. Defaults to FALSE.}
 

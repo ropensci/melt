@@ -27,15 +27,14 @@ test_ibd <- function(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-
 #' @param nbootstrap number of bootstrap replicates.
 #' @param level level.
 #' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-#' @param correction whether to use blocked bootstrap. Defaults to FALSE.
 #' @param approx whether to use the approximation for lambda. Defaults to FALSE.
 #' @param nthread number of cores(threads) to use. Defaults to 1.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-el_pairwise <- function(x, c, control = 0L, interval = TRUE, nbootstrap = 1e4L, level = 0.05, method = "PB", correction = FALSE, approx = FALSE, nthread = 1L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_el_pairwise`, x, c, control, interval, nbootstrap, level, method, correction, approx, nthread, maxit, abstol)
+el_pairwise <- function(x, c, control = 0L, k = 1L, interval = TRUE, nbootstrap = 1e4L, level = 0.05, method = "PB", approx = FALSE, nthread = 1L, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_el_pairwise`, x, c, control, k, interval, nbootstrap, level, method, approx, nthread, maxit, abstol)
 }
 
 #' Pairwise comparison for Incomplete Block Design
@@ -48,14 +47,13 @@ el_pairwise <- function(x, c, control = 0L, interval = TRUE, nbootstrap = 1e4L, 
 #' @param B number of bootstrap replicates.
 #' @param level level.
 #' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-#' @param correction whether to use blocked bootstrap. Defaults to FALSE.
 #' @param approx whether to use the approximation for lambda. Defaults to FALSE.
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #'
 #' @export
-tt <- function(x, c, control = 0L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_tt`, x, c, control, maxit, abstol)
+tt <- function(x, c, control = 0L, k = 1L, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_tt`, x, c, control, k, maxit, abstol)
 }
 
 #' Empirical likelihood test for mean

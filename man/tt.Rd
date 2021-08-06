@@ -4,7 +4,7 @@
 \alias{tt}
 \title{Pairwise comparison for Incomplete Block Design}
 \usage{
-tt(x, c, control = 0L, maxit = 10000L, abstol = 1e-08)
+tt(x, c, control = 0L, k = 1L, maxit = 10000L, abstol = 1e-08)
 }
 \arguments{
 \item{x}{a matrix of data .}
@@ -22,8 +22,6 @@ tt(x, c, control = 0L, maxit = 10000L, abstol = 1e-08)
 \item{level}{level.}
 
 \item{method}{the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.}
-
-\item{correction}{whether to use blocked bootstrap. Defaults to FALSE.}
 
 \item{approx}{whether to use the approximation for lambda. Defaults to FALSE.}
 }
