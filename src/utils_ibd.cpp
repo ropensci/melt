@@ -229,28 +229,29 @@ double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
     .data(), n, B);
 
   // B bootstrap results(we only need maximum statistics)
-  Eigen::VectorXd bootstrap_statistics(B);
-  #pragma omp parallel for num_threads(ncores) default(none) shared(B, maxit, abstol, pairs, x_centered, c, p, m, bootstrap_index, bootstrap_statistics) schedule(auto)
+  std::vector<double> k_bootstrap_statistic(B);
+  #pragma omp parallel for num_threads(ncores) default(none) shared(B, maxit, abstol, pairs, x_centered, c, p, m, bootstrap_index, k_bootstrap_statistic) schedule(auto)
   for (int b = 0; b < B; ++b) {
-    Eigen::ArrayXd statistics_b(m);
+    std::vector<double> bootstrap_statistics(m);
     for (int j = 0; j < m; ++j) {
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
       lhs(pairs[j][0]) = 1;
       lhs(pairs[j][1]) = -1;
-      statistics_b(j) =
+      bootstrap_statistics[j] =
         2 * test_nlogLR(bootstrap_sample(x_centered, bootstrap_index.col(b)),
                         bootstrap_sample(c, bootstrap_index.col(b)),
                         lhs, Eigen::Matrix<double, 1, 1>(0),
                         maxit, abstol);
     }
     // need to generalize later for k-FWER control
-    bootstrap_statistics(b) = statistics_b.maxCoeff();
+    std::sort(bootstrap_statistics.begin(), bootstrap_statistics.end());
+    k_bootstrap_statistic[b] = bootstrap_statistics[m - 1];
   }
 
   // quantile function needed!
   Rcpp::Function quantile("quantile");
   return
-    Rcpp::as<double>(quantile(bootstrap_statistics,
+    Rcpp::as<double>(quantile(k_bootstrap_statistic,
                               Rcpp::Named("probs") = 1 - level));
 }
 
