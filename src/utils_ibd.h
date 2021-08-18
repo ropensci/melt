@@ -45,22 +45,13 @@ Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
 Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n);
 
-double cutoff_pairwise_PB(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                          const Eigen::Ref<const Eigen::MatrixXd>& c,
-                          const int k,
-                          const std::vector<std::array<int, 2>>& pairs,
-                          const int B,
-                          const double level);
-
-double cutoff_pairwise_NB(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                          const Eigen::Ref<const Eigen::MatrixXd>& c,
-                          const int k,
-                          const std::vector<std::array<int, 2>>& pairs,
-                          const int B,
-                          const double level,
-                          const int ncores,
-                          const int maxit,
-                          const double abstol);
+Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
+        const Eigen::Ref<const Eigen::MatrixXd>& x,
+        const Eigen::Ref<const Eigen::MatrixXd>& c,
+        const int k,
+        const std::vector<std::array<int, 2>>& pairs,
+        const int B,
+        const double level);
 
 double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const Eigen::Ref<const Eigen::MatrixXd>& c,
@@ -71,6 +62,17 @@ double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                  const int ncores,
                                  const int maxit,
                                  const double abstol);
+
+Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
+        const Eigen::Ref<const Eigen::MatrixXd>& x,
+        const Eigen::Ref<const Eigen::MatrixXd>& c,
+        const int k,
+        const std::vector<std::array<int, 2>>& pairs,
+        const int B,
+        const double level,
+        const int ncores,
+        const int maxit,
+        const double abstol);
 
 
 // no approximation

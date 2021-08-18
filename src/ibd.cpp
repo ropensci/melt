@@ -71,35 +71,59 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   if (level <= 0 || level >= 1) {
     Rcpp::stop("level must be between 0 and 1.");
   }
-  // all pairs
+  // pairs
   std::vector<std::array<int, 2>> pairs = comparison_pairs(x.cols(), control);
-  // cutoff value
-  double cutoff;
-  if (method == "PB") {
-    cutoff = cutoff_pairwise_PB(x, c, k, pairs, nbootstrap, level);
-  } else if (approx) {
-    cutoff = cutoff_pairwise_NB_approx(x, c, k, pairs, nbootstrap,
-                                       level, nthread, maxit, abstol);
-  } else {
-    cutoff = cutoff_pairwise_NB(x, c, k, pairs, nbootstrap,
-                                level, nthread, maxit, abstol);
-  }
-  // global minimizer
-  const Eigen::VectorXd theta_hat =
-    x.array().colwise().sum() / c.array().colwise().sum();
   // number of hypotheses
   const int m = pairs.size();
 
+  // bootstrap statitics
+  Eigen::ArrayXd bootstrap_statistics_pairwise(nbootstrap);
+  if (method == "PB") {
+    bootstrap_statistics_pairwise =
+      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, nbootstrap, level);
+  } else if (approx) {
+    // NOT READY
+    bootstrap_statistics_pairwise =
+      bootstrap_statistics_pairwise_NB(x, c, k, pairs, nbootstrap,
+                                       level, nthread, maxit, abstol);
+  } else {
+    bootstrap_statistics_pairwise =
+      bootstrap_statistics_pairwise_NB(x, c, k, pairs, nbootstrap,
+                                       level, nthread, maxit, abstol);
+  }
+
+  // cutoff
+  Rcpp::Function quantile("quantile");
+  const double cutoff =
+    Rcpp::as<double>(quantile(bootstrap_statistics_pairwise,
+                              Rcpp::Named("probs") = 1 - level));
+  // // cutoff value
+  // double cutoff;
+  // if (method == "PB") {
+  //   cutoff = cutoff_pairwise_PB(x, c, k, pairs, nbootstrap, level);
+  // } else if (approx) {
+  //   cutoff = cutoff_pairwise_NB_approx(x, c, k, pairs, nbootstrap,
+  //                                      level, nthread, maxit, abstol);
+  // } else {
+  //   cutoff = cutoff_pairwise_NB(x, c, k, pairs, nbootstrap,
+  //                               level, nthread, maxit, abstol);
+  // }
 
   // estimates
-  Rcpp::NumericVector estimate(m);
+  std::vector<double> estimate(m);
 
-  // statistics(-2logLR)
-  Rcpp::NumericVector statistic(m);
+  // statistics
+  std::vector<double> statistic(m);
+
+  // adjusted p-values
+  std::vector<double> adj_pvalues(m);
+
+  // global minimizer
+  const Eigen::VectorXd theta_hat =
+    x.array().colwise().sum() / c.array().colwise().sum();
   for (int i = 0; i < m; ++i) {
-    // estimates
-    estimate(i) = theta_hat(pairs[i][0]) - theta_hat(pairs[i][1]);
-    // statistics
+    estimate[i] = theta_hat(pairs[i][0]) - theta_hat(pairs[i][1]);
+
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
     lhs(pairs[i][0]) = 1;
     lhs(pairs[i][1]) = -1;
@@ -110,12 +134,18 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
       Rcpp::warning("test for pair (%i,%i) failed. \n",
                     pairs[i][0] + 1, pairs[i][1] + 1);
     }
-    statistic(i) = 2 * pairwise_result.nlogLR;
+    statistic[i] = 2 * pairwise_result.nlogLR;
+
+    adj_pvalues[i] =
+      static_cast<double>(
+        (bootstrap_statistics_pairwise >= statistic[i]).count()) / nbootstrap;
   }
+
   // result
   Rcpp::List result;
   result["estimate"] = estimate;
   result["statistic"] = statistic;
+  result["p.adj"] = adj_pvalues;
   // confidence interval(optional)
   if (interval) {
     Rcpp::NumericVector lower(m);
@@ -125,7 +155,7 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
       lhs(pairs[i][0]) = 1;
       lhs(pairs[i][1]) = -1;
       std::array<double, 2> ci =
-        pair_confidence_interval_ibd(theta_hat, x, c, lhs, estimate(i), cutoff);
+        pair_confidence_interval_ibd(theta_hat, x, c, lhs, estimate[i], cutoff);
       lower[i] = ci[0];
       upper[i] = ci[1];
     }
