@@ -39,16 +39,18 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
     Rcpp::Named("convergence") = result.convergence);
 }
 
-//' Pairwise comparison for Incomplete Block Design
+//' Pairwise Comparisons for General Block Design
 //'
-//' Pairwise comparison for Incomplete Block Design
+//' Either all pairwise comparisons or comparisons with control is available.
 //'
 //' @param x a matrix of data .
 //' @param c an incidence matrix.
-//' @param interval whether to compute interval. Defaults to FALSE.
-//' @param nbootstrap number of bootstrap replicates.
+//' @param control control treatment. Defaults to 0.
+//' @param k integer k for k-FWER. Defaults to 1.
+//' @param interval whether to compute interval. Defaults to TRUE.
+//' @param B number of bootstrap replicates.
 //' @param level level.
-//' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
+//' @param method the method to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.
 //' @param approx whether to use the approximation for lambda. Defaults to FALSE.
 //' @param nthread number of cores(threads) to use. Defaults to 1.
 //' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
@@ -60,10 +62,10 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
                        const Eigen::MatrixXd& c,
                        const int control = 0,
                        const int k = 1,
-                       const bool interval = true,
-                       const int nbootstrap = 1e4,
                        const double level = 0.05,
-                       std::string method = "PB",
+                       const bool interval = true,
+                       const std::string method = "AMC",
+                       const int B = 1e4,
                        const bool approx = false,
                        const int nthread = 1,
                        const int maxit = 1e4,
@@ -77,18 +79,18 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   const int m = pairs.size();
 
   // bootstrap statitics
-  Eigen::ArrayXd bootstrap_statistics_pairwise(nbootstrap);
-  if (method == "PB") {
+  Eigen::ArrayXd bootstrap_statistics_pairwise(B);
+  if (method == "AMC") {
     bootstrap_statistics_pairwise =
-      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, nbootstrap, level);
+      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, B, level);
   } else if (approx) {
     // NOT READY
     bootstrap_statistics_pairwise =
-      bootstrap_statistics_pairwise_NB(x, c, k, pairs, nbootstrap,
+      bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
                                        level, nthread, maxit, abstol);
   } else {
     bootstrap_statistics_pairwise =
-      bootstrap_statistics_pairwise_NB(x, c, k, pairs, nbootstrap,
+      bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
                                        level, nthread, maxit, abstol);
   }
 
@@ -97,17 +99,6 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   const double cutoff =
     Rcpp::as<double>(quantile(bootstrap_statistics_pairwise,
                               Rcpp::Named("probs") = 1 - level));
-  // // cutoff value
-  // double cutoff;
-  // if (method == "PB") {
-  //   cutoff = cutoff_pairwise_PB(x, c, k, pairs, nbootstrap, level);
-  // } else if (approx) {
-  //   cutoff = cutoff_pairwise_NB_approx(x, c, k, pairs, nbootstrap,
-  //                                      level, nthread, maxit, abstol);
-  // } else {
-  //   cutoff = cutoff_pairwise_NB(x, c, k, pairs, nbootstrap,
-  //                               level, nthread, maxit, abstol);
-  // }
 
   // estimates
   std::vector<double> estimate(m);
@@ -138,18 +129,17 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
 
     adj_pvalues[i] =
       static_cast<double>(
-        (bootstrap_statistics_pairwise >= statistic[i]).count()) / nbootstrap;
+        (bootstrap_statistics_pairwise >= statistic[i]).count()) / B;
   }
 
   // result
   Rcpp::List result;
   result["estimate"] = estimate;
   result["statistic"] = statistic;
-  result["p.adj"] = adj_pvalues;
   // confidence interval(optional)
   if (interval) {
-    Rcpp::NumericVector lower(m);
-    Rcpp::NumericVector upper(m);
+    std::vector<double> lower(m);
+    std::vector<double> upper(m);
     for (int i = 0; i < m; ++i) {
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
       lhs(pairs[i][0]) = 1;
@@ -162,31 +152,15 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
     result["lower"] = lower;
     result["upper"] = upper;
   }
+  result["p.adj"] = adj_pvalues;
+  result["k"] = k;
   result["level"] = level;
+  result["method"] = approx ? "NB(approx)" : method;
   result["cutoff"] = cutoff;
-  result["method"] = method;
-  result.attr("class") = "elmulttest";
+  result.attr("class") = Rcpp::CharacterVector({"pairwise", "elmulttest"});
   return result;
 }
 
-//
-//
-//
-//' Pairwise comparison for Incomplete Block Design
-//'
-//' Pairwise comparison for Incomplete Block Design
-//'
-//' @param x a matrix of data .
-//' @param c an incidence matrix.
-//' @param interval whether to compute interval. Defaults to FALSE.
-//' @param B number of bootstrap replicates.
-//' @param level level.
-//' @param method the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.
-//' @param approx whether to use the approximation for lambda. Defaults to FALSE.
-//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-//'
-//' @export
 // [[Rcpp::export]]
 Rcpp::List tt(const Eigen::MatrixXd& x,
               const Eigen::MatrixXd& c,

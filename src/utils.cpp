@@ -22,7 +22,7 @@ std::vector<std::array<int, 2>> comparison_pairs(
       if (i == control - 1) {
         continue;
       }
-      pairs.emplace_back(std::array<int, 2>{control - 1, i});
+      pairs.emplace_back(std::array<int, 2>{i, control - 1});
     }
   }
   return pairs;

@@ -29,8 +29,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // el_pairwise
-Rcpp::List el_pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const bool interval, const int nbootstrap, const double level, std::string method, const bool approx, const int nthread, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_el_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP intervalSEXP, SEXP nbootstrapSEXP, SEXP levelSEXP, SEXP methodSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List el_pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const double level, const bool interval, const std::string method, const int B, const bool approx, const int nthread, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_el_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP levelSEXP, SEXP intervalSEXP, SEXP methodSEXP, SEXP BSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -38,15 +38,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type c(cSEXP);
     Rcpp::traits::input_parameter< const int >::type control(controlSEXP);
     Rcpp::traits::input_parameter< const int >::type k(kSEXP);
-    Rcpp::traits::input_parameter< const bool >::type interval(intervalSEXP);
-    Rcpp::traits::input_parameter< const int >::type nbootstrap(nbootstrapSEXP);
     Rcpp::traits::input_parameter< const double >::type level(levelSEXP);
-    Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const bool >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const int >::type B(BSEXP);
     Rcpp::traits::input_parameter< const bool >::type approx(approxSEXP);
     Rcpp::traits::input_parameter< const int >::type nthread(nthreadSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(el_pairwise(x, c, control, k, interval, nbootstrap, level, method, approx, nthread, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(el_pairwise(x, c, control, k, level, interval, method, B, approx, nthread, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }

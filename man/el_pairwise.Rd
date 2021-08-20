@@ -2,17 +2,17 @@
 % Please edit documentation in R/RcppExports.R
 \name{el_pairwise}
 \alias{el_pairwise}
-\title{Pairwise comparison for Incomplete Block Design}
+\title{Pairwise Comparisons for General Block Design}
 \usage{
 el_pairwise(
   x,
   c,
   control = 0L,
   k = 1L,
-  interval = TRUE,
-  nbootstrap = 10000L,
   level = 0.05,
-  method = "PB",
+  interval = TRUE,
+  method = "AMC",
+  B = 10000L,
   approx = FALSE,
   nthread = 1L,
   maxit = 10000L,
@@ -24,13 +24,17 @@ el_pairwise(
 
 \item{c}{an incidence matrix.}
 
-\item{interval}{whether to compute interval. Defaults to FALSE.}
+\item{control}{control treatment. Defaults to 0.}
 
-\item{nbootstrap}{number of bootstrap replicates.}
+\item{k}{integer k for k-FWER. Defaults to 1.}
 
 \item{level}{level.}
 
-\item{method}{the method to be used; either 'PB' or 'NB' is supported. Defaults to 'PB'.}
+\item{interval}{whether to compute interval. Defaults to TRUE.}
+
+\item{method}{the method to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.}
+
+\item{B}{number of bootstrap replicates.}
 
 \item{approx}{whether to use the approximation for lambda. Defaults to FALSE.}
 
@@ -41,5 +45,5 @@ el_pairwise(
 \item{abstol}{an optional value for the absolute convergence tolerance. Defaults to 1e-8.}
 }
 \description{
-Pairwise comparison for Incomplete Block Design
+Either all pairwise comparisons or comparisons with control is available.
 }
