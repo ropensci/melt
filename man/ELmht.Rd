@@ -5,13 +5,13 @@
 \title{Empirical Likelihood Multiple Hypothesis Testing}
 \usage{
 ELmht(
-  df,
+  data,
   hypotheses,
   rhs = NULL,
   k = 1,
-  level = 0.05,
+  alpha = 0.05,
   method = c("AMC", "NB"),
-  B = 10000,
+  B,
   approx = F,
   nthread = 1,
   maxit = 10000,
@@ -19,36 +19,42 @@ ELmht(
 )
 }
 \arguments{
-\item{df}{A data frame.}
+\item{data}{\code{data.frame} with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).}
 
-\item{hypotheses}{hypotheses.}
+\item{hypotheses}{List of numeric matrices specifying hypotheses to be tested. Each matrix denotes a linear hypothesis in terms of parameters.}
 
-\item{rhs}{Right hand side of hypotheses}
+\item{rhs}{Optional list of numeric vectors specifying the right hand sides of \code{hypotheses}. The length of each vector must match the number of rows of the corresponding matrix. If not specified, they are all set to 0 vectors.}
 
-\item{k}{Integer k for k-FWER. Defaults to 1.}
+\item{k}{Integer value \eqn{k} for \eqn{k}-FWER. Defaults to 1.}
 
-\item{level}{Level of test.}
+\item{alpha}{Significance level of the test. Defaults to 0.05.}
 
-\item{method}{Method to be used; either `AMC' or `NB' is supported. Defaults to `AMC'.}
+\item{method}{Character value for the procedure to be used; either `AMC' or `NB' is supported. Defaults to `AMC'.}
 
-\item{B}{Number of replicates for AMC and NB.}
+\item{B}{Number of random samples for the AMC (number of bootstrap replicates for the NB).}
 
-\item{approx}{Whether to use the approximation for NB. Defaults to FALSE.}
+\item{approx}{If \code{TRUE}, approximations are used for computing bootstrap statistics. Only applied when the NB is chosen. Defaults to FALSE.}
 
-\item{nthread}{Number of cores(threads) to use for NB. Defaults to 1.}
+\item{nthread}{Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen. Defaults to 1.}
 
-\item{maxit}{Maximum number of iterations for optimization. Defaults to 1000.}
+\item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 
-\item{abstol}{Absolute convergence tolerance. Defaults to 1e-08.}
+\item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
 A list with class \code{elmulttest}.
 }
 \description{
-Empirical Likelihood Multiple Hypothesis Testing
+Tests multiple hypotheses simultaneously for general block designs. Two single step \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
 }
 \examples{
-sum(1:10)
-sum(1:5, 6:10)
+# General linear hypotheses
+ELmht(df, c("pairwise"), k = 2, method = "AMC", B = 1e4)
+
+# All pairwise comparisons
+ELmht(df, c("pairwise"), method = "NB", B = 1e3)
+
+# Comparisons with control
+ELmht(df, c("pairwise", "1"), method = "NB", B = 1e3)
 
 }

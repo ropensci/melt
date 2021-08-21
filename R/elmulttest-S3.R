@@ -68,6 +68,7 @@ elmulttest_rownames <- function(m, trt, test) {
 
 #' @export
 print.pairwise <- function(x, ...) {
+  stopifnot(inherits(x, "elmulttest"))
   cat("Empirical Likelihood Multiple Hypothesis Testing\n\n")
   if (all(x$test == "pairwise")) {
     cat("Test: all pairwise comparisons\n\n")

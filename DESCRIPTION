@@ -9,8 +9,7 @@ Description: Empicial Likelihood
     Empicial likelihood for multiple hypothesis testing.
 License: GPL (>= 2)
 Imports: 
-    Rcpp (>= 1.0.6),
-    Matrix (>= 1.3.2)
+    Rcpp (>= 1.0.6)
 LinkingTo: 
     Rcpp, 
     RcppEigen

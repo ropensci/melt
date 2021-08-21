@@ -1,6 +1,6 @@
 #include "utils_ibd.h"
 
-//' Hypothesis test for incomplete block design
+//' Empirical Likelihood Hypothesis Testing
 //'
 //' Hypothesis test for incomplete block design
 //'
