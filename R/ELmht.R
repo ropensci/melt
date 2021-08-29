@@ -1,6 +1,6 @@
 #' Empirical Likelihood Multiple Hypothesis Testing
 #'
-#' Tests multiple hypotheses simultaneously for general block designs. Two single step \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
+#' Tests multiple hypotheses simultaneously for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
 #'
 #' @param data \code{data.frame} with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).
 #' @param hypotheses List of numeric matrices specifying hypotheses to be tested. Each matrix denotes a linear hypothesis in terms of parameters.
@@ -18,15 +18,14 @@
 #'
 #' @examples
 #' # General linear hypotheses
-#' ELmht(df, c("pairwise"), k = 2, method = "AMC", B = 1e4)
+#' # ELmht(df, c("pairwise"), k = 2, method = "AMC", B = 1e4)
 #'
 #' # All pairwise comparisons
-#' ELmht(df, c("pairwise"), method = "NB", B = 1e3)
+#' # ELmht(df, c("pairwise"), method = "NB", B = 1e3)
 #'
 #' # Comparisons with control
-#' ELmht(df, c("pairwise", "1"), method = "NB", B = 1e3)
+#' # ELmht(df, c("pairwise", "1"), method = "NB", B = 1e3)
 #'
-#' @importFrom stats reshape
 #' @export
 ELmht <- function(data, hypotheses, rhs = NULL,
                   k = 1, alpha = 0.05,
@@ -35,59 +34,21 @@ ELmht <- function(data, hypotheses, rhs = NULL,
   ## check method
   method <- match.arg(method)
 
-  ## check data
-  # take data.frame with 3 variables
-  if (!is.data.frame(data) || length(data) != 3) {
-    stop("error")
-  }
-
-  # 2 variables for treatments and blocks & 1 variable for observations
-  type <- sapply(data, class)
-  if (!setequal(type, c("factor", "factor", "numeric"))) {
-    stop("error")
-  }
-
-  # infer variable types and name them as "block", "trt, and "obs"
-  obs.loc <- unname(which(type == "numeric"))
-  block.loc <- unname(which(type == "factor"))[1]
-  trt.loc <- unname(which(type == "factor"))[2]
-  if (length(levels(data[, block.loc])) == length(levels(data[, trt.loc]))) {
-    stop("error")
-  } else if (length(levels(data[, block.loc])) <
-             length(levels(data[, trt.loc]))) {
-    block.loc <- unname(which(type == "factor"))[2]
-    trt.loc <- unname(which(type == "factor"))[1]
-  }
-  trt <- levels(data[, trt.loc])
-
-  # incidence matrix
-  c <- unclass(table(data[, block.loc], data[, trt.loc]))
-  # data matrix
-  x <- reshape(data[order(data[, trt.loc]),],
-               idvar = names(data)[block.loc],
-               timevar = names(data)[trt.loc],
-               v.names = names(data)[obs.loc],
-               direction = "wide")
-  # remove block variable and convert to matrix
-  x <- x[order(x[, block.loc]),]
-  x[, names(data)[block.loc]] <- NULL
-  x <- as.matrix(x)
-  # replace NA with 0
-  x[is.na(x)] <- 0
-  dimnames(x) <- list(levels(data[, block.loc]), trt)
-
+  ## check data and construct general block design from data
+  gbd <- el_gbd(data)
 
   ## check hypotheses and rhs
-  test <- check_hypotheses(hypotheses, rhs, trt)
+  test <- check_hypotheses(hypotheses, rhs, gbd$trt)
 
   ## checked everything and go to function call
   if (is.null(test)) {
     stop("general hypotheses not supported yet")
   } else {
-    out <- el_pairwise(x, c, control = test, k, alpha, interval = T,
+    out <- el_pairwise(gbd$model_matrix, gbd$incidence_matrix,
+                       control = test, k, alpha, interval = T,
                        method, B, approx, nthread,
                        maxit, abstol)
-    out$trt <- trt
+    out$trt <- gbd$trt
     out$test <- hypotheses
   }
   out

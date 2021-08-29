@@ -2,6 +2,7 @@
 
 S3method(print,pairwise)
 export(ELmht)
+export(ELtest)
 export(el_mean)
 export(el_pairwise)
 export(test_ibd)

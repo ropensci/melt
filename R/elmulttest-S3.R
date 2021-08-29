@@ -84,5 +84,5 @@ print.pairwise <- function(x, ...) {
   out$p.adj     <- x$p.adj
   print(format(round(out, 4), digits = 4))
   cat("---\n", "k: ", x$k, ", level: ", x$level, ", method: ", x$method,
-      ", cutoff: ", round(x$cutoff, 4), sep = "")
+      ", cutoff: ", round(x$cutoff, 4), "\n", sep = "")
 }

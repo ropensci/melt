@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{test_ibd}
 \alias{test_ibd}
-\title{Hypothesis test for incomplete block design}
+\title{Empirical Likelihood Hypothesis Testing}
 \usage{
 test_ibd(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-08)
 }
