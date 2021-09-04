@@ -14,23 +14,24 @@ el_gbd <- function(data) {
   obs.loc <- unname(which(type == "numeric"))
   levels_lengths <-
     sapply(data[, which(type == "factor")], function(x) length(levels(x)))
-  block_loc <- which.max(levels_lengths)
-  trt_loc <- which.min(levels_lengths)
+  block_loc <- setdiff(c(1, 2, 3), obs.loc)[which.max(levels_lengths)]
+  # block_loc <- which.max(levels_lengths)
+  trt_loc <- setdiff(c(1, 2, 3), obs.loc)[which.min(levels_lengths)]
   if (block_loc == trt_loc) {
     stop("error")
   }
   trt <- levels(data[, trt_loc])
 
   # incidence matrix
-  c <- unclass(table(data[, block_loc], data[, trt_loc]))
+  c <- unclass(table(data[[block_loc]], data[[trt_loc]]))
   # data matrix
-  x <- reshape(data[order(data[, trt_loc]),],
+  x <- reshape(as.data.frame(data)[order(data[[trt_loc]]), ],
                idvar = names(data)[block_loc],
                timevar = names(data)[trt_loc],
                v.names = names(data)[obs.loc],
                direction = "wide")
   # remove block variable and convert to matrix
-  x <- x[order(x[, block_loc]), ]
+  x <- x[order(x[[block_loc]]), ]
   x[, names(data)[block_loc]] <- NULL
   x <- as.matrix(x)
   # replace NA with 0

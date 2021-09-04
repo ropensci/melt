@@ -50,6 +50,8 @@ ELmht <- function(data, hypotheses, rhs = NULL,
                        maxit, abstol)
     out$trt <- gbd$trt
     out$test <- hypotheses
+    out$model.matrix <- gbd$model_matrix
+    out$incidence.matrix <- gbd$incidence_matrix
   }
   out
 }
