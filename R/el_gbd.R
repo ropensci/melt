@@ -20,7 +20,7 @@ el_gbd <- function(data) {
   if (block_loc == trt_loc) {
     stop("error")
   }
-  trt <- levels(data[, trt_loc])
+  trt <- levels(data[[trt_loc]])
 
   # incidence matrix
   c <- unclass(table(data[[block_loc]], data[[trt_loc]]))
