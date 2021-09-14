@@ -140,12 +140,12 @@ std::array<double, 2> pair_confidence_interval_ibd(
   return std::array<double, 2>{lower_ub, upper_lb};
 }
 
-Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                              const Eigen::Ref<const Eigen::MatrixXd>& c) {
-  return x -
-    (c.array().rowwise() *
-    (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
-}
+// Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+//                               const Eigen::Ref<const Eigen::MatrixXd>& c) {
+//   return x -
+//     (c.array().rowwise() *
+//     (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
+// }
 
 Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n) {
   // generate standard multivariate gaussian random vectors(n by p matrix)
@@ -282,7 +282,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
 
   // B bootstrap results
   Eigen::ArrayXd k_bootstrap_statistics(B);
-  #pragma omp parallel for num_threads(ncores) schedule(dynamic, 1)
+  #pragma omp parallel for num_threads(ncores) schedule(dynamic)
   for (int b = 0; b < B; ++b) {
     std::vector<double> bootstrap_statistics(m);
     for (int j = 0; j < m; ++j) {

@@ -40,8 +40,8 @@ std::array<double, 2> pair_confidence_interval_ibd(
     const double init,
     const double threshold);
 
-Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                              const Eigen::Ref<const Eigen::MatrixXd>& c);
+// Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+//                               const Eigen::Ref<const Eigen::MatrixXd>& c);
 
 Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n);
 
