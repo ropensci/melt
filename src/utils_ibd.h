@@ -53,15 +53,15 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
         const int B,
         const double level);
 
-double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                                 const Eigen::Ref<const Eigen::MatrixXd>& c,
-                                 const int k,
-                                 const std::vector<std::array<int, 2>>& pairs,
-                                 const int B,
-                                 const double level,
-                                 const int ncores,
-                                 const int maxit,
-                                 const double abstol);
+// double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
+//                                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+//                                  const int k,
+//                                  const std::vector<std::array<int, 2>>& pairs,
+//                                  const int B,
+//                                  const double level,
+//                                  const int ncores,
+//                                  const int maxit,
+//                                  const double abstol);
 
 Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
         const Eigen::Ref<const Eigen::MatrixXd>& x,
@@ -101,10 +101,10 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
 // working...
 // approximation
-minEL test_ibd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                         const Eigen::Ref<const Eigen::MatrixXd>& c,
-                         const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-                         const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                         const int maxit = 1000,
-                         const double abstol = 1e-8);
+// minEL test_ibd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
+//                          const Eigen::Ref<const Eigen::MatrixXd>& c,
+//                          const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+//                          const Eigen::Ref<const Eigen::VectorXd>& rhs,
+//                          const int maxit = 1000,
+//                          const double abstol = 1e-8);
 #endif
