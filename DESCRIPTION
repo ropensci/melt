@@ -2,17 +2,15 @@ Package: elmulttest
 Type: Package
 Title: Empicial Likelihood for Multiple Hypothesis Testing
 Version: 1.0.0
-Date: 2021-08-21
-Authors@R: c(person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre")))
-Depends: R (>= 3.4.0)
-Description: Empicial Likelihood
-    Empicial likelihood for multiple hypothesis testing.
+Description: Multiple hypothesis testing via empicial Likelihood in general block designs.
 License: GPL (>= 2)
+Authors@R: person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre"))
+Depends: R (>= 3.4.0)
 Imports: 
-    Rcpp (>= 1.0.6)
+    Rcpp (>= 1.0.6),
+    stats
 LinkingTo: 
     Rcpp, 
     RcppEigen
-RoxygenNote: 7.1.2
 Encoding: UTF-8
-LazyData: true
+RoxygenNote: 7.1.2
