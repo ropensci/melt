@@ -107,7 +107,7 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   std::vector<double> statistic(m);
 
   // convergences
-  std::vector<double> convergence(m);
+  std::vector<bool> convergence(m);
 
   // adjusted p-values
   std::vector<double> adj_pvalues(m);
@@ -124,10 +124,10 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
     minEL pairwise_result =
       test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
                   maxit, abstol);
-    if (!pairwise_result.convergence) {
-      Rcpp::warning("test for pair (%i,%i) failed. \n",
-                    pairs[i][0] + 1, pairs[i][1] + 1);
-    }
+    // if (!pairwise_result.convergence) {
+    //   Rcpp::warning("test for pair (%i,%i) failed. \n",
+    //                 pairs[i][0] + 1, pairs[i][1] + 1);
+    // }
     statistic[i] = 2 * pairwise_result.nlogLR;
 
     convergence[i] = pairwise_result.convergence;

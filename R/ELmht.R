@@ -2,7 +2,7 @@
 #'
 #' Tests multiple hypotheses simultaneously for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
 #'
-#' @param data \code{data.frame} with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).
+#' @param data A data frame with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).
 #' @param hypotheses List of numeric matrices specifying hypotheses to be tested. Each matrix denotes a linear hypothesis in terms of parameters.
 #' @param rhs Optional list of numeric vectors specifying the right hand sides of \code{hypotheses}. The length of each vector must match the number of rows of the corresponding matrix. If not specified, they are all set to 0 vectors.
 #' @param k Integer value \eqn{k} for \eqn{k}-FWER. Defaults to 1.
