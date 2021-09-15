@@ -2,9 +2,11 @@ Package: elmulttest
 Type: Package
 Title: Empicial Likelihood for Multiple Hypothesis Testing
 Version: 1.0.0
-Description: Multiple hypothesis testing via empicial Likelihood in general block designs.
+Description: Multiple hypothesis testing via empicial likelihood in general 
+    block designs. It provides asymptotic single-step generalized family-wise 
+    error rate control.
 License: GPL (>= 2)
-Authors@R: person("Eunseop", "Kim", email = "markean@protonmail.com", role = c("aut", "cre"))
+Authors@R: person("Eunseop", "Kim", email = "kim.7302@osu.edu", role = c("aut", "cre"))
 Depends: R (>= 3.4.0)
 Imports: 
     Rcpp (>= 1.0.6),
