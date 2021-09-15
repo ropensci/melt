@@ -11,9 +11,9 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// test_ibd
-Rcpp::List test_ibd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const Eigen::MatrixXd& lhs, const Eigen::VectorXd& rhs, const bool approx, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_test_ibd(SEXP xSEXP, SEXP cSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP approxSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+// test_gbd
+Rcpp::List test_gbd(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const Eigen::MatrixXd& lhs, const Eigen::VectorXd& rhs, const bool approx, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_test_gbd(SEXP xSEXP, SEXP cSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP approxSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -24,7 +24,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type approx(approxSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(test_ibd(x, c, lhs, rhs, approx, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(test_gbd(x, c, lhs, rhs, approx, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -82,7 +82,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_elmulttest_test_ibd", (DL_FUNC) &_elmulttest_test_ibd, 7},
+    {"_elmulttest_test_gbd", (DL_FUNC) &_elmulttest_test_gbd, 7},
     {"_elmulttest_el_pairwise", (DL_FUNC) &_elmulttest_el_pairwise, 12},
     {"_elmulttest_tt", (DL_FUNC) &_elmulttest_tt, 6},
     {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},

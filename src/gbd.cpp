@@ -13,7 +13,7 @@
 //' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 //' @export
 // [[Rcpp::export]]
-Rcpp::List test_ibd(const Eigen::MatrixXd& x,
+Rcpp::List test_gbd(const Eigen::MatrixXd& x,
                     const Eigen::MatrixXd& c,
                     const Eigen::MatrixXd& lhs,
                     const Eigen::VectorXd& rhs,
@@ -28,7 +28,7 @@ Rcpp::List test_ibd(const Eigen::MatrixXd& x,
     Rcpp::stop("Dimensions of L and rhs do not match.");
   }
   minEL result =
-    test_ibd_EL(x.array().colwise().sum() / c.array().colwise().sum(),
+    test_gbd_EL(x.array().colwise().sum() / c.array().colwise().sum(),
                 x, c, lhs, rhs, maxit, abstol);
 
   return Rcpp::List::create(
@@ -106,6 +106,9 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   // statistics
   std::vector<double> statistic(m);
 
+  // convergences
+  std::vector<double> convergence(m);
+
   // adjusted p-values
   std::vector<double> adj_pvalues(m);
 
@@ -119,13 +122,15 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
     lhs(pairs[i][0]) = 1;
     lhs(pairs[i][1]) = -1;
     minEL pairwise_result =
-      test_ibd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
+      test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
                   maxit, abstol);
     if (!pairwise_result.convergence) {
       Rcpp::warning("test for pair (%i,%i) failed. \n",
                     pairs[i][0] + 1, pairs[i][1] + 1);
     }
     statistic[i] = 2 * pairwise_result.nlogLR;
+
+    convergence[i] = pairwise_result.convergence;
 
     adj_pvalues[i] =
       static_cast<double>(
@@ -136,6 +141,7 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   Rcpp::List result;
   result["estimate"] = estimate;
   result["statistic"] = statistic;
+  result["convergence"] = convergence;
   // confidence interval(optional)
   if (interval) {
     std::vector<double> lower(m);
@@ -145,7 +151,7 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
       lhs(pairs[i][0]) = 1;
       lhs(pairs[i][1]) = -1;
       std::array<double, 2> ci =
-        pair_confidence_interval_ibd(theta_hat, x, c, lhs, estimate[i], cutoff);
+        pair_confidence_interval_gbd(theta_hat, x, c, lhs, estimate[i], cutoff);
       lower[i] = ci[0];
       upper[i] = ci[1];
     }
@@ -185,7 +191,7 @@ Rcpp::List tt(const Eigen::MatrixXd& x,
     lhs(pairs[i][0]) = 1;
     lhs(pairs[i][1]) = -1;
     minEL pairwise_result =
-      test_ibd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
+      test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
                   maxit, abstol);
     if (!pairwise_result.convergence) {
       Rcpp::warning("Test for pair (%i,%i) failed. \n",
@@ -197,6 +203,6 @@ Rcpp::List tt(const Eigen::MatrixXd& x,
   // result
   Rcpp::List result;
   result["statistic"] = statistic;
-  result.attr("class") = "pairwise.ibd";
+  result.attr("class") = "pairwise.gbd";
   return result;
 }

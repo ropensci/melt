@@ -1,24 +1,24 @@
 #include "utils_gbd.h"
 
-Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
+Eigen::MatrixXd g_gbd(const Eigen::Ref<const Eigen::VectorXd>& theta,
                       const Eigen::Ref<const Eigen::MatrixXd>& x,
                       const Eigen::Ref<const Eigen::MatrixXd>& c) {
   return x - (c.array().rowwise() * theta.array().transpose()).matrix();
 }
 
-Eigen::MatrixXd cov_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+Eigen::MatrixXd cov_gbd(const Eigen::Ref<const Eigen::MatrixXd>& x,
                         const Eigen::Ref<const Eigen::MatrixXd>& c) {
   // // estimator(global minimizer)
   // const Eigen::VectorXd theta_hat =
   //   x.array().colwise().sum() / c.array().colwise().sum();
   // estimating function
   Eigen::MatrixXd g =
-    g_ibd(x.array().colwise().sum() / c.array().colwise().sum(), x, c);
+    g_gbd(x.array().colwise().sum() / c.array().colwise().sum(), x, c);
   // covariance estimate
   return (g.transpose() * g) / x.rows();
 }
 
-Eigen::VectorXd lambda2theta_ibd(
+Eigen::VectorXd lambda2theta_gbd(
     const Eigen::Ref<const Eigen::VectorXd>& lambda,
     const Eigen::Ref<const Eigen::VectorXd>& theta,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -56,7 +56,7 @@ void lambda2theta_void(
       lambda.array()).matrix();
 }
 
-Eigen::VectorXd approx_lambda_ibd(
+Eigen::VectorXd approx_lambda_gbd(
     const Eigen::Ref<const Eigen::MatrixXd>& g0,
     const Eigen::Ref<const Eigen::MatrixXd>& c,
     const Eigen::Ref<const Eigen::VectorXd>& theta0,
@@ -84,7 +84,7 @@ Eigen::VectorXd approx_lambda_ibd(
   return lambda0 + jacobian * (theta1 - theta0);
 }
 
-std::array<double, 2> pair_confidence_interval_ibd(
+std::array<double, 2> pair_confidence_interval_gbd(
     const Eigen::Ref<const Eigen::VectorXd>& theta0,
     const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::MatrixXd>& c,
@@ -140,7 +140,7 @@ std::array<double, 2> pair_confidence_interval_ibd(
   return std::array<double, 2>{lower_ub, upper_lb};
 }
 
-// Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+// Eigen::MatrixXd centering_gbd(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //                               const Eigen::Ref<const Eigen::MatrixXd>& c) {
 //   return x -
 //     (c.array().rowwise() *
@@ -169,7 +169,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
     const int B,
     const double level) {
   // covariance estimate
-  const Eigen::MatrixXd V_hat = cov_ibd(x, c);
+  const Eigen::MatrixXd V_hat = cov_gbd(x, c);
   // U hat matrices
   const Eigen::MatrixXd U_hat = rmvn(V_hat, B);
   // number of hypotheses
@@ -210,7 +210,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
 //   const int m = pairs.size();   // number of hypotheses
 //
 //   // centered matrix
-//   // Eigen::MatrixXd&& x_centered = centering_ibd(x, c);
+//   // Eigen::MatrixXd&& x_centered = centering_gbd(x, c);
 //   const Eigen::MatrixXd x_centered =
 //     x - (c.array().rowwise() *
 //     (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
@@ -234,7 +234,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
 //       lhs(pairs[j][0]) = 1;
 //       lhs(pairs[j][1]) = -1;
 //       statistics_b(j) =
-//         2 * test_ibd_EL_approx(
+//         2 * test_gbd_EL_approx(
 //             bootstrap_sample(x_centered, bootstrap_index.col(b)),
 //             bootstrap_sample(c, bootstrap_index.col(b)),
 //             lhs, Eigen::Matrix<double, 1, 1>(0),
@@ -266,7 +266,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
   const int m = pairs.size();   // number of hypotheses
 
   // centered matrix
-  // Eigen::MatrixXd&& x_centered = centering_ibd(x, c);
+  // Eigen::MatrixXd&& x_centered = centering_gbd(x, c);
   const Eigen::MatrixXd x_centered =
     x - (c.array().rowwise() *
     (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
@@ -302,7 +302,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
   return k_bootstrap_statistics;
 }
 
-minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                   const Eigen::Ref<const Eigen::MatrixXd>& x,
                   const Eigen::Ref<const Eigen::MatrixXd>& c,
                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
@@ -315,7 +315,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
   Eigen::VectorXd theta =
     linear_projection(theta0, lhs, rhs);
   // estimating function
-  Eigen::MatrixXd g = g_ibd(theta, x, c);
+  Eigen::MatrixXd g = g_gbd(theta, x, c);
   // evaluation
   Eigen::VectorXd lambda = EL2(g).lambda;
   // for current function value(-logLR)
@@ -332,7 +332,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
     lambda2theta_void(lambda, theta_tmp, g, c, gamma);
     linear_projection_void(theta_tmp, lhs, rhs);
     // update g
-    Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
+    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
     // update lambda
     EL2 eval(g_tmp);
     Eigen::VectorXd lambda_tmp = eval.lambda;
@@ -355,7 +355,7 @@ minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
       lambda2theta_void(lambda, theta_tmp, g, c, gamma);
       linear_projection_void(theta_tmp, lhs, rhs);
       // propose new lambda
-      g_tmp = g_ibd(theta_tmp, x, c);
+      g_tmp = g_gbd(theta_tmp, x, c);
       lambda_tmp = EL2(g_tmp).lambda;
       if (gamma < abstol) {
         Rcpp::warning("Convex hull constraint not satisfied during step halving.");
@@ -393,7 +393,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
   Eigen::VectorXd theta =
     linear_projection(theta0, lhs, rhs);
   // estimating function
-  Eigen::MatrixXd g = g_ibd(theta, x, c);
+  Eigen::MatrixXd g = g_gbd(theta, x, c);
   // evaluation
   Eigen::VectorXd lambda = EL2(g).lambda;
   // for current function value(-logLR)
@@ -410,7 +410,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
     lambda2theta_void(lambda, theta_tmp, g, c, gamma);
     linear_projection_void(theta_tmp, lhs, rhs);
     // update g
-    Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
+    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
     // update lambda
     EL2 eval(g_tmp);
     Eigen::VectorXd lambda_tmp = eval.lambda;
@@ -432,7 +432,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
       lambda2theta_void(lambda, theta_tmp, g, c, gamma);
       linear_projection_void(theta_tmp, lhs, rhs);
       // propose new lambda
-      g_tmp = g_ibd(theta_tmp, x, c);
+      g_tmp = g_gbd(theta_tmp, x, c);
       lambda_tmp = EL2(g_tmp).lambda;
       if (gamma < abstol) {
         return f0;
@@ -469,7 +469,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
     linear_projection(x.array().colwise().sum() / c.array().colwise().sum(),
                       lhs, rhs);
   // estimating function
-  Eigen::MatrixXd g = g_ibd(theta, x, c);
+  Eigen::MatrixXd g = g_gbd(theta, x, c);
   // evaluation
   Eigen::VectorXd lambda = EL2(g).lambda;
   // for current function value(-logLR)
@@ -486,7 +486,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
     lambda2theta_void(lambda, theta_tmp, g, c, gamma);
     linear_projection_void(theta_tmp, lhs, rhs);
     // update g
-    Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
+    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
     // update lambda
     EL2 eval(g_tmp);
     Eigen::VectorXd lambda_tmp = eval.lambda;
@@ -506,7 +506,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
       lambda2theta_void(lambda, theta_tmp, g, c, gamma);
       linear_projection_void(theta_tmp, lhs, rhs);
       // propose new lambda
-      g_tmp = g_ibd(theta_tmp, x, c);
+      g_tmp = g_gbd(theta_tmp, x, c);
       lambda_tmp = EL2(g_tmp).lambda;
       if (gamma < abstol) {
         return f0;
@@ -531,7 +531,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
 }
 
 //
-// minEL test_ibd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
+// minEL test_gbd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //                          const Eigen::Ref<const Eigen::MatrixXd>& c,
 //                          const Eigen::Ref<const Eigen::MatrixXd>& lhs,
 //                          const Eigen::Ref<const Eigen::VectorXd>& rhs,
@@ -545,7 +545,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //                       lhs, rhs);
 //
 //   // estimating function
-//   Eigen::MatrixXd g = g_ibd(theta, x, c);
+//   Eigen::MatrixXd g = g_gbd(theta, x, c);
 //   // evaluation
 //   EL eval = getEL(g);
 //   Eigen::VectorXd lambda = eval.lambda;
@@ -562,14 +562,14 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //   while (!convergence && iterations != maxit) {
 //     // update parameter by GD with lambda fixed -> projection
 //     Eigen::VectorXd theta_tmp =
-//       linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma), lhs, rhs);
+//       linear_projection(lambda2theta_gbd(lambda, theta, g, c, gamma), lhs, rhs);
 //     // update g
-//     Eigen::MatrixXd g_tmp = g_ibd(theta_tmp, x, c);
+//     Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
 //
 //     Eigen::VectorXd lambda_tmp(theta.size());
 //       if (iterations > 1) {
 //       // update lambda
-//       lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+//       lambda_tmp = approx_lambda_gbd(g, c, theta, theta_tmp, lambda);
 //     } else {
 //       // update lambda
 //       eval = getEL(g_tmp);
@@ -593,12 +593,12 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //       gamma /= 2;
 //       // propose new theta
 //       theta_tmp =
-//         linear_projection(lambda2theta_ibd(lambda, theta, g, c, gamma),
+//         linear_projection(lambda2theta_gbd(lambda, theta, g, c, gamma),
 //                           lhs, rhs);
 //       // propose new lambda
-//       g_tmp = g_ibd(theta_tmp, x, c);
+//       g_tmp = g_gbd(theta_tmp, x, c);
 //       if (iterations > 1) {
-//         lambda_tmp = approx_lambda_ibd(g, c, theta, theta_tmp, lambda);
+//         lambda_tmp = approx_lambda_gbd(g, c, theta, theta_tmp, lambda);
 //       } else {
 //         eval = getEL(g_tmp);
 //         lambda_tmp = eval.lambda;

@@ -13,8 +13,8 @@
 #' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #' @export
-test_ibd <- function(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_test_ibd`, x, c, lhs, rhs, approx, maxit, abstol)
+test_gbd <- function(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-8) {
+    .Call(`_elmulttest_test_gbd`, x, c, lhs, rhs, approx, maxit, abstol)
 }
 
 #' Pairwise Comparisons for General Block Design

@@ -1,18 +1,18 @@
-#ifndef EL_UTILS_IBD_H_
-#define EL_UTILS_IBD_H_
+#ifndef EL_UTILS_gbd_H_
+#define EL_UTILS_gbd_H_
 
 #include "EL.h"
 #include "utils.h"
 #include <omp.h>
 
-Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
+Eigen::MatrixXd g_gbd(const Eigen::Ref<const Eigen::VectorXd>& theta,
                       const Eigen::Ref<const Eigen::MatrixXd>& x,
                       const Eigen::Ref<const Eigen::MatrixXd>& c);
 
-Eigen::MatrixXd cov_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+Eigen::MatrixXd cov_gbd(const Eigen::Ref<const Eigen::MatrixXd>& x,
                         const Eigen::Ref<const Eigen::MatrixXd>& c);
 
-Eigen::VectorXd lambda2theta_ibd(const Eigen::Ref<const Eigen::VectorXd>& lambda,
+Eigen::VectorXd lambda2theta_gbd(const Eigen::Ref<const Eigen::VectorXd>& lambda,
                                  const Eigen::Ref<const Eigen::VectorXd>& theta,
                                  const Eigen::Ref<const Eigen::MatrixXd>& g,
                                  const Eigen::Ref<const Eigen::MatrixXd>& c,
@@ -25,14 +25,14 @@ void lambda2theta_void(
         const Eigen::Ref<const Eigen::MatrixXd>& c,
         const double gamma);
 
-Eigen::VectorXd approx_lambda_ibd(
+Eigen::VectorXd approx_lambda_gbd(
         const Eigen::Ref<const Eigen::MatrixXd>& g0,
         const Eigen::Ref<const Eigen::MatrixXd>& c,
         const Eigen::Ref<const Eigen::VectorXd>& theta0,
         const Eigen::Ref<const Eigen::VectorXd>& theta1,
         const Eigen::Ref<const Eigen::VectorXd>& lambda0);
 
-std::array<double, 2> pair_confidence_interval_ibd(
+std::array<double, 2> pair_confidence_interval_gbd(
     const Eigen::Ref<const Eigen::VectorXd>& theta0,
     const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::MatrixXd>& c,
@@ -40,7 +40,7 @@ std::array<double, 2> pair_confidence_interval_ibd(
     const double init,
     const double threshold);
 
-// Eigen::MatrixXd centering_ibd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+// Eigen::MatrixXd centering_gbd(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //                               const Eigen::Ref<const Eigen::MatrixXd>& c);
 
 Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n);
@@ -76,7 +76,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
 
 
 // no approximation
-minEL test_ibd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                   const Eigen::Ref<const Eigen::MatrixXd>& x,
                   const Eigen::Ref<const Eigen::MatrixXd>& c,
                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
@@ -101,7 +101,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
 // working...
 // approximation
-// minEL test_ibd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
+// minEL test_gbd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //                          const Eigen::Ref<const Eigen::MatrixXd>& c,
 //                          const Eigen::Ref<const Eigen::MatrixXd>& lhs,
 //                          const Eigen::Ref<const Eigen::VectorXd>& rhs,
