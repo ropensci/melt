@@ -1,4 +1,4 @@
-#include "utils_ibd.h"
+#include "utils_gbd.h"
 
 Eigen::MatrixXd g_ibd(const Eigen::Ref<const Eigen::VectorXd>& theta,
                       const Eigen::Ref<const Eigen::MatrixXd>& x,

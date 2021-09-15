@@ -1,4 +1,4 @@
-#include "utils_ibd.h"
+#include "utils_gbd.h"
 
 //' Empirical Likelihood Hypothesis Testing
 //'
