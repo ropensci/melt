@@ -19,7 +19,7 @@ ELmht(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).}
+\item{data}{A data frame with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).}
 
 \item{hypotheses}{List of numeric matrices specifying hypotheses to be tested. Each matrix denotes a linear hypothesis in terms of parameters.}
 
