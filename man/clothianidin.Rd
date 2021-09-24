@@ -7,7 +7,7 @@
 \format{
 A data frame with 102 rows and 3 variables:
 \describe{
-  \item{blk}{blocks constructed from original data. Days post planting-blocks-year.}
+  \item{blk}{blocks constructed from original data. Days post planting-blocks-year.clothianidin}
   \item{trt}{Seed treatments.}
   \item{clo}{log transformed clothianidin concentration in microgram.}
 }

@@ -9,7 +9,6 @@
 #' @param alpha Significance level of the test. Defaults to 0.05.
 #' @param method Character value for the procedure to be used; either `AMC' or `NB' is supported. Defaults to `AMC'.
 #' @param B Number of random samples for the AMC (number of bootstrap replicates for the NB).
-#' @param approx If \code{TRUE}, approximations are used for computing bootstrap statistics. Only applied when the NB is chosen. Defaults to FALSE.
 #' @param nthread Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen. Defaults to 1.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
@@ -29,8 +28,7 @@
 #' @export
 ELmht <- function(data, hypotheses, rhs = NULL,
                   k = 1, alpha = 0.05,
-                  method = c("AMC", "NB"), B,
-                  approx = F, nthread = 1, maxit = 1e04, abstol = 1e-8) {
+                  method = c("AMC", "NB"), B, nthread = 1, maxit = 1e04, abstol = 1e-8) {
   ## check method
   method <- match.arg(method)
 
@@ -46,7 +44,7 @@ ELmht <- function(data, hypotheses, rhs = NULL,
   } else {
     out <- el_pairwise(gbd$model_matrix, gbd$incidence_matrix,
                        control = test, k, alpha, interval = T,
-                       method, B, approx, nthread,
+                       method, B, approx = F, nthread,
                        maxit, abstol)
     out$trt <- gbd$trt
     out$test <- hypotheses

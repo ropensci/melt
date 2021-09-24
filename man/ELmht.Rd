@@ -12,7 +12,6 @@ ELmht(
   alpha = 0.05,
   method = c("AMC", "NB"),
   B,
-  approx = F,
   nthread = 1,
   maxit = 10000,
   abstol = 1e-08
@@ -32,8 +31,6 @@ ELmht(
 \item{method}{Character value for the procedure to be used; either `AMC' or `NB' is supported. Defaults to `AMC'.}
 
 \item{B}{Number of random samples for the AMC (number of bootstrap replicates for the NB).}
-
-\item{approx}{If \code{TRUE}, approximations are used for computing bootstrap statistics. Only applied when the NB is chosen. Defaults to FALSE.}
 
 \item{nthread}{Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen. Defaults to 1.}
 
