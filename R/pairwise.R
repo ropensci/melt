@@ -1,0 +1,118 @@
+#' Empirical Likelihood Multiple Hypothesis Testing
+#'
+#' Tests multiple hypotheses simultaneously for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
+#'
+#' @param formula A data frame with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).
+#' @param data List of numeric matrices specifying hypotheses to be tested. Each matrix denotes a linear hypothesis in terms of parameters.
+#' @param control Optional list of numeric vectors specifying the right hand sides of \code{hypotheses}. The length of each vector must match the number of rows of the corresponding matrix. If not specified, they are all set to 0 vectors.
+#' @param k Integer value \eqn{k} for \eqn{k}-FWER. Defaults to 1.
+#' @param alpha Significance level of the test. Defaults to 0.05.
+#' @param method Character value for the procedure to be used; either `AMC' or `NB' is supported. Defaults to `AMC'.
+#' @param B Number of random samples for the AMC (number of bootstrap replicates for the NB).
+#' @param nthread Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen. Defaults to 1.
+#' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
+#' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
+#'
+#' @return A list with class \code{elmulttest}.
+#'
+#' @examples
+#' # All pairwise comparisons
+#' # ELmht(df, c("pairwise"), method = "NB", B = 1e3)
+#'
+#' # Comparisons with control
+#' # ELmht(df, c("pairwise", "1"), method = "NB", B = 1e3)
+#'
+#' @importFrom stats terms
+#' @export
+pairwise <- function(formula, data, control = NULL, alpha = 0.05, k = 1,
+                     method = c("AMC", "NB"), B, nthread = 1, maxit = 10000,
+                     abstol = 1e-08) {
+  ## check method
+  method <- match.arg(method)
+
+  ## check formula
+  f <- attributes(terms(formula))
+  if (any(
+    # response required & no arbitrary manipulation on intercept
+    f$response == 0, f$intercept == 0,
+    length(f$variables) != 3,
+    # no other formula
+    typeof(f$variables[[3]]) != "language" ||
+    length(f$variables[[3]]) != 3,
+    # "|" operator needed
+    f$variables[[3]][[1]] != "|",
+    # no transformation of variables
+    typeof(f$variables[[3]][[2]]) != "symbol" ||
+    typeof(f$variables[[3]][[3]]) != "symbol",
+    # distinct variables for treatment and block
+    f$variables[[3]][[2]] == f$variables[[3]][[3]])
+  ) {
+    stop("invalied model formula. specify formula as 'response ~ treatment | block'.")
+  }
+
+  ## pseudo formula for model.frame
+  lhs <- f$variables[[2]]
+  rhs <- c(f$variables[[3]][[2]], f$variables[[3]][[3]])
+  pf <- formula(paste(lhs, paste(rhs, collapse = " + "), sep = " ~ "))
+
+  ## extract model frame
+  mf <- match.call()
+  mf <- mf[c(1L, match(c("formula", "data"), names(mf), 0L))]
+  mf$drop.unused.levels <- TRUE
+  mf[[1L]] <- quote(model.frame)
+  mf[[2L]] <- pf
+  mf <- eval(mf, parent.frame())
+  attributes(mf)$terms <- NULL
+
+  ## type conversion
+  # response
+  mf[[1L]] <- as.numeric(mf[[1L]])
+  # treatment
+  mf[[2L]] <- as.factor(mf[[2L]])
+  # block
+  mf[[3L]] <- as.factor(mf[[3L]])
+  if (nlevels(mf[[2L]]) >= nlevels(mf[[3L]])) {
+    stop("number of blocks should be larger than number of treatments.")
+  }
+
+  ## construct general block design
+  # incidence matrix
+  c <- unclass(table(mf[[3L]], mf[[2L]]))
+  # model matrix
+  x <- reshape(mf[order(mf[[2L]]), ],
+               idvar = names(mf)[3L],
+               timevar = names(mf)[2L],
+               v.names = names(mf)[1L],
+               direction = "wide")
+  x <- x[order(x[[names(mf)[3L]]]), ]
+  # replace NA with 0
+  x[is.na(x)] <- 0
+  # remove block variable and convert to matrix
+  x[names(mf)[3L]] <- NULL
+  x <- as.matrix(x)
+  # name rows and columns
+  dimnames(x) <- list(levels(mf[[3L]]), levels(mf[[2L]]))
+  # general block design
+  gbd <-
+    list("model_matrix" = x, "incidence_matrix" = c, "trt" = levels(mf[[2L]]))
+  class(gbd) <- c("gbd", "elmulttest")
+
+  ## check whether all pairwise comparisons or comparisons to control
+  match.arg(control, gbd$trt)
+  if (is.null(control)) {
+    ctrl <- 0
+  } else {
+    ctrl <- which(control == gbd$trt)
+  }
+
+  ## pairwise comparisons
+  out <- el_pairwise(gbd$model_matrix, gbd$incidence_matrix,
+                     control = ctrl, k, alpha, interval = T,
+                     method, B, approx = F, nthread,
+                     maxit, abstol)
+  out$trt <- gbd$trt
+  out$control <- control
+  out$model.matrix <- gbd$model_matrix
+  out$incidence.matrix <- gbd$incidence_matrix
+  out
+}

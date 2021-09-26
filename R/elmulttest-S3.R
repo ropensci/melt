@@ -39,50 +39,86 @@ check_hypotheses <- function(hypotheses, rhs, trt) {
   test
 }
 
-elmulttest_rownames <- function(m, trt, test) {
-  # if not pairwise comparison, return general hypotheses names
-  if (is.null(test)) {
-    return(paste0("H_", 1:m))
-  }
-
-  # pairwise comparisons
-  if (length(test) == 2) {
-    # comparisons with control
-    diff <- setdiff(trt, test[2])
-    row_names <- vector("character", length = length(diff))
-    for (i in 1:length(diff)) {
-      row_names[i] <- paste(diff[i], "-", test[2])
-    }
-    return(row_names)
-  } else {
-    # all pairwise comparisons
-    row_names <- vector("character", length = 0)
-    for (i in 1:(length(trt) - 1)) {
-      for (j in (i + 1):length(trt)) {
-        row_names <- c(row_names, paste(trt[i], "-", trt[j]))
-      }
-    }
-    row_names
-  }
-}
-
+#' @importFrom stats printCoefmat
 #' @export
 print.pairwise <- function(x, ...) {
   stopifnot(inherits(x, "elmulttest"))
   cat("Empirical Likelihood Multiple Hypothesis Testing\n\n")
-  if (all(x$test == "pairwise")) {
+  # set row names
+  if (is.null(x$control)) {
     cat("Test: all pairwise comparisons\n\n")
+    rname <- vector("character", length = 0)
+    for (i in 1:(length(x$trt) - 1)) {
+      for (j in (i + 1):length(x$trt)) {
+        rname <- c(rname, paste(x$trt[i], "-", x$trt[j]))
+      }
+    }
   } else {
     cat("Test: comparisons with control\n\n")
+    diff <- setdiff(x$trt, x$control)
+    rname <- vector("character", length = length(diff))
+    for (i in 1:length(diff)) {
+      rname[i] <- paste(diff[i], "-", x$control)
+    }
   }
-  out <- data.frame(row.names =
-                      elmulttest_rownames(length(x$statistic), x$trt, x$test))
-  out$estimate  <- x$estimate
-  out$statistic <- x$statistic
-  out$lwr.ci    <- x$lower
-  out$upr.ci    <- x$upper
-  out$p.adj     <- x$p.adj
-  print(format(round(out, 4), digits = 4))
-  cat("---\n", "k: ", x$k, ", level: ", x$level, ", method: ", x$method,
-      ", cutoff: ", round(x$cutoff, 4), "\n", sep = "")
+  out <- data.frame(row.names = rname, estimate  = x$estimate,
+                    statistic = x$statistic, lwr.ci = x$lower,
+                    upr.ci = x$upper,
+                    p.adj = round(x$p.adj, 4))
+  printCoefmat(out, digits = min(4, getOption("digits")), cs.ind = c(1, 3, 4),
+               tst.ind = 2, dig.tst = min(3, getOption("digits")),
+               P.values = T, has.Pvalue = T, eps.Pvalue = 1e-03)
+  cat("\n")
+  cat(paste(c("k", "level", "method", "cutoff"),
+            c(x$k, x$level, x$method, round(x$cutoff, 4)),
+            collapse = ", ", sep = ": "))
+  cat("\n\n")
 }
+
+# elmulttest_rownames <- function(m, trt, test) {
+#   # if not pairwise comparison, return general hypotheses names
+#   if (is.null(test)) {
+#     return(paste0("H_", 1:m))
+#   }
+#
+#   # pairwise comparisons
+#   if (length(test) == 2) {
+#     # comparisons with control
+#     diff <- setdiff(trt, test[2])
+#     row_names <- vector("character", length = length(diff))
+#     for (i in 1:length(diff)) {
+#       row_names[i] <- paste(diff[i], "-", test[2])
+#     }
+#     return(row_names)
+#   } else {
+#     # all pairwise comparisons
+#     row_names <- vector("character", length = 0)
+#     for (i in 1:(length(trt) - 1)) {
+#       for (j in (i + 1):length(trt)) {
+#         row_names <- c(row_names, paste(trt[i], "-", trt[j]))
+#       }
+#     }
+#     row_names
+#   }
+# }
+
+# print.pairwise <- function(x, ...) {
+#   stopifnot(inherits(x, "elmulttest"))
+#   cat("Empirical Likelihood Multiple Hypothesis Testing\n\n")
+#   if (all(x$test == "pairwise")) {
+#     cat("Test: all pairwise comparisons\n\n")
+#   } else {
+#     cat("Test: comparisons with control\n\n")
+#   }
+#   out <- data.frame(row.names =
+#                       elmulttest_rownames(length(x$statistic), x$trt, x$test))
+#   out$estimate  <- x$estimate
+#   out$statistic <- x$statistic
+#   out$lwr.ci    <- x$lower
+#   out$upr.ci    <- x$upper
+#   out$p.adj     <- x$p.adj
+#   print(format(round(out, 4), digits = 4))
+#   cat("---\n", "k: ", x$k, ", level: ", x$level, ", method: ", x$method,
+#       ", cutoff: ", round(x$cutoff, 4), "\n", sep = "")
+# }
+
