@@ -7,9 +7,9 @@
 \format{
 A data frame with 102 rows and 3 variables:
 \describe{
-  \item{blk}{blocks constructed from original data. Days post planting-blocks-year.clothianidin}
-  \item{trt}{Seed treatments.}
-  \item{clo}{log transformed clothianidin concentration in microgram.}
+  \item{blk}{New blocks constructed from original data. The format is 'days post planting_original block_year'.}
+  \item{trt}{Seed treatment.}
+  \item{clo}{Log transformed clothianidin concentration (µg).}
 }
 }
 \source{
@@ -20,7 +20,9 @@ Alford A, Krupke CH (2017) Translocation of the neonicotinoid seed treatment clo
 data("clothianidin")
 }
 \description{
-A dataset containing the prices and other attributes of almost 54,000
-diamonds.
+A dataset summarizing field experiments result of seed treatments on clothianidin concentration.
+}
+\details{
+The original data is provided by Alford and Krupke (2017). Only some of the shoot region observations are taken from the original data and processed for illustration.
 }
 \keyword{datasets}

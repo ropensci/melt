@@ -7,7 +7,7 @@ Description: Multiple hypothesis testing via empicial likelihood in general
     error rate control.
 License: GPL (>= 2)
 Authors@R: person("Eunseop", "Kim", email = "kim.7302@osu.edu", role = c("aut", "cre"))
-Depends: R (>= 3.4.0)
+Depends: R (>= 3.5.0)
 Imports: 
     Rcpp (>= 1.0.6),
     stats
