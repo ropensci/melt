@@ -1,30 +1,29 @@
-#' Empirical Likelihood Multiple Hypothesis Testing
+#' Empirical Likelihood Pairwise Comparisons
 #'
-#' Tests multiple hypotheses simultaneously for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
+#' Tests all pairwise comparisons or comparisons with control for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
 #'
-#' @param formula A data frame with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).
-#' @param data List of numeric matrices specifying hypotheses to be tested. Each matrix denotes a linear hypothesis in terms of parameters.
-#' @param control Optional list of numeric vectors specifying the right hand sides of \code{hypotheses}. The length of each vector must match the number of rows of the corresponding matrix. If not specified, they are all set to 0 vectors.
-#' @param k Integer value \eqn{k} for \eqn{k}-FWER. Defaults to 1.
-#' @param alpha Significance level of the test. Defaults to 0.05.
-#' @param method Character value for the procedure to be used; either `AMC' or `NB' is supported. Defaults to `AMC'.
-#' @param B Number of random samples for the AMC (number of bootstrap replicates for the NB).
-#' @param nthread Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen. Defaults to 1.
+#' @param formula A formula object. It must specify variables for response, treatment, and block as 'response ~ treatment | block'. Note that the use of vertical bar (|) separating treatment and block.
+#' @param data A data frame containing the variables in the formula.
+#' @param control Optional character specifying the treatment for comparisons with control.
+#' @param k Single integer for \eqn{k} in \eqn{k}-FWER. Defaults to 1.
+#' @param alpha Level of the test. Defaults to 0.05.
+#' @param method Single character for the procedure to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.
+#' @param B Number of Monte Carlo samples for the AMC (number of bootstrap replicates for the NB).
+#' @param nthread Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen as method. Defaults to 1.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
-#'
 #' @return A list with class \code{elmulttest}.
 #'
 #' @examples
-#' # All pairwise comparisons
-#' # ELmht(df, c("pairwise"), method = "NB", B = 1e3)
+#' ## all pairwise comparisons
+#' pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 #'
-#' # Comparisons with control
-#' # ELmht(df, c("pairwise", "1"), method = "NB", B = 1e3)
+#' ## comparisons with control
+#' pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB", B = 1000)
 #'
 #' @importFrom stats terms
 #' @export
-pairwise <- function(formula, data, control = NULL, alpha = 0.05, k = 1,
+pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
                      method = c("AMC", "NB"), B, nthread = 1, maxit = 10000,
                      abstol = 1e-08) {
   ## check method
