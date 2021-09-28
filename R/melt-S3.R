@@ -1,44 +1,3 @@
-check_hypotheses <- function(hypotheses, rhs, trt) {
-  # hypotheses must be either character vector or list of numeric matrices
-  match.arg(class(hypotheses), c("character", "list"))
-  # test for pairwise comparisons
-  test <- NULL
-  if (is.character(hypotheses)) {
-    if (length(hypotheses) == 1 && hypotheses == "pairwise") {
-      test <- 0
-      # all pairwise
-    } else if (length(hypotheses) == 2 && hypotheses[1] == "pairwise") {
-      if (hypotheses[2] %in% trt) {
-        test <- which(trt == hypotheses[2])
-      } else {
-        stop(paste("there is no treatment named", hypotheses[2]))
-      }
-    } else {
-      stop("invalid hypotheses specified")
-    }
-    return(test)
-  }
-
-  # check validity of hypotheses and rhs
-  if (!all(sapply(hypotheses, function(x) is.numeric(x) && is.matrix(x)))) {
-    stop("hypotheses must consists of numeric matrices")
-  } else if (!all(sapply(hypotheses, function(x) {
-    nrow(x) <= ncol(x) && ncol(x) == length(trt)}))) {
-    stop("invalid matrix dimensions for hypotheses")
-  }
-
-  if (!is.null(rhs)) {
-    if (!is.list(rhs)) {
-      stop("invalid rhs specified")
-    } else if (length(hypotheses) != length(rhs)) {
-      stop("number of hypotheses and rhs do not match")
-    } else if (!all(sapply(rhs, function(x) is.numeric(x) && is.vector(x)))) {
-      stop("rhs must consists of numeric vectors")
-    }
-  }
-  test
-}
-
 #' @importFrom stats printCoefmat
 #' @export
 print.pairwise <- function(x, ...) {
@@ -75,6 +34,47 @@ print.pairwise <- function(x, ...) {
             collapse = ", ", sep = ": "))
   cat("\n\n")
 }
+
+# check_hypotheses <- function(hypotheses, rhs, trt) {
+#   # hypotheses must be either character vector or list of numeric matrices
+#   match.arg(class(hypotheses), c("character", "list"))
+#   # test for pairwise comparisons
+#   test <- NULL
+#   if (is.character(hypotheses)) {
+#     if (length(hypotheses) == 1 && hypotheses == "pairwise") {
+#       test <- 0
+#       # all pairwise
+#     } else if (length(hypotheses) == 2 && hypotheses[1] == "pairwise") {
+#       if (hypotheses[2] %in% trt) {
+#         test <- which(trt == hypotheses[2])
+#       } else {
+#         stop(paste("there is no treatment named", hypotheses[2]))
+#       }
+#     } else {
+#       stop("invalid hypotheses specified")
+#     }
+#     return(test)
+#   }
+#
+#   # check validity of hypotheses and rhs
+#   if (!all(sapply(hypotheses, function(x) is.numeric(x) && is.matrix(x)))) {
+#     stop("hypotheses must consists of numeric matrices")
+#   } else if (!all(sapply(hypotheses, function(x) {
+#     nrow(x) <= ncol(x) && ncol(x) == length(trt)}))) {
+#     stop("invalid matrix dimensions for hypotheses")
+#   }
+#
+#   if (!is.null(rhs)) {
+#     if (!is.list(rhs)) {
+#       stop("invalid rhs specified")
+#     } else if (length(hypotheses) != length(rhs)) {
+#       stop("number of hypotheses and rhs do not match")
+#     } else if (!all(sapply(rhs, function(x) is.numeric(x) && is.vector(x)))) {
+#       stop("rhs must consists of numeric vectors")
+#     }
+#   }
+#   test
+# }
 
 # elmulttest_rownames <- function(m, trt, test) {
 #   # if not pairwise comparison, return general hypotheses names
