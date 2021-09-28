@@ -1,7 +1,7 @@
 #' @importFrom stats printCoefmat
 #' @export
 print.pairwise <- function(x, ...) {
-  stopifnot(inherits(x, "elmulttest"))
+  stopifnot(inherits(x, "melt"))
   cat("\n")
   cat("Empirical Likelihood Multiple Hypothesis Testing\n\n")
   # set row names

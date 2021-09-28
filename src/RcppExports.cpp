@@ -52,22 +52,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// tt
-Rcpp::List tt(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const int maxit, const double abstol);
-RcppExport SEXP _melt_tt(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type c(cSEXP);
-    Rcpp::traits::input_parameter< const int >::type control(controlSEXP);
-    Rcpp::traits::input_parameter< const int >::type k(kSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(tt(x, c, control, k, maxit, abstol));
-    return rcpp_result_gen;
-END_RCPP
-}
 // el_mean
 Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double abstol);
 RcppExport SEXP _melt_el_mean(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
@@ -86,7 +70,6 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_melt_test_gbd", (DL_FUNC) &_melt_test_gbd, 7},
     {"_melt_el_pairwise", (DL_FUNC) &_melt_el_pairwise, 14},
-    {"_melt_tt", (DL_FUNC) &_melt_tt, 6},
     {"_melt_el_mean", (DL_FUNC) &_melt_el_mean, 4},
     {NULL, NULL, 0}
 };

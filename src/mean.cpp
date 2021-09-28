@@ -44,7 +44,7 @@ Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta,
   result["lambda"] = el.lambda;
   result["iterations"] = el.iterations;
   result["convergence"] = el.convergence;
-  result.attr("class") = Rcpp::CharacterVector({"mean", "elmulttest"});
+  result.attr("class") = Rcpp::CharacterVector({"mean", "melt"});
   return result;
 }
 

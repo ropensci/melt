@@ -1,6 +1,6 @@
 Package: melt
 Type: Package
-Title: Empirical Likelihood for Multiple Hypothesis Testing
+Title: Multiple Empirical Likelihood Tests
 Version: 1.0.0
 Description: Multiple hypothesis testing via empirical likelihood in general 
     block designs. It provides asymptotic generalized family-wise 

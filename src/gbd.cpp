@@ -1,17 +1,5 @@
 #include "utils_gbd.h"
 
-//' Empirical Likelihood Hypothesis Testing
-//'
-//' Hypothesis test for incomplete block design
-//'
-//' @param x a matrix of data .
-//' @param c an incidence matrix.
-//' @param lhs a linear hypothesis matrix.
-//' @param rhs right-hand-side vector for hypothesis, with as many entries as rows in the hypothesis matrix.
-//' @param approx whether to use the approximation for lambda. Defaults to FALSE.
-//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-//' @export
 // [[Rcpp::export]]
 Rcpp::List test_gbd(const Eigen::MatrixXd& x,
                     const Eigen::MatrixXd& c,
@@ -154,46 +142,6 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   result["method"] = approx ? "NB(approx)" : method;
   result["B"] = bootstrap_statistics_pairwise.size();
   result["cutoff"] = cutoff;
-  result.attr("class") = Rcpp::CharacterVector({"pairwise", "elmulttest"});
-  return result;
-}
-
-// [[Rcpp::export]]
-Rcpp::List tt(const Eigen::MatrixXd& x,
-              const Eigen::MatrixXd& c,
-              const int control = 0,
-              const int k = 1,
-              const int maxit = 1e4,
-              const double abstol = 1e-8) {
-  // all pairs
-  std::vector<std::array<int, 2>> pairs = comparison_pairs(x.cols(), control);
-
-  // global minimizer
-  const Eigen::VectorXd theta_hat =
-    x.array().colwise().sum() / c.array().colwise().sum();
-  // number of hypotheses
-  const int m = pairs.size();
-
-  // statistics(-2logLR)
-  Rcpp::NumericVector statistic(m);
-  for (int i = 0; i < m; ++i) {
-    // statistics
-    Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
-    lhs(pairs[i][0]) = 1;
-    lhs(pairs[i][1]) = -1;
-    minEL pairwise_result =
-      test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
-                  maxit, abstol);
-    if (!pairwise_result.convergence) {
-      Rcpp::warning("Test for pair (%i,%i) failed. \n",
-                    pairs[i][0] + 1, pairs[i][1] + 1);
-    }
-    statistic(i) = 2 * pairwise_result.nlogLR;
-  }
-
-  // result
-  Rcpp::List result;
-  result["statistic"] = statistic;
-  result.attr("class") = "pairwise.gbd";
+  result.attr("class") = Rcpp::CharacterVector({"pairwise", "melt"});
   return result;
 }
