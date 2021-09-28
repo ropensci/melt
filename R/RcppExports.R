@@ -14,15 +14,15 @@
 #' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
 #' @export
 test_gbd <- function(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-8) {
-    .Call(`_elmulttest_test_gbd`, x, c, lhs, rhs, approx, maxit, abstol)
+    .Call(`_melt_test_gbd`, x, c, lhs, rhs, approx, maxit, abstol)
 }
 
 el_pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, approx = FALSE, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_el_pairwise`, x, c, control, k, level, interval, method, B, approx, nthread, progress, threshold, maxit, abstol)
+    .Call(`_melt_el_pairwise`, x, c, control, k, level, interval, method, B, approx, nthread, progress, threshold, maxit, abstol)
 }
 
 tt <- function(x, c, control = 0L, k = 1L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_tt`, x, c, control, k, maxit, abstol)
+    .Call(`_melt_tt`, x, c, control, k, maxit, abstol)
 }
 
 #' Empirical likelihood test for mean
@@ -49,6 +49,6 @@ tt <- function(x, c, control = 0L, k = 1L, maxit = 1e4L, abstol = 1e-8) {
 #'
 #' @export
 el_mean <- function(theta, x, maxit = 50L, abstol = 1e-8) {
-    .Call(`_elmulttest_el_mean`, theta, x, maxit, abstol)
+    .Call(`_melt_el_mean`, theta, x, maxit, abstol)
 }
 

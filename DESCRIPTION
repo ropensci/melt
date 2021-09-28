@@ -1,4 +1,4 @@
-Package: elmulttest
+Package: melt
 Type: Package
 Title: Empirical Likelihood for Multiple Hypothesis Testing
 Version: 1.0.0
