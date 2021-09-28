@@ -16,7 +16,7 @@ el_mean(theta, x, maxit = 50L, abstol = 1e-08)
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
-A list with class \code{elmulttest}.
+A list with class \code{c("mean", "melt")}.
 }
 \description{
 Compute empirical likelihood for mean

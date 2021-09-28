@@ -34,7 +34,7 @@ tt <- function(x, c, control = 0L, k = 1L, maxit = 1e4L, abstol = 1e-8) {
 #' @param maxit Maximum number of iterations for optimization. Defaults to 50.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 #'
-#' @return A list with class \code{elmulttest}.
+#' @return A list with class \code{c("mean", "melt")}.
 #'
 #' @examples
 #' ## scalar mean

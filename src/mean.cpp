@@ -9,7 +9,7 @@
 //' @param maxit Maximum number of iterations for optimization. Defaults to 50.
 //' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 //'
-//' @return A list with class \code{elmulttest}.
+//' @return A list with class \code{c("mean", "melt")}.
 //'
 //' @examples
 //' ## scalar mean
@@ -37,12 +37,14 @@ Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta,
   }
   // compute EL
   // const EL result = getEL(x.rowwise() - theta.transpose(), maxit, abstol);
-  const EL2 result(x.rowwise() - theta.transpose(), x.cols() * 100, maxit, abstol);
+  const EL2 el(x.rowwise() - theta.transpose(), x.cols() * 100, maxit, abstol);
 
-  return Rcpp::List::create(
-    Rcpp::Named("n2logLR") = 2 * result.nlogLR,
-    Rcpp::Named("lambda") = result.lambda,
-    Rcpp::Named("iterations") = result.iterations,
-    Rcpp::Named("convergence") = result.convergence);
+  Rcpp::List result;
+  result["n2logLR"] = 2 * el.nlogLR;
+  result["lambda"] = el.lambda;
+  result["iterations"] = el.iterations;
+  result["convergence"] = el.convergence;
+  result.attr("class") = Rcpp::CharacterVector({"mean", "elmulttest"});
+  return result;
 }
 
