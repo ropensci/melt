@@ -35,7 +35,7 @@ pairwise(
 
 \item{nthread}{Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen as method. Defaults to 1.}
 
-\item{progress}{whether to show progress bar.}
+\item{progress}{If TRUE, will show a progress bar.}
 
 \item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 

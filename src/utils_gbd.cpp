@@ -262,7 +262,9 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
     Rcpp::NumericVector v_interrupted = Rcpp::wrap(k_bootstrap_statistics);
     v_interrupted = v_interrupted[!Rcpp::is_na(v_interrupted)];
     k_bootstrap_statistics = Rcpp::as<Eigen::ArrayXd>(v_interrupted);
-    REprintf("\nInterrupted\n");
+    if (progress) {
+      REprintf("\ninterrupted!");
+    }
   }
   return k_bootstrap_statistics;
 }

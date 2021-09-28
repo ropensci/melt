@@ -33,7 +33,7 @@ class NB_ProgressBar: public ProgressBar{
     }
     public: // ===== main methods =====
       void display() {
-        REprintf("NB: computing cutoff by bootstrap...\n");
+        REprintf("\n");
         flush_console();
       }
       // update display
@@ -128,8 +128,7 @@ class NB_ProgressBar: public ProgressBar{
         // finalize
         void _finalize_display() {
           if (_finalized) return;
-
-          REprintf("\n");
+          // REprintf("\n");
           flush_console();
           _finalized = true;
         }

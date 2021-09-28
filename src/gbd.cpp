@@ -61,64 +61,66 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   std::vector<std::array<int, 2>> pairs = comparison_pairs(x.cols(), control);
   // number of hypotheses
   const int m = pairs.size();
-
-  // bootstrap statitics
-  Eigen::ArrayXd bootstrap_statistics_pairwise(B);
-  if (method == "AMC") {
-    bootstrap_statistics_pairwise =
-      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, B, level);
-  // } else if (approx) {
-  //   // NOT READY
-  //   bootstrap_statistics_pairwise =
-  //     bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
-  //                                      level, nthread, maxit, abstol);
-  } else {
-    bootstrap_statistics_pairwise =
-      bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
-                                       level, nthread, progress,
-                                       threshold, maxit, abstol);
-  }
-  // cutoff
-  Rcpp::Function quantile("quantile");
-  const double cutoff =
-    Rcpp::as<double>(quantile(bootstrap_statistics_pairwise,
-                              Rcpp::Named("probs") = 1 - level));
-
   // estimates
   std::vector<double> estimate(m);
-
   // statistics
   std::vector<double> statistic(m);
-
   // convergences
   std::vector<bool> convergence(m);
-
-  // adjusted p-values
-  std::vector<double> adj_pvalues(m);
 
   // global minimizer
   const Eigen::VectorXd theta_hat =
     x.array().colwise().sum() / c.array().colwise().sum();
-
+  if (progress) {
+    REprintf("computing statistics...");
+  }
+  // statistics
   for (int i = 0; i < m; ++i) {
     Rcpp::checkUserInterrupt();
     estimate[i] = theta_hat(pairs[i][0]) - theta_hat(pairs[i][1]);
-
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
     lhs(pairs[i][0]) = 1;
     lhs(pairs[i][1]) = -1;
     minEL pairwise_result =
       test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
                   threshold, maxit, abstol);
-
     statistic[i] = 2 * pairwise_result.nlogLR;
-
     convergence[i] = pairwise_result.convergence;
+  }
 
+  // bootstrap statitics
+  if (progress) {
+    REprintf("\ncomputing cutoff...");
+  }
+  Eigen::ArrayXd bootstrap_statistics_pairwise(B);
+  if (method == "AMC") {
+    bootstrap_statistics_pairwise =
+      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, B, level);
+  } else {
+    bootstrap_statistics_pairwise =
+      bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
+                                       level, nthread, progress,
+                                       threshold, maxit, abstol);
+  }
+  // adjusted p-values
+  std::vector<double> adj_pvalues(m);
+  for (int i = 0; i < m; ++i) {
     adj_pvalues[i] =
       static_cast<double>(
         (bootstrap_statistics_pairwise >= statistic[i]).count()) / B;
   }
+  // cutoff
+  bool rr = std::any_of(convergence.begin(), convergence.end(),
+                        [](bool v) {return !v;});
+  if (rr) {
+    // Rcpp::Rcout << "sdf\n";
+    bootstrap_statistics_pairwise =
+      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, B, level);
+  }
+  Rcpp::Function quantile("quantile");
+  const double cutoff =
+    Rcpp::as<double>(quantile(bootstrap_statistics_pairwise,
+                              Rcpp::Named("probs") = 1 - level));
 
   // result
   Rcpp::List result;
@@ -126,6 +128,9 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   result["statistic"] = statistic;
   result["convergence"] = convergence;
   // confidence interval(optional)
+  if (progress) {
+    REprintf("\ncomputing confidence intervals...\n");
+  }
   if (interval) {
     std::vector<double> lower(m);
     std::vector<double> upper(m);

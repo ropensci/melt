@@ -13,8 +13,7 @@ A data frame with 102 rows and 3 variables:
 }
 }
 \source{
-Alford A, Krupke CH (2017) Translocation of the neonicotinoid seed treatment clothianidin in maize. PLoS ONE 12(3): e0173836.
-\url{https://doi.org/10.1371/journal.pone.0173836}
+Alford A, Krupke CH (2017) Translocation of the neonicotinoid seed treatment clothianidin in maize. PLoS ONE 12(3): e0173836. \doi{10.1371/journal.pone.0173836}
 }
 \usage{
 data("clothianidin")
