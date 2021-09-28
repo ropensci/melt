@@ -3,7 +3,7 @@ Type: Package
 Title: Empicial Likelihood for Multiple Hypothesis Testing
 Version: 1.0.0
 Description: Multiple hypothesis testing via empicial likelihood in general 
-    block designs. It provides asymptotic single-step generalized family-wise 
+    block designs. It provides asymptotic generalized family-wise 
     error rate control.
 License: GPL (>= 2)
 Authors@R: person("Eunseop", "Kim", email = "kim.7302@osu.edu", role = c("aut", "cre"))
@@ -13,7 +13,8 @@ Imports:
     stats
 LinkingTo: 
     Rcpp, 
-    RcppEigen
+    RcppEigen,
+    RcppProgress
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
