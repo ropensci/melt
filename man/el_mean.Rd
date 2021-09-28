@@ -4,17 +4,32 @@
 \alias{el_mean}
 \title{Empirical likelihood test for mean}
 \usage{
-el_mean(theta, x, maxit = 100L, abstol = 1e-08)
+el_mean(theta, x, maxit = 50L, abstol = 1e-08)
 }
 \arguments{
-\item{theta}{a vector of parameters to be tested.}
+\item{theta}{Numeric vector of parameters to be tested.}
 
-\item{x}{a matrix or vector of data. Each row is an observation vector.}
+\item{x}{Numeric matrix or vector of data. If \code{x} is a matrix, each row corresponds to an observation.}
 
-\item{maxit}{an optional value for the maximum number of iterations. Defaults to 50.}
+\item{maxit}{Maximum number of iterations for optimization. Defaults to 50.}
 
-\item{abstol}{an optional value for the absolute convergence tolerance. Defaults to 1e-8.}
+\item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
+}
+\value{
+A list with class \code{elmulttest}.
 }
 \description{
 Compute empirical likelihood for mean
+}
+\examples{
+## scalar mean
+theta <- 0
+x <- rnorm(100)
+el_mean(theta, x)
+
+## vector mean
+x <- matrix(rnorm(100), ncol = 2)
+theta <- c(0, 0)
+el_mean(theta, x)
+
 }
