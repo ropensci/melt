@@ -32,6 +32,7 @@ public:
   bool convergence;
 
   EL2(const Eigen::Ref<const Eigen::MatrixXd>& g,
+      const double threshold,
       const int maxit = 100,
       const double abstol = 1e-8);
 };

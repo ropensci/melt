@@ -89,22 +89,25 @@ std::array<double, 2> pair_confidence_interval_gbd(
     const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::MatrixXd>& c,
     const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const double threshold,
     const double init,
-    const double threshold) {
+    const double cutoff) {
   // upper endpoint
   double upper_lb = init;
   double upper_size = 1;
   double upper_ub = init + upper_size;
   // upper bound for upper endpoint
-  while (2 * test_nlogLR(theta0, x, c,
-                         lhs, Eigen::Matrix<double, 1, 1>(upper_ub)) <= threshold) {
+  while (2 * test_nlogLR(
+      theta0, x, c, lhs,
+      Eigen::Matrix<double, 1, 1>(upper_ub), threshold) <= cutoff) {
     upper_lb = upper_ub;
     upper_ub += upper_size;
   }
   // approximate upper bound by numerical search
   while (upper_ub - upper_lb > 1e-04) {
-    if (2 * test_nlogLR(theta0, x, c, lhs,
-                        Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2)) > threshold) {
+    if (2 * test_nlogLR(
+        theta0, x, c, lhs,
+        Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2), threshold) > cutoff) {
       upper_ub = (upper_lb + upper_ub) / 2;
     } else {
       upper_lb = (upper_lb + upper_ub) / 2;
@@ -123,15 +126,17 @@ std::array<double, 2> pair_confidence_interval_gbd(
 
 
   // lower bound for lower endpoint
-  while (2 * test_nlogLR(theta0, x, c,
-                         lhs, Eigen::Matrix<double, 1, 1>(lower_lb)) <= threshold) {
+  while (2 * test_nlogLR(
+      theta0, x, c, lhs,
+      Eigen::Matrix<double, 1, 1>(lower_lb), threshold) <= cutoff) {
     lower_ub = lower_lb;
     lower_lb -= lower_size;
   }
   // approximate lower bound by numerical search
   while (lower_ub - lower_lb > 1e-04) {
-    if (2 * test_nlogLR(theta0, x, c, lhs,
-                        Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2)) > threshold) {
+    if (2 * test_nlogLR(
+        theta0, x, c, lhs,
+        Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2), threshold) > cutoff) {
       lower_lb = (lower_lb + lower_ub) / 2;
     } else {
       lower_ub = (lower_lb + lower_ub) / 2;
@@ -139,13 +144,6 @@ std::array<double, 2> pair_confidence_interval_gbd(
   }
   return std::array<double, 2>{lower_ub, upper_lb};
 }
-
-// Eigen::MatrixXd centering_gbd(const Eigen::Ref<const Eigen::MatrixXd>& x,
-//                               const Eigen::Ref<const Eigen::MatrixXd>& c) {
-//   return x -
-//     (c.array().rowwise() *
-//     (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
-// }
 
 Eigen::MatrixXd rmvn(const Eigen::MatrixXd& x, const int n) {
   // generate standard multivariate gaussian random vectors(n by p matrix)
@@ -195,6 +193,319 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
 
   return bootstrap_statistics.col(m - k);
 }
+
+Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::MatrixXd>& c,
+    const int k,
+    const std::vector<std::array<int, 2>>& pairs,
+    const int B,
+    const double level,
+    const int nthread,
+    const bool progress,
+    const double threshold,
+    const int maxit,
+    const double abstol) {
+  const int n = x.rows();
+  const int p = x.cols();
+  const int m = pairs.size();   // number of hypotheses
+
+  // centered matrix
+  // Eigen::MatrixXd&& x_centered = centering_gbd(x, c);
+  const Eigen::MatrixXd x_centered =
+    x - (c.array().rowwise() *
+    (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
+
+  // index vector for boostrap(length n * B)
+  // generate index to sample(Rcpp) -> transform to std::vector ->
+  // reshape to ArrayXXi(Eigen)
+  const Eigen::ArrayXXi bootstrap_index =
+    Eigen::Map<Eigen::ArrayXXi, Eigen::Unaligned>(
+        (Rcpp::as<std::vector<int>>(
+            Rcpp::sample(Rcpp::IntegerVector(Rcpp::seq(0, n - 1)), n * B, true)))
+    .data(), n, B);
+
+  // B bootstrap results
+  Eigen::ArrayXd k_bootstrap_statistics = Eigen::ArrayXd::Constant(B, NA_REAL);
+  NB_ProgressBar pb;
+  Progress pg(B, progress, pb);
+  bool stop = false;
+  #pragma omp parallel for num_threads(nthread) schedule(dynamic)
+  for (int b = 0; b < B; ++b) {
+    if (!pg.is_aborted()) { // the only way to exit an OpenMP loop
+      // check for user abort for every 250 iterations
+      // if ((b + 1) % 250 == 0){
+        if (Progress::check_abort()) {
+          stop = true;
+        }
+      // }
+
+      std::vector<double> bootstrap_statistics(m);
+      for (int j = 0; j < m; ++j) {
+        Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
+        lhs(pairs[j][0]) = 1;
+        lhs(pairs[j][1]) = -1;
+        bootstrap_statistics[j] =
+          2 * test_nlogLR(bootstrap_sample(x_centered, bootstrap_index.col(b)),
+                          bootstrap_sample(c, bootstrap_index.col(b)),
+                          lhs, Eigen::Matrix<double, 1, 1>(0),
+                          threshold, maxit, abstol);
+      }
+      // kth largest element
+      std::sort(bootstrap_statistics.begin(), bootstrap_statistics.end());
+      k_bootstrap_statistics[b] = bootstrap_statistics[m - k];
+      // update the progress
+      pg.increment();
+    }
+  }
+  if (stop) {
+    Rcpp::NumericVector v_interrupted = Rcpp::wrap(k_bootstrap_statistics);
+    v_interrupted = v_interrupted[!Rcpp::is_na(v_interrupted)];
+    k_bootstrap_statistics = Rcpp::as<Eigen::ArrayXd>(v_interrupted);
+    REprintf("\nInterrupted\n");
+  }
+  return k_bootstrap_statistics;
+}
+
+minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                  const Eigen::Ref<const Eigen::MatrixXd>& c,
+                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                  const double threshold,
+                  const int maxit,
+                  const double abstol) {
+  /// initialization ///
+  // Constraint imposed on the initial value by projection.
+  // The initial value is given as treatment means.
+  Eigen::VectorXd theta =
+    linear_projection(theta0, lhs, rhs);
+  // estimating function
+  Eigen::MatrixXd g = g_gbd(theta, x, c);
+  // evaluation
+  Eigen::VectorXd lambda = EL2(g, threshold).lambda;
+  // for current function value(-logLR)
+  double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
+
+  /// minimization(projected gradient descent) ///
+  double gamma = 1.0 / (c.colwise().sum().mean());    // step size
+  bool convergence = false;
+  int iterations = 0;
+  // proposed value for theta
+  while (!convergence && iterations != maxit) {
+    // update parameter by GD with lambda fixed -> projection
+    Eigen::VectorXd theta_tmp = theta;
+    lambda2theta_void(lambda, theta_tmp, g, c, gamma);
+    linear_projection_void(theta_tmp, lhs, rhs);
+    // update g
+    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
+    // update lambda
+    EL2 eval(g_tmp, threshold);
+    Eigen::VectorXd lambda_tmp = eval.lambda;
+    if (!eval.convergence && iterations > 9) {
+      Rcpp::warning("Convex hull constraint not satisfied during optimization.");
+      return {theta, lambda, f1, iterations, convergence};
+    }
+
+    // update function value
+    double f0 = f1;
+    f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    // step halving to ensure that the updated function value be
+    // strictly less than the current function value
+    while (f0 < f1) {
+      // reduce step size
+      gamma /= 2;
+      // propose new theta
+      theta_tmp = theta;
+      lambda2theta_void(lambda, theta_tmp, g, c, gamma);
+      linear_projection_void(theta_tmp, lhs, rhs);
+      // propose new lambda
+      g_tmp = g_gbd(theta_tmp, x, c);
+      lambda_tmp = EL2(g_tmp, threshold).lambda;
+      if (gamma < abstol) {
+        Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+        return {theta, lambda, f0, iterations, convergence};
+      }
+      // propose new function value
+      f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    }
+
+    // update parameters
+    theta = std::move(theta_tmp);
+    lambda = std::move(lambda_tmp);
+    g = std::move(g_tmp);
+    ++iterations;
+
+    // convergence check
+    if (f0 - f1 < abstol) {
+      convergence = true;
+    }
+  }
+
+  return {theta, lambda, f1, iterations, convergence};
+}
+
+double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
+                   const Eigen::Ref<const Eigen::MatrixXd>& x,
+                   const Eigen::Ref<const Eigen::MatrixXd>& c,
+                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                   const double threshold,
+                   const int maxit,
+                   const double abstol) {
+  /// initialization ///
+  // Constraint imposed on the initial value by projection.
+  // The initial value is given as treatment means.
+  Eigen::VectorXd theta =
+    linear_projection(theta0, lhs, rhs);
+  // estimating function
+  Eigen::MatrixXd g = g_gbd(theta, x, c);
+  // evaluation
+  Eigen::VectorXd lambda = EL2(g, threshold).lambda;
+  // for current function value(-logLR)
+  double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
+
+  /// minimization(projected gradient descent) ///
+  double gamma = 1.0 / (c.colwise().sum().mean());    // step size
+  bool convergence = false;
+  int iterations = 0;
+  // proposed value for theta
+  while (!convergence && iterations != maxit) {
+    // update parameter by GD with lambda fixed -> projection
+    Eigen::VectorXd theta_tmp = theta;
+    lambda2theta_void(lambda, theta_tmp, g, c, gamma);
+    linear_projection_void(theta_tmp, lhs, rhs);
+    // update g
+    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
+    // update lambda
+    EL2 eval(g_tmp, threshold);
+    Eigen::VectorXd lambda_tmp = eval.lambda;
+    if (!eval.convergence && iterations > 9) {
+      return f1;
+    }
+
+    // update function value
+    double f0 = f1;
+    f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+
+    // step halving to ensure that the updated function value be
+    // strictly less than the current function value
+    while (f0 < f1) {
+      // reduce step size
+      gamma /= 2;
+      // propose new theta
+      theta_tmp = theta;
+      lambda2theta_void(lambda, theta_tmp, g, c, gamma);
+      linear_projection_void(theta_tmp, lhs, rhs);
+      // propose new lambda
+      g_tmp = g_gbd(theta_tmp, x, c);
+      lambda_tmp = EL2(g_tmp, threshold).lambda;
+      if (gamma < abstol) {
+        return f0;
+      }
+      // propose new function value
+      f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    }
+
+    // update parameters
+    theta = std::move(theta_tmp);
+    lambda = std::move(lambda_tmp);
+    g = std::move(g_tmp);
+    ++iterations;
+
+    // convergence check
+    if (f0 - f1 < abstol) {
+      convergence = true;
+    }
+  }
+
+  return f1;
+}
+
+double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                   const Eigen::Ref<const Eigen::MatrixXd>& c,
+                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
+                   const double threshold,
+                   const int maxit,
+                   const double abstol) {
+  /// initialization ///
+  // Constraint imposed on the initial value by projection.
+  // The initial value is given as treatment means.
+  Eigen::VectorXd theta =
+    linear_projection(x.array().colwise().sum() / c.array().colwise().sum(),
+                      lhs, rhs);
+  // estimating function
+  Eigen::MatrixXd g = g_gbd(theta, x, c);
+  // evaluation
+  Eigen::VectorXd lambda = EL2(g, threshold).lambda;
+  // for current function value(-logLR)
+  double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
+
+  /// minimization(projected gradient descent) ///
+  double gamma = 1.0 / (c.colwise().sum().mean());    // step size
+  bool convergence = false;
+  int iterations = 0;
+  // proposed value for theta
+  while (!convergence && iterations != maxit) {
+    // update parameter by GD with lambda fixed -> projection
+    Eigen::VectorXd theta_tmp = theta;
+    lambda2theta_void(lambda, theta_tmp, g, c, gamma);
+    linear_projection_void(theta_tmp, lhs, rhs);
+    // update g
+    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
+    // update lambda
+    EL2 eval(g_tmp, threshold);
+    Eigen::VectorXd lambda_tmp = eval.lambda;
+    if (!eval.convergence && iterations > 9) {
+      return f1;
+    }
+    // update function value
+    double f0 = f1;
+    f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    // step halving to ensure that the updated function value be
+    // strictly less than the current function value
+    while (f0 < f1) {
+      // reduce step size
+      gamma /= 2;
+      // propose new theta
+      theta_tmp = theta;
+      lambda2theta_void(lambda, theta_tmp, g, c, gamma);
+      linear_projection_void(theta_tmp, lhs, rhs);
+      // propose new lambda
+      g_tmp = g_gbd(theta_tmp, x, c);
+      lambda_tmp = EL2(g_tmp, threshold).lambda;
+      if (gamma < abstol) {
+        return f0;
+      }
+      // propose new function value
+      f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
+    }
+
+    // update parameters
+    theta = std::move(theta_tmp);
+    lambda = std::move(lambda_tmp);
+    g = std::move(g_tmp);
+    ++iterations;
+
+    // convergence check
+    if (f0 - f1 < abstol) {
+      convergence = true;
+    }
+  }
+
+  return f1;
+}
+
+
+// working...
+//
+// Eigen::MatrixXd centering_gbd(const Eigen::Ref<const Eigen::MatrixXd>& x,
+//                               const Eigen::Ref<const Eigen::MatrixXd>& c) {
+//   return x -
+//     (c.array().rowwise() *
+//     (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
+// }
 
 // double cutoff_pairwise_NB_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //                                  const Eigen::Ref<const Eigen::MatrixXd>& c,
@@ -251,286 +562,6 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
 //                               Rcpp::Named("probs") = 1 - level));
 // }
 
-Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
-    const Eigen::Ref<const Eigen::MatrixXd>& x,
-    const Eigen::Ref<const Eigen::MatrixXd>& c,
-    const int k,
-    const std::vector<std::array<int, 2>>& pairs,
-    const int B,
-    const double level,
-    const int ncores,
-    const int maxit,
-    const double abstol) {
-  const int n = x.rows();
-  const int p = x.cols();
-  const int m = pairs.size();   // number of hypotheses
-
-  // centered matrix
-  // Eigen::MatrixXd&& x_centered = centering_gbd(x, c);
-  const Eigen::MatrixXd x_centered =
-    x - (c.array().rowwise() *
-    (x.array().colwise().sum() / c.array().colwise().sum())).matrix();
-
-  // index vector for boostrap(length n * B)
-  // generate index to sample(Rcpp) -> transform to std::vector ->
-  // reshape to ArrayXXi(Eigen)
-  const Eigen::ArrayXXi bootstrap_index =
-    Eigen::Map<Eigen::ArrayXXi, Eigen::Unaligned>(
-        (Rcpp::as<std::vector<int>>(
-            Rcpp::sample(Rcpp::IntegerVector(Rcpp::seq(0, n - 1)), n * B, true)))
-    .data(), n, B);
-
-  // B bootstrap results
-  Eigen::ArrayXd k_bootstrap_statistics(B);
-  #pragma omp parallel for num_threads(ncores) schedule(dynamic)
-  for (int b = 0; b < B; ++b) {
-    std::vector<double> bootstrap_statistics(m);
-    for (int j = 0; j < m; ++j) {
-      Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
-      lhs(pairs[j][0]) = 1;
-      lhs(pairs[j][1]) = -1;
-      bootstrap_statistics[j] =
-        2 * test_nlogLR(bootstrap_sample(x_centered, bootstrap_index.col(b)),
-                        bootstrap_sample(c, bootstrap_index.col(b)),
-                        lhs, Eigen::Matrix<double, 1, 1>(0),
-                        maxit, abstol);
-    }
-    // kth largest element
-    std::sort(bootstrap_statistics.begin(), bootstrap_statistics.end());
-    k_bootstrap_statistics[b] = bootstrap_statistics[m - k];
-  }
-  return k_bootstrap_statistics;
-}
-
-minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
-                  const Eigen::Ref<const Eigen::MatrixXd>& x,
-                  const Eigen::Ref<const Eigen::MatrixXd>& c,
-                  const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-                  const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                  const int maxit,
-                  const double abstol) {
-  /// initialization ///
-  // Constraint imposed on the initial value by projection.
-  // The initial value is given as treatment means.
-  Eigen::VectorXd theta =
-    linear_projection(theta0, lhs, rhs);
-  // estimating function
-  Eigen::MatrixXd g = g_gbd(theta, x, c);
-  // evaluation
-  Eigen::VectorXd lambda = EL2(g).lambda;
-  // for current function value(-logLR)
-  double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
-
-  /// minimization(projected gradient descent) ///
-  double gamma = 1.0 / (c.colwise().sum().mean());    // step size
-  bool convergence = false;
-  int iterations = 0;
-  // proposed value for theta
-  while (!convergence && iterations != maxit) {
-    // update parameter by GD with lambda fixed -> projection
-    Eigen::VectorXd theta_tmp = theta;
-    lambda2theta_void(lambda, theta_tmp, g, c, gamma);
-    linear_projection_void(theta_tmp, lhs, rhs);
-    // update g
-    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
-    // update lambda
-    EL2 eval(g_tmp);
-    Eigen::VectorXd lambda_tmp = eval.lambda;
-    if (!eval.convergence && iterations > 9) {
-      Rcpp::warning("Convex hull constraint not satisfied during optimization.");
-      return {theta, lambda, f1, iterations, convergence};
-    }
-
-    // update function value
-    double f0 = f1;
-    f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-
-    // step halving to ensure that the updated function value be
-    // strictly less than the current function value
-    while (f0 < f1) {
-      // reduce step size
-      gamma /= 2;
-      // propose new theta
-      theta_tmp = theta;
-      lambda2theta_void(lambda, theta_tmp, g, c, gamma);
-      linear_projection_void(theta_tmp, lhs, rhs);
-      // propose new lambda
-      g_tmp = g_gbd(theta_tmp, x, c);
-      lambda_tmp = EL2(g_tmp).lambda;
-      if (gamma < abstol) {
-        Rcpp::warning("Convex hull constraint not satisfied during step halving.");
-        return {theta, lambda, f0, iterations, convergence};
-      }
-      // propose new function value
-      f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-    }
-
-    // update parameters
-    theta = std::move(theta_tmp);
-    lambda = std::move(lambda_tmp);
-    g = std::move(g_tmp);
-    ++iterations;
-
-    // convergence check
-    if (f0 - f1 < abstol) {
-      convergence = true;
-    }
-  }
-
-  return {theta, lambda, f1, iterations, convergence};
-}
-
-double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
-                   const Eigen::Ref<const Eigen::MatrixXd>& x,
-                   const Eigen::Ref<const Eigen::MatrixXd>& c,
-                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                   const int maxit,
-                   const double abstol) {
-  /// initialization ///
-  // Constraint imposed on the initial value by projection.
-  // The initial value is given as treatment means.
-  Eigen::VectorXd theta =
-    linear_projection(theta0, lhs, rhs);
-  // estimating function
-  Eigen::MatrixXd g = g_gbd(theta, x, c);
-  // evaluation
-  Eigen::VectorXd lambda = EL2(g).lambda;
-  // for current function value(-logLR)
-  double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
-
-  /// minimization(projected gradient descent) ///
-  double gamma = 1.0 / (c.colwise().sum().mean());    // step size
-  bool convergence = false;
-  int iterations = 0;
-  // proposed value for theta
-  while (!convergence && iterations != maxit) {
-    // update parameter by GD with lambda fixed -> projection
-    Eigen::VectorXd theta_tmp = theta;
-    lambda2theta_void(lambda, theta_tmp, g, c, gamma);
-    linear_projection_void(theta_tmp, lhs, rhs);
-    // update g
-    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
-    // update lambda
-    EL2 eval(g_tmp);
-    Eigen::VectorXd lambda_tmp = eval.lambda;
-    if (!eval.convergence && iterations > 9) {
-      return f1;
-    }
-
-    // update function value
-    double f0 = f1;
-    f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-
-    // step halving to ensure that the updated function value be
-    // strictly less than the current function value
-    while (f0 < f1) {
-      // reduce step size
-      gamma /= 2;
-      // propose new theta
-      theta_tmp = theta;
-      lambda2theta_void(lambda, theta_tmp, g, c, gamma);
-      linear_projection_void(theta_tmp, lhs, rhs);
-      // propose new lambda
-      g_tmp = g_gbd(theta_tmp, x, c);
-      lambda_tmp = EL2(g_tmp).lambda;
-      if (gamma < abstol) {
-        return f0;
-      }
-      // propose new function value
-      f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-    }
-
-    // update parameters
-    theta = std::move(theta_tmp);
-    lambda = std::move(lambda_tmp);
-    g = std::move(g_tmp);
-    ++iterations;
-
-    // convergence check
-    if (f0 - f1 < abstol) {
-      convergence = true;
-    }
-  }
-
-  return f1;
-}
-
-double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                   const Eigen::Ref<const Eigen::MatrixXd>& c,
-                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                   const int maxit,
-                   const double abstol) {
-  /// initialization ///
-  // Constraint imposed on the initial value by projection.
-  // The initial value is given as treatment means.
-  Eigen::VectorXd theta =
-    linear_projection(x.array().colwise().sum() / c.array().colwise().sum(),
-                      lhs, rhs);
-  // estimating function
-  Eigen::MatrixXd g = g_gbd(theta, x, c);
-  // evaluation
-  Eigen::VectorXd lambda = EL2(g).lambda;
-  // for current function value(-logLR)
-  double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
-
-  /// minimization(projected gradient descent) ///
-  double gamma = 1.0 / (c.colwise().sum().mean());    // step size
-  bool convergence = false;
-  int iterations = 0;
-  // proposed value for theta
-  while (!convergence && iterations != maxit) {
-    // update parameter by GD with lambda fixed -> projection
-    Eigen::VectorXd theta_tmp = theta;
-    lambda2theta_void(lambda, theta_tmp, g, c, gamma);
-    linear_projection_void(theta_tmp, lhs, rhs);
-    // update g
-    Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
-    // update lambda
-    EL2 eval(g_tmp);
-    Eigen::VectorXd lambda_tmp = eval.lambda;
-    if (!eval.convergence && iterations > 9) {
-      return f1;
-    }
-    // update function value
-    double f0 = f1;
-    f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-    // step halving to ensure that the updated function value be
-    // strictly less than the current function value
-    while (f0 < f1) {
-      // reduce step size
-      gamma /= 2;
-      // propose new theta
-      theta_tmp = theta;
-      lambda2theta_void(lambda, theta_tmp, g, c, gamma);
-      linear_projection_void(theta_tmp, lhs, rhs);
-      // propose new lambda
-      g_tmp = g_gbd(theta_tmp, x, c);
-      lambda_tmp = EL2(g_tmp).lambda;
-      if (gamma < abstol) {
-        return f0;
-      }
-      // propose new function value
-      f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g_tmp.rows()) + g_tmp * lambda_tmp);
-    }
-
-    // update parameters
-    theta = std::move(theta_tmp);
-    lambda = std::move(lambda_tmp);
-    g = std::move(g_tmp);
-    ++iterations;
-
-    // convergence check
-    if (f0 - f1 < abstol) {
-      convergence = true;
-    }
-  }
-
-  return f1;
-}
-
-//
 // minEL test_gbd_EL_approx(const Eigen::Ref<const Eigen::MatrixXd>& x,
 //                          const Eigen::Ref<const Eigen::MatrixXd>& c,
 //                          const Eigen::Ref<const Eigen::MatrixXd>& lhs,

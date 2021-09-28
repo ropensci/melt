@@ -13,6 +13,7 @@ pairwise(
   method = c("AMC", "NB"),
   B,
   nthread = 1,
+  progress = TRUE,
   maxit = 10000,
   abstol = 1e-08
 )
@@ -33,6 +34,8 @@ pairwise(
 \item{B}{Number of Monte Carlo samples for the AMC (number of bootstrap replicates for the NB).}
 
 \item{nthread}{Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen as method. Defaults to 1.}
+
+\item{progress}{whether to show progress bar.}
 
 \item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 

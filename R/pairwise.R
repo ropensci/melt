@@ -10,6 +10,7 @@
 #' @param method Single character for the procedure to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.
 #' @param B Number of Monte Carlo samples for the AMC (number of bootstrap replicates for the NB).
 #' @param nthread Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen as method. Defaults to 1.
+#' @param progress whether to show progress bar.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 #' @return A list with class \code{elmulttest}.
@@ -24,8 +25,8 @@
 #' @importFrom stats terms
 #' @export
 pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
-                     method = c("AMC", "NB"), B, nthread = 1, maxit = 10000,
-                     abstol = 1e-08) {
+                     method = c("AMC", "NB"), B, nthread = 1, progress = TRUE,
+                     maxit = 10000, abstol = 1e-08) {
   ## check method
   method <- match.arg(method)
 
@@ -107,8 +108,8 @@ pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
   ## pairwise comparisons
   out <- el_pairwise(gbd$model_matrix, gbd$incidence_matrix,
                      control = ctrl, k, alpha, interval = T,
-                     method, B, approx = F, nthread,
-                     maxit, abstol)
+                     method, B, approx = F, nthread, progress,
+                     threshold = 50, maxit, abstol)
   out$trt <- gbd$trt
   out$control <- control
   out$model.matrix <- gbd$model_matrix

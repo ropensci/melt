@@ -43,6 +43,7 @@ check_hypotheses <- function(hypotheses, rhs, trt) {
 #' @export
 print.pairwise <- function(x, ...) {
   stopifnot(inherits(x, "elmulttest"))
+  cat("\n")
   cat("Empirical Likelihood Multiple Hypothesis Testing\n\n")
   # set row names
   if (is.null(x$control)) {

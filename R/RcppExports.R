@@ -17,26 +17,8 @@ test_gbd <- function(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-
     .Call(`_elmulttest_test_gbd`, x, c, lhs, rhs, approx, maxit, abstol)
 }
 
-#' Pairwise Comparisons for General Block Design
-#'
-#' Either all pairwise comparisons or comparisons with control is available.
-#'
-#' @param x a matrix of data .
-#' @param c an incidence matrix.
-#' @param control control treatment. Defaults to 0.
-#' @param k integer k for k-FWER. Defaults to 1.
-#' @param interval whether to compute interval. Defaults to TRUE.
-#' @param B number of bootstrap replicates.
-#' @param level level.
-#' @param method the method to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.
-#' @param approx whether to use the approximation for lambda. Defaults to FALSE.
-#' @param nthread number of cores(threads) to use. Defaults to 1.
-#' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-#'
-#' @export
-el_pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, approx = FALSE, nthread = 1L, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_elmulttest_el_pairwise`, x, c, control, k, level, interval, method, B, approx, nthread, maxit, abstol)
+el_pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, approx = FALSE, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_elmulttest_el_pairwise`, x, c, control, k, level, interval, method, B, approx, nthread, progress, threshold, maxit, abstol)
 }
 
 tt <- function(x, c, control = 0L, k = 1L, maxit = 1e4L, abstol = 1e-8) {

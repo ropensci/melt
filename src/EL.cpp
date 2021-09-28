@@ -58,6 +58,7 @@ EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
 }
 
 EL2::EL2(const Eigen::Ref<const Eigen::MatrixXd>& g,
+         const double threshold,
          const int maxit,
          const double abstol) {
   // maximization
@@ -84,6 +85,12 @@ EL2::EL2(const Eigen::Ref<const Eigen::MatrixXd>& g,
     }
     // update lambda
     lambda += step;
+
+    // check convex hull constraint(stop if larger than threshold)
+    if (nlogLR > threshold) {
+      break;
+    }
+
     // convergence check
     if (nlogLR - log_tmp.plog_sum < abstol) {
       convergence = true;

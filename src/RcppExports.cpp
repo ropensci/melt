@@ -29,8 +29,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // el_pairwise
-Rcpp::List el_pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const double level, const bool interval, const std::string method, const int B, const bool approx, const int nthread, const int maxit, const double abstol);
-RcppExport SEXP _elmulttest_el_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP levelSEXP, SEXP intervalSEXP, SEXP methodSEXP, SEXP BSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List el_pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const double level, const bool interval, const std::string method, const int B, const bool approx, const int nthread, const bool progress, const double threshold, const int maxit, const double abstol);
+RcppExport SEXP _elmulttest_el_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP levelSEXP, SEXP intervalSEXP, SEXP methodSEXP, SEXP BSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP progressSEXP, SEXP thresholdSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -44,9 +44,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type B(BSEXP);
     Rcpp::traits::input_parameter< const bool >::type approx(approxSEXP);
     Rcpp::traits::input_parameter< const int >::type nthread(nthreadSEXP);
+    Rcpp::traits::input_parameter< const bool >::type progress(progressSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(el_pairwise(x, c, control, k, level, interval, method, B, approx, nthread, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(el_pairwise(x, c, control, k, level, interval, method, B, approx, nthread, progress, threshold, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -83,7 +85,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_elmulttest_test_gbd", (DL_FUNC) &_elmulttest_test_gbd, 7},
-    {"_elmulttest_el_pairwise", (DL_FUNC) &_elmulttest_el_pairwise, 12},
+    {"_elmulttest_el_pairwise", (DL_FUNC) &_elmulttest_el_pairwise, 14},
     {"_elmulttest_tt", (DL_FUNC) &_elmulttest_tt, 6},
     {"_elmulttest_el_mean", (DL_FUNC) &_elmulttest_el_mean, 4},
     {NULL, NULL, 0}

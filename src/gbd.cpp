@@ -39,24 +39,6 @@ Rcpp::List test_gbd(const Eigen::MatrixXd& x,
     Rcpp::Named("convergence") = result.convergence);
 }
 
-//' Pairwise Comparisons for General Block Design
-//'
-//' Either all pairwise comparisons or comparisons with control is available.
-//'
-//' @param x a matrix of data .
-//' @param c an incidence matrix.
-//' @param control control treatment. Defaults to 0.
-//' @param k integer k for k-FWER. Defaults to 1.
-//' @param interval whether to compute interval. Defaults to TRUE.
-//' @param B number of bootstrap replicates.
-//' @param level level.
-//' @param method the method to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.
-//' @param approx whether to use the approximation for lambda. Defaults to FALSE.
-//' @param nthread number of cores(threads) to use. Defaults to 1.
-//' @param maxit an optional value for the maximum number of iterations. Defaults to 1000.
-//' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-//'
-//' @export
 // [[Rcpp::export]]
 Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
                        const Eigen::MatrixXd& c,
@@ -68,6 +50,8 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
                        const int B = 1e4,
                        const bool approx = false,
                        const int nthread = 1,
+                       const bool progress = true,
+                       const double threshold = 50,
                        const int maxit = 1e4,
                        const double abstol = 1e-8) {
   if (level <= 0 || level >= 1) {
@@ -83,17 +67,17 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   if (method == "AMC") {
     bootstrap_statistics_pairwise =
       bootstrap_statistics_pairwise_AMC(x, c, k, pairs, B, level);
-  } else if (approx) {
-    // NOT READY
-    bootstrap_statistics_pairwise =
-      bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
-                                       level, nthread, maxit, abstol);
+  // } else if (approx) {
+  //   // NOT READY
+  //   bootstrap_statistics_pairwise =
+  //     bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
+  //                                      level, nthread, maxit, abstol);
   } else {
     bootstrap_statistics_pairwise =
       bootstrap_statistics_pairwise_NB(x, c, k, pairs, B,
-                                       level, nthread, maxit, abstol);
+                                       level, nthread, progress,
+                                       threshold, maxit, abstol);
   }
-
   // cutoff
   Rcpp::Function quantile("quantile");
   const double cutoff =
@@ -115,7 +99,9 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   // global minimizer
   const Eigen::VectorXd theta_hat =
     x.array().colwise().sum() / c.array().colwise().sum();
+
   for (int i = 0; i < m; ++i) {
+    Rcpp::checkUserInterrupt();
     estimate[i] = theta_hat(pairs[i][0]) - theta_hat(pairs[i][1]);
 
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
@@ -123,11 +109,8 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
     lhs(pairs[i][1]) = -1;
     minEL pairwise_result =
       test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
-                  maxit, abstol);
-    // if (!pairwise_result.convergence) {
-    //   Rcpp::warning("test for pair (%i,%i) failed. \n",
-    //                 pairs[i][0] + 1, pairs[i][1] + 1);
-    // }
+                  threshold, maxit, abstol);
+
     statistic[i] = 2 * pairwise_result.nlogLR;
 
     convergence[i] = pairwise_result.convergence;
@@ -147,11 +130,13 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
     std::vector<double> lower(m);
     std::vector<double> upper(m);
     for (int i = 0; i < m; ++i) {
+      Rcpp::checkUserInterrupt();
       Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, x.cols());
       lhs(pairs[i][0]) = 1;
       lhs(pairs[i][1]) = -1;
       std::array<double, 2> ci =
-        pair_confidence_interval_gbd(theta_hat, x, c, lhs, estimate[i], cutoff);
+        pair_confidence_interval_gbd(theta_hat, x, c, lhs,
+                                     threshold, estimate[i], cutoff);
       lower[i] = ci[0];
       upper[i] = ci[1];
     }
@@ -162,6 +147,7 @@ Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
   result["k"] = k;
   result["level"] = level;
   result["method"] = approx ? "NB(approx)" : method;
+  result["B"] = bootstrap_statistics_pairwise.size();
   result["cutoff"] = cutoff;
   result.attr("class") = Rcpp::CharacterVector({"pairwise", "elmulttest"});
   return result;
