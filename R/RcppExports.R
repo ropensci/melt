@@ -29,12 +29,26 @@ tt <- function(x, c, control = 0L, k = 1L, maxit = 1e4L, abstol = 1e-8) {
 #'
 #' Compute empirical likelihood for mean
 #'
-#' @param theta a vector of parameters to be tested.
-#' @param x a matrix or vector of data. Each row is an observation vector.
-#' @param abstol an optional value for the absolute convergence tolerance. Defaults to 1e-8.
-#' @param maxit an optional value for the maximum number of iterations. Defaults to 50.
+#' @param theta Numeric vector of parameters to be tested.
+#' @param x Numeric matrix or vector of data. If \code{x} is a matrix, each row corresponds to an observation.
+#' @param maxit Maximum number of iterations for optimization. Defaults to 50.
+#' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
+#'
+#' @return A list with class \code{elmulttest}.
+#'
+#' @examples
+#' ## scalar mean
+#' theta <- 0
+#' x <- rnorm(100)
+#' el_mean(theta, x)
+#'
+#' ## vector mean
+#' x <- matrix(rnorm(100), ncol = 2)
+#' theta <- c(0, 0)
+#' el_mean(theta, x)
+#'
 #' @export
-el_mean <- function(theta, x, maxit = 100L, abstol = 1e-8) {
+el_mean <- function(theta, x, maxit = 50L, abstol = 1e-8) {
     .Call(`_elmulttest_el_mean`, theta, x, maxit, abstol)
 }
 
