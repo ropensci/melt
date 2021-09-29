@@ -92,16 +92,16 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   if (is.null(rhs)) {
     rhs <- rep(0, nrow(lhs))
   }
-  # check function(rhs, lhs)...
 
-
-  ## pairwise comparisons
+  ## test hypothesis
   out <- test(gbd$model_matrix, gbd$incidence_matrix,
               lhs, rhs,
-              threshold = nrow(lhs) * 100, maxit, abstol)
+              threshold = nrow(lhs) * 500, maxit, abstol)
   out$trt <- gbd$trt
   out$model.matrix <- gbd$model_matrix
   out$incidence.matrix <- gbd$incidence_matrix
+  if (!out$convergence) {
+    warning("convergence failed.\n")
+  }
   out
-
 }
