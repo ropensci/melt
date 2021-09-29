@@ -10,4 +10,5 @@ src/.vscode
 melt.Rproj
 .Rbuildignore
 .vscode
+data-raw
 ignore
