@@ -9,6 +9,5 @@ src/*.dll
 src/.vscode
 melt.Rproj
 .Rbuildignore
-cran-comments.md
 .vscode
 ignore
