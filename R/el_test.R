@@ -16,7 +16,7 @@
 #' el_test(clo ~ trt | blk, clothianidin,
 #'         lhs = matrix(c(1, -1, 0, 0,
 #'                        0, 1, -1, 0,
-#'                        0, 0, 1, -1), byrow = T, nrow = 3))
+#'                        0, 0, 1, -1), byrow = TRUE, nrow = 3))
 #'
 #' @importFrom stats reshape
 #' @export
