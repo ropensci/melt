@@ -134,7 +134,7 @@ minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
     EL2 eval(g_tmp, threshold);
     Eigen::VectorXd lambda_tmp = eval.lambda;
     if (!eval.convergence && iterations > 9) {
-      Rcpp::warning("Convex hull constraint not satisfied during optimization.");
+      // Rcpp::warning("Convex hull constraint not satisfied during optimization.");
       return {theta, lambda, f1, iterations, convergence};
     }
 
@@ -154,7 +154,7 @@ minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
       g_tmp = g_gbd(theta_tmp, x, c);
       lambda_tmp = EL2(g_tmp, threshold).lambda;
       if (gamma < abstol) {
-        Rcpp::warning("Convex hull constraint not satisfied during step halving.");
+        // Rcpp::warning("Convex hull constraint not satisfied during step halving.");
         return {theta, lambda, f0, iterations, convergence};
       }
       // propose new function value

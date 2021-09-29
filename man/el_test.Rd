@@ -4,47 +4,32 @@
 \alias{el_test}
 \title{Empirical likelihood hypothesis testing}
 \usage{
-el_test(
-  data,
-  lhs,
-  rhs = NULL,
-  alpha = 0.05,
-  method = c("AMC", "NB"),
-  B,
-  approx = F,
-  nthread = 1,
-  maxit = 10000,
-  abstol = 1e-08
-)
+el_test(formula, data, lhs, rhs = NULL, maxit = 10000, abstol = 1e-08)
 }
 \arguments{
-\item{data}{\code{data.frame} with three variables: blocks (\code{factor}), treatments (\code{factor}), and observations (\code{numeric}).}
+\item{formula}{A formula object. It must specify variables for response, treatment, and block as 'response ~ treatment | block'. Note that the use of vertical bar (|) separating treatment and block.}
+
+\item{data}{A data frame containing the variables in the formula.}
 
 \item{lhs}{Numeric matrix specifying linear hypothesis in terms of parameters.}
 
 \item{rhs}{Optional numeric vector for the right hand side of \code{lhs}. If not specified, it is set to 0 vector.}
-
-\item{alpha}{Significance level of the test. Defaults to 0.05.}
-
-\item{method}{Character value for the procedure to be used; either `AMC' or `NB' is supported. Defaults to `AMC'.}
-
-\item{B}{Number of random samples for the AMC (number of bootstrap replicates for the NB).}
-
-\item{approx}{If \code{TRUE}, approximations are used for computing bootstrap statistics. Only applied when the NB is chosen. Defaults to FALSE.}
-
-\item{nthread}{Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen. Defaults to 1.}
 
 \item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
-A list with class \code{elmulttest}.
+A list with class \code{c("test", "melt")}.
 }
 \description{
 Tests single hypothesis for general block designs.
 }
 \examples{
-sum(1)
+## test for equal means
+el_test(clo ~ trt | blk, clothianidin,
+        lhs = matrix(c(1, -1, 0, 0,
+                       0, 1, -1, 0,
+                       0, 0, 1, -1), byrow = T, nrow = 3))
 
 }

@@ -9,7 +9,6 @@ Rcpp::List pairwise(const Eigen::MatrixXd& x,
                     const bool interval = true,
                     const std::string method = "AMC",
                     const int B = 1e4,
-                    const bool approx = false,
                     const int nthread = 1,
                     const bool progress = true,
                     const double threshold = 50,
@@ -35,7 +34,7 @@ Rcpp::List pairwise(const Eigen::MatrixXd& x,
   if (progress) {
     REprintf("computing statistics...");
   }
-  // statistics
+  // 1. statistics
   for (int i = 0; i < m; ++i) {
     Rcpp::checkUserInterrupt();
     estimate[i] = theta_hat(pairs[i][0]) - theta_hat(pairs[i][1]);
@@ -48,8 +47,10 @@ Rcpp::List pairwise(const Eigen::MatrixXd& x,
     statistic[i] = 2 * pairwise_result.nlogLR;
     convergence[i] = pairwise_result.convergence;
   }
-
-  // bootstrap statitics
+  // if any of the statistics is not converged, switch...
+  bool anyfail = std::any_of(convergence.begin(), convergence.end(),
+                             [](bool v) {return !v;});
+  // bootstrap statistics
   if (progress) {
     REprintf("\ncomputing cutoff...");
   }
@@ -63,23 +64,16 @@ Rcpp::List pairwise(const Eigen::MatrixXd& x,
                                        level, nthread, progress,
                                        threshold, maxit, abstol);
   }
-  // adjusted p-values
+  // 2. adjusted p-values
   std::vector<double> adj_pvalues(m);
   for (int i = 0; i < m; ++i) {
     adj_pvalues[i] =
       static_cast<double>(
         (bootstrap_statistics_pairwise >= statistic[i]).count()) / B;
   }
-  // cutoff
-  bool rr = std::any_of(convergence.begin(), convergence.end(),
-                        [](bool v) {return !v;});
-  if (rr) {
-    // Rcpp::Rcout << "sdf\n";
-    bootstrap_statistics_pairwise =
-      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, B, level);
-  }
+  // 3. cutoff
   Rcpp::Function quantile("quantile");
-  const double cutoff =
+  double cutoff =
     Rcpp::as<double>(quantile(bootstrap_statistics_pairwise,
                               Rcpp::Named("probs") = 1 - level));
 
@@ -88,7 +82,14 @@ Rcpp::List pairwise(const Eigen::MatrixXd& x,
   result["estimate"] = estimate;
   result["statistic"] = statistic;
   result["convergence"] = convergence;
-  // confidence interval(optional)
+  result["cutoff"] = cutoff;
+  if (method == "NB" && anyfail) {
+    bootstrap_statistics_pairwise =
+      bootstrap_statistics_pairwise_AMC(x, c, k, pairs, B, level);
+    cutoff =
+      Rcpp::as<double>(quantile(bootstrap_statistics_pairwise,
+                                Rcpp::Named("probs") = 1 - level));
+  }
   if (progress) {
     REprintf("\ncomputing confidence intervals...\n");
   }
@@ -112,9 +113,8 @@ Rcpp::List pairwise(const Eigen::MatrixXd& x,
   result["p.adj"] = adj_pvalues;
   result["k"] = k;
   result["level"] = level;
-  result["method"] = approx ? "NB(approx)" : method;
+  result["method"] = method;
   result["B"] = bootstrap_statistics_pairwise.size();
-  result["cutoff"] = cutoff;
   result.attr("class") = Rcpp::CharacterVector({"pairwise", "melt"});
   return result;
 }

@@ -1,3 +1,18 @@
+#' @export
+print.test <- function(x, ...) {
+  stopifnot(inherits(x, "melt"))
+  cat("\n")
+  cat("Empirical Likelihood Hypothesis Testing\n\n")
+  cat("minimizer:\n")
+  cat(format(round(x$theta, 4), scientific = F))
+  cat("\n\n")
+  cat("statistic:\n")
+  cat(format(round(x$n2logLR, 4), scientific = F))
+  cat("\n\n")
+}
+
+
+
 #' @importFrom stats printCoefmat
 #' @export
 print.pairwise <- function(x, ...) {

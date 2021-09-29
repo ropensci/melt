@@ -108,11 +108,18 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
   ## pairwise comparisons
   out <- pairwise(gbd$model_matrix, gbd$incidence_matrix,
                   control = ctrl, k, alpha, interval = T,
-                  method, B, approx = F, nthread, progress,
+                  method, B, nthread, progress,
                   threshold = 50, maxit, abstol)
   out$trt <- gbd$trt
   out$control <- control
   out$model.matrix <- gbd$model_matrix
   out$incidence.matrix <- gbd$incidence_matrix
+  if (!all(out$convergence)) {
+    if (method == "NB") {
+      warning("convergence failed. switched to AMC for confidence intervals.\n")
+    } else {
+      warning("convergence failed.\n")
+    }
+  }
   out
 }

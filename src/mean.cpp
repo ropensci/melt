@@ -42,8 +42,8 @@ Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta,
   Rcpp::List result;
   result["n2logLR"] = 2 * el.nlogLR;
   result["lambda"] = el.lambda;
-  result["iterations"] = el.iterations;
   result["convergence"] = el.convergence;
+  result["iterations"] = el.iterations;
   result.attr("class") = Rcpp::CharacterVector({"mean", "melt"});
   return result;
 }
