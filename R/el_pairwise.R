@@ -10,7 +10,7 @@
 #' @param method Single character for the procedure to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.
 #' @param B Number of Monte Carlo samples for the AMC (number of bootstrap replicates for the NB).
 #' @param nthread Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen as method. Defaults to 1.
-#' @param progress If TRUE, will show a progress status.
+#' @param progress If TRUE, will show progress status.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 #' @return A list with class \code{c("pairwise", "melt")}.
