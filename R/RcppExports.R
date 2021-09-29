@@ -5,10 +5,6 @@ test_gbd <- function(x, c, lhs, rhs, approx = FALSE, maxit = 1000L, abstol = 1e-
     .Call(`_melt_test_gbd`, x, c, lhs, rhs, approx, maxit, abstol)
 }
 
-el_pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, approx = FALSE, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_melt_el_pairwise`, x, c, control, k, level, interval, method, B, approx, nthread, progress, threshold, maxit, abstol)
-}
-
 #' Empirical likelihood test for mean
 #'
 #' Compute empirical likelihood for mean
@@ -34,5 +30,9 @@ el_pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRU
 #' @export
 el_mean <- function(theta, x, maxit = 50L, abstol = 1e-8) {
     .Call(`_melt_el_mean`, theta, x, maxit, abstol)
+}
+
+el_pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, approx = FALSE, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_melt_el_pairwise`, x, c, control, k, level, interval, method, B, approx, nthread, progress, threshold, maxit, abstol)
 }
 

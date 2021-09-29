@@ -28,6 +28,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// el_mean
+Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double abstol);
+RcppExport SEXP _melt_el_mean(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(el_mean(theta, x, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // el_pairwise
 Rcpp::List el_pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const double level, const bool interval, const std::string method, const int B, const bool approx, const int nthread, const bool progress, const double threshold, const int maxit, const double abstol);
 RcppExport SEXP _melt_el_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP levelSEXP, SEXP intervalSEXP, SEXP methodSEXP, SEXP BSEXP, SEXP approxSEXP, SEXP nthreadSEXP, SEXP progressSEXP, SEXP thresholdSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
@@ -52,25 +66,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// el_mean
-Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double abstol);
-RcppExport SEXP _melt_el_mean(SEXP thetaSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(el_mean(theta, x, maxit, abstol));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_melt_test_gbd", (DL_FUNC) &_melt_test_gbd, 7},
-    {"_melt_el_pairwise", (DL_FUNC) &_melt_el_pairwise, 14},
     {"_melt_el_mean", (DL_FUNC) &_melt_el_mean, 4},
+    {"_melt_el_pairwise", (DL_FUNC) &_melt_el_pairwise, 14},
     {NULL, NULL, 0}
 };
 
