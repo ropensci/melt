@@ -1,13 +1,12 @@
 #include "utils_gbd.h"
 
-// [[Rcpp::export]]
-Rcpp::List test_gbd(const Eigen::MatrixXd& x,
-                    const Eigen::MatrixXd& c,
-                    const Eigen::MatrixXd& lhs,
-                    const Eigen::VectorXd& rhs,
-                    const bool approx = false,
-                    const int maxit = 1000,
-                    const double abstol = 1e-8) {
+Rcpp::List test(const Eigen::MatrixXd& x,
+                const Eigen::MatrixXd& c,
+                const Eigen::MatrixXd& lhs,
+                const Eigen::VectorXd& rhs,
+                const bool approx = false,
+                const int maxit = 1000,
+                const double abstol = 1e-8) {
   /// initialization ///
   // if (arma::rank(L) != lhs.rows()) {
   //   Rcpp::stop("Hypothesis matrix lhs must have full rank.");

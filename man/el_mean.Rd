@@ -19,7 +19,7 @@ el_mean(theta, x, maxit = 50L, abstol = 1e-08)
 A list with class \code{c("mean", "melt")}.
 }
 \description{
-Compute empirical likelihood for mean
+Computes empirical likelihood for mean parameter.
 }
 \examples{
 ## scalar mean

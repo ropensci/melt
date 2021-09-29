@@ -17,16 +17,16 @@
 #'
 #' @examples
 #' ## all pairwise comparisons
-#' pairwise(clo ~ trt | blk, clothianidin, B = 10000)
+#' el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 #'
 #' ## comparisons with control
-#' pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB", B = 1000)
+#' el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB", B = 1000)
 #'
 #' @importFrom stats terms
 #' @export
-pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
-                     method = c("AMC", "NB"), B, nthread = 1, progress = TRUE,
-                     maxit = 10000, abstol = 1e-08) {
+el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
+                        method = c("AMC", "NB"), B, nthread = 1, progress = TRUE,
+                        maxit = 10000, abstol = 1e-08) {
   ## check method
   method <- match.arg(method)
 
@@ -106,10 +106,10 @@ pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
   }
 
   ## pairwise comparisons
-  out <- el_pairwise(gbd$model_matrix, gbd$incidence_matrix,
-                     control = ctrl, k, alpha, interval = T,
-                     method, B, approx = F, nthread, progress,
-                     threshold = 50, maxit, abstol)
+  out <- pairwise(gbd$model_matrix, gbd$incidence_matrix,
+                  control = ctrl, k, alpha, interval = T,
+                  method, B, approx = F, nthread, progress,
+                  threshold = 50, maxit, abstol)
   out$trt <- gbd$trt
   out$control <- control
   out$model.matrix <- gbd$model_matrix

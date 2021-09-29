@@ -1,20 +1,20 @@
 #include "utils_pairwise.h"
 
 // [[Rcpp::export]]
-Rcpp::List el_pairwise(const Eigen::MatrixXd& x,
-                       const Eigen::MatrixXd& c,
-                       const int control = 0,
-                       const int k = 1,
-                       const double level = 0.05,
-                       const bool interval = true,
-                       const std::string method = "AMC",
-                       const int B = 1e4,
-                       const bool approx = false,
-                       const int nthread = 1,
-                       const bool progress = true,
-                       const double threshold = 50,
-                       const int maxit = 1e4,
-                       const double abstol = 1e-8) {
+Rcpp::List pairwise(const Eigen::MatrixXd& x,
+                    const Eigen::MatrixXd& c,
+                    const int control = 0,
+                    const int k = 1,
+                    const double level = 0.05,
+                    const bool interval = true,
+                    const std::string method = "AMC",
+                    const int B = 1e4,
+                    const bool approx = false,
+                    const int nthread = 1,
+                    const bool progress = true,
+                    const double threshold = 50,
+                    const int maxit = 1e4,
+                    const double abstol = 1e-8) {
   if (level <= 0 || level >= 1) {
     Rcpp::stop("level must be between 0 and 1.");
   }

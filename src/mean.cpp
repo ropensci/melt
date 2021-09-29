@@ -2,7 +2,7 @@
 
 //' Empirical likelihood test for mean
 //'
-//' Compute empirical likelihood for mean
+//' Computes empirical likelihood for mean parameter.
 //'
 //' @param theta Numeric vector of parameters to be tested.
 //' @param x Numeric matrix or vector of data. If \code{x} is a matrix, each row corresponds to an observation.

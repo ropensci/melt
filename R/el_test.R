@@ -20,10 +20,10 @@
 #'
 #' @importFrom stats reshape
 #' @export
-ELtest <- function(data, lhs, rhs = NULL,
-                   alpha = 0.05,
-                   method = c("AMC", "NB"), B,
-                   approx = F, nthread = 1, maxit = 1e04, abstol = 1e-8) {
+el_test <- function(data, lhs, rhs = NULL,
+                    alpha = 0.05,
+                    method = c("AMC", "NB"), B,
+                    approx = F, nthread = 1, maxit = 1e04, abstol = 1e-8) {
   ## check method
   method <- match.arg(method)
 }
