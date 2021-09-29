@@ -2,7 +2,7 @@
 % Please edit documentation in R/el_test.R
 \name{el_test}
 \alias{el_test}
-\title{Empirical Likelihood Hypothesis Testing}
+\title{Empirical likelihood hypothesis testing}
 \usage{
 el_test(
   data,

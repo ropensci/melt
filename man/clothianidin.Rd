@@ -3,7 +3,7 @@
 \docType{data}
 \name{clothianidin}
 \alias{clothianidin}
-\title{Clothianidin concentration in maize plants.}
+\title{Clothianidin concentration in maize plants}
 \format{
 A data frame with 102 rows and 3 variables:
 \describe{

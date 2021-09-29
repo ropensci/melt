@@ -2,7 +2,7 @@
 % Please edit documentation in R/el_pairwise.R
 \name{el_pairwise}
 \alias{el_pairwise}
-\title{Empirical Likelihood Pairwise Comparisons}
+\title{Empirical likelihood pairwise comparisons}
 \usage{
 el_pairwise(
   formula,
@@ -35,7 +35,7 @@ el_pairwise(
 
 \item{nthread}{Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen as method. Defaults to 1.}
 
-\item{progress}{If TRUE, will show a progress bar.}
+\item{progress}{If TRUE, will show progress status.}
 
 \item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 

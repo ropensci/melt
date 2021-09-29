@@ -1,4 +1,4 @@
-#' Empirical Likelihood Hypothesis Testing
+#' Empirical likelihood hypothesis testing
 #'
 #' Tests single hypothesis for general block designs.
 #'

@@ -1,4 +1,4 @@
-#' Clothianidin concentration in maize plants.
+#' Clothianidin concentration in maize plants
 #'
 #' A dataset summarizing field experiments result of seed treatments on clothianidin concentration.
 #'

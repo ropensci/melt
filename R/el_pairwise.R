@@ -1,4 +1,4 @@
-#' Empirical Likelihood Pairwise Comparisons
+#' Empirical likelihood pairwise comparisons
 #'
 #' Tests all pairwise comparisons or comparisons with control for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
 #'
