@@ -33,7 +33,7 @@ el_pairwise(
 
 \item{B}{Number of Monte Carlo samples for the AMC (number of bootstrap replicates for the NB).}
 
-\item{nthread}{Number of cores (threads) to be used for bootstrapping. Only applied when the NB is chosen as method. Defaults to 1.}
+\item{nthread}{Number of threads to be used with OpenMP. Only applied when the NB is chosen as the method. Defaults to 1.}
 
 \item{progress}{If TRUE, will show progress status.}
 

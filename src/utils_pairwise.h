@@ -4,9 +4,16 @@
 #include "EL.h"
 #include "utils.h"
 #include "utils_gbd.h"
-#include <omp.h>
-#include <progress.hpp>
 #include "nb_progress_bar.h"
+#include <progress.hpp>
+#include <array>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
+
+std::vector<std::array<int, 2>> comparison_pairs(
+    const int p, const int control);
 
 std::array<double, 2> pair_confidence_interval_gbd(
     const Eigen::Ref<const Eigen::VectorXd>& theta0,
