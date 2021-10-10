@@ -10,14 +10,14 @@ Rcpp::List ELtest(const Eigen::MatrixXd& x,
                 const double abstol = 1e-8) {
   // check lhs & rhs
   if (lhs.rows() > lhs.cols()) {
-    Rcpp::stop("nrow(lhs) must not exceed ncol(lhs).");
+    Rcpp::stop("nrow(lhs) must not exceed ncol(lhs)");
   }
   Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(lhs);
   if (lu_decomp.rank() != lhs.rows()) {
-    Rcpp::stop("lhs must have full rank.");
+    Rcpp::stop("lhs must have full rank");
   }
   if (lhs.rows() != rhs.rows()) {
-    Rcpp::stop("dimensions of lhs and rhs do not match.");
+    Rcpp::stop("dimensions of lhs and rhs do not match");
   }
 
   // global minimizer

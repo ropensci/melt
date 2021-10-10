@@ -1,12 +1,19 @@
-#' Empirical likelihood pairwise comparisons
+#' Fit an Analysis of Variance Model via Empirical Likelihood
 #'
-#' Tests all pairwise comparisons or comparisons with control for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
+#' Fit an one-way analysis of variance model via empirical likelihood.
 #'
 #' @param formula A formula object. It must specify variables for response and treatment as 'response ~ treatment'.
 #' @param data A data frame containing the variables in the formula.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
+#'
 #' @return A list with class \code{c("el_aov", "melt")}.
+#'
+#' @references Owen, A. B. (1988),
+#' "Empirical Likelihood for Linear Models," \emph{The Annals of Statistics},
+#' 1725–1747.
+#'
+#' @seealso \link{el_test}
 #'
 #' @examples
 #' el_aov(clo ~ trt, clothianidin)
@@ -24,7 +31,7 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
     typeof(f$variables[[3]]) != "symbol" ||
     length(f$variables[[3]]) != 1)
   ) {
-    stop("invalied model formula. specify formula as 'response ~ treatment'.")
+    stop("invalied model formula. specify formula as 'response ~ treatment'")
   }
 
   ## extract model frame
@@ -80,6 +87,5 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
   if (!out$optim$convergence) {
     warning("convergence failed\n")
   }
-
   out
 }

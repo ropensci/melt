@@ -2,7 +2,7 @@
 % Please edit documentation in R/el_aov.R
 \name{el_aov}
 \alias{el_aov}
-\title{Empirical likelihood pairwise comparisons}
+\title{Fit an Analysis of Variance Model via Empirical Likelihood}
 \usage{
 el_aov(formula, data, maxit = 10000, abstol = 1e-08)
 }
@@ -19,9 +19,17 @@ el_aov(formula, data, maxit = 10000, abstol = 1e-08)
 A list with class \code{c("el_aov", "melt")}.
 }
 \description{
-Tests all pairwise comparisons or comparisons with control for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
+Fit an one-way analysis of variance model via empirical likelihood.
 }
 \examples{
 el_aov(clo ~ trt, clothianidin)
 
+}
+\references{
+Owen, A. B. (1988),
+"Empirical Likelihood for Linear Models," \emph{The Annals of Statistics},
+1725–1747.
+}
+\seealso{
+\link{el_test}
 }
