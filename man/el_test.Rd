@@ -20,7 +20,7 @@ el_test(formula, data, lhs, rhs = NULL, maxit = 10000, abstol = 1e-08)
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
-A list with class \code{c("test", "melt")}.
+A list with class \code{c("el_test", "melt")}.
 }
 \description{
 Tests single hypothesis for general block designs.

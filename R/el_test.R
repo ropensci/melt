@@ -9,7 +9,7 @@
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 #'
-#' @return A list with class \code{c("test", "melt")}.
+#' @return A list with class \code{c("el_test", "melt")}.
 #'
 #' @examples
 #' ## test for equal means
@@ -38,7 +38,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
     # distinct variables for treatment and block
     f$variables[[3]][[2]] == f$variables[[3]][[3]])
   ) {
-    stop("invalied model formula. specify formula as 'response ~ treatment | block'.")
+    stop("invalied model formula. specify formula as 'response ~ treatment | block'")
   }
 
   ## pseudo formula for model.frame
@@ -63,7 +63,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   # block
   mf[[3L]] <- as.factor(mf[[3L]])
   if (nlevels(mf[[2L]]) >= nlevels(mf[[3L]])) {
-    stop("number of blocks should be larger than number of treatments.")
+    stop("number of blocks should be larger than number of treatments")
   }
 
   ## construct general block design
@@ -86,7 +86,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   # general block design
   gbd <-
     list("model_matrix" = x, "incidence_matrix" = c, "trt" = levels(mf[[2L]]))
-  class(gbd) <- c("gbd", "elmulttest")
+  class(gbd) <- c("gbd", "melt")
 
   ## test for lhs and rhs
   if (is.null(rhs)) {
@@ -94,14 +94,15 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   }
 
   ## test hypothesis
-  out <- test(gbd$model_matrix, gbd$incidence_matrix,
+  out <- ELtest(gbd$model_matrix, gbd$incidence_matrix,
               lhs, rhs,
               threshold = nrow(lhs) * 500, maxit, abstol)
   out$trt <- gbd$trt
   out$model.matrix <- gbd$model_matrix
   out$incidence.matrix <- gbd$incidence_matrix
-  if (!out$convergence) {
-    warning("convergence failed.\n")
+  class(out) <- c("el_test", oldClass(out))
+  if (!out$optim$convergence) {
+    warning("convergence failed\n")
   }
   out
 }

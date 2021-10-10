@@ -1,7 +1,7 @@
 #include "utils_gbd.h"
 
 // [[Rcpp::export]]
-Rcpp::List test(const Eigen::MatrixXd& x,
+Rcpp::List ELtest(const Eigen::MatrixXd& x,
                 const Eigen::MatrixXd& c,
                 const Eigen::MatrixXd& lhs,
                 const Eigen::VectorXd& rhs,
@@ -28,12 +28,14 @@ Rcpp::List test(const Eigen::MatrixXd& x,
     test_gbd_EL(theta_hat, x, c, lhs, rhs, threshold, maxit, abstol);
 
   Rcpp::List result;
-  result["theta"] = el.theta;
-  result["lambda"] = el.lambda;
-  result["n2logLR"] = 2 * el.nlogLR;
-  result["convergence"] = el.convergence;
-  result["iterations"] = el.iterations;
-  result.attr("class") = Rcpp::CharacterVector({"test", "melt"});
+  result["coefficients"] = theta_hat;
+  result["optim"] = Rcpp::List::create(
+    Rcpp::Named("par") = el.theta,
+    Rcpp::Named("lambda") = el.lambda,
+    Rcpp::Named("n2logLR") = 2 * el.nlogLR,
+    Rcpp::Named("convergence") = el.convergence,
+    Rcpp::Named("iterations") = el.iterations
+    );
+  result.attr("class") = "melt";
   return result;
-
 }
