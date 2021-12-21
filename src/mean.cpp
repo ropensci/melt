@@ -10,7 +10,7 @@
 //' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 //'
 //' @return A list with class \code{c("mean", "melt")}.
-//'
+//' @references Owen, A. B. (1988), Empirical Likelihood for Linear Models," \emph{The Annals of Statistics}, 1725–1747.
 //' @examples
 //' ## scalar mean
 //' theta <- 0

@@ -10,6 +10,9 @@
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 #'
 #' @return A list with class \code{c("el_test", "melt")}.
+#' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
+#' "Empirical Likelihood for the Analysis of Experimental Designs,"
+#' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #'
 #' @examples
 #' ## test for equal means

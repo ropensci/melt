@@ -55,3 +55,8 @@ el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB", B = 1000)
 
 }
+\references{
+Kim, E., MacEachern, S., and Peruggia, M., (2021),
+"Empirical Likelihood for the Analysis of Experimental Designs,"
+\href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
+}

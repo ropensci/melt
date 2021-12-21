@@ -33,3 +33,6 @@ theta <- c(0, 0)
 el_mean(theta, x)
 
 }
+\references{
+Owen, A. B. (1988), Empirical Likelihood for Linear Models," \emph{The Annals of Statistics}, 1725–1747.
+}
