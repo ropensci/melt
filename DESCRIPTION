@@ -5,6 +5,8 @@ Version: 1.0.1
 Description: Multiple testing via empirical likelihood for 
     the analysis of experimental designs. Details of the testing
     procedures are given in Kim et al. (2021) <arxiv:2112.09206>.
+URL: https://github.com/markean/melt
+BugReports: https://github.com/markean/melt/issues
 License: GPL (>= 2)
 Depends: R (>= 3.5.0)
 Imports: 
