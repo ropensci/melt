@@ -23,7 +23,6 @@ Fit an one-way analysis of variance model via empirical likelihood.
 }
 \examples{
 el_aov(clo ~ trt, clothianidin)
-
 }
 \references{
 Owen, A. B. (1988),

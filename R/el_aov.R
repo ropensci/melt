@@ -6,18 +6,13 @@
 #' @param data A data frame containing the variables in the formula.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
-#'
 #' @return A list with class \code{c("el_aov", "melt")}.
-#'
 #' @references Owen, A. B. (1988),
 #' "Empirical Likelihood for Linear Models," \emph{The Annals of Statistics},
 #' 1725–1747.
-#'
 #' @seealso \link{el_test}
-#'
 #' @examples
 #' el_aov(clo ~ trt, clothianidin)
-#'
 #' @importFrom stats .getXlevels setNames terms
 #' @export
 el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
@@ -29,7 +24,8 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
     length(f$variables) != 3,
     # no other formula
     typeof(f$variables[[3]]) != "symbol" ||
-    length(f$variables[[3]]) != 1)
+      length(f$variables[[3]]) != 1
+  )
   ) {
     stop("invalied model formula. specify formula as 'response ~ treatment'")
   }
@@ -61,8 +57,10 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
 
   ## construct a general block design
   # incidence matrix
-  c <- unclass(table(factor(row.names(mf), levels = unique(row.names(mf))),
-                     mf[[2L]]))
+  c <- unclass(table(
+    factor(row.names(mf), levels = unique(row.names(mf))),
+    mf[[2L]]
+  ))
   # model matrix
   x <- mf[[1L]] * c
 

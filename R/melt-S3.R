@@ -129,23 +129,3 @@ print.pairwise <- function(x, ...) {
 #   }
 # }
 
-# print.pairwise <- function(x, ...) {
-#   stopifnot(inherits(x, "elmulttest"))
-#   cat("Empirical Likelihood Multiple Hypothesis Testing\n\n")
-#   if (all(x$test == "pairwise")) {
-#     cat("Test: all pairwise comparisons\n\n")
-#   } else {
-#     cat("Test: comparisons with control\n\n")
-#   }
-#   out <- data.frame(row.names =
-#                       elmulttest_rownames(length(x$statistic), x$trt, x$test))
-#   out$estimate  <- x$estimate
-#   out$statistic <- x$statistic
-#   out$lwr.ci    <- x$lower
-#   out$upr.ci    <- x$upper
-#   out$p.adj     <- x$p.adj
-#   print(format(round(out, 4), digits = 4))
-#   cat("---\n", "k: ", x$k, ", level: ", x$level, ", method: ", x$method,
-#       ", cutoff: ", round(x$cutoff, 4), "\n", sep = "")
-# }
-
