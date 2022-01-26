@@ -33,9 +33,8 @@ Rcpp::List ELtest(const Eigen::MatrixXd& x,
     Rcpp::Named("par") = el.theta,
     Rcpp::Named("lambda") = el.lambda,
     Rcpp::Named("n2logLR") = 2 * el.nlogLR,
-    Rcpp::Named("convergence") = el.convergence,
-    Rcpp::Named("iterations") = el.iterations
-    );
+    Rcpp::Named("iterations") = el.iterations,
+    Rcpp::Named("convergence") = el.convergence);
   result.attr("class") = "melt";
   return result;
 }

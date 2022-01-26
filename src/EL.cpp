@@ -1,6 +1,6 @@
 #include "EL.h"
 
-EL2::EL2(const Eigen::Ref<const Eigen::MatrixXd>& g,
+EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
          const double threshold,
          const int maxit,
          const double abstol) {

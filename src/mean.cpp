@@ -37,7 +37,7 @@ Rcpp::List el_mean(const Eigen::Map<Eigen::VectorXd>& theta,
   }
   // compute EL
   // const EL result = getEL(x.rowwise() - theta.transpose(), maxit, abstol);
-  const EL2 el(x.rowwise() - theta.transpose(), 5000, maxit, abstol);
+  const EL el(x.rowwise() - theta.transpose(), 5000, maxit, abstol);
 
   Rcpp::List result;
   result["n2logLR"] = 2 * el.nlogLR;
