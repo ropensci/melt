@@ -24,7 +24,7 @@ Authors@R:
              family = "Kim", 
              email = "kim.7302@osu.edu", 
              role = c("aut", "cre")),
-      person(given = "Steve",
+      person(given = "Steven",
              family = "MacEachern",
              role = c("aut", "ths")),
       person(given = "Mario",
