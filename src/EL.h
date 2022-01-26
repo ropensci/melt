@@ -32,8 +32,4 @@ public:
       const int maxit = 100,
       const double abstol = 1e-8);
 };
-
-EL getEL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-         const int maxit = 100,
-         const double abstol = 1e-8);
 #endif
