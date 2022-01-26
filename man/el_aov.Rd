@@ -25,9 +25,7 @@ Fit an one-way analysis of variance model via empirical likelihood.
 el_aov(clo ~ trt, clothianidin)
 }
 \references{
-Owen, A. B. (1988),
-"Empirical Likelihood for Linear Models," \emph{The Annals of Statistics},
-1725–1747.
+Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \url{https://doi.org/10.1214/aos/1176348368}.
 }
 \seealso{
 \link{el_test}
