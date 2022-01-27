@@ -7,7 +7,7 @@ Description: Empirical likelihood-based multiple testing for the analysis of exp
 URL: https://github.com/markean/melt
 BugReports: https://github.com/markean/melt/issues
 License: GPL (>= 2)
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.6.3)
 Imports: 
     Rcpp (>= 1.0.6),
     stats

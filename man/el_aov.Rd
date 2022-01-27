@@ -2,7 +2,7 @@
 % Please edit documentation in R/el_aov.R
 \name{el_aov}
 \alias{el_aov}
-\title{Fit an Analysis of Variance Model via Empirical Likelihood}
+\title{Fit an Analysis of Variance Model with Empirical Likelihood}
 \usage{
 el_aov(formula, data, maxit = 10000, abstol = 1e-08)
 }
@@ -19,7 +19,7 @@ el_aov(formula, data, maxit = 10000, abstol = 1e-08)
 A list with class \code{c("el_aov", "melt")}.
 }
 \description{
-Fit an one-way analysis of variance model via empirical likelihood.
+Fit an one-way analysis of variance model with empirical likelihood.
 }
 \examples{
 el_aov(clo ~ trt, clothianidin)
