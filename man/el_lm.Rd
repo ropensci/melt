@@ -11,13 +11,13 @@ el_lm(formula, data, na.action, model = TRUE, maxit = 10000, abstol = 1e-08)
 
 \item{data}{A data frame containing the variables in the formula.}
 
+\item{na.action}{A function which indicates what should happen when the data contain NAs.}
+
 \item{model}{Logical. If TRUE the model frame is returned.}
 
 \item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
-
-\item{na.omit}{A function which indicates what should happen when the data contain NAs.}
 }
 \value{
 A list with class \code{c("el_lm", "melt")}.

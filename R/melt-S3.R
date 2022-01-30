@@ -11,6 +11,7 @@ print.el_aov <- function(x, ...) {
   cat("\n\n")
 }
 
+#' @importFrom stats coef
 #' @export
 print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   stopifnot(inherits(x, "melt"))
@@ -26,6 +27,7 @@ print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   invisible(x)
 }
 
+#' @importFrom stats var
 #' @export
 summary.el_lm <- function(object, ...) {
   z <- object
@@ -65,6 +67,7 @@ summary.el_lm <- function(object, ...) {
   ans
 }
 
+#' @importFrom stats naprint pchisq quantile
 #' @export
 print.summary.el_lm <- function(
   x, digits = max(3L, getOption("digits") - 3L), symbolic.cor = x$symbolic.cor,

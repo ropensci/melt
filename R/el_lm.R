@@ -4,7 +4,7 @@
 #'
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
-#' @param na.omit A function which indicates what should happen when the data contain NAs.
+#' @param na.action A function which indicates what should happen when the data contain NAs.
 #' @param model Logical. If TRUE the model frame is returned.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
@@ -14,7 +14,7 @@
 #' @examples
 #' model <- el_lm(clo ~ trt, clothianidin)
 #' summary(model)
-#' @importFrom stats .getXlevels setNames terms
+#' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames terms
 #' @export
 el_lm <- function(formula, data, na.action, model = TRUE, maxit = 1e04, abstol = 1e-08) {
   cl <- match.call()
