@@ -1,7 +1,7 @@
 #' @export
 print.el_aov <- function(x, ...) {
   stopifnot(inherits(x, "melt"))
-  cat("Call:\n   ")
+  cat("Call:\n")
   dput(x$call, control = NULL)
   cat("\nminimizer:\n")
   cat(format(round(x$optim$par, 4), scientific = F))
@@ -9,6 +9,122 @@ print.el_aov <- function(x, ...) {
   cat("statistic:\n")
   cat(format(round(x$optim$n2logLR, 4), scientific = F))
   cat("\n\n")
+}
+
+#' @export
+print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+  stopifnot(inherits(x, "melt"))
+  cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
+      "\n\n", sep = "")
+  if (length(coef(x))) {
+    cat("Coefficients:\n")
+    print.default(format(coef(x), digits = digits),
+                  print.gap = 2L, quote = FALSE)
+  } else {cat("No coefficients\n")
+  }
+  cat("\n")
+  invisible(x)
+}
+
+#' @export
+summary.el_lm <- function(object, ...) {
+  z <- object
+  if (!inherits(object, "el_lm")) stop("invalid 'el_lm' object")
+  if (is.null(z$terms)) stop("invalid 'el_lm' object:  no 'terms' component")
+  p <- z$rank
+  rdf <- z$df.residual
+  n <- p + rdf
+  if (is.na(z$df.residual) || n - p != z$df.residual)
+    warning("residual degrees of freedom in object suggest this is not an \"el_lm\" fit")
+  r <- z$residuals
+  f <- z$fitted.values
+  mss <- if (attr(z$terms, "intercept")) sum((f - mean(f))^2) else sum(f^2)
+  rss <- sum(r^2)
+  resvar <- rss/rdf
+  if (is.finite(resvar) && resvar < (mean(f)^2 + var(c(f))) * 1e-30)
+    warning("essentially perfect fit: summary may be unreliable")
+  p1 <- 1L:p
+  ans <- z[c("call", "terms")]
+  ans$residuals <- r
+  ans$coefficients <- cbind(estimate = z$coefficients,
+                            `chisq-value` = z$optim$par.tests$statistic,
+                            `p-value` = z$optim$par.tests$p.value)
+  ans$aliased <- is.na(z$coefficients)
+  ans$df <- c(p, rdf, p)
+  if (p != attr(z$terms, "intercept")) {
+    df.int <- if (attr(z$terms, "intercept")) 1L else 0L
+    ans$r.squared <- mss/(mss + rss)
+    ans$adj.r.squared <- 1 - (1 - ans$r.squared) * ((n - df.int)/rdf)
+
+    ans$chisq.statistic <- c(value = z$optim$n2logLR, df = p)
+
+  } else
+    ans$r.squared <- ans$adj.r.squared <- 0
+  if (!is.null(z$na.action)) ans$na.action <- z$na.action
+  class(ans) <- "summary.el_lm"
+  ans
+}
+
+#' @export
+print.summary.el_lm <- function(
+  x, digits = max(3L, getOption("digits") - 3L), symbolic.cor = x$symbolic.cor,
+  signif.stars = getOption("show.signif.stars"), ...) {
+  cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
+      "\n\n", sep = "")
+  resid <- x$residuals
+  df <- x$df
+  rdf <- df[2L]
+  if (rdf > 5L) {
+    nam <- c("Min", "1Q", "Median", "3Q", "Max")
+    rq <- if (length(dim(resid)) == 2L)
+      structure(apply(t(resid), 1L, quantile),
+                dimnames = list(nam, dimnames(resid)[[2L]]))
+    else {
+      zz <- zapsmall(quantile(resid), digits + 1L)
+      structure(zz, names = nam)
+    }
+    print(rq, digits = digits, ...)
+  }
+  else if (rdf > 0L) {
+    print(resid, digits = digits, ...)
+  }
+  else {
+    cat("ALL", df[1L], "residuals are 0: no residual degrees of freedom!")
+    cat("\n")
+  }
+  if (length(x$aliased) == 0L) {
+    cat("\nNo Coefficients\n")
+  }
+  else {
+    if (nsingular <- df[3L] - df[1L])
+      cat("\nCoefficients: (", nsingular,
+          " not defined because of singularities)\n", sep = "")
+    else cat("\nCoefficients:\n")
+    coefs <- x$coefficients
+    if (any(aliased <- x$aliased)) {
+      cn <- names(aliased)
+      coefs <-
+        matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
+      coefs[!aliased, ] <- x$coefficients
+    }
+    printCoefmat(coefs, digits = digits, signif.stars = signif.stars,
+                 P.values = TRUE, has.Pvalue = TRUE, na.print = "NA", ...)
+  }
+  cat("\n")
+  if (nzchar(mess <- naprint(x$na.action)))
+    cat("  (", mess, ")\n", sep = "")
+  if (!is.null(x$chisq.statistic)) {
+    cat("Multiple R-squared: ", formatC(x$r.squared, digits = digits))
+    cat(",\tAdjusted R-squared: ", formatC(x$adj.r.squared, digits = digits),
+        "\nChisq-statistic:", formatC(x$chisq.statistic[1L], digits = digits),
+        "on", x$chisq.statistic[2L], "DF, p-value:",
+        format.pval(pchisq(x$chisq.statistic[1L], x$chisq.statistic[2L],
+                           lower.tail = FALSE),
+                    digits = digits))
+    cat("\n")
+  }
+  cat("\n")
+  invisible(x)
 }
 
 #' @export
@@ -34,8 +150,8 @@ print.pairwise <- function(x, ...) {
   if (is.null(x$control)) {
     cat("Test: all pairwise comparisons\n\n")
     rname <- vector("character", length = 0)
-    for (i in 1:(length(x$trt) - 1)) {
-      for (j in (i + 1):length(x$trt)) {
+    for (i in 1L:(length(x$trt) - 1L)) {
+      for (j in (i + 1L):length(x$trt)) {
         rname <- c(rname, paste(x$trt[i], "-", x$trt[j]))
       }
     }
@@ -43,7 +159,7 @@ print.pairwise <- function(x, ...) {
     cat("Test: comparisons with control\n\n")
     diff <- setdiff(x$trt, x$control)
     rname <- vector("character", length = length(diff))
-    for (i in 1:length(diff)) {
+    for (i in 1L:length(diff)) {
       rname[i] <- paste(diff[i], "-", x$control)
     }
   }
@@ -51,8 +167,8 @@ print.pairwise <- function(x, ...) {
                     statistic = x$statistic, lwr.ci = x$lower,
                     upr.ci = x$upper,
                     p.adj = round(x$p.adj, 4))
-  printCoefmat(out, digits = min(4, getOption("digits")), cs.ind = c(1, 3, 4),
-               tst.ind = 2, dig.tst = min(3, getOption("digits")),
+  printCoefmat(out, digits = min(4L, getOption("digits")), cs.ind = c(1, 3, 4),
+               tst.ind = 2L, dig.tst = min(3L, getOption("digits")),
                P.values = T, has.Pvalue = T, eps.Pvalue = 1e-03)
   cat("\n")
   cat(paste(c("k", "level", "method", "cutoff"),

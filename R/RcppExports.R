@@ -5,6 +5,10 @@ ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
 }
 
+EL_lm <- function(x, y, beta, threshold, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_melt_EL_lm`, x, y, beta, threshold, maxit, abstol)
+}
+
 #' Empirical likelihood test for mean
 #'
 #' Computes empirical likelihood for mean parameter.
