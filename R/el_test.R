@@ -29,24 +29,24 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   if (any(
     # response required & no arbitrary manipulation on intercept
     f$response == 0, f$intercept == 0,
-    length(f$variables) != 3,
+    length(f$variables) != 3L,
     # no other formula
-    typeof(f$variables[[3]]) != "language" ||
-    length(f$variables[[3]]) != 3,
+    typeof(f$variables[[3L]]) != "language" ||
+    length(f$variables[[3L]]) != 3L,
     # "|" operator needed
-    f$variables[[3]][[1]] != "|",
+    f$variables[[3L]][[1L]] != "|",
     # no transformation of variables
-    typeof(f$variables[[3]][[2]]) != "symbol" ||
-    typeof(f$variables[[3]][[3]]) != "symbol",
+    typeof(f$variables[[3L]][[2L]]) != "symbol" ||
+    typeof(f$variables[[3L]][[3L]]) != "symbol",
     # distinct variables for treatment and block
-    f$variables[[3]][[2]] == f$variables[[3]][[3]])
+    f$variables[[3L]][[2L]] == f$variables[[3L]][[3L]])
   ) {
     stop("invalied model formula. specify formula as 'response ~ treatment | block'")
   }
 
   ## pseudo formula for model.frame
-  l <- f$variables[[2]]
-  r <- c(f$variables[[3]][[2]], f$variables[[3]][[3]])
+  l <- f$variables[[2L]]
+  r <- c(f$variables[[3L]][[2L]], f$variables[[3L]][[3L]])
   pf <- formula(paste(l, paste(r, collapse = " + "), sep = " ~ "))
 
   ## extract model frame

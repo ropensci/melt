@@ -2,12 +2,12 @@
 
 // [[Rcpp::export]]
 Rcpp::List ELtest(const Eigen::MatrixXd& x,
-                const Eigen::MatrixXd& c,
-                const Eigen::MatrixXd& lhs,
-                const Eigen::VectorXd& rhs,
-                const double threshold,
-                const int maxit = 1e4,
-                const double abstol = 1e-8) {
+                  const Eigen::MatrixXd& c,
+                  const Eigen::MatrixXd& lhs,
+                  const Eigen::VectorXd& rhs,
+                  const double threshold,
+                  const int maxit = 1e4,
+                  const double abstol = 1e-8) {
   // check lhs & rhs
   if (lhs.rows() > lhs.cols()) {
     Rcpp::stop("nrow(lhs) must not exceed ncol(lhs)");
@@ -30,7 +30,7 @@ Rcpp::List ELtest(const Eigen::MatrixXd& x,
   Rcpp::List result;
   result["coefficients"] = theta_hat;
   result["optim"] = Rcpp::List::create(
-    Rcpp::Named("par") = el.theta,
+    Rcpp::Named("par") = el.par,
     Rcpp::Named("lambda") = el.lambda,
     Rcpp::Named("n2logLR") = 2 * el.nlogLR,
     Rcpp::Named("iterations") = el.iterations,

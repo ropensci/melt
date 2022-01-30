@@ -5,15 +5,8 @@
 #include <RcppEigen.h>
 #include "PSEUDO_LOG.h"
 
-// struct EL {
-//   Eigen::VectorXd lambda;
-//   double nlogLR;
-//   int iterations;
-//   bool convergence;
-// };
-
 struct minEL {
-  Eigen::VectorXd theta;
+  Eigen::VectorXd par;
   Eigen::VectorXd lambda;
   double nlogLR;
   int iterations;
