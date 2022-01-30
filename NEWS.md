@@ -1,3 +1,8 @@
+# melt 1.2.0
+* `el_lm` function added for linear regression analysis.
+* Dependence on R version updated to '3.6.0'.
+* Reference style streamlined across functions and data.
+
 # melt 1.1.0
 * DESCRIPTION file modified. 
 * `el_aov` function added for one-way analysis of variance. It only supports one variable at the moment.
@@ -8,4 +13,4 @@
 
 # melt 1.0.0
 * Currently, 4 functions are available: `el_mean`, `el_test`, `el_pairwise`, and `el_mht`.
-* `clothianidin` dataset is added.
+* `clothianidin` data set added.
