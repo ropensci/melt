@@ -70,7 +70,7 @@ summary.el_lm <- function(object, ...) {
 #' @importFrom stats naprint pchisq quantile
 #' @export
 print.summary.el_lm <- function(
-  x, digits = max(3L, getOption("digits") - 3L), symbolic.cor = x$symbolic.cor,
+  x, digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"), ...) {
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
       "\n\n", sep = "")

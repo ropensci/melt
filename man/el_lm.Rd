@@ -30,7 +30,7 @@ model <- el_lm(clo ~ trt, clothianidin)
 summary(model)
 }
 \references{
-Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \url{https://doi.org/10.1214/aos/1176348368}.
+Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
 }
 \seealso{
 \link{el_aov}

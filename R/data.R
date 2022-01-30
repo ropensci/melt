@@ -12,5 +12,5 @@
 #'
 #' @details The original data is provided by Alford and Krupke (2017). Only some of the shoot region observations are taken from the original data and processed for illustration.
 #'
-#' @source Alford, Adam, and Christian H. Krupke. 2017. “Translocation of the Neonicotinoid Seed Treatment Clothianidin in Maize.” Edited by Michael J. Stout. PLOS ONE 12 (3): e0173836. \url{https://doi.org/10.1371/journal.pone.0173836}.
+#' @source Alford, Adam, and Christian H. Krupke. 2017. “Translocation of the Neonicotinoid Seed Treatment Clothianidin in Maize.” Edited by Michael J. Stout. PLOS ONE 12 (3): e0173836. \doi{10.1371/journal.pone.0173836}.
 "clothianidin"

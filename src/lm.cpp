@@ -38,7 +38,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
     lhs(i) = 1;
     minEL lm_result = test_lm(bhat, x, y, lhs,
                               Eigen::Matrix<double, 1, 1>(0),
-                              50, maxit, abstol);
+                              20, maxit, abstol);
     chisq_statistic[i] = 2 * lm_result.nlogLR;
     convergence[i] = lm_result.convergence;
     p_value[i] = Rcpp::as<double>(pchisq(chisq_statistic[i],
