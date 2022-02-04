@@ -29,7 +29,8 @@ el_lm <- function(formula, data, na.action, model = TRUE, maxit = 1e04, abstol =
 
   y <- model.response(mf, "numeric")
   nm <- names(y)
-  ny <- if (is.matrix(y)) nrow(y) else length(y)
+  if (is.matrix(y)) stop("'el_lm' does not support multiple responses")
+  ny <- length(y)
   x <- model.matrix(mt, mf)
 
   out <- EL_lm(x, y, rep(0, ny), threshold = 500, maxit, abstol)
