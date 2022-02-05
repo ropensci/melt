@@ -48,7 +48,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("lambda") = el.lambda,
-      Rcpp::Named("n2logLR") = 2 * el.nlogLR,
+      Rcpp::Named("logLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
       Rcpp::Named("convergence") = el.convergence,
       Rcpp::Named("par.tests") = Rcpp::List::create(
