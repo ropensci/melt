@@ -11,18 +11,17 @@ print.el_aov <- function(x, ...) {
   cat("\n\n")
 }
 
-#' @export
-print.el_test <- function(x, ...) {
-  stopifnot(inherits(x, "melt"))
-  cat("\n")
-  cat("Empirical Likelihood Hypothesis Testing\n\n")
-  cat("minimizer:\n")
-  cat(format(round(x$optim$par, 4), scientific = F))
-  cat("\n\n")
-  cat("statistic:\n")
-  cat(format(round(x$optim$n2logLR, 4), scientific = F))
-  cat("\n\n")
-}
+# print.el_test <- function(x, ...) {
+#   stopifnot(inherits(x, "melt"))
+#   cat("\n")
+#   cat("Empirical Likelihood Hypothesis Testing\n\n")
+#   cat("minimizer:\n")
+#   cat(format(round(x$optim$par, 4), scientific = F))
+#   cat("\n\n")
+#   cat("statistic:\n")
+#   cat(format(round(x$optim$n2logLR, 4), scientific = F))
+#   cat("\n\n")
+# }
 
 #' @importFrom stats printCoefmat
 #' @export

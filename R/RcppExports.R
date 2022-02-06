@@ -9,31 +9,8 @@ EL_lm <- function(x, y, beta, threshold, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_EL_lm`, x, y, beta, threshold, maxit, abstol)
 }
 
-#' Empirical likelihood test for mean
-#'
-#' Computes empirical likelihood for mean parameter.
-#'
-#' @param theta Numeric vector of parameters to be tested.
-#' @param x Numeric matrix or vector of data. If \code{x} is a matrix, each row corresponds to an observation.
-#' @param maxit Maximum number of iterations for optimization. Defaults to 50.
-#' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
-#'
-#' @return A list with class \code{c("mean", "melt")}.
-#' @references Owen, A. B. (1988), Empirical Likelihood for Linear Models," \emph{The Annals of Statistics}, 1725–1747.
-#' @examples
-#' ## scalar mean
-#' theta <- 0
-#' x <- rnorm(100)
-#' el_mean(theta, x)
-#'
-#' ## vector mean
-#' x <- matrix(rnorm(100), ncol = 2)
-#' theta <- c(0, 0)
-#' el_mean(theta, x)
-#'
-#' @export
-el_mean <- function(theta, x, maxit = 50L, abstol = 1e-8) {
-    .Call(`_melt_el_mean`, theta, x, maxit, abstol)
+EL_mean <- function(par, x, maxit = 50L, abstol = 1e-8) {
+    .Call(`_melt_EL_mean`, par, x, maxit, abstol)
 }
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
