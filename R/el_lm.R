@@ -16,7 +16,7 @@
 #' summary(model)
 #' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames terms
 #' @export
-el_lm <- function(formula, data, na.action, model = TRUE, maxit = 1e04, abstol = 1e-08) {
+el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "na.action"), names(mf), 0L)
@@ -42,9 +42,7 @@ el_lm <- function(formula, data, na.action, model = TRUE, maxit = 1e04, abstol =
   out$xlevels <- .getXlevels(mt, mf)
   out$call <- cl
   out$terms <- mt
-  if (model)
-    out$model <- mf
-  return(out)
+  out$model <- mf
 }
 
 #' @export
@@ -175,6 +173,13 @@ nobs.el_lm <- function(object, ...) {
 
 #' @export
 logLik.el_lm <- function(object, ...) {
+  mt <- object$terms
+  mf <- object$model
+  x <- model.matrix(mt, mf)
+  y <- model.response(mf, "numeric")
+  mele <- object$coefficients
+  out <- EL_lm(x, y, mele, threshold = 500, ...)
+
   res <- object$residuals
   p <- object$rank
   N <- length(res)
@@ -193,7 +198,7 @@ logLik.el_lm <- function(object, ...) {
   # }
 
   N0 <- N
-  val <- object$optim$logLR
+  val <- out$optim$logLR - N * log(N)
   attr(val, "nall") <- N0
   attr(val, "nobs") <- N
   # df is p instead of p + 1 since EL does not estimate variance
