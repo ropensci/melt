@@ -4,7 +4,7 @@
 \alias{el_mean}
 \title{Empirical likelihood test for mean}
 \usage{
-el_mean(par, x, maxit = 10000, abstol = 1e-08)
+el_mean(par, x, maxit = 100, abstol = 1e-08)
 }
 \arguments{
 \item{par}{Numeric vector of parameters to be tested.}

@@ -21,11 +21,31 @@
 #' par <- c(0, 0)
 #' el_mean(par, x)
 #' @export
-el_mean <- function(par, x, maxit = 1e04, abstol = 1e-08) {
+el_mean <- function(par, x, maxit = 1e02, abstol = 1e-08) {
   if (!is.numeric(par)) stop("'par' must be a numeric vector")
   out <- EL_mean(par, x, maxit, abstol)
+  out$null.value <- setNames(out$null.value, "mean")
+  out$data <- x
   out$data.name <- deparse1(substitute(x))
   return(out)
+}
+
+#' @export
+confint.el_test <- function(object, conf.level = 0.95) {
+  if (!missing(conf.level) &&
+      (length(conf.level) != 1L || !is.finite(conf.level) ||
+       conf.level < 0 || conf.level > 1))
+    stop("'conf.level' must be a single number between 0 and 1")
+  if (conf.level == 0) {
+    ci <- rep(object$estimate, 2)
+  } else if (conf.level == 1) {
+    ci <- c(-Inf, Inf)
+  } else {
+    cutoff <- qchisq(conf.level, 1)
+    ci <- EL_confidence_interval(object$data, object$optim$type,
+                                 object$estimate, cutoff)
+  }
+  ci
 }
 
 #' @export
@@ -69,3 +89,7 @@ print.el_test <- function(x, digits = getOption("digits"), prefix = "\t", ...) {
   cat("\n")
   invisible(x)
 }
+
+
+
+

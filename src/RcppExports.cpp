@@ -58,6 +58,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EL_confidence_interval_mean
+Rcpp::NumericVector EL_confidence_interval_mean(const Eigen::Map<Eigen::MatrixXd>& x, const double init, const double cutoff, const int maxit, const double abstol);
+RcppExport SEXP _melt_EL_confidence_interval_mean(SEXP xSEXP, SEXP initSEXP, SEXP cutoffSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double >::type init(initSEXP);
+    Rcpp::traits::input_parameter< const double >::type cutoff(cutoffSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_confidence_interval_mean(x, init, cutoff, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// EL_confidence_interval
+Eigen::MatrixXd EL_confidence_interval(const Eigen::Map<Eigen::MatrixXd>& x, const std::string type, const Eigen::Map<Eigen::VectorXd>& init, const double cutoff, const int maxit, const double abstol);
+RcppExport SEXP _melt_EL_confidence_interval(SEXP xSEXP, SEXP typeSEXP, SEXP initSEXP, SEXP cutoffSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type init(initSEXP);
+    Rcpp::traits::input_parameter< const double >::type cutoff(cutoffSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_confidence_interval(x, type, init, cutoff, maxit, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pairwise
 Rcpp::List pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const double level, const bool interval, const std::string method, const int B, const int nthread, const bool progress, const double threshold, const int maxit, const double abstol);
 RcppExport SEXP _melt_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP levelSEXP, SEXP intervalSEXP, SEXP methodSEXP, SEXP BSEXP, SEXP nthreadSEXP, SEXP progressSEXP, SEXP thresholdSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
@@ -86,6 +117,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
     {"_melt_EL_lm", (DL_FUNC) &_melt_EL_lm, 6},
     {"_melt_EL_mean", (DL_FUNC) &_melt_EL_mean, 4},
+    {"_melt_EL_confidence_interval_mean", (DL_FUNC) &_melt_EL_confidence_interval_mean, 5},
+    {"_melt_EL_confidence_interval", (DL_FUNC) &_melt_EL_confidence_interval, 6},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
     {NULL, NULL, 0}
 };
