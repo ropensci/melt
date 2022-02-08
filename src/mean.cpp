@@ -1,4 +1,3 @@
-// #include "utils_mean.h"
 #include "EL.h"
 
 // [[Rcpp::export]]

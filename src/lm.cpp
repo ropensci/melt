@@ -5,8 +5,8 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
                  const Eigen::VectorXd& y,
                  const Eigen::VectorXd& beta,
                  const double threshold,
-                 const int maxit = 1e4,
-                 const double abstol = 1e-8) {
+                 const int maxit,
+                 const double abstol) {
   // check design matrix
   const int p = x.cols();
   if (x.rows() <= p) {
@@ -32,6 +32,13 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
   // p-value
   Rcpp::Function pchisq("pchisq");
   std::vector<double> p_value(p);
+
+  // // progress bar
+  // SEXP bar = PROTECT(
+  //   cli_progress_bar(p, Rcpp::List::create(
+  //       Rcpp::Named("name") = "testing parameters",
+  //       Rcpp::Named("type") = "tasks")));
+
   for (int i = 0; i < p; ++i) {
     Rcpp::checkUserInterrupt();
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
@@ -44,7 +51,13 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
     p_value[i] = Rcpp::as<double>(pchisq(chisq_statistic[i],
                                          Rcpp::Named("df") = 1,
                                          Rcpp::Named("lower.tail") = false));
+    // // progress update
+    // if (CLI_SHOULD_TICK) cli_progress_set(bar, i);
+
   }
+  // cli_progress_done(bar);
+  // UNPROTECT(1);
+
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("lambda") = el.lambda,
@@ -58,8 +71,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
     Rcpp::Named("coefficients") = bhat,
     Rcpp::Named("residuals") = residuals,
     Rcpp::Named("rank") = p,
-    Rcpp::Named("fitted.values") = fitted_values
-  );
+    Rcpp::Named("fitted.values") = fitted_values);
   result.attr("class") = Rcpp::CharacterVector({"el_lm", "melt"});
   return result;
 }
