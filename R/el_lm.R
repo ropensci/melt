@@ -8,7 +8,7 @@
 #' @param model Logical. If TRUE the model frame is returned.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
-#' @return A list with class \code{c("el_lm", "melt")}.
+#' @return A list with class \code{c("el_lm")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_aov}
 #' @examples
@@ -43,6 +43,7 @@ el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
   out$call <- cl
   out$terms <- mt
   out$model <- mf
+  out
 }
 
 #' @export

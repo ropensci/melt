@@ -31,7 +31,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
   std::vector<bool> convergence(p);
   // p-value
   Rcpp::Function pchisq("pchisq");
-  std::vector<double> p_value(p);
+  std::vector<double> pval(p);
 
   // // progress bar
   // SEXP bar = PROTECT(
@@ -48,7 +48,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
                               20, maxit, abstol);
     chisq_statistic[i] = 2 * lm_result.nlogLR;
     convergence[i] = lm_result.convergence;
-    p_value[i] = Rcpp::as<double>(pchisq(chisq_statistic[i],
+    pval[i] = Rcpp::as<double>(pchisq(chisq_statistic[i],
                                          Rcpp::Named("df") = 1,
                                          Rcpp::Named("lower.tail") = false));
     // // progress update
@@ -60,18 +60,19 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
+      Rcpp::Named("type") = "lm",
       Rcpp::Named("lambda") = el.lambda,
       Rcpp::Named("logLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
       Rcpp::Named("convergence") = el.convergence,
       Rcpp::Named("par.tests") = Rcpp::List::create(
         Rcpp::Named("statistic") = chisq_statistic,
-        Rcpp::Named("p.value") = p_value,
+        Rcpp::Named("p.value") = pval,
         Rcpp::Named("convergence") = convergence)),
     Rcpp::Named("coefficients") = bhat,
     Rcpp::Named("residuals") = residuals,
     Rcpp::Named("rank") = p,
     Rcpp::Named("fitted.values") = fitted_values);
-  result.attr("class") = Rcpp::CharacterVector({"el_lm", "melt"});
+  result.attr("class") = Rcpp::CharacterVector({"el_lm"});
   return result;
 }

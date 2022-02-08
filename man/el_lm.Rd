@@ -20,7 +20,7 @@ el_lm(formula, data, na.action, maxit = 10000, abstol = 1e-08)
 \item{model}{Logical. If TRUE the model frame is returned.}
 }
 \value{
-A list with class \code{c("el_lm", "melt")}.
+A list with class \code{c("el_lm")}.
 }
 \description{
 Fit a linear model with empirical likelihood.

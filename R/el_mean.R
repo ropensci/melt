@@ -7,7 +7,7 @@
 #' @param maxit Maximum number of iterations for optimization. Defaults to 50.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 #'
-#' @return A list with class \code{c("mean", "melt")}.
+#' @return A list with class \code{c("el_test")}.
 #'
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
 #' @examples
@@ -29,67 +29,3 @@ el_mean <- function(par, x, maxit = 1e02, abstol = 1e-08) {
   out$data.name <- deparse1(substitute(x))
   return(out)
 }
-
-#' @export
-confint.el_test <- function(object, conf.level = 0.95) {
-  if (!missing(conf.level) &&
-      (length(conf.level) != 1L || !is.finite(conf.level) ||
-       conf.level < 0 || conf.level > 1))
-    stop("'conf.level' must be a single number between 0 and 1")
-  if (conf.level == 0) {
-    ci <- rep(object$estimate, 2)
-  } else if (conf.level == 1) {
-    ci <- c(-Inf, Inf)
-  } else {
-    cutoff <- qchisq(conf.level, 1)
-    ci <- EL_confidence_interval(object$data, object$optim$type,
-                                 object$estimate, cutoff)
-  }
-  ci
-}
-
-#' @export
-print.el_test <- function(x, digits = getOption("digits"), prefix = "\t", ...) {
-  cat("\n")
-  cat(strwrap(x$method, prefix = prefix), sep = "\n")
-  cat("\n")
-  cat("data: ", x$data.name, "\n", sep = "")
-  out <- character()
-  if (!is.null(x$statistic))
-    out <- c(out, paste("Chisq", names(x$statistic), "=",
-                        format(x$statistic, digits = max(1L, digits - 2L))))
-  if (!is.null(x$df))
-    out <- c(out, paste("df", "=", x$df))
-  if (!is.null(x$p.value)) {
-    fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
-    out <- c(out, paste("p-value", if (startsWith(fp, "<")) fp else paste("=",
-                                                                          fp)))
-  }
-  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
-  if (!is.null(x$alternative)) {
-    cat("alternative hypothesis: ")
-    if (!is.null(x$null.value)) {
-      if (length(x$null.value) == 1L) {
-        alt.char <- switch(x$alternative, two.sided = "not equal to",
-                           less = "less than", greater = "greater than")
-        cat("true ", names(x$null.value), " is ", alt.char,
-            " ", x$null.value, "\n", sep = "")
-      }
-      else {
-        cat(x$alternative, "\nnull values:\n", sep = "")
-        print(x$null.value, digits = digits, ...)
-      }
-    }
-    else cat(x$alternative, "\n", sep = "")
-  }
-  if (!is.null(x$estimate)) {
-    cat("maximum EL estimates:\n")
-    print(x$estimate, digits = digits, ...)
-  }
-  cat("\n")
-  invisible(x)
-}
-
-
-
-
