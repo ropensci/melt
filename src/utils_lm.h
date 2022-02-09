@@ -4,10 +4,6 @@
 #include "EL.h"
 // #include <cli/progress.h>
 
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& beta,
-                     const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& y);
-
 Eigen::VectorXd gradient_nlogLR_lm(
     const Eigen::Ref<const Eigen::VectorXd>& lambda,
     const Eigen::Ref<const Eigen::MatrixXd>& g,

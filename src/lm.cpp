@@ -73,6 +73,6 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
     Rcpp::Named("residuals") = residuals,
     Rcpp::Named("rank") = p,
     Rcpp::Named("fitted.values") = fitted_values);
-  result.attr("class") = Rcpp::CharacterVector({"el_lm"});
+  result.attr("class") = Rcpp::CharacterVector({"el_lm", "el_test"});
   return result;
 }

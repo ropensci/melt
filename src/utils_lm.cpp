@@ -1,11 +1,5 @@
 #include "utils_lm.h"
 
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& beta,
-                     const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& y) {
-  return x.array().colwise() * (y - x * beta).array();
-}
-
 Eigen::VectorXd gradient_nlogLR_lm(
     const Eigen::Ref<const Eigen::VectorXd>& lambda,
     const Eigen::Ref<const Eigen::MatrixXd>& g,

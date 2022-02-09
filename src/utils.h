@@ -6,6 +6,10 @@
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
                        const Eigen::Ref<const Eigen::MatrixXd>& x);
 
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& beta,
+                     const Eigen::Ref<const Eigen::MatrixXd>& x,
+                     const Eigen::Ref<const Eigen::VectorXd>& y);
+
 Eigen::MatrixXd estimating_func(
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::MatrixXd>& x,
