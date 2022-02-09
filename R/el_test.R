@@ -110,10 +110,21 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 }
 
 #' @export
-confint.el_test <- function(object, conf.level = 0.95) {
+confint.el_test <- function(object, parm, conf.level = 0.95) {
   cf <- coef(object)
-  p <- length(cf)
   pnames <- if (is.null(names(cf))) seq(length(cf)) else names(cf)
+  idx <- seq(length(cf))
+  if (!missing(parm)) {
+    if (is.numeric(parm)) {
+      idx <- parm
+      pnames <- pnames[parm]
+    } else if (is.character(parm)) {
+      idx <- match(parm, pnames)
+      pnames <- pnames[idx]
+    } else {
+      stop("invalid 'parm' specified")
+    }
+  }
   if (!missing(conf.level) &&
       (length(conf.level) != 1L || !is.finite(conf.level) ||
        conf.level < 0 || conf.level > 1))
@@ -121,10 +132,11 @@ confint.el_test <- function(object, conf.level = 0.95) {
   if (conf.level == 0) {
     ci <- matrix(rep(cf, 2L), ncol = 2L)
   } else if (conf.level == 1) {
+    p <- length(pnames)
     ci <- matrix(c(rep(-Inf, p), rep(Inf, p)), ncol = 2L)
   } else {
     cutoff <- qchisq(conf.level, 1L)
-    ci <- EL_confint(object$data, object$optim$type, cf, cutoff,
+    ci <- EL_confint(object$data, object$optim$type, cf, cutoff, idx,
                      maxit = 100, abstol = 1e-8)
   }
   a <- (1 - conf.level)/2
@@ -132,16 +144,6 @@ confint.el_test <- function(object, conf.level = 0.95) {
   pct <- paste(round(100 * a, 1L), "%")
   dimnames(ci) <- list(pnames, pct)
   ci
-  # if (missing(parm))
-  #   parm <- pnames
-  # else if (is.numeric(parm))
-  #   parm <- pnames[parm]
-  # a <- (1 - level)/2
-  # a <- c(a, 1 - a)
-  # fac <- qt(a, object$df.residual)
-  # pct <- format.perc(a, 3)
-  # ci <- array(NA_real_, dim = c(length(parm), 2L), dimnames = list(parm,
-  #                                                                  pct))
 }
 
 #' @export

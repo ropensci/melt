@@ -24,7 +24,6 @@
 el_mean <- function(par, x, maxit = 1e02, abstol = 1e-08) {
   if (!is.numeric(par)) stop("'par' must be a numeric vector")
   out <- EL_mean(par, x, maxit, abstol)
-  out$null.value <- setNames(out$null.value, "mean")
   out$data <- x
   out$data.name <- deparse1(substitute(x))
   return(out)

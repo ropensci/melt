@@ -13,8 +13,8 @@ EL_mean <- function(par, x, maxit, abstol) {
     .Call(`_melt_EL_mean`, par, x, maxit, abstol)
 }
 
-EL_confint <- function(x, type, init, cutoff, maxit, abstol) {
-    .Call(`_melt_EL_confint`, x, type, init, cutoff, maxit, abstol)
+EL_confint <- function(x, type, init, cutoff, idx, maxit, abstol) {
+    .Call(`_melt_EL_confint`, x, type, init, cutoff, idx, maxit, abstol)
 }
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
