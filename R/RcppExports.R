@@ -13,12 +13,8 @@ EL_mean <- function(par, x, maxit, abstol) {
     .Call(`_melt_EL_mean`, par, x, maxit, abstol)
 }
 
-EL_confidence_interval_mean <- function(x, init, cutoff, maxit = 100L, abstol = 1e-8) {
-    .Call(`_melt_EL_confidence_interval_mean`, x, init, cutoff, maxit, abstol)
-}
-
-EL_confidence_interval <- function(x, type, init, cutoff, maxit = 100L, abstol = 1e-8) {
-    .Call(`_melt_EL_confidence_interval`, x, type, init, cutoff, maxit, abstol)
+EL_confint <- function(x, type, init, cutoff, maxit, abstol) {
+    .Call(`_melt_EL_confint`, x, type, init, cutoff, maxit, abstol)
 }
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {

@@ -211,7 +211,6 @@ logLik.el_lm <- function(object, ...) {
 #' @importFrom stats coef
 #' @export
 print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-  stopifnot(inherits(x, "melt"))
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
       "\n\n", sep = "")
   if (length(coef(x))) {

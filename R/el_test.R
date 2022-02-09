@@ -111,60 +111,76 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 
 #' @export
 confint.el_test <- function(object, conf.level = 0.95) {
+  cf <- coef(object)
+  p <- length(cf)
+  pnames <- if (is.null(names(cf))) seq(length(cf)) else names(cf)
   if (!missing(conf.level) &&
       (length(conf.level) != 1L || !is.finite(conf.level) ||
        conf.level < 0 || conf.level > 1))
     stop("'conf.level' must be a single number between 0 and 1")
   if (conf.level == 0) {
-    ci <- matrix(rep(object$estimate, 2L), ncol = 2L)
+    ci <- matrix(rep(cf, 2L), ncol = 2L)
   } else if (conf.level == 1) {
-    p <- length(object$estimate)
     ci <- matrix(c(rep(-Inf, p), rep(Inf, p)), ncol = 2L)
   } else {
     cutoff <- qchisq(conf.level, 1L)
-    ci <- EL_confidence_interval(object$data, object$optim$type,
-                                 object$estimate, cutoff)
+    ci <- EL_confint(object$data, object$optim$type, cf, cutoff,
+                     maxit = 100, abstol = 1e-8)
   }
+  a <- (1 - conf.level)/2
+  a <- c(a, 1 - a)
+  pct <- paste(round(100 * a, 1L), "%")
+  dimnames(ci) <- list(pnames, pct)
   ci
+  # if (missing(parm))
+  #   parm <- pnames
+  # else if (is.numeric(parm))
+  #   parm <- pnames[parm]
+  # a <- (1 - level)/2
+  # a <- c(a, 1 - a)
+  # fac <- qt(a, object$df.residual)
+  # pct <- format.perc(a, 3)
+  # ci <- array(NA_real_, dim = c(length(parm), 2L), dimnames = list(parm,
+  #                                                                  pct))
 }
 
 #' @export
-print.el_test <- function(x, digits = getOption("digits"), prefix = "\t", ...) {
+print.el_test <- function(object, digits = getOption("digits"), prefix = "\t", ...) {
   cat("\n")
-  cat(strwrap(x$method, prefix = prefix), sep = "\n")
+  cat(strwrap(object$method, prefix = prefix), sep = "\n")
   cat("\n")
-  cat("data: ", x$data.name, "\n", sep = "")
+  cat("data: ", object$data.name, "\n", sep = "")
   out <- character()
-  if (!is.null(x$statistic))
-    out <- c(out, paste("Chisq", names(x$statistic), "=",
-                        format(x$statistic, digits = max(1L, digits - 2L))))
-  if (!is.null(x$df))
-    out <- c(out, paste("df", "=", x$df))
-  if (!is.null(x$p.value)) {
-    fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
+  if (!is.null(object$statistic))
+    out <- c(out, paste("Chisq", names(object$statistic), "=",
+                        format(object$statistic, digits = max(1L, digits - 2L))))
+  if (!is.null(object$df))
+    out <- c(out, paste("df", "=", object$df))
+  if (!is.null(object$p.value)) {
+    fp <- format.pval(object$p.value, digits = max(1L, digits - 3L))
     out <- c(out, paste("p-value", if (startsWith(fp, "<")) fp else paste("=",
                                                                           fp)))
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
-  if (!is.null(x$alternative)) {
+  if (!is.null(object$alternative)) {
     cat("alternative hypothesis: ")
-    if (!is.null(x$null.value)) {
-      if (length(x$null.value) == 1L) {
-        alt.char <- switch(x$alternative, two.sided = "not equal to",
+    if (!is.null(object$null.value)) {
+      if (length(object$null.value) == 1L) {
+        alt.char <- switch(object$alternative, two.sided = "not equal to",
                            less = "less than", greater = "greater than")
-        cat("true ", names(x$null.value), " is ", alt.char,
-            " ", x$null.value, "\n", sep = "")
+        cat("true ", names(object$null.value), " is ", alt.char,
+            " ", object$null.value, "\n", sep = "")
       }
       else {
-        cat(x$alternative, "\nnull values:\n", sep = "")
-        print(x$null.value, digits = digits, ...)
+        cat(object$alternative, "\nnull values:\n", sep = "")
+        print(object$null.value, digits = digits, ...)
       }
     }
-    else cat(x$alternative, "\n", sep = "")
+    else cat(object$alternative, "\n", sep = "")
   }
-  if (!is.null(x$estimate)) {
+  if (!is.null(object$coefficients)) {
     cat("maximum EL estimates:\n")
-    print(x$estimate, digits = digits, ...)
+    print(object$coefficients, digits = digits, ...)
   }
   cat("\n")
   invisible(x)
