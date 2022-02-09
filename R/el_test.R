@@ -185,5 +185,5 @@ print.el_test <- function(object, digits = getOption("digits"), prefix = "\t", .
     print(object$coefficients, digits = digits, ...)
   }
   cat("\n")
-  invisible(x)
+  invisible(object)
 }
