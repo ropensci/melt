@@ -16,8 +16,6 @@ el_lm(formula, data, na.action, maxit = 10000, abstol = 1e-08)
 \item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
-
-\item{model}{Logical. If TRUE the model frame is returned.}
 }
 \value{
 A list with class \code{c("el_lm")}.
