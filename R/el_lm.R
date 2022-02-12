@@ -179,7 +179,7 @@ logLik.el_lm <- function(object, ...) {
   x <- model.matrix(mt, mf)
   y <- model.response(mf, "numeric")
   mele <- object$coefficients
-  out <- EL_lm(x, y, mele, threshold = 500, ...)
+  out <- EL_lm(x, y, mele, threshold = 500, maxit = 1e4, abstol = 1e-8, ...)
 
   res <- object$residuals
   p <- object$rank
