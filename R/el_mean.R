@@ -7,7 +7,7 @@
 #' @param maxit Maximum number of iterations for optimization. Defaults to 50.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
 #'
-#' @return A list with class \code{c("el_test")}.
+#' @return A list with class \code{"el_test"}.
 #'
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
 #' @examples

@@ -153,6 +153,11 @@ el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
 #   structure(res, class = "dummy_coef", matrix = isM)
 # }
 
+
+#' formula
+#'
+#' @param x object of class "el_lm".
+#' @param ... further arguments to be passed to or from methods.
 #' @importFrom stats formula
 #' @export
 formula.el_lm <- function(x, ...) {
@@ -172,6 +177,11 @@ nobs.el_lm <- function(object, ...) {
   print(10)
 }
 
+#' logLik
+#'
+#' @param object object of class "el_lm".
+#' @param ... further arguments to be passed to or from methods.
+#' @importFrom stats formula
 #' @export
 logLik.el_lm <- function(object, ...) {
   mt <- object$terms

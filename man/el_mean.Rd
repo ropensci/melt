@@ -16,7 +16,7 @@ el_mean(par, x, maxit = 100, abstol = 1e-08)
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
-A list with class \code{c("el_test")}.
+A list with class \code{"el_test"}.
 }
 \description{
 Computes empirical likelihood for mean parameter.

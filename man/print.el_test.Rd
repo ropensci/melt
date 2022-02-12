@@ -2,7 +2,7 @@
 % Please edit documentation in R/el_test.R
 \name{print.el_test}
 \alias{print.el_test}
-\title{Prints surveyor object.}
+\title{print}
 \usage{
 \method{print}{el_test}(x, digits = getOption("digits"), prefix = "\\t", ...)
 }
@@ -13,8 +13,8 @@
 
 \item{prefix}{string, passed to strwrap for displaying the method component of the htest object.}
 
-\item{...further}{arguments to be passed to or from methods.}
+\item{...}{further arguments to be passed to or from methods.}
 }
 \description{
-Prints surveyor object.
+print
 }
