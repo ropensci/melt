@@ -148,6 +148,12 @@ confint.el_test <- function(object, parm, level = 0.95, ...) {
   ci
 }
 
+#' Prints surveyor object.
+#'
+#' @param x object of class "el_test".
+#' @param digits number of significant digits to be used.
+#' @param prefix string, passed to strwrap for displaying the method component of the htest object.
+#' @param ...further arguments to be passed to or from methods.
 #' @export
 print.el_test <- function(x, digits = getOption("digits"), prefix = "\t", ...) {
   cat("\n")
