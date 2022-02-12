@@ -42,11 +42,11 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& x,
   for (int i = 0; i < p; ++i) {
     Rcpp::checkUserInterrupt();
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
-    lhs(i) = 1;
+    lhs(i) = 1.0;
     minEL lm_result = test_lm(bhat, x, y, lhs,
                               Eigen::Matrix<double, 1, 1>(0),
                               20, maxit, abstol);
-    chisq_statistic[i] = 2 * lm_result.nlogLR;
+    chisq_statistic[i] = 2.0 * lm_result.nlogLR;
     convergence[i] = lm_result.convergence;
     pval[i] = Rcpp::as<double>(pchisq(chisq_statistic[i],
                                          Rcpp::Named("df") = 1,

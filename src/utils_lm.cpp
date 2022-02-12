@@ -39,7 +39,7 @@ minEL test_lm(const Eigen::Ref<const Eigen::VectorXd>& beta0,
   /// minimization (projected gradient descent) ///
   double gamma = 1.0 / n;    // step size
   bool convergence = false;
-  int iterations = 0;
+  int iterations = 1;
   while (!convergence && iterations != maxit) {
     // update parameter
     Eigen::VectorXd beta_tmp =
@@ -60,7 +60,7 @@ minEL test_lm(const Eigen::Ref<const Eigen::VectorXd>& beta0,
     // strictly less than the current function value
     while (f0 < f1) {
       // reduce step size
-      gamma /= 2;
+      gamma /= 2.0;
       // propose new theta
       beta_tmp = beta - gamma * P * gradient_nlogLR_lm(lambda, g, x);;
       // propose new lambda

@@ -125,6 +125,7 @@ confint.el_test <- function(object, parm, conf.level = 0.95) {
       stop("invalid 'parm' specified")
     }
   }
+  stopifnot(complete.cases(pnames))
   if (!missing(conf.level) &&
       (length(conf.level) != 1L || !is.finite(conf.level) ||
        conf.level < 0 || conf.level > 1))
@@ -186,4 +187,10 @@ print.el_test <- function(object, digits = getOption("digits"), prefix = "\t", .
   }
   cat("\n")
   invisible(object)
+}
+
+#' @export
+weights.el_test <- function(object) {
+  n <- nrow(object$data)
+  c((n + n * aa$data %*% aa$optim$lambda)^-1)
 }

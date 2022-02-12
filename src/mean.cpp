@@ -22,7 +22,7 @@ Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
   const EL2 el(par, x, "mean", maxit, abstol);
   // const EL el(x.rowwise() - par.transpose(), p * 100, maxit, abstol);
 
-  const double chisq_statistic = 2 * el.nlogLR;
+  const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
     pchisq(chisq_statistic, Rcpp::Named("df") = p,
@@ -34,7 +34,7 @@ Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
       Rcpp::Named("logLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
       Rcpp::Named("convergence") = el.convergence),
-    Rcpp::Named("statistic") = 2 * el.nlogLR,
+    Rcpp::Named("statistic") = 2.0 * el.nlogLR,
     Rcpp::Named("df") = p,
     Rcpp::Named("p.value") = pval,
     Rcpp::Named("coefficients") = estimate,
