@@ -2,7 +2,6 @@
 #define EL_UTILS_lm_H_
 
 #include "EL.h"
-// #include <cli/progress.h>
 
 Eigen::VectorXd gradient_nlogLR_lm(
     const Eigen::Ref<const Eigen::VectorXd>& lambda,

@@ -9,6 +9,10 @@ EL_lm <- function(x, y, beta, threshold, maxit, abstol) {
     .Call(`_melt_EL_lm`, x, y, beta, threshold, maxit, abstol)
 }
 
+EL_lm2 <- function(x, y, data, maxit, abstol) {
+    .Call(`_melt_EL_lm2`, x, y, data, maxit, abstol)
+}
+
 EL_mean <- function(par, x, maxit, abstol) {
     .Call(`_melt_EL_mean`, par, x, maxit, abstol)
 }

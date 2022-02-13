@@ -62,7 +62,7 @@ minEL test_lm(const Eigen::Ref<const Eigen::VectorXd>& beta0,
       // reduce step size
       gamma /= 2.0;
       // propose new theta
-      beta_tmp = beta - gamma * P * gradient_nlogLR_lm(lambda, g, x);;
+      beta_tmp = beta - gamma * P * gradient_nlogLR_lm(lambda, g, x);
       // propose new lambda
       g_tmp = g_lm(beta_tmp, x, y);
       lambda_tmp = EL(g_tmp, threshold).lambda;

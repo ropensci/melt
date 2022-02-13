@@ -1,24 +1,5 @@
 #include "utils.h"
 
-Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
-                       const Eigen::Ref<const Eigen::MatrixXd>& x) {
-  return x.rowwise() - par.transpose();
-}
-
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& beta,
-                     const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& y) {
-  return x.array().colwise() * (y - x * beta).array();
-}
-
-// Eigen::MatrixXd estimating_func(
-//     const Eigen::Ref<const Eigen::VectorXd>& par,
-//     const Eigen::Ref<const Eigen::MatrixXd>& x,
-//     std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
-//                                   const Eigen::Ref<const Eigen::MatrixXd>&)> func) {
-//   return func(par, x);
-// }
-
 // std::vector<std::array<int, 2>> comparison_pairs(
 //     const int p, const int control) {
 //   // initialize a vector of vectors

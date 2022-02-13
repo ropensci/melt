@@ -53,11 +53,8 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par,
              const Eigen::Ref<const Eigen::VectorXd>&,
              const Eigen::Ref<const Eigen::MatrixXd>&)>> funcMap{
                {{"mean", g_mean},
-               {"lm", g_mean}}
+               {"lm", g_lm2}}
              };
-  // Eigen::MatrixXd (*fcnPtr)(
-  //     const Eigen::Ref<const Eigen::VectorXd>& par,
-  //     const Eigen::Ref<const Eigen::MatrixXd>& x){ &g_mean };
 
   Eigen::MatrixXd g = funcMap[type](par, x);
   // maximization
@@ -97,4 +94,180 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par,
       ++iterations;
     }
   }
+}
+
+PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
+  static const double n = static_cast<double>(x.size());
+  static const double a0 = 1.0 / n;
+  static const double a1 = -std::log(n) - 1.5;
+  static const double a2 = 2.0 * n;
+  static const double a3 = -0.5 * n * n;
+
+  dplog.resize(x.size());
+  sqrt_neg_d2plog.resize(x.size());
+  plog_sum = 0;
+
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    if (x[i] < a0) {
+      dplog[i] = a2 + 2 * a3 * x[i];
+      sqrt_neg_d2plog[i] = a2 / 2;
+      plog_sum += a1 + a2 * x[i] + a3 * x[i] * x[i];
+    } else {
+      dplog[i] = 1.0 / x[i];
+      sqrt_neg_d2plog[i] = 1.0 / x[i];
+      plog_sum += std::log(x[i]);
+    }
+  }
+}
+
+double PSEUDO_LOG::sum(Eigen::VectorXd&& x) {
+  static const double n = static_cast<double>(x.size());
+  static const double a0 = 1.0 / n;
+  static const double a1 = -std::log(n) - 1.5;
+  static const double a2 = 2.0 * n;
+  static const double a3 = -0.5 * n * n;
+  double out = 0;
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    out += x[i] < a0 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : std::log(x[i]);
+  }
+  return out;
+}
+
+Eigen::ArrayXd PSEUDO_LOG::dp(Eigen::VectorXd&& x) {
+  static const double n = static_cast<double>(x.size());
+  static const double a0 = 1.0 / n;
+  static const double a1 = 2.0 * n;
+  static const double a2 = -1.0 * n * n;
+  // Eigen::ArrayXd out(n);
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    if (x[i] < a0) {
+      x[i] = a1 + a2 * x[i];
+    } else {
+      x[i] = 1.0 / x[i];
+    }
+  }
+  return x;
+}
+
+Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
+                       const Eigen::Ref<const Eigen::MatrixXd>& x) {
+  return x.rowwise() - par.transpose();
+}
+
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& beta,
+                     const Eigen::Ref<const Eigen::MatrixXd>& x,
+                     const Eigen::Ref<const Eigen::VectorXd>& y) {
+  return x.array().colwise() * (y - x * beta).array();
+}
+
+Eigen::MatrixXd g_lm2(const Eigen::Ref<const Eigen::VectorXd>& par,
+                      const Eigen::Ref<const Eigen::MatrixXd>& data) {
+  // const Eigen::VectorXd y = data.col(0);
+  // const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  // return x.array().colwise() * (y - x * beta).array();
+  return data.rightCols(data.cols() - 1).array().colwise() *
+    (data.col(0) - data.rightCols(data.cols() - 1) * par).array();
+}
+
+Eigen::VectorXd gradient_nlogLR_lm2(
+    const Eigen::Ref<const Eigen::VectorXd>& lambda,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data) {
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd denominator =
+    Eigen::VectorXd::Ones(g.rows()) + g * lambda;
+  // gradient of nlogLR
+  const Eigen::MatrixXd gradient =
+    -(x.transpose() * (x.array().colwise() / denominator).matrix()) * lambda;
+    return gradient;
+}
+
+minEL el_test(const Eigen::Ref<const Eigen::VectorXd>& par0,
+              const Eigen::Ref<const Eigen::MatrixXd>& data,
+              const std::string type,
+              const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+              const Eigen::Ref<const Eigen::VectorXd>& rhs,
+              const double threshold,
+              const int maxit,
+              const double abstol) {
+  std::map<std::string,
+           std::function<Eigen::MatrixXd(
+             const Eigen::Ref<const Eigen::VectorXd>&,
+             const Eigen::Ref<const Eigen::MatrixXd>&)>> funcMap{
+               {{"mean", g_mean},
+               {"lm", g_lm2}}
+             };
+  std::map<std::string,
+           std::function<Eigen::MatrixXd(
+             const Eigen::Ref<const Eigen::VectorXd>&,
+             const Eigen::Ref<const Eigen::MatrixXd>&,
+             const Eigen::Ref<const Eigen::MatrixXd>&)>> gradMap{
+               {{"mean", gradient_nlogLR_lm2},
+               {"lm", gradient_nlogLR_lm2}}
+             };
+  /// initialization ///
+  // orthogonal projection matrix
+  const Eigen::MatrixXd P =
+    Eigen::MatrixXd::Identity(lhs.cols(), lhs.cols()) -
+    lhs.transpose() * (lhs * lhs.transpose()).inverse() * lhs;
+  // initial value (LS estimate) with the constraint imposed.
+  Eigen::VectorXd par =
+    P * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
+  // estimating function
+  Eigen::MatrixXd g = funcMap[type](par, data);
+  // evaluation
+  Eigen::VectorXd lambda = EL(g, threshold).lambda;
+  // function value(-logLR)
+  const int n = g.rows();
+  double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * lambda);
+
+  /// minimization (projected gradient descent) ///
+  double gamma = 1.0 / n;    // step size
+  bool convergence = false;
+  int iterations = 1;
+  while (!convergence && iterations != maxit) {
+    // update parameter
+    Eigen::VectorXd par_tmp =
+      par - gamma * P * gradMap[type](lambda, g, data);
+      // update g
+      Eigen::MatrixXd g_tmp = funcMap[type](par_tmp, data);
+      // update lambda
+      EL eval(g_tmp, threshold);
+      Eigen::VectorXd lambda_tmp = eval.lambda;
+      if (!eval.convergence && iterations > 9) {
+        return {par, lambda, f1, iterations, convergence};
+      }
+      // update function value
+      double f0 = f1;
+      f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * lambda_tmp);
+
+      // step halving to ensure that the updated function value be
+      // strictly less than the current function value
+      while (f0 < f1) {
+        // reduce step size
+        gamma /= 2.0;
+        // propose new par
+        par_tmp = par - gamma * P * gradMap[type](lambda, g, data);
+        // propose new lambda
+        g_tmp = funcMap[type](par_tmp, data);
+        lambda_tmp = EL(g_tmp, threshold).lambda;
+        if (gamma < abstol) {
+          return {par, lambda, f0, iterations, convergence};
+        }
+        // propose new function value
+        f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * lambda_tmp);
+      }
+
+      // update
+      par = std::move(par_tmp);
+      lambda = std::move(lambda_tmp);
+      g = std::move(g_tmp);
+      ++iterations;
+
+      // convergence check
+      if (f0 - f1 < abstol) {
+        convergence = true;
+      }
+  }
+  return {par, lambda, f1, iterations, convergence};
 }

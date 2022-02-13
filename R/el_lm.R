@@ -32,7 +32,8 @@ el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
   ny <- length(y)
   x <- model.matrix(mt, mf)
 
-  out <- EL_lm(x, y, rep(0, ny), threshold = 500, maxit, abstol)
+  # out <- EL_lm(x, y, rep(0, ny), 500, maxit, abstol)
+  out <- EL_lm2(x, y, cbind(y, x), maxit, abstol)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)
@@ -263,7 +264,7 @@ summary.el_lm <- function(object, ...) {
     df.int <- if (attr(z$terms, "intercept")) 1L else 0L
     ans$r.squared <- mss/(mss + rss)
     ans$adj.r.squared <- 1 - (1 - ans$r.squared) * ((n - df.int)/rdf)
-    ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = p)
+    ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = p - df.int)
   } else
     ans$r.squared <- ans$adj.r.squared <- 0
   if (!is.null(z$na.action)) ans$na.action <- z$na.action
