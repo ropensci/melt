@@ -33,7 +33,7 @@ el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
   x <- model.matrix(mt, mf)
 
   # out <- EL_lm(x, y, rep(0, ny), 500, maxit, abstol)
-  out <- EL_lm2(x, y, cbind(y, x), maxit, abstol)
+  out <- EL_lm2(cbind(y, x), maxit, abstol)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)

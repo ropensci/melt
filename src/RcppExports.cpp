@@ -45,17 +45,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // EL_lm2
-Rcpp::List EL_lm2(const Eigen::MatrixXd& x, const Eigen::VectorXd& y, const Eigen::MatrixXd& data, const int maxit, const double abstol);
-RcppExport SEXP _melt_EL_lm2(SEXP xSEXP, SEXP ySEXP, SEXP dataSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
+Rcpp::List EL_lm2(const Eigen::MatrixXd& data, const int maxit, const double abstol);
+RcppExport SEXP _melt_EL_lm2(SEXP dataSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_lm2(x, y, data, maxit, abstol));
+    rcpp_result_gen = Rcpp::wrap(EL_lm2(data, maxit, abstol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -117,7 +115,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
     {"_melt_EL_lm", (DL_FUNC) &_melt_EL_lm, 6},
-    {"_melt_EL_lm2", (DL_FUNC) &_melt_EL_lm2, 5},
+    {"_melt_EL_lm2", (DL_FUNC) &_melt_EL_lm2, 3},
     {"_melt_EL_mean", (DL_FUNC) &_melt_EL_mean, 4},
     {"_melt_EL_confint", (DL_FUNC) &_melt_EL_confint, 7},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},

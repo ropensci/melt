@@ -3,7 +3,6 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
-// #include "PSEUDO_LOG.h"
 #include "utils.h"
 
 struct minEL {
@@ -29,15 +28,27 @@ public:
 
 class EL2 {
 public:
+  Eigen::VectorXd par2;
   Eigen::VectorXd lambda;
   double nlogLR;
   int iterations;
   bool convergence;
 
+  // evaluation
   EL2(const Eigen::Ref<const Eigen::VectorXd>& par,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
       const std::string type,
       // const double threshold,
+      const int maxit,
+      const double abstol);
+
+  // minimization
+  EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
+      const Eigen::Ref<const Eigen::MatrixXd>& x,
+      const std::string type,
+      const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+      const Eigen::Ref<const Eigen::VectorXd>& rhs,
+      const double threshold,
       const int maxit,
       const double abstol);
 };
