@@ -5,17 +5,18 @@
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
 #' @param na.action A function which indicates what should happen when the data contain NAs.
+#' @param control A list of control parameters. See ‘Details’.
 #' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
 #' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
-#' @return A list with class \code{c("el_lm")}.
+#' @return A list with class \code{c("el_lm", "el_test")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_aov}
 #' @examples
-#' model <- el_lm(clo ~ trt, clothianidin)
-#' summary(model)
+#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+#' summary(fit)
 #' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames terms
 #' @export
-el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
+el_lm <- function(formula, data, na.action, control = list(), maxit = 1e04, abstol = 1e-08) {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "na.action"), names(mf), 0L)
@@ -32,7 +33,7 @@ el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
   ny <- length(y)
   x <- model.matrix(mt, mf)
 
-  out <- EL_lm2(cbind(y, x), intercept, maxit, abstol)
+  out <- EL_lm(cbind(y, x), intercept, maxit, abstol)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)

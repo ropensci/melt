@@ -68,14 +68,10 @@ public:
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
                        const Eigen::Ref<const Eigen::MatrixXd>& x);
 
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& beta,
-                     const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& y);
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& par,
+                     const Eigen::Ref<const Eigen::MatrixXd>& data);
 
-Eigen::MatrixXd g_lm2(const Eigen::Ref<const Eigen::VectorXd>& par,
-                      const Eigen::Ref<const Eigen::MatrixXd>& data);
-
-Eigen::VectorXd gradient_nlogLR_lm2(
+Eigen::VectorXd gr_nlogLR_lm(
     const Eigen::Ref<const Eigen::VectorXd>& lambda,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data);

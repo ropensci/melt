@@ -1,10 +1,10 @@
 #include "EL.h"
 
 // [[Rcpp::export]]
-Rcpp::List EL_lm2(const Eigen::MatrixXd& data,
-                  const bool intercept,
-                  const int maxit,
-                  const double abstol) {
+Rcpp::List EL_lm(const Eigen::MatrixXd& data,
+                 const bool intercept,
+                 const int maxit,
+                 const double abstol) {
   // check design matrix
   const Eigen::VectorXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);

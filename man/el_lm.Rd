@@ -4,7 +4,14 @@
 \alias{el_lm}
 \title{Fit a Linear Model with Empirical Likelihood}
 \usage{
-el_lm(formula, data, na.action, maxit = 10000, abstol = 1e-08)
+el_lm(
+  formula,
+  data,
+  na.action,
+  control = list(),
+  maxit = 10000,
+  abstol = 1e-08
+)
 }
 \arguments{
 \item{formula}{A formula object.}
@@ -13,19 +20,21 @@ el_lm(formula, data, na.action, maxit = 10000, abstol = 1e-08)
 
 \item{na.action}{A function which indicates what should happen when the data contain NAs.}
 
+\item{control}{A list of control parameters. See ‘Details’.}
+
 \item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
 
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
-A list with class \code{c("el_lm")}.
+A list with class \code{c("el_lm", "el_test")}.
 }
 \description{
 Fit a linear model with empirical likelihood.
 }
 \examples{
-model <- el_lm(clo ~ trt, clothianidin)
-summary(model)
+fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+summary(fit)
 }
 \references{
 Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.

@@ -54,7 +54,7 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
              const Eigen::Ref<const Eigen::VectorXd>&,
              const Eigen::Ref<const Eigen::MatrixXd>&)>> funcMap{
                {{"mean", g_mean},
-               {"lm", g_lm2}}
+               {"lm", g_lm}}
              };
 
   Eigen::MatrixXd g = funcMap[type](par0, x);
@@ -110,15 +110,15 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
              const Eigen::Ref<const Eigen::VectorXd>&,
              const Eigen::Ref<const Eigen::MatrixXd>&)>> funcMap{
                {{"mean", g_mean},
-               {"lm", g_lm2}}
+               {"lm", g_lm}}
              };
   std::map<std::string,
            std::function<Eigen::MatrixXd(
              const Eigen::Ref<const Eigen::VectorXd>&,
              const Eigen::Ref<const Eigen::MatrixXd>&,
              const Eigen::Ref<const Eigen::MatrixXd>&)>> gradMap{
-               {{"mean", gradient_nlogLR_lm2},
-               {"lm", gradient_nlogLR_lm2}}
+               {{"mean", gr_nlogLR_lm},
+               {"lm", gr_nlogLR_lm}}
              };
 
   /// initialization ///
@@ -246,14 +246,8 @@ Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
   return x.rowwise() - par.transpose();
 }
 
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& beta,
-                     const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& y) {
-  return x.array().colwise() * (y - x * beta).array();
-}
-
-Eigen::MatrixXd g_lm2(const Eigen::Ref<const Eigen::VectorXd>& par,
-                      const Eigen::Ref<const Eigen::MatrixXd>& data) {
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& par,
+                     const Eigen::Ref<const Eigen::MatrixXd>& data) {
   // const Eigen::VectorXd y = data.col(0);
   // const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   // return x.array().colwise() * (y - x * beta).array();
@@ -261,15 +255,15 @@ Eigen::MatrixXd g_lm2(const Eigen::Ref<const Eigen::VectorXd>& par,
     (data.col(0) - data.rightCols(data.cols() - 1) * par).array();
 }
 
-Eigen::VectorXd gradient_nlogLR_lm2(
+Eigen::VectorXd gr_nlogLR_lm(
     const Eigen::Ref<const Eigen::VectorXd>& lambda,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data) {
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd denominator =
     Eigen::VectorXd::Ones(g.rows()) + g * lambda;
-  // gradient of nlogLR
-  const Eigen::MatrixXd gradient =
+  // const Eigen::MatrixXd gradient =
+  //   -(x.transpose() * (x.array().colwise() / denominator).matrix()) * lambda;
+  return
     -(x.transpose() * (x.array().colwise() / denominator).matrix()) * lambda;
-    return gradient;
 }
