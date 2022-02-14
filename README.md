@@ -1,59 +1,52 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# melt
+# melt - Multiple Empirical Likelihood Tests
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
+[![R-CMD-check](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of melt is to …
+## Overview
+
+The R package **melt** provides a unified framework for data analysis
+with empirical likelihood methods. A collection of functions are
+available for basic regression analysis and hypothesis testing. Much of
+its functionality and syntax are designed to mimic the corresponding
+base R functions. The core routines are written in C++ and utilize
+OpenMP for parallelization.
 
 ## Installation
 
-You can install the development version of melt from
-[GitHub](https://github.com/) with:
+You can install the latest stable release from
+[CRAN](https://cran.r-project.org/package=melt).
+
+``` r
+install.packages("melt", dependencies = TRUE)
+```
+
+You can install the latest development version from
+[Github](https://github.com/markean/melt).
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("markean/melt")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
+## Usage
 
 ``` r
 library(melt)
-## basic example code
+# one sample test (mean)
+el_mean(par = 0, x = rnorm(n = 100))
+
+# linear regression
+fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+summary(fit)
+
+# analysis of variance
+el_aov(formula = Sepal.Length ~ Species, data = iris)
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
