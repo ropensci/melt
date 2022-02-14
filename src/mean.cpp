@@ -18,15 +18,15 @@ Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
   if (lu_decomp.rank() != p || n <= p) {
     Rcpp::stop("matrix 'x' must have full column rank");
   }
-  const Eigen::VectorXd estimate = x.colwise().mean();
-  const EL2 el(par, x, "mean", maxit, abstol);
-  // const EL el(x.rowwise() - par.transpose(), p * 100, maxit, abstol);
 
+  const EL2 el(par, x, "mean", 20.0 * p, maxit, abstol);
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
     pchisq(chisq_statistic, Rcpp::Named("df") = p,
            Rcpp::Named("lower.tail") = false));
+  const Eigen::VectorXd estimate = x.colwise().mean();
+
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("type") = "mean",

@@ -5,12 +5,8 @@ ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
 }
 
-EL_lm <- function(x, y, beta, threshold, maxit, abstol) {
-    .Call(`_melt_EL_lm`, x, y, beta, threshold, maxit, abstol)
-}
-
-EL_lm2 <- function(data, maxit, abstol) {
-    .Call(`_melt_EL_lm2`, data, maxit, abstol)
+EL_lm2 <- function(data, intercept, maxit, abstol) {
+    .Call(`_melt_EL_lm2`, data, intercept, maxit, abstol)
 }
 
 EL_mean <- function(par, x, maxit, abstol) {

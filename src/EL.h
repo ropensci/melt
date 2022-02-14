@@ -28,17 +28,17 @@ public:
 
 class EL2 {
 public:
-  Eigen::VectorXd par2;
+  Eigen::VectorXd par;
   Eigen::VectorXd lambda;
   double nlogLR;
   int iterations;
   bool convergence;
 
   // evaluation
-  EL2(const Eigen::Ref<const Eigen::VectorXd>& par,
+  EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
       const std::string type,
-      // const double threshold,
+      const double threshold,
       const int maxit,
       const double abstol);
 
@@ -79,13 +79,4 @@ Eigen::VectorXd gradient_nlogLR_lm2(
     const Eigen::Ref<const Eigen::VectorXd>& lambda,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data);
-
-minEL el_test(const Eigen::Ref<const Eigen::VectorXd>& par0,
-              const Eigen::Ref<const Eigen::MatrixXd>& data,
-              const std::string type,
-              const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-              const Eigen::Ref<const Eigen::VectorXd>& rhs,
-              const double threshold,
-              const int maxit,
-              const double abstol);
 #endif

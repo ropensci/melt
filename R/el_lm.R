@@ -25,15 +25,14 @@ el_lm <- function(formula, data, na.action, maxit = 1e04, abstol = 1e-08) {
   mf <- eval(mf, parent.frame())
   mt <- attr(mf, "terms")
   if (is.empty.model(mt)) stop("empty model specified")
-
+  intercept <- attr(mt, "intercept")
   y <- model.response(mf, "numeric")
-  nm <- names(y)
   if (is.matrix(y)) stop("'el_lm' does not support multiple responses")
+  nm <- names(y)
   ny <- length(y)
   x <- model.matrix(mt, mf)
 
-  # out <- EL_lm(x, y, rep(0, ny), 500, maxit, abstol)
-  out <- EL_lm2(cbind(y, x), maxit, abstol)
+  out <- EL_lm2(cbind(y, x), intercept, maxit, abstol)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)
@@ -175,7 +174,6 @@ formula.el_lm <- function(x, ...) {
 #' @export
 nobs.el_lm <- function(object, ...) {
   if (!is.null(w <- object$weights)) sum(w != 0) else NROW(object$residuals)
-  print(10)
 }
 
 #' logLik
@@ -190,7 +188,7 @@ logLik.el_lm <- function(object, ...) {
   x <- model.matrix(mt, mf)
   y <- model.response(mf, "numeric")
   mele <- object$coefficients
-  out <- EL_lm(x, y, mele, threshold = 500, maxit = 1e4, abstol = 1e-8, ...)
+  # out <- EL_lm2(x, mele, threshold = 500, maxit = 1e4, abstol = 1e-8, ...)
 
   res <- object$residuals
   p <- object$rank
@@ -210,7 +208,7 @@ logLik.el_lm <- function(object, ...) {
   # }
 
   N0 <- N
-  val <- out$optim$logLR - N * log(N)
+  val <- 0 - N * log(N)
   attr(val, "nall") <- N0
   attr(val, "nobs") <- N
   # df is p instead of p + 1 since EL does not estimate variance
