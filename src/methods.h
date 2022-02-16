@@ -9,5 +9,6 @@ Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x,
                            const double cutoff,
                            const std::vector<int>& idx,
                            const int maxit,
-                           const double abstol);
+                           const double abstol,
+                           const Rcpp::Nullable<double> threshold);
 #endif

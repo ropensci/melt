@@ -4,16 +4,14 @@
 \alias{el_mean}
 \title{Empirical likelihood test for mean}
 \usage{
-el_mean(par, x, maxit = 100, abstol = 1e-08)
+el_mean(par, x, control = list())
 }
 \arguments{
 \item{par}{Numeric vector of parameters to be tested.}
 
 \item{x}{Numeric matrix or vector of data. For matrix \code{x}, each row corresponds to an observation.}
 
-\item{maxit}{Maximum number of iterations for optimization. Defaults to 50.}
-
-\item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
+\item{control}{A list of control parameters. See ‘Details’.}
 }
 \value{
 A list with class \code{"el_test"}.

@@ -7,7 +7,8 @@ Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x,
                            const double cutoff,
                            const std::vector<int>& idx,
                            const int maxit,
-                           const double abstol) {
+                           const double abstol,
+                           const Rcpp::Nullable<double> threshold) {
   const int p = idx.size();
   std::vector<double> ci_vec;
   ci_vec.reserve(2 * p);
@@ -19,14 +20,14 @@ Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x,
     double lower_lb = init[j - 1] - lower_size;
     // lower bound for lower endpoint
     while (2.0 * EL2(Eigen::Matrix<double, 1, 1>(lower_lb), x, type,
-                     20.0, maxit, abstol).nlogLR <= cutoff) {
+                     maxit, abstol, 20.0).nlogLR <= cutoff) {
       lower_ub = lower_lb;
       lower_lb -= lower_size;
     }
     // approximate lower bound by numerical search
     while (lower_ub - lower_lb > 1e-04) {
       if (2.0 * EL2(Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2), x,
-                    type, 20.0, maxit, abstol).nlogLR > cutoff) {
+                    type, maxit, abstol, 20.0).nlogLR > cutoff) {
         lower_lb = (lower_lb + lower_ub) / 2;
       } else {
         lower_ub = (lower_lb + lower_ub) / 2;
@@ -40,14 +41,14 @@ Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x,
     double upper_ub = init[j - 1] + upper_size;
     // upper bound for upper endpoint
     while (2.0 * EL2(Eigen::Matrix<double, 1, 1>(upper_ub), x, type,
-                     20.0, maxit, abstol).nlogLR <= cutoff) {
+                     maxit, abstol, 20.0).nlogLR <= cutoff) {
       upper_lb = upper_ub;
       upper_ub += upper_size;
     }
     // approximate upper bound by numerical search
     while (upper_ub - upper_lb > 1e-04) {
       if (2.0 * EL2(Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2), x,
-                  type, 20.0, maxit, abstol).nlogLR > cutoff) {
+                  type, maxit, abstol, 20.0).nlogLR > cutoff) {
         upper_ub = (upper_lb + upper_ub) / 2;
       } else {
         upper_lb = (upper_lb + upper_ub) / 2;

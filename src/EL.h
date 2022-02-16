@@ -21,9 +21,9 @@ public:
   bool convergence;
 
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-     const double threshold,
-     const int maxit = 100,
-     const double abstol = 1e-8);
+     const int maxit,
+     const double abstol,
+     const double threshold);
 };
 
 class EL2 {
@@ -38,9 +38,9 @@ public:
   EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
       const std::string type,
-      const double threshold,
       const int maxit,
-      const double abstol);
+      const double abstol,
+      const double threshold);
 
   // minimization
   EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
@@ -48,9 +48,9 @@ public:
       const std::string type,
       const Eigen::Ref<const Eigen::MatrixXd>& lhs,
       const Eigen::Ref<const Eigen::VectorXd>& rhs,
-      const double threshold,
       const int maxit,
-      const double abstol);
+      const double abstol,
+      const double threshold);
 };
 
 class PSEUDO_LOG {
@@ -64,6 +64,8 @@ public:
   static double sum(Eigen::VectorXd&& x);
   static Eigen::ArrayXd dp(Eigen::VectorXd&& x);
 };
+
+double th_nlogLR(const int p, const Rcpp::Nullable<double> threshold);
 
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
                        const Eigen::Ref<const Eigen::MatrixXd>& x);

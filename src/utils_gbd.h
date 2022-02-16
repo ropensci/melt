@@ -38,24 +38,24 @@ minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                   const Eigen::Ref<const Eigen::MatrixXd>& c,
                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                  const double threshold,
-                  const int maxit = 1000,
-                  const double abstol = 1e-8);
+                  const int maxit,
+                  const double abstol,
+                  const double threshold);
 
 double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                    const Eigen::Ref<const Eigen::MatrixXd>& x,
                    const Eigen::Ref<const Eigen::MatrixXd>& c,
                    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
                    const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                   const double threshold,
-                   const int maxit = 1000,
-                   const double abstol = 1e-8);
+                   const int maxit,
+                   const double abstol,
+                   const double threshold);
 
 double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
                    const Eigen::Ref<const Eigen::MatrixXd>& c,
                    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
                    const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                   const double threshold,
-                   const int maxit = 1000,
-                   const double abstol = 1e-8);
+                   const int maxit,
+                   const double abstol,
+                   const double threshold);
 #endif

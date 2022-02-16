@@ -43,7 +43,7 @@ std::array<double, 2> pair_confidence_interval_gbd(
   // upper bound for upper endpoint
   while (2 * test_nlogLR(
       theta0, x, c, lhs,
-      Eigen::Matrix<double, 1, 1>(upper_ub), threshold) <= cutoff) {
+      Eigen::Matrix<double, 1, 1>(upper_ub), 1000, 1e-04, threshold) <= cutoff) {
     upper_lb = upper_ub;
     upper_ub += upper_size;
   }
@@ -51,7 +51,8 @@ std::array<double, 2> pair_confidence_interval_gbd(
   while (upper_ub - upper_lb > 1e-04) {
     if (2 * test_nlogLR(
         theta0, x, c, lhs,
-        Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2), threshold) > cutoff) {
+        Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2), 1000, 1e-04,
+        threshold) > cutoff) {
       upper_ub = (upper_lb + upper_ub) / 2;
     } else {
       upper_lb = (upper_lb + upper_ub) / 2;
@@ -72,7 +73,7 @@ std::array<double, 2> pair_confidence_interval_gbd(
   // lower bound for lower endpoint
   while (2 * test_nlogLR(
       theta0, x, c, lhs,
-      Eigen::Matrix<double, 1, 1>(lower_lb), threshold) <= cutoff) {
+      Eigen::Matrix<double, 1, 1>(lower_lb), 1000, 1e-04, threshold) <= cutoff) {
     lower_ub = lower_lb;
     lower_lb -= lower_size;
   }
@@ -80,7 +81,8 @@ std::array<double, 2> pair_confidence_interval_gbd(
   while (lower_ub - lower_lb > 1e-04) {
     if (2 * test_nlogLR(
         theta0, x, c, lhs,
-        Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2), threshold) > cutoff) {
+        Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2), 1000, 1e-04,
+        threshold) > cutoff) {
       lower_lb = (lower_lb + lower_ub) / 2;
     } else {
       lower_ub = (lower_lb + lower_ub) / 2;

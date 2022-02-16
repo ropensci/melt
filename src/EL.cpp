@@ -1,9 +1,9 @@
 #include "EL.h"
 
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-       const double threshold,
        const int maxit,
-       const double abstol) {
+       const double abstol,
+       const double threshold) {
   // maximization
   lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
   iterations = 1;
@@ -46,9 +46,9 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
 EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
          const Eigen::Ref<const Eigen::MatrixXd>& x,
          const std::string type,
-         const double threshold,
          const int maxit,
-         const double abstol) {
+         const double abstol,
+         const double threshold) {
   std::map<std::string,
            std::function<Eigen::MatrixXd(
              const Eigen::Ref<const Eigen::VectorXd>&,
@@ -102,9 +102,9 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
          const std::string type,
          const Eigen::Ref<const Eigen::MatrixXd>& lhs,
          const Eigen::Ref<const Eigen::VectorXd>& rhs,
-         const double threshold,
          const int maxit,
-         const double abstol) {
+         const double abstol,
+         const double threshold) {
   std::map<std::string,
            std::function<Eigen::MatrixXd(
              const Eigen::Ref<const Eigen::VectorXd>&,
@@ -131,7 +131,7 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
   // estimating function
   Eigen::MatrixXd g = funcMap[type](par, x);
   // evaluation
-  lambda = EL(g, threshold).lambda;
+  lambda = EL(g, maxit, abstol, threshold).lambda;
   // function value(-logLR)
   const int n = g.rows();
   nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * lambda);
@@ -147,7 +147,7 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
     // update g
     Eigen::MatrixXd g_tmp = funcMap[type](par_tmp, x);
     // update lambda
-    EL eval(g_tmp, threshold);
+    EL eval(g_tmp, maxit, abstol, threshold);
     Eigen::VectorXd lambda_tmp = eval.lambda;
     if (!eval.convergence && iterations > 9) {
       break;
@@ -166,7 +166,7 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
       par_tmp = par - gamma * P * gradMap[type](lambda, g, x);
       // propose new lambda
       g_tmp = funcMap[type](par_tmp, x);
-      lambda_tmp = EL(g_tmp, threshold).lambda;
+      lambda_tmp = EL(g_tmp, maxit, abstol, threshold).lambda;
       if (gamma < abstol) {
         nlogLR = f0;
         break;
@@ -240,6 +240,10 @@ Eigen::ArrayXd PSEUDO_LOG::dp(Eigen::VectorXd&& x) {
   }
   return x;
 }
+
+double th_nlogLR(const int p, const Rcpp::Nullable<double> threshold) {
+  return (threshold.isNull())? 20.0 * p : Rcpp::as<double>(threshold);
+};
 
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
                        const Eigen::Ref<const Eigen::MatrixXd>& x) {

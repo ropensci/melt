@@ -103,9 +103,9 @@ minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                   const Eigen::Ref<const Eigen::MatrixXd>& c,
                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
                   const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                  const double threshold,
                   const int maxit,
-                  const double abstol) {
+                  const double abstol,
+                  const double threshold) {
   /// initialization ///
   // Constraint imposed on the initial value by projection.
   // The initial value is given as treatment means.
@@ -114,7 +114,7 @@ minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
   // estimating function
   Eigen::MatrixXd g = g_gbd(theta, x, c);
   // evaluation
-  Eigen::VectorXd lambda = EL(g, threshold).lambda;
+  Eigen::VectorXd lambda = EL(g, maxit, abstol, threshold).lambda;
   // for current function value(-logLR)
   double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
 
@@ -131,7 +131,7 @@ minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
     // update g
     Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
     // update lambda
-    EL eval(g_tmp, threshold);
+    EL eval(g_tmp, maxit, abstol, threshold);
     Eigen::VectorXd lambda_tmp = eval.lambda;
     if (!eval.convergence && iterations > 9) {
       // Rcpp::warning("Convex hull constraint not satisfied during optimization.");
@@ -152,7 +152,7 @@ minEL test_gbd_EL(const Eigen::Ref<const Eigen::VectorXd>& theta0,
       linear_projection_void(theta_tmp, lhs, rhs);
       // propose new lambda
       g_tmp = g_gbd(theta_tmp, x, c);
-      lambda_tmp = EL(g_tmp, threshold).lambda;
+      lambda_tmp = EL(g_tmp, maxit, abstol, threshold).lambda;
       if (gamma < abstol) {
         // Rcpp::warning("Convex hull constraint not satisfied during step halving.");
         return {theta, lambda, f0, iterations, convergence};
@@ -181,9 +181,9 @@ double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
                    const Eigen::Ref<const Eigen::MatrixXd>& c,
                    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
                    const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                   const double threshold,
                    const int maxit,
-                   const double abstol) {
+                   const double abstol,
+                   const double threshold) {
   /// initialization ///
   // Constraint imposed on the initial value by projection.
   // The initial value is given as treatment means.
@@ -192,7 +192,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
   // estimating function
   Eigen::MatrixXd g = g_gbd(theta, x, c);
   // evaluation
-  Eigen::VectorXd lambda = EL(g, threshold).lambda;
+  Eigen::VectorXd lambda = EL(g, maxit, abstol, threshold).lambda;
   // for current function value(-logLR)
   double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
 
@@ -209,7 +209,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
     // update g
     Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
     // update lambda
-    EL eval(g_tmp, threshold);
+    EL eval(g_tmp, maxit, abstol, threshold);
     Eigen::VectorXd lambda_tmp = eval.lambda;
     if (!eval.convergence && iterations > 9) {
       return f1;
@@ -230,7 +230,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::VectorXd>& theta0,
       linear_projection_void(theta_tmp, lhs, rhs);
       // propose new lambda
       g_tmp = g_gbd(theta_tmp, x, c);
-      lambda_tmp = EL(g_tmp, threshold).lambda;
+      lambda_tmp = EL(g_tmp, maxit, abstol, threshold).lambda;
       if (gamma < abstol) {
         return f0;
       }
@@ -257,9 +257,9 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
                    const Eigen::Ref<const Eigen::MatrixXd>& c,
                    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
                    const Eigen::Ref<const Eigen::VectorXd>& rhs,
-                   const double threshold,
                    const int maxit,
-                   const double abstol) {
+                   const double abstol,
+                   const double threshold) {
   /// initialization ///
   // Constraint imposed on the initial value by projection.
   // The initial value is given as treatment means.
@@ -269,7 +269,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
   // estimating function
   Eigen::MatrixXd g = g_gbd(theta, x, c);
   // evaluation
-  Eigen::VectorXd lambda = EL(g, threshold).lambda;
+  Eigen::VectorXd lambda = EL(g, maxit, abstol, threshold).lambda;
   // for current function value(-logLR)
   double f1 = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * lambda);
 
@@ -286,7 +286,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
     // update g
     Eigen::MatrixXd g_tmp = g_gbd(theta_tmp, x, c);
     // update lambda
-    EL eval(g_tmp, threshold);
+    EL eval(g_tmp, maxit, abstol, threshold);
     Eigen::VectorXd lambda_tmp = eval.lambda;
     if (!eval.convergence && iterations > 9) {
       return f1;
@@ -305,7 +305,7 @@ double test_nlogLR(const Eigen::Ref<const Eigen::MatrixXd>& x,
       linear_projection_void(theta_tmp, lhs, rhs);
       // propose new lambda
       g_tmp = g_gbd(theta_tmp, x, c);
-      lambda_tmp = EL(g_tmp, threshold).lambda;
+      lambda_tmp = EL(g_tmp, maxit, abstol, threshold).lambda;
       if (gamma < abstol) {
         return f0;
       }

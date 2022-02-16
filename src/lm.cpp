@@ -4,7 +4,8 @@
 Rcpp::List EL_lm(const Eigen::MatrixXd& data,
                  const bool intercept,
                  const int maxit,
-                 const double abstol) {
+                 const double abstol,
+                 const Rcpp::Nullable<double> threshold) {
   // check design matrix
   const Eigen::VectorXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
@@ -27,8 +28,10 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
   const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
   const EL2 el =
     (intercept && p > 1)?
-    EL2(bhat, data, "lm", lhs, rhs, 20.0 * (p - 1), maxit, abstol) :
-    EL2(Eigen::MatrixXd::Zero(1, p), data, "lm", 20.0 * p, maxit, abstol);
+    EL2(bhat, data, "lm", lhs, rhs, th_nlogLR(p - 1, threshold),
+        maxit, abstol) :
+    EL2(Eigen::MatrixXd::Zero(1, p), data, "lm", th_nlogLR(p, threshold),
+        maxit, abstol);
 
   // test each coefficient
   std::vector<double> chisq_statistic(p);
@@ -40,7 +43,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
     EL2 coef_test = EL2(bhat, data, "lm", lhs, Eigen::VectorXd::Zero(1),
-                        20.0, maxit, abstol);
+                        th_nlogLR(1, threshold), maxit, abstol);
     chisq_statistic[i] = 2.0 * coef_test.nlogLR;
     convergence[i] = coef_test.convergence;
     pval[i] = Rcpp::as<double>(pchisq(chisq_statistic[i],

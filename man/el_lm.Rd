@@ -4,14 +4,7 @@
 \alias{el_lm}
 \title{Fit a Linear Model with Empirical Likelihood}
 \usage{
-el_lm(
-  formula,
-  data,
-  na.action,
-  control = list(),
-  maxit = 10000,
-  abstol = 1e-08
-)
+el_lm(formula, data, na.action, control = list())
 }
 \arguments{
 \item{formula}{A formula object.}
@@ -21,10 +14,6 @@ el_lm(
 \item{na.action}{A function which indicates what should happen when the data contain NAs.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
-
-\item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
-
-\item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
 A list with class \code{c("el_lm", "el_test")}.
