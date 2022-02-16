@@ -11,4 +11,12 @@ Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x,
                            const int maxit,
                            const double abstol,
                            const Rcpp::Nullable<double> threshold);
+
+Eigen::MatrixXd EL_confint2(const Eigen::Map<Eigen::MatrixXd>& x,
+                            const std::string type,
+                            const Eigen::VectorXd par0,
+                            const double cutoff,
+                            const int maxit,
+                            const double abstol,
+                            const Rcpp::Nullable<double> threshold);
 #endif

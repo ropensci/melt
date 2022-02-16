@@ -139,7 +139,7 @@ confint.el_test <- function(object, parm, level = 0.95, ...) {
   } else {
     cutoff <- qchisq(level, 1L)
     optcfg <- object$optim$control
-    ci <- EL_confint(object$data, object$optim$type, cf, cutoff, idx,
+    ci <- EL_confint2(object$data, object$optim$type, cf, cutoff,
                      optcfg$maxit, optcfg$abstol, optcfg$threshold)
   }
   a <- (1 - level)/2

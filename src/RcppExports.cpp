@@ -76,6 +76,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EL_confint2
+Eigen::MatrixXd EL_confint2(const Eigen::Map<Eigen::MatrixXd>& x, const std::string type, const Eigen::VectorXd par0, const double cutoff, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
+RcppExport SEXP _melt_EL_confint2(SEXP xSEXP, SEXP typeSEXP, SEXP par0SEXP, SEXP cutoffSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< const Eigen::VectorXd >::type par0(par0SEXP);
+    Rcpp::traits::input_parameter< const double >::type cutoff(cutoffSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_confint2(x, type, par0, cutoff, maxit, abstol, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pairwise
 Rcpp::List pairwise(const Eigen::MatrixXd& x, const Eigen::MatrixXd& c, const int control, const int k, const double level, const bool interval, const std::string method, const int B, const int nthread, const bool progress, const double threshold, const int maxit, const double abstol);
 RcppExport SEXP _melt_pairwise(SEXP xSEXP, SEXP cSEXP, SEXP controlSEXP, SEXP kSEXP, SEXP levelSEXP, SEXP intervalSEXP, SEXP methodSEXP, SEXP BSEXP, SEXP nthreadSEXP, SEXP progressSEXP, SEXP thresholdSEXP, SEXP maxitSEXP, SEXP abstolSEXP) {
@@ -105,6 +122,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_EL_lm", (DL_FUNC) &_melt_EL_lm, 5},
     {"_melt_EL_mean", (DL_FUNC) &_melt_EL_mean, 5},
     {"_melt_EL_confint", (DL_FUNC) &_melt_EL_confint, 8},
+    {"_melt_EL_confint2", (DL_FUNC) &_melt_EL_confint2, 7},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
     {NULL, NULL, 0}
 };

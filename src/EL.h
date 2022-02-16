@@ -30,9 +30,9 @@ class EL2 {
 public:
   Eigen::VectorXd par;
   Eigen::VectorXd lambda;
-  double nlogLR;
-  int iterations;
-  bool convergence;
+  double nlogLR = 0;
+  int iterations = 1;
+  bool convergence = false;
 
   // evaluation
   EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
