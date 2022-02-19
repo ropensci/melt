@@ -4,12 +4,14 @@
 \alias{el_mean}
 \title{Empirical likelihood test for mean}
 \usage{
-el_mean(par, x, control = list())
+el_mean(par, x, weights = NULL, control = list())
 }
 \arguments{
-\item{par}{Numeric vector of parameters to be tested.}
+\item{par}{A numeric vector of parameters to be tested.}
 
-\item{x}{Numeric matrix or vector of data. For matrix \code{x}, each row corresponds to an observation.}
+\item{x}{A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.}
+
+\item{weights}{An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likiehood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
 }
@@ -29,7 +31,13 @@ el_mean(par, x)
 x <- matrix(rnorm(100), ncol = 2)
 par <- c(0, 0)
 el_mean(par, x)
+## weighted EL
+x <- matrix(rnorm(100), ncol = 2)
+par <- c(0, 0)
+el_mean(par, x, weights = rep(c(1, 2), each = 50))
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
+
+Glenn, N.L., and Yichuan Zhao. 2007. “Weighted Empirical Likelihood Estimates and Their Robustness Properties.” Computational Statistics & Data Analysis 51 (10): 5130–41. \doi{10.1016/j.csda.2006.07.032}.
 }

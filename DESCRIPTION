@@ -9,16 +9,13 @@ BugReports: https://github.com/markean/melt/issues
 License: GPL (>= 2)
 Depends: R (>= 3.6.0)
 Imports: 
-    cli,
     Rcpp (>= 1.0.6),
     stats
 LinkingTo: 
-    cli,
     Rcpp, 
     RcppEigen,
     RcppProgress
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.2
 NeedsCompilation: yes
 Authors@R: 

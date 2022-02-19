@@ -1,13 +1,14 @@
 #' @export
-print.el_aov <- function(x, ...) {
+print.el_aov <- function(x, ...)
+{
   stopifnot(inherits(x, "melt"))
   cat("Call:\n")
   dput(x$call, control = NULL)
   cat("\nminimizer:\n")
-  cat(format(round(x$optim$par, 4), scientific = F))
+  cat(format(round(x$optim$par, 4), scientific = FALSE))
   cat("\n\n")
   cat("statistic:\n")
-  cat(format(round(x$optim$n2logLR, 4), scientific = F))
+  cat(format(round(x$optim$n2logLR, 4), scientific = FALSE))
   cat("\n\n")
 }
 
@@ -52,7 +53,7 @@ print.pairwise <- function(x, ...) {
                     p.adj = round(x$p.adj, 4))
   printCoefmat(out, digits = min(4L, getOption("digits")), cs.ind = c(1, 3, 4),
                tst.ind = 2L, dig.tst = min(3L, getOption("digits")),
-               P.values = T, has.Pvalue = T, eps.Pvalue = 1e-03)
+               P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03)
   cat("\n")
   cat(paste(c("k", "level", "method", "cutoff"),
             c(x$k, x$level, x$method, round(x$cutoff, 4)),

@@ -13,6 +13,10 @@ EL_mean <- function(par, x, maxit, abstol, threshold) {
     .Call(`_melt_EL_mean`, par, x, maxit, abstol, threshold)
 }
 
+EL_mean_weight <- function(par, x, w, maxit, abstol, threshold) {
+    .Call(`_melt_EL_mean_weight`, par, x, w, maxit, abstol, threshold)
+}
+
 EL_confint <- function(x, type, init, cutoff, idx, maxit, abstol, threshold) {
     .Call(`_melt_EL_confint`, x, type, init, cutoff, idx, maxit, abstol, threshold)
 }

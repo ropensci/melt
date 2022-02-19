@@ -58,6 +58,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EL_mean_weight
+Rcpp::List EL_mean_weight(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
+RcppExport SEXP _melt_EL_mean_weight(SEXP parSEXP, SEXP xSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par(parSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_mean_weight(par, x, w, maxit, abstol, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // EL_confint
 Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x, const std::string type, const Eigen::Map<Eigen::VectorXd>& init, const double cutoff, const std::vector<int>& idx, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
 RcppExport SEXP _melt_EL_confint(SEXP xSEXP, SEXP typeSEXP, SEXP initSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
@@ -121,6 +137,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
     {"_melt_EL_lm", (DL_FUNC) &_melt_EL_lm, 5},
     {"_melt_EL_mean", (DL_FUNC) &_melt_EL_mean, 5},
+    {"_melt_EL_mean_weight", (DL_FUNC) &_melt_EL_mean_weight, 6},
     {"_melt_EL_confint", (DL_FUNC) &_melt_EL_confint, 8},
     {"_melt_EL_confint2", (DL_FUNC) &_melt_EL_confint2, 7},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},

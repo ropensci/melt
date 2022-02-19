@@ -54,10 +54,12 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
  */
 EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
          const Eigen::Ref<const Eigen::MatrixXd>& x,
-         const std::string type,
+         const std::string method,
          const int maxit,
          const double abstol,
          const double threshold) {
+  type = method;
+  par = par0;
   std::map<std::string,
            std::function<Eigen::MatrixXd(
              const Eigen::Ref<const Eigen::VectorXd>&,
@@ -90,6 +92,71 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
       nlogLR =
         PSEUDO_LOG::sum(
           Eigen::VectorXd::Ones(g.rows()) + g * (lambda + gamma * step));
+    }
+    /* If the step halving is not successful (possibly due to the convex
+     * hull constraint), terminate the maximization with the current values
+     * without further updates.
+     */
+    if (gamma < abstol) {
+      nlogLR = log_tmp.plog_sum;
+      break;
+    }
+    // Otherwise, update lambda and check for convergence
+    lambda += gamma * step;
+    if (nlogLR - log_tmp.plog_sum < abstol) {
+      convergence = true;
+    }
+    ++iterations;
+  }
+}
+
+/* Constructor for weighted EL2 class (evaluation)
+ * Last updated: 02/16/21
+ *
+ * abstol for gamma should be reconsidered.
+ * Perhaps, use another optim parameter such as step size tolerance.
+ */
+EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
+         const Eigen::Ref<const Eigen::MatrixXd>& x,
+         const Eigen::Ref<const Eigen::ArrayXd>& w,
+         const std::string method,
+         const int maxit,
+         const double abstol,
+         const double threshold) {
+  type = method;
+  par = par0;
+  std::map<std::string,
+           std::function<Eigen::MatrixXd(
+             const Eigen::Ref<const Eigen::VectorXd>&,
+             const Eigen::Ref<const Eigen::MatrixXd>&)>> funcMap{
+               {{"mean", g_mean},
+               {"lm", g_lm}}
+             };
+  Eigen::MatrixXd g = funcMap[type](par0, x);
+  // maximization
+  lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
+  while (!convergence && iterations != maxit && nlogLR <= threshold) {
+    // plog class
+    PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(g.rows()) + g * lambda, w);
+    // J matrix
+    const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
+    // propose new lambda by NR method with least square
+    Eigen::VectorXd step =
+      (J.transpose() * J).ldlt().solve(
+          J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+    // update function value
+    nlogLR =
+      PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * (lambda + step), w);
+    // step halving to ensure increase in function value
+    double gamma = 1.0;
+    while (nlogLR < log_tmp.plog_sum) {
+      gamma /= 2;
+      if (gamma < abstol) {
+        break;
+      }
+      nlogLR =
+        PSEUDO_LOG::sum(
+          Eigen::VectorXd::Ones(g.rows()) + g * (lambda + gamma * step), w);
     }
     /* If the step halving is not successful (possibly due to the convex
      * hull constraint), terminate the maximization with the current values
@@ -198,39 +265,149 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
   }
 }
 
+/* log probability for weighted EL2 class
+ * Last updated: 02/17/21
+ *
+ */
+Eigen::ArrayXd EL2::log_prob(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                             const Eigen::Ref<const Eigen::ArrayXd>& w) {
+  std::map<std::string,
+           std::function<Eigen::MatrixXd(
+             const Eigen::Ref<const Eigen::VectorXd>&,
+             const Eigen::Ref<const Eigen::MatrixXd>&)>> funcMap{
+               {{"mean", g_mean},
+               {"lm", g_lm}}
+             };
+  Eigen::MatrixXd g = funcMap[type](par, x);
+  // return  w * (w.log() - log(x.rows())-
+  //              PSEUDO_LOG::plog(Eigen::VectorXd::Ones(x.rows()) + g * lambda));
+  return  w.log() -
+    PSEUDO_LOG::plog(Eigen::VectorXd::Ones(x.rows()) + g * lambda);
+}
+
+/* log weighted probability for weighted EL2 class
+ * Last updated: 02/17/21
+ *
+ */
+Eigen::ArrayXd EL2::log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                              const Eigen::Ref<const Eigen::ArrayXd>& w) {
+  std::map<std::string,
+           std::function<Eigen::MatrixXd(
+             const Eigen::Ref<const Eigen::VectorXd>&,
+             const Eigen::Ref<const Eigen::MatrixXd>&)>> funcMap{
+               {{"mean", g_mean},
+               {"lm", g_lm}}
+             };
+  Eigen::MatrixXd g = funcMap[type](par, x);
+  return  -w * PSEUDO_LOG::plog(Eigen::VectorXd::Ones(x.rows()) + g * lambda);
+}
+
+
+
+
+
+
+
 PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
   static const double n = static_cast<double>(x.size());
   static const double a0 = 1.0 / n;
-  static const double a1 = -std::log(n) - 1.5;
+  static const double a1 = -log(n) - 1.5;
   static const double a2 = 2.0 * n;
   static const double a3 = -0.5 * n * n;
 
   dplog.resize(x.size());
   sqrt_neg_d2plog.resize(x.size());
-  plog_sum = 0;
+  // plog_sum = 0;
 
   for (unsigned int i = 0; i < x.size(); ++i) {
     if (x[i] < a0) {
-      dplog[i] = a2 + 2 * a3 * x[i];
-      sqrt_neg_d2plog[i] = a2 / 2;
+      dplog[i] = a2 + 2.0 * a3 * x[i];
+      sqrt_neg_d2plog[i] = a2 / 2.0;
       plog_sum += a1 + a2 * x[i] + a3 * x[i] * x[i];
     } else {
       dplog[i] = 1.0 / x[i];
       sqrt_neg_d2plog[i] = 1.0 / x[i];
-      plog_sum += std::log(x[i]);
+      plog_sum += log(x[i]);
     }
   }
+}
+
+/* Constructor for PSEUDO_LOG class (weighted)
+ * Last updated: 02/16/21
+ *
+ */
+PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x, Eigen::ArrayXd&& w) {
+  static const double n = static_cast<double>(x.size());
+  static const double a0 = 1.0 / n;
+  static const double a1 = -log(n) - 1.5;
+  static const double a2 = 2.0 * n;
+  static const double a3 = -0.5 * n * n;
+
+  dplog.resize(x.size());
+  sqrt_neg_d2plog.resize(x.size());
+
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    if (x[i] < a0) {
+      dplog[i] = w[i] * (a2 + 2.0 * a3 * x[i]);
+      sqrt_neg_d2plog[i] = sqrt(w[i]) * a2 / 2.0;
+      plog_sum += w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]);
+    } else {
+      dplog[i] = w[i] / x[i];
+      sqrt_neg_d2plog[i] = sqrt(w[i]) / x[i];
+      plog_sum += w[i] * log(x[i]);
+    }
+  }
+}
+
+/* pseudo log function
+ * Last updated: 02/17/21
+ *
+ */
+Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::ArrayXd&& x) {
+  static const double n = static_cast<double>(x.size());
+  static const double a0 = 1.0 / n;
+  static const double a1 = -log(n) - 1.5;
+  static const double a2 = 2.0 * n;
+  static const double a3 = -0.5 * n * n;
+  // Eigen::ArrayXd out(x.size());
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    if (x[i] < a0) {
+      x[i] = a1 + a2 * x[i] + a3 * x[i] * x[i];
+    } else {
+      x[i] = log(x[i]);
+    }
+  }
+  return x;
 }
 
 double PSEUDO_LOG::sum(Eigen::VectorXd&& x) {
   static const double n = static_cast<double>(x.size());
   static const double a0 = 1.0 / n;
-  static const double a1 = -std::log(n) - 1.5;
+  static const double a1 = -log(n) - 1.5;
   static const double a2 = 2.0 * n;
   static const double a3 = -0.5 * n * n;
   double out = 0;
   for (unsigned int i = 0; i < x.size(); ++i) {
-    out += x[i] < a0 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : std::log(x[i]);
+    out += x[i] < a0 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : log(x[i]);
+  }
+  return out;
+}
+
+/* Summation funtion for PSEUDO_LOG class (weighted)
+ * Last updated: 02/16/21
+ *
+ */
+double PSEUDO_LOG::sum(Eigen::VectorXd&& x, Eigen::ArrayXd&& w) {
+  static const double n = static_cast<double>(x.size());
+  static const double a0 = 1.0 / n;
+  static const double a1 = -log(n) - 1.5;
+  static const double a2 = 2.0 * n;
+  static const double a3 = -0.5 * n * n;
+  double out = 0;
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    out += x[i] < a0 ?
+    w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]) :
+    w[i] * log(x[i]);
   }
   return out;
 }

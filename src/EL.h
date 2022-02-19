@@ -3,6 +3,7 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
+#include <cmath>
 #include "utils.h"
 
 struct minEL {
@@ -28,6 +29,7 @@ public:
 
 class EL2 {
 public:
+  std::string type;
   Eigen::VectorXd par;
   Eigen::VectorXd lambda;
   double nlogLR = 0;
@@ -37,7 +39,16 @@ public:
   // evaluation
   EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
-      const std::string type,
+      const std::string method,
+      const int maxit,
+      const double abstol,
+      const double threshold);
+
+  // evaluation (weighted)
+  EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
+      const Eigen::Ref<const Eigen::MatrixXd>& x,
+      const Eigen::Ref<const Eigen::ArrayXd>& w,
+      const std::string method,
       const int maxit,
       const double abstol,
       const double threshold);
@@ -51,17 +62,28 @@ public:
       const int maxit,
       const double abstol,
       const double threshold);
+
+  // log probability
+  Eigen::ArrayXd log_prob(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                          const Eigen::Ref<const Eigen::ArrayXd>& w);
+
+  // log weighted probability
+  Eigen::ArrayXd log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                           const Eigen::Ref<const Eigen::ArrayXd>& w);
 };
 
 class PSEUDO_LOG {
 public:
   Eigen::ArrayXd dplog;
   Eigen::ArrayXd sqrt_neg_d2plog;
-  double plog_sum;
+  double plog_sum = 0;
 
   // PSEUDO_LOG(const Eigen::Ref<const Eigen::VectorXd>& x);
   PSEUDO_LOG(Eigen::VectorXd&& x);
+  PSEUDO_LOG(Eigen::VectorXd&& x, Eigen::ArrayXd&& w);
+  static Eigen::ArrayXd plog(Eigen::ArrayXd&& x);
   static double sum(Eigen::VectorXd&& x);
+  static double sum(Eigen::VectorXd&& x, Eigen::ArrayXd&& w);
   static Eigen::ArrayXd dp(Eigen::VectorXd&& x);
 };
 

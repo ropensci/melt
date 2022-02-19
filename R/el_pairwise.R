@@ -109,7 +109,7 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
 
   ## pairwise comparisons
   out <- pairwise(gbd$model_matrix, gbd$incidence_matrix,
-                  control = ctrl, k, alpha, interval = T,
+                  control = ctrl, k, alpha, interval = TRUE,
                   method, B, nthread, progress,
                   threshold = 50, maxit, abstol)
   out$trt <- gbd$trt
