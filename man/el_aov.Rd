@@ -22,6 +22,7 @@ A list with class \code{c("el_aov", "melt")}.
 Fit an one-way analysis of variance model with empirical likelihood.
 }
 \examples{
+data("clothianidin")
 el_aov(clo ~ trt, clothianidin)
 }
 \references{

@@ -7,7 +7,7 @@
 el_mean(par, x, weights = NULL, control = list())
 }
 \arguments{
-\item{par}{A numeric vector of parameters to be tested.}
+\item{par}{A numeric vector of parameter values to be tested.}
 
 \item{x}{A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.}
 
@@ -28,13 +28,13 @@ x <- rnorm(100)
 el_mean(par, x)
 
 ## vector mean
-x <- matrix(rnorm(100), ncol = 2)
 par <- c(0, 0)
+x <- matrix(rnorm(100L), ncol = 2)
 el_mean(par, x)
 ## weighted EL
-x <- matrix(rnorm(100), ncol = 2)
 par <- c(0, 0)
-el_mean(par, x, weights = rep(c(1, 2), each = 50))
+x <- matrix(rnorm(100), ncol = 2)
+el_mean(par, x, weights = rep(c(1,2), each = 25))
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.

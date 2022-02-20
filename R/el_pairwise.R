@@ -19,6 +19,7 @@
 #' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #' @examples
 #' ## all pairwise comparisons
+#' data("clothianidin")
 #' el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 #'
 #' ## comparisons with control

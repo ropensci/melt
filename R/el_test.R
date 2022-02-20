@@ -16,6 +16,7 @@
 #'
 #' @examples
 #' ## test for equal means
+#' data("clothianidin")
 #' el_test(clo ~ trt | blk, clothianidin,
 #'         lhs = matrix(c(1, -1, 0, 0,
 #'                        0, 1, -1, 0,

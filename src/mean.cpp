@@ -6,15 +6,8 @@ Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
                    const int maxit,
                    const double abstol,
                    const Rcpp::Nullable<double> threshold) {
-  // check 'par' and 'x'
   const int n = x.rows();
   const int p = x.cols();
-  // if (par.size() != p) {
-  //   Rcpp::stop("dimensions of 'par' and 'x' do not match");
-  // }
-  // if (n < 2) {
-  //   Rcpp::stop("not enough 'x' observations");
-  // }
   const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(x);
   if (lu_decomp.rank() != p || n <= p) {
     Rcpp::stop("'x' must have full column rank");
@@ -57,15 +50,8 @@ Rcpp::List EL_mean_weight(const Eigen::Map<Eigen::VectorXd>& par,
                           const int maxit,
                           const double abstol,
                           const Rcpp::Nullable<double> threshold) {
-  // check 'par' and 'x'
   const int n = x.rows();
   const int p = x.cols();
-  // if (par.size() != p) {
-  //   Rcpp::stop("dimensions of 'par' and 'x' do not match");
-  // }
-  // if (n < 2) {
-  //   Rcpp::stop("not enough 'x' observations");
-  // }
   const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(x);
   if (lu_decomp.rank() != p || n <= p) {
     Rcpp::stop("'x' must have full column rank");

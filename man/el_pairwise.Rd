@@ -49,6 +49,7 @@ Tests all pairwise comparisons or comparisons with control for general block des
 }
 \examples{
 ## all pairwise comparisons
+data("clothianidin")
 el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 
 ## comparisons with control

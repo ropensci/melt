@@ -2,7 +2,7 @@
 #'
 #' Computes empirical likelihood for mean parameter.
 #'
-#' @param par A numeric vector of parameters to be tested.
+#' @param par A numeric vector of parameter values to be tested.
 #' @param x A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.
 #' @param weights An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likiehood is computed.
 #' @param control A list of control parameters. See ‘Details’.
@@ -17,18 +17,18 @@
 #' el_mean(par, x)
 #'
 #' ## vector mean
-#' x <- matrix(rnorm(100), ncol = 2)
 #' par <- c(0, 0)
+#' x <- matrix(rnorm(100L), ncol = 2)
 #' el_mean(par, x)
 
 #' ## weighted EL
-#' x <- matrix(rnorm(100), ncol = 2)
 #' par <- c(0, 0)
-#' el_mean(par, x, weights = rep(c(1, 2), each = 50))
+#' x <- matrix(rnorm(100), ncol = 2)
+#' el_mean(par, x, weights = rep(c(1,2), each = 25))
 #' @export
 el_mean <- function(par, x, weights = NULL, control = list())
 {
-  if (!is.numeric(par) || !is.finite(par))
+  if (!is.numeric(par) || any(!is.finite(par)))
     stop("'par' must be a finite numeric vector")
   mm <- as.matrix(x)
   if (!is.numeric(mm) || any(!is.finite(mm)))
@@ -40,12 +40,12 @@ el_mean <- function(par, x, weights = NULL, control = list())
   if (is.null(weights)) {
     w <- rep(1, NROW(mm))
   } else {
-    w <- as.vector(weights)
+    w <- as.numeric(weights)
   }
-  if (!is.numeric(w) || !is.finite(w))
+  if (any(!is.finite(w)))
     stop("'weights' must be a finite numeric vector")
   if (any(w < 0))
-    stop("negative weights are not allowed")
+    stop("negative 'weights' are not allowed")
   if (length(w) != NROW(mm))
     stop("'x' and 'weights' have incompatible dimensions")
   optcfg <- check_control(control)
