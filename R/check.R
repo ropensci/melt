@@ -1,5 +1,5 @@
 check_control <- function(control = list()) {
-  ctrl <- list(maxit = 100L, abstol = 1e-08, threshold = NULL)
+  ctrl <- list(maxit = 100L, abstol = 1e-06, threshold = NULL)
   nctrl <- names(ctrl)
   ctrl[(ncontrol <- names(control))] <- control
   if (length(nomatch <- ncontrol[!ncontrol %in% nctrl]))
