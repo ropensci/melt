@@ -37,7 +37,7 @@ devtools::install_github("markean/melt")
 
 
 ## Usage
-```{r eval = FALSE}
+```{r eval = TRUE}
 library(melt)
 # one sample test (mean)
 el_mean(par = 0, x = rnorm(n = 100))
