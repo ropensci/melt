@@ -1,7 +1,7 @@
 Package: melt
 Type: Package
 Title: Multiple Empirical Likelihood Tests
-Version: 1.2.0
+Version: 1.2.0.9000
 Description: Empirical likelihood-based multiple testing for the analysis of experimental designs. 
   Details of the testing procedures are given in Kim et al. (2021) <arxiv:2112.09206>. Additional functions for regression analysis are included.
 URL: https://github.com/markean/melt
