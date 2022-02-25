@@ -11,3 +11,5 @@ melt.Rproj
 .vscode
 data-raw
 ignore
+.Rprofile
+renv

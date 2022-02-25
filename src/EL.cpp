@@ -111,7 +111,7 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
 }
 
 /* Constructor for weighted EL2 class (evaluation)
- * Last updated: 02/21/21
+ * Last updated: 02/24/21
  *
  * abstol for gamma should be reconsidered.
  * Perhaps, use another optim parameter such as step size tolerance.
@@ -144,13 +144,6 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
   while (!convergence && iterations != maxit && nlogLR <= threshold) {
     // plog class
     PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(g.rows()) + g * lambda, w);
-    // convergence check
-    if ((g.array().colwise() * log_tmp.dplog).colwise().sum().matrix().norm() <
-      abstol) {
-      nlogLR = log_tmp.plog_sum;
-      convergence = true;
-      break;
-    }
     // J matrix
     const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
     // propose new lambda by NR method with least square
@@ -175,9 +168,55 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
      * hull constraint), terminate the maximization with the current values
      * without further updates.
      */
+    if (gamma < abstol) {
+      nlogLR = log_tmp.plog_sum;
+      break;
+    }
+    // Otherwise, update lambda and check for convergence
     lambda += gamma * step;
-    ++iterations;
+    if (nlogLR - log_tmp.plog_sum < abstol) {
+      convergence = true;
+    } else {
+      ++iterations;
+    }
   }
+  // while (!convergence && iterations != maxit && nlogLR <= threshold) {
+  //   // plog class
+  //   PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(g.rows()) + g * lambda, w);
+  //   // convergence check
+  //   if ((g.array().colwise() * log_tmp.dplog).colwise().sum().matrix().norm() <
+  //     abstol) {
+  //     nlogLR = log_tmp.plog_sum;
+  //     convergence = true;
+  //     break;
+  //   }
+  //   // J matrix
+  //   const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
+  //   // propose new lambda by NR method with least square
+  //   Eigen::VectorXd step =
+  //     (J.transpose() * J).ldlt().solve(
+  //         J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+  //   // update function value
+  //   nlogLR =
+  //     PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * (lambda + step), w);
+  //   // step halving to ensure increase in function value
+  //   double gamma = 1.0;
+  //   while (nlogLR < log_tmp.plog_sum) {
+  //     gamma /= 2;
+  //     if (gamma < abstol) {
+  //       break;
+  //     }
+  //     nlogLR =
+  //       PSEUDO_LOG::sum(
+  //         Eigen::VectorXd::Ones(g.rows()) + g * (lambda + gamma * step), w);
+  //   }
+  //   /* If the step halving is not successful (possibly due to the convex
+  //    * hull constraint), terminate the maximization with the current values
+  //    * without further updates.
+  //    */
+  //   lambda += gamma * step;
+  //   ++iterations;
+  // }
 }
 
 EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
