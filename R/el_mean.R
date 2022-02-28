@@ -52,7 +52,7 @@ el_mean <- function(par, x, weights = NULL, control = list())
   # out <- EL_mean(par, mm, optcfg$maxit, optcfg$abstol, optcfg$threshold)
   out <- EL_mean_weight(par, mm, w,
                         optcfg$maxit, optcfg$abstol, optcfg$threshold)
-  out$data <- mm
+  out$data.matrix <- mm
   out$data.name <- deparse1(substitute(x))
   return(out)
 }

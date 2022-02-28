@@ -110,6 +110,42 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   out
 }
 
+#' Empirical likelihood hypothesis testing
+#'
+#' Empirical likelihood hypothesis testing
+#'
+#' @param object An object of class \code{"el_test"}.
+#' @param rhs A numeric vector specifying the right hand side of linear hypothesis testing. If not specified, it is set to 0 vector.
+#' @param lhs A numeric matrix specifying linear hypothesis in terms of parameters. If not specified, it is set an identity matrix of an appropriate dimensions.
+#' @param control A list of control parameters. See ‘Details’.
+#' @return A list with class \code{"el_test"}.
+#'
+#' @export
+el_test2 <- function(object, rhs, lhs, control = list())
+{
+  if (!inherits(object, "el_test"))
+    stop("invalid 'object' supplied")
+  p <- object$df
+  if (missing(rhs)) {
+    rhs <- rep(0, p)
+  } else {
+    if (!is.numeric(rhs) || any(!is.finite(rhs)))
+      stop("'rhs' must be a finite numeric vector")
+    if (length(rhs) != p)
+      stop("'rhs' and 'object' have incompatible dimensions")
+  }
+  # if (missing(lhs))
+  #   lhs <- diag(nrow = p)
+
+  ctrl <- object$optim$control
+  ctrl[names(control)] <- control
+  optcfg <- check_control(ctrl)
+  out <- EL_test(object$optim$type, rhs, object$data.matrix,
+                 optcfg$maxit, optcfg$abstol, optcfg$threshold)
+  class(out) <- class(object)
+  out
+}
+
 #' @importFrom stats complete.cases qchisq
 #' @export
 confint.el_test <- function(object, parm, level = 0.95, ...) {

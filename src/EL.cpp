@@ -47,7 +47,7 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
 }
 
 /* Constructor for EL2 class (evaluation)
- * Last updated: 02/16/21
+ * Last updated: 02/28/21
  *
  * abstol for gamma should be reconsidered.
  * Perhaps, use another optim parameter such as step size tolerance.
@@ -57,9 +57,9 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
          const std::string method,
          const int maxit,
          const double abstol,
-         const double threshold) {
-  type = method;
-  par = par0;
+         const double threshold)
+  : type{method}, par{par0}
+{
   std::map<std::string,
            std::function<Eigen::MatrixXd(
              const Eigen::Ref<const Eigen::VectorXd>&,
@@ -67,7 +67,7 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
                {{"mean", g_mean},
                {"lm", g_lm}}
              };
-  Eigen::MatrixXd g = funcMap[type](par0, x);
+  Eigen::MatrixXd g = funcMap[type](par, x);
   // maximization
   lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
   while (!convergence && iterations != maxit && nlogLR <= threshold) {
@@ -105,13 +105,14 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
     lambda += gamma * step;
     if (nlogLR - log_tmp.plog_sum < abstol) {
       convergence = true;
+    } else {
+      ++iterations;
     }
-    ++iterations;
   }
 }
 
 /* Constructor for weighted EL2 class (evaluation)
- * Last updated: 02/24/21
+ * Last updated: 02/28/21
  *
  * abstol for gamma should be reconsidered.
  * Perhaps, use another optim parameter such as step size tolerance.
@@ -128,9 +129,9 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
          const std::string method,
          const int maxit,
          const double abstol,
-         const double threshold) {
-  type = method;
-  par = par0;
+         const double threshold)
+  : type{method}, par{par0}
+{
   std::map<std::string,
            std::function<Eigen::MatrixXd(
              const Eigen::Ref<const Eigen::VectorXd>&,
@@ -138,7 +139,7 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
                {{"mean", g_mean},
                {"lm", g_lm}}
              };
-  Eigen::MatrixXd g = funcMap[type](par0, x);
+  Eigen::MatrixXd g = funcMap[type](par, x);
   // maximization
   lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
   while (!convergence && iterations != maxit && nlogLR <= threshold) {
@@ -180,53 +181,21 @@ EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
       ++iterations;
     }
   }
-  // while (!convergence && iterations != maxit && nlogLR <= threshold) {
-  //   // plog class
-  //   PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(g.rows()) + g * lambda, w);
-  //   // convergence check
-  //   if ((g.array().colwise() * log_tmp.dplog).colwise().sum().matrix().norm() <
-  //     abstol) {
-  //     nlogLR = log_tmp.plog_sum;
-  //     convergence = true;
-  //     break;
-  //   }
-  //   // J matrix
-  //   const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
-  //   // propose new lambda by NR method with least square
-  //   Eigen::VectorXd step =
-  //     (J.transpose() * J).ldlt().solve(
-  //         J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
-  //   // update function value
-  //   nlogLR =
-  //     PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * (lambda + step), w);
-  //   // step halving to ensure increase in function value
-  //   double gamma = 1.0;
-  //   while (nlogLR < log_tmp.plog_sum) {
-  //     gamma /= 2;
-  //     if (gamma < abstol) {
-  //       break;
-  //     }
-  //     nlogLR =
-  //       PSEUDO_LOG::sum(
-  //         Eigen::VectorXd::Ones(g.rows()) + g * (lambda + gamma * step), w);
-  //   }
-  //   /* If the step halving is not successful (possibly due to the convex
-  //    * hull constraint), terminate the maximization with the current values
-  //    * without further updates.
-  //    */
-  //   lambda += gamma * step;
-  //   ++iterations;
-  // }
 }
 
+/* Constructor for EL2 class (minimization)
+ * Last updated: 02/28/21
+ */
 EL2::EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
          const Eigen::Ref<const Eigen::MatrixXd>& x,
-         const std::string type,
+         const std::string method,
          const Eigen::Ref<const Eigen::MatrixXd>& lhs,
          const Eigen::Ref<const Eigen::VectorXd>& rhs,
          const int maxit,
          const double abstol,
-         const double threshold) {
+         const double threshold)
+  : type{method}, par{par0}
+{
   std::map<std::string,
            std::function<Eigen::MatrixXd(
              const Eigen::Ref<const Eigen::VectorXd>&,

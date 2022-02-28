@@ -28,10 +28,10 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
   const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
   const EL2 el =
     (intercept && p > 1)?
-    EL2(bhat, data, "lm", lhs, rhs, th_nlogLR(p - 1, threshold),
-        maxit, abstol) :
-    EL2(Eigen::MatrixXd::Zero(1, p), data, "lm", th_nlogLR(p, threshold),
-        maxit, abstol);
+    EL2(bhat, data, "lm", lhs, rhs, maxit, abstol,
+        th_nlogLR(p - 1, threshold)) :
+    EL2(Eigen::MatrixXd::Zero(1, p), data, "lm", maxit, abstol,
+        th_nlogLR(p, threshold));
 
   // test each coefficient
   std::vector<double> chisq_statistic(p);
@@ -43,7 +43,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
     EL2 coef_test = EL2(bhat, data, "lm", lhs, Eigen::VectorXd::Zero(1),
-                        th_nlogLR(1, threshold), maxit, abstol);
+                        maxit, abstol, th_nlogLR(1, threshold));
     chisq_statistic[i] = 2.0 * coef_test.nlogLR;
     convergence[i] = coef_test.convergence;
     pval[i] = Rcpp::as<double>(pchisq(chisq_statistic[i],
@@ -68,7 +68,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
         Rcpp::Named("threshold") = th_nlogLR(p, threshold))),
       Rcpp::Named("coefficients") = bhat,
       Rcpp::Named("residuals") = residuals,
-      Rcpp::Named("rank") = p,
+      Rcpp::Named("df") = p,
       Rcpp::Named("fitted.values") = fitted_values);
   result.attr("class") = Rcpp::CharacterVector({"el_lm", "el_test"});
   return result;

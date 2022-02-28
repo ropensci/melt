@@ -37,12 +37,13 @@ el_lm <- function(formula, data, na.action, control = list()) {
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)
-  out$df.residual = nrow(x) - out$rank
+  out$df.residual = nrow(x) - out$df
   out$na.action <- attr(mf, "na.action")
   out$xlevels <- .getXlevels(mt, mf)
   out$call <- cl
   out$terms <- mt
   out$model <- mf
+  out$data.matrix <- cbind(y, x)
   out
 }
 
@@ -192,7 +193,7 @@ logLik.el_lm <- function(object, ...) {
   # out <- EL_lm2(x, mele, threshold = 500, maxit = 1e4, abstol = 1e-8, ...)
 
   res <- object$residuals
-  p <- object$rank
+  p <- object$df
   N <- length(res)
 
   # no support for weights
@@ -239,7 +240,7 @@ summary.el_lm <- function(object, ...) {
   z <- object
   if (!inherits(object, "el_lm")) stop("invalid 'el_lm' object")
   if (is.null(z$terms)) stop("invalid 'el_lm' object:  no 'terms' component")
-  p <- z$rank
+  p <- z$df
   rdf <- z$df.residual
   n <- p + rdf
   if (is.na(z$df.residual) || n - p != z$df.residual)

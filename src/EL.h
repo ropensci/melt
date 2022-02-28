@@ -27,10 +27,12 @@ public:
      const double threshold);
 };
 
-class EL2 {
-public:
-  std::string type;
+class EL2
+{
+private:
+  const std::string type;
   Eigen::VectorXd par;
+public:
   Eigen::VectorXd lambda;
   double nlogLR = 0;
   int iterations = 1;
@@ -56,7 +58,7 @@ public:
   // minimization
   EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
-      const std::string type,
+      const std::string method,
       const Eigen::Ref<const Eigen::MatrixXd>& lhs,
       const Eigen::Ref<const Eigen::VectorXd>& rhs,
       const int maxit,
