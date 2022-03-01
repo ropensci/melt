@@ -4,16 +4,16 @@
 \alias{el_test2}
 \title{Empirical likelihood hypothesis testing}
 \usage{
-el_test2(object, rhs, lhs, control = list())
+el_test2(object, rhs, control = list())
 }
 \arguments{
 \item{object}{An object of class \code{"el_test"}.}
 
 \item{rhs}{A numeric vector specifying the right hand side of linear hypothesis testing. If not specified, it is set to 0 vector.}
 
-\item{lhs}{A numeric matrix specifying linear hypothesis in terms of parameters. If not specified, it is set an identity matrix of an appropriate dimensions.}
-
 \item{control}{A list of control parameters. See ‘Details’.}
+
+\item{lhs}{A numeric matrix specifying linear hypothesis in terms of parameters. If not specified, it is set an identity matrix of an appropriate dimensions.}
 }
 \value{
 A list with class \code{"el_test"}.

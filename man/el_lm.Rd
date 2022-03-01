@@ -4,7 +4,7 @@
 \alias{el_lm}
 \title{Fit a Linear Model with Empirical Likelihood}
 \usage{
-el_lm(formula, data, na.action, control = list())
+el_lm(formula, data, na.action, control = list(), keep.data = TRUE)
 }
 \arguments{
 \item{formula}{A formula object.}
@@ -14,6 +14,8 @@ el_lm(formula, data, na.action, control = list())
 \item{na.action}{A function which indicates what should happen when the data contain NAs.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
+
+\item{keep.data}{Logical. If \code{TRUE} the data matrix used in fitting is returned.}
 }
 \value{
 A list with class \code{c("el_lm", "el_test")}.

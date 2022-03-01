@@ -6,6 +6,7 @@
 #' @param data A data frame containing the variables in the formula.
 #' @param na.action A function which indicates what should happen when the data contain NAs.
 #' @param control A list of control parameters. See ‘Details’.
+#' @param keep.data Logical. If \code{TRUE} the data matrix used in fitting is returned.
 #' @return A list with class \code{c("el_lm", "el_test")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_aov}
@@ -14,7 +15,8 @@
 #' summary(fit)
 #' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames terms
 #' @export
-el_lm <- function(formula, data, na.action, control = list()) {
+el_lm <- function(formula, data, na.action, control = list(), keep.data = TRUE)
+{
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "na.action"), names(mf), 0L)
@@ -23,27 +25,35 @@ el_lm <- function(formula, data, na.action, control = list()) {
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
   mt <- attr(mf, "terms")
-  if (is.empty.model(mt)) stop("empty model specified")
+  if (is.empty.model(mt))
+    stop("empty model specified")
   intercept <- attr(mt, "intercept")
   y <- model.response(mf, "numeric")
-  if (is.matrix(y)) stop("'el_lm' does not support multiple responses")
+  if (is.matrix(y))
+    stop("'el_lm' does not support multiple responses")
   nm <- names(y)
-  ny <- length(y)
   x <- model.matrix(mt, mf)
 
+  action <- if (missing(na.action) & is.null(attr(mf, "na.action"))) list(NULL)
+  else attr(mf, "na.action")
+  if (is.null(action))
+    action <- list(NULL)
+
   optcfg <- check_control(control)
-  out <- EL_lm(cbind(y, x), intercept, optcfg$maxit, optcfg$abstol,
+  mm <- cbind(y, x)
+  out <- EL_lm(mm, intercept, optcfg$maxit, optcfg$abstol,
                optcfg$threshold)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)
   out$df.residual = nrow(x) - out$df
-  out$na.action <- attr(mf, "na.action")
+  out$na.action <- action
   out$xlevels <- .getXlevels(mt, mf)
   out$call <- cl
   out$terms <- mt
-  out$model <- mf
-  out$data.matrix <- cbind(y, x)
+  # out$model <- mf
+  if (keep.data)
+    out$data.matrix <- mm
   out
 }
 

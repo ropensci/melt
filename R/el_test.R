@@ -121,10 +121,12 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 #' @return A list with class \code{"el_test"}.
 #'
 #' @export
-el_test2 <- function(object, rhs, lhs, control = list())
+el_test2 <- function(object, rhs, control = list())
 {
   if (!inherits(object, "el_test"))
     stop("invalid 'object' supplied")
+  if (is.null(object$data.matrix))
+    stop("'object' has no 'data.matrix'; fit the model with 'keep.data' = TRUE")
   p <- object$df
   if (missing(rhs)) {
     rhs <- rep(0, p)
