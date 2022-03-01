@@ -116,7 +116,6 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 #'
 #' @param object An object of class \code{"el_test"}.
 #' @param rhs A numeric vector specifying the right hand side of linear hypothesis testing. If not specified, it is set to 0 vector.
-#' @param lhs A numeric matrix specifying linear hypothesis in terms of parameters. If not specified, it is set an identity matrix of an appropriate dimensions.
 #' @param control A list of control parameters. See ‘Details’.
 #' @return A list with class \code{"el_test"}.
 #'
