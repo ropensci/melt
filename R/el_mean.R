@@ -37,22 +37,25 @@ el_mean <- function(par, x, weights = NULL, control = list())
     stop("not enough 'x' observations")
   if (length(par) != NCOL(mm))
     stop("'par' and 'x' have incompatible dimensions")
-  if (is.null(weights)) {
-    w <- rep(1, NROW(mm))
-  } else {
-    w <- as.numeric(weights)
-  }
-  if (any(!is.finite(w)))
-    stop("'weights' must be a finite numeric vector")
-  if (any(w < 0))
-    stop("negative 'weights' are not allowed")
-  if (length(w) != NROW(mm))
-    stop("'x' and 'weights' have incompatible dimensions")
+
+  # check control
   optcfg <- check_control(control)
-  # out <- EL_mean(par, mm, optcfg$maxit, optcfg$abstol, optcfg$threshold)
-  out <- EL_mean_weight(par, mm, w,
-                        optcfg$maxit, optcfg$abstol, optcfg$threshold)
+  if (is.null(weights)) {
+    out <- EL_mean(par, mm, optcfg$maxit, optcfg$abstol, optcfg$threshold)
+  } else {
+    if (!is.numeric(weights))
+      stop("'weights' must be a numeric vector")
+    w <- as.numeric(weights)
+    if (any(!is.finite(w)))
+      stop("'weights' must be a finite numeric vector")
+    if (any(w < 0))
+      stop("negative 'weights' are not allowed")
+    if (length(w) != NROW(mm))
+      stop("'g' and 'weights' have incompatible dimensions")
+    w <- (NROW(mm) / sum(w)) * w
+    out <- WEL_mean(par, mm, w, optcfg$maxit, optcfg$abstol, optcfg$threshold)
+  }
   out$data.matrix <- mm
   out$data.name <- deparse1(substitute(x))
-  return(out)
+  out
 }
