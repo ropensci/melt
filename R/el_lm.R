@@ -4,6 +4,7 @@
 #'
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
+#' @param weights An optional vector of weights to be used in the fitting process.
 #' @param na.action A function which indicates what should happen when the data contain NAs.
 #' @param control A list of control parameters. See ‘Details’.
 #' @param keep.data Logical. If \code{TRUE} the data matrix used in fitting is returned.
@@ -15,7 +16,7 @@
 #' summary(fit)
 #' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames terms
 #' @export
-el_lm <- function(formula, data, na.action, control = list(), keep.data = TRUE)
+el_lm <- function(formula, data, weights = NULL, na.action, control = list(), keep.data = TRUE)
 {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
@@ -33,14 +34,28 @@ el_lm <- function(formula, data, na.action, control = list(), keep.data = TRUE)
     stop("'el_lm' does not support multiple responses")
   nm <- names(y)
   x <- model.matrix(mt, mf)
+  mm <- cbind(y, x)
 
-  action <- if (missing(na.action) & is.null(attr(mf, "na.action"))) list(NULL)
+  if (is.null(weights)) {
+    w <- NULL
+  } else {
+    if (!is.numeric(weights))
+      stop("'weights' must be a numeric vector")
+    w <- as.numeric(weights)
+    if (any(!is.finite(w)))
+      stop("'weights' must be a finite numeric vector")
+    if (any(w < 0))
+      stop("negative 'weights' are not allowed")
+    if (length(w) != NROW(mm))
+      stop("'data' and 'weights' have incompatible dimensions")
+  }
+
+  action <- if (missing(na.action) && is.null(attr(mf, "na.action"))) list(NULL)
   else attr(mf, "na.action")
   if (is.null(action))
     action <- list(NULL)
 
   optcfg <- check_control(control)
-  mm <- cbind(y, x)
   out <- EL_lm(mm, intercept, optcfg$maxit, optcfg$abstol,
                optcfg$threshold)
   out$coefficients <- setNames(out$coefficients, colnames(x))
@@ -51,7 +66,7 @@ el_lm <- function(formula, data, na.action, control = list(), keep.data = TRUE)
   out$xlevels <- .getXlevels(mt, mf)
   out$call <- cl
   out$terms <- mt
-  # out$model <- mf
+  out$tmp <- w
   if (keep.data)
     out$data.matrix <- mm
   out

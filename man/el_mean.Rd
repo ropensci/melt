@@ -11,7 +11,7 @@ el_mean(par, x, weights = NULL, control = list())
 
 \item{x}{A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.}
 
-\item{weights}{An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likiehood is computed.}
+\item{weights}{An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
 }

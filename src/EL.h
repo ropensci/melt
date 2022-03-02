@@ -15,13 +15,21 @@ struct minEL {
 };
 
 class EL {
+private:
+  const int n;
 public:
   Eigen::VectorXd lambda;
-  double nlogLR;
-  int iterations;
-  bool convergence;
+  double nlogLR = 0;
+  int iterations = 1;
+  bool convergence = false;
 
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
+     const int maxit,
+     const double abstol,
+     const double threshold);
+
+  EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
+     const Eigen::Ref<const Eigen::ArrayXd>& w,
      const int maxit,
      const double abstol,
      const double threshold);

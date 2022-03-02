@@ -4,7 +4,7 @@
 #'
 #' @param par A numeric vector of parameter values to be tested.
 #' @param x A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.
-#' @param weights An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likiehood is computed.
+#' @param weights An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’.
 #' @return A list with class \code{"el_test"}.
 #'

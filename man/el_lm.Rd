@@ -4,12 +4,21 @@
 \alias{el_lm}
 \title{Fit a Linear Model with Empirical Likelihood}
 \usage{
-el_lm(formula, data, na.action, control = list(), keep.data = TRUE)
+el_lm(
+  formula,
+  data,
+  weights = NULL,
+  na.action,
+  control = list(),
+  keep.data = TRUE
+)
 }
 \arguments{
 \item{formula}{A formula object.}
 
 \item{data}{A data frame containing the variables in the formula.}
+
+\item{weights}{An optional vector of weights to be used in the fitting process.}
 
 \item{na.action}{A function which indicates what should happen when the data contain NAs.}
 

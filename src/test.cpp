@@ -8,8 +8,7 @@ Rcpp::List EL_test(const std::string method,
                    const double abstol,
                    const Rcpp::Nullable<double> threshold) {
   const int p = par.size();
-  const EL2 el = EL2(par, x, method, maxit, abstol,
-                     th_nlogLR(p, threshold));
+  const EL2 el(par, x, method, maxit, abstol, th_nlogLR(p, threshold));
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
@@ -34,5 +33,4 @@ Rcpp::List EL_test(const std::string method,
         Rcpp::Named("alternative") = "two.sided",
         Rcpp::Named("method") = "One sample EL test");
   return result;
-
 }
