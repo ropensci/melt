@@ -66,7 +66,7 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(), ke
   out$xlevels <- .getXlevels(mt, mf)
   out$call <- cl
   out$terms <- mt
-  out$tmp <- w
+  # out$tmp <- w
   if (keep.data)
     out$data.matrix <- mm
   out

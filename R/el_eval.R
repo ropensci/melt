@@ -1,3 +1,11 @@
+#' Empirical likelihood with general estimating functions
+#'
+#' Computes empirical likelihood with general estimating functions.
+#'
+#' @param g A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.
+#' @param weights An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likelihood is computed.
+#' @param control A list of control parameters. See ‘Details’.
+#' @return A list with class \code{"el_test"}.
 #' @export
 el_eval <- function(g, weights = NULL, control = list()) {
   # check g

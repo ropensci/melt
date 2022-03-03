@@ -33,6 +33,10 @@ public:
      const int maxit,
      const double abstol,
      const double threshold);
+
+  // // log probability
+  // Eigen::ArrayXd log_prob(const Eigen::Ref<const Eigen::MatrixXd>& g,
+  //                         const Eigen::Ref<const Eigen::ArrayXd>& w) const;
 };
 
 class EL2

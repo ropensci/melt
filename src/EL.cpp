@@ -103,6 +103,17 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
   }
 }
 
+// /* log probability for weighted EL class
+//  * Last updated: 03/02/21
+//  *
+//  */
+// Eigen::ArrayXd EL::log_prob(const Eigen::Ref<const Eigen::MatrixXd>& g,
+//                             const Eigen::Ref<const Eigen::ArrayXd>& w) const
+// {
+//   return  w.log() -
+//     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * lambda);
+// }
+
 /* Constructor for EL2 class (evaluation)
  * Last updated: 02/28/21
  *
