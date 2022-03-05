@@ -14,7 +14,8 @@ struct minEL {
   bool convergence;
 };
 
-class EL {
+class EL
+{
 private:
   const int n;
 public:
@@ -86,7 +87,8 @@ public:
                            const Eigen::Ref<const Eigen::ArrayXd>& w);
 };
 
-class PSEUDO_LOG {
+class PSEUDO_LOG
+{
 public:
   Eigen::ArrayXd dplog;
   Eigen::ArrayXd sqrt_neg_d2plog;

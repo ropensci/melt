@@ -1,4 +1,4 @@
-#' Fit a Linear Model with Empirical Likelihood
+#' Fit a linear model with empirical likelihood
 #'
 #' Fit a linear model with empirical likelihood.
 #'
@@ -7,10 +7,10 @@
 #' @param weights An optional vector of weights to be used in the fitting process.
 #' @param na.action A function which indicates what should happen when the data contain NAs.
 #' @param control A list of control parameters. See ‘Details’.
-#' @param keep.data Logical. If \code{TRUE} the data matrix used in fitting is returned.
+#' @param keep.data A logical. If \code{TRUE} the data matrix used in fitting is returned.
 #' @return A list with class \code{c("el_lm", "el_test")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
-#' @seealso \link{el_aov}
+#' @seealso \link{el_aov}, \link{el_eval}
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' summary(fit)

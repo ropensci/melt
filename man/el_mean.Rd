@@ -11,12 +11,16 @@ el_mean(par, x, weights = NULL, control = list())
 
 \item{x}{A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.}
 
-\item{weights}{An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
+\item{weights}{An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non \code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
 }
 \value{
 A list with class \code{"el_test"}.
+\describe{
+  \item{maxit}{First item}
+  \item{abstol}{Second item}
+}
 }
 \description{
 Computes empirical likelihood for mean parameter.
@@ -37,7 +41,10 @@ x <- matrix(rnorm(100), ncol = 2)
 el_mean(par, x, weights = rep(c(1,2), each = 25))
 }
 \references{
-Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
-
 Glenn, N.L., and Yichuan Zhao. 2007. “Weighted Empirical Likelihood Estimates and Their Robustness Properties.” Computational Statistics & Data Analysis 51 (10): 5130–41. \doi{10.1016/j.csda.2006.07.032}.
+
+Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
+}
+\seealso{
+\link{el_eval}
 }

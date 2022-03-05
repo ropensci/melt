@@ -387,8 +387,10 @@ Eigen::ArrayXd EL2::log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
 
 
 
-
-
+/* Constructor for PSEUDO_LOG class
+ * Last updated: 03/04/21
+ *
+ */
 PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
   static const double n = static_cast<double>(x.size());
   static const double a0 = 1.0 / n;
@@ -398,7 +400,6 @@ PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
 
   dplog.resize(x.size());
   sqrt_neg_d2plog.resize(x.size());
-  // plog_sum = 0;
 
   for (unsigned int i = 0; i < x.size(); ++i) {
     if (x[i] < a0) {

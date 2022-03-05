@@ -2,7 +2,7 @@
 % Please edit documentation in R/el_lm.R
 \name{el_lm}
 \alias{el_lm}
-\title{Fit a Linear Model with Empirical Likelihood}
+\title{Fit a linear model with empirical likelihood}
 \usage{
 el_lm(
   formula,
@@ -24,7 +24,7 @@ el_lm(
 
 \item{control}{A list of control parameters. See ‘Details’.}
 
-\item{keep.data}{Logical. If \code{TRUE} the data matrix used in fitting is returned.}
+\item{keep.data}{A logical. If \code{TRUE} the data matrix used in fitting is returned.}
 }
 \value{
 A list with class \code{c("el_lm", "el_test")}.
@@ -40,5 +40,5 @@ summary(fit)
 Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\link{el_aov}
+\link{el_aov}, \link{el_eval}
 }

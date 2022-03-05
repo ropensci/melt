@@ -4,12 +4,15 @@
 #'
 #' @param par A numeric vector of parameter values to be tested.
 #' @param x A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.
-#' @param weights An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non-\code{NULL}, weighted empirical likelihood is computed.
-#' @param control A list of control parameters. See ‘Details’.
+#' @inheritParams el_eval
 #' @return A list with class \code{"el_test"}.
-#'
-#' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
+#' \describe{
+#'   \item{maxit}{First item}
+#'   \item{abstol}{Second item}
+#' }
 #' @references Glenn, N.L., and Yichuan Zhao. 2007. “Weighted Empirical Likelihood Estimates and Their Robustness Properties.” Computational Statistics & Data Analysis 51 (10): 5130–41. \doi{10.1016/j.csda.2006.07.032}.
+#' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
+#' @seealso \link{el_eval}
 #' @examples
 #' ## scalar mean
 #' par <- 0
