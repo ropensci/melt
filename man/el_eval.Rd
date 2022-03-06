@@ -7,22 +7,28 @@
 el_eval(g, weights = NULL, control = list())
 }
 \arguments{
-\item{g}{A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation of an estimating function.}
+\item{g}{A numeric matrix, or an object that can be coerced to a numeric
+matrix. Each row corresponds to an observation of an estimating
+function.}
 
-\item{weights}{An optional numeric vector of weights. Defaults to \code{NULL}, corresponding to identical weights. If non \code{NULL}, weighted empirical likelihood is computed.}
+\item{weights}{An optional numeric vector of weights.
+Defaults to \code{NULL}, corresponding to identical weights.
+If non \code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
 }
 \value{
-A list with class \code{"el_test"} that contains the following components:
+A list with the following components:
 \describe{
   \item{optim}{A list with the following optimization results:
     \describe{
       \item{lambda}{The Lagrange multiplier of dual problem.}
-      \item{weights}{If non \code{NULL} \code{weights} is supplied, the rescaled weights are returned.}
-      \item{logLR}{The (weighted) log likelihood ratio value.}
+      \item{weights}{If non \code{NULL} \code{weights} is supplied, the
+      rescaled weights are returned.}
+      \item{logLR}{The (weighted) log empirical likelihood ratio value.}
       \item{iterations}{The number of iterations performed.}
-      \item{convergence}{A logical vector. \code{TRUE} indicates the convergence of the algorithm.}
+      \item{convergence}{A logical vector. \code{TRUE} indicates the
+      convergence of the algorithm.}
     }
   }
   \item{statistic}{The chi-square statistic.}
@@ -34,15 +40,33 @@ A list with class \code{"el_test"} that contains the following components:
 Computes empirical likelihood with general estimating functions.
 }
 \details{
-For a \eqn{p}-dimensional parameter \eqn{\theta_0} and an estimating function \eqn{g}, consider the following moment condition: \deqn{E{g(X_i, \theta_0)} = 0, i = 1, \dots, n.} Given a value of \eqn{\theta}, \code{el_eval} computes the empirical likelihood with a \eqn{n} by \eqn{p} numeric matrix argument \code{g}, whose rows consist of all \eqn{g(X_i, \theta)}. If \code{weights} is non \code{NULL}, the weights are rescaled to add up to \eqn{n}. The \code{control} argument is a list that can supply any of the following components:
+For a \eqn{p}-dimensional parameter \eqn{\theta_0} and an estimating
+  function \eqn{g}, consider the following moment condition:
+  \deqn{E{g(X_i, \theta_0)} = 0, i = 1, \dots, n.}
+  Given a value of \eqn{\theta}, \code{el_eval} computes the empirical
+  likelihood with a \eqn{n} by \eqn{p} numeric matrix argument \code{g},
+  whose rows consist of all \eqn{g(X_i, \theta)}. If \code{weights} is non
+  \code{NULL}, the weights are rescaled to add up to \eqn{n}. The
+  \code{control} argument is a list that can supply any of the following
+  components:
 \describe{
-  \item{maxit}{The maximum number of iterations for optimization. Defaults to \code{100}.}
-  \item{abstol}{The absolute convergence tolerance for log likelihood ratio value. Defaults to \code{1e-06}.}
-  \item{threshold}{The threshold for log likelihood ratio value. The computation stops if the value exceeds the threshold. Defaults to \code{NULL} and sets the threshold to \eqn{20p}.}
+  \item{maxit}{The maximum number of iterations for optimization. Defaults to
+  \code{100}.}
+  \item{abstol}{The absolute convergence tolerance for log likelihood ratio
+  value. Defaults to \code{1e-06}.}
+  \item{threshold}{The threshold for log likelihood ratio value. The
+  computation stops if the value exceeds the threshold. Defaults to
+  \code{NULL} and sets the threshold to \eqn{20p}.}
 }
 }
 \references{
-Glenn, N.L., and Yichuan Zhao. 2007. “Weighted Empirical Likelihood Estimates and Their Robustness Properties.” Computational Statistics & Data Analysis 51 (10): 5130–41. \doi{10.1016/j.csda.2006.07.032}.
+Glenn, N.L., and Yichuan Zhao. 2007.
+  “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
+  Computational Statistics & Data Analysis 51 (10): 5130–41.
+  \doi{10.1016/j.csda.2006.07.032}.
 
-Qin, Jin, and Jerry Lawless. 1994. “Empirical Likelihood and General Estimating Equations.” The Annals of Statistics 22 (1). \doi{10.1214/aos/1176325370}.
+Qin, Jin, and Jerry Lawless. 1994.
+  “Empirical Likelihood and General Estimating Equations.”
+  The Annals of Statistics 22 (1).
+  \doi{10.1214/aos/1176325370}.
 }

@@ -61,11 +61,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
       Rcpp::Named("par.tests") = Rcpp::List::create(
         Rcpp::Named("statistic") = chisq_statistic,
         Rcpp::Named("p.value") = pval,
-        Rcpp::Named("convergence") = convergence),
-      Rcpp::Named("control") = Rcpp::List::create(
-        Rcpp::Named("maxit") = maxit,
-        Rcpp::Named("abstol") = abstol,
-        Rcpp::Named("threshold") = th_nlogLR(p, threshold))),
+        Rcpp::Named("convergence") = convergence)),
       Rcpp::Named("coefficients") = bhat,
       Rcpp::Named("residuals") = residuals,
       Rcpp::Named("df") = p,

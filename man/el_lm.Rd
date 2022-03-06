@@ -12,19 +12,26 @@ el_lm(
   control = list(),
   keep.data = TRUE
 )
+
+\method{summary}{el_lm}(object, ...)
 }
 \arguments{
 \item{formula}{A formula object.}
 
 \item{data}{A data frame containing the variables in the formula.}
 
-\item{weights}{An optional vector of weights to be used in the fitting process.}
+\item{weights}{An optional numeric vector of weights.
+Defaults to \code{NULL}, corresponding to identical weights.
+If non \code{NULL}, weighted empirical likelihood is computed.}
 
-\item{na.action}{A function which indicates what should happen when the data contain NAs.}
+\item{na.action}{A function which indicates what should happen when the data
+contain \code{NA}s.}
 
-\item{control}{A list of control parameters. See ‘Details’.}
+\item{control}{A list of control parameters. See ‘Details’ in
+\code{\link{el_eval}}.}
 
-\item{keep.data}{A logical. If \code{TRUE} the data matrix used in fitting is returned.}
+\item{keep.data}{A logical. If \code{TRUE} the data matrix used in fitting is
+returned.}
 }
 \value{
 A list with class \code{c("el_lm", "el_test")}.
@@ -37,7 +44,9 @@ fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 summary(fit)
 }
 \references{
-Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
+Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
+  The Annals of Statistics 19 (4).
+  \doi{10.1214/aos/1176348368}.
 }
 \seealso{
 \link{el_aov}, \link{el_eval}

@@ -3,15 +3,20 @@
 #' Computes empirical likelihood for mean parameter.
 #'
 #' @param par A numeric vector of parameter values to be tested.
-#' @param x A numeric matrix, or an object that can be coerced to a numeric matrix. Each row corresponds to an observation.
+#' @param x A numeric matrix, or an object that can be coerced to a numeric
+#'   matrix. Each row corresponds to an observation.
+#' @param control A list of control parameters. See ‘Details’ in
+#'   \code{\link{el_eval}}.
 #' @inheritParams el_eval
-#' @return A list with class \code{"el_test"}.
-#' \describe{
-#'   \item{maxit}{First item}
-#'   \item{abstol}{Second item}
-#' }
-#' @references Glenn, N.L., and Yichuan Zhao. 2007. “Weighted Empirical Likelihood Estimates and Their Robustness Properties.” Computational Statistics & Data Analysis 51 (10): 5130–41. \doi{10.1016/j.csda.2006.07.032}.
-#' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.” The Annals of Statistics 18 (1). \doi{10.1214/aos/1176347494}.
+#' @return A list with class \code{"el_test"} as described in
+#'   \code{\link{el_eval}}.
+#' @references Glenn, N.L., and Yichuan Zhao. 2007.
+#'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
+#'   Computational Statistics & Data Analysis 51 (10): 5130–41.
+#'   \doi{10.1016/j.csda.2006.07.032}.
+#' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
+#'   The Annals of Statistics 18 (1).
+#'   \doi{10.1214/aos/1176347494}.
 #' @seealso \link{el_eval}
 #' @examples
 #' ## scalar mean
@@ -23,7 +28,7 @@
 #' par <- c(0, 0)
 #' x <- matrix(rnorm(100L), ncol = 2)
 #' el_mean(par, x)
-
+#'
 #' ## weighted EL
 #' par <- c(0, 0)
 #' x <- matrix(rnorm(100), ncol = 2)
@@ -59,6 +64,5 @@ el_mean <- function(par, x, weights = NULL, control = list())
     out <- WEL_mean(par, mm, w, optcfg$maxit, optcfg$abstol, optcfg$threshold)
   }
   out$data.matrix <- mm
-  out$data.name <- deparse1(substitute(x))
   out
 }

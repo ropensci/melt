@@ -2,14 +2,31 @@
 #'
 #' Fit a linear model with empirical likelihood.
 #'
+#' @usage
+#' el_lm(
+#'   formula,
+#'   data,
+#'   weights = NULL,
+#'   na.action,
+#'   control = list(),
+#'   keep.data = TRUE
+#' )
+#'
+#' \method{summary}{el_lm}(object, ...)
+#'
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
-#' @param weights An optional vector of weights to be used in the fitting process.
-#' @param na.action A function which indicates what should happen when the data contain NAs.
-#' @param control A list of control parameters. See ‘Details’.
-#' @param keep.data A logical. If \code{TRUE} the data matrix used in fitting is returned.
+#' @param na.action A function which indicates what should happen when the data
+#'   contain \code{NA}s.
+#' @param control A list of control parameters. See ‘Details’ in
+#'   \code{\link{el_eval}}.
+#' @param keep.data A logical. If \code{TRUE} the data matrix used in fitting is
+#'   returned.
+#' @inheritParams el_eval
 #' @return A list with class \code{c("el_lm", "el_test")}.
-#' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.” The Annals of Statistics 19 (4). \doi{10.1214/aos/1176348368}.
+#' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
+#'   The Annals of Statistics 19 (4).
+#'   \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_aov}, \link{el_eval}
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
@@ -181,10 +198,6 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(), ke
 # }
 
 
-#' formula
-#'
-#' @param x object of class "el_lm".
-#' @param ... further arguments to be passed to or from methods.
 #' @importFrom stats formula
 #' @export
 formula.el_lm <- function(x, ...) {
@@ -203,10 +216,6 @@ nobs.el_lm <- function(object, ...) {
   if (!is.null(w <- object$weights)) sum(w != 0) else NROW(object$residuals)
 }
 
-#' logLik
-#'
-#' @param object object of class "el_lm".
-#' @param ... further arguments to be passed to or from methods.
 #' @importFrom stats formula
 #' @export
 logLik.el_lm <- function(object, ...) {

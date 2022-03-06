@@ -25,17 +25,12 @@ Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
       Rcpp::Named("lambda") = el.lambda,
       Rcpp::Named("logLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
-      Rcpp::Named("convergence") = el.convergence,
-      Rcpp::Named("control") = Rcpp::List::create(
-        Rcpp::Named("maxit") = maxit,
-        Rcpp::Named("abstol") = abstol,
-        Rcpp::Named("threshold") = th_nlogLR(p, threshold))),
+      Rcpp::Named("convergence") = el.convergence),
         Rcpp::Named("statistic") = chisq_statistic,
         Rcpp::Named("df") = p,
         Rcpp::Named("p.value") = pval,
         Rcpp::Named("alternative") = "two.sided",
         Rcpp::Named("method") = "One sample EL test");
-  result.attr("class") = Rcpp::CharacterVector({"el_test"});
   return result;
 }
 
@@ -69,16 +64,11 @@ Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
       Rcpp::Named("logLR") = -el.nlogLR,
       Rcpp::Named("logWLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
-      Rcpp::Named("convergence") = el.convergence,
-      Rcpp::Named("control") = Rcpp::List::create(
-        Rcpp::Named("maxit") = maxit,
-        Rcpp::Named("abstol") = abstol,
-        Rcpp::Named("threshold") = th_nlogLR(p, threshold))),
+      Rcpp::Named("convergence") = el.convergence),
         Rcpp::Named("statistic") = chisq_statistic,
         Rcpp::Named("df") = p,
         Rcpp::Named("p.value") = pval,
         Rcpp::Named("alternative") = "two.sided",
         Rcpp::Named("method") = "One sample EL test");
-  result.attr("class") = Rcpp::CharacterVector({"el_test"});
   return result;
 }
