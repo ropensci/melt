@@ -12,8 +12,6 @@ el_lm(
   control = list(),
   keep.data = TRUE
 )
-
-\method{summary}{el_lm}(object, ...)
 }
 \arguments{
 \item{formula}{A formula object.}

@@ -2,18 +2,6 @@
 #'
 #' Fit a linear model with empirical likelihood.
 #'
-#' @usage
-#' el_lm(
-#'   formula,
-#'   data,
-#'   weights = NULL,
-#'   na.action,
-#'   control = list(),
-#'   keep.data = TRUE
-#' )
-#'
-#' \method{summary}{el_lm}(object, ...)
-#'
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
 #' @param na.action A function which indicates what should happen when the data
