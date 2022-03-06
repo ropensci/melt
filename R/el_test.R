@@ -110,16 +110,6 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   out
 }
 
-#' Empirical likelihood hypothesis testing
-#'
-#' Empirical likelihood hypothesis testing
-#'
-#' @param object An object of class \code{"el_test"}.
-#' @param rhs A numeric vector specifying the right hand side of linear hypothesis testing. If not specified, it is set to 0 vector.
-#' @param control A list of control parameters. See ‘Details’.
-#' @return A list with class \code{"el_test"}.
-#'
-#' @export
 el_test2 <- function(object, rhs, control = list())
 {
   if (!inherits(object, "el_test"))
@@ -148,7 +138,6 @@ el_test2 <- function(object, rhs, control = list())
 }
 
 #' @importFrom stats complete.cases qchisq
-#' @export
 confint.el_test <- function(object, parm, level = 0.95, ...) {
   cf <- coef(object)
   pnames <- if (is.null(names(cf))) seq(length(cf)) else names(cf)
@@ -188,11 +177,10 @@ confint.el_test <- function(object, parm, level = 0.95, ...) {
 }
 
 #' @export
-print.el_test <- function(x, digits = getOption("digits"), prefix = "\t", ...) {
+print.el_test <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
-  cat(strwrap(x$method, prefix = prefix), sep = "\n")
+  cat("Empirical Likelihood Test:", x$optim$type, "\n")
   cat("\n")
-  cat("data: ", x$data.name, "\n", sep = "")
   out <- character()
   if (!is.null(x$statistic))
     out <- c(out, paste("Chisq", names(x$statistic), "=",
@@ -230,7 +218,6 @@ print.el_test <- function(x, digits = getOption("digits"), prefix = "\t", ...) {
 }
 
 #' @importFrom stats weights
-#' @export
 weights.el_test <- function(object, ...) {
   n <- NROW(object$data)
   c((n + n * as.matrix(object$data) %*% as.matrix(object$optim$lambda))^-1)

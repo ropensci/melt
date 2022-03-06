@@ -58,17 +58,15 @@ Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("lambda") = el.lambda,
-      Rcpp::Named("log.prob") =  w.log() -
-        PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * el.lambda),
+      // Rcpp::Named("log.prob") =  w.log() -
+      //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * el.lambda),
       Rcpp::Named("weights") = w,
       Rcpp::Named("logLR") = -el.nlogLR,
-      Rcpp::Named("logWLR") = -el.nlogLR,
+      // Rcpp::Named("logWLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
       Rcpp::Named("convergence") = el.convergence),
         Rcpp::Named("statistic") = chisq_statistic,
         Rcpp::Named("df") = p,
-        Rcpp::Named("p.value") = pval,
-        Rcpp::Named("alternative") = "two.sided",
-        Rcpp::Named("method") = "One sample EL test");
+        Rcpp::Named("p.value") = pval);
   return result;
 }
