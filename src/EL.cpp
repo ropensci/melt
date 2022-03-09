@@ -1,23 +1,23 @@
 #include "EL.h"
 
 /* Constructor for EL class (evaluation)
- * Last updated: 03/02/21
+ * Last updated: 03/08/21
  */
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
        const int maxit,
        const double abstol,
        const double threshold)
-  : n{static_cast<int>(g.rows())}
+  : n{static_cast<int>(g.rows())},
+    lambda{(g.transpose() * g).ldlt().solve(g.colwise().sum())}
 {
   // maximization
-  lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
   while (!convergence && iterations != maxit) {
     // plog class
-    PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda);
+    const PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda);
     // J matrix
     const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
     // prpose new lambda by NR method with least square
-    Eigen::VectorXd step =
+    const Eigen::VectorXd step =
       (J.transpose() * J).ldlt().solve(
           J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
     // update function value
@@ -52,24 +52,24 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
 }
 
 /* Constructor for weighted EL class (evaluation)
- * Last updated: 03/02/21
+ * Last updated: 03/08/21
  */
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
        const Eigen::Ref<const Eigen::ArrayXd>& w,
        const int maxit,
        const double abstol,
        const double threshold)
-  : n{static_cast<int>(g.rows())}
+  : n{static_cast<int>(g.rows())},
+    lambda{(g.transpose() * g).ldlt().solve(g.colwise().sum())}
 {
   // maximization
-  lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
   while (!convergence && iterations != maxit) {
     // plog class
-    PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda, w);
+    const PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda, w);
     // J matrix
     const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
     // prpose new lambda by NR method with least square
-    Eigen::VectorXd step =
+    const Eigen::VectorXd step =
       (J.transpose() * J).ldlt().solve(
           J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
     // update function value
@@ -102,17 +102,6 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
     }
   }
 }
-
-// /* log probability for weighted EL class
-//  * Last updated: 03/02/21
-//  *
-//  */
-// Eigen::ArrayXd EL::log_prob(const Eigen::Ref<const Eigen::MatrixXd>& g,
-//                             const Eigen::Ref<const Eigen::ArrayXd>& w) const
-// {
-//   return  w.log() -
-//     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * lambda);
-// }
 
 /* Constructor for EL2 class (evaluation)
  * Last updated: 02/28/21

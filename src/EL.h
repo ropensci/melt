@@ -3,7 +3,7 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
-#include <cmath>
+// #include <cmath>
 #include "utils.h"
 
 struct minEL {

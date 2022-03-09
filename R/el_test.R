@@ -110,6 +110,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   out
 }
 
+#' @export
 el_test2 <- function(object, rhs, control = list())
 {
   if (!inherits(object, "el_test"))
@@ -138,6 +139,7 @@ el_test2 <- function(object, rhs, control = list())
 }
 
 #' @importFrom stats complete.cases qchisq
+#' @export
 confint.el_test <- function(object, parm, level = 0.95, ...) {
   cf <- coef(object)
   pnames <- if (is.null(names(cf))) seq(length(cf)) else names(cf)

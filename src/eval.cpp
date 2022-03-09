@@ -58,8 +58,8 @@ Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("lambda") = el.lambda,
-      // Rcpp::Named("log.prob") =  w.log() -
-      //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * el.lambda),
+      Rcpp::Named("log.prob") =  w.log() -
+        PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * el.lambda),
       Rcpp::Named("weights") = w,
       Rcpp::Named("logLR") = -el.nlogLR,
       // Rcpp::Named("logWLR") = -el.nlogLR,
