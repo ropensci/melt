@@ -37,6 +37,7 @@ class EL2
 private:
   const std::string type;
   Eigen::VectorXd par;
+  const int n;
 public:
   Eigen::VectorXd lambda;
   double nlogLR = 0;
@@ -44,26 +45,26 @@ public:
   bool convergence = false;
 
   // evaluation
-  EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
+  EL2(const std::string method,
+      const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
-      const std::string method,
       const int maxit,
       const double abstol,
       const double threshold);
 
   // evaluation (weighted)
-  EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
+  EL2(const std::string method,
+      const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
       const Eigen::Ref<const Eigen::ArrayXd>& w,
-      const std::string method,
       const int maxit,
       const double abstol,
       const double threshold);
 
   // minimization
-  EL2(const Eigen::Ref<const Eigen::VectorXd>& par0,
+  EL2(const std::string method,
+      const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
-      const std::string method,
       const Eigen::Ref<const Eigen::MatrixXd>& lhs,
       const Eigen::Ref<const Eigen::VectorXd>& rhs,
       const int maxit,

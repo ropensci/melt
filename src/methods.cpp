@@ -19,15 +19,15 @@ Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x,
     double lower_size = 1.0;
     double lower_lb = init[j - 1] - lower_size;
     // lower bound for lower endpoint
-    while (2.0 * EL2(Eigen::Matrix<double, 1, 1>(lower_lb), x, type,
+    while (2.0 * EL2(type, Eigen::Matrix<double, 1, 1>(lower_lb), x,
                      maxit, abstol, th_nlogLR(1, threshold)).nlogLR <= cutoff) {
       lower_ub = lower_lb;
       lower_lb -= lower_size;
     }
     // approximate lower bound by numerical search
     while (lower_ub - lower_lb > 1e-04) {
-      if (2.0 * EL2(Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2), x,
-                    type, maxit, abstol, th_nlogLR(1, threshold)).nlogLR > cutoff) {
+      if (2.0 * EL2(type, Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2),
+                    x, maxit, abstol, th_nlogLR(1, threshold)).nlogLR > cutoff) {
         lower_lb = (lower_lb + lower_ub) / 2;
       } else {
         lower_ub = (lower_lb + lower_ub) / 2;
@@ -40,15 +40,15 @@ Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x,
     double upper_size = 1.0;
     double upper_ub = init[j - 1] + upper_size;
     // upper bound for upper endpoint
-    while (2.0 * EL2(Eigen::Matrix<double, 1, 1>(upper_ub), x, type,
+    while (2.0 * EL2(type, Eigen::Matrix<double, 1, 1>(upper_ub), x,
                      maxit, abstol, th_nlogLR(1, threshold)).nlogLR <= cutoff) {
       upper_lb = upper_ub;
       upper_ub += upper_size;
     }
     // approximate upper bound by numerical search
     while (upper_ub - upper_lb > 1e-04) {
-      if (2.0 * EL2(Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2), x,
-                  type, maxit, abstol, th_nlogLR(1, threshold)).nlogLR > cutoff) {
+      if (2.0 * EL2(type, Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2),
+                    x, maxit, abstol, th_nlogLR(1, threshold)).nlogLR > cutoff) {
         upper_ub = (upper_lb + upper_ub) / 2;
       } else {
         upper_lb = (upper_lb + upper_ub) / 2;
@@ -84,7 +84,7 @@ Eigen::MatrixXd EL_confint2(const Eigen::Map<Eigen::MatrixXd>& x,
     Rcpp::Rcout << lower_lb << "\n";
     Rcpp::Rcout << lower_ub << "\n";
     // lower bound for lower endpoint
-    while (2.0 * EL2(par0, x, type, lhs, Eigen::Matrix<double, 1, 1>(lower_lb),
+    while (2.0 * EL2(type, par0, x, lhs, Eigen::Matrix<double, 1, 1>(lower_lb),
                      maxit, abstol, 20000).nlogLR <= cutoff) {
       lower_ub = lower_lb;
       lower_lb -= lower_size;
@@ -93,7 +93,7 @@ Eigen::MatrixXd EL_confint2(const Eigen::Map<Eigen::MatrixXd>& x,
     Rcpp::Rcout << lower_ub << "\n";
     // approximate lower bound by numerical search
     while (lower_ub - lower_lb > 1e-04) {
-      if (2.0 * EL2(par0, x, type, lhs,
+      if (2.0 * EL2(type, par0, x, lhs,
                     Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2),
                     maxit, abstol, 20000).nlogLR > cutoff) {
         lower_lb = (lower_lb + lower_ub) / 2;
@@ -109,14 +109,14 @@ Eigen::MatrixXd EL_confint2(const Eigen::Map<Eigen::MatrixXd>& x,
     double upper_ub = par0[j] + upper_size;
 
     // upper bound for upper endpoint
-    while (2.0 * EL2(par0, x, type, lhs, Eigen::Matrix<double, 1, 1>(upper_ub),
+    while (2.0 * EL2(type, par0, x, lhs, Eigen::Matrix<double, 1, 1>(upper_ub),
                      maxit, abstol, th_nlogLR(1, threshold)).nlogLR <= cutoff) {
       upper_lb = upper_ub;
       upper_ub += upper_size;
     }
     // approximate upper bound by numerical search
     while (upper_ub - upper_lb > 1e-04) {
-      if (2.0 * EL2(par0, x, type, lhs,
+      if (2.0 * EL2(type, par0, x, lhs,
                     Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2),
                     maxit, abstol, th_nlogLR(1, threshold)).nlogLR > cutoff) {
         upper_ub = (upper_lb + upper_ub) / 2;

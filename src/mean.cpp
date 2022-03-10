@@ -13,7 +13,7 @@ Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
     Rcpp::stop("'x' must have full column rank");
   }
 
-  const EL2 el(par, x, "mean", maxit, abstol, th_nlogLR(p, threshold));
+  const EL2 el("mean", par, x, maxit, abstol, th_nlogLR(p, threshold));
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
@@ -51,7 +51,7 @@ Rcpp::List WEL_mean(const Eigen::Map<Eigen::VectorXd>& par,
     Rcpp::stop("'x' must have full column rank");
   }
 
-  EL2 el(par, x, w, "mean", maxit, abstol, th_nlogLR(p, threshold));
+  EL2 el("mean", par, x, w, maxit, abstol, th_nlogLR(p, threshold));
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(

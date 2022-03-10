@@ -110,6 +110,14 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   out
 }
 
+#' Test2 (development version)
+#'
+#' Test2 (development version)
+#'
+#' @param object An object
+#' @param rhs A rhs
+#' @param control A list of control parameters. See ‘Details’ in
+#'   \code{\link{el_eval}}.
 #' @export
 el_test2 <- function(object, rhs, control = list())
 {
@@ -168,8 +176,8 @@ confint.el_test <- function(object, parm, level = 0.95, ...) {
   } else {
     cutoff <- qchisq(level, 1L)
     optcfg <- object$optim$control
-    ci <- EL_confint2(object$data, object$optim$type, cf, cutoff,
-                     optcfg$maxit, optcfg$abstol, optcfg$threshold)
+    ci <- EL_confint2(object$data.matrix, object$optim$type, cf, cutoff,
+                      optcfg$maxit, optcfg$abstol, optcfg$threshold)
   }
   a <- (1 - level)/2
   a <- c(a, 1 - a)

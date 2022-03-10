@@ -28,9 +28,9 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
   const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
   const EL2 el =
     (intercept && p > 1)?
-    EL2(bhat, data, "lm", lhs, rhs, maxit, abstol,
+    EL2("lm", bhat, data, lhs, rhs, maxit, abstol,
         th_nlogLR(p - 1, threshold)) :
-    EL2(Eigen::MatrixXd::Zero(1, p), data, "lm", maxit, abstol,
+    EL2("lm", Eigen::MatrixXd::Zero(1, p), data , maxit, abstol,
         th_nlogLR(p, threshold));
 
   // test each coefficient
@@ -42,7 +42,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
     Rcpp::checkUserInterrupt();
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
-    EL2 coef_test = EL2(bhat, data, "lm", lhs, Eigen::VectorXd::Zero(1),
+    EL2 coef_test = EL2("lm", bhat, data, lhs, Eigen::VectorXd::Zero(1),
                         maxit, abstol, th_nlogLR(1, threshold));
     chisq_statistic[i] = 2.0 * coef_test.nlogLR;
     convergence[i] = coef_test.convergence;
