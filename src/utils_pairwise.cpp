@@ -43,7 +43,7 @@ std::array<double, 2> pair_confidence_interval_gbd(
   // upper bound for upper endpoint
   while (2 * test_nlogLR(
       theta0, x, c, lhs,
-      Eigen::Matrix<double, 1, 1>(upper_ub), 1000, 1e-04, threshold) <= cutoff) {
+      Eigen::Matrix<double, 1, 1>(upper_ub), threshold) <= cutoff) {
     upper_lb = upper_ub;
     upper_ub += upper_size;
   }
@@ -51,8 +51,7 @@ std::array<double, 2> pair_confidence_interval_gbd(
   while (upper_ub - upper_lb > 1e-04) {
     if (2 * test_nlogLR(
         theta0, x, c, lhs,
-        Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2), 1000, 1e-04,
-        threshold) > cutoff) {
+        Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2), threshold) > cutoff) {
       upper_ub = (upper_lb + upper_ub) / 2;
     } else {
       upper_lb = (upper_lb + upper_ub) / 2;
@@ -73,7 +72,7 @@ std::array<double, 2> pair_confidence_interval_gbd(
   // lower bound for lower endpoint
   while (2 * test_nlogLR(
       theta0, x, c, lhs,
-      Eigen::Matrix<double, 1, 1>(lower_lb), 1000, 1e-04, threshold) <= cutoff) {
+      Eigen::Matrix<double, 1, 1>(lower_lb), threshold) <= cutoff) {
     lower_ub = lower_lb;
     lower_lb -= lower_size;
   }
@@ -81,8 +80,7 @@ std::array<double, 2> pair_confidence_interval_gbd(
   while (lower_ub - lower_lb > 1e-04) {
     if (2 * test_nlogLR(
         theta0, x, c, lhs,
-        Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2), 1000, 1e-04,
-        threshold) > cutoff) {
+        Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2), threshold) > cutoff) {
       lower_lb = (lower_lb + lower_ub) / 2;
     } else {
       lower_ub = (lower_lb + lower_ub) / 2;
@@ -155,46 +153,46 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
             Rcpp::sample(Rcpp::IntegerVector(Rcpp::seq(0, n - 1)), n * B, true)))
     .data(), n, B);
 
-  // B bootstrap results
-  Eigen::ArrayXd k_bootstrap_statistics = Eigen::ArrayXd::Constant(B, NA_REAL);
-  NB_ProgressBar pb;
-  Progress pg(B, progress, pb);
-  bool stop = false;
-  #pragma omp parallel for num_threads(nthread) schedule(dynamic)
-  for (int b = 0; b < B; ++b) {
-    if (!pg.is_aborted()) { // the only way to exit an OpenMP loop
-      // check for user abort for every 250 iterations
-      // if ((b + 1) % 250 == 0){
-      if (Progress::check_abort()) {
-          stop = true;
-      }
-      // }
+            // B bootstrap results
+            Eigen::ArrayXd k_bootstrap_statistics = Eigen::ArrayXd::Constant(B, NA_REAL);
+            NB_ProgressBar pb;
+            Progress pg(B, progress, pb);
+            bool stop = false;
+#pragma omp parallel for num_threads(nthread) schedule(dynamic)
+            for (int b = 0; b < B; ++b) {
+              if (!pg.is_aborted()) { // the only way to exit an OpenMP loop
+                // check for user abort for every 250 iterations
+                // if ((b + 1) % 250 == 0){
+                if (Progress::check_abort()) {
+                  stop = true;
+                }
+                // }
 
-      std::vector<double> bootstrap_statistics(m);
-      for (int j = 0; j < m; ++j) {
-      Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
-      lhs(pairs[j][0]) = 1;
-      lhs(pairs[j][1]) = -1;
-      bootstrap_statistics[j] =
-        2 * test_nlogLR(bootstrap_sample(x_centered, bootstrap_index.col(b)),
-                        bootstrap_sample(c, bootstrap_index.col(b)),
-                        lhs, Eigen::Matrix<double, 1, 1>(0),
-                        threshold, maxit, abstol);
-        }
-    // kth largest element
-    std::sort(bootstrap_statistics.begin(), bootstrap_statistics.end());
-    k_bootstrap_statistics[b] = bootstrap_statistics[m - k];
-    // update the progress
-    pg.increment();
-    }
-  }
-  if (stop) {
-    Rcpp::NumericVector v_interrupted = Rcpp::wrap(k_bootstrap_statistics);
-    v_interrupted = v_interrupted[!Rcpp::is_na(v_interrupted)];
-    k_bootstrap_statistics = Rcpp::as<Eigen::ArrayXd>(v_interrupted);
-    if (progress) {
-      REprintf("\ninterrupted!");
-    }
-  }
-  return k_bootstrap_statistics;
+                std::vector<double> bootstrap_statistics(m);
+                for (int j = 0; j < m; ++j) {
+                  Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
+                  lhs(pairs[j][0]) = 1;
+                  lhs(pairs[j][1]) = -1;
+                  bootstrap_statistics[j] =
+                    2 * test_nlogLR(bootstrap_sample(x_centered, bootstrap_index.col(b)),
+                                    bootstrap_sample(c, bootstrap_index.col(b)),
+                                    lhs, Eigen::Matrix<double, 1, 1>(0),
+                                    threshold, maxit, abstol);
+                }
+                // kth largest element
+                std::sort(bootstrap_statistics.begin(), bootstrap_statistics.end());
+                k_bootstrap_statistics[b] = bootstrap_statistics[m - k];
+                // update the progress
+                pg.increment();
+              }
+            }
+            if (stop) {
+              Rcpp::NumericVector v_interrupted = Rcpp::wrap(k_bootstrap_statistics);
+              v_interrupted = v_interrupted[!Rcpp::is_na(v_interrupted)];
+              k_bootstrap_statistics = Rcpp::as<Eigen::ArrayXd>(v_interrupted);
+              if (progress) {
+                REprintf("\ninterrupted!");
+              }
+            }
+            return k_bootstrap_statistics;
 }

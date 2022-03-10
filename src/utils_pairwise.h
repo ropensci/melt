@@ -13,35 +13,35 @@
 
 
 std::vector<std::array<int, 2>> comparison_pairs(
-    const int p, const int control);
+        const int p, const int control);
 
 std::array<double, 2> pair_confidence_interval_gbd(
-    const Eigen::Ref<const Eigen::VectorXd>& theta0,
-    const Eigen::Ref<const Eigen::MatrixXd>& x,
-    const Eigen::Ref<const Eigen::MatrixXd>& c,
-    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-    const double threshold,
-    const double init,
-    const double cutoff);
+        const Eigen::Ref<const Eigen::VectorXd>& theta0,
+        const Eigen::Ref<const Eigen::MatrixXd>& x,
+        const Eigen::Ref<const Eigen::MatrixXd>& c,
+        const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+        const double threshold,
+        const double init,
+        const double cutoff);
 
 Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
-    const Eigen::Ref<const Eigen::MatrixXd>& x,
-    const Eigen::Ref<const Eigen::MatrixXd>& c,
-    const int k,
-    const std::vector<std::array<int, 2>>& pairs,
-    const int B,
-    const double level);
+        const Eigen::Ref<const Eigen::MatrixXd>& x,
+        const Eigen::Ref<const Eigen::MatrixXd>& c,
+        const int k,
+        const std::vector<std::array<int, 2>>& pairs,
+        const int B,
+        const double level);
 
 Eigen::ArrayXd bootstrap_statistics_pairwise_NB(
-    const Eigen::Ref<const Eigen::MatrixXd>& x,
-    const Eigen::Ref<const Eigen::MatrixXd>& c,
-    const int k,
-    const std::vector<std::array<int, 2>>& pairs,
-    const int B,
-    const double level,
-    const int nthread,
-    const bool progress,
-    const double threshold,
-    const int maxit,
-    const double abstol);
+        const Eigen::Ref<const Eigen::MatrixXd>& x,
+        const Eigen::Ref<const Eigen::MatrixXd>& c,
+        const int k,
+        const std::vector<std::array<int, 2>>& pairs,
+        const int B,
+        const double level,
+        const int nthread,
+        const bool progress,
+        const double threshold,
+        const int maxit,
+        const double abstol);
 #endif

@@ -39,7 +39,7 @@ devtools::install_github("markean/melt")
 ## Usage
 ```{r eval = TRUE}
 library(melt)
-# one sample test (mean)
+# one sample test (mean) 
 el_mean(par = 0, x = rnorm(n = 100))
 
 # linear regression

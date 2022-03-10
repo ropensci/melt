@@ -6,14 +6,6 @@
 // #include <cmath>
 #include "utils.h"
 
-struct minEL {
-  Eigen::VectorXd par;
-  Eigen::VectorXd lambda;
-  double nlogLR;
-  int iterations;
-  bool convergence;
-};
-
 class EL
 {
 private:
