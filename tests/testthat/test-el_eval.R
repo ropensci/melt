@@ -1,3 +1,5 @@
+skip_on_os("windows", arch = "i386")
+
 test_that("EL vs. EL2", {
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
