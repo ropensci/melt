@@ -2,7 +2,7 @@ test_that("EL vs. EL2", {
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   g <- x - par
-  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+02)
+  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+03)
 
   a1 <- el_eval(g, control = optcfg)$optim
   a1[["iterations"]] <- NULL
@@ -19,7 +19,7 @@ test_that("convergence check", {
     el_eval(x - par, control = list(maxit = 20L, abstol = 1e-08,
                                     threshold = 1e+10))$optim$convergence
   }
-  expect_identical(all(sapply(grid, conv)), TRUE)
+  expect_true(all(sapply(grid, conv)))
 })
 
 test_that("identical weights", {
@@ -27,12 +27,12 @@ test_that("identical weights", {
   par <- runif(1, min(x), max(x))
   g <- x - par
   w <- rep(runif(1), length(x))
-  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+02)
+  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+03)
 
   a1 <- el_eval(g, control = optcfg)$optim
   a2 <- el_eval(g, w, control = optcfg)$optim
-  a2$weights <- NULL
-  expect_identical(a1, a2)
+  expect_equal(a1$lambda, a2$lambda)
+  expect_equal(a1$logLR, a2$logLR)
 })
 
 test_that("tmp", {
@@ -40,7 +40,7 @@ test_that("tmp", {
   par <- runif(1, min(x), max(x))
   g <- x - par
   w <- runif(length(x))
-  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+02)
+  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+03)
 
   a1 <- el_eval(g, w, control = optcfg)$optim
   a2 <- el_mean(par, x, w, control = optcfg)$optim
