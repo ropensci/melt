@@ -41,13 +41,13 @@ devtools::install_github("markean/melt")
 ``` r
 library(melt)
 # one sample test (mean) 
-el_mean(par = 0, x = rnorm(n = 100))
+el_mean(par = 0, x = rnorm(n = 100))  
 #> 
 #> Empirical Likelihood Test: mean 
 #> 
-#> Chisq = 2.5498, df = 1, p-value = 0.1103
+#> Chisq = 2.4953, df = 1, p-value = 0.1142
 #> maximum EL estimates:
-#> [1] 0.1675158
+#> [1] 0.1816577
 
 # linear regression
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)
@@ -60,14 +60,14 @@ summary(fit)
 #> -4.5432 -2.3647 -0.1252  1.4096  6.8727 
 #> 
 #> Coefficients:
-#>             estimate chisq-value p-value    
-#> (Intercept)   37.285        4436  <2e-16 ***
-#> wt            -5.344        4431  <2e-16 ***
+#>             estimate chisq-value  p-value    
+#> (Intercept)   37.285       44.10 3.13e-11 ***
+#> wt            -5.344       41.55 1.15e-10 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> Multiple R-squared:  0.7528, Adjusted R-squared:  0.7446 
-#> Chisq-statistic:  4431 on 1 DF, p-value: < 2.2e-16
+#> Chisq-statistic: 41.55 on 1 DF, p-value: 1.149e-10
 
 # analysis of variance
 el_aov(formula = Sepal.Length ~ Species, data = iris)

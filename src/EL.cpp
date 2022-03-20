@@ -1,105 +1,77 @@
 #include "EL.h"
 
 /* Constructor for EL class (evaluation)
- * Last updated: 03/08/21
+ * Last updated: 03/19/21
  */
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
        const int maxit,
-       const double abstol,
+       const double tol,
        const double threshold)
   : n{static_cast<int>(g.rows())},
-    lambda{(g.transpose() * g).ldlt().solve(g.colwise().sum())}
+    l{Eigen::VectorXd::Zero(g.cols())}
 {
   // maximization
-  while (!convergence && iterations != maxit) {
-    // plog class
-    const PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda);
+  while (!convergence && iterations != maxit && nlogLR <= threshold) {
+    // pseudo log
+    const PSEUDO_LOG pl(Eigen::VectorXd::Ones(n) + g * l);
     // J matrix
-    const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
-    // prpose new lambda by NR method with least square
-    const Eigen::VectorXd step =
-      (J.transpose() * J).ldlt().solve(
-          J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+    const Eigen::MatrixXd J = g.array().colwise() * pl.sqrt_neg_d2plog;
+    // propose new lambda by NR method with least square
+    Eigen::VectorXd step = (J.transpose() * J).ldlt().solve(
+      J.transpose() * (pl.dplog / pl.sqrt_neg_d2plog).matrix());
     // update function value
-    nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (lambda + step));
+    nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step));
     // step halving to ensure increase in function value
-    double gamma = 1.0;
-    while (nlogLR < log_tmp.plog_sum) {
-      gamma /= 2;
-      if (gamma < abstol) {
-        break;
-      }
-      nlogLR =
-        PSEUDO_LOG::sum(
-          Eigen::VectorXd::Ones(n) + g * (lambda + gamma * step));
+    if (nlogLR < pl.plog_sum) {
+      step /= 2;
+      nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step));
     }
-    /* If the step halving is not successful (possibly due to the convex
-     * hull constraint), terminate the maximization with the current values
-     * without further updates.
-     */
-    if (gamma < abstol) {
-      nlogLR = log_tmp.plog_sum;
-      break;
-    }
-    // Otherwise, update lambda and check for convergence
-    lambda += gamma * step;
-    if (nlogLR - log_tmp.plog_sum < abstol) {
+    // convergence check
+    if (step.norm() < tol * l.norm() + tol) {
       convergence = true;
     } else {
       ++iterations;
     }
+    // update lambda
+    l += step;
   }
 }
 
 /* Constructor for weighted EL class (evaluation)
- * Last updated: 03/08/21
+ * Last updated: 03/19/21
  */
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-       const Eigen::Ref<const Eigen::ArrayXd>& w,
+       const Eigen::Ref<const Eigen::VectorXd>& w,
        const int maxit,
-       const double abstol,
+       const double tol,
        const double threshold)
   : n{static_cast<int>(g.rows())},
-    lambda{(g.transpose() * g).ldlt().solve(g.colwise().sum())}
+    l{Eigen::VectorXd::Zero(g.cols())}
 {
   // maximization
-  while (!convergence && iterations != maxit) {
-    // plog class
-    const PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda, w);
+  while (!convergence && iterations != maxit && nlogLR <= threshold) {
+    // pseudo log
+    const PSEUDO_LOG pl(Eigen::VectorXd::Ones(n) + g * l, w);
     // J matrix
-    const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
-    // prpose new lambda by NR method with least square
-    const Eigen::VectorXd step =
-      (J.transpose() * J).ldlt().solve(
-          J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+    const Eigen::MatrixXd J = g.array().colwise() * pl.sqrt_neg_d2plog;
+    // propose new lambda by NR method with least square
+    Eigen::VectorXd step = (J.transpose() * J).ldlt().solve(
+      J.transpose() * (pl.dplog / pl.sqrt_neg_d2plog).matrix());
     // update function value
-    nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (lambda + step), w);
+    nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step), w);
     // step halving to ensure increase in function value
-    double gamma = 1.0;
-    while (nlogLR < log_tmp.plog_sum) {
-      gamma /= 2;
-      if (gamma < abstol) {
-        break;
-      }
-      nlogLR =
-        PSEUDO_LOG::sum(
-          Eigen::VectorXd::Ones(n) + g * (lambda + gamma * step), w);
+    if (nlogLR < pl.plog_sum) {
+      step /= 2;
+      nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step), w);
     }
-    /* If the step halving is not successful (possibly due to the convex
-     * hull constraint), terminate the maximization with the current values
-     * without further updates.
-     */
-    if (gamma < abstol) {
-      nlogLR = log_tmp.plog_sum;
-      break;
-    }
-    // Otherwise, update lambda and check for convergence
-    lambda += gamma * step;
-    if (nlogLR - log_tmp.plog_sum < abstol) {
+    // convergence check
+    if (step.norm() < tol * l.norm() + tol) {
       convergence = true;
     } else {
       ++iterations;
     }
+    // update lambda
+    l += step;
   }
 }
 
@@ -127,20 +99,20 @@ EL2::EL2(const std::string method,
   Eigen::MatrixXd g = funcMap[type](par, x);
   // maximization
   lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
+  // lambda = Eigen::VectorXd::Zero(par0.size());
   while (!convergence && iterations != maxit && nlogLR <= threshold) {
     // plog class
-    PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda);
+    PSEUDO_LOG pl(Eigen::VectorXd::Ones(n) + g * lambda);
     // J matrix
-    const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
+    const Eigen::MatrixXd J = g.array().colwise() * pl.sqrt_neg_d2plog;
     // propose new lambda by NR method with least square
-    Eigen::VectorXd step =
-      (J.transpose() * J).ldlt().solve(
-          J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+    Eigen::VectorXd step = (J.transpose() * J).ldlt().solve(
+      J.transpose() * (pl.dplog / pl.sqrt_neg_d2plog).matrix());
     // update function value
     nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (lambda + step));
     // step halving to ensure increase in function value
     double gamma = 1.0;
-    while (nlogLR < log_tmp.plog_sum) {
+    while (nlogLR < pl.plog_sum) {
       gamma /= 2;
       if (gamma < abstol) {
         break;
@@ -153,12 +125,12 @@ EL2::EL2(const std::string method,
      * without further updates.
      */
     if (gamma < abstol) {
-      nlogLR = log_tmp.plog_sum;
+      nlogLR = pl.plog_sum;
       break;
     }
     // Otherwise, update lambda and check for convergence
     lambda += gamma * step;
-    if (nlogLR - log_tmp.plog_sum < abstol) {
+    if (nlogLR - pl.plog_sum < abstol) {
       convergence = true;
     } else {
       ++iterations;
@@ -167,21 +139,21 @@ EL2::EL2(const std::string method,
 }
 
 /* Constructor for weighted EL2 class (evaluation)
- * Last updated: 03/09/21
+ * Last updated: 03/19/21
  *
  * abstol for gamma should be reconsidered.
  * Perhaps, use another optim parameter such as step size tolerance.
  *
  * l2 norm of the gradient of nlogLR is
- * (g.array().colwise() * log_tmp.dplog).colwise().sum().matrix().norm(), where
- * the log_tmp is computed with the current value of lambda. Consider moving
+ * (g.array().colwise() * pl.dplog).colwise().sum().matrix().norm(), where
+ * the pl is computed with the current value of lambda. Consider moving
  * toward the real gradient descent than evaluating nlogLR directly. It could be
  * slower.
  */
 EL2::EL2(const std::string method,
          const Eigen::Ref<const Eigen::VectorXd>& par0,
          const Eigen::Ref<const Eigen::MatrixXd>& x,
-         const Eigen::Ref<const Eigen::ArrayXd>& w,
+         const Eigen::Ref<const Eigen::VectorXd>& w,
          const int maxit,
          const double abstol,
          const double threshold)
@@ -199,18 +171,17 @@ EL2::EL2(const std::string method,
   lambda = (g.transpose() * g).ldlt().solve(g.colwise().sum());
   while (!convergence && iterations != maxit && nlogLR <= threshold) {
     // plog class
-    PSEUDO_LOG log_tmp(Eigen::VectorXd::Ones(n) + g * lambda, w);
+    PSEUDO_LOG pl(Eigen::VectorXd::Ones(n) + g * lambda, w);
     // J matrix
-    const Eigen::MatrixXd J = g.array().colwise() * log_tmp.sqrt_neg_d2plog;
+    const Eigen::MatrixXd J = g.array().colwise() * pl.sqrt_neg_d2plog;
     // propose new lambda by NR method with least square
-    Eigen::VectorXd step =
-      (J.transpose() * J).ldlt().solve(
-          J.transpose() * (log_tmp.dplog / log_tmp.sqrt_neg_d2plog).matrix());
+    Eigen::VectorXd step = (J.transpose() * J).ldlt().solve(
+      J.transpose() * (pl.dplog / pl.sqrt_neg_d2plog).matrix());
     // update function value
     nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (lambda + step), w);
     // step halving to ensure increase in function value
     double gamma = 1.0;
-    while (nlogLR < log_tmp.plog_sum) {
+    while (nlogLR < pl.plog_sum) {
       gamma /= 2;
       if (gamma < abstol) {
         break;
@@ -224,12 +195,12 @@ EL2::EL2(const std::string method,
      * without further updates.
      */
     if (gamma < abstol) {
-      nlogLR = log_tmp.plog_sum;
+      nlogLR = pl.plog_sum;
       break;
     }
     // Otherwise, update lambda and check for convergence
     lambda += gamma * step;
-    if (nlogLR - log_tmp.plog_sum < abstol) {
+    if (nlogLR - pl.plog_sum < abstol) {
       convergence = true;
     } else {
       ++iterations;
@@ -275,7 +246,7 @@ EL2::EL2(const std::string method,
   // estimating function
   Eigen::MatrixXd g = funcMap[type](par, x);
   // evaluation
-  lambda = EL(g, maxit, abstol, threshold).lambda;
+  lambda = EL(g, maxit, abstol, threshold).l;
   // function value(-logLR)
   nlogLR = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * lambda);
 
@@ -291,7 +262,7 @@ EL2::EL2(const std::string method,
     Eigen::MatrixXd g_tmp = funcMap[type](par_tmp, x);
     // update lambda
     EL eval(g_tmp, maxit, abstol, threshold);
-    Eigen::VectorXd lambda_tmp = eval.lambda;
+    Eigen::VectorXd lambda_tmp = eval.l;
     if (!eval.convergence && iterations > 9) {
       break;
     }
@@ -309,7 +280,7 @@ EL2::EL2(const std::string method,
       par_tmp = par - gamma * P * gradMap[type](lambda, g, x);
       // propose new lambda
       g_tmp = funcMap[type](par_tmp, x);
-      lambda_tmp = EL(g_tmp, maxit, abstol, threshold).lambda;
+      lambda_tmp = EL(g_tmp, maxit, abstol, threshold).l;
       if (gamma < abstol) {
         nlogLR = f0;
         break;
@@ -345,8 +316,6 @@ Eigen::ArrayXd EL2::log_prob(const Eigen::Ref<const Eigen::MatrixXd>& x,
                {"lm", g_lm}}
              };
   Eigen::MatrixXd g = funcMap[type](par, x);
-  // return  w * (w.log() - log(x.rows())-
-  //              PSEUDO_LOG::plog(Eigen::VectorXd::Ones(x.rows()) + g * lambda));
   return  w.log() -
     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * lambda);
 }
@@ -377,17 +346,16 @@ Eigen::ArrayXd EL2::log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
  *
  */
 PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
-  static const double n = static_cast<double>(x.size());
-  static const double a0 = 1.0 / n;
-  static const double a1 = -log(n) - 1.5;
-  static const double a2 = 2.0 * n;
-  static const double a3 = -0.5 * n * n;
+  const double n = static_cast<double>(x.size());
+  const double a1 = -log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
 
   dplog.resize(x.size());
   sqrt_neg_d2plog.resize(x.size());
 
   for (unsigned int i = 0; i < x.size(); ++i) {
-    if (x[i] < a0) {
+    if (n * x[i] < 1.0) {
       dplog[i] = a2 + 2.0 * a3 * x[i];
       sqrt_neg_d2plog[i] = a2 / 2.0;
       plog_sum += a1 + a2 * x[i] + a3 * x[i] * x[i];
@@ -400,21 +368,21 @@ PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
 }
 
 /* Constructor for PSEUDO_LOG class (weighted)
- * Last updated: 02/16/21
+ * Last updated: 03/19/21
  *
  */
-PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x, Eigen::ArrayXd&& w) {
-  static const double n = static_cast<double>(x.size());
-  static const double a0 = 1.0 / n;
-  static const double a1 = -log(n) - 1.5;
-  static const double a2 = 2.0 * n;
-  static const double a3 = -0.5 * n * n;
+PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x,
+                       const Eigen::Ref<const Eigen::VectorXd>& w) {
+  const double n = static_cast<double>(x.size());
+  const double a1 = -log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
 
   dplog.resize(x.size());
   sqrt_neg_d2plog.resize(x.size());
 
   for (unsigned int i = 0; i < x.size(); ++i) {
-    if (x[i] < a0) {
+    if (n * x[i] < 1.0) {
       dplog[i] = w[i] * (a2 + 2.0 * a3 * x[i]);
       sqrt_neg_d2plog[i] = sqrt(w[i]) * a2 / 2.0;
       plog_sum += w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]);
@@ -427,18 +395,16 @@ PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x, Eigen::ArrayXd&& w) {
 }
 
 /* pseudo log function
- * Last updated: 02/17/21
+ * Last updated: 03/19/21
  *
  */
-Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::ArrayXd&& x) {
-  static const double n = static_cast<double>(x.size());
-  static const double a0 = 1.0 / n;
-  static const double a1 = -log(n) - 1.5;
-  static const double a2 = 2.0 * n;
-  static const double a3 = -0.5 * n * n;
-  // Eigen::ArrayXd out(x.size());
+Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x) {
+  const double n = static_cast<double>(x.size());
+  const double a1 = -log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
   for (unsigned int i = 0; i < x.size(); ++i) {
-    if (x[i] < a0) {
+    if (n * x[i] < 1.0) {
       x[i] = a1 + a2 * x[i] + a3 * x[i] * x[i];
     } else {
       x[i] = log(x[i]);
@@ -448,31 +414,30 @@ Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::ArrayXd&& x) {
 }
 
 double PSEUDO_LOG::sum(Eigen::VectorXd&& x) {
-  static const double n = static_cast<double>(x.size());
-  static const double a0 = 1.0 / n;
-  static const double a1 = -log(n) - 1.5;
-  static const double a2 = 2.0 * n;
-  static const double a3 = -0.5 * n * n;
+  const double n = static_cast<double>(x.size());
+  const double a1 = -log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
   double out = 0;
   for (unsigned int i = 0; i < x.size(); ++i) {
-    out += x[i] < a0 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : log(x[i]);
+    out += n * x[i] < 1.0 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : log(x[i]);
   }
   return out;
 }
 
-/* Summation funtion for PSEUDO_LOG class (weighted)
- * Last updated: 02/16/21
+/* Summation function for PSEUDO_LOG class (weighted)
+ * Last updated: 03/19/21
  *
  */
-double PSEUDO_LOG::sum(Eigen::VectorXd&& x, Eigen::ArrayXd&& w) {
-  static const double n = static_cast<double>(x.size());
-  static const double a0 = 1.0 / n;
-  static const double a1 = -log(n) - 1.5;
-  static const double a2 = 2.0 * n;
-  static const double a3 = -0.5 * n * n;
+double PSEUDO_LOG::sum(Eigen::VectorXd&& x,
+                       const Eigen::Ref<const Eigen::VectorXd>& w) {
+  const double n = static_cast<double>(x.size());
+  const double a1 = -log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
   double out = 0;
   for (unsigned int i = 0; i < x.size(); ++i) {
-    out += x[i] < a0 ?
+    out += n * x[i] < 1.0 ?
     w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]) :
     w[i] * log(x[i]);
   }

@@ -3,7 +3,7 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
-// #include <cmath>
+#include <cmath>
 #include "utils.h"
 
 class EL
@@ -11,25 +11,21 @@ class EL
 private:
   const int n;
 public:
-  Eigen::VectorXd lambda;
-  double nlogLR = 0;
-  int iterations = 1;
-  bool convergence = false;
+  Eigen::VectorXd l;
+  double nlogLR;
+  int iterations{1};
+  bool convergence{false};
 
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
      const int maxit,
-     const double abstol,
+     const double tol,
      const double threshold);
 
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-     const Eigen::Ref<const Eigen::ArrayXd>& w,
+     const Eigen::Ref<const Eigen::VectorXd>& w,
      const int maxit,
-     const double abstol,
+     const double tol,
      const double threshold);
-
-  // // log probability
-  // Eigen::ArrayXd log_prob(const Eigen::Ref<const Eigen::MatrixXd>& g,
-  //                         const Eigen::Ref<const Eigen::ArrayXd>& w) const;
 };
 
 class EL2
@@ -56,7 +52,7 @@ public:
   EL2(const std::string method,
       const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
-      const Eigen::Ref<const Eigen::ArrayXd>& w,
+      const Eigen::Ref<const Eigen::VectorXd>& w,
       const int maxit,
       const double abstol,
       const double threshold);
@@ -87,13 +83,12 @@ public:
   Eigen::ArrayXd sqrt_neg_d2plog;
   double plog_sum = 0;
 
-  // PSEUDO_LOG(const Eigen::Ref<const Eigen::VectorXd>& x);
   PSEUDO_LOG(Eigen::VectorXd&& x);
-  PSEUDO_LOG(Eigen::VectorXd&& x, Eigen::ArrayXd&& w);
-  static Eigen::ArrayXd plog(Eigen::ArrayXd&& x);
+  PSEUDO_LOG(Eigen::VectorXd&& x, const Eigen::Ref<const Eigen::VectorXd>& w);
+  static Eigen::ArrayXd plog(Eigen::VectorXd&& x);
   static double sum(Eigen::VectorXd&& x);
-  static double sum(Eigen::VectorXd&& x, Eigen::ArrayXd&& w);
-  static Eigen::ArrayXd dp(Eigen::VectorXd&& x);
+  static double sum(Eigen::VectorXd&& x,
+                    const Eigen::Ref<const Eigen::VectorXd>& w);
 };
 
 double th_nlogLR(const int p, const Rcpp::Nullable<double> threshold);
