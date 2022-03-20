@@ -3,19 +3,16 @@
 
 #include <RcppEigen.h>
 
-std::vector<std::array<int, 2>> comparison_pairs(
-        const int p, const int control);
+double th_nlogLR(const int p, const Rcpp::Nullable<double> threshold);
 
-Eigen::VectorXd linear_projection(
-    const Eigen::Ref<const Eigen::VectorXd>& theta,
-    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-    const Eigen::Ref<const Eigen::VectorXd>& rhs);
+Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
+                       const Eigen::Ref<const Eigen::MatrixXd>& x);
 
-void linear_projection_void(
-    Eigen::Ref<Eigen::VectorXd> theta,
-    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-    const Eigen::Ref<const Eigen::VectorXd>& rhs);
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& par,
+                     const Eigen::Ref<const Eigen::MatrixXd>& data);
 
-Eigen::MatrixXd bootstrap_sample(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                                 const Eigen::Ref<const Eigen::ArrayXi>& index);
+Eigen::VectorXd gr_nlogLR_lm(
+        const Eigen::Ref<const Eigen::VectorXd>& lambda,
+        const Eigen::Ref<const Eigen::MatrixXd>& g,
+        const Eigen::Ref<const Eigen::MatrixXd>& data);
 #endif

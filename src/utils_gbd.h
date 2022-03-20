@@ -35,6 +35,19 @@ public:
   static Eigen::ArrayXd dp(Eigen::VectorXd&& x);
 };
 
+Eigen::VectorXd linear_projection(
+    const Eigen::Ref<const Eigen::VectorXd>& theta,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const Eigen::Ref<const Eigen::VectorXd>& rhs);
+
+void linear_projection_void(
+    Eigen::Ref<Eigen::VectorXd> theta,
+    const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+    const Eigen::Ref<const Eigen::VectorXd>& rhs);
+
+Eigen::MatrixXd bootstrap_sample(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                                 const Eigen::Ref<const Eigen::ArrayXi>& index);
+
 Eigen::MatrixXd g_gbd(const Eigen::Ref<const Eigen::VectorXd>& theta,
                       const Eigen::Ref<const Eigen::MatrixXd>& x,
                       const Eigen::Ref<const Eigen::MatrixXd>& c);

@@ -13,7 +13,7 @@ Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
     Rcpp::stop("'g' must have full column rank");
   }
 
-  const EL el(g, maxit, abstol, th_nlogLR(p, threshold));
+  const EL2 el(g, maxit, abstol, th_nlogLR(p, threshold));
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
@@ -48,7 +48,7 @@ Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
     Rcpp::stop("'g' must have full column rank");
   }
 
-  const EL el(g, w, maxit, abstol, th_nlogLR(p, threshold));
+  const EL2 el(g, w, maxit, abstol, th_nlogLR(p, threshold));
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
@@ -58,11 +58,8 @@ Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("lambda") = el.l,
-      // Rcpp::Named("log.prob") =  w.log() -
-      //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * el.l),
       Rcpp::Named("weights") = w,
       Rcpp::Named("logLR") = -el.nlogLR,
-      // Rcpp::Named("logWLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
       Rcpp::Named("convergence") = el.convergence),
         Rcpp::Named("statistic") = chisq_statistic,

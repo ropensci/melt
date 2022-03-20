@@ -25,7 +25,7 @@ You can install the latest stable release from
 [CRAN](https://cran.r-project.org/package=melt).
 
 ``` r
-install.packages("melt", dependencies = TRUE)
+install.packages("melt")
 ```
 
 You can install the latest development version from
@@ -45,9 +45,9 @@ el_mean(par = 0, x = rnorm(n = 100))
 #> 
 #> Empirical Likelihood Test: mean 
 #> 
-#> Chisq = 2.4953, df = 1, p-value = 0.1142
+#> Chisq = 4.0738, df = 1, p-value = 0.04355
 #> maximum EL estimates:
-#> [1] 0.1816577
+#> [1] 0.2045773
 
 # linear regression
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)

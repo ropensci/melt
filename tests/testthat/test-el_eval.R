@@ -9,7 +9,7 @@ test_that("convergence check", {
   expect_true(all(sapply(grid, conv)))
 })
 
-test_that("identical weights", {
+test_that("identical weights == no weights", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
@@ -19,20 +19,6 @@ test_that("identical weights", {
 
   a1 <- el_eval(g, control = optcfg)$optim
   a2 <- el_eval(g, w, control = optcfg)$optim
-  expect_equal(a1$lambda, a2$lambda)
-  expect_equal(a1$logLR, a2$logLR)
-})
-
-test_that("EL vs. EL2", {
-  skip_on_os("windows", arch = "i386")
-  x <- rnorm(10)
-  par <- runif(1, min(x), max(x))
-  g <- x - par
-  w <- runif(length(x))
-  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+03)
-
-  a1 <- el_eval(g, w, control = optcfg)$optim
-  a2 <- el_mean(par, x, w, control = optcfg)$optim
   expect_equal(a1$lambda, a2$lambda)
   expect_equal(a1$logLR, a2$logLR)
 })

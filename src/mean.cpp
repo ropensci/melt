@@ -4,7 +4,7 @@
 Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
                    const Eigen::Map<Eigen::MatrixXd>& x,
                    const int maxit,
-                   const double abstol,
+                   const double tol,
                    const Rcpp::Nullable<double> threshold) {
   const int n = x.rows();
   const int p = x.cols();
@@ -13,7 +13,7 @@ Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
     Rcpp::stop("'x' must have full column rank");
   }
 
-  const EL2 el("mean", par, x, maxit, abstol, th_nlogLR(p, threshold));
+  const EL2 el("mean", par, x, maxit, tol, th_nlogLR(p, threshold));
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
@@ -24,7 +24,7 @@ Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par,
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("type") = "mean",
-      Rcpp::Named("lambda") = el.lambda,
+      Rcpp::Named("lambda") = el.l,
       Rcpp::Named("logLR") = -el.nlogLR,
       Rcpp::Named("iterations") = el.iterations,
       Rcpp::Named("convergence") = el.convergence),
@@ -42,7 +42,7 @@ Rcpp::List WEL_mean(const Eigen::Map<Eigen::VectorXd>& par,
                     const Eigen::Map<Eigen::MatrixXd>& x,
                     const Eigen::Map<Eigen::ArrayXd>& w,
                     const int maxit,
-                    const double abstol,
+                    const double tol,
                     const Rcpp::Nullable<double> threshold) {
   const int n = x.rows();
   const int p = x.cols();
@@ -51,7 +51,7 @@ Rcpp::List WEL_mean(const Eigen::Map<Eigen::VectorXd>& par,
     Rcpp::stop("'x' must have full column rank");
   }
 
-  EL2 el("mean", par, x, w, maxit, abstol, th_nlogLR(p, threshold));
+  EL2 el("mean", par, x, w, maxit, tol, th_nlogLR(p, threshold));
   const double chisq_statistic = 2.0 * el.nlogLR;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
@@ -65,7 +65,7 @@ Rcpp::List WEL_mean(const Eigen::Map<Eigen::VectorXd>& par,
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("type") = "mean",
-      Rcpp::Named("lambda") = el.lambda,
+      Rcpp::Named("lambda") = el.l,
       Rcpp::Named("log.prob") = log_prob,
       Rcpp::Named("log.wprob") = log_wprob,
       Rcpp::Named("weights") = w,

@@ -6,46 +6,45 @@
 #include <cmath>
 #include "utils.h"
 
-class EL
-{
-private:
-  const int n;
-public:
-  Eigen::VectorXd l;
-  double nlogLR;
-  int iterations{1};
-  bool convergence{false};
-
-  EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-     const int maxit,
-     const double tol,
-     const double threshold);
-
-  EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-     const Eigen::Ref<const Eigen::VectorXd>& w,
-     const int maxit,
-     const double tol,
-     const double threshold);
-};
-
 class EL2
 {
 private:
   const std::string type;
   Eigen::VectorXd par;
+  const int maxit;
+  const double tol;
+  const double threshold;
   const int n;
 public:
-  Eigen::VectorXd lambda;
-  double nlogLR = 0;
-  int iterations = 1;
-  bool convergence = false;
+  Eigen::VectorXd l;
+  double nlogLR{0};
+  int iterations{1};
+  bool convergence{false};
+
+  void setup(const Eigen::Ref<const Eigen::MatrixXd>& g);
+
+  void setup(const Eigen::Ref<const Eigen::MatrixXd>& g,
+             const Eigen::Ref<const Eigen::VectorXd>& w);
+
+  // direct evaluation
+  EL2(const Eigen::Ref<const Eigen::MatrixXd>& g,
+      const int maxit,
+      const double tol,
+      const double threshold);
+
+  // direct evaluation (weighted)
+  EL2(const Eigen::Ref<const Eigen::MatrixXd>& g,
+      const Eigen::Ref<const Eigen::VectorXd>& w,
+      const int maxit,
+      const double tol,
+      const double threshold);
 
   // evaluation
   EL2(const std::string method,
       const Eigen::Ref<const Eigen::VectorXd>& par0,
       const Eigen::Ref<const Eigen::MatrixXd>& x,
       const int maxit,
-      const double abstol,
+      const double tol,
       const double threshold);
 
   // evaluation (weighted)
@@ -54,7 +53,7 @@ public:
       const Eigen::Ref<const Eigen::MatrixXd>& x,
       const Eigen::Ref<const Eigen::VectorXd>& w,
       const int maxit,
-      const double abstol,
+      const double tol,
       const double threshold);
 
   // minimization
@@ -64,7 +63,7 @@ public:
       const Eigen::Ref<const Eigen::MatrixXd>& lhs,
       const Eigen::Ref<const Eigen::VectorXd>& rhs,
       const int maxit,
-      const double abstol,
+      const double tol,
       const double threshold);
 
   // log probability
@@ -90,17 +89,4 @@ public:
   static double sum(Eigen::VectorXd&& x,
                     const Eigen::Ref<const Eigen::VectorXd>& w);
 };
-
-double th_nlogLR(const int p, const Rcpp::Nullable<double> threshold);
-
-Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::VectorXd>& par,
-                       const Eigen::Ref<const Eigen::MatrixXd>& x);
-
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::VectorXd>& par,
-                     const Eigen::Ref<const Eigen::MatrixXd>& data);
-
-Eigen::VectorXd gr_nlogLR_lm(
-    const Eigen::Ref<const Eigen::VectorXd>& lambda,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data);
 #endif

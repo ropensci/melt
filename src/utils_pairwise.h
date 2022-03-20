@@ -1,8 +1,6 @@
 #ifndef EL_UTILS_pairwise_H_
 #define EL_UTILS_pairwise_H_
 
-#include "EL.h"
-#include "utils.h"
 #include "utils_gbd.h"
 #include "nb_progress_bar.h"
 #include <progress.hpp>
@@ -10,7 +8,6 @@
 #ifdef _OPENMP
 #include <omp.h>
 #endif
-
 
 std::vector<std::array<int, 2>> comparison_pairs(
         const int p, const int control);

@@ -17,12 +17,12 @@ EL_lm <- function(data, intercept, maxit, abstol, threshold) {
     .Call(`_melt_EL_lm`, data, intercept, maxit, abstol, threshold)
 }
 
-EL_mean <- function(par, x, maxit, abstol, threshold) {
-    .Call(`_melt_EL_mean`, par, x, maxit, abstol, threshold)
+EL_mean <- function(par, x, maxit, tol, threshold) {
+    .Call(`_melt_EL_mean`, par, x, maxit, tol, threshold)
 }
 
-WEL_mean <- function(par, x, w, maxit, abstol, threshold) {
-    .Call(`_melt_WEL_mean`, par, x, w, maxit, abstol, threshold)
+WEL_mean <- function(par, x, w, maxit, tol, threshold) {
+    .Call(`_melt_WEL_mean`, par, x, w, maxit, tol, threshold)
 }
 
 EL_confint <- function(x, type, init, cutoff, idx, maxit, abstol, threshold) {

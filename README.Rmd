@@ -26,7 +26,7 @@ The R package **melt** provides a unified framework for data analysis with empir
 ## Installation
 You can install the latest stable release from [CRAN](https://cran.r-project.org/package=melt).
 ```{r eval = FALSE}
-install.packages("melt", dependencies = TRUE)
+install.packages("melt")
 ```
 You can install the latest development version from
 [Github](https://github.com/markean/melt).
