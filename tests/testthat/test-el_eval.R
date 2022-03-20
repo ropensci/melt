@@ -1,19 +1,5 @@
-test_that("EL vs. EL2", {
-  skip_on_os("windows", arch = "i386")
-  x <- rnorm(10)
-  par <- runif(1, min(x), max(x))
-  g <- x - par
-  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+03)
-
-  a1 <- el_eval(g, control = optcfg)$optim
-  a1[["iterations"]] <- NULL
-  a2 <- el_mean(par, x, control = optcfg)$optim
-  a2[["type"]] <- NULL
-  a2[["iterations"]] <- NULL
-  expect_equal(a1, a2)
-})
-
 test_that("convergence check", {
+  skip_on_os("windows", arch = "i386")
   x <- c(-1.5, 1.5, rnorm(10))
   grid <- seq(-1, 1, length.out = 1000)
   conv <- function(par) {
@@ -24,6 +10,7 @@ test_that("convergence check", {
 })
 
 test_that("identical weights", {
+  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   g <- x - par
@@ -36,7 +23,8 @@ test_that("identical weights", {
   expect_equal(a1$logLR, a2$logLR)
 })
 
-test_that("tmp", {
+test_that("EL vs. EL2", {
+  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   g <- x - par
