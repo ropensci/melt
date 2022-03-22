@@ -61,7 +61,7 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(), ke
     action <- list(NULL)
 
   optcfg <- check_control(control)
-  out <- EL_lm(mm, intercept, optcfg$maxit, optcfg$tol, optcfg$threshold)
+  out <- EL_lm(mm, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)
@@ -211,7 +211,6 @@ logLik.el_lm <- function(object, ...) {
   x <- model.matrix(mt, mf)
   y <- model.response(mf, "numeric")
   mele <- object$coefficients
-  # out <- EL_lm2(x, mele, threshold = 500, maxit = 1e4, abstol = 1e-8, ...)
 
   res <- object$residuals
   p <- object$df

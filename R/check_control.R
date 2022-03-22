@@ -1,9 +1,21 @@
 check_control <- function(control = list()) {
-  ctrl <- list(maxit = 100L, tol = 1e-06, threshold = NULL)
+  ctrl <- list(maxit = 100L, tol = 1e-06, th = NULL)
   nctrl <- names(ctrl)
   ctrl[(ncontrol <- names(control))] <- control
   if (length(nomatch <- ncontrol[!ncontrol %in% nctrl]))
     warning("unknown names in control: ", paste(nomatch, collapse = ", "))
+
+  ##
+  # deprecated (threshold, abstol)
+  if ("threshold" %in% names(control)) {
+    warning("'threshold' is deprecated; please use 'th' instead.",
+            call. = FALSE)
+  }
+  if ("abstol" %in% names(control)) {
+    warning("'abstol' is deprecated; please use 'tol' instead.",
+            call. = FALSE)
+  }
+  ##
 
   # maxit: Integer (positive)
   ctrl$maxit <- tryCatch(as.integer(ctrl$maxit),
@@ -22,15 +34,15 @@ check_control <- function(control = list()) {
   if (ctrl$tol < .Machine$double.eps)
     stop("'tol' is not a positive number")
 
-  # threshold: Numeric (positive, finite)
-  if (!is.null(ctrl$threshold)) {
-    ctrl$threshold <- tryCatch(as.numeric(ctrl$threshold),
+  # th: Numeric (positive, finite)
+  if (!is.null(ctrl$th)) {
+    ctrl$th <- tryCatch(as.numeric(ctrl$th),
                                warning = function(w) NA, error = function(e) NA)
-    if (any(length(ctrl$threshold) != 1L, is.na(ctrl$threshold),
-            is.infinite(ctrl$threshold)))
-      stop("'threshold' is not a number")
-    if (ctrl$threshold < .Machine$double.eps)
-      stop("'threshold' is not a positive number")
+    if (any(length(ctrl$th) != 1L, is.na(ctrl$th),
+            is.infinite(ctrl$th)))
+      stop("'th' is not a number")
+    if (ctrl$th < .Machine$double.eps)
+      stop("'th' is not a positive number")
   }
   ctrl
 }

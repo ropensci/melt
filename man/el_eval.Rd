@@ -40,23 +40,42 @@ A list with the following components:
 Computes empirical likelihood with general estimating functions.
 }
 \details{
-For a \eqn{p}-dimensional parameter \eqn{\theta_0} and an estimating
-  function \eqn{g}, consider the following moment condition:
-  \deqn{E{g(X_i, \theta_0)} = 0, i = 1, \dots, n.}
-  Given a value of \eqn{\theta}, \code{el_eval} computes the empirical
-  likelihood with a \eqn{n} by \eqn{p} numeric matrix argument \code{g},
-  whose rows consist of all \eqn{g(X_i, \theta)}. If \code{weights} is non
+Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
+  \eqn{i = 1, \dots, n}. Assume that there exists an unique \eqn{\theta_0 \in
+  {\rm{I\!R}}^p} that solves \eqn{\textnormal{E}[g(X_i, \theta)] = 0}, where
+  the estimating function \eqn{g(X_i, \theta)} takes values in
+  \eqn{{\rm{I\!R}}^p}. Given a value of \eqn{\theta}, the empirical
+  likelihood ratio is obtained by
+  \deqn{\mathcal{R}(\theta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
+  \right\}.}
+  The Lagrange multiplier \eqn{\lambda \equiv \lambda(\theta)} of the dual
+  problem leads to
+  \deqn{p_i = \frac{1}{n}\frac{1}{1 + \lambda^\top g(X_i, \theta)},}
+  where \eqn{\lambda} solves
+  \deqn{\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}
+  {1 + \lambda^\top g(X_i, \theta)} = 0.}
+  Then the log empirical likelihood ratio is given by
+  \deqn{\log\mathcal{R}(\theta) = -\sum_{i = 1}^n
+  \log(1 + \lambda^\top g(X_i, \theta)).}
+
+  \code{el_eval} performs the optimization via Newton’s algorithm to compute
+  \eqn{\lambda} with a \eqn{n} by \eqn{p} numeric matrix argument \code{g},
+  whose \eqn{i}th is \eqn{g(X_i, \theta)}. If \code{weights} is non
   \code{NULL}, the weights are rescaled to add up to \eqn{n}. The
   \code{control} argument is a list that can supply any of the following
   components:
 \describe{
-  \item{maxit}{The maximum number of iterations for optimization. Defaults to
-  \code{100}.}
-  \item{abstol}{The absolute convergence tolerance for log likelihood ratio
-  value. Defaults to \code{1e-06}.}
-  \item{threshold}{The threshold for log likelihood ratio value. The
-  computation stops if the value exceeds the threshold. Defaults to
-  \code{NULL} and sets the threshold to \eqn{20p}.}
+  \item{maxit}{The maximum number of iterations for the optimization.
+  Defaults to \code{100}.}
+  \item{tol}{The relative convergence tolerance, denoted by \eqn{\epsilon}.
+  The iteration stops when
+  \deqn{\|\lambda_{k} - \lambda_{k - 1}\| \leq
+  \epsilon\|\lambda_{k - 1}\| + \epsilon.} Defaults to \code{1e-06}.}
+  \item{th}{The threshold for the negative log empirical likelihood
+  ratio value. The iteration stops if the value exceeds the threshold.
+  Defaults to \code{NULL} and sets the threshold to \eqn{20p}.}
 }
 }
 \references{

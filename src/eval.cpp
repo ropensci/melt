@@ -28,9 +28,7 @@ Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
       Rcpp::Named("convergence") = el.conv),
         Rcpp::Named("statistic") = chisq_statistic,
         Rcpp::Named("df") = p,
-        Rcpp::Named("p.value") = pval,
-        Rcpp::Named("alternative") = "two.sided",
-        Rcpp::Named("method") = "One sample EL test");
+        Rcpp::Named("p.value") = pval);
   return result;
 }
 

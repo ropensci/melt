@@ -49,7 +49,7 @@ el_mean <- function(par, x, weights = NULL, control = list())
   # check control
   optcfg <- check_control(control)
   if (is.null(weights)) {
-    out <- EL_mean(par, mm, optcfg$maxit, optcfg$tol, optcfg$threshold)
+    out <- EL_mean(par, mm, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
     if (!is.numeric(weights))
       stop("'weights' must be a numeric vector")
@@ -61,7 +61,7 @@ el_mean <- function(par, x, weights = NULL, control = list())
     if (length(w) != NROW(mm))
       stop("'g' and 'weights' have incompatible dimensions")
     w <- (NROW(mm) / sum(w)) * w
-    out <- WEL_mean(par, mm, w, optcfg$maxit, optcfg$tol, optcfg$threshold)
+    out <- WEL_mean(par, mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
   }
   out$data.matrix <- mm
   out
