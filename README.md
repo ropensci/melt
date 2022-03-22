@@ -45,9 +45,9 @@ el_mean(par = 0, x = rnorm(n = 100))
 #> 
 #> Empirical Likelihood Test: mean 
 #> 
-#> Chisq = 4.0738, df = 1, p-value = 0.04355
+#> Chisq = 0.065866, df = 1, p-value = 0.7975
 #> maximum EL estimates:
-#> [1] 0.2045773
+#> [1] 0.02888881
 
 # linear regression
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)
@@ -61,13 +61,13 @@ summary(fit)
 #> 
 #> Coefficients:
 #>             estimate chisq-value  p-value    
-#> (Intercept)   37.285       44.10 3.13e-11 ***
-#> wt            -5.344       41.55 1.15e-10 ***
+#> (Intercept)   37.285       43.25 4.81e-11 ***
+#> wt            -5.344       40.00 2.54e-10 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> Multiple R-squared:  0.7528, Adjusted R-squared:  0.7446 
-#> Chisq-statistic: 41.55 on 1 DF, p-value: 1.149e-10
+#> Chisq-statistic:    40 on 1 DF, p-value: 2.54e-10
 
 # analysis of variance
 el_aov(formula = Sepal.Length ~ Species, data = iris)

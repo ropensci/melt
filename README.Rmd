@@ -40,7 +40,7 @@ devtools::install_github("markean/melt")
 ```{r eval = TRUE}
 library(melt)
 # one sample test (mean) 
-el_mean(par = 0, x = rnorm(n = 100))  
+el_mean(par = 0, x = rnorm(n = 100))   
 
 # linear regression
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)

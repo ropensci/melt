@@ -66,7 +66,7 @@ el_eval <- function(g, weights = NULL, control = list())
   # check control
   optcfg <- check_control(control)
   if (is.null(weights)) {
-    out <- EL_eval(g, optcfg$maxit, optcfg$abstol, optcfg$threshold)
+    out <- EL_eval(g, optcfg$maxit, optcfg$tol, optcfg$threshold)
   } else {
     if (!is.numeric(weights))
       stop("'weights' must be a numeric vector")
@@ -78,7 +78,7 @@ el_eval <- function(g, weights = NULL, control = list())
     if (length(w) != NROW(g))
       stop("'g' and 'weights' have incompatible dimensions")
     w <- (NROW(g) / sum(w)) * w
-    out <- WEL_eval(g, w, optcfg$maxit, optcfg$abstol, optcfg$threshold)
+    out <- WEL_eval(g, w, optcfg$maxit, optcfg$tol, optcfg$threshold)
   }
   out
 }

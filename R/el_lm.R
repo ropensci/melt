@@ -61,8 +61,7 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(), ke
     action <- list(NULL)
 
   optcfg <- check_control(control)
-  out <- EL_lm(mm, intercept, optcfg$maxit, optcfg$abstol,
-               optcfg$threshold)
+  out <- EL_lm(mm, intercept, optcfg$maxit, optcfg$tol, optcfg$threshold)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)

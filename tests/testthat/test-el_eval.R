@@ -3,7 +3,7 @@ test_that("convergence check", {
   x <- c(-1.5, 1.5, rnorm(10))
   grid <- seq(-1, 1, length.out = 1000)
   conv <- function(par) {
-    el_eval(x - par, control = list(maxit = 20L, abstol = 1e-08,
+    el_eval(x - par, control = list(maxit = 20L, tol = 1e-08,
                                     threshold = 1e+10))$optim$convergence
   }
   expect_true(all(sapply(grid, conv)))
@@ -15,8 +15,7 @@ test_that("identical weights == no weights", {
   par <- runif(1, min(x), max(x))
   g <- x - par
   w <- rep(runif(1), length(x))
-  optcfg <- list(maxit = 20L, abstol = 1e-08, threshold = 1e+03)
-
+  optcfg <- list(maxit = 20L, tol = 1e-08, threshold = 1e+03)
   a1 <- el_eval(g, control = optcfg)$optim
   a2 <- el_eval(g, w, control = optcfg)$optim
   expect_equal(a1$lambda, a2$lambda)

@@ -141,7 +141,7 @@ el_test2 <- function(object, rhs, control = list())
   ctrl[names(control)] <- control
   optcfg <- check_control(ctrl)
   out <- EL_test(object$optim$type, rhs, object$data.matrix,
-                 optcfg$maxit, optcfg$abstol, optcfg$threshold)
+                 optcfg$maxit, optcfg$tol, optcfg$threshold)
   class(out) <- class(object)
   out
 }

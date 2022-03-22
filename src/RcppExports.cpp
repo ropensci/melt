@@ -12,22 +12,22 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // EL_eval
-Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_EL_eval(SEXP gSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g, const int maxit, const double abstol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_EL_eval(SEXP gSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type g(gSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_eval(g, maxit, abstol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_eval(g, maxit, abstol, th));
     return rcpp_result_gen;
 END_RCPP
 }
 // WEL_eval
-Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_WEL_eval(SEXP gSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double abstol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_WEL_eval(SEXP gSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,8 +35,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(WEL_eval(g, w, maxit, abstol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(WEL_eval(g, w, maxit, abstol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -58,8 +58,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // EL_lm
-Rcpp::List EL_lm(const Eigen::MatrixXd& data, const bool intercept, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_EL_lm(SEXP dataSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+Rcpp::List EL_lm(const Eigen::MatrixXd& data, const bool intercept, const int maxit, const double abstol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_EL_lm(SEXP dataSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -67,14 +67,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type intercept(interceptSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_lm(data, intercept, maxit, abstol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_lm(data, intercept, maxit, abstol, th));
     return rcpp_result_gen;
 END_RCPP
 }
 // EL_mean
-Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double tol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_EL_mean(SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thresholdSEXP) {
+Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_EL_mean(SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -82,14 +82,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_mean(par, x, maxit, tol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_mean(par, x, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
 // WEL_mean
-Rcpp::List WEL_mean(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double tol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_WEL_mean(SEXP parSEXP, SEXP xSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thresholdSEXP) {
+Rcpp::List WEL_mean(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_WEL_mean(SEXP parSEXP, SEXP xSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -98,14 +98,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(WEL_mean(par, x, w, maxit, tol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(WEL_mean(par, x, w, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
 // EL_confint
-Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x, const std::string type, const Eigen::Map<Eigen::VectorXd>& init, const double cutoff, const std::vector<int>& idx, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_EL_confint(SEXP xSEXP, SEXP typeSEXP, SEXP initSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+Eigen::MatrixXd EL_confint(const Eigen::Map<Eigen::MatrixXd>& x, const std::string type, const Eigen::Map<Eigen::VectorXd>& init, const double cutoff, const std::vector<int>& idx, const int maxit, const double abstol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_EL_confint(SEXP xSEXP, SEXP typeSEXP, SEXP initSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -116,14 +116,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::vector<int>& >::type idx(idxSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_confint(x, type, init, cutoff, idx, maxit, abstol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_confint(x, type, init, cutoff, idx, maxit, abstol, th));
     return rcpp_result_gen;
 END_RCPP
 }
 // EL_confint2
-Eigen::MatrixXd EL_confint2(const Eigen::Map<Eigen::MatrixXd>& x, const std::string type, const Eigen::VectorXd par0, const double cutoff, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_EL_confint2(SEXP xSEXP, SEXP typeSEXP, SEXP par0SEXP, SEXP cutoffSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+Eigen::MatrixXd EL_confint2(const Eigen::Map<Eigen::MatrixXd>& x, const std::string type, const Eigen::VectorXd par0, const double cutoff, const int maxit, const double abstol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_EL_confint2(SEXP xSEXP, SEXP typeSEXP, SEXP par0SEXP, SEXP cutoffSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -133,8 +133,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type cutoff(cutoffSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_confint2(x, type, par0, cutoff, maxit, abstol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_confint2(x, type, par0, cutoff, maxit, abstol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -162,8 +162,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // EL_test
-Rcpp::List EL_test(const std::string method, const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double abstol, const Rcpp::Nullable<double> threshold);
-RcppExport SEXP _melt_EL_test(SEXP methodSEXP, SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thresholdSEXP) {
+Rcpp::List EL_test(const std::string method, const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double abstol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_EL_test(SEXP methodSEXP, SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -172,8 +172,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_test(method, par, x, maxit, abstol, threshold));
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(EL_test(method, par, x, maxit, abstol, th));
     return rcpp_result_gen;
 END_RCPP
 }
