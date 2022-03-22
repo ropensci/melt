@@ -45,9 +45,9 @@ el_mean(par = 0, x = rnorm(n = 100))
 #> 
 #> Empirical Likelihood Test: mean 
 #> 
-#> Chisq = 0.065866, df = 1, p-value = 0.7975
+#> Chisq = 1.2659, df = 1, p-value = 0.2605
 #> maximum EL estimates:
-#> [1] 0.02888881
+#> [1] 0.09999666
 
 # linear regression
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)
