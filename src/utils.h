@@ -11,8 +11,13 @@ Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::MatrixXd>& x,
 Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
                      const Eigen::Ref<const Eigen::VectorXd>& par);
 
+Eigen::VectorXd gr_nloglr_mean(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data);
+
 Eigen::VectorXd gr_nloglr_lm(
-        const Eigen::Ref<const Eigen::VectorXd>& lambda,
+        const Eigen::Ref<const Eigen::VectorXd>& l,
         const Eigen::Ref<const Eigen::MatrixXd>& g,
         const Eigen::Ref<const Eigen::MatrixXd>& data);
 #endif

@@ -25,7 +25,7 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
              const Eigen::Ref<const Eigen::VectorXd>&,
              const Eigen::Ref<const Eigen::MatrixXd>&,
              const Eigen::Ref<const Eigen::MatrixXd>&)>> gr_map{
-               {{"mean", gr_nloglr_lm},
+               {{"mean", gr_nloglr_mean},
                 {"lm", gr_nloglr_lm}}
                };
   return gr_map[method];
@@ -61,7 +61,7 @@ void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g)
 }
 
 void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
-               const Eigen::Ref<const Eigen::VectorXd>& w)
+                const Eigen::Ref<const Eigen::VectorXd>& w)
 {
   // maximization
   while (!conv && iter != maxit && nllr <= th) {

@@ -27,7 +27,7 @@ A list with the following components:
       rescaled weights are returned.}
       \item{logLR}{The (weighted) log empirical likelihood ratio value.}
       \item{iterations}{The number of iterations performed.}
-      \item{convergence}{A logical vector. \code{TRUE} indicates the
+      \item{convergence}{A logical vector. \code{TRUE} indicates
       convergence of the algorithm.}
     }
   }

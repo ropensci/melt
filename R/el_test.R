@@ -119,8 +119,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
 #' @export
-el_test2 <- function(object, rhs, control = list())
-{
+el_test2 <- function(object, rhs, control = list()) {
   if (!inherits(object, "el_test"))
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
@@ -148,41 +147,52 @@ el_test2 <- function(object, rhs, control = list())
 
 #' @importFrom stats complete.cases qchisq
 #' @export
-confint.el_test <- function(object, parm, level = 0.95, ...) {
+confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
+  # check level and control arguments
+  if (!missing(level) &&
+      (length(level) != 1L || !is.finite(level) || level < 0 || level > 1))
+    stop("'conf.level' must be a single number between 0 and 1")
+  optcfg <- check_control(control)
+  # set cutoff and coefficients
+  cutoff <- qchisq(level, 1L)
   cf <- coef(object)
-  pnames <- if (is.null(names(cf))) seq(length(cf)) else names(cf)
+  # index for location of parameters
   idx <- seq(length(cf))
+  # rownames of the confidence interval matrix
+  pnames <- if (is.null(names(cf))) idx else names(cf)
+  # if parm is supplied, modify idx and pnames accordingly
   if (!missing(parm)) {
     if (is.numeric(parm)) {
-      idx <- parm
       pnames <- pnames[parm]
+      idx <- match(pnames, names(cf))
     } else if (is.character(parm)) {
       idx <- match(parm, pnames)
-      pnames <- pnames[idx]
+      pnames <- parm
     } else {
       stop("invalid 'parm' specified")
     }
   }
-  stopifnot(complete.cases(pnames))
-  if (!missing(level) &&
-      (length(level) != 1L || !is.finite(level) ||
-       level < 0 || level > 1))
-    stop("'conf.level' must be a single number between 0 and 1")
+  # number of rows of the confidence interval matrix
+  p <- length(idx)
+  # compute the confidence interval matrix
   if (level == 0) {
-    ci <- matrix(rep(cf, 2L), ncol = 2L)
+    ci <- matrix(rep(cf[idx], 2L), ncol = 2L)
   } else if (level == 1) {
-    p <- length(pnames)
-    ci <- matrix(c(rep(-Inf, p), rep(Inf, p)), ncol = 2L)
+    ci <- matrix(NA, nrow = p, ncol = 2L)
+    ci[which(!is.na(idx)), ] <- c(-Inf, Inf)
+  } else if (all(is.na(idx))) {
+    ci <- matrix(NA, nrow = p, ncol = 2L)
+  } else if (any(is.na(idx))) {
+    idx_na <- which(is.na(idx))
+    ci <- matrix(NA, nrow = p, ncol = 2L)
+    ci[-idx_na, ] <- EL_confint(object$optim$type, cf, object$data.matrix,
+                                cutoff, idx[-idx_na], optcfg$maxit,
+                                optcfg$tol, optcfg$th)
   } else {
-    cutoff <- qchisq(level, 1L)
-    optcfg <- object$optim$control
-    ci <- EL_confint2(object$data.matrix, object$optim$type, cf, cutoff,
-                      optcfg$maxit, optcfg$abstol, optcfg$threshold)
+    ci <- EL_confint(object$optim$type, cf, object$data.matrix, cutoff, idx,
+                     optcfg$maxit, optcfg$tol, optcfg$th)
   }
-  a <- (1 - level)/2
-  a <- c(a, 1 - a)
-  pct <- paste(round(100 * a, 1L), "%")
-  dimnames(ci) <- list(pnames, pct)
+  dimnames(ci) <- list(pnames, c("lower", "upper"))
   ci
 }
 
