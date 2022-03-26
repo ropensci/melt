@@ -110,42 +110,68 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   out
 }
 
-#' Test2 (development version)
+#' Test linear hypothesis
 #'
 #' Test2 (development version)
 #'
-#' @param object An object
+#' @param object A fitted "\code{el_test}" object.
+#' @param lhs A matrix
 #' @param rhs A rhs
-#' @param control A list of control parameters. See ‘Details’ in
-#'   \code{\link{el_eval}}.
+#' @param control A list of control parameters. See ‘Details’.
 #' @export
-el_test2 <- function(object, rhs, control = list()) {
+lht <- function(object, lhs, rhs, control = list()) {
   if (!inherits(object, "el_test"))
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
     stop("'object' has no 'data.matrix'; fit the model with 'keep.data' = TRUE")
   p <- object$df
-  if (missing(rhs)) {
-    rhs <- rep(0, p)
-  } else {
-    if (!is.numeric(rhs) || any(!is.finite(rhs)))
-      stop("'rhs' must be a finite numeric vector")
-    if (length(rhs) != p)
-      stop("'rhs' and 'object' have incompatible dimensions")
-  }
+  # if (missing(rhs)) {
+  #   rhs <- rep(0, p)
+  # } else {
+  #   if (!is.numeric(rhs) || any(!is.finite(rhs)))
+  #     stop("'rhs' must be a finite numeric vector")
+  #   if (length(rhs) != p)
+  #     stop("'rhs' and 'object' have incompatible dimensions")
+  # }
   # if (missing(lhs))
   #   lhs <- diag(nrow = p)
 
   ctrl <- object$optim$control
   ctrl[names(control)] <- control
-  optcfg <- check_control(ctrl)
-  out <- EL_test(object$optim$type, rhs, object$data.matrix,
-                 optcfg$maxit, optcfg$tol, optcfg$threshold)
+  optcfg <- check_control(control)
+  out <- EL_lht(object$optim$type, object$coefficients, object$data.matrix, lhs,
+                rhs, optcfg$maxit, optcfg$tol, optcfg$th)
   class(out) <- class(object)
   out
 }
 
+#' Confidence intervals for model parameters
+#'
+#' Computes confidence intervals for one or more parameters in a fitted model.
+#' Package \strong{melt} adds a method for objects inheriting from class
+#'  "\code{el_test}".
+#'
+#' @param object A fitted "\code{el_test}" object.
+#' @param parm A specification of which parameters are to be given confidence
+#'   intervals, either a vector of numbers or a vector of names. If missing, all
+#'   parameters are considered.
+#' @param level A confidence level required.
+#' @param control A list of control parameters. See ‘Details’ in
+#'   \code{\link{lht}}.
+#' @param ... Additional argument(s) for methods.
 #' @importFrom stats complete.cases qchisq
+#' @return A matrix with columns giving lower and upper confidence limits for
+#'  each parameter. In contrast to other methods that rely on studentization,
+#'  the lower and upper limits obatained from empirical likelihood do not
+#'  correspond to the (1 - level) / 2 and 1 - (1 - level) / 2 in \%,
+#'  respectively.
+#' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
+#' "Empirical Likelihood for the Analysis of Experimental Designs,"
+#' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
+#' @seealso \link{lht}
+#' @examples
+#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+#' confint(fit)
 #' @export
 confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   # check level and control arguments
@@ -156,7 +182,7 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   # set cutoff and coefficients
   cutoff <- qchisq(level, 1L)
   cf <- coef(object)
-  # index for location of parameters
+  # index for tracking the parameters
   idx <- seq(length(cf))
   # rownames of the confidence interval matrix
   pnames <- if (is.null(names(cf))) idx else names(cf)

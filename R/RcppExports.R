@@ -33,7 +33,7 @@ pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, 
     .Call(`_melt_pairwise`, x, c, control, k, level, interval, method, B, nthread, progress, threshold, maxit, abstol)
 }
 
-EL_test <- function(method, par, x, maxit, abstol, th) {
-    .Call(`_melt_EL_test`, method, par, x, maxit, abstol, th)
+EL_lht <- function(method, par0, x, lhs, rhs, maxit, tol, th) {
+    .Call(`_melt_EL_lht`, method, par0, x, lhs, rhs, maxit, tol, th)
 }
 

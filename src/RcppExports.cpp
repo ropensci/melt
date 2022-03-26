@@ -144,19 +144,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EL_test
-Rcpp::List EL_test(const std::string method, const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double abstol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_EL_test(SEXP methodSEXP, SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP abstolSEXP, SEXP thSEXP) {
+// EL_lht
+Rcpp::List EL_lht(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::MatrixXd>& lhs, const Eigen::Map<Eigen::VectorXd>& rhs, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_EL_lht(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par(parSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type lhs(lhsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type rhs(rhsSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type abstol(abstolSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_test(method, par, x, maxit, abstol, th));
+    rcpp_result_gen = Rcpp::wrap(EL_lht(method, par0, x, lhs, rhs, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -170,7 +172,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_WEL_mean", (DL_FUNC) &_melt_WEL_mean, 6},
     {"_melt_EL_confint", (DL_FUNC) &_melt_EL_confint, 8},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
-    {"_melt_EL_test", (DL_FUNC) &_melt_EL_test, 6},
+    {"_melt_EL_lht", (DL_FUNC) &_melt_EL_lht, 8},
     {NULL, NULL, 0}
 };
 

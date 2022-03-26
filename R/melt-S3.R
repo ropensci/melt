@@ -1,6 +1,5 @@
 #' @export
-print.el_aov <- function(x, ...)
-{
+print.el_aov <- function(x, ...) {
   stopifnot(inherits(x, "melt"))
   cat("Call:\n")
   dput(x$call, control = NULL)

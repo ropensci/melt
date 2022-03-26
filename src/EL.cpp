@@ -198,7 +198,7 @@ EL::EL(const std::string method,
   const double norm0 = (proj * gr_fcn(l, g, x)).norm();
 
   /// minimization (projected gradient descent) ///
-  double gamma = 1.0 / n;    // step size
+  double gamma = 1.0;
   while (!conv && iter != maxit) {
     // update parameter
     Eigen::VectorXd par_tmp = par - gamma * proj * gr_fcn(l, g, x);
@@ -258,8 +258,6 @@ Eigen::ArrayXd EL::log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
   const Eigen::MatrixXd g = g_fcn(x, par);
   return  -w * PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
 }
-
-
 
 
 

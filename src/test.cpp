@@ -1,18 +1,20 @@
 #include "EL.h"
 
 // [[Rcpp::export]]
-Rcpp::List EL_test(const std::string method,
-                   const Eigen::Map<Eigen::VectorXd>& par,
-                   const Eigen::Map<Eigen::MatrixXd>& x,
-                   const int maxit,
-                   const double abstol,
-                   const Rcpp::Nullable<double> th) {
-  const int p = par.size();
-  const EL el(method, par, x, maxit, abstol, th_nloglr(p, th));
-  const double chisq_statistic = 2.0 * el.nllr;
+Rcpp::List EL_lht(const std::string method,
+                  const Eigen::Map<Eigen::VectorXd>& par0,
+                  const Eigen::Map<Eigen::MatrixXd>& x,
+                  const Eigen::Map<Eigen::MatrixXd>& lhs,
+                  const Eigen::Map<Eigen::VectorXd>& rhs,
+                  const int maxit,
+                  const double tol,
+                  const Rcpp::Nullable<double> th) {
+  const int p = lhs.rows();
+  const EL el(method, par0, x, lhs, rhs, maxit, tol, th_nloglr(p, th));
+  const double chisq_val = 2.0 * el.nllr;
   Rcpp::Function pchisq("pchisq");
   const double pval = Rcpp::as<double>(
-    pchisq(chisq_statistic, Rcpp::Named("df") = p,
+    pchisq(chisq_val, Rcpp::Named("df") = p,
            Rcpp::Named("lower.tail") = false));
 
   Rcpp::List result = Rcpp::List::create(
@@ -22,11 +24,8 @@ Rcpp::List EL_test(const std::string method,
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-    Rcpp::Named("statistic") = chisq_statistic,
+    Rcpp::Named("statistic") = chisq_val,
     Rcpp::Named("df") = p,
-    Rcpp::Named("p.value") = pval,
-    Rcpp::Named("null.value") = par,
-    Rcpp::Named("alternative") = "two.sided",
-    Rcpp::Named("method") = "One sample EL test");
+    Rcpp::Named("p.value") = pval);
   return result;
 }
