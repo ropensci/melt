@@ -17,7 +17,7 @@ check_control <- function(control = list()) {
   }
   ##
 
-  # maxit: Integer (positive)
+  # maxit: integer (positive)
   ctrl$maxit <- tryCatch(as.integer(ctrl$maxit),
                          warning = function(w) NA, error = function(e) NA)
   if (any(length(ctrl$maxit) != 1L, is.na(ctrl$maxit)))
@@ -25,7 +25,7 @@ check_control <- function(control = list()) {
   if (ctrl$maxit < 1)
     stop("'maxit' is not a positive integer")
 
-  # tol: Numeric (positive, finite)
+  # tol: numeric (positive, finite)
   ctrl$tol <- tryCatch(as.numeric(ctrl$tol),
                           warning = function(w) NA, error = function(e) NA)
   if (any(length(ctrl$tol) != 1L, is.na(ctrl$tol),
@@ -45,4 +45,18 @@ check_control <- function(control = list()) {
       stop("'th' is not a positive number")
   }
   ctrl
+}
+
+check_weights <- function(weights, nw) {
+  if (!is.numeric(weights))
+    stop("'weights' must be a numeric vector")
+  w <- as.numeric(weights)
+  if (any(!is.finite(w)))
+    stop("'weights' must be a finite numeric vector")
+  if (any(w < 0))
+    stop("negative 'weights' are not allowed")
+  if (length(w) != nw)
+    stop("length of 'weights' is incompatible with data")
+  w <- (nw / sum(w)) * w
+  w
 }

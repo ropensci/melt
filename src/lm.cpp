@@ -1,11 +1,11 @@
 #include "EL.h"
 
 // [[Rcpp::export]]
-Rcpp::List EL_lm(const Eigen::MatrixXd& data,
-                 const bool intercept,
-                 const int maxit,
-                 const double tol,
-                 const Rcpp::Nullable<double> th) {
+Rcpp::List lm_(const Eigen::MatrixXd& data,
+               const bool intercept,
+               const int maxit,
+               const double tol,
+               const Rcpp::Nullable<double> th) {
   // check design matrix
   const Eigen::VectorXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
@@ -50,7 +50,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
-      Rcpp::Named("type") = "lm",
+      Rcpp::Named("method") = "lm",
       Rcpp::Named("lambda") = el.l,
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
@@ -61,7 +61,7 @@ Rcpp::List EL_lm(const Eigen::MatrixXd& data,
         Rcpp::Named("convergence") = conv)),
     Rcpp::Named("coefficients") = bhat,
     Rcpp::Named("residuals") = resid,
-    Rcpp::Named("df") = p,
+    Rcpp::Named("rank") = p,
     Rcpp::Named("fitted.values") = fit_val);
   result.attr("class") = Rcpp::CharacterVector({"el_lm", "el_test"});
   return result;

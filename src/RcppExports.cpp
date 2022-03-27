@@ -11,9 +11,9 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// EL_eval
-Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g, const int maxit, const double tol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_EL_eval(SEXP gSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+// eval_
+Rcpp::List eval_(const Eigen::Map<Eigen::MatrixXd>& g, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_eval_(SEXP gSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,13 +21,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_eval(g, maxit, tol, th));
+    rcpp_result_gen = Rcpp::wrap(eval_(g, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
-// WEL_eval
-Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double tol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_WEL_eval(SEXP gSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+// eval_w_
+Rcpp::List eval_w_(const Eigen::Map<Eigen::MatrixXd>& g, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_eval_w_(SEXP gSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -36,7 +36,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(WEL_eval(g, w, maxit, tol, th));
+    rcpp_result_gen = Rcpp::wrap(eval_w_(g, w, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -57,9 +57,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EL_lm
-Rcpp::List EL_lm(const Eigen::MatrixXd& data, const bool intercept, const int maxit, const double tol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_EL_lm(SEXP dataSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+// lm_
+Rcpp::List lm_(const Eigen::MatrixXd& data, const bool intercept, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_lm_(SEXP dataSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -68,13 +68,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_lm(data, intercept, maxit, tol, th));
+    rcpp_result_gen = Rcpp::wrap(lm_(data, intercept, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
-// EL_mean
-Rcpp::List EL_mean(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double tol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_EL_mean(SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+// mean_
+Rcpp::List mean_(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_mean_(SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -83,13 +83,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_mean(par, x, maxit, tol, th));
+    rcpp_result_gen = Rcpp::wrap(mean_(par, x, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
-// WEL_mean
-Rcpp::List WEL_mean(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double tol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_WEL_mean(SEXP parSEXP, SEXP xSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+// mean_w_
+Rcpp::List mean_w_(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::ArrayXd>& w, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_mean_w_(SEXP parSEXP, SEXP xSEXP, SEXP wSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -99,7 +99,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(WEL_mean(par, x, w, maxit, tol, th));
+    rcpp_result_gen = Rcpp::wrap(mean_w_(par, x, w, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -164,12 +164,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_melt_EL_eval", (DL_FUNC) &_melt_EL_eval, 4},
-    {"_melt_WEL_eval", (DL_FUNC) &_melt_WEL_eval, 5},
+    {"_melt_eval_", (DL_FUNC) &_melt_eval_, 4},
+    {"_melt_eval_w_", (DL_FUNC) &_melt_eval_w_, 5},
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
-    {"_melt_EL_lm", (DL_FUNC) &_melt_EL_lm, 5},
-    {"_melt_EL_mean", (DL_FUNC) &_melt_EL_mean, 5},
-    {"_melt_WEL_mean", (DL_FUNC) &_melt_WEL_mean, 6},
+    {"_melt_lm_", (DL_FUNC) &_melt_lm_, 5},
+    {"_melt_mean_", (DL_FUNC) &_melt_mean_, 5},
+    {"_melt_mean_w_", (DL_FUNC) &_melt_mean_w_, 6},
     {"_melt_EL_confint", (DL_FUNC) &_melt_EL_confint, 8},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
     {"_melt_EL_lht", (DL_FUNC) &_melt_EL_lht, 8},

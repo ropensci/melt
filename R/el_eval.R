@@ -72,32 +72,20 @@
 #'   The Annals of Statistics 22 (1).
 #'   \doi{10.1214/aos/1176325370}.
 #' @export
-el_eval <- function(g, weights = NULL, control = list())
-{
-  # check g
-  if (!is.matrix(g))
-    g <- as.matrix(g)
-  if (!is.numeric(g) || any(!is.finite(g)))
+el_eval <- function(g, weights = NULL, control = list()) {
+  mm <- as.matrix(g)
+  if (!is.numeric(mm) || any(!is.finite(mm)))
     stop("'g' must be a finite numeric matrix")
-  if (NROW(g) < 2L)
+  if (NROW(mm) < 2L)
     stop("not enough 'g' observations")
 
   # check control
   optcfg <- check_control(control)
   if (is.null(weights)) {
-    out <- EL_eval(g, optcfg$maxit, optcfg$tol, optcfg$th)
+    out <- eval_(mm, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
-    if (!is.numeric(weights))
-      stop("'weights' must be a numeric vector")
-    w <- as.numeric(weights)
-    if (any(!is.finite(w)))
-      stop("'weights' must be a finite numeric vector")
-    if (any(w < 0))
-      stop("negative 'weights' are not allowed")
-    if (length(w) != NROW(g))
-      stop("'g' and 'weights' have incompatible dimensions")
-    w <- (NROW(g) / sum(w)) * w
-    out <- WEL_eval(g, w, optcfg$maxit, optcfg$tol, optcfg$th)
+    w <- check_weights(weights, NROW(mm))
+    out <- eval_w_(mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
   }
   out
 }

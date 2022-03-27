@@ -139,7 +139,7 @@ lht <- function(object, lhs, rhs, control = list()) {
   ctrl <- object$optim$control
   ctrl[names(control)] <- control
   optcfg <- check_control(control)
-  out <- EL_lht(object$optim$type, object$coefficients, object$data.matrix, lhs,
+  out <- EL_lht(object$optim$method, object$coefficients, object$data.matrix, lhs,
                 rhs, optcfg$maxit, optcfg$tol, optcfg$th)
   class(out) <- class(object)
   out
@@ -211,11 +211,11 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))
     ci <- matrix(NA, nrow = p, ncol = 2L)
-    ci[-idx_na, ] <- EL_confint(object$optim$type, cf, object$data.matrix,
+    ci[-idx_na, ] <- EL_confint(object$optim$method, cf, object$data.matrix,
                                 cutoff, idx[-idx_na], optcfg$maxit,
                                 optcfg$tol, optcfg$th)
   } else {
-    ci <- EL_confint(object$optim$type, cf, object$data.matrix, cutoff, idx,
+    ci <- EL_confint(object$optim$method, cf, object$data.matrix, cutoff, idx,
                      optcfg$maxit, optcfg$tol, optcfg$th)
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))
@@ -223,38 +223,16 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
 }
 
 #' @export
-print.el_test <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat("Empirical Likelihood Test:", x$optim$type, "\n")
-  cat("\n")
+print.el_test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+  cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
   out <- character()
-  if (!is.null(x$statistic))
-    out <- c(out, paste("Chisq", names(x$statistic), "=",
-                        format(x$statistic, digits = max(1L, digits - 2L))))
-  if (!is.null(x$df))
-    out <- c(out, paste("df", "=", x$df))
-  if (!is.null(x$p.value)) {
-    fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
-    out <- c(out, paste("p-value", if (startsWith(fp, "<")) fp else paste("=",
-                                                                          fp)))
+  if (!is.null(x$statistic)) {
+    out <- c(out,
+             paste("Chisq:", format(x$statistic, digits = digits)),
+             paste("df:", x$df),
+             paste("p-value:", format.pval(x$p.value, digits = digits)))
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
-  if (!is.null(x$alternative)) {
-    cat("alternative hypothesis: ")
-    if (!is.null(x$null.value)) {
-      if (length(x$null.value) == 1L) {
-        alt.char <- switch(x$alternative, two.sided = "not equal to",
-                           less = "less than", greater = "greater than")
-        cat("true ", names(x$null.value), " is ", alt.char,
-            " ", x$null.value, "\n", sep = "")
-      }
-      else {
-        cat(x$alternative, "\nnull values:\n", sep = "")
-        print(x$null.value, digits = digits, ...)
-      }
-    }
-    else cat(x$alternative, "\n", sep = "")
-  }
   if (!is.null(x$coefficients)) {
     cat("maximum EL estimates:\n")
     print(x$coefficients, digits = digits, ...)

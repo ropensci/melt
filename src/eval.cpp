@@ -1,10 +1,10 @@
 #include "EL.h"
 
 // [[Rcpp::export]]
-Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
-                   const int maxit,
-                   const double tol,
-                   const Rcpp::Nullable<double> th)
+Rcpp::List eval_(const Eigen::Map<Eigen::MatrixXd>& g,
+                 const int maxit,
+                 const double tol,
+                 const Rcpp::Nullable<double> th)
 {
   const int n = g.rows();
   const int p = g.cols();
@@ -33,11 +33,11 @@ Rcpp::List EL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
 }
 
 // [[Rcpp::export]]
-Rcpp::List WEL_eval(const Eigen::Map<Eigen::MatrixXd>& g,
-                    const Eigen::Map<Eigen::ArrayXd>& w,
-                    const int maxit,
-                    const double tol,
-                    const Rcpp::Nullable<double> th)
+Rcpp::List eval_w_(const Eigen::Map<Eigen::MatrixXd>& g,
+                   const Eigen::Map<Eigen::ArrayXd>& w,
+                   const int maxit,
+                   const double tol,
+                   const Rcpp::Nullable<double> th)
 {
   const int n = g.rows();
   const int p = g.cols();

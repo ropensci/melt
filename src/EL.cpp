@@ -260,6 +260,17 @@ Eigen::ArrayXd EL::log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
 }
 
 
+// Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
+//                         const Eigen::Ref<const Eigen::ArrayXd>& w) {
+//   const Eigen::MatrixXd g = g_fcn(x, par);
+//   return  w.log() - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+// }
+
+
+
+
+
+
 
 /* Constructor for PSEUDO_LOG class
  * Last updated: 03/19/21
