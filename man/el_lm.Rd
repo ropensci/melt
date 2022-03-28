@@ -47,5 +47,5 @@ Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
   \doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\link{el_aov}, \link{el_eval}
+\link{el_eval}
 }

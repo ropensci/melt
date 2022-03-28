@@ -58,17 +58,33 @@ BEGIN_RCPP
 END_RCPP
 }
 // lm_
-Rcpp::List lm_(const Eigen::MatrixXd& data, const bool intercept, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& data, const bool intercept, const int maxit, const double tol, const Rcpp::Nullable<double> th);
 RcppExport SEXP _melt_lm_(SEXP dataSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const bool >::type intercept(interceptSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
     rcpp_result_gen = Rcpp::wrap(lm_(data, intercept, maxit, tol, th));
+    return rcpp_result_gen;
+END_RCPP
+}
+// lm_w_
+Rcpp::List lm_w_(const Eigen::Map<Eigen::MatrixXd>& data, const Eigen::Map<Eigen::ArrayXd>& w, const bool intercept, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_lm_w_(SEXP dataSEXP, SEXP wSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const bool >::type intercept(interceptSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_w_(data, w, intercept, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -103,9 +119,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EL_confint
-Eigen::MatrixXd EL_confint(const std::string type, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const double cutoff, const Rcpp::IntegerVector& idx, const int maxit, const double tol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_EL_confint(SEXP typeSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+// confint_
+Eigen::MatrixXd confint_(const std::string type, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const double cutoff, const Rcpp::IntegerVector& idx, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_confint_(SEXP typeSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -117,7 +133,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(EL_confint(type, par0, x, cutoff, idx, maxit, tol, th));
+    rcpp_result_gen = Rcpp::wrap(confint_(type, par0, x, cutoff, idx, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -168,9 +184,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_eval_w_", (DL_FUNC) &_melt_eval_w_, 5},
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
     {"_melt_lm_", (DL_FUNC) &_melt_lm_, 5},
+    {"_melt_lm_w_", (DL_FUNC) &_melt_lm_w_, 6},
     {"_melt_mean_", (DL_FUNC) &_melt_mean_, 5},
     {"_melt_mean_w_", (DL_FUNC) &_melt_mean_w_, 6},
-    {"_melt_EL_confint", (DL_FUNC) &_melt_EL_confint, 8},
+    {"_melt_confint_", (DL_FUNC) &_melt_confint_, 8},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
     {"_melt_EL_lht", (DL_FUNC) &_melt_EL_lht, 8},
     {NULL, NULL, 0}

@@ -15,11 +15,11 @@
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4).
 #'   \doi{10.1214/aos/1176348368}.
-#' @seealso \link{el_aov}, \link{el_eval}
+#' @seealso \link{el_eval}
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' summary(fit)
-#' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames terms
+#' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames
 #' @export
 el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
                   keep.data = TRUE) {
@@ -30,22 +30,30 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
   mf$drop.unused.levels <- TRUE
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
-  mt <- attr(mf, "terms")
-  if (is.empty.model(mt))
-    stop("empty model specified")
-  intercept <- attr(mt, "intercept")
-  y <- model.response(mf, "numeric")
-  if (is.matrix(y))
-    stop("'el_lm' does not support multiple responses")
-  nm <- names(y)
-  x <- model.matrix(mt, mf)
-  mm <- cbind(y, x)
-
-
 
   action <- if (missing(na.action) && is.null(attr(mf, "na.action"))) list(NULL)
   else attr(mf, "na.action")
-  if (is.null(action)) action <- list(NULL)
+  if (is.null(action))
+    action <- list(NULL)
+
+  mt <- attr(mf, "terms")
+  intercept <- attr(mt, "intercept")
+  y <- model.response(mf, "numeric")
+  nm <- names(y)
+  if (is.matrix(y))
+    stop("'el_lm' does not support multiple responses")
+  x <- model.matrix(mt, mf)
+  mm <- cbind(y, x)
+
+  if (is.empty.model(mt)) {
+    out <- list(coefficients = numeric(), residuals = y, rank = 0L,
+                fitted.values = 0 * y, na.action = action,
+                xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
+    if (keep.data)
+      out$data.matrix <- mm
+    class(out) <- c("el_lm", "el_test")
+    return(out)
+  }
 
   if (is.null(weights)) {
     w <- NULL
@@ -58,12 +66,10 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)
-  out$df.residual <- nrow(x) - out$rank
   out$na.action <- action
   out$xlevels <- .getXlevels(mt, mf)
   out$call <- cl
   out$terms <- mt
-  # out$tmp <- w
   if (keep.data)
     out$data.matrix <- mm
   out
@@ -122,12 +128,12 @@ logLik.el_lm <- function(object, ...) {
 print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
       "\n\n", sep = "")
-  if (length(coef(x))) {
+  if (length(coef(x)) == 0L) {
+    cat("No coefficients\n")
+  } else {
     cat("Coefficients:\n")
     print.default(format(coef(x), digits = digits), print.gap = 2L,
                   quote = FALSE)
-  } else {
-    cat("No coefficients\n")
   }
   cat("\n")
   invisible(x)
@@ -137,7 +143,6 @@ print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 summary.el_lm <- function(object, ...) {
   z <- object
   p <- z$rank
-  rdf <- z$df.residual
   if (p == 0) {
     r <- z$residuals
     n <- length(r)
@@ -154,15 +159,11 @@ summary.el_lm <- function(object, ...) {
     stop("invalid 'el_lm' object")
   if (is.null(z$terms))
     stop("invalid 'el_lm' object:  no 'terms' component")
-  n <- p + rdf
-  if (is.na(z$df.residual) || n - p != z$df.residual)
-    warning("residual degrees of freedom in object suggest this is not an \"el_lm\" fit")
   ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
   ans$coefficients <- cbind(estimate = z$coefficients,
                             `chisq-value` = z$optim$par.tests$statistic,
                             `p-value` = z$optim$par.tests$p.value)
   ans$aliased <- is.na(z$coefficients)
-  ans$df <- c(p, rdf, p)
   if (p != attr(z$terms, "intercept")) {
     df.int <- if (attr(z$terms, "intercept")) 1L else 0L
     ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = p - df.int)
@@ -180,13 +181,9 @@ print.summary.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L),
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
       "\n", sep = "")
   if (length(x$aliased) == 0L) {
-    cat("No Coefficients\n")
-  }
-  else {
-    if (nsingular <- x$df[3L] - x$df[1L])
-      cat("Coefficients: (", nsingular,
-          " not defined because of singularities)\n", sep = "")
-    else cat("\nCoefficients:\n")
+    cat("\nNo Coefficients\n")
+  } else {
+    cat("\nCoefficients:\n")
     coefs <- x$coefficients
     if (any(aliased <- x$aliased)) {
       cn <- names(aliased)
@@ -201,19 +198,12 @@ print.summary.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L),
   if (nzchar(mess <- naprint(x$na.action)))
     cat("  (", mess, ")\n", sep = "")
   if (!is.null(x$chisq.statistic)) {
-    # cat("Chisq-statistic:", formatC(x$chisq.statistic[1L], digits = digits),
-    #     "on", x$chisq.statistic[2L], "df, p-value:",
-    #     format.pval(pchisq(x$chisq.statistic[1L], x$chisq.statistic[2L],
-    #                        lower.tail = FALSE), digits = digits))
-    # cat("\n")
-
     out <- c(paste("Chisq:", format(x$chisq.statistic[1L], digits = digits)),
              paste("df:", x$chisq.statistic[2L]),
              paste("p-value:", format.pval(
                pchisq(x$chisq.statistic[1L], x$chisq.statistic[2L],
                       lower.tail = FALSE), digits = digits)))
-    cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
+    cat(strwrap(paste(out, collapse = ", ")), "\n\n")
   }
-  cat("\n")
   invisible(x)
 }

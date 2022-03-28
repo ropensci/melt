@@ -182,6 +182,12 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   # set cutoff and coefficients
   cutoff <- qchisq(level, 1L)
   cf <- coef(object)
+  # no confidence interval for empty model
+  if (length(cf) == 0L) {
+    ci <- matrix(, nrow = 0L, ncol = 2L)
+    colnames(ci) <- c("lower", "upper")
+    return(ci)
+  }
   # index for tracking the parameters
   idx <- seq(length(cf))
   # rownames of the confidence interval matrix
@@ -211,12 +217,12 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))
     ci <- matrix(NA, nrow = p, ncol = 2L)
-    ci[-idx_na, ] <- EL_confint(object$optim$method, cf, object$data.matrix,
-                                cutoff, idx[-idx_na], optcfg$maxit,
-                                optcfg$tol, optcfg$th)
+    ci[-idx_na, ] <- confint_(object$optim$method, cf, object$data.matrix,
+                              cutoff, idx[-idx_na], optcfg$maxit, optcfg$tol,
+                              optcfg$th)
   } else {
-    ci <- EL_confint(object$optim$method, cf, object$data.matrix, cutoff, idx,
-                     optcfg$maxit, optcfg$tol, optcfg$th)
+    ci <- confint_(object$optim$method, cf, object$data.matrix, cutoff, idx,
+                   optcfg$maxit, optcfg$tol, optcfg$th)
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))
   ci
@@ -227,8 +233,7 @@ print.el_test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
   out <- character()
   if (!is.null(x$statistic)) {
-    out <- c(out,
-             paste("Chisq:", format(x$statistic, digits = digits)),
+    out <- c(out, paste("Chisq:", format(x$statistic, digits = digits)),
              paste("df:", x$df),
              paste("p-value:", format.pval(x$p.value, digits = digits)))
   }
@@ -239,10 +244,4 @@ print.el_test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   }
   cat("\n")
   invisible(x)
-}
-
-#' @importFrom stats weights
-weights.el_test <- function(object, ...) {
-  n <- NROW(object$data)
-  c((n + n * as.matrix(object$data) %*% as.matrix(object$optim$lambda))^-1)
 }

@@ -57,7 +57,7 @@ Rcpp::List mean_w_(const Eigen::Map<Eigen::VectorXd>& par,
   const double pval =
     Rcpp::as<double>(pchisq(chisq_val, Rcpp::Named("df") = p,
                             Rcpp::Named("lower.tail") = false));
-  const Eigen::VectorXd estimate = x.colwise().mean();
+  const Eigen::VectorXd estimate = (w.matrix().transpose() * x) / n;
 
   Eigen::ArrayXd log_prob = el.log_prob(x, w);
   Eigen::ArrayXd log_wprob = el.log_wprob(x, w);

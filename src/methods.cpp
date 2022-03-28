@@ -1,14 +1,14 @@
 #include "methods.h"
 
 // [[Rcpp::export]]
-Eigen::MatrixXd EL_confint(const std::string type,
-                           const Eigen::Map<Eigen::VectorXd>& par0,
-                           const Eigen::Map<Eigen::MatrixXd>& x,
-                           const double cutoff,
-                           const Rcpp::IntegerVector& idx,
-                           const int maxit,
-                           const double tol,
-                           const Rcpp::Nullable<double> th) {
+Eigen::MatrixXd confint_(const std::string type,
+                         const Eigen::Map<Eigen::VectorXd>& par0,
+                         const Eigen::Map<Eigen::MatrixXd>& x,
+                         const double cutoff,
+                         const Rcpp::IntegerVector& idx,
+                         const int maxit,
+                         const double tol,
+                         const Rcpp::Nullable<double> th) {
   // parameter dimension
   const int p = par0.size();
   // number of confidence intervals
