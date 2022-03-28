@@ -110,13 +110,13 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
   out
 }
 
-#' Test linear hypothesis
+#' Linear hypothesis test
 #'
-#' Test2 (development version)
+#' Linear hypothesis test
 #'
 #' @param object A fitted "\code{el_test}" object.
 #' @param lhs A matrix
-#' @param rhs A rhs
+#' @param rhs An optional rhs
 #' @param control A list of control parameters. See ‘Details’.
 #' @export
 lht <- function(object, lhs, rhs, control = list()) {
@@ -124,24 +124,24 @@ lht <- function(object, lhs, rhs, control = list()) {
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
     stop("'object' has no 'data.matrix'; fit the model with 'keep.data' = TRUE")
-  p <- object$df
-  # if (missing(rhs)) {
-  #   rhs <- rep(0, p)
-  # } else {
-  #   if (!is.numeric(rhs) || any(!is.finite(rhs)))
-  #     stop("'rhs' must be a finite numeric vector")
-  #   if (length(rhs) != p)
-  #     stop("'rhs' and 'object' have incompatible dimensions")
-  # }
-  # if (missing(lhs))
-  #   lhs <- diag(nrow = p)
 
-  ctrl <- object$optim$control
-  ctrl[names(control)] <- control
+  q <- check_hypothesis(lhs, object$rank)
+
+  if (missing(rhs)) {
+    rhs <- rep(0, nrow(lhs))
+  } else {
+    rhs <- as.vector(rhs)
+    if (!is.numeric(rhs) || !all(is.finite(rhs)))
+      stop("'rhs' must be a numeric vector")
+    if (length(rhs) != q)
+      stop("'lhs' and 'rhs' have incompatible dimensions")
+  }
+
   optcfg <- check_control(control)
-  out <- EL_lht(object$optim$method, object$coefficients, object$data.matrix, lhs,
-                rhs, optcfg$maxit, optcfg$tol, optcfg$th)
-  class(out) <- class(object)
+  out <- lht_(object$optim$method, object$coefficients, object$data.matrix, lhs,
+              rhs, optcfg$maxit, optcfg$tol, optcfg$th)
+  # class(out) <- class(object)
+  class(out) <- "el_test"
   out
 }
 

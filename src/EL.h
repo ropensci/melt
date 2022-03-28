@@ -67,10 +67,10 @@ public:
   // methods
   // log probability
   Eigen::ArrayXd log_prob(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                          const Eigen::Ref<const Eigen::ArrayXd>& w);
+                          const Eigen::Ref<const Eigen::ArrayXd>& w) const;
   // log weighted probability
   Eigen::ArrayXd log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                           const Eigen::Ref<const Eigen::ArrayXd>& w);
+                           const Eigen::Ref<const Eigen::ArrayXd>& w) const;
 
 private:
   // members
@@ -89,6 +89,8 @@ private:
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&)> gr_fcn;
 };
+
+
 
 class PSEUDO_LOG
 {

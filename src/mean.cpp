@@ -51,7 +51,7 @@ Rcpp::List mean_w_(const Eigen::Map<Eigen::VectorXd>& par,
     Rcpp::stop("'x' must have full column rank");
   }
 
-  EL el("mean", par, x, w, maxit, tol, th_nloglr(p, th));
+  const EL el("mean", par, x, w, maxit, tol, th_nloglr(p, th));
   const double chisq_val = 2.0 * el.nllr;
   Rcpp::Function pchisq("pchisq");
   const double pval =
@@ -59,8 +59,8 @@ Rcpp::List mean_w_(const Eigen::Map<Eigen::VectorXd>& par,
                             Rcpp::Named("lower.tail") = false));
   const Eigen::VectorXd estimate = (w.matrix().transpose() * x) / n;
 
-  Eigen::ArrayXd log_prob = el.log_prob(x, w);
-  Eigen::ArrayXd log_wprob = el.log_wprob(x, w);
+  const Eigen::ArrayXd log_prob = el.log_prob(x, w);
+  const Eigen::ArrayXd log_wprob = el.log_wprob(x, w);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(

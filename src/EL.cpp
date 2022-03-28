@@ -244,7 +244,7 @@ EL::EL(const std::string method,
  *
  */
 Eigen::ArrayXd EL::log_prob(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                            const Eigen::Ref<const Eigen::ArrayXd>& w) {
+                            const Eigen::Ref<const Eigen::ArrayXd>& w) const {
   const Eigen::MatrixXd g = g_fcn(x, par);
   return  w.log() - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
 }
@@ -254,7 +254,7 @@ Eigen::ArrayXd EL::log_prob(const Eigen::Ref<const Eigen::MatrixXd>& x,
  *
  */
 Eigen::ArrayXd EL::log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                             const Eigen::Ref<const Eigen::ArrayXd>& w) {
+                             const Eigen::Ref<const Eigen::ArrayXd>& w) const {
   const Eigen::MatrixXd g = g_fcn(x, par);
   return  -w * PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
 }

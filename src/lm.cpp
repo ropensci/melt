@@ -10,11 +10,8 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& data,
   const Eigen::VectorXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const int p = x.cols();
-  if (x.rows() <= p) {
-    Rcpp::stop("design matrix must have full column rank");
-  }
   const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(x);
-  if (lu_decomp.rank() != p) {
+  if (x.rows() <= p || lu_decomp.rank() != p) {
     Rcpp::stop("design matrix must have full column rank");
   }
 
@@ -78,11 +75,8 @@ Rcpp::List lm_w_(const Eigen::Map<Eigen::MatrixXd>& data,
   const Eigen::VectorXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const int p = x.cols();
-  if (x.rows() <= p) {
-    Rcpp::stop("design matrix must have full column rank");
-  }
   const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(x);
-  if (lu_decomp.rank() != p) {
+  if (x.rows() <= p || lu_decomp.rank() != p) {
     Rcpp::stop("design matrix must have full column rank");
   }
 

@@ -1,7 +1,7 @@
 #ifndef EL_UTILS_gbd_H_
 #define EL_UTILS_gbd_H_
 
-#include "utils.h"
+#include <RcppEigen.h>
 
 struct minEL {
   Eigen::VectorXd par;

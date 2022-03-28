@@ -2,7 +2,7 @@
 % Please edit documentation in R/el_test.R
 \name{lht}
 \alias{lht}
-\title{Test linear hypothesis}
+\title{Linear hypothesis test}
 \usage{
 lht(object, lhs, rhs, control = list())
 }
@@ -11,10 +11,10 @@ lht(object, lhs, rhs, control = list())
 
 \item{lhs}{A matrix}
 
-\item{rhs}{A rhs}
+\item{rhs}{An optional rhs}
 
 \item{control}{A list of control parameters. See ‘Details’.}
 }
 \description{
-Test2 (development version)
+Linear hypothesis test
 }

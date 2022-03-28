@@ -13,6 +13,10 @@ ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
 }
 
+lht_ <- function(method, par0, x, lhs, rhs, maxit, tol, th) {
+    .Call(`_melt_lht_`, method, par0, x, lhs, rhs, maxit, tol, th)
+}
+
 lm_ <- function(data, intercept, maxit, tol, th) {
     .Call(`_melt_lm_`, data, intercept, maxit, tol, th)
 }
@@ -35,9 +39,5 @@ confint_ <- function(type, par0, x, cutoff, idx, maxit, tol, th) {
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_pairwise`, x, c, control, k, level, interval, method, B, nthread, progress, threshold, maxit, abstol)
-}
-
-EL_lht <- function(method, par0, x, lhs, rhs, maxit, tol, th) {
-    .Call(`_melt_EL_lht`, method, par0, x, lhs, rhs, maxit, tol, th)
 }
 

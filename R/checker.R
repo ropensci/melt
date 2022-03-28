@@ -34,7 +34,7 @@ check_control <- function(control = list()) {
   if (ctrl$tol < .Machine$double.eps)
     stop("'tol' is not a positive number")
 
-  # th: Numeric (positive, finite)
+  # th: numeric (positive, finite)
   if (!is.null(ctrl$th)) {
     ctrl$th <- tryCatch(as.numeric(ctrl$th),
                                warning = function(w) NA, error = function(e) NA)
@@ -59,4 +59,17 @@ check_weights <- function(weights, nw) {
     stop("length of 'weights' is incompatible with data")
   w <- (nw / sum(w)) * w
   w
+}
+
+check_hypothesis <- function(lhs, p) {
+  if (!is.matrix(lhs))
+    stop("'lhs' must be a numeric matrix")
+  if (!is.numeric(lhs) || !all(is.finite(lhs)))
+    stop("'lhs' must be a numeric matrix")
+  if (NCOL(lhs) != p)
+    stop("'object' and 'lhs' have incompatible dimensions")
+  q <- NROW(lhs)
+  if (q == 0L || q > p)
+    stop("'object' and 'lhs' have incompatible dimensions")
+  q
 }
