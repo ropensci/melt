@@ -62,13 +62,11 @@ check_weights <- function(weights, nw) {
 }
 
 check_hypothesis <- function(lhs, p) {
-  if (!is.matrix(lhs))
-    stop("'lhs' must be a numeric matrix")
   if (!is.numeric(lhs) || !all(is.finite(lhs)))
-    stop("'lhs' must be a numeric matrix")
-  if (NCOL(lhs) != p)
+    stop("'lhs' must be a finite numeric matrix")
+  if (ncol(lhs) != p)
     stop("'object' and 'lhs' have incompatible dimensions")
-  q <- NROW(lhs)
+  q <- nrow(lhs)
   if (q == 0L || q > p)
     stop("'object' and 'lhs' have incompatible dimensions")
   q

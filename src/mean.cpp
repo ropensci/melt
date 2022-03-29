@@ -28,11 +28,12 @@ Rcpp::List mean_(const Eigen::Map<Eigen::VectorXd>& par,
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
+    Rcpp::Named("npar") = p,
+    Rcpp::Named("log.prob") = el.logp(x),
     Rcpp::Named("statistic") = chisq_val,
     Rcpp::Named("df") = p,
     Rcpp::Named("p.value") = pval,
-    Rcpp::Named("coefficients") = estimate,
-    Rcpp::Named("null.value") = par);
+    Rcpp::Named("coefficients") = estimate);
   result.attr("class") = Rcpp::CharacterVector({"el_test"});
   return result;
 }
@@ -68,15 +69,15 @@ Rcpp::List mean_w_(const Eigen::Map<Eigen::VectorXd>& par,
       Rcpp::Named("lambda") = el.l,
       Rcpp::Named("log.prob") = log_prob,
       Rcpp::Named("log.wprob") = log_wprob,
-      Rcpp::Named("weights") = w,
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
+    Rcpp::Named("npar") = p,
+    Rcpp::Named("log.prob") = el.logp(x, w),
     Rcpp::Named("statistic") = chisq_val,
     Rcpp::Named("df") = p,
     Rcpp::Named("p.value") = pval,
-    Rcpp::Named("coefficients") = estimate,
-    Rcpp::Named("null.value") = par);
+    Rcpp::Named("coefficients") = estimate);
   result.attr("class") = Rcpp::CharacterVector({"el_test"});
   return result;
 }

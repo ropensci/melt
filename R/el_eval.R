@@ -7,7 +7,7 @@
 #'   function.
 #' @param weights An optional numeric vector of weights.
 #'   Defaults to \code{NULL}, corresponding to identical weights.
-#'   If non \code{NULL}, weighted empirical likelihood is computed.
+#'   If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’.
 #' @details Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
 #'   \eqn{i = 1, \dots, n}. Assume that there exists an unique \eqn{\theta_0 \in
@@ -28,20 +28,18 @@
 #'   Then the log empirical likelihood ratio is given by
 #'   \deqn{\log\mathcal{R}(\theta) = -\sum_{i = 1}^n
 #'   \log(1 + \lambda^\top g(X_i, \theta)).}
-#'
 #'   \code{el_eval} performs the optimization via Newton’s algorithm to compute
 #'   \eqn{\lambda} with a \eqn{n} by \eqn{p} numeric matrix argument \code{g},
 #'   whose \eqn{i}th is \eqn{g(X_i, \theta)}. If \code{weights} is non
-#'   \code{NULL}, the weights are rescaled to add up to \eqn{n}. The
-#'   \code{control} argument is a list that can supply any of the following
-#'   components:
-#' \describe{
+#'   \code{NULL}, the weights are rescaled to add up to \eqn{n}. \code{control}
+#'   is a list that can supply any of the following components:
+#'   \describe{
 #'   \item{maxit}{The maximum number of iterations for the optimization.
 #'   Defaults to \code{100}.}
 #'   \item{tol}{The relative convergence tolerance, denoted by \eqn{\epsilon}.
 #'   The iteration stops when
-#'   \deqn{\|\lambda_{k} - \lambda_{k - 1}\| \leq
-#'   \epsilon\|\lambda_{k - 1}\| + \epsilon.} Defaults to \code{1e-06}.}
+#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| \leq
+#'   \epsilon\|\lambda^{(k - 1)}\| + \epsilon.} Defaults to \code{1e-06}.}
 #'   \item{th}{The threshold for the negative log empirical likelihood
 #'   ratio value. The iteration stops if the value exceeds the threshold.
 #'   Defaults to \code{NULL} and sets the threshold to \eqn{20p}.}
@@ -51,17 +49,19 @@
 #'   \item{optim}{A list with the following optimization results:
 #'     \describe{
 #'       \item{lambda}{The Lagrange multiplier of dual problem.}
-#'       \item{weights}{If non \code{NULL} \code{weights} is supplied, the
-#'       rescaled weights are returned.}
 #'       \item{logLR}{The (weighted) log empirical likelihood ratio value.}
 #'       \item{iterations}{The number of iterations performed.}
 #'       \item{convergence}{A logical vector. \code{TRUE} indicates
 #'       convergence of the algorithm.}
 #'     }
 #'   }
+#'   \item{npar}{The number of parameters.}
+#'   \item{log.prob}{The log probabilities.}
 #'   \item{statistic}{The chi-square statistic.}
 #'   \item{df}{The degrees of freedom of the statistic.}
 #'   \item{p.value}{The \eqn{p}-value of the statistic.}
+#'   \item{weights}{If non-\code{NULL} \code{weights} is supplied, the
+#'   rescaled weights are returned.}
 #' }
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
@@ -72,20 +72,21 @@
 #'   The Annals of Statistics 22 (1).
 #'   \doi{10.1214/aos/1176325370}.
 #' @export
-el_eval <- function(g, weights = NULL, control = list()) {
+el_eval <- function(g, weights, control = list()) {
   mm <- as.matrix(g)
-  if (!is.numeric(mm) || any(!is.finite(mm)))
+  if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'g' must be a finite numeric matrix")
   if (NROW(mm) < 2L)
     stop("not enough 'g' observations")
 
   # check control
   optcfg <- check_control(control)
-  if (is.null(weights)) {
+  if (missing(weights)) {
     out <- eval_(mm, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
     w <- check_weights(weights, NROW(mm))
     out <- eval_w_(mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
+    out$weights <- w
   }
   out
 }

@@ -17,6 +17,10 @@ lht_ <- function(method, par0, x, lhs, rhs, maxit, tol, th) {
     .Call(`_melt_lht_`, method, par0, x, lhs, rhs, maxit, tol, th)
 }
 
+lht_w_ <- function(method, par0, x, w, lhs, rhs, maxit, tol, th) {
+    .Call(`_melt_lht_w_`, method, par0, x, w, lhs, rhs, maxit, tol, th)
+}
+
 lm_ <- function(data, intercept, maxit, tol, th) {
     .Call(`_melt_lm_`, data, intercept, maxit, tol, th)
 }
@@ -33,8 +37,12 @@ mean_w_ <- function(par, x, w, maxit, tol, th) {
     .Call(`_melt_mean_w_`, par, x, w, maxit, tol, th)
 }
 
-confint_ <- function(type, par0, x, cutoff, idx, maxit, tol, th) {
-    .Call(`_melt_confint_`, type, par0, x, cutoff, idx, maxit, tol, th)
+confint_ <- function(method, par0, x, cutoff, idx, maxit, tol, th) {
+    .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, tol, th)
+}
+
+confint_w_ <- function(method, par0, x, w, cutoff, idx, maxit, tol, th) {
+    .Call(`_melt_confint_w_`, method, par0, x, w, cutoff, idx, maxit, tol, th)
 }
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {

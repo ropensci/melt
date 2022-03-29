@@ -16,7 +16,7 @@ el_aov(formula, data, maxit = 10000, abstol = 1e-08)
 \item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
 }
 \value{
-A list with class \code{c("el_aov", "melt")}.
+A list with class \code{"el_aov"}.
 }
 \description{
 Fit an one-way analysis of variance model with empirical likelihood.

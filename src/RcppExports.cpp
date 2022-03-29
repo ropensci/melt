@@ -75,6 +75,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// lht_w_
+Rcpp::List lht_w_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::ArrayXd>& w, const Eigen::Map<Eigen::MatrixXd>& lhs, const Eigen::Map<Eigen::VectorXd>& rhs, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_lht_w_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP wSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type lhs(lhsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type rhs(rhsSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(lht_w_(method, par0, x, w, lhs, rhs, maxit, tol, th));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lm_
 Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& data, const bool intercept, const int maxit, const double tol, const Rcpp::Nullable<double> th);
 RcppExport SEXP _melt_lm_(SEXP dataSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
@@ -138,12 +157,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // confint_
-Eigen::MatrixXd confint_(const std::string type, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const double cutoff, const Rcpp::IntegerVector& idx, const int maxit, const double tol, const Rcpp::Nullable<double> th);
-RcppExport SEXP _melt_confint_(SEXP typeSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+Eigen::MatrixXd confint_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const double cutoff, const Rcpp::IntegerVector& idx, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_confint_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const double >::type cutoff(cutoffSEXP);
@@ -151,7 +170,26 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    rcpp_result_gen = Rcpp::wrap(confint_(type, par0, x, cutoff, idx, maxit, tol, th));
+    rcpp_result_gen = Rcpp::wrap(confint_(method, par0, x, cutoff, idx, maxit, tol, th));
+    return rcpp_result_gen;
+END_RCPP
+}
+// confint_w_
+Eigen::MatrixXd confint_w_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::ArrayXd>& w, const double cutoff, const Rcpp::IntegerVector& idx, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_confint_w_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP wSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const double >::type cutoff(cutoffSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type idx(idxSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(confint_w_(method, par0, x, w, cutoff, idx, maxit, tol, th));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -184,11 +222,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_eval_w_", (DL_FUNC) &_melt_eval_w_, 5},
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
     {"_melt_lht_", (DL_FUNC) &_melt_lht_, 8},
+    {"_melt_lht_w_", (DL_FUNC) &_melt_lht_w_, 9},
     {"_melt_lm_", (DL_FUNC) &_melt_lm_, 5},
     {"_melt_lm_w_", (DL_FUNC) &_melt_lm_w_, 6},
     {"_melt_mean_", (DL_FUNC) &_melt_mean_, 5},
     {"_melt_mean_w_", (DL_FUNC) &_melt_mean_w_, 6},
     {"_melt_confint_", (DL_FUNC) &_melt_confint_, 8},
+    {"_melt_confint_w_", (DL_FUNC) &_melt_confint_w_, 9},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
     {NULL, NULL, 0}
 };

@@ -5,9 +5,11 @@
 #' @param par A numeric vector of parameter values to be tested.
 #' @param x A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. Each row corresponds to an observation.
+#' @param weights An optional numeric vector of weights.
+#'   Defaults to \code{NULL}, corresponding to identical weights.
+#'   If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
-#' @inheritParams el_eval
 #' @return A list with class \code{"el_test"} as described in
 #'   \code{\link{el_eval}}.
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
@@ -32,26 +34,28 @@
 #' ## weighted EL
 #' par <- c(0, 0)
 #' x <- matrix(rnorm(100), ncol = 2)
-#' el_mean(par, x, weights = rep(c(1,2), each = 25))
+#' w <- rep(c(1, 2), each = 25)
+#' el_mean(par, x, w)
 #' @export
-el_mean <- function(par, x, weights = NULL, control = list()) {
+el_mean <- function(par, x, weights, control = list()) {
   mm <- as.matrix(x)
-  if (!is.numeric(mm) || any(!is.finite(mm)))
+  if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'x' must be a finite numeric matrix")
-  if (NROW(mm) < 2L)
+  if (nrow(mm) < 2L)
     stop("not enough 'x' observations")
-  if (!is.numeric(par) || any(!is.finite(par)))
+  if (!is.numeric(par) || !all(is.finite(par)))
     stop("'par' must be a finite numeric vector")
-  if (length(par) != NCOL(mm))
+  if (length(par) != ncol(mm))
     stop("'par' and 'x' have incompatible dimensions")
 
   # check control
   optcfg <- check_control(control)
-  if (is.null(weights)) {
+  if (missing(weights)) {
     out <- mean_(par, mm, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
     w <- check_weights(weights, NROW(mm))
     out <- mean_w_(par, mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
+    out$weights <- w
   }
   out$data.matrix <- mm
   out

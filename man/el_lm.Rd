@@ -4,14 +4,7 @@
 \alias{el_lm}
 \title{Fit a linear model with empirical likelihood}
 \usage{
-el_lm(
-  formula,
-  data,
-  weights = NULL,
-  na.action,
-  control = list(),
-  keep.data = TRUE
-)
+el_lm(formula, data, weights, na.action, control = list(), keep.data = TRUE)
 }
 \arguments{
 \item{formula}{A formula object.}
@@ -20,7 +13,7 @@ el_lm(
 
 \item{weights}{An optional numeric vector of weights.
 Defaults to \code{NULL}, corresponding to identical weights.
-If non \code{NULL}, weighted empirical likelihood is computed.}
+If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{na.action}{A function which indicates what should happen when the data
 contain \code{NA}s.}
@@ -38,7 +31,7 @@ A list with class \code{c("el_lm", "el_test")}.
 Fit a linear model with empirical likelihood.
 }
 \examples{
-fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+fit <- el_lm(mpg ~ wt, mtcars)
 summary(fit)
 }
 \references{
@@ -47,5 +40,5 @@ Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
   \doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\link{el_eval}
+\link{el_eval}, \link{lht}
 }

@@ -36,6 +36,6 @@ Rcpp::List ELtest(const Eigen::MatrixXd& x,
     Rcpp::Named("convergence") = el.convergence,
     Rcpp::Named("iterations") = el.iterations
   );
-  result.attr("class") = "melt";
+  // result.attr("class") = "el_aov";
   return result;
 }

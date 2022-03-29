@@ -4,7 +4,7 @@
 \alias{el_mean}
 \title{Empirical likelihood test for mean}
 \usage{
-el_mean(par, x, weights = NULL, control = list())
+el_mean(par, x, weights, control = list())
 }
 \arguments{
 \item{par}{A numeric vector of parameter values to be tested.}
@@ -14,7 +14,7 @@ matrix. Each row corresponds to an observation.}
 
 \item{weights}{An optional numeric vector of weights.
 Defaults to \code{NULL}, corresponding to identical weights.
-If non \code{NULL}, weighted empirical likelihood is computed.}
+If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’ in
 \code{\link{el_eval}}.}
@@ -40,7 +40,8 @@ el_mean(par, x)
 ## weighted EL
 par <- c(0, 0)
 x <- matrix(rnorm(100), ncol = 2)
-el_mean(par, x, weights = rep(c(1,2), each = 25))
+w <- rep(c(1, 2), each = 25)
+el_mean(par, x, w)
 }
 \references{
 Glenn, N.L., and Yichuan Zhao. 2007.

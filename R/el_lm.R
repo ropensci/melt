@@ -4,24 +4,26 @@
 #'
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
+#' @param weights An optional numeric vector of weights.
+#'   Defaults to \code{NULL}, corresponding to identical weights.
+#'   If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s.
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
 #' @param keep.data A logical. If \code{TRUE} the data matrix used in fitting is
 #'   returned.
-#' @inheritParams el_eval
 #' @return A list with class \code{c("el_lm", "el_test")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4).
 #'   \doi{10.1214/aos/1176348368}.
-#' @seealso \link{el_eval}
+#' @seealso \link{el_eval}, \link{lht}
 #' @examples
-#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+#' fit <- el_lm(mpg ~ wt, mtcars)
 #' summary(fit)
 #' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames
 #' @export
-el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
+el_lm <- function(formula, data, weights, na.action, control = list(),
                   keep.data = TRUE) {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
@@ -46,7 +48,7 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
   mm <- cbind(y, x)
 
   if (is.empty.model(mt)) {
-    out <- list(coefficients = numeric(), residuals = y, rank = 0L,
+    out <- list(coefficients = numeric(), residuals = y, npar = 0L,
                 fitted.values = 0 * y, na.action = action,
                 xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
     if (keep.data)
@@ -55,14 +57,14 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
     return(out)
   }
 
-  if (is.null(weights)) {
-    w <- NULL
+  optcfg <- check_control(control)
+  if (missing(weights)) {
+    out <- lm_(mm, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
     w <- check_weights(weights, NROW(mm))
+    out <- lm_w_(mm, w, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
+    out$weights <- w
   }
-
-  optcfg <- check_control(control)
-  out <- lm_(mm, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)
@@ -97,7 +99,7 @@ logLik.el_lm <- function(object, ...) {
   mele <- object$coefficients
 
   res <- object$residuals
-  p <- object$rank
+  p <- object$npar
   N <- length(res)
 
   # no support for weights
@@ -142,7 +144,7 @@ print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 #' @export
 summary.el_lm <- function(object, ...) {
   z <- object
-  p <- z$rank
+  p <- z$npar
   if (p == 0) {
     r <- z$residuals
     n <- length(r)
