@@ -39,13 +39,27 @@ devtools::install_github("markean/melt")
 ## Usage
 ```{r eval = TRUE}
 library(melt)
-# one sample test (mean) 
-el_mean(par = 0, x = rnorm(n = 100))  
+# one sample test for mean
+fit1 <- el_mean(par = 0, x = rnorm(n = 100))
+confint(fit1)
+
 
 # linear regression
-fit <- el_lm(formula = mpg ~ wt, data = mtcars)
-summary(fit)
+fit2 <- el_lm(formula = mpg ~ wt, data = mtcars)
+summary(fit2)
+confint(fit2)
 
-# analysis of variance
-el_aov(formula = Sepal.Length ~ Species, data = iris)
+
+# analysis of variance 
+data("clothianidin")
+fit3 <- el_lm(clo ~ -1 + trt, clothianidin)
+summary(fit3)
+confint(fit3)
+
+
+# test of no treatment effect
+lhs <- matrix(c(1, -1, 0, 0,
+                0, 1, -1, 0,
+                0, 0, 1, -1), byrow = TRUE, nrow = 3)
+lht(fit3, lhs)
 ```

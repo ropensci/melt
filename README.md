@@ -40,43 +40,69 @@ devtools::install_github("markean/melt")
 
 ``` r
 library(melt)
-# one sample test (mean) 
-el_mean(par = 0, x = rnorm(n = 100))  
-#> 
-#> Empirical Likelihood Test: mean 
-#> 
-#> Chisq = 1.2659, df = 1, p-value = 0.2605
-#> maximum EL estimates:
-#> [1] 0.09999666
+# one sample test for mean
+fit1 <- el_mean(par = 0, x = rnorm(n = 100))
+confint(fit1)
+#>        lower      upper
+#> 1 -0.3192432 0.09835835
+
 
 # linear regression
-fit <- el_lm(formula = mpg ~ wt, data = mtcars)
-summary(fit)
+fit2 <- el_lm(formula = mpg ~ wt, data = mtcars)
+summary(fit2)
 #> 
 #> Call:
 #> el_lm(formula = mpg ~ wt, data = mtcars)
 #> 
-#>     Min      1Q  Median      3Q     Max 
-#> -4.5432 -2.3647 -0.1252  1.4096  6.8727 
-#> 
 #> Coefficients:
 #>             estimate chisq-value  p-value    
-#> (Intercept)   37.285       43.25 4.81e-11 ***
-#> wt            -5.344       40.00 2.54e-10 ***
+#> (Intercept)   37.285       44.11 3.10e-11 ***
+#> wt            -5.344       41.67 1.08e-10 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Multiple R-squared:  0.7528, Adjusted R-squared:  0.7446 
-#> Chisq-statistic:    40 on 1 DF, p-value: 2.54e-10
+#> Chisq: 41.67, df: 1, p-value: 1.08e-10
+confint(fit2)
+#>                lower     upper
+#> (Intercept) 34.49139 41.180745
+#> wt          -6.21663 -4.413012
 
-# analysis of variance
-el_aov(formula = Sepal.Length ~ Species, data = iris)
+
+# analysis of variance 
+data("clothianidin")
+fit3 <- el_lm(clo ~ -1 + trt, clothianidin)
+summary(fit3)
+#> 
 #> Call:
-#> el_aov(formula = Sepal.Length ~ Species, data = iris)
+#> el_lm(formula = clo ~ -1 + trt, data = clothianidin)
 #> 
-#> minimizer:
-#> 5.4944 5.4944 5.4944
+#> Coefficients:
+#>              estimate chisq-value  p-value    
+#> trtNaked       -4.479      60.781 6.38e-15 ***
+#> trtFungicide   -3.427      56.844 4.72e-14 ***
+#> trtLow         -2.800      41.587 1.13e-10 ***
+#> trtHigh        -1.307       4.653    0.031 *  
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> statistic:
-#> 199.6752
+#> Chisq: 163.9, df: 4, p-value: < 2.2e-16
+confint(fit3)
+#>                  lower      upper
+#> trtNaked     -5.002118 -3.9198229
+#> trtFungicide -4.109816 -2.6069870
+#> trtLow       -3.681837 -1.9031795
+#> trtHigh      -2.499165 -0.1157222
+
+
+# test of no treatment effect
+lhs <- matrix(c(1, -1, 0, 0,
+                0, 1, -1, 0,
+                0, 0, 1, -1), byrow = TRUE, nrow = 3)
+lht(fit3, lhs)
+#> 
+#> Empirical Likelihood Linear Hypothesis Test: lm 
+#> 
+#> Chisq: 26.6, df: 3, p-value: 7.148e-06
+#> maximum EL estimates:
+#> [1] -3.368 -3.368 -3.368 -3.368
 ```
