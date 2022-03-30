@@ -21,23 +21,23 @@ If non-\code{NULL}, weighted empirical likelihood is computed.}
 }
 \value{
 A list with class \code{"el_test"} as described in
-  \code{\link{el_eval}}.
+  \code{\link{lht}}.
 }
 \description{
 Computes empirical likelihood for mean parameter.
 }
 \examples{
-## scalar mean
+# scalar mean
 par <- 0
 x <- rnorm(100)
 el_mean(par, x)
 
-## vector mean
+# vector mean
 par <- c(0, 0)
 x <- matrix(rnorm(100L), ncol = 2)
 el_mean(par, x)
 
-## weighted EL
+# weighted EL
 par <- c(0, 0)
 x <- matrix(rnorm(100), ncol = 2)
 w <- rep(c(1, 2), each = 25)
@@ -54,5 +54,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{el_eval}
+\link{el_eval}, \link{lht}
 }

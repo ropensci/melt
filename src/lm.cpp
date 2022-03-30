@@ -23,15 +23,12 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& data,
   lhs.col(0) = Eigen::MatrixXd::Zero(p - 1, 1);
   lhs.rightCols(p - 1) = Eigen::MatrixXd::Identity(p - 1, p - 1);
   const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
-  // const EL el =
-  //   (intercept && p > 1)?
-  //   EL("lm", bhat, data, lhs, rhs, maxit, tol, th_nloglr(p - 1, th)) :
-  //   EL("lm", Eigen::MatrixXd::Zero(1, p), data , maxit, tol, th_nloglr(p, th));
   const MINEL el =
     (intercept && p > 1)?
     MINEL("lm", bhat, data, lhs, rhs, maxit, tol, th_nloglr(p - 1, th)) :
     MINEL("lm", bhat, data, Eigen::MatrixXd::Identity(p, p),
           Eigen::VectorXd::Zero(p), maxit, tol,th_nloglr(p, th));
+  const int df = (intercept && p > 1)? p - 1 : p;
 
   // test each coefficient
   Rcpp::NumericVector chisq_val(p);
@@ -63,7 +60,10 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& data,
         Rcpp::Named("convergence") = conv)),
     Rcpp::Named("npar") = p,
     Rcpp::Named("log.prob") = el.logp(data),
+    Rcpp::Named("loglik") = el.loglik(),
     Rcpp::Named("coefficients") = bhat,
+    // Rcpp::Named("statistic") = ,
+    Rcpp::Named("df") = df,
     Rcpp::Named("residuals") = resid,
     Rcpp::Named("fitted.values") = fit_val);
   result.attr("class") = Rcpp::CharacterVector({"el_lm", "el_test"});
@@ -101,6 +101,7 @@ Rcpp::List lm_w_(const Eigen::Map<Eigen::MatrixXd>& data,
     MINEL("lm", bhat, data, w, lhs, rhs, maxit, tol, th_nloglr(p - 1, th)) :
     MINEL("lm", bhat, data, w, Eigen::MatrixXd::Identity(p, p),
           Eigen::VectorXd::Zero(p), maxit, tol, th_nloglr(p, th));
+  const int df = (intercept && p > 1)? p - 1 : p;
 
   // test each coefficient
   Rcpp::NumericVector chisq_val(p);
@@ -132,7 +133,10 @@ Rcpp::List lm_w_(const Eigen::Map<Eigen::MatrixXd>& data,
         Rcpp::Named("convergence") = conv)),
     Rcpp::Named("npar") = p,
     Rcpp::Named("log.prob") = el.logp(data, w),
+    Rcpp::Named("loglik") = el.wloglik(w),
     Rcpp::Named("coefficients") = bhat,
+    // Rcpp::Named("statistic") = ,
+    Rcpp::Named("df") = df,
     Rcpp::Named("residuals") = resid,
     Rcpp::Named("fitted.values") = fit_val);
   result.attr("class") = Rcpp::CharacterVector({"el_lm", "el_test"});

@@ -11,7 +11,7 @@
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
 #' @return A list with class \code{"el_test"} as described in
-#'   \code{\link{el_eval}}.
+#'   \code{\link{lht}}.
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
@@ -19,19 +19,19 @@
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1).
 #'   \doi{10.1214/aos/1176347494}.
-#' @seealso \link{el_eval}
+#' @seealso \link{el_eval}, \link{lht}
 #' @examples
-#' ## scalar mean
+#' # scalar mean
 #' par <- 0
 #' x <- rnorm(100)
 #' el_mean(par, x)
 #'
-#' ## vector mean
+#' # vector mean
 #' par <- c(0, 0)
 #' x <- matrix(rnorm(100L), ncol = 2)
 #' el_mean(par, x)
 #'
-#' ## weighted EL
+#' # weighted EL
 #' par <- c(0, 0)
 #' x <- matrix(rnorm(100), ncol = 2)
 #' w <- rep(c(1, 2), each = 25)

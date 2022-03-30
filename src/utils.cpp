@@ -2,7 +2,7 @@
 
 double th_nloglr(const int p, const Rcpp::Nullable<double> th)
 {
-  return (th.isNull())? 20.0 * p : Rcpp::as<double>(th);
+  return (th.isNull())? 200.0 * p : Rcpp::as<double>(th);
 }
 
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::MatrixXd>& x,
@@ -31,6 +31,17 @@ Eigen::VectorXd gr_nloglr_mean(
   return -(1.0 / denominator).sum() * l / n;
 }
 
+Eigen::VectorXd wgr_nloglr_mean(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::ArrayXd>& w)
+{
+  const int n = g.rows();
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
+  return -(w / denominator).sum() * l / n;
+}
+
 Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -43,4 +54,16 @@ Eigen::VectorXd gr_nloglr_lm(
     -(x.transpose() * (x.array().colwise() / denominator).matrix()) * l / n;
 }
 
+Eigen::VectorXd wgr_nloglr_lm(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::ArrayXd>& w)
+{
+  const int n = g.rows();
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
+  return -(x.transpose() * (x.array().colwise() * (w / denominator)).matrix()) *
+    l / n;
+}
 

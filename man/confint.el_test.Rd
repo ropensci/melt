@@ -7,7 +7,7 @@
 \method{confint}{el_test}(object, parm, level = 0.95, control = list(), ...)
 }
 \arguments{
-\item{object}{A fitted "\code{el_test}" object.}
+\item{object}{A fitted \code{"el_test"} object.}
 
 \item{parm}{A specification of which parameters are to be given confidence
 intervals, either a vector of numbers or a vector of names. If missing, all
@@ -30,7 +30,7 @@ A matrix with columns giving lower and upper confidence limits for
 \description{
 Computes confidence intervals for one or more parameters in a fitted model.
 Package \strong{melt} adds a method for objects inheriting from class
- "\code{el_test}".
+\code{"el_test"}.
 }
 \examples{
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)

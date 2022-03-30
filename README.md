@@ -8,6 +8,8 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
 [![R-CMD-check](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/markean/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/markean/melt?branch=master)
 <!-- badges: end -->
 
 ## Overview
@@ -43,8 +45,8 @@ library(melt)
 # one sample test for mean
 fit1 <- el_mean(par = 0, x = rnorm(n = 100))
 confint(fit1)
-#>        lower      upper
-#> 1 -0.3192432 0.09835835
+#>        lower     upper
+#> 1 -0.2083682 0.2239598
 
 
 # linear regression
@@ -55,17 +57,17 @@ summary(fit2)
 #> el_lm(formula = mpg ~ wt, data = mtcars)
 #> 
 #> Coefficients:
-#>             estimate chisq-value  p-value    
-#> (Intercept)   37.285       44.11 3.10e-11 ***
-#> wt            -5.344       41.67 1.08e-10 ***
+#>             estimate chisq-value p-value    
+#> (Intercept)   37.285       443.3  <2e-16 ***
+#> wt            -5.344       439.1  <2e-16 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Chisq: 41.67, df: 1, p-value: 1.08e-10
+#> Chisq: 439.1, df: 1, p-value: < 2.2e-16
 confint(fit2)
-#>                lower     upper
-#> (Intercept) 34.49139 41.180745
-#> wt          -6.21663 -4.413012
+#>                 lower     upper
+#> (Intercept) 33.175865 41.865426
+#> wt          -6.746896 -4.149511
 
 
 # analysis of variance 
@@ -78,14 +80,14 @@ summary(fit3)
 #> 
 #> Coefficients:
 #>              estimate chisq-value  p-value    
-#> trtNaked       -4.479      60.781 6.38e-15 ***
-#> trtFungicide   -3.427      56.844 4.72e-14 ***
-#> trtLow         -2.800      41.587 1.13e-10 ***
+#> trtNaked       -4.479     411.072  < 2e-16 ***
+#> trtFungicide   -3.427      59.486 1.23e-14 ***
+#> trtLow         -2.800      62.955 2.11e-15 ***
 #> trtHigh        -1.307       4.653    0.031 *  
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Chisq: 163.9, df: 4, p-value: < 2.2e-16
+#> Chisq: 1628, df: 4, p-value: < 2.2e-16
 confint(fit3)
 #>                  lower      upper
 #> trtNaked     -5.002118 -3.9198229

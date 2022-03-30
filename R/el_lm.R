@@ -21,7 +21,8 @@
 #' @examples
 #' fit <- el_lm(mpg ~ wt, mtcars)
 #' summary(fit)
-#' @importFrom stats .getXlevels is.empty.model model.matrix model.response setNames
+#' @importFrom stats .getXlevels is.empty.model model.matrix model.response
+#'   setNames
 #' @export
 el_lm <- function(formula, data, weights, na.action, control = list(),
                   keep.data = TRUE) {
@@ -48,8 +49,9 @@ el_lm <- function(formula, data, weights, na.action, control = list(),
   mm <- cbind(y, x)
 
   if (is.empty.model(mt)) {
-    out <- list(coefficients = numeric(), residuals = y, npar = 0L,
-                fitted.values = 0 * y, na.action = action,
+    out <- list(optim = list(), npar = 0L, log.prob = numeric(),
+                loglik = numeric(), coefficients = numeric(), df = 0L,
+                residuals = y, fitted.values = 0 * y, na.action = action,
                 xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
     if (keep.data)
       out$data.matrix <- mm
@@ -87,42 +89,6 @@ formula.el_lm <- function(x, ...) {
     form
   }
   else formula(x$terms)
-}
-
-#' @importFrom stats formula
-#' @export
-logLik.el_lm <- function(object, ...) {
-  mt <- object$terms
-  mf <- object$model
-  x <- model.matrix(mt, mf)
-  y <- model.response(mf, "numeric")
-  mele <- object$coefficients
-
-  res <- object$residuals
-  p <- object$npar
-  N <- length(res)
-
-  # no support for weights
-  # if (is.null(w <- object$weights)) {
-  #   w <- rep.int(1, N)
-  # }
-  # else {
-  #   excl <- w == 0
-  #   if (any(excl)) {
-  #     res <- res[!excl]
-  #     N <- length(res)
-  #     w <- w[!excl]
-  #   }
-  # }
-
-  N0 <- N
-  val <- 0 - N * log(N)
-  attr(val, "nall") <- N0
-  attr(val, "nobs") <- N
-  # df is p instead of p + 1 since EL does not estimate variance
-  attr(val, "df") <- p
-  class(val) <- "logLik"
-  val
 }
 
 #' @importFrom stats coef
@@ -167,8 +133,9 @@ summary.el_lm <- function(object, ...) {
                             `p-value` = z$optim$par.tests$p.value)
   ans$aliased <- is.na(z$coefficients)
   if (p != attr(z$terms, "intercept")) {
-    df.int <- if (attr(z$terms, "intercept")) 1L else 0L
-    ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = p - df.int)
+    # df.int <- if (attr(z$terms, "intercept")) 1L else 0L
+    # ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = p - df.int)
+    ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = z$df)
   }
   if (!is.null(z$na.action)) ans$na.action <- z$na.action
   class(ans) <- "summary.el_lm"

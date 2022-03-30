@@ -26,7 +26,7 @@ A list with class \code{c("el_test", "melt")}.
 Tests single hypothesis for general block designs.
 }
 \examples{
-## test for equal means
+# test of no treatment effect
 data("clothianidin")
 el_test(clo ~ trt | blk, clothianidin,
         lhs = matrix(c(1, -1, 0, 0,

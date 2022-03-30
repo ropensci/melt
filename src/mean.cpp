@@ -30,10 +30,11 @@ Rcpp::List mean_(const Eigen::Map<Eigen::VectorXd>& par,
       Rcpp::Named("convergence") = el.conv),
     Rcpp::Named("npar") = p,
     Rcpp::Named("log.prob") = el.logp(x),
+    Rcpp::Named("loglik") = el.loglik(),
+    Rcpp::Named("coefficients") = estimate,
     Rcpp::Named("statistic") = chisq_val,
     Rcpp::Named("df") = p,
-    Rcpp::Named("p.value") = pval,
-    Rcpp::Named("coefficients") = estimate);
+    Rcpp::Named("p.value") = pval);
   result.attr("class") = Rcpp::CharacterVector({"el_test"});
   return result;
 }
@@ -60,24 +61,23 @@ Rcpp::List mean_w_(const Eigen::Map<Eigen::VectorXd>& par,
                             Rcpp::Named("lower.tail") = false));
   const Eigen::VectorXd estimate = (w.matrix().transpose() * x) / n;
 
-  const Eigen::ArrayXd log_prob = el.log_prob(x, w);
-  const Eigen::ArrayXd log_wprob = el.log_wprob(x, w);
+  // const Eigen::ArrayXd log_prob = el.log_prob(x, w);
+  // const Eigen::ArrayXd log_wprob = el.log_wprob(x, w);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("method") = "mean",
       Rcpp::Named("lambda") = el.l,
-      Rcpp::Named("log.prob") = log_prob,
-      Rcpp::Named("log.wprob") = log_wprob,
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
     Rcpp::Named("npar") = p,
     Rcpp::Named("log.prob") = el.logp(x, w),
+    Rcpp::Named("loglik") = el.wloglik(w),
+    Rcpp::Named("coefficients") = estimate,
     Rcpp::Named("statistic") = chisq_val,
     Rcpp::Named("df") = p,
-    Rcpp::Named("p.value") = pval,
-    Rcpp::Named("coefficients") = estimate);
+    Rcpp::Named("p.value") = pval);
   result.attr("class") = Rcpp::CharacterVector({"el_test"});
   return result;
 }

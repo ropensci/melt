@@ -2,12 +2,18 @@
 #'
 #' Tests single hypothesis for general block designs.
 #'
-#' @param formula A formula object. It must specify variables for response, treatment, and block as 'response ~ treatment | block'. Note that the use of vertical bar (|) separating treatment and block.
+#' @param formula A formula object. It must specify variables for response,
+#'   treatment, and block as 'response ~ treatment | block'. Note that the use
+#'   of vertical bar (|) separating treatment and block.
 #' @param data A data frame containing the variables in the formula.
-#' @param lhs Numeric matrix specifying linear hypothesis in terms of parameters.
-#' @param rhs Optional numeric vector for the right hand side of \code{lhs}. If not specified, it is set to 0 vector.
-#' @param maxit Maximum number of iterations for optimization. Defaults to 10000.
-#' @param abstol Absolute convergence tolerance for optimization. Defaults to 1e-08.
+#' @param lhs Numeric matrix specifying linear hypothesis in terms of
+#'   parameters.
+#' @param rhs Optional numeric vector for the right hand side of \code{lhs}.
+#'   If not specified, it is set to 0 vector.
+#' @param maxit Maximum number of iterations for optimization.
+#'   Defaults to 10000.
+#' @param abstol Absolute convergence tolerance for optimization.
+#'   Defaults to 1e-08.
 #'
 #' @return A list with class \code{c("el_test", "melt")}.
 #' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
@@ -15,7 +21,7 @@
 #' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #'
 #' @examples
-#' ## test for equal means
+#' # test of no treatment effect
 #' data("clothianidin")
 #' el_test(clo ~ trt | blk, clothianidin,
 #'         lhs = matrix(c(1, -1, 0, 0,
@@ -24,7 +30,8 @@
 #'
 #' @importFrom stats reshape
 #' @export
-el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8) {
+el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
+                    abstol = 1e-08) {
   ## check formula
   f <- attributes(terms(formula))
   if (any(
@@ -112,9 +119,9 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 
 #' Linear hypothesis test
 #'
-#' Tests a linear hypothesis for objects inheriting from class "\code{el_test}".
+#' Tests a linear hypothesis for objects inheriting from class \code{"el_test"}.
 #'
-#' @param object A fitted "\code{el_test}" object.
+#' @param object A fitted \code{"el_test"} object.
 #' @param lhs A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 #'   linear combination of parameters. The number of columns should be equal to
@@ -125,7 +132,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 #' @details Consider a linear hypothesis of the form \deqn{L\theta = r,} where
 #'   the left-hand-side \eqn{L} is a \eqn{q} by \eqn{p} matrix and the
 #'   right-hand-side \eqn{r} is a \eqn{q}-dimensional vector. Let
-#'   \eqn{l_n(\theta)} denote the minus twice the log empirical likelihood ratio
+#'   \eqn{l_n(\theta)} denote the minus twice the empirical log-likelihood ratio
 #'   function. Under some regularity conditions, \eqn{l_n(\theta)} is
 #'   asymptotically distributed as \eqn{\chi^2_q} under the constraint of
 #'   hypothesis, i.e.,
@@ -144,22 +151,27 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 #'   \deqn{\|P \nabla l_n(\theta^{(k)})\| \leq
 #'   \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon.}
 #'   Defaults to \code{1e-06}.}
-#'   \item{th}{The threshold for the negative log empirical likelihood
-#'   ratio value. The iteration stops if the value exceeds the threshold.
-#'   Defaults to \code{NULL} and sets the threshold to \eqn{20p}.}
+#'   \item{th}{The threshold for negative empirical log-likelihood ratio value.
+#'   The iteration stops if the value exceeds the threshold.
+#'   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
 #'   }
-#' @return A list with class \code{"el_test"} with the following components:
+#' @return A list with class \code{c("el_lht", "el_test")} with the following
+#'   components:
 #'   \describe{
 #'   \item{optim}{A list with the following optimization results:
 #'     \describe{
 #'       \item{method}{The type of estimating function.}
 #'       \item{lambda}{The Lagrange multiplier of dual problem.}
-#'       \item{logLR}{The (weighted) log empirical likelihood ratio value.}
+#'       \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
 #'       \item{iterations}{The number of iterations performed.}
 #'       \item{convergence}{A logical vector. \code{TRUE} indicates
 #'       convergence of the algorithm.}
 #'     }
 #'   }
+#'   \item{npar}{The number of parameters.}
+#'   \item{log.prob}{The log probabilities.}
+#'   \item{loglik}{The log likelihood value evaluated at the estimated
+#'   coefficients}
 #'   \item{coefficients}{The solution of the optimization.}
 #'   \item{statistic}{The chi-square statistic.}
 #'   \item{df}{The degrees of freedom of the statistic.}
@@ -182,6 +194,14 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04, abstol = 1e-8)
 #' fit <- el_lm(y ~ x1 + x2, df)
 #' lhs <- matrix(c(0, 1, -1), nrow = 1)
 #' lht(fit, lhs)
+#'
+#' # test of no treatment effect
+#' data("clothianidin")
+#' lhs2 <- matrix(c(1, -1, 0, 0,
+#'                  0, 1, -1, 0,
+#'                  0, 0, 1, -1), byrow = TRUE, nrow = 3)
+#' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
+#' lht(fit2, lhs2)
 #' @export
 lht <- function(object, lhs, rhs, control = list()) {
   if (!inherits(object, "el_test"))
@@ -204,13 +224,13 @@ lht <- function(object, lhs, rhs, control = list()) {
 
   optcfg <- check_control(control)
   if (is.null(object$weights)) {
-    out <- lht_(object$optim$method, object$coefficients, object$data.matrix, lhs,
-                rhs, optcfg$maxit, optcfg$tol, optcfg$th)
+    out <- lht_(object$optim$method, object$coefficients, object$data.matrix,
+                lhs, rhs, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
     out <- lht_w_(object$optim$method, object$coefficients, object$data.matrix,
                   object$weights, lhs, rhs, optcfg$maxit, optcfg$tol, optcfg$th)
   }
-  class(out) <- "el_test"
+  class(out) <- c("el_lht", "el_test")
   out
 }
 
@@ -218,9 +238,9 @@ lht <- function(object, lhs, rhs, control = list()) {
 #'
 #' Computes confidence intervals for one or more parameters in a fitted model.
 #' Package \strong{melt} adds a method for objects inheriting from class
-#'  "\code{el_test}".
+#' \code{"el_test"}.
 #'
-#' @param object A fitted "\code{el_test}" object.
+#' @param object A fitted \code{"el_test"} object.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
@@ -314,9 +334,62 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   ci
 }
 
+#' Empirical log-likelihood
+#'
+#' Computes the empirical log-likelihood value of the model represented by
+#'   \code{object} evaluated at the estimated coefficients. Package
+#'   \strong{melt} adds a method for objects inheriting from class
+#'   \code{"el_test"}.
+#'
+#' @param object A fitted \code{"el_test"} object.
+#' @param ... Some methods for this generic function require extra arguments.
+#'   None are used in this method.
+#' @return An object of class \code{"logLik"} with an attribute \code{df} that
+#'   gives the number of (estimated) parameters in the model.
+#' @examples
+#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+#' logLik(fit)
+#' @export
+logLik.el_test <- function(object, ...) {
+  if (!missing(...))
+    warning("extra arguments are not supported")
+  p <- object$npar
+  if (inherits(object, "el_lht")) {
+    val <- object$loglik
+    # df is the number of estimated parameters
+    attr(val, "df") <- p - object$df
+  } else{
+    lhs <- diag(nrow = p, ncol = p)
+    rhs <- object$coefficients
+    out <- lht(object, lhs, rhs)
+    val <- out$loglik
+    attr(val, "df") <- p
+  }
+  class(val) <- "logLik"
+  val
+}
+
 #' @export
 print.el_test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
+  out <- character()
+  if (!is.null(x$statistic)) {
+    out <- c(out, paste("Chisq:", format(x$statistic, digits = digits)),
+             paste("df:", x$df),
+             paste("p-value:", format.pval(x$p.value, digits = digits)))
+  }
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
+  if (!is.null(x$coefficients)) {
+    cat("maximum EL estimates:\n")
+    print(x$coefficients, digits = digits, ...)
+  }
+  cat("\n")
+  invisible(x)
+}
+
+#' @export
+print.el_lht <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+  cat("\nEmpirical Likelihood Linear Hypothesis Test:", x$optim$method, "\n\n")
   out <- character()
   if (!is.null(x$statistic)) {
     out <- c(out, paste("Chisq:", format(x$statistic, digits = digits)),

@@ -16,8 +16,20 @@ Eigen::VectorXd gr_nloglr_mean(
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data);
 
+Eigen::VectorXd wgr_nloglr_mean(
+        const Eigen::Ref<const Eigen::VectorXd>& l,
+        const Eigen::Ref<const Eigen::MatrixXd>& g,
+        const Eigen::Ref<const Eigen::MatrixXd>& data,
+        const Eigen::Ref<const Eigen::ArrayXd>& w);
+
 Eigen::VectorXd gr_nloglr_lm(
         const Eigen::Ref<const Eigen::VectorXd>& l,
         const Eigen::Ref<const Eigen::MatrixXd>& g,
         const Eigen::Ref<const Eigen::MatrixXd>& data);
+
+Eigen::VectorXd wgr_nloglr_lm(
+        const Eigen::Ref<const Eigen::VectorXd>& l,
+        const Eigen::Ref<const Eigen::MatrixXd>& g,
+        const Eigen::Ref<const Eigen::MatrixXd>& data,
+        const Eigen::Ref<const Eigen::ArrayXd>& w);
 #endif

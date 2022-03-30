@@ -164,6 +164,8 @@ Eigen::ArrayXd EL::log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
 }
 
 
+
+
 Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const {
   const Eigen::MatrixXd g = g_fcn(x, par);
   return  -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
@@ -182,95 +184,24 @@ Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g) const {
 
 Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g,
                           const Eigen::Ref<const Eigen::ArrayXd>& w) const {
-  // return w.log() -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
   return PSEUDO_LOG::plog(w) - log(n) -
     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
 }
 
-// /* Constructor for EL class (minimization)
-//  * Last updated: 03/21/21
-//  */
-// EL::EL(const std::string method,
-//        const Eigen::Ref<const Eigen::VectorXd>& par0,
-//        const Eigen::Ref<const Eigen::MatrixXd>& x,
-//        const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-//        const Eigen::Ref<const Eigen::VectorXd>& rhs,
-//        const int maxit,
-//        const double tol,
-//        const double th)
-//   : maxit{maxit},
-//     tol{tol},
-//     th{th},
-//     n{static_cast<int>(x.rows())},
-//     g_fcn{set_g_fcn(method)},
-//     gr_fcn{set_gr_fcn(method)}
-// {
-//   /// initialization ///
-//   // orthogonal projection matrix
-//   const Eigen::MatrixXd proj =
-//     Eigen::MatrixXd::Identity(lhs.cols(), lhs.cols()) -
-//     lhs.transpose() * (lhs * lhs.transpose()).inverse() * lhs;
-//   // parameter (constraint imposed)
-//   par = proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
-//   // estimating function
-//   Eigen::MatrixXd g = g_fcn(x, par);
-//   // lambda
-//   l = EL(g, maxit, tol, th).l;
-//   // function value(-logLR)
-//   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l);
-//   // function norm
-//   const double norm0 = (proj * gr_fcn(l, g, x)).norm();
-//
-//   /// minimization (projected gradient descent) ///
-//   double gamma = 1.0;
-//   while (!conv && iter != maxit) {
-//     // update parameter
-//     Eigen::VectorXd par_tmp = par - gamma * proj * gr_fcn(l, g, x);
-//     // update estimating function
-//     Eigen::MatrixXd g_tmp = g_fcn(x, par_tmp);
-//     // update lambda
-//     Eigen::VectorXd l_tmp = EL(g_tmp, maxit, tol, th).l;
-//     // update function value
-//     double f0 = nllr;
-//     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp);
-//     // step halving to ensure that the updated function value be
-//     // strictly less than the current function value
-//     while (f0 < nllr) {
-//       // reduce step size
-//       gamma /= 2.0;
-//       // propose new parameter
-//       par_tmp = par - gamma * proj * gr_fcn(l, g, x);
-//       // propose new lambda
-//       g_tmp = g_fcn(x, par_tmp);
-//       l_tmp = EL(g_tmp, maxit, tol, th).l;
-//       if (gamma < 1e-20) {
-//         nllr = f0;
-//         break;
-//       }
-//       // propose new function value
-//       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp);
-//     }
-//     // update
-//     par = std::move(par_tmp);
-//     l = std::move(l_tmp);
-//     g = std::move(g_tmp);
-//     // convergence check
-//     if ((proj * gr_fcn(l, g, x)).norm() < tol * norm0 + tol) {
-//       conv = true;
-//     } else {
-//       ++iter;
-//     }
-//   }
-// }
+double EL::loglik() const {
+  return -nllr - n * log(n);
+}
 
-
+double EL::wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const {
+  return -nllr - (w * (log(n) - log(w))).sum();
+}
 
 
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>
   MINEL::set_g_fcn(const std::string method)
-  {
+{
     std::map<std::string,
              std::function<Eigen::MatrixXd(
                const Eigen::Ref<const Eigen::MatrixXd>&,
@@ -280,13 +211,13 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                    {"lm", g_lm}}
                  };
     return g_map[method];
-  }
+}
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
                               const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::MatrixXd>&)>
   MINEL::set_gr_fcn(const std::string method)
-  {
+{
     std::map<std::string,
              std::function<Eigen::MatrixXd(
                const Eigen::Ref<const Eigen::VectorXd>&,
@@ -296,7 +227,25 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
                  {"lm", gr_nloglr_lm}}
                };
     return gr_map[method];
-  }
+}
+
+std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
+                              const Eigen::Ref<const Eigen::MatrixXd>&,
+                              const Eigen::Ref<const Eigen::MatrixXd>&,
+                              const Eigen::Ref<const Eigen::ArrayXd>&)>
+  MINEL::set_wgr_fcn(const std::string method)
+{
+    std::map<std::string,
+             std::function<Eigen::MatrixXd(
+               const Eigen::Ref<const Eigen::VectorXd>&,
+               const Eigen::Ref<const Eigen::MatrixXd>&,
+               const Eigen::Ref<const Eigen::MatrixXd>&,
+               const Eigen::Ref<const Eigen::ArrayXd>&)>> gr_map{
+                 {{"mean", wgr_nloglr_mean},
+                 {"lm", wgr_nloglr_lm}}
+               };
+    return gr_map[method];
+}
 
 /* Constructor for MINEL class (minimization)
  * Last updated: 03/28/21
@@ -314,7 +263,8 @@ MINEL::MINEL(const std::string method,
     th{th},
     n{static_cast<int>(x.rows())},
     g_fcn{set_g_fcn(method)},
-    gr_fcn{set_gr_fcn(method)}
+    gr_fcn{set_gr_fcn(method)},
+    wgr_fcn{}
 {
   /// initialization ///
   // orthogonal projection matrix
@@ -391,7 +341,8 @@ MINEL::MINEL(const std::string method,
     th{th},
     n{static_cast<int>(x.rows())},
     g_fcn{set_g_fcn(method)},
-    gr_fcn{set_gr_fcn(method)}
+    gr_fcn{},
+    wgr_fcn{set_wgr_fcn(method)}
 {
   /// initialization ///
   // orthogonal projection matrix
@@ -407,13 +358,13 @@ MINEL::MINEL(const std::string method,
   // function value (-logLR)
   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, w);
   // function norm
-  const double norm0 = (proj * gr_fcn(l, g, x)).norm();
+  const double norm0 = (proj * wgr_fcn(l, g, x, w)).norm();
 
   /// minimization (projected gradient descent) ///
   double gamma = 1.0;
   while (!conv && iter != maxit && nllr <= th) {
     // update parameter
-    Eigen::VectorXd par_tmp = par - gamma * proj * gr_fcn(l, g, x);
+    Eigen::VectorXd par_tmp = par - gamma * proj * wgr_fcn(l, g, x, w);
     // update estimating function
     Eigen::MatrixXd g_tmp = g_fcn(x, par_tmp);
     // update lambda
@@ -427,7 +378,7 @@ MINEL::MINEL(const std::string method,
       // reduce step size
       gamma /= 2.0;
       // propose new parameter
-      par_tmp = par - gamma * proj * gr_fcn(l, g, x);
+      par_tmp = par - gamma * proj * wgr_fcn(l, g, x, w);
       // propose new lambda
       g_tmp = g_fcn(x, par_tmp);
       l_tmp = EL(g_tmp, w, maxit, tol, th).l;
@@ -443,7 +394,7 @@ MINEL::MINEL(const std::string method,
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    if ((proj * gr_fcn(l, g, x)).norm() < tol * norm0 + tol) {
+    if ((proj * wgr_fcn(l, g, x, w)).norm() < tol * norm0 + tol) {
       conv = true;
     } else {
       ++iter;
@@ -463,6 +414,13 @@ Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
 }
 
+double MINEL::loglik() const {
+  return -nllr - n * log(n);
+}
+
+double MINEL::wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const {
+  return -nllr - (w * (log(n) - log(w))).sum();
+}
 
 
 

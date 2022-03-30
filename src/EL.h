@@ -64,6 +64,8 @@ public:
   Eigen::ArrayXd logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g) const;
   Eigen::ArrayXd logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g,
                         const Eigen::Ref<const Eigen::ArrayXd>& w) const;
+  double loglik() const;
+  double wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
 
 private:
   // members
@@ -117,12 +119,19 @@ public:
                                 const Eigen::Ref<const Eigen::MatrixXd>&,
                                 const Eigen::Ref<const Eigen::MatrixXd>&)>
     set_gr_fcn(const std::string method);
+  std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
+                                const Eigen::Ref<const Eigen::MatrixXd>&,
+                                const Eigen::Ref<const Eigen::MatrixXd>&,
+                                const Eigen::Ref<const Eigen::ArrayXd>&)>
+    set_wgr_fcn(const std::string method);
 
   // methods
   // log probability
   Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const;
   Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                       const Eigen::Ref<const Eigen::ArrayXd>& w) const;
+  double loglik() const;
+  double wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
 
 private:
   // members
@@ -139,6 +148,11 @@ private:
       const Eigen::Ref<const Eigen::VectorXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&)> gr_fcn;
+  const std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::VectorXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::ArrayXd>&)> wgr_fcn;
 };
 
 

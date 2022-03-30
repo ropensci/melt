@@ -31,6 +31,7 @@ A list with the following components:
   }
   \item{npar}{The number of parameters.}
   \item{log.prob}{The log probabilities.}
+  \item{loglik}{The log likelihood value.}
   \item{statistic}{The chi-square statistic.}
   \item{df}{The degrees of freedom of the statistic.}
   \item{p.value}{The \eqn{p}-value of the statistic.}
@@ -75,7 +76,7 @@ Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
   \epsilon\|\lambda^{(k - 1)}\| + \epsilon.} Defaults to \code{1e-06}.}
   \item{th}{The threshold for the negative log empirical likelihood
   ratio value. The iteration stops if the value exceeds the threshold.
-  Defaults to \code{NULL} and sets the threshold to \eqn{20p}.}
+  Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
 }
 }
 \references{

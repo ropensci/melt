@@ -48,11 +48,11 @@ A list with class \code{c("pairwise", "melt")}.
 Tests all pairwise comparisons or comparisons with control for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
 }
 \examples{
-## all pairwise comparisons
+# all pairwise comparisons
 data("clothianidin")
 el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 
-## comparisons with control
+# comparisons with control
 el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB", B = 1000)
 
 }

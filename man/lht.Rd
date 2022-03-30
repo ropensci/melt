@@ -7,7 +7,7 @@
 lht(object, lhs, rhs, control = list())
 }
 \arguments{
-\item{object}{A fitted "\code{el_test}" object.}
+\item{object}{A fitted \code{"el_test"} object.}
 
 \item{lhs}{A numeric matrix, or an object that can be coerced to a numeric
 matrix. It specifies the left-hand-side of hypothesis. Each row gives a
@@ -20,18 +20,23 @@ many entries as the rows in \code{lhs}. Defaults to a vector of zeroes.}
 \item{control}{A list of control parameters. See ‘Details’.}
 }
 \value{
-A list with class \code{"el_test"} with the following components:
+A list with class \code{c("el_lht", "el_test")} with the following
+  components:
   \describe{
   \item{optim}{A list with the following optimization results:
     \describe{
       \item{method}{The type of estimating function.}
       \item{lambda}{The Lagrange multiplier of dual problem.}
-      \item{logLR}{The (weighted) log empirical likelihood ratio value.}
+      \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
       \item{iterations}{The number of iterations performed.}
       \item{convergence}{A logical vector. \code{TRUE} indicates
       convergence of the algorithm.}
     }
   }
+  \item{npar}{The number of parameters.}
+  \item{log.prob}{The log probabilities.}
+  \item{loglik}{The log likelihood value evaluated at the estimated
+  coefficients}
   \item{coefficients}{The solution of the optimization.}
   \item{statistic}{The chi-square statistic.}
   \item{df}{The degrees of freedom of the statistic.}
@@ -39,13 +44,13 @@ A list with class \code{"el_test"} with the following components:
 }
 }
 \description{
-Tests a linear hypothesis for objects inheriting from class "\code{el_test}".
+Tests a linear hypothesis for objects inheriting from class \code{"el_test"}.
 }
 \details{
 Consider a linear hypothesis of the form \deqn{L\theta = r,} where
   the left-hand-side \eqn{L} is a \eqn{q} by \eqn{p} matrix and the
   right-hand-side \eqn{r} is a \eqn{q}-dimensional vector. Let
-  \eqn{l_n(\theta)} denote the minus twice the log empirical likelihood ratio
+  \eqn{l_n(\theta)} denote the minus twice the empirical log-likelihood ratio
   function. Under some regularity conditions, \eqn{l_n(\theta)} is
   asymptotically distributed as \eqn{\chi^2_q} under the constraint of
   hypothesis, i.e.,
@@ -64,9 +69,9 @@ Consider a linear hypothesis of the form \deqn{L\theta = r,} where
   \deqn{\|P \nabla l_n(\theta^{(k)})\| \leq
   \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon.}
   Defaults to \code{1e-06}.}
-  \item{th}{The threshold for the negative log empirical likelihood
-  ratio value. The iteration stops if the value exceeds the threshold.
-  Defaults to \code{NULL} and sets the threshold to \eqn{20p}.}
+  \item{th}{The threshold for negative empirical log-likelihood ratio value.
+  The iteration stops if the value exceeds the threshold.
+  Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
   }
 }
 \examples{
@@ -78,6 +83,14 @@ df <- data.frame(y, x1, x2)
 fit <- el_lm(y ~ x1 + x2, df)
 lhs <- matrix(c(0, 1, -1), nrow = 1)
 lht(fit, lhs)
+
+# test of no treatment effect
+data("clothianidin")
+lhs2 <- matrix(c(1, -1, 0, 0,
+                 0, 1, -1, 0,
+                 0, 0, 1, -1), byrow = TRUE, nrow = 3)
+fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
+lht(fit2, lhs2)
 }
 \references{
 Kim, E., MacEachern, S., and Peruggia, M., (2021),

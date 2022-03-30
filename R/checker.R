@@ -1,3 +1,4 @@
+#' @noRd
 check_control <- function(control = list()) {
   ctrl <- list(maxit = 100L, tol = 1e-06, th = NULL)
   nctrl <- names(ctrl)

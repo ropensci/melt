@@ -35,5 +35,6 @@ Authors@R:
              family = "Peruggia",
              role = c("aut", "ths")))
 Suggests: 
+    covr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
