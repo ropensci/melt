@@ -15,6 +15,7 @@ test_that("probabilities add up to 1", {
   par <- (max(x) + min(x)) / 2
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
+  expect_output(print(fit))
   expect_equal(sum(exp(fit$log.prob)), 1)
 })
 
@@ -60,4 +61,34 @@ test_that("loglik to loglr (weighted)", {
   fit <- el_mean(par, x, w, control = optcfg)
   w <- fit$weights
   expect_equal(fit$loglik + sum(w * (log(n) - log(w))), fit$optim$logLR)
+})
+
+test_that("non-full rank", {
+  skip_on_os("windows", arch = "i386")
+  x <- matrix(c(1, 1, 2, 2), ncol = 2)
+  w <- c(1, 2)
+  par <- c(0, 0)
+  optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
+  expect_error(el_mean(par, x, control = optcfg))
+  expect_error(el_mean(par, x, w, control = optcfg))
+})
+
+test_that("invalid 'x", {
+  skip_on_os("windows", arch = "i386")
+  par <- 0
+  optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
+  expect_error(el_mean(par, c(1, Inf), control = optcfg))
+  expect_error(el_mean(par, rnorm(1), control = optcfg))
+})
+
+test_that("invalid 'par", {
+  skip_on_os("windows", arch = "i386")
+  x <- matrix(c(1, 1, 2, 2), ncol = 2)
+  par <- 0
+  optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
+  expect_error(el_mean(par, x, control = optcfg))
+  expect_error(el_mean(NA, rnorm(10), control = optcfg))
+  expect_error(el_mean(NULL, rnorm(10), control = optcfg))
+  expect_error(el_mean(Inf, rnorm(10), control = optcfg))
+  expect_error(el_mean(NaN, rnorm(10), control = optcfg))
 })

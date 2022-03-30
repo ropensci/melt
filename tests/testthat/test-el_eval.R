@@ -62,3 +62,19 @@ test_that("identical weights == no weights", {
   expect_equal(a1$lambda, a2$lambda)
   expect_equal(a1$logLR, a2$logLR)
 })
+
+test_that("non-full rank", {
+  skip_on_os("windows", arch = "i386")
+  g <- matrix(c(1, 1, 2, 2), ncol = 2)
+  w <- c(1, 2)
+  optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
+  expect_error(el_eval(g, control = optcfg))
+  expect_error(el_eval(g, w, control = optcfg))
+})
+
+test_that("invalid 'g'", {
+  skip_on_os("windows", arch = "i386")
+  optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
+  expect_error(el_eval(matrix(rnorm(2), ncol = 2), control = optcfg))
+  expect_error(el_eval(matrix(c(1, 1, 2, NA), ncol = 2), control = optcfg))
+})

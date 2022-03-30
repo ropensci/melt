@@ -79,6 +79,7 @@ el_lm <- function(formula, data, weights, na.action, control = list(),
   out
 }
 
+#' @noRd
 #' @importFrom stats formula
 #' @export
 formula.el_lm <- function(x, ...) {

@@ -13,3 +13,4 @@
 ^\.github$
 
 ^codecov\.yml$
+^codemeta\.json$

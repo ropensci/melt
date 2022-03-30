@@ -283,9 +283,11 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   pnames <- if (is.null(names(cf))) idx else names(cf)
   # if parm is supplied, modify idx and pnames accordingly
   if (!missing(parm)) {
-    if (is.numeric(parm)) {
+    if (is.numeric(parm) && all(is.finite(parm))) {
       pnames <- pnames[parm]
-      idx <- match(pnames, names(cf))
+      # idx <- match(pnames, names(cf))
+      idx <- if (is.null(names(cf))) match(pnames, idx) else
+        match(pnames, names(cf))
     } else if (is.character(parm)) {
       idx <- match(parm, pnames)
       pnames <- parm
