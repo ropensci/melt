@@ -34,13 +34,14 @@
 #' el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 #'
 #' # comparisons with control
-#' el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB", B = 1000)
+#' el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB",
+#'             B = 1000)
 #'
 #' @importFrom stats terms
 #' @export
 el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
-                        method = c("AMC", "NB"), B, nthread = 1, progress = TRUE,
-                        maxit = 10000, abstol = 1e-08) {
+                        method = c("AMC", "NB"), B, nthread = 1,
+                        progress = TRUE, maxit = 10000, abstol = 1e-08) {
   ## check method
   method <- match.arg(method)
 
@@ -61,7 +62,7 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
     # distinct variables for treatment and block
     f$variables[[3]][[2]] == f$variables[[3]][[3]])
   ) {
-    stop("invalied model formula. specify formula as 'response ~ treatment | block'.")
+    stop("specify formula as 'response ~ treatment | block'.")
   }
 
   ## pseudo formula for model.frame
@@ -138,6 +139,7 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
   out
 }
 
+#' @noRd
 #' @importFrom stats printCoefmat
 #' @export
 print.pairwise <- function(x, ...) {

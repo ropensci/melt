@@ -95,6 +95,7 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
   out
 }
 
+#' @noRd
 #' @export
 print.el_aov <- function(x, ...) {
   cat("\nCall:\n")

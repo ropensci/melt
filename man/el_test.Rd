@@ -7,17 +7,23 @@
 el_test(formula, data, lhs, rhs = NULL, maxit = 10000, abstol = 1e-08)
 }
 \arguments{
-\item{formula}{A formula object. It must specify variables for response, treatment, and block as 'response ~ treatment | block'. Note that the use of vertical bar (|) separating treatment and block.}
+\item{formula}{A formula object. It must specify variables for response,
+treatment, and block as 'response ~ treatment | block'. Note that the use
+of vertical bar (|) separating treatment and block.}
 
 \item{data}{A data frame containing the variables in the formula.}
 
-\item{lhs}{Numeric matrix specifying linear hypothesis in terms of parameters.}
+\item{lhs}{Numeric matrix specifying linear hypothesis in terms of
+parameters.}
 
-\item{rhs}{Optional numeric vector for the right hand side of \code{lhs}. If not specified, it is set to 0 vector.}
+\item{rhs}{Optional numeric vector for the right hand side of \code{lhs}.
+If not specified, it is set to 0 vector.}
 
-\item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
+\item{maxit}{Maximum number of iterations for optimization.
+Defaults to 10000.}
 
-\item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
+\item{abstol}{Absolute convergence tolerance for optimization.
+Defaults to 1e-08.}
 }
 \value{
 A list with class \code{c("el_test", "melt")}.

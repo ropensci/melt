@@ -72,12 +72,18 @@
 #'   “Empirical Likelihood and General Estimating Equations.”
 #'   The Annals of Statistics 22 (1).
 #'   \doi{10.1214/aos/1176325370}.
+#' @examples
+#' # test for variance known mean
+#' x <- rnorm(100)
+#' sigma <- 1
+#' g <- x^2 - sigma^2
+#' el_eval(g)
 #' @export
 el_eval <- function(g, weights, control = list()) {
   mm <- as.matrix(g)
   if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'g' must be a finite numeric matrix")
-  if (NROW(mm) < 2L)
+  if (nrow(mm) < 2L)
     stop("not enough 'g' observations")
 
   # check control

@@ -49,7 +49,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
     # distinct variables for treatment and block
     f$variables[[3L]][[2L]] == f$variables[[3L]][[3L]])
   ) {
-    stop("invalied model formula. specify formula as 'response ~ treatment | block'")
+    stop("specify formula as 'response ~ treatment | block'")
   }
 
   ## pseudo formula for model.frame
@@ -369,6 +369,7 @@ logLik.el_test <- function(object, ...) {
   val
 }
 
+#' @noRd
 #' @export
 print.el_test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
@@ -387,6 +388,7 @@ print.el_test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   invisible(x)
 }
 
+#' @noRd
 #' @export
 print.el_lht <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Linear Hypothesis Test:", x$optim$method, "\n\n")

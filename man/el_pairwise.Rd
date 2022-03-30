@@ -19,33 +19,44 @@ el_pairwise(
 )
 }
 \arguments{
-\item{formula}{A formula object. It must specify variables for response, treatment, and block as 'response ~ treatment | block'. Note that the use of vertical bar (|) separating treatment and block.}
+\item{formula}{A formula object. It must specify variables for response,
+treatment, and block as 'response ~ treatment | block'. Note that the use
+of vertical bar (|) separating treatment and block.}
 
 \item{data}{A data frame containing the variables in the formula.}
 
-\item{control}{Optional character specifying the treatment for comparisons with control.}
+\item{control}{Optional character specifying the treatment for comparisons
+with control.}
 
 \item{k}{Single integer for \eqn{k} in \eqn{k}-FWER. Defaults to 1.}
 
 \item{alpha}{Level of the test. Defaults to 0.05.}
 
-\item{method}{Single character for the procedure to be used; either 'AMC' or 'NB' is supported. Defaults to 'AMC'.}
+\item{method}{Single character for the procedure to be used; either 'AMC'
+or 'NB' is supported. Defaults to 'AMC'.}
 
-\item{B}{Number of Monte Carlo samples for the AMC (number of bootstrap replicates for the NB).}
+\item{B}{Number of Monte Carlo samples for the AMC (number of bootstrap
+replicates for the NB).}
 
-\item{nthread}{Number of threads to be used with OpenMP. Only applied when the NB is chosen as the method. Defaults to 1.}
+\item{nthread}{Number of threads to be used with OpenMP. Only applied when
+the NB is chosen as the method. Defaults to 1.}
 
 \item{progress}{If TRUE, will show progress status.}
 
-\item{maxit}{Maximum number of iterations for optimization. Defaults to 10000.}
+\item{maxit}{Maximum number of iterations for optimization.
+Defaults to 10000.}
 
-\item{abstol}{Absolute convergence tolerance for optimization. Defaults to 1e-08.}
+\item{abstol}{Absolute convergence tolerance for optimization.
+Defaults to 1e-08.}
 }
 \value{
 A list with class \code{c("pairwise", "melt")}.
 }
 \description{
-Tests all pairwise comparisons or comparisons with control for general block designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise error rate) controlling procedures are available: asymptotic Monte Carlo (AMC) and nonparametric bootstrap (NB).
+Tests all pairwise comparisons or comparisons with control for general block
+  designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise
+  error rate) controlling procedures are available: asymptotic Monte Carlo
+  (AMC) and nonparametric bootstrap (NB).
 }
 \examples{
 # all pairwise comparisons
@@ -53,7 +64,8 @@ data("clothianidin")
 el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
 
 # comparisons with control
-el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB", B = 1000)
+el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB",
+            B = 1000)
 
 }
 \references{

@@ -91,6 +91,7 @@ formula.el_lm <- function(x, ...) {
   else formula(x$terms)
 }
 
+#' @noRd
 #' @importFrom stats coef
 #' @export
 print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
@@ -107,6 +108,7 @@ print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   invisible(x)
 }
 
+#' @noRd
 #' @export
 summary.el_lm <- function(object, ...) {
   z <- object
@@ -142,6 +144,7 @@ summary.el_lm <- function(object, ...) {
   ans
 }
 
+#' @noRd
 #' @importFrom stats naprint pchisq
 #' @export
 print.summary.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L),

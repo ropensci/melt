@@ -48,6 +48,7 @@ check_control <- function(control = list()) {
   ctrl
 }
 
+#' @noRd
 check_weights <- function(weights, nw) {
   if (!is.numeric(weights))
     stop("'weights' must be a numeric vector")
@@ -62,6 +63,7 @@ check_weights <- function(weights, nw) {
   w
 }
 
+#' @noRd
 check_hypothesis <- function(lhs, p) {
   if (!is.numeric(lhs) || !all(is.finite(lhs)))
     stop("'lhs' must be a finite numeric matrix")

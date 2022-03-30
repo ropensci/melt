@@ -79,6 +79,13 @@ Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
 }
 }
+\examples{
+# test for variance known mean
+x <- rnorm(100)
+sigma <- 1
+g <- x^2 - sigma^2
+el_eval(g)
+}
 \references{
 Glenn, N.L., and Yichuan Zhao. 2007.
   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
