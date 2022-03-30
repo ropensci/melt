@@ -53,11 +53,6 @@ public:
 
   // methods
   // log probability
-  Eigen::ArrayXd log_prob(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                          const Eigen::Ref<const Eigen::ArrayXd>& w) const;
-  // log weighted probability
-  Eigen::ArrayXd log_wprob(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                           const Eigen::Ref<const Eigen::ArrayXd>& w) const;
   Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const;
   Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                       const Eigen::Ref<const Eigen::ArrayXd>& w) const;

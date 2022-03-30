@@ -13,3 +13,4 @@ data-raw
 ignore
 .Rprofile
 renv
+inst/doc

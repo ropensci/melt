@@ -32,8 +32,7 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
     # no other formula
     typeof(f$variables[[3]]) != "symbol" ||
       length(f$variables[[3]]) != 1
-  )
-  ) {
+  )) {
     stop("invalied model formula. specify formula as 'response ~ treatment'")
   }
 

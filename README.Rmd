@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 ## Overview
-The R package **melt** provides a unified framework for data analysis with empirical likelihood methods. A collection of functions are available for basic regression analysis and hypothesis testing. Much of its functionality and syntax mimics the corresponding base R functions. The core routines are written in C++ and utilize OpenMP for parallelization. 
+The R package **melt** provides a unified framework for data analysis with empirical likelihood methods. A collection of functions are available for basic regression analysis and hypothesis testing. Much of its functionality and syntax mimics the corresponding base R functions. The core computational routines are implemented with the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Additional functions are available for multiple testing for the analysis of experimental designs. Details of the testing procedures are given in [Kim et al. (2021)](https://arxiv.org/abs/2112.09206). 
 
 
 ## Installation
