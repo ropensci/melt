@@ -67,7 +67,7 @@ Consider a linear hypothesis of the form \deqn{L\theta = r,} where
   With the orthogonal projector matrix \eqn{P} and an initial value
   \eqn{\theta^{(0)}}, the iteration stops when
   \deqn{\|P \nabla l_n(\theta^{(k)})\| \leq
-  \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon.}
+  \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon^2.}
   Defaults to \code{1e-06}.}
   \item{th}{The threshold for negative empirical log-likelihood ratio value.
   The iteration stops if the value exceeds the threshold.

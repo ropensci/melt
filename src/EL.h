@@ -64,11 +64,11 @@ public:
 
 private:
   // members
-  Eigen::VectorXd par;    // parameter value (solution of optimization problem)
-  const int maxit;        // maximum number of iterations
-  const double tol;       // relative convergence tolerance
-  const double th;        // threshold value for -logLR
-  const int n;            // sample size
+  const Eigen::VectorXd par;  // parameter value
+  const int maxit;            // maximum number of iterations
+  const double tol;           // relative convergence tolerance
+  const double th;            // threshold value for -logLR
+  const int n;                // sample size
   // estimating function
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd>&,
@@ -112,7 +112,8 @@ public:
     set_g_fcn(const std::string method);
   std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
                                 const Eigen::Ref<const Eigen::MatrixXd>&,
-                                const Eigen::Ref<const Eigen::MatrixXd>&)>
+                                const Eigen::Ref<const Eigen::MatrixXd>&,
+                                const Eigen::Ref<const Eigen::VectorXd>&)>
     set_gr_fcn(const std::string method);
   std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
                                 const Eigen::Ref<const Eigen::MatrixXd>&,
@@ -142,7 +143,8 @@ private:
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::VectorXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&,
-      const Eigen::Ref<const Eigen::MatrixXd>&)> gr_fcn;
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&)> gr_fcn;
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::VectorXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&,

@@ -4,7 +4,7 @@
 \alias{el_lm}
 \title{Fit a linear model with empirical likelihood}
 \usage{
-el_lm(formula, data, weights, na.action, control = list(), keep.data = TRUE)
+el_lm(formula, data, weights, na.action, control = list(), model = TRUE)
 }
 \arguments{
 \item{formula}{A formula object.}
@@ -21,7 +21,7 @@ contain \code{NA}s.}
 \item{control}{A list of control parameters. See ‘Details’ in
 \code{\link{el_eval}}.}
 
-\item{keep.data}{A logical. If \code{TRUE} the data matrix used in fitting is
+\item{model}{A logical. If \code{TRUE} the model matrix used for fitting is
 returned.}
 }
 \value{

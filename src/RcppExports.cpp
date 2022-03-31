@@ -57,6 +57,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// glm_
+Rcpp::List glm_(const std::string link, const Eigen::Map<Eigen::MatrixXd>& data, const Eigen::Map<Eigen::VectorXd>& init, const bool intercept, const int maxit, const double tol, const Rcpp::Nullable<double> th);
+RcppExport SEXP _melt_glm_(SEXP linkSEXP, SEXP dataSEXP, SEXP initSEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type link(linkSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type init(initSEXP);
+    Rcpp::traits::input_parameter< const bool >::type intercept(interceptSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    rcpp_result_gen = Rcpp::wrap(glm_(link, data, init, intercept, maxit, tol, th));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lht_
 Rcpp::List lht_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::MatrixXd>& lhs, const Eigen::Map<Eigen::VectorXd>& rhs, const int maxit, const double tol, const Rcpp::Nullable<double> th);
 RcppExport SEXP _melt_lht_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP) {
@@ -221,6 +238,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_eval_", (DL_FUNC) &_melt_eval_, 4},
     {"_melt_eval_w_", (DL_FUNC) &_melt_eval_w_, 5},
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
+    {"_melt_glm_", (DL_FUNC) &_melt_glm_, 7},
     {"_melt_lht_", (DL_FUNC) &_melt_lht_, 8},
     {"_melt_lht_w_", (DL_FUNC) &_melt_lht_w_, 9},
     {"_melt_lm_", (DL_FUNC) &_melt_lm_, 5},

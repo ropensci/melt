@@ -14,7 +14,8 @@ Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
 Eigen::VectorXd gr_nloglr_mean(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data);
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par);
 
 Eigen::VectorXd wgr_nloglr_mean(
         const Eigen::Ref<const Eigen::VectorXd>& l,
@@ -25,11 +26,30 @@ Eigen::VectorXd wgr_nloglr_mean(
 Eigen::VectorXd gr_nloglr_lm(
         const Eigen::Ref<const Eigen::VectorXd>& l,
         const Eigen::Ref<const Eigen::MatrixXd>& g,
-        const Eigen::Ref<const Eigen::MatrixXd>& data);
+        const Eigen::Ref<const Eigen::MatrixXd>& data,
+        const Eigen::Ref<const Eigen::VectorXd>& par);
 
 Eigen::VectorXd wgr_nloglr_lm(
         const Eigen::Ref<const Eigen::VectorXd>& l,
         const Eigen::Ref<const Eigen::MatrixXd>& g,
         const Eigen::Ref<const Eigen::MatrixXd>& data,
         const Eigen::Ref<const Eigen::ArrayXd>& w);
+
+
+
+
+
+
+
+
+Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);
+
+Eigen::MatrixXd g_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                        const Eigen::Ref<const Eigen::VectorXd>& par);
+
+Eigen::VectorXd gr_nloglr_logit(
+        const Eigen::Ref<const Eigen::VectorXd>& l,
+        const Eigen::Ref<const Eigen::MatrixXd>& g,
+        const Eigen::Ref<const Eigen::MatrixXd>& data,
+        const Eigen::Ref<const Eigen::VectorXd>& par);
 #endif

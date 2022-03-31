@@ -56,7 +56,7 @@ check_weights <- function(weights, nw) {
   if (any(!is.finite(w)))
     stop("'weights' must be a finite numeric vector")
   if (any(w < 0))
-    stop("negative 'weights' are not allowed")
+    stop("negative 'weights' not allowed")
   if (length(w) != nw)
     stop("length of 'weights' is incompatible with data")
   w <- (nw / sum(w)) * w

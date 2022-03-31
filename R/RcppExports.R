@@ -13,6 +13,10 @@ ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
 }
 
+glm_ <- function(link, data, init, intercept, maxit, tol, th) {
+    .Call(`_melt_glm_`, link, data, init, intercept, maxit, tol, th)
+}
+
 lht_ <- function(method, par0, x, lhs, rhs, maxit, tol, th) {
     .Call(`_melt_lht_`, method, par0, x, lhs, rhs, maxit, tol, th)
 }

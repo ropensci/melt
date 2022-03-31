@@ -149,7 +149,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #'   With the orthogonal projector matrix \eqn{P} and an initial value
 #'   \eqn{\theta^{(0)}}, the iteration stops when
 #'   \deqn{\|P \nabla l_n(\theta^{(k)})\| \leq
-#'   \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon.}
+#'   \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon^2.}
 #'   Defaults to \code{1e-06}.}
 #'   \item{th}{The threshold for negative empirical log-likelihood ratio value.
 #'   The iteration stops if the value exceeds the threshold.
@@ -207,7 +207,7 @@ lht <- function(object, lhs, rhs, control = list()) {
   if (!inherits(object, "el_test"))
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
-    stop("'object' has no 'data.matrix'; fit the model with 'keep.data' = TRUE")
+    stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
 
   lhs <- as.matrix(lhs)
   q <- check_hypothesis(lhs, object$npar)

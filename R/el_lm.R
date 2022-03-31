@@ -11,7 +11,7 @@
 #'   contain \code{NA}s.
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
-#' @param keep.data A logical. If \code{TRUE} the data matrix used in fitting is
+#' @param model A logical. If \code{TRUE} the model matrix used for fitting is
 #'   returned.
 #' @return A list with class \code{c("el_lm", "el_test")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
@@ -25,7 +25,7 @@
 #'   setNames
 #' @export
 el_lm <- function(formula, data, weights, na.action, control = list(),
-                  keep.data = TRUE) {
+                  model = TRUE) {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "na.action"), names(mf), 0L)
@@ -53,7 +53,7 @@ el_lm <- function(formula, data, weights, na.action, control = list(),
                 loglik = numeric(), coefficients = numeric(), df = 0L,
                 residuals = y, fitted.values = 0 * y, na.action = action,
                 xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
-    if (keep.data)
+    if (model)
       out$data.matrix <- mm
     class(out) <- c("el_lm", "el_test")
     return(out)
@@ -74,7 +74,7 @@ el_lm <- function(formula, data, weights, na.action, control = list(),
   out$xlevels <- .getXlevels(mt, mf)
   out$call <- cl
   out$terms <- mt
-  if (keep.data)
+  if (model)
     out$data.matrix <- mm
   out
 }

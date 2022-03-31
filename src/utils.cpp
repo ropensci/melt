@@ -24,7 +24,8 @@ Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
 Eigen::VectorXd gr_nloglr_mean(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data)
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par)
 {
   const int n = g.rows();
   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
@@ -45,7 +46,8 @@ Eigen::VectorXd wgr_nloglr_mean(
 Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data)
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par)
 {
   const int n = g.rows();
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
@@ -67,3 +69,40 @@ Eigen::VectorXd wgr_nloglr_lm(
     l / n;
 }
 
+
+
+
+
+
+
+
+Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
+{
+  return 1.0 / (1.0 + exp(-x.array()));
+}
+
+Eigen::MatrixXd g_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                        const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  return x.array().colwise() * (y - logit_linkinv(x * par));
+  // return data.rightCols(data.cols() - 1).array().colwise() *
+  //   (data.array().col(0) -
+  //   logit_linkinv(data.rightCols(data.cols() - 1) * par));
+}
+
+Eigen::VectorXd gr_nloglr_logit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const int n = g.rows();
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd numerator =
+    logit_linkinv(x * par) * (1.0 - logit_linkinv(x * par));
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
+  return -(x.transpose() *
+           (x.array().colwise() * numerator / denominator).matrix()) * l / n;
+}

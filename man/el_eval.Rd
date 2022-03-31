@@ -73,7 +73,7 @@ Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
   \item{tol}{The relative convergence tolerance, denoted by \eqn{\epsilon}.
   The iteration stops when
   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| \leq
-  \epsilon\|\lambda^{(k - 1)}\| + \epsilon.} Defaults to \code{1e-06}.}
+  \epsilon\|\lambda^{(k - 1)}\| + \epsilon^2.} Defaults to \code{1e-06}.}
   \item{th}{The threshold for the negative log empirical likelihood
   ratio value. The iteration stops if the value exceeds the threshold.
   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}

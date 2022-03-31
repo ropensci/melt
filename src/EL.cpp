@@ -4,14 +4,12 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>
   EL::set_g_fcn(const std::string method)
 {
-  std::map<std::string,
-           std::function<Eigen::MatrixXd(
-             const Eigen::Ref<const Eigen::MatrixXd>&,
-             const Eigen::Ref<const Eigen::VectorXd>&)>>
-               g_map{
-               {{"mean", g_mean},
-               {"lm", g_lm}}
-             };
+  std::map<std::string, std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&)>>
+        g_map{{{"mean", g_mean},
+               {"lm", g_lm},
+               {"logit", g_logit}}};
   return g_map[method];
 }
 
@@ -34,11 +32,15 @@ void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g)
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step));
     }
     // convergence check
-    if (step.norm() < tol * l.norm() + tol) {
+    // if (step.norm() < tol * l.norm() + tol * tol) {
+    //   conv = true;
+    // } else {
+    //   ++iter;
+    // }
+    if (step.norm() < tol * l.norm() + tol * tol) {
       conv = true;
-    } else {
-      ++iter;
     }
+    ++iter;
     // update lambda
     l += step;
   }
@@ -64,18 +66,22 @@ void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step), w);
     }
     // convergence check
-    if (step.norm() < tol * l.norm() + tol) {
+    // if (step.norm() < tol * l.norm() + tol * tol) {
+    //   conv = true;
+    // } else {
+    //   ++iter;
+    // }
+    if (step.norm() < tol * l.norm() + tol * tol) {
       conv = true;
-    } else {
-      ++iter;
     }
+    ++iter;
     // update lambda
     l += step;
   }
 }
 
 /* Constructor for EL class (evaluation)
- * Last updated: 03/21/21
+ * Last updated: 03/31/21
  */
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
        const int maxit,
@@ -179,31 +185,30 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>
   MINEL::set_g_fcn(const std::string method)
 {
-    std::map<std::string,
-             std::function<Eigen::MatrixXd(
-               const Eigen::Ref<const Eigen::MatrixXd>&,
-               const Eigen::Ref<const Eigen::VectorXd>&)>>
-                 g_map{
-                   {{"mean", g_mean},
-                   {"lm", g_lm}}
-                 };
-    return g_map[method];
+  std::map<std::string, std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&)>>
+        g_map{{{"mean", g_mean},
+               {"lm", g_lm},
+               {"logit", g_logit}}};
+  return g_map[method];
 }
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
                               const Eigen::Ref<const Eigen::MatrixXd>&,
-                              const Eigen::Ref<const Eigen::MatrixXd>&)>
+                              const Eigen::Ref<const Eigen::MatrixXd>&,
+                              const Eigen::Ref<const Eigen::VectorXd>&)>
   MINEL::set_gr_fcn(const std::string method)
 {
-    std::map<std::string,
-             std::function<Eigen::MatrixXd(
-               const Eigen::Ref<const Eigen::VectorXd>&,
-               const Eigen::Ref<const Eigen::MatrixXd>&,
-               const Eigen::Ref<const Eigen::MatrixXd>&)>> gr_map{
-                 {{"mean", gr_nloglr_mean},
-                 {"lm", gr_nloglr_lm}}
-               };
-    return gr_map[method];
+  std::map<std::string, std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::VectorXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&)>> gr_map{
+        {{"mean", gr_nloglr_mean},
+         {"lm", gr_nloglr_lm},
+         {"logit", gr_nloglr_logit}}};
+  return gr_map[method];
 }
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
@@ -212,20 +217,18 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
                               const Eigen::Ref<const Eigen::ArrayXd>&)>
   MINEL::set_wgr_fcn(const std::string method)
 {
-    std::map<std::string,
-             std::function<Eigen::MatrixXd(
-               const Eigen::Ref<const Eigen::VectorXd>&,
-               const Eigen::Ref<const Eigen::MatrixXd>&,
-               const Eigen::Ref<const Eigen::MatrixXd>&,
-               const Eigen::Ref<const Eigen::ArrayXd>&)>> gr_map{
-                 {{"mean", wgr_nloglr_mean},
-                 {"lm", wgr_nloglr_lm}}
-               };
-    return gr_map[method];
+  std::map<std::string, std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::VectorXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::ArrayXd>&)>> gr_map{
+        {{"mean", wgr_nloglr_mean},
+         {"lm", wgr_nloglr_lm}}};
+  return gr_map[method];
 }
 
 /* Constructor for MINEL class (minimization)
- * Last updated: 03/28/21
+ * Last updated: 03/31/21
  */
 MINEL::MINEL(const std::string method,
              const Eigen::Ref<const Eigen::VectorXd>& par0,
@@ -257,19 +260,19 @@ MINEL::MINEL(const std::string method,
   // function value (-logLR)
   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l);
   // function norm
-  const double norm0 = (proj * gr_fcn(l, g, x)).norm();
+  const double norm0 = (proj * gr_fcn(l, g, x, par)).norm();
 
   /// minimization (projected gradient descent) ///
   double gamma = 1.0;
   while (!conv && iter != maxit && nllr <= th) {
     // update parameter
-    Eigen::VectorXd par_tmp = par - gamma * proj * gr_fcn(l, g, x);
+    Eigen::VectorXd par_tmp = par - gamma * proj * gr_fcn(l, g, x, par);
     // update estimating function
     Eigen::MatrixXd g_tmp = g_fcn(x, par_tmp);
     // update lambda
     Eigen::VectorXd l_tmp = EL(g_tmp, maxit, tol, th).l;
     // update function value
-    double f0 = nllr;
+    const double f0 = nllr;
     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp);
     // step halving to ensure that the updated function value be
     // strictly less than the current function value
@@ -277,32 +280,40 @@ MINEL::MINEL(const std::string method,
       // reduce step size
       gamma /= 2.0;
       // propose new parameter
-      par_tmp = par - gamma * proj * gr_fcn(l, g, x);
+      par_tmp = par - gamma * proj * gr_fcn(l, g, x, par);
       // propose new lambda
       g_tmp = g_fcn(x, par_tmp);
       l_tmp = EL(g_tmp, maxit, tol, th).l;
-      if (gamma < 1e-20) {
+      if (gamma < 1e-10) {
         nllr = f0;
         break;
       }
       // propose new function value
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp);
     }
+
     // update
+    const double step = (par - par_tmp).norm();
     par = std::move(par_tmp);
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    if ((proj * gr_fcn(l, g, x)).norm() < tol * norm0 + tol) {
+    // if ((proj * gr_fcn(l, g, x, par)).norm() < tol * norm0 + tol * tol ||
+    //     step < tol * par.norm() + tol * tol) {
+    //   conv = true;
+    // } else {
+    //   ++iter;
+    // }
+    if ((proj * gr_fcn(l, g, x, par)).norm() < tol * norm0 + tol * tol ||
+        step < tol * par.norm() + tol * tol) {
       conv = true;
-    } else {
-      ++iter;
     }
+    ++iter;
   }
 }
 
 /* Constructor for MINEL class (minimization, weighted)
- * Last updated: 03/28/21
+ * Last updated: 03/31/21
  */
 MINEL::MINEL(const std::string method,
              const Eigen::Ref<const Eigen::VectorXd>& par0,
@@ -347,7 +358,7 @@ MINEL::MINEL(const std::string method,
     // update lambda
     Eigen::VectorXd l_tmp = EL(g_tmp, w, maxit, tol, th).l;
     // update function value
-    double f0 = nllr;
+    const double f0 = nllr;
     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, w);
     // step halving to ensure that the updated function value be
     // strictly less than the current function value
@@ -359,7 +370,7 @@ MINEL::MINEL(const std::string method,
       // propose new lambda
       g_tmp = g_fcn(x, par_tmp);
       l_tmp = EL(g_tmp, w, maxit, tol, th).l;
-      if (gamma < 1e-20) {
+      if (gamma < 1e-10) {
         nllr = f0;
         break;
       }
@@ -371,11 +382,15 @@ MINEL::MINEL(const std::string method,
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    if ((proj * wgr_fcn(l, g, x, w)).norm() < tol * norm0 + tol) {
+    // if ((proj * wgr_fcn(l, g, x, w)).norm() < tol * norm0 + tol * tol) {
+    //   conv = true;
+    // } else {
+    //   ++iter;
+    // }
+    if ((proj * wgr_fcn(l, g, x, w)).norm() < tol * norm0 + tol * tol) {
       conv = true;
-    } else {
-      ++iter;
     }
+    ++iter;
   }
 }
 
