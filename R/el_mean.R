@@ -10,6 +10,8 @@
 #'   If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
+#' @param model A logical. If \code{TRUE} the model matrix used for fitting is
+#'   returned.
 #' @return A list with class \code{"el_test"} as described in
 #'   \code{\link{lht}}.
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
@@ -37,7 +39,7 @@
 #' w <- rep(c(1, 2), each = 25)
 #' el_mean(par, x, w)
 #' @export
-el_mean <- function(par, x, weights, control = list()) {
+el_mean <- function(par, x, weights, control = list(), model = TRUE) {
   mm <- as.matrix(x)
   if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'x' must be a finite numeric matrix")
@@ -53,10 +55,11 @@ el_mean <- function(par, x, weights, control = list()) {
   if (missing(weights)) {
     out <- mean_(par, mm, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
-    w <- check_weights(weights, NROW(mm))
+    w <- check_weights(weights, nrow(mm))
     out <- mean_w_(par, mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
     out$weights <- w
   }
-  out$data.matrix <- mm
+  if (model)
+    out$data.matrix <- mm
   out
 }

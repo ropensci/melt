@@ -1,4 +1,7 @@
 #include "methods.h"
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 // [[Rcpp::export]]
 Eigen::MatrixXd confint_(const std::string method,
@@ -16,6 +19,7 @@ Eigen::MatrixXd confint_(const std::string method,
   // confidence intervals (vector)
   std::vector<double> ci_vec;
   ci_vec.reserve(2 * n);
+  // #pragma omp parallel for
   for (int j : idx) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(j - 1) = 1.0;

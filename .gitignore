@@ -9,6 +9,7 @@ src/*.dll
 src/.vscode
 melt.Rproj
 .vscode
+.VSCodeCounter
 data-raw
 ignore
 .Rprofile

@@ -122,12 +122,12 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #' Tests a linear hypothesis for objects inheriting from class \code{"el_test"}.
 #'
 #' @param object A fitted \code{"el_test"} object.
+#' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
+#'   many entries as the rows in \code{lhs}. Defaults to a vector of zeroes.
 #' @param lhs A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 #'   linear combination of parameters. The number of columns should be equal to
 #'   the number of parameters in \code{object}. See ‘Details’.
-#' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
-#'   many entries as the rows in \code{lhs}. Defaults to a vector of zeroes.
 #' @param control A list of control parameters. See ‘Details’.
 #' @details Consider a linear hypothesis of the form \deqn{L\theta = r,} where
 #'   the left-hand-side \eqn{L} is a \eqn{q} by \eqn{p} matrix and the
@@ -193,7 +193,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
 #' lhs <- matrix(c(0, 1, -1), nrow = 1)
-#' lht(fit, lhs)
+#' lht(fit, lhs = lhs)
 #'
 #' # test of no treatment effect
 #' data("clothianidin")
@@ -201,9 +201,9 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #'                  0, 1, -1, 0,
 #'                  0, 0, 1, -1), byrow = TRUE, nrow = 3)
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-#' lht(fit2, lhs2)
+#' lht(fit2, lhs = lhs2)
 #' @export
-lht <- function(object, lhs, rhs, control = list()) {
+lht <- function(object, rhs, lhs, control = list()) {
   if (!inherits(object, "el_test"))
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
@@ -361,9 +361,9 @@ logLik.el_test <- function(object, ...) {
     # df is the number of estimated parameters
     attr(val, "df") <- p - object$df
   } else{
-    lhs <- diag(nrow = p, ncol = p)
     rhs <- object$coefficients
-    out <- lht(object, lhs, rhs)
+    lhs <- diag(nrow = p, ncol = p)
+    out <- lht(object, rhs = rhs, lhs = lhs)
     val <- out$loglik
     attr(val, "df") <- p
   }

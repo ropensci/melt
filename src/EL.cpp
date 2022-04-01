@@ -157,8 +157,10 @@ Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const {
 Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                         const Eigen::Ref<const Eigen::ArrayXd>& w) const {
   const Eigen::MatrixXd g = g_fcn(x, par);
-  return PSEUDO_LOG::plog(w) - log(n) -
-    PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+  // return PSEUDO_LOG::plog(w) - log(n) -
+  //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+  return
+    log(w) - log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l, w);
 }
 
 Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g) const {
@@ -167,8 +169,10 @@ Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g) const {
 
 Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g,
                           const Eigen::Ref<const Eigen::ArrayXd>& w) const {
-  return PSEUDO_LOG::plog(w) - log(n) -
-    PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+  // return PSEUDO_LOG::plog(w) - log(n) -
+  //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+  return
+  log(w) - log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l, w);
 }
 
 double EL::loglik() const {
@@ -458,21 +462,43 @@ PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
  * Last updated: 03/19/21
  *
  */
+// PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x,
+//                        const Eigen::Ref<const Eigen::VectorXd>& w) {
+//   const double n = static_cast<double>(x.size());
+//   const double a1 = -log(n) - 1.5;
+//   const double a2 = 2.0 * n;
+//   const double a3 = -0.5 * n * n;
+//
+//   dplog.resize(x.size());
+//   sqrt_neg_d2plog.resize(x.size());
+//
+//   for (unsigned int i = 0; i < x.size(); ++i) {
+//     if (n * x[i] < 1.0) {
+//       dplog[i] = w[i] * (a2 + 2.0 * a3 * x[i]);
+//       sqrt_neg_d2plog[i] = sqrt(w[i]) * a2 / 2.0;
+//       plog_sum += w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]);
+//     } else {
+//       dplog[i] = w[i] / x[i];
+//       sqrt_neg_d2plog[i] = sqrt(w[i]) / x[i];
+//       plog_sum += w[i] * log(x[i]);
+//     }
+//   }
+// }
 PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x,
                        const Eigen::Ref<const Eigen::VectorXd>& w) {
   const double n = static_cast<double>(x.size());
-  const double a1 = -log(n) - 1.5;
-  const double a2 = 2.0 * n;
-  const double a3 = -0.5 * n * n;
-
+    const double a1 = -log(n) - 1.5;
+    const double a2 = 2.0 * n;
+    const double a3 = -0.5 * n * n;
   dplog.resize(x.size());
   sqrt_neg_d2plog.resize(x.size());
 
   for (unsigned int i = 0; i < x.size(); ++i) {
-    if (n * x[i] < 1.0) {
-      dplog[i] = w[i] * (a2 + 2.0 * a3 * x[i]);
-      sqrt_neg_d2plog[i] = sqrt(w[i]) * a2 / 2.0;
-      plog_sum += w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]);
+    if (n * x[i] < w[i]) {
+      dplog[i] = w[i] * (2.0 * n / w[i] - n * n * x[i] / (w[i] * w[i]));
+      sqrt_neg_d2plog[i] = n / sqrt(w[i]);
+      plog_sum += w[i] * (log(w[i] / n) - 1.5 + 2.0 * n *  x[i] / w[i] -
+        0.5 * (n * n * x[i] * x[i]) / (w[i] * w[i]));
     } else {
       dplog[i] = w[i] / x[i];
       sqrt_neg_d2plog[i] = sqrt(w[i]) / x[i];
@@ -487,7 +513,7 @@ PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x,
  */
 Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x) {
   const double n = static_cast<double>(x.size());
-  const double a1 = -log(n) - 1.5;
+  const double a1 = -std::log(n) - 1.5;
   const double a2 = 2.0 * n;
   const double a3 = -0.5 * n * n;
   for (unsigned int i = 0; i < x.size(); ++i) {
@@ -498,6 +524,23 @@ Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x) {
     }
   }
   return x;
+}
+Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x,
+                                const Eigen::Ref<const Eigen::VectorXd>& w) {
+  const double n = static_cast<double>(x.size());
+  const double a1 = -std::log(n) - 1.5;
+  const double a2 = 2.0 * n;
+  const double a3 = -0.5 * n * n;
+  Eigen::ArrayXd out(x.size());
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    if (n * x[i] < w[i]) {
+      out[i] = (log(w[i] / n) - 1.5 + 2.0 * n *  x[i] / w[i] -
+        0.5 * (n * n * x[i] * x[i]) / (w[i] * w[i]));
+    } else {
+      out[i] = log(x[i]);
+    }
+  }
+  return out;
 }
 
 double PSEUDO_LOG::sum(Eigen::VectorXd&& x) {
@@ -516,6 +559,20 @@ double PSEUDO_LOG::sum(Eigen::VectorXd&& x) {
  * Last updated: 03/19/21
  *
  */
+// double PSEUDO_LOG::sum(Eigen::VectorXd&& x,
+//                        const Eigen::Ref<const Eigen::VectorXd>& w) {
+//   const double n = static_cast<double>(x.size());
+//   const double a1 = -log(n) - 1.5;
+//   const double a2 = 2.0 * n;
+//   const double a3 = -0.5 * n * n;
+//   double out = 0;
+//   for (unsigned int i = 0; i < x.size(); ++i) {
+//     out += n * x[i] < 1.0 ?
+//     w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]) :
+//     w[i] * log(x[i]);
+//   }
+//   return out;
+// }
 double PSEUDO_LOG::sum(Eigen::VectorXd&& x,
                        const Eigen::Ref<const Eigen::VectorXd>& w) {
   const double n = static_cast<double>(x.size());
@@ -524,8 +581,9 @@ double PSEUDO_LOG::sum(Eigen::VectorXd&& x,
   const double a3 = -0.5 * n * n;
   double out = 0;
   for (unsigned int i = 0; i < x.size(); ++i) {
-    out += n * x[i] < 1.0 ?
-    w[i] * (a1 + a2 * x[i] + a3 * x[i] * x[i]) :
+    out += n * x[i] < w[i] ?
+    w[i] * (log(w[i] / n) - 1.5 + 2.0 * n *  x[i] / w[i] -
+    0.5 * (n * n * x[i] * x[i]) / (w[i] * w[i])) :
     w[i] * log(x[i]);
   }
   return out;

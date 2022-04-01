@@ -4,18 +4,18 @@
 \alias{lht}
 \title{Linear hypothesis test}
 \usage{
-lht(object, lhs, rhs, control = list())
+lht(object, rhs, lhs, control = list())
 }
 \arguments{
 \item{object}{A fitted \code{"el_test"} object.}
+
+\item{rhs}{A numeric vector for the right-hand-side of hypothesis, with as
+many entries as the rows in \code{lhs}. Defaults to a vector of zeroes.}
 
 \item{lhs}{A numeric matrix, or an object that can be coerced to a numeric
 matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 linear combination of parameters. The number of columns should be equal to
 the number of parameters in \code{object}. See ‘Details’.}
-
-\item{rhs}{A numeric vector for the right-hand-side of hypothesis, with as
-many entries as the rows in \code{lhs}. Defaults to a vector of zeroes.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
 }
@@ -82,7 +82,7 @@ y <- 1 + x1 + x2 + rnorm(n)
 df <- data.frame(y, x1, x2)
 fit <- el_lm(y ~ x1 + x2, df)
 lhs <- matrix(c(0, 1, -1), nrow = 1)
-lht(fit, lhs)
+lht(fit, lhs = lhs)
 
 # test of no treatment effect
 data("clothianidin")
@@ -90,7 +90,7 @@ lhs2 <- matrix(c(1, -1, 0, 0,
                  0, 1, -1, 0,
                  0, 0, 1, -1), byrow = TRUE, nrow = 3)
 fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-lht(fit2, lhs2)
+lht(fit2, lhs = lhs2)
 }
 \references{
 Kim, E., MacEachern, S., and Peruggia, M., (2021),

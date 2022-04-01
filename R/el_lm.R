@@ -1,6 +1,6 @@
-#' Fit a linear model with empirical likelihood
+#' Fits a linear model with empirical likelihood
 #'
-#' Fit a linear model with empirical likelihood.
+#' Fits a linear model with empirical likelihood.
 #'
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
@@ -120,7 +120,7 @@ summary.el_lm <- function(object, ...) {
     ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
     ans$coefficients <-
       matrix(NA_real_, 0L, 3L, dimnames =
-               list(NULL, c("estimate", "chisq-value", "p-value")))
+               list(NULL, c("estimate", "chisq value", "p-value")))
     ans$aliased <- is.na(coef(object))
     ans$df <- c(0L, n, length(ans$aliased))
     class(ans) <- "summary.el_lm"
@@ -132,7 +132,8 @@ summary.el_lm <- function(object, ...) {
     stop("invalid 'el_lm' object:  no 'terms' component")
   ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
   ans$coefficients <- cbind(estimate = z$coefficients,
-                            `chisq-value` = z$optim$par.tests$statistic,
+                            `chisq value` = z$optim$par.tests$statistic,
+                            # `Pr(>chisq)` = z$optim$par.tests$p.value
                             `p-value` = z$optim$par.tests$p.value)
   ans$aliased <- is.na(z$coefficients)
   if (p != attr(z$terms, "intercept")) {

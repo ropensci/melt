@@ -4,7 +4,7 @@
 \alias{el_mean}
 \title{Empirical likelihood test for mean}
 \usage{
-el_mean(par, x, weights, control = list())
+el_mean(par, x, weights, control = list(), model = TRUE)
 }
 \arguments{
 \item{par}{A numeric vector of parameter values to be tested.}
@@ -18,6 +18,9 @@ If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’ in
 \code{\link{el_eval}}.}
+
+\item{model}{A logical. If \code{TRUE} the model matrix used for fitting is
+returned.}
 }
 \value{
 A list with class \code{"el_test"} as described in

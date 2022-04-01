@@ -3,7 +3,7 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
-#include <cmath>
+// #include <cmath>
 #include "utils.h"
 
 class EL
@@ -167,6 +167,8 @@ public:
 
   // methods
   static Eigen::ArrayXd plog(Eigen::VectorXd&& x);
+  static Eigen::ArrayXd plog(Eigen::VectorXd&& x,
+                             const Eigen::Ref<const Eigen::VectorXd>& w);
   static double sum(Eigen::VectorXd&& x);
   static double sum(Eigen::VectorXd&& x,
                     const Eigen::Ref<const Eigen::VectorXd>& w);

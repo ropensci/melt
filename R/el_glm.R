@@ -1,3 +1,29 @@
+#' Fits a generalized linear model with empirical likelihood
+#'
+#' Fits a generalized linear model with empirical likelihood.
+#'
+#' @param formula A formula object.
+#' @param family dd
+#' @param data A data frame containing the variables in the formula.
+#' @param weights An optional numeric vector of weights.
+#'   Defaults to \code{NULL}, corresponding to identical weights.
+#'   If non-\code{NULL}, weighted empirical likelihood is computed.
+#' @param control A list of control parameters. See ‘Details’ in
+#'   \code{\link{el_eval}}.
+#' @param model A logical. If \code{TRUE} the model matrix used for fitting is
+#'   returned.
+#' @param contrasts dd
+#' @param ... For glm: arguments to be used to form the default control argument
+#'   if it is not supplied directly.
+#' @return A list with class \code{c("el_lm", "el_test")}.
+#' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
+#'   The Annals of Statistics 19 (4).
+#'   \doi{10.1214/aos/1176348368}.
+#' @seealso \link{el_eval}, \link{lht}
+#' @examples
+#' fit <- el_lm(mpg ~ wt, mtcars)
+#' summary(fit)
+#' @importFrom stats gaussian glm.fit
 #' @export
 el_glm <- function(formula, family = gaussian, data, weights, control = list(),
                    model = TRUE, contrasts = NULL, ...) {
@@ -74,7 +100,7 @@ el_glm <- function(formula, family = gaussian, data, weights, control = list(),
     out <- glm_("logit", mm, aa, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
     # w <- check_weights(weights, NROW(mm))
-    # out <- glm_(mm, w, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
+    # out <- glm_w_("logit", mm, w, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
     # out$weights <- w
   }
 
@@ -91,89 +117,6 @@ el_glm <- function(formula, family = gaussian, data, weights, control = list(),
   out$call <- cl
   out$terms <- mt
   out
-  # 1
 }
 
-el_glm2 <- function(formula, family = gaussian, data,
-                   weights, subset, na.action, start = NULL, etastart,
-                   mustart, offset, control = list(...), model = TRUE,
-                   method = "glm.fit", x = FALSE, y = TRUE, singular.ok = TRUE,
-                   contrasts = NULL, ...) {
-  cal <- match.call()
-  if (is.character(family))
-    family <- get(family, mode = "function", envir = parent.frame())
-  if (is.function(family))
-    family <- family()
-  if (is.null(family$family)) {
-    print(family)
-    stop("'family' not recognized")
-  }
-  if (missing(data))
-    data <- environment(formula)
-  mf <- match.call(expand.dots = FALSE)
-  m <- match(c("formula", "data", "subset", "weights", "na.action",
-               "etastart", "mustart", "offset"), names(mf), 0L)
-  mf <- mf[c(1L, m)]
-  mf$drop.unused.levels <- TRUE
-  mf[[1L]] <- quote(stats::model.frame)
-  mf <- eval(mf, parent.frame())
-  if (identical(method, "model.frame"))
-    return(mf)
-  if (!is.character(method) && !is.function(method))
-    stop("invalid 'method' argument")
-  if (identical(method, "glm.fit"))
-    control <- do.call("glm.control", control)
-  mt <- attr(mf, "terms")
-  Y <- model.response(mf, "any")
-  if (length(dim(Y)) == 1L) {
-    nm <- rownames(Y)
-    dim(Y) <- NULL
-    if (!is.null(nm))
-      names(Y) <- nm
-  }
-  X <- if (!is.empty.model(mt))
-    model.matrix(mt, mf, contrasts)
-  else matrix(, NROW(Y), 0L)
-  weights <- as.vector(model.weights(mf))
-  if (!is.null(weights) && !is.numeric(weights))
-    stop("'weights' must be a numeric vector")
-  if (!is.null(weights) && any(weights < 0))
-    stop("negative weights not allowed")
-  offset <- as.vector(model.offset(mf))
-  if (!is.null(offset)) {
-    if (length(offset) != NROW(Y))
-      stop(gettextf("number of offsets is %d should equal %d (number of observations)",
-                    length(offset), NROW(Y)), domain = NA)
-  }
-  mustart <- model.extract(mf, "mustart")
-  etastart <- model.extract(mf, "etastart")
-  fit <- eval(call(if (is.function(method)) "method" else method,
-                   x = X, y = Y, weights = weights, start = start,
-                   etastart = etastart, mustart = mustart, offset = offset,
-                   family = family, control = control,
-                   intercept = attr(mt, "intercept") > 0L,
-                   singular.ok = singular.ok))
-  if (length(offset) && attr(mt, "intercept") > 0L) {
-    fit2 <- eval(call(if (is.function(method)) "method" else method,
-                      x = X[, "(Intercept)", drop = FALSE], y = Y,
-                      mustart = fit$fitted.values, weights = weights,
-                      offset = offset, family = family, control = control,
-                      intercept = TRUE))
-    if (!fit2$converged)
-      warning("fitting to calculate the null deviance did not converge -- increase 'maxit'?")
-    fit$null.deviance <- fit2$deviance
-  }
-  if (model)
-    fit$model <- mf
-  fit$na.action <- attr(mf, "na.action")
-  if (x)
-    fit$x <- X
-  if (!y)
-    fit$y <- NULL
-  structure(c(fit, list(call = cal, formula = formula, terms = mt,
-                        data = data, offset = offset, control = control,
-                        method = method,
-                        contrasts = attr(X, "contrasts"),
-                        xlevels = .getXlevels(mt, mf))),
-            class = c(fit$class, c("glm", "lm")))
-}
+

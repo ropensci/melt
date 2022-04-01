@@ -6,11 +6,12 @@
 ^LICENSE\.md$
 ^cran-comments\.md$
 ^\.vscode$
+^\.VSCodeCounter$
 ^ignore$
 ^data-raw$
 ^CRAN-RELEASE$
 ^CRAN-SUBMISSION$
 ^\.github$
-
+^CONTRIBUTING\.md$
 ^codecov\.yml$
 ^codemeta\.json$

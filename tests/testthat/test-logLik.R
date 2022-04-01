@@ -20,7 +20,7 @@ test_that("constrained EL estimate", {
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
   lhs <- matrix(c(0, 1, 0), nrow = 1)
-  fit2 <- lht(fit, lhs, control = optcfg)
+  fit2 <- lht(fit, lhs = lhs, control = optcfg)
   expect_output(print(fit2))
   expect_lt(logLik(fit2), -n * log(n))
 })
