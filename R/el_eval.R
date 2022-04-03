@@ -5,9 +5,9 @@
 #' @param g A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. Each row corresponds to an observation of an estimating
 #'   function.
-#' @param weights An optional numeric vector of weights.
-#'   Defaults to \code{NULL}, corresponding to identical weights.
-#'   If non-\code{NULL}, weighted empirical likelihood is computed.
+#' @param weights An optional numeric vector of weights to be used in the
+#'   fitting process. If not provided, identical weights are applied. Otherwise,
+#'   weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’.
 #' @details Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
 #'   \eqn{i = 1, \dots, n}. Assume that there exists an unique \eqn{\theta_0 \in
@@ -89,10 +89,10 @@ el_eval <- function(g, weights, control = list()) {
   # check control
   optcfg <- check_control(control)
   if (missing(weights)) {
-    out <- eval_(mm, optcfg$maxit, optcfg$tol, optcfg$th)
+    out <- eval_g_(mm, optcfg$maxit, optcfg$tol, optcfg$th)
   } else {
     w <- check_weights(weights, NROW(mm))
-    out <- eval_w_(mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
+    out <- eval_g_w_(mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
     out$weights <- w
   }
   out

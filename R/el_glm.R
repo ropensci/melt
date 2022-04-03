@@ -5,9 +5,9 @@
 #' @param formula A formula object.
 #' @param family dd
 #' @param data A data frame containing the variables in the formula.
-#' @param weights An optional numeric vector of weights.
-#'   Defaults to \code{NULL}, corresponding to identical weights.
-#'   If non-\code{NULL}, weighted empirical likelihood is computed.
+#' @param weights An optional numeric vector of weights to be used in the
+#'   fitting process. If not provided, identical weights are applied. Otherwise,
+#'   weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
 #' @param model A logical. If \code{TRUE} the model matrix used for fitting is

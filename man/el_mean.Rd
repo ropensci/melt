@@ -12,9 +12,9 @@ el_mean(par, x, weights, control = list(), model = TRUE)
 \item{x}{A numeric matrix, or an object that can be coerced to a numeric
 matrix. Each row corresponds to an observation.}
 
-\item{weights}{An optional numeric vector of weights.
-Defaults to \code{NULL}, corresponding to identical weights.
-If non-\code{NULL}, weighted empirical likelihood is computed.}
+\item{weights}{An optional numeric vector of weights to be used in the
+fitting process. If not provided, identical weights are applied. Otherwise,
+weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’ in
 \code{\link{el_eval}}.}

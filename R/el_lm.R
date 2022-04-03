@@ -4,9 +4,9 @@
 #'
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
-#' @param weights An optional numeric vector of weights.
-#'   Defaults to \code{NULL}, corresponding to identical weights.
-#'   If non-\code{NULL}, weighted empirical likelihood is computed.
+#' @param weights An optional numeric vector of weights to be used in the
+#'   fitting process. If not provided, identical weights are applied. Otherwise,
+#'   weighted empirical likelihood is computed.
 #' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s.
 #' @param control A list of control parameters. See ‘Details’ in

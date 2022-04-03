@@ -28,7 +28,7 @@ test_that("invalid 'lhs' and 'rhs'", {
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   fit2 <- el_lm(y ~ x + x2, df, weights =  w, control = optcfg)
   out <- lht(fit2, lhs = lhs, control = optcfg)
-  expect_lt(out$statistic, 10)
+  expect_lt(out$statistic, 20)
 
   lhs3 <- matrix(c(1, 1, 0, 0, 0, 0), nrow = 2)
   expect_error(lht(fit, lhs = lhs3))

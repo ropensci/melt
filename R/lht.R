@@ -1,0 +1,154 @@
+#' Linear hypothesis test
+#'
+#' Tests a linear hypothesis for objects inheriting from class \code{"el_test"}.
+#'
+#' @param object A fitted \code{"el_test"} object.
+#' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
+#'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}.
+#' @param lhs A numeric matrix, or an object that can be coerced to a numeric
+#'   matrix. It specifies the left-hand-side of hypothesis. Each row gives a
+#'   linear combination of parameters. The number of columns should be equal to
+#'   the number of parameters in \code{object}. Defaults to \code{NULL}.
+#'   See ‘Details’.
+#' @param control A list of control parameters. See ‘Details’.
+#' @details Consider a linear hypothesis of the form \deqn{L\theta = r,} where
+#'   the left-hand-side \eqn{L} is a \eqn{q} by \eqn{p} matrix and the
+#'   right-hand-side \eqn{r} is a \eqn{q}-dimensional vector. Let
+#'   \eqn{l_n(\theta)} denote the minus twice the empirical log-likelihood ratio
+#'   function. Under some regularity conditions, \eqn{l_n(\theta)} is
+#'   asymptotically distributed as \eqn{\chi^2_q} under the constraint of
+#'   hypothesis, i.e.,
+#'   \deqn{\min_{\theta: L\theta = r} l_n(\theta) \to_d \chi^2_q .}
+#'   \code{lht} solves the constrained optimization problem using projected
+#'   gradient descent method. It is required that \code{lhs} have full row rank
+#'   \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
+#'   parameters. \code{control} is a list that can supply any of the following
+#'   components:
+#'   \describe{
+#'   \item{maxit}{The maximum number of iterations for the optimization.
+#'   Defaults to \code{100}.}
+#'   \item{tol}{The relative convergence tolerance, denoted by \eqn{\epsilon}.
+#'   With the orthogonal projector matrix \eqn{P} and an initial value
+#'   \eqn{\theta^{(0)}}, the iteration stops when
+#'   \deqn{\|P \nabla l_n(\theta^{(k)})\| \leq
+#'   \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon^2.}
+#'   Defaults to \code{1e-06}.}
+#'   \item{th}{The threshold for negative empirical log-likelihood ratio value.
+#'   The iteration stops if the value exceeds the threshold.
+#'   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
+#'   }
+#' @return A list with class \code{c("el_lht", "el_test")} with the following
+#'   components:
+#'   \describe{
+#'   \item{optim}{A list with the following optimization results:
+#'     \describe{
+#'       \item{method}{The type of estimating function.}
+#'       \item{lambda}{The Lagrange multiplier of dual problem.}
+#'       \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
+#'       \item{iterations}{The number of iterations performed.}
+#'       \item{convergence}{A logical vector. \code{TRUE} indicates
+#'       convergence of the algorithm.}
+#'     }
+#'   }
+#'   \item{npar}{The number of parameters.}
+#'   \item{log.prob}{The log probabilities.}
+#'   \item{loglik}{The log likelihood value evaluated at the estimated
+#'   coefficients}
+#'   \item{coefficients}{The solution of the optimization.}
+#'   \item{statistic}{The chi-square statistic.}
+#'   \item{df}{The degrees of freedom of the statistic.}
+#'   \item{p.value}{The \eqn{p}-value of the statistic.}
+#' }
+#' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
+#' "Empirical Likelihood for the Analysis of Experimental Designs,"
+#' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
+#' @references Qin, Jing, and Jerry Lawless. 1995.
+#'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
+#'   Canadian Journal of Statistics 23 (2): 145–59.
+#'   \doi{10.2307/3315441}.
+#' @seealso \link{el_eval}
+#' @examples
+#' n <- 100
+#' x1 <- rnorm(n)
+#' x2 <- rnorm(n)
+#' y <- 1 + x1 + x2 + rnorm(n)
+#' df <- data.frame(y, x1, x2)
+#' fit <- el_lm(y ~ x1 + x2, df)
+#' lhs <- matrix(c(0, 1, -1), nrow = 1)
+#' lht(fit, lhs = lhs)
+#'
+#' # test of no treatment effect
+#' data("clothianidin")
+#' lhs2 <- matrix(c(1, -1, 0, 0,
+#'                  0, 1, -1, 0,
+#'                  0, 0, 1, -1), byrow = TRUE, nrow = 3)
+#' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
+#' lht(fit2, lhs = lhs2)
+#' @export
+lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
+  if (!inherits(object, "el_test"))
+    stop("invalid 'object' supplied")
+  if (is.null(object$data.matrix))
+    stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
+  h <- check_hypothesis(lhs, rhs, object$npar)
+
+  method <- object$optim$method
+  optcfg <- check_control(control)
+  maxit <- optcfg$maxit
+  tol <- optcfg$tol
+  th <- optcfg$th
+  w <- object$weights
+
+  if (is.null(lhs)) {
+    if (is.null(w)) {
+      out <- eval_(method, h$r, object$data.matrix, maxit, tol, th)
+    } else {
+      out <- eval_w_(method, h$r, object$data.matrix, w, maxit, tol, th)
+    }
+  } else {
+    if (is.null(w)) {
+      out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
+                  maxit, tol, th)
+    } else {
+      out <- lht_w_(method, object$coefficients, object$data.matrix, w, h$l,
+                    h$r, maxit, tol, th)
+    }
+  }
+  # if (missing(lhs)) {
+  #   rhs <- check_rhs(rhs, p)
+  #   if (is.null(w)) {
+  #     out <- eval_(object$optim$method, rhs, object$data.matrix, maxit, tol, th)
+  #   } else {
+  #     out <- eval_w_(object$optim$method, rhs, object$data.matrix, w, maxit,
+  #                    tol, th)
+  #   }
+  # } else if (missing(rhs)) {
+  #   lhs <- as.matrix(lhs)
+  #   q <- check_hypothesis(lhs, p)
+  # }
+  #
+  #
+  # lhs <- as.matrix(lhs)
+  # q <- check_hypothesis(lhs, p)
+  #
+  # if (missing(rhs)) {
+  #   rhs <- rep(0, nrow(lhs))
+  # } else {
+  #   rhs <- as.vector(rhs)
+  #   if (!is.numeric(rhs) || !all(is.finite(rhs)))
+  #     stop("'rhs' must be a finite numeric vector")
+  #   if (length(rhs) != q)
+  #     stop("'lhs' and 'rhs' have incompatible dimensions")
+  # }
+  #
+  #
+  # if (is.null(object$weights)) {
+  #   out <- lht_(object$optim$method, object$coefficients, object$data.matrix,
+  #               lhs, rhs, optcfg$maxit, optcfg$tol, optcfg$th)
+  # } else {
+  #   out <- lht_w_(object$optim$method, object$coefficients, object$data.matrix,
+  #                 object$weights, lhs, rhs, optcfg$maxit, optcfg$tol, optcfg$th)
+  # }
+  class(out) <- c("el_lht", "el_test")
+  out
+}

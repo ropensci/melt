@@ -4,7 +4,7 @@ Title: Multiple Empirical Likelihood Tests
 Version: 1.3.0.9000
 Description: Performs multiple empirical likelihood tests for regression analysis. 
     Much of its functionality and syntax mimics the corresponding base R functions. 
-    The core computational routines are implemented with the 'Eigen' C++ library 
+    The core computational routines are implemented using the 'Eigen' C++ library 
     and 'RcppEigen' interface, with OpenMP for parallel computation. Additional 
     functions are available for multiple testing for the analysis of experimental 
     designs. Details of the testing procedures are given in Kim et al. (2021) 

@@ -47,7 +47,7 @@ void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g)
 }
 
 void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
-                const Eigen::Ref<const Eigen::VectorXd>& w)
+                const Eigen::Ref<const Eigen::ArrayXd>& w)
 {
   // maximization
   while (!conv && iter != maxit && nllr <= th) {
@@ -99,7 +99,7 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
 }
 
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-       const Eigen::Ref<const Eigen::VectorXd>& w,
+       const Eigen::Ref<const Eigen::ArrayXd>& w,
        const int maxit,
        const double tol,
        const double th)
@@ -134,7 +134,7 @@ EL::EL(const std::string method,
 EL::EL(const std::string method,
        const Eigen::Ref<const Eigen::VectorXd>& par0,
        const Eigen::Ref<const Eigen::MatrixXd>& x,
-       const Eigen::Ref<const Eigen::VectorXd>& w,
+       const Eigen::Ref<const Eigen::ArrayXd>& w,
        const int maxit,
        const double tol,
        const double th)
@@ -150,38 +150,39 @@ EL::EL(const std::string method,
 }
 
 Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const {
-  const Eigen::MatrixXd g = g_fcn(x, par);
-  return  -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+  return
+    -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fcn(x, par) * l);
 }
 
 Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                         const Eigen::Ref<const Eigen::ArrayXd>& w) const {
-  const Eigen::MatrixXd g = g_fcn(x, par);
+  // const Eigen::MatrixXd g = g_fcn(x, par);
   // return PSEUDO_LOG::plog(w) - log(n) -
   //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
-  return
-    log(w) - log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l, w);
+  return log(w) - log(n) -
+    PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fcn(x, par) * l, w);
 }
 
 Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g) const {
-  return  -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+  return -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
 }
 
 Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g,
                           const Eigen::Ref<const Eigen::ArrayXd>& w) const {
   // return PSEUDO_LOG::plog(w) - log(n) -
   //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
-  return
-  log(w) - log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l, w);
+  return log(w) - log(n) -
+    PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l, w);
 }
 
 double EL::loglik() const {
   return -nllr - n * log(n);
 }
 
-double EL::wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const {
+double EL::loglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const {
   return -nllr - (w * (log(n) - log(w))).sum();
 }
+
 
 
 
@@ -282,7 +283,7 @@ MINEL::MINEL(const std::string method,
     // strictly less than the current function value
     while (f0 < nllr) {
       // reduce step size
-      gamma /= 2.0;
+      gamma *= 0.5;
       // propose new parameter
       par_tmp = par - gamma * proj * gr_fcn(l, g, x, par);
       // propose new lambda
@@ -302,12 +303,6 @@ MINEL::MINEL(const std::string method,
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    // if ((proj * gr_fcn(l, g, x, par)).norm() < tol * norm0 + tol * tol ||
-    //     step < tol * par.norm() + tol * tol) {
-    //   conv = true;
-    // } else {
-    //   ++iter;
-    // }
     if ((proj * gr_fcn(l, g, x, par)).norm() < tol * norm0 + tol * tol ||
         step < tol * par.norm() + tol * tol) {
       conv = true;
@@ -317,12 +312,12 @@ MINEL::MINEL(const std::string method,
 }
 
 /* Constructor for MINEL class (minimization, weighted)
- * Last updated: 03/31/21
+ * Last updated: 04/02/21
  */
 MINEL::MINEL(const std::string method,
              const Eigen::Ref<const Eigen::VectorXd>& par0,
              const Eigen::Ref<const Eigen::MatrixXd>& x,
-             const Eigen::Ref<const Eigen::VectorXd>& w,
+             const Eigen::Ref<const Eigen::ArrayXd>& w,
              const Eigen::Ref<const Eigen::MatrixXd>& lhs,
              const Eigen::Ref<const Eigen::VectorXd>& rhs,
              const int maxit,
@@ -368,7 +363,7 @@ MINEL::MINEL(const std::string method,
     // strictly less than the current function value
     while (f0 < nllr) {
       // reduce step size
-      gamma /= 2.0;
+      gamma *= 0.5;
       // propose new parameter
       par_tmp = par - gamma * proj * wgr_fcn(l, g, x, w);
       // propose new lambda
@@ -386,11 +381,6 @@ MINEL::MINEL(const std::string method,
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    // if ((proj * wgr_fcn(l, g, x, w)).norm() < tol * norm0 + tol * tol) {
-    //   conv = true;
-    // } else {
-    //   ++iter;
-    // }
     if ((proj * wgr_fcn(l, g, x, w)).norm() < tol * norm0 + tol * tol) {
       conv = true;
     }
@@ -399,22 +389,21 @@ MINEL::MINEL(const std::string method,
 }
 
 Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const {
-  const Eigen::MatrixXd g = g_fcn(x, par);
-  return  -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+  return
+    -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fcn(x, par) * l);
 }
 
 Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                            const Eigen::Ref<const Eigen::ArrayXd>& w) const {
-  const Eigen::MatrixXd g = g_fcn(x, par);
   return PSEUDO_LOG::plog(w) - log(n) -
-    PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
+    PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fcn(x, par) * l);
 }
 
 double MINEL::loglik() const {
   return -nllr - n * log(n);
 }
 
-double MINEL::wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const {
+double MINEL::loglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const {
   return -nllr - (w * (log(n) - log(w))).sum();
 }
 
@@ -427,13 +416,8 @@ double MINEL::wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const {
 
 
 
-
-
-
-
-
 /* Constructor for PSEUDO_LOG class
- * Last updated: 03/19/21
+ * Last updated: 04/02/21
  *
  */
 PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
@@ -485,7 +469,7 @@ PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x) {
 //   }
 // }
 PSEUDO_LOG::PSEUDO_LOG(Eigen::VectorXd&& x,
-                       const Eigen::Ref<const Eigen::VectorXd>& w) {
+                       const Eigen::Ref<const Eigen::ArrayXd>& w) {
   const double n = static_cast<double>(x.size());
     const double a1 = -log(n) - 1.5;
     const double a2 = 2.0 * n;
@@ -526,7 +510,7 @@ Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x) {
   return x;
 }
 Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x,
-                                const Eigen::Ref<const Eigen::VectorXd>& w) {
+                                const Eigen::Ref<const Eigen::ArrayXd>& w) {
   const double n = static_cast<double>(x.size());
   const double a1 = -std::log(n) - 1.5;
   const double a2 = 2.0 * n;
@@ -574,7 +558,7 @@ double PSEUDO_LOG::sum(Eigen::VectorXd&& x) {
 //   return out;
 // }
 double PSEUDO_LOG::sum(Eigen::VectorXd&& x,
-                       const Eigen::Ref<const Eigen::VectorXd>& w) {
+                       const Eigen::Ref<const Eigen::ArrayXd>& w) {
   const double n = static_cast<double>(x.size());
   const double a1 = -log(n) - 1.5;
   const double a2 = 2.0 * n;

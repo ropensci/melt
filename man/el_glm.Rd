@@ -22,9 +22,9 @@ el_glm(
 
 \item{data}{A data frame containing the variables in the formula.}
 
-\item{weights}{An optional numeric vector of weights.
-Defaults to \code{NULL}, corresponding to identical weights.
-If non-\code{NULL}, weighted empirical likelihood is computed.}
+\item{weights}{An optional numeric vector of weights to be used in the
+fitting process. If not provided, identical weights are applied. Otherwise,
+weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’ in
 \code{\link{el_eval}}.}

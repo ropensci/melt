@@ -3,7 +3,6 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
-// #include <cmath>
 #include "utils.h"
 
 class EL
@@ -23,7 +22,7 @@ public:
      const double th);
   // direct evaluation (weighted)
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-     const Eigen::Ref<const Eigen::VectorXd>& w,
+     const Eigen::Ref<const Eigen::ArrayXd>& w,
      const int maxit,
      const double tol,
      const double th);
@@ -38,7 +37,7 @@ public:
   EL(const std::string method,
      const Eigen::Ref<const Eigen::VectorXd>& par0,
      const Eigen::Ref<const Eigen::MatrixXd>& x,
-     const Eigen::Ref<const Eigen::VectorXd>& w,
+     const Eigen::Ref<const Eigen::ArrayXd>& w,
      const int maxit,
      const double tol,
      const double th);
@@ -46,7 +45,7 @@ public:
   // functions for constructors
   void set_el(const Eigen::Ref<const Eigen::MatrixXd>& g);
   void set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
-              const Eigen::Ref<const Eigen::VectorXd>& w);
+              const Eigen::Ref<const Eigen::ArrayXd>& w);
   std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                                 const Eigen::Ref<const Eigen::VectorXd>&)>
     set_g_fcn(const std::string method);
@@ -60,7 +59,7 @@ public:
   Eigen::ArrayXd logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g,
                         const Eigen::Ref<const Eigen::ArrayXd>& w) const;
   double loglik() const;
-  double wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
+  double loglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
 
 private:
   // members
@@ -99,7 +98,7 @@ public:
   MINEL(const std::string method,
         const Eigen::Ref<const Eigen::VectorXd>& par0,
         const Eigen::Ref<const Eigen::MatrixXd>& x,
-        const Eigen::Ref<const Eigen::VectorXd>& w,
+        const Eigen::Ref<const Eigen::ArrayXd>& w,
         const Eigen::Ref<const Eigen::MatrixXd>& lhs,
         const Eigen::Ref<const Eigen::VectorXd>& rhs,
         const int maxit,
@@ -127,7 +126,7 @@ public:
   Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                       const Eigen::Ref<const Eigen::ArrayXd>& w) const;
   double loglik() const;
-  double wloglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
+  double loglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
 
 private:
   // members
@@ -163,14 +162,14 @@ public:
 
   // constructors
   PSEUDO_LOG(Eigen::VectorXd&& x);
-  PSEUDO_LOG(Eigen::VectorXd&& x, const Eigen::Ref<const Eigen::VectorXd>& w);
+  PSEUDO_LOG(Eigen::VectorXd&& x, const Eigen::Ref<const Eigen::ArrayXd>& w);
 
   // methods
   static Eigen::ArrayXd plog(Eigen::VectorXd&& x);
   static Eigen::ArrayXd plog(Eigen::VectorXd&& x,
-                             const Eigen::Ref<const Eigen::VectorXd>& w);
+                             const Eigen::Ref<const Eigen::ArrayXd>& w);
   static double sum(Eigen::VectorXd&& x);
   static double sum(Eigen::VectorXd&& x,
-                    const Eigen::Ref<const Eigen::VectorXd>& w);
+                    const Eigen::Ref<const Eigen::ArrayXd>& w);
 };
 #endif
