@@ -156,9 +156,6 @@ Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const {
 
 Eigen::ArrayXd EL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                         const Eigen::Ref<const Eigen::ArrayXd>& w) const {
-  // const Eigen::MatrixXd g = g_fcn(x, par);
-  // return PSEUDO_LOG::plog(w) - log(n) -
-  //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
   return log(w) - log(n) -
     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fcn(x, par) * l, w);
 }
@@ -169,8 +166,6 @@ Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g) const {
 
 Eigen::ArrayXd EL::logp_g(const Eigen::Ref<const Eigen::MatrixXd>& g,
                           const Eigen::Ref<const Eigen::ArrayXd>& w) const {
-  // return PSEUDO_LOG::plog(w) - log(n) -
-  //   PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l);
   return log(w) - log(n) -
     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g * l, w);
 }
@@ -395,7 +390,7 @@ Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const {
 
 Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                            const Eigen::Ref<const Eigen::ArrayXd>& w) const {
-  return PSEUDO_LOG::plog(w) - log(n) -
+  return log(w) - log(n) -
     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fcn(x, par) * l);
 }
 

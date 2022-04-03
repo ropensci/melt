@@ -134,7 +134,7 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #' @importFrom stats complete.cases qchisq
 #' @return A matrix with columns giving lower and upper confidence limits for
 #'  each parameter. In contrast to other methods that rely on studentization,
-#'  the lower and upper limits obatained from empirical likelihood do not
+#'  the lower and upper limits obtained from empirical likelihood do not
 #'  correspond to the (1 - level) / 2 and 1 - (1 - level) / 2 in \%,
 #'  respectively.
 #' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
@@ -150,7 +150,12 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   if (!missing(level) &&
       (length(level) != 1L || !is.finite(level) || level < 0 || level > 1))
     stop("'conf.level' must be a single number between 0 and 1")
+  method <- object$optim$method
   optcfg <- check_control(control)
+  maxit <- optcfg$maxit
+  tol <- optcfg$tol
+  th <- optcfg$th
+  w <- object$weights
   # set cutoff and coefficients
   cutoff <- qchisq(level, 1L)
   cf <- coef(object)
@@ -181,9 +186,9 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   # number of rows of the confidence interval matrix
   p <- length(idx)
   # compute the confidence interval matrix
-  if (level == 0) {
+  if (isTRUE(all.equal(level, 0))) {
     ci <- matrix(rep(cf[idx], 2L), ncol = 2L)
-  } else if (level == 1) {
+  } else if (isTRUE(all.equal(level, 1))) {
     ci <- matrix(NA, nrow = p, ncol = 2L)
     ci[which(!is.na(idx)), ] <- c(-Inf, Inf)
   } else if (all(is.na(idx))) {
@@ -191,28 +196,20 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))
     ci <- matrix(NA, nrow = p, ncol = 2L)
-    # ci[-idx_na, ] <- confint_(object$optim$method, cf, object$data.matrix,
-    #                           cutoff, idx[-idx_na], optcfg$maxit, optcfg$tol,
-    #                           optcfg$th)
-    if (is.null(object$weights)) {
-      ci[-idx_na, ] <- confint_(object$optim$method, cf, object$data.matrix,
-                                cutoff, idx[-idx_na], optcfg$maxit, optcfg$tol,
-                                optcfg$th)
+    if (is.null(w)) {
+      ci[-idx_na, ] <- confint_(method, cf, object$data.matrix, cutoff,
+                                idx[-idx_na], maxit, tol, th)
     } else {
-      ci[-idx_na, ] <- confint_w_(object$optim$method, cf, object$data.matrix,
-                                  object$weights, cutoff, idx[-idx_na],
-                                  optcfg$maxit, optcfg$tol, optcfg$th)
+      ci[-idx_na, ] <- confint_w_(method, cf, object$data.matrix, w, cutoff,
+                                  idx[-idx_na], maxit, tol, th)
     }
   } else {
-    # ci <- confint_(object$optim$method, cf, object$data.matrix, cutoff, idx,
-    #                optcfg$maxit, optcfg$tol, optcfg$th)
-    if (is.null(object$weights)) {
-      ci <- confint_(object$optim$method, cf, object$data.matrix, cutoff, idx,
-                     optcfg$maxit, optcfg$tol, optcfg$th)
+    if (is.null(w)) {
+      ci <- confint_(method, cf, object$data.matrix, cutoff, idx, maxit, tol,
+                     th)
     } else {
-      ci <- confint_w_(object$optim$method, cf, object$data.matrix,
-                       object$weights,  cutoff, idx, optcfg$maxit, optcfg$tol,
-                       optcfg$th)
+      ci <- confint_w_(method, cf, object$data.matrix, w, cutoff, idx, maxit,
+                       tol, th)
     }
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))

@@ -1,5 +1,5 @@
 ---
-title: "melt-vignette"
+title: "melt-vignette" 
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{melt-vignette}

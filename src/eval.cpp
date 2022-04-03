@@ -19,16 +19,18 @@ Rcpp::List eval_(const std::string method,
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
+      Rcpp::Named("method") = method,
       Rcpp::Named("lambda") = el.l,
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-      Rcpp::Named("npar") = p,
-      Rcpp::Named("log.prob") = el.logp(x),
-      Rcpp::Named("loglik") = el.loglik(),
-      Rcpp::Named("statistic") = chisq_val,
-      Rcpp::Named("df") = p,
-      Rcpp::Named("p.value") = pval);
+    Rcpp::Named("npar") = p,
+    Rcpp::Named("log.prob") = el.logp(x),
+    Rcpp::Named("loglik") = el.loglik(),
+    Rcpp::Named("coefficients") = par0,
+    Rcpp::Named("statistic") = chisq_val,
+    Rcpp::Named("df") = p,
+    Rcpp::Named("p.value") = pval);
   return result;
 }
 
@@ -52,16 +54,18 @@ Rcpp::List eval_w_(const std::string method,
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
+      Rcpp::Named("method") = method,
       Rcpp::Named("lambda") = el.l,
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-      Rcpp::Named("npar") = p,
-      Rcpp::Named("log.prob") = el.logp(x, w),
-      Rcpp::Named("loglik") = el.loglik(w),
-      Rcpp::Named("statistic") = chisq_val,
-      Rcpp::Named("df") = p,
-      Rcpp::Named("p.value") = pval);
+    Rcpp::Named("npar") = p,
+    Rcpp::Named("log.prob") = el.logp(x, w),
+    Rcpp::Named("loglik") = el.loglik(w),
+    Rcpp::Named("coefficients") = par0,
+    Rcpp::Named("statistic") = chisq_val,
+    Rcpp::Named("df") = p,
+    Rcpp::Named("p.value") = pval);
   return result;
 }
 

@@ -1,3 +1,15 @@
+# melt 1.4.0
+* C++14 standards are used for the package.
+
+* `lht` function added for linear hypothesis testing.
+
+* Generic functions `confint` and `logLik` added for `el_test` class.
+
+* `el_test` objects additionally return `npar`, `log.prob`, and `loglik`.
+
+* `el_aov` deprecated in favor of `el_lm`. It will be removed in a future release. 
+
+
 # melt 1.3.0
 * `el_eval` function added for direct computation with custom estimating functions.
 

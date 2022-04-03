@@ -88,11 +88,14 @@ el_eval <- function(g, weights, control = list()) {
 
   # check control
   optcfg <- check_control(control)
+  maxit <- optcfg$maxit
+  tol <- optcfg$tol
+  th <- optcfg$th
   if (missing(weights)) {
-    out <- eval_g_(mm, optcfg$maxit, optcfg$tol, optcfg$th)
+    out <- eval_g_(mm, maxit, tol, th)
   } else {
-    w <- check_weights(weights, NROW(mm))
-    out <- eval_g_w_(mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
+    w <- check_weights(weights, nrow(mm))
+    out <- eval_g_w_(mm, w, maxit, tol, th)
     out$weights <- w
   }
   out

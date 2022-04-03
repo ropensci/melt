@@ -23,7 +23,7 @@ parameters are considered.}
 \value{
 A matrix with columns giving lower and upper confidence limits for
  each parameter. In contrast to other methods that rely on studentization,
- the lower and upper limits obatained from empirical likelihood do not
+ the lower and upper limits obtained from empirical likelihood do not
  correspond to the (1 - level) / 2 and 1 - (1 - level) / 2 in \%,
  respectively.
 }

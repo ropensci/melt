@@ -31,11 +31,11 @@
 #' @examples
 #' # all pairwise comparisons
 #' data("clothianidin")
-#' el_pairwise(clo ~ trt | blk, clothianidin, B = 10000)
+#' el_pairwise(clo ~ trt | blk, clothianidin, B = 1000)
 #'
 #' # comparisons with control
 #' el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB",
-#'             B = 1000)
+#'             B = 500)
 #'
 #' @importFrom stats terms
 #' @export

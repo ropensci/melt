@@ -1,4 +1,4 @@
-# Contributing to melt
+# Contributing to melt 
 
 This outlines how to propose a change to melt. 
 For more detailed info about contributing to this, and other tidyverse packages, please see the

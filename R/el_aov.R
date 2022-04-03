@@ -87,10 +87,10 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
   out$call <- cl
   out$terms <- mt
   out$model <- list(model.matrix = x, incidence.matrix = c)
-  class(out) <- "el_aov"
   if (!out$optim$convergence) {
     warning("convergence failed\n")
   }
+  class(out) <- "el_aov"
   out
 }
 

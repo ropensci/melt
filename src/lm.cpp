@@ -66,7 +66,6 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& data,
     Rcpp::Named("df") = df,
     Rcpp::Named("residuals") = resid,
     Rcpp::Named("fitted.values") = fit_val);
-  result.attr("class") = Rcpp::CharacterVector({"el_lm", "el_test"});
   return result;
 }
 
@@ -139,6 +138,5 @@ Rcpp::List lm_w_(const Eigen::Map<Eigen::MatrixXd>& data,
     Rcpp::Named("df") = df,
     Rcpp::Named("residuals") = resid,
     Rcpp::Named("fitted.values") = fit_val);
-  result.attr("class") = Rcpp::CharacterVector({"el_lm", "el_test"});
   return result;
 }

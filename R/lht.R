@@ -98,7 +98,6 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
   tol <- optcfg$tol
   th <- optcfg$th
   w <- object$weights
-
   if (is.null(lhs)) {
     if (is.null(w)) {
       out <- eval_(method, h$r, object$data.matrix, maxit, tol, th)
@@ -114,41 +113,6 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
                     h$r, maxit, tol, th)
     }
   }
-  # if (missing(lhs)) {
-  #   rhs <- check_rhs(rhs, p)
-  #   if (is.null(w)) {
-  #     out <- eval_(object$optim$method, rhs, object$data.matrix, maxit, tol, th)
-  #   } else {
-  #     out <- eval_w_(object$optim$method, rhs, object$data.matrix, w, maxit,
-  #                    tol, th)
-  #   }
-  # } else if (missing(rhs)) {
-  #   lhs <- as.matrix(lhs)
-  #   q <- check_hypothesis(lhs, p)
-  # }
-  #
-  #
-  # lhs <- as.matrix(lhs)
-  # q <- check_hypothesis(lhs, p)
-  #
-  # if (missing(rhs)) {
-  #   rhs <- rep(0, nrow(lhs))
-  # } else {
-  #   rhs <- as.vector(rhs)
-  #   if (!is.numeric(rhs) || !all(is.finite(rhs)))
-  #     stop("'rhs' must be a finite numeric vector")
-  #   if (length(rhs) != q)
-  #     stop("'lhs' and 'rhs' have incompatible dimensions")
-  # }
-  #
-  #
-  # if (is.null(object$weights)) {
-  #   out <- lht_(object$optim$method, object$coefficients, object$data.matrix,
-  #               lhs, rhs, optcfg$maxit, optcfg$tol, optcfg$th)
-  # } else {
-  #   out <- lht_w_(object$optim$method, object$coefficients, object$data.matrix,
-  #                 object$weights, lhs, rhs, optcfg$maxit, optcfg$tol, optcfg$th)
-  # }
   class(out) <- c("el_lht", "el_test")
   out
 }

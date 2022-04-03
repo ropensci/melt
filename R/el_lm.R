@@ -60,11 +60,14 @@ el_lm <- function(formula, data, weights, na.action, control = list(),
   }
 
   optcfg <- check_control(control)
+  maxit <- optcfg$maxit
+  tol <- optcfg$tol
+  th <- optcfg$th
   if (missing(weights)) {
-    out <- lm_(mm, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
+    out <- lm_(mm, intercept, maxit, tol, th)
   } else {
-    w <- check_weights(weights, NROW(mm))
-    out <- lm_w_(mm, w, intercept, optcfg$maxit, optcfg$tol, optcfg$th)
+    w <- check_weights(weights, nrow(mm))
+    out <- lm_w_(mm, w, intercept, maxit, tol, th)
     out$weights <- w
   }
   out$coefficients <- setNames(out$coefficients, colnames(x))
@@ -76,6 +79,7 @@ el_lm <- function(formula, data, weights, na.action, control = list(),
   out$terms <- mt
   if (model)
     out$data.matrix <- mm
+  class(out) <- c("el_lm", "el_test")
   out
 }
 
@@ -114,7 +118,7 @@ print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 summary.el_lm <- function(object, ...) {
   z <- object
   p <- z$npar
-  if (p == 0) {
+  if (p == 0L) {
     r <- z$residuals
     n <- length(r)
     ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
