@@ -99,19 +99,10 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
   th <- optcfg$th
   w <- object$weights
   if (is.null(lhs)) {
-    if (is.null(w)) {
-      out <- eval_(method, h$r, object$data.matrix, maxit, tol, th)
-    } else {
-      out <- eval_w_(method, h$r, object$data.matrix, w, maxit, tol, th)
-    }
+    out <- eval_(method, h$r, object$data.matrix, maxit, tol, th, w)
   } else {
-    if (is.null(w)) {
-      out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
-                  maxit, tol, th)
-    } else {
-      out <- lht_w_(method, object$coefficients, object$data.matrix, w, h$l,
-                    h$r, maxit, tol, th)
-    }
+    out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
+                maxit, tol, th, w)
   }
   class(out) <- c("el_lht", "el_test")
   out

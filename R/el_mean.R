@@ -6,8 +6,8 @@
 #' @param x A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. Each row corresponds to an observation.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. If not provided, identical weights are applied. Otherwise,
-#'   weighted empirical likelihood is computed.
+#'   fitting process. Defaults to \code{NULL}, corresponding to identical weights.
+#'   If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’ in
 #'   \code{\link{el_eval}}.
 #' @param model A logical. If \code{TRUE} the model matrix used for fitting is
@@ -39,7 +39,7 @@
 #' w <- rep(c(1, 2), each = 25)
 #' el_mean(par, x, w)
 #' @export
-el_mean <- function(par, x, weights, control = list(), model = TRUE) {
+el_mean <- function(par, x, weights = NULL, control = list(), model = TRUE) {
   mm <- as.matrix(x)
   if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'x' must be a finite numeric matrix")
@@ -52,13 +52,14 @@ el_mean <- function(par, x, weights, control = list(), model = TRUE) {
 
   # check control
   optcfg <- check_control(control)
-  if (missing(weights)) {
-    out <- mean_(par, mm, optcfg$maxit, optcfg$tol, optcfg$th)
-  } else {
-    w <- check_weights(weights, nrow(mm))
-    out <- mean_w_(par, mm, w, optcfg$maxit, optcfg$tol, optcfg$th)
-    out$weights <- w
+  maxit <- optcfg$maxit
+  tol <- optcfg$tol
+  th <- optcfg$th
+  if (!is.null(weights)) {
+    weights <- check_weights(weights, nrow(mm))
   }
+  out <- mean_(par, mm, maxit, tol, th, weights)
+  out$weights <- weights
   if (model)
     out$data.matrix <- mm
   class(out) <- "el_test"

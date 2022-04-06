@@ -4,7 +4,7 @@
 \alias{el_eval}
 \title{Empirical likelihood with general estimating functions}
 \usage{
-el_eval(g, weights, control = list())
+el_eval(g, weights = NULL, control = list())
 }
 \arguments{
 \item{g}{A numeric matrix, or an object that can be coerced to a numeric
@@ -12,8 +12,8 @@ matrix. Each row corresponds to an observation of an estimating
 function.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. If not provided, identical weights are applied. Otherwise,
-weighted empirical likelihood is computed.}
+fitting process. Defaults to \code{NULL}, corresponding to identical weights.
+If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters. See ‘Details’.}
 }

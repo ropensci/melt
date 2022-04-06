@@ -106,3 +106,31 @@ Eigen::VectorXd gr_nloglr_logit(
   return -(x.transpose() *
            (x.array().colwise() * numerator / denominator).matrix()) * l / n;
 }
+
+
+
+inline Eigen::ArrayXd linkinv_log(const Eigen::Ref<const Eigen::VectorXd>& x)
+{
+  return exp(x.array());
+}
+Eigen::MatrixXd g_gaussian_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                               const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  return x.array().colwise() * (y - linkinv_log(x * par));
+}
+Eigen::VectorXd gr_nloglr_gaussian_log(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const int n = g.rows();
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd numerator = linkinv_log(x * par);
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
+  return -(x.transpose() *
+           (x.array().colwise() * numerator / denominator).matrix()) * l / n;
+}
+

@@ -10,7 +10,9 @@ class EL
 public:
   // members
   Eigen::VectorXd l;  // Lagrange multiplier
-  double nllr{0};     // negative log likelihood ratio
+  const std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&)>
+    mele_fcn;         // maximum empirical likelihood estimator
+  double nllr{0};     // negative log-likelihood ratio
   int iter{0};        // iterations performed in optimization
   bool conv{false};   // convergence status
 
@@ -46,6 +48,8 @@ public:
   void set_el(const Eigen::Ref<const Eigen::MatrixXd>& g);
   void set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
               const Eigen::Ref<const Eigen::ArrayXd>& w);
+  std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&)>
+    set_mele_fcn(const std::string method);
   std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                                 const Eigen::Ref<const Eigen::VectorXd>&)>
     set_g_fcn(const std::string method);
@@ -60,6 +64,18 @@ public:
                         const Eigen::Ref<const Eigen::ArrayXd>& w) const;
   double loglik() const;
   double loglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
+
+
+  Eigen::ArrayXd logp2_g(
+      const Eigen::Ref<const Eigen::MatrixXd>& g,
+      const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w = R_NilValue)
+    const;
+  Eigen::ArrayXd logp2(
+      const Eigen::Ref<const Eigen::MatrixXd>& x,
+      const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w = R_NilValue)
+    const;
+  double loglik2(const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w =
+                 R_NilValue) const;
 
 private:
   // members
@@ -127,6 +143,13 @@ public:
                       const Eigen::Ref<const Eigen::ArrayXd>& w) const;
   double loglik() const;
   double loglik(const Eigen::Ref<const Eigen::ArrayXd>& w) const;
+
+  Eigen::ArrayXd logp2(
+      const Eigen::Ref<const Eigen::MatrixXd>& x,
+      const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w = R_NilValue)
+    const;
+  double loglik2(const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w =
+                 R_NilValue) const;
 
 private:
   // members

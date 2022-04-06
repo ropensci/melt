@@ -25,7 +25,7 @@ test_that("probabilities add up to 1 (weighted)", {
   par <- (max(x) + min(x)) / 2
   w <- 1 + runif(10, min = -0.5, max = 0.5)
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
-  fit <- el_mean(par, x, w, optcfg)
+  fit <- el_mean(par, x, weights = w, optcfg)
   expect_equal(sum(exp(fit$log.prob)), 1)
 })
 
@@ -36,7 +36,7 @@ test_that("identical weights == no weights", {
   w <- rep(runif(1), length(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   a1 <- el_mean(par, x, control = optcfg)$optim
-  a2 <- el_mean(par, x, w, control = optcfg)$optim
+  a2 <- el_mean(par, x, weights = w, control = optcfg)$optim
   expect_equal(a1$lambda, a2$lambda)
   expect_equal(a1$logLR, a2$logLR)
 })
@@ -58,7 +58,7 @@ test_that("loglik to loglr (weighted)", {
   par <- (max(x) + min(x)) / 2
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
-  fit <- el_mean(par, x, w, control = optcfg)
+  fit <- el_mean(par, x, weights = w, control = optcfg)
   w <- fit$weights
   expect_equal(fit$loglik + sum(w * (log(n) - log(w))), fit$optim$logLR)
 })
@@ -70,7 +70,7 @@ test_that("non-full rank", {
   par <- c(0, 0)
   optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
   expect_error(el_mean(par, x, control = optcfg))
-  expect_error(el_mean(par, x, w, control = optcfg))
+  expect_error(el_mean(par, x, weights = w, control = optcfg))
 })
 
 test_that("invalid 'x", {

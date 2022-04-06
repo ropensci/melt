@@ -6,8 +6,8 @@
 #'   matrix. Each row corresponds to an observation of an estimating
 #'   function.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. If not provided, identical weights are applied. Otherwise,
-#'   weighted empirical likelihood is computed.
+#'   fitting process. Defaults to \code{NULL}, corresponding to identical weights.
+#'   If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’.
 #' @details Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
 #'   \eqn{i = 1, \dots, n}. Assume that there exists an unique \eqn{\theta_0 \in
@@ -79,7 +79,7 @@
 #' g <- x^2 - sigma^2
 #' el_eval(g)
 #' @export
-el_eval <- function(g, weights, control = list()) {
+el_eval <- function(g, weights = NULL, control = list()) {
   mm <- as.matrix(g)
   if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'g' must be a finite numeric matrix")
@@ -91,12 +91,10 @@ el_eval <- function(g, weights, control = list()) {
   maxit <- optcfg$maxit
   tol <- optcfg$tol
   th <- optcfg$th
-  if (missing(weights)) {
-    out <- eval_g_(mm, maxit, tol, th)
-  } else {
-    w <- check_weights(weights, nrow(mm))
-    out <- eval_g_w_(mm, w, maxit, tol, th)
-    out$weights <- w
+  if (!is.null(weights)) {
+    weights <- check_weights(weights, nrow(mm))
   }
+  out <- eval_g_(mm, maxit, tol, th, weights)
+  out$weights <- weights
   out
 }

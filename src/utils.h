@@ -5,6 +5,11 @@
 
 double th_nloglr(const int p, const Rcpp::Nullable<double> th);
 
+inline Eigen::VectorXd mele_mean(const Eigen::Ref<const Eigen::MatrixXd>& x)
+{
+    return x.colwise().mean();
+};
+
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::MatrixXd>& x,
                        const Eigen::Ref<const Eigen::VectorXd>& par);
 
@@ -52,4 +57,25 @@ Eigen::VectorXd gr_nloglr_logit(
         const Eigen::Ref<const Eigen::MatrixXd>& g,
         const Eigen::Ref<const Eigen::MatrixXd>& data,
         const Eigen::Ref<const Eigen::VectorXd>& par);
+
+
+
+Eigen::ArrayXd log_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);
+Eigen::MatrixXd g_gaussian_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                               const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::VectorXd gr_nloglr_gaussian_log(
+        const Eigen::Ref<const Eigen::VectorXd>& l,
+        const Eigen::Ref<const Eigen::MatrixXd>& g,
+        const Eigen::Ref<const Eigen::MatrixXd>& data,
+        const Eigen::Ref<const Eigen::VectorXd>& par);
+
+
+
+
+
+
+
+
+
+
 #endif
