@@ -3,6 +3,7 @@
 S3method(confint,el_test)
 S3method(formula,el_lm)
 S3method(logLik,el_test)
+S3method(plot,eld)
 S3method(print,el_aov)
 S3method(print,el_lht)
 S3method(print,el_lm)

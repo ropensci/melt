@@ -196,21 +196,25 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))
     ci <- matrix(NA, nrow = p, ncol = 2L)
-    if (is.null(w)) {
-      ci[-idx_na, ] <- confint_(method, cf, object$data.matrix, cutoff,
-                                idx[-idx_na], maxit, tol, th)
-    } else {
-      ci[-idx_na, ] <- confint_w_(method, cf, object$data.matrix, w, cutoff,
-                                  idx[-idx_na], maxit, tol, th)
-    }
+    # if (is.null(w)) {
+    #   ci[-idx_na, ] <- confint_(method, cf, object$data.matrix, cutoff,
+    #                             idx[-idx_na], maxit, tol, th)
+    # } else {
+    #   ci[-idx_na, ] <- confint_w_(method, cf, object$data.matrix, w, cutoff,
+    #                               idx[-idx_na], maxit, tol, th)
+    # }
+    ci[-idx_na, ] <- confint_(method, cf, object$data.matrix, cutoff,
+                              idx[-idx_na], maxit, tol, th, w)
   } else {
-    if (is.null(w)) {
-      ci <- confint_(method, cf, object$data.matrix, cutoff, idx, maxit, tol,
-                     th)
-    } else {
-      ci <- confint_w_(method, cf, object$data.matrix, w, cutoff, idx, maxit,
-                       tol, th)
-    }
+    # if (is.null(w)) {
+    #   ci <- confint_(method, cf, object$data.matrix, cutoff, idx, maxit, tol,
+    #                  th)
+    # } else {
+    #   ci <- confint_w_(method, cf, object$data.matrix, w, cutoff, idx, maxit,
+    #                    tol, th)
+    # }
+    ci <- confint_(method, cf, object$data.matrix, cutoff, idx, maxit, tol, th,
+                   w)
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))
   ci

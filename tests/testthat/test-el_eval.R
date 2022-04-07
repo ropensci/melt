@@ -12,7 +12,7 @@ test_that("convergence check", {
 test_that("probabilities add up to 1", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
   expect_equal(sum(exp(fit$log.prob)), 1)
@@ -21,7 +21,7 @@ test_that("probabilities add up to 1", {
 test_that("probabilities add up to 1 (weighted)", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   w <- 1 + runif(10, min = -0.5, max = 0.5)
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
@@ -32,7 +32,7 @@ test_that("loglik to loglr", {
   skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
   expect_equal(fit$loglik + n * log(n), fit$optim$logLR)
@@ -42,7 +42,7 @@ test_that("loglik to loglr (weighted)", {
   skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
@@ -57,10 +57,10 @@ test_that("identical weights == no weights", {
   g <- x - par
   w <- rep(runif(1), length(x))
   optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
-  a1 <- el_eval(g, control = optcfg)$optim
-  a2 <- el_eval(g, w, control = optcfg)$optim
-  expect_equal(a1$lambda, a2$lambda)
-  expect_equal(a1$logLR, a2$logLR)
+  a1 <- el_mean(par, x, control = optcfg)
+  a2 <- el_mean(par, x, weights = w, control = optcfg)
+  a2$weights <- NULL
+  expect_equal(a1, a2)
 })
 
 test_that("non-full rank", {

@@ -1,7 +1,7 @@
 test_that("invalid 'level'", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
   expect_error(confint(fit, level = -1))
@@ -13,7 +13,7 @@ test_that("invalid 'level'", {
 test_that("invalid 'parm'", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
   expect_error(confint(fit, parm = NA))
@@ -25,7 +25,7 @@ test_that("invalid 'parm'", {
 test_that("'level' == 1", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
   ci <- confint(fit, level = 1)
@@ -36,7 +36,7 @@ test_that("'level' == 1", {
 test_that("'level' == 0", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
   ci <- confint(fit, level = 0)

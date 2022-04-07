@@ -4,7 +4,7 @@
 \alias{el_lm}
 \title{Fits a linear model with empirical likelihood}
 \usage{
-el_lm(formula, data, weights, na.action, control = list(), model = TRUE)
+el_lm(formula, data, weights = NULL, na.action, control = list(), model = TRUE)
 }
 \arguments{
 \item{formula}{A formula object.}
@@ -12,8 +12,8 @@ el_lm(formula, data, weights, na.action, control = list(), model = TRUE)
 \item{data}{A data frame containing the variables in the formula.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. If not provided, identical weights are applied. Otherwise,
-weighted empirical likelihood is computed.}
+fitting process. Defaults to \code{NULL}, corresponding to identical weights.
+If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{na.action}{A function which indicates what should happen when the data
 contain \code{NA}s.}

@@ -10,7 +10,8 @@ Rcpp::List lht_(
     const int maxit,
     const double tol,
     const Rcpp::Nullable<double> th,
-    const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w = R_NilValue)
+    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
+      R_NilValue)
 {
   const int q = lhs.rows();
   const int p = lhs.cols();
@@ -18,11 +19,7 @@ Rcpp::List lht_(
   if (lu_decomp.rank() != q) {
     Rcpp::stop("'lhs' must have full row rank");
   }
-
-  const MINEL el = (w.isNull())?
-    MINEL(method, par0, x, lhs, rhs, maxit, tol, th_nloglr(q, th)) :
-    MINEL(method, par0, x, Rcpp::as<Eigen::ArrayXd>(w), lhs, rhs, maxit, tol,
-          th_nloglr(q, th));
+  const MINEL el(method, par0, x, lhs, rhs, maxit, tol, th_nloglr(q, th), wt);
 
   const double chisq_val = 2.0 * el.nllr;
   Rcpp::Function pchisq("pchisq");
@@ -38,8 +35,8 @@ Rcpp::List lht_(
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
       Rcpp::Named("npar") = p,
-      Rcpp::Named("log.prob") = el.logp2(x, w),
-      Rcpp::Named("loglik") = el.loglik2(w),
+      Rcpp::Named("log.prob") = el.logp(x),
+      Rcpp::Named("loglik") = el.loglik(),
       Rcpp::Named("coefficients") = el.par,
       Rcpp::Named("statistic") = chisq_val,
       Rcpp::Named("df") = q,

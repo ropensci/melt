@@ -31,9 +31,9 @@ Rcpp::List glm_(const std::string link,
   const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
   const MINEL el =
     (intercept && p > 1)?
-    MINEL(link, bhat, data, lhs, rhs, maxit, tol, th_nloglr(p - 1, th)) :
+    MINEL(link, bhat, data, lhs, rhs, maxit, tol, th_nloglr(p - 1, th), NULL) :
     MINEL(link, bhat, data, Eigen::MatrixXd::Identity(p, p),
-          Eigen::VectorXd::Zero(p), maxit, tol,th_nloglr(p, th));
+          Eigen::VectorXd::Zero(p), maxit, tol,th_nloglr(p, th), NULL);
   const int df = (intercept && p > 1)? p - 1 : p;
 
 
@@ -51,7 +51,7 @@ Rcpp::List glm_(const std::string link,
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
     const MINEL par_test(link, bhat, data, lhs, Eigen::VectorXd::Zero(1), maxit,
-                         tol, th_nloglr(1, th));
+                         tol, th_nloglr(1, th), NULL);
     chisq_val[i] = 2.0 * par_test.nllr;
     conv[i] = par_test.conv;
     pval[i] = Rcpp::as<double>(pchisq(chisq_val[i], Rcpp::Named("df") = 1,

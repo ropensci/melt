@@ -8,14 +8,11 @@ Rcpp::List eval_(
     const int maxit,
     const double tol,
     const Rcpp::Nullable<double> th,
-    const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w = R_NilValue)
+    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
+      R_NilValue)
 {
   const int p = par0.size();
-
-  const EL el = (w.isNull())?
-    EL(method, par0, x, maxit, tol, th_nloglr(p, th)) :
-    EL(method, par0, x, Rcpp::as<Eigen::ArrayXd>(w), maxit, tol,
-       th_nloglr(p, th));
+  const EL el(method, par0, x, maxit, tol, th_nloglr(p, th), wt);
 
   const double chisq_val = 2.0 * el.nllr;
   Rcpp::Function pchisq("pchisq");
@@ -31,8 +28,8 @@ Rcpp::List eval_(
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
       Rcpp::Named("npar") = p,
-      Rcpp::Named("log.prob") = el.logp2(x, w),
-      Rcpp::Named("loglik") = el.loglik2(w),
+      Rcpp::Named("log.prob") = el.logp(x),
+      Rcpp::Named("loglik") = el.loglik(),
       Rcpp::Named("coefficients") = par0,
       Rcpp::Named("statistic") = chisq_val,
       Rcpp::Named("df") = p,
@@ -46,7 +43,8 @@ Rcpp::List eval_g_(
     const int maxit,
     const double tol,
     const Rcpp::Nullable<double> th,
-    const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w = R_NilValue)
+    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
+      R_NilValue)
 {
   const int n = g.rows();
   const int p = g.cols();
@@ -54,10 +52,7 @@ Rcpp::List eval_g_(
   if (lu_decomp.rank() != p || n <= p) {
     Rcpp::stop("'g' must have full column rank");
   }
-
-  const EL el = (w.isNull())?
-    EL(g, maxit, tol, th_nloglr(p, th)) :
-    EL(g, Rcpp::as<Eigen::ArrayXd>(w), maxit, tol, th_nloglr(p, th));
+  const EL el(g, maxit, tol, th_nloglr(p, th), wt);
 
   const double chisq_val = 2.0 * el.nllr;
   Rcpp::Function pchisq("pchisq");
@@ -72,8 +67,8 @@ Rcpp::List eval_g_(
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
       Rcpp::Named("npar") = p,
-      Rcpp::Named("log.prob") = el.logp2_g(g, w),
-      Rcpp::Named("loglik") = el.loglik2(w),
+      Rcpp::Named("log.prob") = el.logp_g(g),
+      Rcpp::Named("loglik") = el.loglik(),
       Rcpp::Named("statistic") = chisq_val,
       Rcpp::Named("df") = p,
       Rcpp::Named("p.value") = pval);

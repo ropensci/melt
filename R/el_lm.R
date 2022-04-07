@@ -5,8 +5,8 @@
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. If not provided, identical weights are applied. Otherwise,
-#'   weighted empirical likelihood is computed.
+#'   fitting process. Defaults to \code{NULL}, corresponding to identical weights.
+#'   If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s.
 #' @param control A list of control parameters. See ‘Details’ in
@@ -24,7 +24,7 @@
 #' @importFrom stats .getXlevels is.empty.model model.matrix model.response
 #'   setNames
 #' @export
-el_lm <- function(formula, data, weights, na.action, control = list(),
+el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
                   model = TRUE) {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
@@ -63,13 +63,11 @@ el_lm <- function(formula, data, weights, na.action, control = list(),
   maxit <- optcfg$maxit
   tol <- optcfg$tol
   th <- optcfg$th
-  if (missing(weights)) {
-    out <- lm_(mm, intercept, maxit, tol, th)
-  } else {
-    w <- check_weights(weights, nrow(mm))
-    out <- lm_w_(mm, w, intercept, maxit, tol, th)
-    out$weights <- w
+  if (!is.null(weights)) {
+    weights <- check_weights(weights, nrow(mm))
   }
+  out <- lm_(mm, intercept, maxit, tol, th, weights)
+  out$weights <- weights
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)
   out$fitted.values <- setNames(out$fitted.values, nm)

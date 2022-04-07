@@ -2,14 +2,14 @@ test_that("invalid 'object", {
   skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, w, control = optcfg)
   fit$data.matrix <- NULL
-  expect_error(lht(fit, lhs = 1))
+  expect_error(lht(fit, lhs = 1, control = optcfg))
   class(fit) <- NULL
-  expect_error(lht(fit, lhs = 1))
+  expect_error(lht(fit, lhs = 1, control = optcfg))
 })
 
 test_that("invalid 'lhs' and 'rhs'", {
@@ -21,16 +21,60 @@ test_that("invalid 'lhs' and 'rhs'", {
   df <- data.frame(y, x, x2)
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
+  # invalid rhs
   lhs <- matrix(c(0, 1, -1), nrow = 1)
-  expect_error(lht(fit, c(NA, 0), lhs))
-  expect_error(lht(fit, c(1, 0), lhs))
+  expect_error(lht(fit, control = optcfg))
+  expect_error(lht(fit, rhs = c(NA, 0), lhs = lhs, control = optcfg))
+  expect_error(lht(fit, rhs = c(1, 0), lhs = lhs, control = optcfg))
 
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   fit2 <- el_lm(y ~ x + x2, df, weights =  w, control = optcfg)
   out <- lht(fit2, lhs = lhs, control = optcfg)
   expect_lt(out$statistic, 20)
 
-  lhs3 <- matrix(c(1, 1, 0, 0, 0, 0), nrow = 2)
-  expect_error(lht(fit, lhs = lhs3))
-  expect_error(lht(fit2, lhs = lhs3))
+  # invalid lhs
+  lhs <- matrix(c(1, 0, 0, 0, NA, 1), nrow = 2)
+  expect_error(lht(fit, lhs = lhs, control = optcfg))
+  expect_error(lht(fit2, lhs = lhs, control = optcfg))
+  lhs <- matrix(rnorm(4), ncol = 2)
+  expect_error(lht(fit, lhs = lhs, control = optcfg))
+  expect_error(lht(fit2, lhs = lhs, control = optcfg))
+  lhs <- matrix(rnorm(12), ncol = 3)
+  expect_error(lht(fit, lhs = lhs, control = optcfg))
+  expect_error(lht(fit2, lhs = lhs, control = optcfg))
+  lhs <- matrix(c(1, 1, 0, 0, 0, 0), nrow = 2)
+  expect_error(lht(fit, lhs = lhs, control = optcfg))
+  expect_error(lht(fit2, lhs = lhs, control = optcfg))
+})
+
+test_that("when lht == eval", {
+  skip_on_os("windows", arch = "i386")
+  optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
+  # mean
+  n <- 100
+  x <- rnorm(n)
+  w <- 1 + runif(n, min = -0.5, max = 0.5)
+  par <- runif(1, min(x), max(x))
+  fit <- el_mean(par, x, control = optcfg)
+  fit2 <- lht(fit, rhs = par, control = optcfg)
+  expect_equal(fit$optim$lambda, fit2$optim$lambda)
+  # mean (weighted)
+  fit <- el_mean(par, x, weights = w, control = optcfg)
+  fit2 <- lht(fit, rhs = par, control = optcfg)
+  expect_equal(fit$optim$lambda, fit2$optim$lambda)
+  # lm
+  x2 <- rnorm(n)
+  y <- 1 + x + x2 + rnorm(n)
+  df <- data.frame(y, x, x2)
+  fit <- el_lm(y ~ x + x2, df, control = optcfg)
+  lhs <- matrix(c(0, 0, 1, 0, 0, 1), nrow = 2)
+  rhs <- c(0, 0)
+  fit2 <- lht(fit, lhs = lhs, rhs = rhs, control = optcfg)
+  expect_equal(fit$optim$lambda, fit2$optim$lambda)
+  # lm (weighted)
+  fit <- el_lm(y ~ x + x2, df, weights = w, control = optcfg)
+  lhs <- matrix(c(0, 0, 1, 0, 0, 1), nrow = 2)
+  rhs <- c(0, 0)
+  fit2 <- lht(fit, lhs = lhs, rhs = rhs, control = optcfg)
+  expect_equal(fit$optim$lambda, fit2$optim$lambda)
 })

@@ -7,27 +7,25 @@ Rcpp::List mean_(
     const int maxit,
     const double tol,
     const Rcpp::Nullable<double> th,
-    const Rcpp::Nullable<const Eigen::Map<Eigen::ArrayXd>&> w = R_NilValue)
+    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
+      R_NilValue)
 {
   const int n = x.rows();
-  const int p = x.cols();
+  const int p = par.size();
   const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(x);
   if (lu_decomp.rank() != p || n <= p) {
     Rcpp::stop("'x' must have full column rank");
   }
 
   Eigen::VectorXd estimate(p);
-  Eigen::ArrayXd w2;
-  if (w.isNotNull()) {
-    w2 = Rcpp::as<Eigen::ArrayXd>(w);
-    estimate = (w2.matrix().transpose() * x) / n;
-  } else {
+  if (wt.isNull()) {
     estimate = x.colwise().mean();
+  } else {
+    estimate = (Rcpp::as<Eigen::VectorXd>(wt).transpose() * x) / n;
   }
 
-  const EL el = (w.isNull())?
-    EL("mean", par, x, maxit, tol, th_nloglr(p, th)) :
-    EL("mean", par, x, w2, maxit, tol, th_nloglr(p, th));
+  const EL el("mean", par, x, maxit, tol, th_nloglr(p, th), wt);
+
   const double chisq_val = 2.0 * el.nllr;
   Rcpp::Function pchisq("pchisq");
   const double pval =
@@ -42,8 +40,8 @@ Rcpp::List mean_(
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
     Rcpp::Named("npar") = p,
-    Rcpp::Named("log.prob") = el.logp2(x, w),
-    Rcpp::Named("loglik") = el.loglik2(w),
+    Rcpp::Named("log.prob") = el.logp(x),
+    Rcpp::Named("loglik") = el.loglik(),
     Rcpp::Named("coefficients") = estimate,
     Rcpp::Named("statistic") = chisq_val,
     Rcpp::Named("df") = p,

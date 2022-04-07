@@ -2,7 +2,7 @@ test_that("maximum EL estimate", {
   skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
-  par <- (max(x) + min(x)) / 2
+  par <- runif(1, min(x), max(x))
   optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
   loglik <- suppressWarnings(logLik(fit, REML = T))
