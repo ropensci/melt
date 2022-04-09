@@ -23,8 +23,7 @@ If non-\code{NULL}, weighted empirical likelihood is computed.}
 returned.}
 }
 \value{
-A list with class \code{"el_test"} as described in
-  \code{\link{lht}}.
+A list of class \code{"el"} as described in \code{\link{lht}}.
 }
 \description{
 Computes empirical likelihood for mean parameter.

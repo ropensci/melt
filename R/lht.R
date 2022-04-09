@@ -1,8 +1,8 @@
 #' Linear hypothesis test
 #'
-#' Tests a linear hypothesis for objects inheriting from class \code{"el_test"}.
+#' Tests a linear hypothesis for objects inheriting from class \code{"el"}.
 #'
-#' @param object A fitted \code{"el_test"} object.
+#' @param object A fitted \code{"el"} object.
 #' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
 #'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}.
 #' @param lhs A numeric matrix, or an object that can be coerced to a numeric
@@ -37,7 +37,7 @@
 #'   The iteration stops if the value exceeds the threshold.
 #'   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
 #'   }
-#' @return A list with class \code{c("el_lht", "el_test")} with the following
+#' @return A list of class \code{c("el", "elt")} with the following
 #'   components:
 #'   \describe{
 #'   \item{optim}{A list with the following optimization results:
@@ -86,7 +86,7 @@
 #' lht(fit2, lhs = lhs2)
 #' @export
 lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
-  if (!inherits(object, "el_test"))
+  if (!inherits(object, "el"))
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
     stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
@@ -100,10 +100,11 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
   w <- object$weights
   if (is.null(lhs)) {
     out <- eval_(method, h$r, object$data.matrix, maxit, tol, th, w)
+    class(out) <- "el"
   } else {
     out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
                 maxit, tol, th, w)
+    class(out) <- c("el", "elt")
   }
-  class(out) <- c("el_lht", "el_test")
   out
 }

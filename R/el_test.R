@@ -15,7 +15,7 @@
 #' @param abstol Absolute convergence tolerance for optimization.
 #'   Defaults to 1e-08.
 #'
-#' @return A list with class \code{c("el_test", "melt")}.
+#' @return A list of class \code{c("el_test", "melt")}.
 #' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
 #' "Empirical Likelihood for the Analysis of Experimental Designs,"
 #' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
@@ -121,9 +121,9 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #'
 #' Computes confidence intervals for one or more parameters in a fitted model.
 #' Package \strong{melt} adds a method for objects inheriting from class
-#' \code{"el_test"}.
+#' \code{"el"}.
 #'
-#' @param object A fitted \code{"el_test"} object.
+#' @param object A fitted \code{"el"} object.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
@@ -145,7 +145,9 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' confint(fit)
 #' @export
-confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
+confint.el <- function(object, parm, level = 0.95, control = list(), ...) {
+  if (inherits(object, "elt"))
+    stop("method not applicable for 'elt' object")
   # check level and control arguments
   if (!missing(level) &&
       (length(level) != 1L || !is.finite(level) || level < 0 || level > 1))
@@ -224,10 +226,9 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
 #'
 #' Computes the empirical log-likelihood value of the model represented by
 #'   \code{object} evaluated at the estimated coefficients. Package
-#'   \strong{melt} adds a method for objects inheriting from class
-#'   \code{"el_test"}.
+#'   \strong{melt} adds a method for objects inheriting from class \code{"el"}.
 #'
-#' @param object A fitted \code{"el_test"} object.
+#' @param object A fitted \code{"el"} object.
 #' @param ... Some methods for this generic function require extra arguments.
 #'   None are used in this method.
 #' @return An object of class \code{"logLik"} with an attribute \code{df} that
@@ -236,11 +237,11 @@ confint.el_test <- function(object, parm, level = 0.95, control = list(), ...) {
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' logLik(fit)
 #' @export
-logLik.el_test <- function(object, ...) {
+logLik.el <- function(object, ...) {
   if (!missing(...))
     warning("extra arguments are not supported")
   p <- object$npar
-  if (inherits(object, "el_lht")) {
+  if (inherits(object, "elt")) {
     val <- object$loglik
     # df is the number of estimated parameters
     attr(val, "df") <- p - object$df
@@ -257,7 +258,7 @@ logLik.el_test <- function(object, ...) {
 
 #' @noRd
 #' @export
-print.el_test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+print.el <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
   out <- character()
   if (!is.null(x$statistic)) {

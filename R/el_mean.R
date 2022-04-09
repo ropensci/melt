@@ -12,8 +12,7 @@
 #'   \code{\link{el_eval}}.
 #' @param model A logical. If \code{TRUE} the model matrix used for fitting is
 #'   returned.
-#' @return A list with class \code{"el_test"} as described in
-#'   \code{\link{lht}}.
+#' @return A list of class \code{"el"} as described in \code{\link{lht}}.
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
@@ -62,6 +61,6 @@ el_mean <- function(par, x, weights = NULL, control = list(), model = TRUE) {
   out$weights <- weights
   if (model)
     out$data.matrix <- mm
-  class(out) <- "el_test"
+  class(out) <- "el"
   out
 }

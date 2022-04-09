@@ -25,7 +25,7 @@ contain \code{NA}s.}
 returned.}
 }
 \value{
-A list with class \code{c("el_lm", "el_test")}.
+A list of class \code{c("el_lm", "el")}.
 }
 \description{
 Fits a linear model with empirical likelihood.

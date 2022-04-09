@@ -15,7 +15,7 @@
 #' #' @param contrasts dd
 #' #' @param ... For glm: arguments to be used to form the default control argument
 #' #'   if it is not supplied directly.
-#' #' @return A list with class \code{c("el_lm", "el_test")}.
+#' #' @return A list of class \code{c("el_lm", "el")}.
 #' #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #' #'   The Annals of Statistics 19 (4).
 #' #'   \doi{10.1214/aos/1176348368}.
@@ -67,7 +67,7 @@
 #'     #             xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
 #'     # if (keep.data)
 #'     #   out$data.matrix <- mm
-#'     # class(out) <- c("el_glm", "el_test")
+#'     # class(out) <- c("el_glm", "el")
 #'     # return(out)
 #'     return("empty model")
 #'   }

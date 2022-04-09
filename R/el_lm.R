@@ -13,7 +13,7 @@
 #'   \code{\link{el_eval}}.
 #' @param model A logical. If \code{TRUE} the model matrix used for fitting is
 #'   returned.
-#' @return A list with class \code{c("el_lm", "el_test")}.
+#' @return A list of class \code{c("el_lm", "el")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4).
 #'   \doi{10.1214/aos/1176348368}.
@@ -55,7 +55,7 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
                 xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
     if (model)
       out$data.matrix <- mm
-    class(out) <- c("el_lm", "el_test")
+    class(out) <- c("el_lm", "el")
     return(out)
   }
 
@@ -77,7 +77,7 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
   out$terms <- mt
   if (model)
     out$data.matrix <- mm
-  class(out) <- c("el_lm", "el_test")
+  class(out) <- c("el_lm", "el")
   out
 }
 

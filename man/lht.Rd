@@ -7,7 +7,7 @@
 lht(object, rhs = NULL, lhs = NULL, control = list())
 }
 \arguments{
-\item{object}{A fitted \code{"el_test"} object.}
+\item{object}{A fitted \code{"el"} object.}
 
 \item{rhs}{A numeric vector for the right-hand-side of hypothesis, with as
 many entries as the rows in \code{lhs}. Defaults to \code{NULL}.}
@@ -21,7 +21,7 @@ See ‘Details’.}
 \item{control}{A list of control parameters. See ‘Details’.}
 }
 \value{
-A list with class \code{c("el_lht", "el_test")} with the following
+A list of class \code{c("el_lht", "el")} with the following
   components:
   \describe{
   \item{optim}{A list with the following optimization results:
@@ -45,7 +45,7 @@ A list with class \code{c("el_lht", "el_test")} with the following
 }
 }
 \description{
-Tests a linear hypothesis for objects inheriting from class \code{"el_test"}.
+Tests a linear hypothesis for objects inheriting from class \code{"el"}.
 }
 \details{
 Consider a linear hypothesis of the form \deqn{L\theta = r,} where

@@ -26,7 +26,7 @@ Defaults to 10000.}
 Defaults to 1e-08.}
 }
 \value{
-A list with class \code{c("el_test", "melt")}.
+A list of class \code{c("el_test", "melt")}.
 }
 \description{
 Tests single hypothesis for general block designs.

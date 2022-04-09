@@ -6,8 +6,8 @@
 #'   matrix. Each row corresponds to an observation of an estimating
 #'   function.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. Defaults to \code{NULL}, corresponding to identical weights.
-#'   If non-\code{NULL}, weighted empirical likelihood is computed.
+#'   fitting process. Defaults to \code{NULL}, corresponding to identical
+#'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters. See ‘Details’.
 #' @details Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
 #'   \eqn{i = 1, \dots, n}. Assume that there exists an unique \eqn{\theta_0 \in
@@ -25,7 +25,7 @@
 #'   where \eqn{\lambda} solves
 #'   \deqn{\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}
 #'   {1 + \lambda^\top g(X_i, \theta)} = 0.}
-#'   Then the log empirical likelihood ratio is given by
+#'   Then the empirical log-likelihood ratio is given by
 #'   \deqn{\log\mathcal{R}(\theta) = -\sum_{i = 1}^n
 #'   \log(1 + \lambda^\top g(X_i, \theta)).}
 #'   \code{el_eval} performs the optimization via Newton’s algorithm to compute
@@ -40,7 +40,7 @@
 #'   The iteration stops when
 #'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| \leq
 #'   \epsilon\|\lambda^{(k - 1)}\| + \epsilon^2.} Defaults to \code{1e-06}.}
-#'   \item{th}{The threshold for the negative log empirical likelihood
+#'   \item{th}{The threshold for the negative empirical log-likelihood
 #'   ratio value. The iteration stops if the value exceeds the threshold.
 #'   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
 #' }
@@ -49,7 +49,7 @@
 #'   \item{optim}{A list with the following optimization results:
 #'     \describe{
 #'       \item{lambda}{The Lagrange multiplier of dual problem.}
-#'       \item{logLR}{The (weighted) log empirical likelihood ratio value.}
+#'       \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
 #'       \item{iterations}{The number of iterations performed.}
 #'       \item{convergence}{A logical vector. \code{TRUE} indicates
 #'       convergence of the algorithm.}
