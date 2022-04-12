@@ -148,6 +148,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// max_threads
+int max_threads();
+RcppExport SEXP _melt_max_threads() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(max_threads());
+    return rcpp_result_gen;
+END_RCPP
+}
 // mean_
 Rcpp::List mean_(const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit, const double tol, const Rcpp::Nullable<double> th, const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
 RcppExport SEXP _melt_mean_(SEXP parSEXP, SEXP xSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP thSEXP, SEXP wtSEXP) {
@@ -197,6 +207,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_glm_", (DL_FUNC) &_melt_glm_, 7},
     {"_melt_lht_", (DL_FUNC) &_melt_lht_, 9},
     {"_melt_lm_", (DL_FUNC) &_melt_lm_, 6},
+    {"_melt_max_threads", (DL_FUNC) &_melt_max_threads, 0},
     {"_melt_mean_", (DL_FUNC) &_melt_mean_, 6},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
     {NULL, NULL, 0}

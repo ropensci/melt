@@ -4,15 +4,15 @@
 #'   detection.
 #'
 #' @param object An object of class \code{`el`}.
-#' @param control A list of control parameters. See ‘Details’ in
-#'   \code{\link{el_eval}}.
-#' @details Let \eqn{l(\theta)} be the empirical log-likelihood function based
+#' @param control A list of control parameters set by
+#'   \code{\link{melt_control}}.
+#' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
 #'   on the full sample with \eqn{n} observations. The maximum empirical
 #'   likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
 #'   sample with the \eqn{i}th observation deleted and the corresponding
 #'   estimate \eqn{\hat{\theta}_{(i)}}. The empirical likelihood displacement is
 #'   defined by
-#'   \deqn{\textnormal{ELD}_i = 2\{l(\hat{\theta}) - l(\hat{\theta}_{(i)})\}.}
+#'   \deqn{\textnormal{ELD}_i = 2\{L(\hat{\theta}) - L(\hat{\theta}_{(i)})\}.}
 #'   If the value of \eqn{\textnormal{ELD}_i } is large, then the \eqn{i}th
 #'   observation is an influential point and can be inspected as a possible
 #'   outlier. \code{eld} computes \eqn{\textnormal{ELD}_i } for
@@ -26,27 +26,24 @@
 #'   Measures for Empirical Likelihood of General Estimating Equations.”
 #'   Biometrika 95 (2): 489–507.
 #'   \doi{10.1093/biomet/asm094}.
-#' @seealso \link{plot.eld}
+#' @seealso \link{el_eval}, \link{melt_control}, \link{plot.eld}
 #' @examples
-#' x <- rnorm(10)
+#' x <- rnorm(10L)
 #' y <- 10
 #' fit <- el_mean(0, c(x, y))
 #' eld(fit)
 #' @export
-eld <- function(object, control = list()) {
+eld <- function(object, control = melt_control()) {
   if (!inherits(object, "el"))
     stop("invalid 'object' supplied")
-  if (inherits(object, "elt"))
-    stop("method not applicable for 'elt' object")
   if (is.null(object$data.matrix))
     stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
-  optcfg <- check_control(control)
-  maxit <- optcfg$maxit
-  tol <- optcfg$tol
-  th <- optcfg$th
-  wt <- object$weights
+  if (inherits(object, "elt"))
+    stop("method not applicable for 'elt' object")
+  if (!inherits(control, "melt_control") || !is.list(control))
+    stop("invalid 'control' supplied")
   out <- eld_(object$optim$method, object$coefficients, object$data.matrix,
-              maxit, tol, th , wt)
+              control$maxit_l, control$tol_l, control$th , object$weights)
   setNames(out, "eld")
   class(out) <- "eld"
   out

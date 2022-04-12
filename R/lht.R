@@ -4,40 +4,20 @@
 #'
 #' @param object A fitted \code{"el"} object.
 #' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
-#'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}.
+#'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}. See
+#'   ‘Details’ in \code{\link{melt_control}}.
 #' @param lhs A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 #'   linear combination of parameters. The number of columns should be equal to
 #'   the number of parameters in \code{object}. Defaults to \code{NULL}.
-#'   See ‘Details’.
-#' @param control A list of control parameters. See ‘Details’.
-#' @details Consider a linear hypothesis of the form \deqn{L\theta = r,} where
-#'   the left-hand-side \eqn{L} is a \eqn{q} by \eqn{p} matrix and the
-#'   right-hand-side \eqn{r} is a \eqn{q}-dimensional vector. Let
-#'   \eqn{l_n(\theta)} denote the minus twice the empirical log-likelihood ratio
-#'   function. Under some regularity conditions, \eqn{l_n(\theta)} is
-#'   asymptotically distributed as \eqn{\chi^2_q} under the constraint of
-#'   hypothesis, i.e.,
-#'   \deqn{\min_{\theta: L\theta = r} l_n(\theta) \to_d \chi^2_q .}
-#'   \code{lht} solves the constrained optimization problem using projected
-#'   gradient descent method. It is required that \code{lhs} have full row rank
-#'   \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
-#'   parameters. \code{control} is a list that can supply any of the following
-#'   components:
-#'   \describe{
-#'   \item{maxit}{The maximum number of iterations for the optimization.
-#'   Defaults to \code{100}.}
-#'   \item{tol}{The relative convergence tolerance, denoted by \eqn{\epsilon}.
-#'   With the orthogonal projector matrix \eqn{P} and an initial value
-#'   \eqn{\theta^{(0)}}, the iteration stops when
-#'   \deqn{\|P \nabla l_n(\theta^{(k)})\| \leq
-#'   \epsilon\|P \nabla l_n(\theta^{(0)})\| + \epsilon^2.}
-#'   Defaults to \code{1e-06}.}
-#'   \item{th}{The threshold for negative empirical log-likelihood ratio value.
-#'   The iteration stops if the value exceeds the threshold.
-#'   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
-#'   }
-#' @return A list of class \code{c("el", "elt")} with the following
+#'   See ‘Details’ in \code{\link{melt_control}}.
+#' @param control A list of control parameters set by
+#'   \code{\link{melt_control}}.
+#' @details \code{lht} performs the constrained minimization of
+#'   \eqn{l(\theta)} using projected gradient descent method. It is required
+#'   that \code{lhs} have full row rank \eqn{q \leq p} and \eqn{p} be equal to
+#'   \code{object$npar}, the number of parameters.
+#' @return A list of class \code{c("elt", "el")} with the following
 #'   components:
 #'   \describe{
 #'   \item{optim}{A list with the following optimization results:
@@ -66,37 +46,37 @@
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
 #'   Canadian Journal of Statistics 23 (2): 145–59.
 #'   \doi{10.2307/3315441}.
-#' @seealso \link{el_eval}
+#' @seealso \link{melt_control}
 #' @examples
-#' n <- 100
+#' n <- 100L
 #' x1 <- rnorm(n)
 #' x2 <- rnorm(n)
 #' y <- 1 + x1 + x2 + rnorm(n)
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
-#' lhs <- matrix(c(0, 1, -1), nrow = 1)
+#' lhs <- matrix(c(0, 1, -1), nrow = 1L)
 #' lht(fit, lhs = lhs)
 #'
 #' # test of no treatment effect
 #' data("clothianidin")
 #' lhs2 <- matrix(c(1, -1, 0, 0,
 #'                  0, 1, -1, 0,
-#'                  0, 0, 1, -1), byrow = TRUE, nrow = 3)
+#'                  0, 0, 1, -1), byrow = TRUE, nrow = 3L)
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 #' lht(fit2, lhs = lhs2)
 #' @export
-lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
+lht <- function(object, rhs = NULL, lhs = NULL, control = melt_control()) {
   if (!inherits(object, "el"))
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
     stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
   h <- check_hypothesis(lhs, rhs, object$npar)
-
+  if (!inherits(control, "melt_control") || !is.list(control))
+    stop("invalid 'control' supplied")
   method <- object$optim$method
-  optcfg <- check_control(control)
-  maxit <- optcfg$maxit
-  tol <- optcfg$tol
-  th <- optcfg$th
+  maxit <- control$maxit
+  tol <- control$tol
+  th <- control$th
   w <- object$weights
   if (is.null(lhs)) {
     out <- eval_(method, h$r, object$data.matrix, maxit, tol, th, w)
@@ -104,7 +84,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = list()) {
   } else {
     out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
                 maxit, tol, th, w)
-    class(out) <- c("el", "elt")
+    class(out) <- c("elt", "el")
   }
   out
 }

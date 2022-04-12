@@ -1,39 +1,3 @@
-#' @noRd
-check_control <- function(control = list()) {
-  ctrl <- list(maxit = 100L, tol = 1e-06, th = NULL)
-  nctrl <- names(ctrl)
-  ctrl[(ncontrol <- names(control))] <- control
-  if (length(nomatch <- ncontrol[!ncontrol %in% nctrl]))
-    warning("unknown names in control: ", paste(nomatch, collapse = ", "))
-  # maxit: integer (positive)
-  ctrl$maxit <- tryCatch(as.integer(ctrl$maxit),
-                         warning = function(w) NA, error = function(e) NA)
-  if (any(length(ctrl$maxit) != 1L, is.na(ctrl$maxit)))
-    stop("'maxit' is not an integer")
-  if (ctrl$maxit < 1)
-    stop("'maxit' is not a positive integer")
-  # tol: numeric (positive, finite)
-  ctrl$tol <- tryCatch(as.numeric(ctrl$tol),
-                          warning = function(w) NA, error = function(e) NA)
-  if (any(length(ctrl$tol) != 1L, is.na(ctrl$tol),
-          is.infinite(ctrl$tol)))
-    stop("'tol' is not a number")
-  if (ctrl$tol < .Machine$double.eps)
-    stop("'tol' is not a positive number")
-  # th: numeric (positive, finite)
-  if (!is.null(ctrl$th)) {
-    ctrl$th <- tryCatch(as.numeric(ctrl$th),
-                               warning = function(w) NA, error = function(e) NA)
-    if (any(length(ctrl$th) != 1L, is.na(ctrl$th),
-            is.infinite(ctrl$th)))
-      stop("'th' is not a number")
-    if (ctrl$th < .Machine$double.eps)
-      stop("'th' is not a positive number")
-  }
-  ctrl
-}
-
-#' @noRd
 check_weights <- function(weights, nw) {
   if (!is.numeric(weights))
     stop("'weights' must be a numeric vector")
@@ -48,7 +12,6 @@ check_weights <- function(weights, nw) {
   w
 }
 
-#' @noRd
 check_rhs <- function(rhs, p) {
   rhs <- as.vector(rhs, "numeric")
 
@@ -59,7 +22,6 @@ check_rhs <- function(rhs, p) {
   rhs
 }
 
-#' @noRd
 check_lhs <- function(lhs, p) {
   lhs <- as.matrix(lhs)
 
@@ -73,7 +35,6 @@ check_lhs <- function(lhs, p) {
   lhs
 }
 
-#' @noRd
 check_hypothesis <- function(lhs, rhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either 'rhs' or 'lhs' must be provided")

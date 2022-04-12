@@ -5,27 +5,27 @@
 #' @param formula A formula object.
 #' @param data A data frame containing the variables in the formula.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. Defaults to \code{NULL}, corresponding to identical weights.
-#'   If non-\code{NULL}, weighted empirical likelihood is computed.
+#'   fitting process. Defaults to \code{NULL}, corresponding to identical
+#'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s.
-#' @param control A list of control parameters. See ‘Details’ in
-#'   \code{\link{el_eval}}.
+#' @param control A list of control parameters set by
+#'   \code{\link{melt_control}}.
 #' @param model A logical. If \code{TRUE} the model matrix used for fitting is
 #'   returned.
 #' @return A list of class \code{c("el_lm", "el")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4).
 #'   \doi{10.1214/aos/1176348368}.
-#' @seealso \link{el_eval}, \link{lht}
+#' @seealso \link{melt_control}, \link{lht}
 #' @examples
 #' fit <- el_lm(mpg ~ wt, mtcars)
 #' summary(fit)
 #' @importFrom stats .getXlevels is.empty.model model.matrix model.response
 #'   setNames
 #' @export
-el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
-                  model = TRUE) {
+el_lm <- function(formula, data, weights = NULL, na.action,
+                  control = melt_control(), model = TRUE) {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "na.action"), names(mf), 0L)
@@ -59,14 +59,12 @@ el_lm <- function(formula, data, weights = NULL, na.action, control = list(),
     return(out)
   }
 
-  optcfg <- check_control(control)
-  maxit <- optcfg$maxit
-  tol <- optcfg$tol
-  th <- optcfg$th
   if (!is.null(weights)) {
     weights <- check_weights(weights, nrow(mm))
   }
-  out <- lm_(mm, intercept, maxit, tol, th, weights)
+  if (!inherits(control, "melt_control") || !is.list(control))
+    stop("invalid 'control' supplied")
+  out <- lm_(mm, intercept, control$maxit, control$tol, control$th, weights)
   out$weights <- weights
   out$coefficients <- setNames(out$coefficients, colnames(x))
   out$residuals <- setNames(out$residuals, nm)

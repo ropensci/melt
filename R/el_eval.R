@@ -8,42 +8,12 @@
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
-#' @param control A list of control parameters. See ‘Details’.
-#' @details Let \eqn{X_i \in {\rm{I\!R}}^p} be i.i.d. random variables for
-#'   \eqn{i = 1, \dots, n}. Assume that there exists an unique \eqn{\theta_0 \in
-#'   {\rm{I\!R}}^p} that solves \eqn{\textnormal{E}[g(X_i, \theta)] = 0}, where
-#'   the estimating function \eqn{g(X_i, \theta)} takes values in
-#'   \eqn{{\rm{I\!R}}^p}. Given a value of \eqn{\theta}, the empirical
-#'   likelihood ratio is obtained by
-#'   \deqn{\mathcal{R}(\theta) =
-#'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
-#'   \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
-#'   \right\}.}
-#'   The Lagrange multiplier \eqn{\lambda \equiv \lambda(\theta)} of the dual
-#'   problem leads to
-#'   \deqn{p_i = \frac{1}{n}\frac{1}{1 + \lambda^\top g(X_i, \theta)},}
-#'   where \eqn{\lambda} solves
-#'   \deqn{\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}
-#'   {1 + \lambda^\top g(X_i, \theta)} = 0.}
-#'   Then the empirical log-likelihood ratio is given by
-#'   \deqn{\log\mathcal{R}(\theta) = -\sum_{i = 1}^n
-#'   \log(1 + \lambda^\top g(X_i, \theta)).}
-#'   \code{el_eval} performs the optimization via Newton’s algorithm to compute
-#'   \eqn{\lambda} with a \eqn{n} by \eqn{p} numeric matrix argument \code{g},
-#'   whose \eqn{i}th is \eqn{g(X_i, \theta)}. If \code{weights} is non
-#'   \code{NULL}, the weights are rescaled to add up to \eqn{n}. \code{control}
-#'   is a list that can supply any of the following components:
-#'   \describe{
-#'   \item{maxit}{The maximum number of iterations for the optimization.
-#'   Defaults to \code{100}.}
-#'   \item{tol}{The relative convergence tolerance, denoted by \eqn{\epsilon}.
-#'   The iteration stops when
-#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| \leq
-#'   \epsilon\|\lambda^{(k - 1)}\| + \epsilon^2.} Defaults to \code{1e-06}.}
-#'   \item{th}{The threshold for the negative empirical log-likelihood
-#'   ratio value. The iteration stops if the value exceeds the threshold.
-#'   Defaults to \code{NULL} and sets the threshold to \eqn{200p}.}
-#' }
+#' @param control A list of control parameters set by
+#'   \code{\link{melt_control}}.
+#' @details \code{el_eval} evaluates empirical likelihood with a \eqn{n} by
+#'   \eqn{p} numeric matrix argument \code{g}, whose \eqn{i}th row is
+#'   \eqn{g(X_i, \theta)}. If \code{weights} is non \code{NULL}, the weights are
+#'   rescaled to add up to \eqn{n}.
 #' @return A list with the following components:
 #' \describe{
 #'   \item{optim}{A list with the following optimization results:
@@ -72,29 +42,26 @@
 #'   “Empirical Likelihood and General Estimating Equations.”
 #'   The Annals of Statistics 22 (1).
 #'   \doi{10.1214/aos/1176325370}.
+#' @seealso \link{melt_control}
 #' @examples
-#' # test for variance known mean
+#' # test for variance with known mean
 #' x <- rnorm(100)
 #' sigma <- 1
 #' g <- x^2 - sigma^2
 #' el_eval(g)
 #' @export
-el_eval <- function(g, weights = NULL, control = list()) {
+el_eval <- function(g, weights = NULL, control = melt_control()) {
   mm <- as.matrix(g)
   if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'g' must be a finite numeric matrix")
   if (nrow(mm) < 2L)
     stop("not enough 'g' observations")
-
-  # check control
-  optcfg <- check_control(control)
-  maxit <- optcfg$maxit
-  tol <- optcfg$tol
-  th <- optcfg$th
+  if (!inherits(control, "melt_control") || !is.list(control))
+    stop("invalid 'control' supplied")
   if (!is.null(weights)) {
     weights <- check_weights(weights, nrow(mm))
   }
-  out <- eval_g_(mm, maxit, tol, th, weights)
+  out <- eval_g_(mm, control$maxit_l, control$tol_l, control$th, weights)
   out$weights <- weights
   out
 }

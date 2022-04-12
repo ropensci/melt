@@ -4,7 +4,8 @@ test_that("convergence check", {
   grid <- seq(-1, 1, length.out = 1000)
   conv <- function(par) {
     el_eval(x - par, control =
-              list(maxit = 20L, tol = 1e-08, th = 1e+10))$optim$convergence
+              melt_control(maxit_l = 20L, tol_l = 1e-08,
+                           th = 1e+10))$optim$convergence
   }
   expect_true(all(vapply(grid, conv, FUN.VALUE = logical(1))))
 })
@@ -13,7 +14,7 @@ test_that("probabilities add up to 1", {
   skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
-  optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
   expect_equal(sum(exp(fit$log.prob)), 1)
 })
@@ -23,7 +24,7 @@ test_that("probabilities add up to 1 (weighted)", {
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   w <- 1 + runif(10, min = -0.5, max = 0.5)
-  optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
   expect_equal(sum(exp(fit$log.prob)), 1)
 })
@@ -33,7 +34,7 @@ test_that("loglik to loglr", {
   n <- 10
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
-  optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
   expect_equal(fit$loglik + n * log(n), fit$optim$logLR)
 })
@@ -44,7 +45,7 @@ test_that("loglik to loglr (weighted)", {
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
   w <- 1 + runif(n, min = -0.5, max = 0.5)
-  optcfg <- list(maxit = 200L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
   w <- fit$weights
   expect_equal(fit$loglik + sum(w * (log(n) - log(w))), fit$optim$logLR)
@@ -56,7 +57,7 @@ test_that("identical weights == no weights", {
   par <- runif(1, min(x), max(x))
   g <- x - par
   w <- rep(runif(1), length(x))
-  optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(maxit_l = 20L, tol_l = 1e-08, th = 1e+10)
   a1 <- el_mean(par, x, control = optcfg)
   a2 <- el_mean(par, x, weights = w, control = optcfg)
   a2$weights <- NULL
@@ -67,14 +68,14 @@ test_that("non-full rank", {
   skip_on_os("windows", arch = "i386")
   g <- matrix(c(1, 1, 2, 2), ncol = 2)
   w <- c(1, 2)
-  optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(maxit_l = 20L, tol_l = 1e-08, th = 1e+10)
   expect_error(el_eval(g, control = optcfg))
   expect_error(el_eval(g, w, control = optcfg))
 })
 
 test_that("invalid 'g'", {
   skip_on_os("windows", arch = "i386")
-  optcfg <- list(maxit = 20L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(maxit_l = 20L, tol_l = 1e-08, th = 1e+10)
   expect_error(el_eval(matrix(rnorm(2), ncol = 2), control = optcfg))
   expect_error(el_eval(matrix(c(1, 1, 2, NA), ncol = 2), control = optcfg))
 })

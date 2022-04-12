@@ -128,8 +128,8 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
 #' @param level A confidence level required.
-#' @param control A list of control parameters. See ‘Details’ in
-#'   \code{\link{lht}}.
+#' @param control A list of control parameters set by
+#'   \code{\link{melt_control}}.
 #' @param ... Additional argument(s) for methods.
 #' @importFrom stats complete.cases qchisq
 #' @return A matrix with columns giving lower and upper confidence limits for
@@ -140,23 +140,25 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 #' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
 #' "Empirical Likelihood for the Analysis of Experimental Designs,"
 #' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
-#' @seealso \link{lht}
+#' @seealso \link{melt_control}, \link{lht}
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' confint(fit)
 #' @export
-confint.el <- function(object, parm, level = 0.95, control = list(), ...) {
+confint.el <- function(object, parm, level = 0.95, control = melt_control(),
+                       ...) {
   if (inherits(object, "elt"))
     stop("method not applicable for 'elt' object")
   # check level and control arguments
   if (!missing(level) &&
       (length(level) != 1L || !is.finite(level) || level < 0 || level > 1))
     stop("'conf.level' must be a single number between 0 and 1")
+  if (!inherits(control, "melt_control") || !is.list(control))
+    stop("invalid 'control' supplied")
   method <- object$optim$method
-  optcfg <- check_control(control)
-  maxit <- optcfg$maxit
-  tol <- optcfg$tol
-  th <- optcfg$th
+  maxit <- control$maxit
+  tol <- control$tol
+  th <- control$th
   w <- object$weights
   # set cutoff and coefficients
   cutoff <- qchisq(level, 1L)
@@ -277,7 +279,7 @@ print.el <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 
 #' @noRd
 #' @export
-print.el_lht <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+print.elt <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Linear Hypothesis Test:", x$optim$method, "\n\n")
   out <- character()
   if (!is.null(x$statistic)) {

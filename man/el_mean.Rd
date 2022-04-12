@@ -4,7 +4,7 @@
 \alias{el_mean}
 \title{Empirical likelihood test for mean}
 \usage{
-el_mean(par, x, weights = NULL, control = list(), model = TRUE)
+el_mean(par, x, weights = NULL, control = melt_control(), model = TRUE)
 }
 \arguments{
 \item{par}{A numeric vector of parameter values to be tested.}
@@ -13,17 +13,17 @@ el_mean(par, x, weights = NULL, control = list(), model = TRUE)
 matrix. Each row corresponds to an observation.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to \code{NULL}, corresponding to identical weights.
-If non-\code{NULL}, weighted empirical likelihood is computed.}
+fitting process. Defaults to \code{NULL}, corresponding to identical
+weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
-\item{control}{A list of control parameters. See ‘Details’ in
-\code{\link{el_eval}}.}
+\item{control}{A list of control parameters set by
+\code{\link{melt_control}}.}
 
 \item{model}{A logical. If \code{TRUE} the model matrix used for fitting is
 returned.}
 }
 \value{
-A list of class \code{"el"} as described in \code{\link{lht}}.
+A list of class \code{"el"} as described in \code{\link{el_eval}}.
 }
 \description{
 Computes empirical likelihood for mean parameter.
@@ -31,18 +31,18 @@ Computes empirical likelihood for mean parameter.
 \examples{
 # scalar mean
 par <- 0
-x <- rnorm(100)
+x <- rnorm(100L)
 el_mean(par, x)
 
 # vector mean
 par <- c(0, 0)
-x <- matrix(rnorm(100L), ncol = 2)
+x <- matrix(rnorm(100L), ncol = 2L)
 el_mean(par, x)
 
 # weighted EL
 par <- c(0, 0)
-x <- matrix(rnorm(100), ncol = 2)
-w <- rep(c(1, 2), each = 25)
+x <- matrix(rnorm(100), ncol = 2L)
+w <- rep(c(1, 2), each = 25L)
 el_mean(par, x, w)
 }
 \references{
@@ -56,5 +56,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{el_eval}, \link{lht}
+\link{el_eval}, \link{melt_control}
 }

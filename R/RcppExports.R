@@ -33,6 +33,10 @@ lm_ <- function(data, intercept, maxit, tol, th, wt = NULL) {
     .Call(`_melt_lm_`, data, intercept, maxit, tol, th, wt)
 }
 
+max_threads <- function() {
+    .Call(`_melt_max_threads`)
+}
+
 mean_ <- function(par, x, maxit, tol, th, wt = NULL) {
     .Call(`_melt_mean_`, par, x, maxit, tol, th, wt)
 }

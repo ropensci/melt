@@ -4,7 +4,7 @@
 \alias{confint.el}
 \title{Confidence intervals for model parameters}
 \usage{
-\method{confint}{el}(object, parm, level = 0.95, control = list(), ...)
+\method{confint}{el}(object, parm, level = 0.95, control = melt_control(), ...)
 }
 \arguments{
 \item{object}{A fitted \code{"el"} object.}
@@ -15,8 +15,8 @@ parameters are considered.}
 
 \item{level}{A confidence level required.}
 
-\item{control}{A list of control parameters. See ‘Details’ in
-\code{\link{lht}}.}
+\item{control}{A list of control parameters set by
+\code{\link{melt_control}}.}
 
 \item{...}{Additional argument(s) for methods.}
 }
@@ -42,5 +42,5 @@ Kim, E., MacEachern, S., and Peruggia, M., (2021),
 \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 }
 \seealso{
-\link{lht}
+\link{melt_control}, \link{lht}
 }
