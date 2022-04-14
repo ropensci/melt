@@ -5,7 +5,7 @@
 \title{Control parameters for computation}
 \usage{
 melt_control(
-  maxit = 100L,
+  maxit = 200L,
   maxit_l = 100L,
   tol = 1e-06,
   tol_l = 1e-06,
@@ -15,7 +15,7 @@ melt_control(
 }
 \arguments{
 \item{maxit}{Maximum number of iterations for constrained minimization of
-empirical likelihood. Defaults to \code{100}.}
+empirical likelihood. Defaults to \code{200}.}
 
 \item{maxit_l}{Maximum number of iterations of evaluation of empirical
 likelihood. Defaults to \code{100}.}
@@ -102,19 +102,18 @@ Let \eqn{X_i} be independent and identically distributed
   respect to \eqn{\lambda} and \eqn{\theta} with the following arguments:
   \describe{
   \item{maxit}{Maximum number of iterations for the optimization with
-  respect to \eqn{\theta}. Defaults to \code{100}.}
+  respect to \eqn{\theta}.}
   \item{maxit_l}{Maximum number of iterations for the optimization with
-  respect to \eqn{\lambda}. Defaults to \code{100}.}
+  respect to \eqn{\lambda}.}
   \item{tol}{Relative convergence tolerance, denoted by \eqn{\epsilon}.
   With the orthogonal projector matrix \eqn{P} and an initial value
   \eqn{\theta^{(0)}}, the iteration stops when
   \deqn{\|P \nabla l(\theta^{(k)})\| \leq
-  \epsilon\|P \nabla l(\theta^{(0)})\| + \epsilon^2.}
-  Defaults to \code{1e-06}.}
+  \epsilon\|P \nabla l(\theta^{(0)})\| + \epsilon^2.}}
   \item{tol_l}{Relative convergence tolerance, denoted by \eqn{\delta}.
   The iteration stops when
   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| \leq
-  \delta\|\lambda^{(k - 1)}\| + \delta^2.} Defaults to \code{1e-06}.}
+  \delta\|\lambda^{(k - 1)}\| + \delta^2.}}
   \item{th}{Threshold for the negative empirical log-likelihood ratio value.
   The iteration stops if the value exceeds the threshold. Defaults to
   \code{NULL} and sets the threshold to \code{200 * d}, where \code{d}
@@ -128,7 +127,7 @@ Let \eqn{X_i} be independent and identically distributed
   }
 }
 \examples{
-optcfg <- melt_control(maxit = 200L, th = 200, nthreads = 1L)
+optcfg <- melt_control(maxit = 300L, th = 200, nthreads = 1L)
 }
 \references{
 Adimari, Gianfranco, and Annamaria Guolo. 2010.
@@ -137,22 +136,18 @@ Adimari, Gianfranco, and Annamaria Guolo. 2010.
   \doi{10.1007/s10260-010-0137-9}.
 
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-  The Annals of Statistics 18 (1).
-  \doi{10.1214/aos/1176347494}.
+  The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 
 Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
-  The Annals of Statistics 19 (4).
-  \doi{10.1214/aos/1176348368}.
+  The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 
 Qin, Jin, and Jerry Lawless. 1994.
   “Empirical Likelihood and General Estimating Equations.”
-  The Annals of Statistics 22 (1).
-  \doi{10.1214/aos/1176325370}.
+  The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 
 Qin, Jing, and Jerry Lawless. 1995.
   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-  Canadian Journal of Statistics 23 (2): 145–59.
-  \doi{10.2307/3315441}.
+  Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 }
 \seealso{
 \link{el_eval}, \link{lht}

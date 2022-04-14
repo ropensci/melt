@@ -5,18 +5,33 @@
 #' @param object A fitted \code{"el"} object.
 #' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
 #'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}. See
-#'   ‘Details’ in \code{\link{melt_control}}.
+#'   ‘Details’.
 #' @param lhs A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 #'   linear combination of parameters. The number of columns should be equal to
 #'   the number of parameters in \code{object}. Defaults to \code{NULL}.
-#'   See ‘Details’ in \code{\link{melt_control}}.
+#'   See ‘Details’.
 #' @param control A list of control parameters set by
 #'   \code{\link{melt_control}}.
-#' @details \code{lht} performs the constrained minimization of
-#'   \eqn{l(\theta)} using projected gradient descent method. It is required
-#'   that \code{lhs} have full row rank \eqn{q \leq p} and \eqn{p} be equal to
-#'   \code{object$npar}, the number of parameters.
+#' @details \code{\link{lht}} performs the constrained minimization of
+#'   \eqn{l(\theta)} introduced in \code{\link{melt_control}}.
+#'   \code{rhs} and \code{lhs} cannot be both \code{NULL}. For non-\code{NULL}
+#'   \code{lhs}, it is required that \code{lhs} have full row rank
+#'   \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
+#'   parameters in the fitted model.
+#'
+#'   Depending on the specification of \code{rhs} and \code{lhs}, we have the following three cases:
+#'   \enumerate{
+#'   \item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the
+#'   constrained minimization is performed with the right-hand-side \eqn{r} and
+#'   the left-hand-side \eqn{L} as
+#'   \deqn{\min_{\theta: L\theta = r} l(\theta).}
+#'   \item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as
+#'   \deqn{\min_{\theta: L\theta = 0} l(\theta).}
+#'   \item If \code{lhs} is \code{NULL}, \eqn{L} is set to the identity matrix
+#'   and the problem reduces to evaluating at \eqn{r} as
+#'   \deqn{l(r).}
+#'   }
 #' @return A list of class \code{c("elt", "el")} with the following
 #'   components:
 #'   \describe{
@@ -44,8 +59,7 @@
 #' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #' @references Qin, Jing, and Jerry Lawless. 1995.
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   Canadian Journal of Statistics 23 (2): 145–59.
-#'   \doi{10.2307/3315441}.
+#'   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 #' @seealso \link{melt_control}
 #' @examples
 #' n <- 100L
@@ -75,15 +89,27 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = melt_control()) {
     stop("invalid 'control' supplied")
   method <- object$optim$method
   maxit <- control$maxit
+  maxit_l <- control$maxit_l
   tol <- control$tol
+  tol_l <- control$tol_l
   th <- control$th
   w <- object$weights
   if (is.null(lhs)) {
-    out <- eval_(method, h$r, object$data.matrix, maxit, tol, th, w)
+    out <- eval_(method, h$r, object$data.matrix, maxit_l, tol_l, th, w)
+    out$df <- length(h$r)
+    out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
+    out$par <- h$r
+    out$npar <- length(h$r)
+    out$coefficients <- object$coefficients
     class(out) <- "el"
   } else {
     out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
                 maxit, tol, th, w)
+    out$df <- nrow(h$l)
+    out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
+    # out$par <- h$r
+    out$npar <- ncol(h$l)
+    # out$coefficients <- object$coefficients
     class(out) <- c("elt", "el")
   }
   out

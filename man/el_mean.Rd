@@ -52,8 +52,7 @@ Glenn, N.L., and Yichuan Zhao. 2007.
   \doi{10.1016/j.csda.2006.07.032}.
 
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-  The Annals of Statistics 18 (1).
-  \doi{10.1214/aos/1176347494}.
+  The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
 \link{el_eval}, \link{melt_control}

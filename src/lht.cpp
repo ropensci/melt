@@ -13,19 +13,8 @@ Rcpp::List lht_(
     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
       R_NilValue)
 {
-  const int q = lhs.rows();
-  const int p = lhs.cols();
-  const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(lhs);
-  if (lu_decomp.rank() != q) {
-    Rcpp::stop("'lhs' must have full row rank");
-  }
-  const MINEL el(method, par0, x, lhs, rhs, maxit, tol, th_nloglr(q, th), wt);
-
-  const double chisq_val = 2.0 * el.nllr;
-  Rcpp::Function pchisq("pchisq");
-  const double pval = Rcpp::as<double>(
-    pchisq(chisq_val, Rcpp::Named("df") = q,
-           Rcpp::Named("lower.tail") = false));
+  const MINEL el(method, par0, x, lhs, rhs, maxit, tol,
+                 th_nloglr(lhs.rows(), th), wt);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
@@ -34,12 +23,9 @@ Rcpp::List lht_(
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-      Rcpp::Named("npar") = p,
       Rcpp::Named("log.prob") = el.logp(x),
       Rcpp::Named("loglik") = el.loglik(),
       Rcpp::Named("coefficients") = el.par,
-      Rcpp::Named("statistic") = chisq_val,
-      Rcpp::Named("df") = q,
-      Rcpp::Named("p.value") = pval);
+      Rcpp::Named("statistic") = 2.0 * el.nllr);
   return result;
 }

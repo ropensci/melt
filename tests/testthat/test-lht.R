@@ -4,7 +4,7 @@ test_that("invalid 'object", {
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
   w <- 1 + runif(n, min = -0.5, max = 0.5)
-  optcfg <- melt_control(maxit = 200L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(tol = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, w, control = optcfg)
   fit$data.matrix <- NULL
   expect_error(lht(fit, lhs = 1, control = optcfg))
@@ -19,7 +19,7 @@ test_that("invalid 'lhs' and 'rhs'", {
   x2 <- rnorm(n)
   y <- 1 + x + x2 + rnorm(n)
   df <- data.frame(y, x, x2)
-  optcfg <- melt_control(maxit = 200L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
   # invalid rhs
   lhs <- matrix(c(0, 1, -1), nrow = 1)
@@ -49,7 +49,7 @@ test_that("invalid 'lhs' and 'rhs'", {
 
 test_that("when lht == eval", {
   skip_on_os("windows", arch = "i386")
-  optcfg <- melt_control(maxit = 200L, tol = 1e-08, th = 1e+10)
+  optcfg <- melt_control(tol = 1e-08, th = 1e+10)
   # mean
   n <- 100
   x <- rnorm(n)

@@ -4,7 +4,7 @@
 #' Consider Package \strong{melt} .
 #'
 #' @param maxit Maximum number of iterations for constrained minimization of
-#'   empirical likelihood. Defaults to \code{100}.
+#'   empirical likelihood. Defaults to \code{200}.
 #' @param maxit_l Maximum number of iterations of evaluation of empirical
 #'   likelihood. Defaults to \code{100}.
 #' @param tol Relative convergence tolerance for the constrained
@@ -76,19 +76,18 @@
 #'   respect to \eqn{\lambda} and \eqn{\theta} with the following arguments:
 #'   \describe{
 #'   \item{maxit}{Maximum number of iterations for the optimization with
-#'   respect to \eqn{\theta}. Defaults to \code{100}.}
+#'   respect to \eqn{\theta}.}
 #'   \item{maxit_l}{Maximum number of iterations for the optimization with
-#'   respect to \eqn{\lambda}. Defaults to \code{100}.}
+#'   respect to \eqn{\lambda}.}
 #'   \item{tol}{Relative convergence tolerance, denoted by \eqn{\epsilon}.
 #'   With the orthogonal projector matrix \eqn{P} and an initial value
 #'   \eqn{\theta^{(0)}}, the iteration stops when
 #'   \deqn{\|P \nabla l(\theta^{(k)})\| \leq
-#'   \epsilon\|P \nabla l(\theta^{(0)})\| + \epsilon^2.}
-#'   Defaults to \code{1e-06}.}
+#'   \epsilon\|P \nabla l(\theta^{(0)})\| + \epsilon^2.}}
 #'   \item{tol_l}{Relative convergence tolerance, denoted by \eqn{\delta}.
 #'   The iteration stops when
 #'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| \leq
-#'   \delta\|\lambda^{(k - 1)}\| + \delta^2.} Defaults to \code{1e-06}.}
+#'   \delta\|\lambda^{(k - 1)}\| + \delta^2.}}
 #'   \item{th}{Threshold for the negative empirical log-likelihood ratio value.
 #'   The iteration stops if the value exceeds the threshold. Defaults to
 #'   \code{NULL} and sets the threshold to \code{200 * d}, where \code{d}
@@ -107,24 +106,20 @@
 #'   Statistical Methods & Applications 19 (4): 463–76.
 #'   \doi{10.1007/s10260-010-0137-9}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-#'   The Annals of Statistics 18 (1).
-#'   \doi{10.1214/aos/1176347494}.
+#'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
-#'   The Annals of Statistics 19 (4).
-#'   \doi{10.1214/aos/1176348368}.
+#'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 #' @references Qin, Jin, and Jerry Lawless. 1994.
 #'   “Empirical Likelihood and General Estimating Equations.”
-#'   The Annals of Statistics 22 (1).
-#'   \doi{10.1214/aos/1176325370}.
+#'   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 #' @references Qin, Jing, and Jerry Lawless. 1995.
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   Canadian Journal of Statistics 23 (2): 145–59.
-#'   \doi{10.2307/3315441}.
+#'   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 #' @seealso \link{el_eval}, \link{lht}
 #' @examples
-#' optcfg <- melt_control(maxit = 200L, th = 200, nthreads = 1L)
+#' optcfg <- melt_control(maxit = 300L, th = 200, nthreads = 1L)
 #' @export
-melt_control <- function(maxit = 100L, maxit_l = 100L, tol = 1e-06,
+melt_control <- function(maxit = 200L, maxit_l = 100L, tol = 1e-06,
                          tol_l = 1e-06, th = NULL, nthreads) {
   # maxit: integer (positive)
   maxit <- tryCatch(as.integer(maxit), warning = function(w) NA,
@@ -169,7 +164,7 @@ melt_control <- function(maxit = 100L, maxit_l = 100L, tol = 1e-06,
   }
 
   # nthreads: integer (positive)
-  max_threads <- max_threads()
+  max_threads <- max_threads_()
   if (missing(nthreads)) {
     nthreads <- max(1L, max_threads / 2L)
   } else {

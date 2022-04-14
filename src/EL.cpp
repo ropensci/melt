@@ -4,7 +4,7 @@
  * Last updated: 04/07/22
  */
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-       const int maxit,
+       const int maxit_l,
        const double tol,
        const double th,
        const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
@@ -12,7 +12,7 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
     mele_fn{},
     w{},
     par{},
-    maxit{maxit},
+    maxit_l{maxit_l},
     tol{tol},
     th{th},
     n{static_cast<int>(g.rows())},
@@ -34,15 +34,15 @@ EL::EL(
   const std::string method,
   const Eigen::Ref<const Eigen::VectorXd>& par0,
   const Eigen::Ref<const Eigen::MatrixXd>& x,
-  const int maxit,
+  const int maxit_l,
   const double tol,
   const double th,
   const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
-  : l{Eigen::VectorXd::Zero(x.cols())},
+  : l{Eigen::VectorXd::Zero(par0.size())},
     mele_fn{set_mele_fn(method)},
     w{},
     par{par0},
-    maxit{maxit},
+    maxit_l{maxit_l},
     tol{tol},
     th{th},
     n{static_cast<int>(x.rows())},
@@ -63,7 +63,7 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::ArrayXd>&)>>
         g_map{{{"mean", mele_mean},
                {"lm", mele_lm},
-               {"logit", mele_mean}}};
+               {"binomial_logit", mele_mean}}};
   return g_map[method];
 }
 
@@ -76,7 +76,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::VectorXd>&)>>
         g_map{{{"mean", g_mean},
                {"lm", g_lm},
-               {"logit", g_logit}}};
+               {"binomial_logit", g_bin_logit},
+               {"binomial_probit", g_bin_probit}}};
   return g_map[method];
 }
 
@@ -84,7 +85,7 @@ void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
                 const Eigen::Ref<const Eigen::ArrayXd>& w)
 {
   // maximization
-  while (!conv && iter != maxit && nllr <= th) {
+  while (!conv && iter != maxit_l && nllr <= th) {
     // pseudo log
     const PSEUDO_LOG pl(Eigen::VectorXd::Ones(n) + g * l, w);
     // J matrix
@@ -233,7 +234,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::VectorXd>&)>>
         g_map{{{"mean", g_mean},
                {"lm", g_lm},
-               {"logit", g_logit}}};
+               {"binomial_logit", g_bin_logit},
+               {"binomial_probit", g_bin_probit}}};
   return g_map[method];
 }
 
@@ -252,7 +254,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
       const Eigen::Ref<const Eigen::ArrayXd>&)>> gr_map{
         {{"mean", gr_nloglr_mean},
          {"lm", gr_nloglr_lm},
-         {"logit", gr_nloglr_logit}}};
+         {"binomial_logit", gr_nloglr_bin_logit},
+         {"binomial_probit", gr_nloglr_bin_probit}}};
   return gr_map[method];
 }
 

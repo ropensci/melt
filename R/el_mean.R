@@ -18,8 +18,7 @@
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
 #'   \doi{10.1016/j.csda.2006.07.032}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-#'   The Annals of Statistics 18 (1).
-#'   \doi{10.1214/aos/1176347494}.
+#'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 #' @seealso \link{el_eval}, \link{melt_control}
 #' @examples
 #' # scalar mean
@@ -41,20 +40,34 @@
 el_mean <- function(par, x, weights = NULL, control = melt_control(),
                     model = TRUE) {
   mm <- as.matrix(x)
+  n <- nrow(mm)
+  p <- ncol(mm)
   if (!is.numeric(mm) || !all(is.finite(mm)))
     stop("'x' must be a finite numeric matrix")
-  if (nrow(mm) < 2L)
+  if (n < 2L)
     stop("not enough 'x' observations")
+  if (get_rank_(mm) != p || n <= p) {
+    stop("'x' must have full column rank");
+  }
   if (!is.numeric(par) || !all(is.finite(par)))
     stop("'par' must be a finite numeric vector")
-  if (length(par) != ncol(mm))
+  if (length(par) != p)
     stop("'par' and 'x' have incompatible dimensions")
   if (!inherits(control, "melt_control") || !is.list(control))
     stop("invalid 'control' supplied")
   if (!is.null(weights)) {
-    weights <- check_weights(weights, nrow(mm))
+    weights <- check_weights(weights, n)
+    cf <- colSums(mm * weights) / n
+  } else {
+    cf <- colMeans(mm)
   }
-  out <- mean_(par, mm, control$maxit_l, control$tol_l, control$th, weights)
+  out <- eval_("mean", par, mm, control$maxit_l, control$tol_l, control$th,
+               weights)
+  out$df <- p
+  out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
+  out$par <- par
+  out$npar <- p
+  out$coefficients <- cf
   out$weights <- weights
   if (model)
     out$data.matrix <- mm

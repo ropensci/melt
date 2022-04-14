@@ -1,85 +1,93 @@
-#' Fits a linear model with empirical likelihood
+#' Empirical likelihood for linear models
 #'
 #' Fits a linear model with empirical likelihood.
 #'
-#' @param formula A formula object.
-#' @param data A data frame containing the variables in the formula.
+#' @param formula An object of class \code{"\link[stats]{formula}"} (or one that
+#'   can be coerced to that class): a symbolic description of the model to be
+#'   fitted.
+#' @param data An optional data frame, list or environment (or object coercible
+#'   by \code{\link[base]{as.data.frame}} to a data frame) containing the
+#'   variables in the formula. If not found in data, the variables are taken
+#'   from \code{environment(formula)}.
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
+#'   See ‘Details’.
 #' @param na.action A function which indicates what should happen when the data
-#'   contain \code{NA}s.
+#'   contain \code{NA}s. The default is set by the \code{na.action} setting of
+#'   \code{\link[base]{options}}, and is \code{na.fail} if that is unset.
 #' @param control A list of control parameters set by
 #'   \code{\link{melt_control}}.
 #' @param model A logical. If \code{TRUE} the model matrix used for fitting is
 #'   returned.
+#' @param ... Additional arguments to be passed to the low level regression
+#'   fitting functions. See ‘Details’.
 #' @return A list of class \code{c("el_lm", "el")}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
-#'   The Annals of Statistics 19 (4).
-#'   \doi{10.1214/aos/1176348368}.
+#'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 #' @seealso \link{melt_control}, \link{lht}
 #' @examples
 #' fit <- el_lm(mpg ~ wt, mtcars)
 #' summary(fit)
-#' @importFrom stats .getXlevels is.empty.model model.matrix model.response
-#'   setNames
+#' @importFrom stats .getXlevels is.empty.model lm.fit lm.wfit model.matrix
+#'   model.response model.weights setNames
 #' @export
 el_lm <- function(formula, data, weights = NULL, na.action,
-                  control = melt_control(), model = TRUE) {
+                  control = melt_control(), model = TRUE, ...) {
   cl <- match.call()
+  if (missing(data))
+    data <- environment(formula)
   mf <- match.call(expand.dots = FALSE)
-  m <- match(c("formula", "data", "na.action"), names(mf), 0L)
+  m <- match(c("formula", "data", "weights", "na.action"), names(mf), 0L)
   mf <- mf[c(1L, m)]
   mf$drop.unused.levels <- TRUE
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
-
-  action <- if (missing(na.action) && is.null(attr(mf, "na.action"))) list(NULL)
-  else attr(mf, "na.action")
-  if (is.null(action))
-    action <- list(NULL)
-
   mt <- attr(mf, "terms")
-  intercept <- attr(mt, "intercept")
   y <- model.response(mf, "numeric")
-  nm <- names(y)
+  w <- as.vector(model.weights(mf))
+  if (!is.null(w) && !is.numeric(w))
+    stop("'weights' must be a numeric vector")
+  if (!is.null(w) && any(w < 0))
+    stop("negative weights not allowed")
   if (is.matrix(y))
     stop("'el_lm' does not support multiple responses")
-  x <- model.matrix(mt, mf)
-  mm <- cbind(y, x)
-
   if (is.empty.model(mt)) {
-    out <- list(optim = list(), npar = 0L, log.prob = numeric(),
-                loglik = numeric(), coefficients = numeric(), df = 0L,
-                residuals = y, fitted.values = 0 * y, na.action = action,
-                xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
-    if (model)
-      out$data.matrix <- mm
-    class(out) <- c("el_lm", "el")
-    return(out)
+    x <- NULL
+    z <- list(optim = list(), log.prob = numeric(), loglik = numeric(),
+              statistic = numeric(), df = 0L, p.value = numeric(), npar = 0L,
+              coefficients = numeric(), na.action = attr(mf, "na.action"),
+              xlevels = .getXlevels(mt, mf), call = cl, terms = mt)
+    class(z) <- c("el_lm", "el")
+    return(z)
+  } else {
+    x <- model.matrix(mt, mf, NULL)
+    z <- if (is.null(w)) lm.fit(x, y, offset = NULL, singular.ok = FALSE, ...)
+    else lm.wfit(x, y, w, offset = NULL, singular.ok = FALSE, ...)
   }
 
-  if (!is.null(weights)) {
-    weights <- check_weights(weights, nrow(mm))
-  }
   if (!inherits(control, "melt_control") || !is.list(control))
     stop("invalid 'control' supplied")
-  out <- lm_(mm, intercept, control$maxit, control$tol, control$th, weights)
-  out$weights <- weights
-  out$coefficients <- setNames(out$coefficients, colnames(x))
-  out$residuals <- setNames(out$residuals, nm)
-  out$fitted.values <- setNames(out$fitted.values, nm)
-  out$na.action <- action
-  out$xlevels <- .getXlevels(mt, mf)
-  out$call <- cl
-  out$terms <- mt
+  intercept <- attr(mt, "intercept")
+  mm <- cbind(y, x)
+  p <- ncol(x)
+  if (!is.null(w)) {
+    w <- check_weights(w, nrow(mm))
+  }
+  out <- lm_(mm, z$coefficients, intercept, control$maxit, control$maxit_l,
+             control$tol, control$tol_l, control$th, control$nthreads, w)
+  out$df <- if (intercept && p > 1L) p - 1L else p
+  out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
+  out$npar <- p
+  out$weights <- w
   if (model)
     out$data.matrix <- mm
-  class(out) <- c("el_lm", "el")
-  out
+  structure(c(out, list(coefficients = z$coefficients,
+                        na.action = attr(mf, "na.action"),
+                        xlevels = .getXlevels(mt, mf), call = cl, terms = mt)),
+            class = c(out$class, c("el_lm", "el")))
 }
 
-#' @noRd
 #' @importFrom stats formula
 #' @export
 formula.el_lm <- function(x, ...) {
@@ -92,7 +100,6 @@ formula.el_lm <- function(x, ...) {
   else formula(x$terms)
 }
 
-#' @noRd
 #' @importFrom stats coef
 #' @export
 print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
@@ -109,7 +116,6 @@ print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   invisible(x)
 }
 
-#' @noRd
 #' @export
 summary.el_lm <- function(object, ...) {
   z <- object
@@ -146,7 +152,6 @@ summary.el_lm <- function(object, ...) {
   ans
 }
 
-#' @noRd
 #' @importFrom stats naprint pchisq
 #' @export
 print.summary.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L),

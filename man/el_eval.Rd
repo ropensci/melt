@@ -51,7 +51,7 @@ Computes empirical likelihood with general estimating functions.
 }
 \examples{
 # test for variance with known mean
-x <- rnorm(100)
+x <- rnorm(100L)
 sigma <- 1
 g <- x^2 - sigma^2
 el_eval(g)
@@ -64,8 +64,7 @@ Glenn, N.L., and Yichuan Zhao. 2007.
 
 Qin, Jin, and Jerry Lawless. 1994.
   “Empirical Likelihood and General Estimating Equations.”
-  The Annals of Statistics 22 (1).
-  \doi{10.1214/aos/1176325370}.
+  The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 }
 \seealso{
 \link{melt_control}

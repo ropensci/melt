@@ -23,14 +23,14 @@ public:
 
   // constructors
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-     const int maxit,
+     const int maxit_l,
      const double tol,
      const double th,
      const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
   EL(const std::string method,
      const Eigen::Ref<const Eigen::VectorXd>& par0,
      const Eigen::Ref<const Eigen::MatrixXd>& x,
-     const int maxit,
+     const int maxit_l,
      const double tol,
      const double th,
      const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
@@ -55,7 +55,7 @@ public:
 private:
   // members
   const Eigen::VectorXd par;// parameter value
-  const int maxit;          // maximum number of iterations
+  const int maxit_l;          // maximum number of iterations
   const double tol;         // relative convergence tolerance
   const double th;          // threshold value for negative log-likelihood ratio
   const int n;              // sample size

@@ -23,23 +23,11 @@ Eigen::VectorXd gr_nloglr_mean(
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w);
 
-Eigen::VectorXd wgr_nloglr_mean(
-        const Eigen::Ref<const Eigen::VectorXd>& l,
-        const Eigen::Ref<const Eigen::MatrixXd>& g,
-        const Eigen::Ref<const Eigen::MatrixXd>& data,
-        const Eigen::Ref<const Eigen::ArrayXd>& w);
-
 Eigen::VectorXd gr_nloglr_lm(
         const Eigen::Ref<const Eigen::VectorXd>& l,
         const Eigen::Ref<const Eigen::MatrixXd>& g,
         const Eigen::Ref<const Eigen::MatrixXd>& data,
         const Eigen::Ref<const Eigen::VectorXd>& par,
-        const Eigen::Ref<const Eigen::ArrayXd>& w);
-
-Eigen::VectorXd wgr_nloglr_lm(
-        const Eigen::Ref<const Eigen::VectorXd>& l,
-        const Eigen::Ref<const Eigen::MatrixXd>& g,
-        const Eigen::Ref<const Eigen::MatrixXd>& data,
         const Eigen::Ref<const Eigen::ArrayXd>& w);
 
 
@@ -50,17 +38,24 @@ Eigen::VectorXd wgr_nloglr_lm(
 
 
 Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);
-
-Eigen::MatrixXd g_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
-                        const Eigen::Ref<const Eigen::VectorXd>& par);
-
-Eigen::VectorXd gr_nloglr_logit(
+Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                            const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::VectorXd gr_nloglr_bin_logit(
         const Eigen::Ref<const Eigen::VectorXd>& l,
         const Eigen::Ref<const Eigen::MatrixXd>& g,
         const Eigen::Ref<const Eigen::MatrixXd>& data,
         const Eigen::Ref<const Eigen::VectorXd>& par,
         const Eigen::Ref<const Eigen::ArrayXd>& w);
 
+Eigen::ArrayXd probit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);
+Eigen::MatrixXd g_bin_probit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                             const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::VectorXd gr_nloglr_bin_probit(
+        const Eigen::Ref<const Eigen::VectorXd>& l,
+        const Eigen::Ref<const Eigen::MatrixXd>& g,
+        const Eigen::Ref<const Eigen::MatrixXd>& data,
+        const Eigen::Ref<const Eigen::VectorXd>& par,
+        const Eigen::Ref<const Eigen::ArrayXd>& w);
 
 
 Eigen::ArrayXd log_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);
