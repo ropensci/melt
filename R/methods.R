@@ -96,7 +96,7 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
     stop("'cv' is not a number")
   if (cv < .Machine$double.eps)
     stop("'cv' is too small")
-  if (cv > 2 * th)
+  if (!is.null(th) && cv > 2 * th)
     stop("'cv' is too large")
 
   # compute the confidence interval matrix
