@@ -79,3 +79,12 @@ test_that("when lht == eval", {
   fit2 <- lht(fit, lhs = lhs, rhs = rhs, control = optcfg)
   expect_equal(fit$optim$lambda, fit2$optim$lambda)
 })
+
+test_that("invalid 'control", {
+  skip_on_os("windows", arch = "i386")
+  n <- 10
+  x <- rnorm(n)
+  par <- runif(1, min(x), max(x))
+  fit <- el_mean(par, x)
+  expect_error(lht(fit, lhs = 1, control = list(maxit = 200L)))
+})

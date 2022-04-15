@@ -8,7 +8,9 @@ Eigen::MatrixXd confint_(
     const double cutoff,
     const Rcpp::IntegerVector& idx,
     const int maxit,
+    const int maxit_l,
     const double tol,
+    const double tol_l,
     const Rcpp::Nullable<double> th,
     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
       R_NilValue)
@@ -20,6 +22,12 @@ Eigen::MatrixXd confint_(
   // confidence intervals (vector)
   std::vector<double> ci_vec;
   ci_vec.reserve(2 * n);
+  // test threshold
+  const double test_th = th_nloglr(1, th);
+  Eigen::ArrayXd w;
+  if (wt.isNotNull()) {
+    w = Rcpp::as<Eigen::ArrayXd>(wt);
+  }
   // #pragma omp parallel for
   for (int j : idx) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
@@ -30,8 +38,8 @@ Eigen::MatrixXd confint_(
     double lower_lb = par0[j - 1] - 1.0 / std::log(x.rows());
     // lower bound for lower endpoint
     while (2.0 * MINEL(method, par0, x, lhs,
-                       Eigen::Matrix<double, 1, 1>(lower_lb),maxit, tol,
-                       th_nloglr(1, th), wt).nllr <= cutoff) {
+                       Eigen::Matrix<double, 1, 1>(lower_lb), maxit, maxit_l,
+                       tol, tol_l, test_th, w).nllr <= cutoff) {
       lower_ub = lower_lb;
       lower_lb -= 1.0 / std::log(x.rows());
     }
@@ -39,7 +47,7 @@ Eigen::MatrixXd confint_(
     while (lower_ub - lower_lb > tol) {
       if (2.0 * MINEL(method, par0, x, lhs,
                       Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2.0),
-                      maxit, tol, th_nloglr(1, th), wt).nllr > cutoff) {
+                      maxit, maxit_l, tol, tol_l, test_th, w).nllr > cutoff) {
         lower_lb = (lower_lb + lower_ub) / 2.0;
       } else {
         lower_ub = (lower_lb + lower_ub) / 2.0;
@@ -52,8 +60,8 @@ Eigen::MatrixXd confint_(
     double upper_ub = par0[j - 1] + 1.0 / std::log(x.rows());
     // upper bound for upper endpoint
     while (2.0 * MINEL(method, par0, x, lhs,
-                       Eigen::Matrix<double, 1, 1>(upper_ub), maxit, tol,
-                       th_nloglr(1, th), wt).nllr <= cutoff) {
+                       Eigen::Matrix<double, 1, 1>(upper_ub), maxit, maxit_l,
+                       tol, tol_l, test_th, w).nllr <= cutoff) {
       upper_lb = upper_ub;
       upper_ub += 1.0 / std::log(x.rows());
     }
@@ -61,7 +69,7 @@ Eigen::MatrixXd confint_(
     while (upper_ub - upper_lb > tol) {
       if (2.0 * MINEL(method, par0, x, lhs,
                       Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2.0),
-                      maxit, tol, th_nloglr(1, th), wt).nllr > cutoff) {
+                      maxit, maxit_l, tol, tol_l, test_th, w).nllr > cutoff) {
         upper_ub = (upper_lb + upper_ub) / 2.0;
       } else {
         upper_lb = (upper_lb + upper_ub) / 2.0;

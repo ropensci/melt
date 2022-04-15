@@ -79,3 +79,10 @@ test_that("invalid 'g'", {
   expect_error(el_eval(matrix(rnorm(2), ncol = 2), control = optcfg))
   expect_error(el_eval(matrix(c(1, 1, 2, NA), ncol = 2), control = optcfg))
 })
+
+test_that("invalid 'control'", {
+  skip_on_os("windows", arch = "i386")
+  x <- rnorm(10)
+  par <- runif(1, min(x), max(x))
+  expect_error(el_eval(x - par, control = list(maxit = 200L)))
+})

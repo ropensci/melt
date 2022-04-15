@@ -66,7 +66,14 @@ A list of class \code{c("el_glm", "el_lm", "el")}.
 Fits a generalized linear model with empirical likelihood.
 }
 \examples{
-fit <- el_lm(mpg ~ wt, mtcars)
+n <- 50
+x <- rnorm(n)
+x2 <- rnorm(n)
+l <- -2 + 0.2 * x + 3 * x2
+mu <- 1 / (1 + exp(-l))
+y <- rbinom(n, 1, mu)
+df <- data.frame(y, x, x2)
+fit <- el_glm(y ~ x + x2, family = binomial, df)
 summary(fit)
 }
 \references{

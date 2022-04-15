@@ -24,16 +24,23 @@ public:
   // constructors
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
      const int maxit_l,
-     const double tol,
+     const double tol_l,
      const double th,
      const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
   EL(const std::string method,
      const Eigen::Ref<const Eigen::VectorXd>& par0,
      const Eigen::Ref<const Eigen::MatrixXd>& x,
      const int maxit_l,
-     const double tol,
+     const double tol_l,
      const double th,
      const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
+
+  // test
+  EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
+     const int maxit_l,
+     const double tol_l,
+     const double th,
+     const Eigen::Ref<const Eigen::ArrayXd>& wt);
 
   // functions for constructors
   void set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -56,7 +63,7 @@ private:
   // members
   const Eigen::VectorXd par;// parameter value
   const int maxit_l;          // maximum number of iterations
-  const double tol;         // relative convergence tolerance
+  const double tol_l;         // relative convergence tolerance
   const double th;          // threshold value for negative log-likelihood ratio
   const int n;              // sample size
   // estimating function
@@ -83,9 +90,23 @@ public:
         const Eigen::Ref<const Eigen::MatrixXd>& lhs,
         const Eigen::Ref<const Eigen::VectorXd>& rhs,
         const int maxit,
+        const int maxit_l,
         const double tol,
+        const double tol_l,
         const double th,
         const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
+
+  MINEL(const std::string method,
+        const Eigen::Ref<const Eigen::VectorXd>& par0,
+        const Eigen::Ref<const Eigen::MatrixXd>& x,
+        const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+        const Eigen::Ref<const Eigen::VectorXd>& rhs,
+        const int maxit,
+        const int maxit_l,
+        const double tol,
+        const double tol_l,
+        const double th,
+        const Eigen::Ref<const Eigen::ArrayXd>& wt);
 
   // functions for constructors
   std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,

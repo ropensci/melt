@@ -83,7 +83,7 @@ test_that("invalid 'x", {
 
 test_that("invalid 'par", {
   skip_on_os("windows", arch = "i386")
-  x <- matrix(c(1, 1, 2, 2), ncol = 2)
+  x <- matrix(c(1, 1, 2, 2), ncol = 2L)
   par <- 0
   optcfg <- melt_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   expect_error(el_mean(par, x, control = optcfg))
@@ -91,4 +91,8 @@ test_that("invalid 'par", {
   expect_error(el_mean(NULL, rnorm(10), control = optcfg))
   expect_error(el_mean(Inf, rnorm(10), control = optcfg))
   expect_error(el_mean(NaN, rnorm(10), control = optcfg))
+  x <- rnorm(10)
+  par <- c(0, 0)
+  expect_error(el_mean(par, x, control = optcfg))
+  expect_error(el_mean(0, x, control = list(maxit = 200)))
 })

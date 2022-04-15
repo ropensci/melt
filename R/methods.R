@@ -83,9 +83,13 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
     stop("invalid 'control' supplied")
   method <- object$optim$method
   maxit <- control$maxit
+  maxit_l <- control$maxit_l
   tol <- control$tol
-  th <- if (is.null(control$th)) 200 else control$th
+  tol_l <- control$tol_l
+  th <- control$th
   w <- object$weights
+  if (is.null(w))
+    w <- numeric(length = 0L)
   cv <- tryCatch(as.numeric(cv), warning = function(w) NA,
                  error = function(e) NA)
   if (any(length(cv) != 1L, is.na(cv), is.infinite(cv)))
@@ -109,7 +113,8 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
     ci[-idx_na, ] <- confint_(method, cf, object$data.matrix, cv, idx[-idx_na],
                               maxit, tol, th, w)
   } else {
-    ci <- confint_(method, cf, object$data.matrix, cv, idx, maxit, tol, th, w)
+    ci <- confint_(method, cf, object$data.matrix, cv, idx, maxit, maxit_l, tol,
+                   tol_l, th, w)
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))
   ci
@@ -134,17 +139,10 @@ logLik.el <- function(object, ...) {
   if (!missing(...))
     warning("extra arguments are not supported")
   p <- object$npar
-  if (inherits(object, "elt")) {
-    val <- object$loglik
-    # df is the number of estimated parameters
-    attr(val, "df") <- p - object$df
-  } else{
-    rhs <- object$coefficients
-    lhs <- diag(nrow = p, ncol = p)
-    out <- lht(object, rhs = rhs, lhs = lhs)
-    val <- out$loglik
-    attr(val, "df") <- p
-  }
+  rhs <- object$coefficients
+  out <- lht(object, rhs = rhs)
+  val <- out$loglik
+  attr(val, "df") <- p
   class(val) <- "logLik"
   val
 }

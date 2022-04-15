@@ -11,7 +11,8 @@ Rcpp::List eval_(
     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
       R_NilValue)
 {
-  const EL el(method, par0, x, maxit_l, tol_l, th_nloglr(par0.size(), th), wt);
+  const double test_th = th_nloglr(par0.size(), th);
+  const EL el(method, par0, x, maxit_l, tol_l, test_th, wt);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
@@ -35,7 +36,8 @@ Rcpp::List eval_g_(
     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
       R_NilValue)
 {
-  const EL el(g, maxit_l, tol_l, th_nloglr(g.cols(), th), wt);
+  const double test_th = th_nloglr(g.cols(), th);
+  const EL el(g, maxit_l, tol_l, test_th, wt);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(

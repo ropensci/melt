@@ -55,20 +55,20 @@ el_mean <- function(par, x, weights = NULL, control = melt_control(),
     stop("'par' and 'x' have incompatible dimensions")
   if (!inherits(control, "melt_control") || !is.list(control))
     stop("invalid 'control' supplied")
+  w <- check_weights(weights, n)
   if (!is.null(weights)) {
-    weights <- check_weights(weights, n)
-    cf <- colSums(mm * weights) / n
+    cf <- colSums(mm * w) / n
   } else {
     cf <- colMeans(mm)
   }
-  out <- eval_("mean", par, mm, control$maxit_l, control$tol_l, control$th,
-               weights)
+  out <- eval_("mean", par, mm, control$maxit_l, control$tol_l, control$th, w)
   out$df <- p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
   out$par <- par
   out$npar <- p
   out$coefficients <- cf
-  out$weights <- weights
+  if (!is.null(weights))
+    out$weights <- w
   if (model)
     out$data.matrix <- mm
   class(out) <- "el"

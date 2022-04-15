@@ -37,7 +37,14 @@
 #'   Statistica Sinica 13: 69–81.
 #' @seealso \link{el_lm}, \link{lht}
 #' @examples
-#' fit <- el_lm(mpg ~ wt, mtcars)
+#' n <- 50
+#' x <- rnorm(n)
+#' x2 <- rnorm(n)
+#' l <- -2 + 0.2 * x + 3 * x2
+#' mu <- 1 / (1 + exp(-l))
+#' y <- rbinom(n, 1, mu)
+#' df <- data.frame(y, x, x2)
+#' fit <- el_glm(y ~ x + x2, family = binomial, df)
 #' summary(fit)
 #' @importFrom stats gaussian glm.fit model.extract model.weights
 #' @export
@@ -104,16 +111,15 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
   method <- check_family(fit$family)
   mm <- cbind(fit$y, X)
   p <- ncol(X)
-  if (!is.null(w)) {
-    w <- check_weights(w, nrow(mm))
-  }
+  w <- check_weights(w, nrow(mm))
   out <- glm_(method$family, method$link, mm, fit$coefficients, intercept,
               control$maxit, control$maxit_l, control$tol, control$tol_l,
-              control$th, control$nthreads, NULL)
+              control$th, control$nthreads, w)
   out$df <- if (intercept && p > 1L) p - 1L else p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
   out$npar <- p
-  out$weights <- w
+  if (!is.null(weights))
+    out$weights <- w
   if (model)
     out$data.matrix <- mm
   out$na.action <- attr(mf, "na.action")

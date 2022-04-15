@@ -38,12 +38,13 @@ eld <- function(object, control = melt_control()) {
     stop("invalid 'object' supplied")
   if (is.null(object$data.matrix))
     stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
-  if (inherits(object, "elt"))
-    stop("method not applicable for 'elt' object")
   if (!inherits(control, "melt_control") || !is.list(control))
     stop("invalid 'control' supplied")
+  w <- object$weights
+  if (is.null(w))
+    w <- numeric(length = 0L)
   out <- eld_(object$optim$method, object$coefficients, object$data.matrix,
-              control$maxit_l, control$tol_l, control$th , object$weights)
+              control$maxit_l, control$tol_l, control$th, control$nthreads, w)
   setNames(out, "eld")
   class(out) <- "eld"
   out

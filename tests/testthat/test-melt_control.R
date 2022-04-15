@@ -11,4 +11,7 @@ test_that("invalid control parameters", {
   expect_error(melt_control(tol_l = -1))
   expect_error(melt_control(th = Inf))
   expect_error(melt_control(th = -10))
+  expect_error(melt_control(nthreads = c(10, 20)))
+  expect_warning(melt_control(nthreads = 0))
+  expect_warning(melt_control(nthreads = .Machine$integer.max))
 })

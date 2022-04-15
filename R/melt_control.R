@@ -6,7 +6,7 @@
 #' @param maxit Maximum number of iterations for constrained minimization of
 #'   empirical likelihood. Defaults to \code{200}.
 #' @param maxit_l Maximum number of iterations of evaluation of empirical
-#'   likelihood. Defaults to \code{100}.
+#'   likelihood. Defaults to \code{50}.
 #' @param tol Relative convergence tolerance for the constrained
 #'   minimization. Defaults to \code{1e-06}.
 #' @param tol_l Relative convergence tolerance for the evaluation. Defaults
@@ -96,8 +96,8 @@
 #'   \item{nthreads}{Number of threads for parallel computation via OpenMP (if
 #'     available). It only applies to functions that involve multiple
 #'     evaluations or minimizations. Defaults to the half of the available
-#'     threads. For better performance, it is strongly recommended to limit the
-#'     number of threads to the number of physical cores.}
+#'     threads. For better performance, it is recommended to limit the number of
+#'     threads to the number of physical cores.}
 #'   }
 #' @return A list of class \code{"melt_control"} with the control parameters
 #'   specified.
@@ -119,7 +119,7 @@
 #' @examples
 #' optcfg <- melt_control(maxit = 300L, th = 200, nthreads = 1L)
 #' @export
-melt_control <- function(maxit = 200L, maxit_l = 100L, tol = 1e-06,
+melt_control <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06,
                          tol_l = 1e-06, th = NULL, nthreads) {
   # maxit: integer (positive)
   maxit <- tryCatch(as.integer(maxit), warning = function(w) NA,

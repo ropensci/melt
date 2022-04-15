@@ -71,15 +71,14 @@ el_lm <- function(formula, data, weights = NULL, na.action,
   intercept <- attr(mt, "intercept")
   mm <- cbind(y, x)
   p <- ncol(x)
-  if (!is.null(w)) {
-    w <- check_weights(w, nrow(mm))
-  }
+  w <- check_weights(w, nrow(mm))
   out <- lm_(mm, z$coefficients, intercept, control$maxit, control$maxit_l,
              control$tol, control$tol_l, control$th, control$nthreads, w)
   out$df <- if (intercept && p > 1L) p - 1L else p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
   out$npar <- p
-  out$weights <- w
+  if (!is.null(weights))
+    out$weights <- w
   if (model)
     out$data.matrix <- mm
   structure(c(out, list(coefficients = z$coefficients,
@@ -138,9 +137,10 @@ summary.el_lm <- function(object, ...) {
     stop("invalid 'el_lm' object:  no 'terms' component")
   ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
   ans$coefficients <- cbind(estimate = z$coefficients,
-                            `chisq value` = z$optim$par.tests$statistic,
-                            # `Pr(>chisq)` = z$optim$par.tests$p.value
-                            `p-value` = z$optim$par.tests$p.value)
+                            `chisq value` = z$par.tests$statistic,
+                            # `Pr(>Chisq)` = z$optim$par.tests$p.value
+                            `p-value` = pchisq(z$par.tests$statistic, df = 1L,
+                                               lower.tail = FALSE))
   ans$aliased <- is.na(z$coefficients)
   if (p != attr(z$terms, "intercept")) {
     # df.int <- if (attr(z$terms, "intercept")) 1L else 0L

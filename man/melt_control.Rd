@@ -6,7 +6,7 @@
 \usage{
 melt_control(
   maxit = 200L,
-  maxit_l = 100L,
+  maxit_l = 50L,
   tol = 1e-06,
   tol_l = 1e-06,
   th = NULL,
@@ -18,7 +18,7 @@ melt_control(
 empirical likelihood. Defaults to \code{200}.}
 
 \item{maxit_l}{Maximum number of iterations of evaluation of empirical
-likelihood. Defaults to \code{100}.}
+likelihood. Defaults to \code{50}.}
 
 \item{tol}{Relative convergence tolerance for the constrained
 minimization. Defaults to \code{1e-06}.}
@@ -122,8 +122,8 @@ Let \eqn{X_i} be independent and identically distributed
   \item{nthreads}{Number of threads for parallel computation via OpenMP (if
     available). It only applies to functions that involve multiple
     evaluations or minimizations. Defaults to the half of the available
-    threads. For better performance, it is strongly recommended to limit the
-    number of threads to the number of physical cores.}
+    threads. For better performance, it is recommended to limit the number of
+    threads to the number of physical cores.}
   }
 }
 \examples{

@@ -23,7 +23,7 @@ See ‘Details’.}
 \code{\link{melt_control}}.}
 }
 \value{
-A list of class \code{c("elt", "el")} with the following
+A list of class \code{"elt"} with the following
   components:
   \describe{
   \item{optim}{A list with the following optimization results:

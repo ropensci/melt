@@ -32,7 +32,7 @@
 #'   and the problem reduces to evaluating at \eqn{r} as
 #'   \deqn{l(r).}
 #'   }
-#' @return A list of class \code{c("elt", "el")} with the following
+#' @return A list of class \code{"elt"} with the following
 #'   components:
 #'   \describe{
 #'   \item{optim}{A list with the following optimization results:
@@ -94,6 +94,8 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = melt_control()) {
   tol_l <- control$tol_l
   th <- control$th
   w <- object$weights
+  if (is.null(w))
+    w <- numeric(length = 0L)
   if (is.null(lhs)) {
     out <- eval_(method, h$r, object$data.matrix, maxit_l, tol_l, th, w)
     out$df <- length(h$r)
@@ -101,16 +103,15 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = melt_control()) {
     out$par <- h$r
     out$npar <- length(h$r)
     out$coefficients <- object$coefficients
-    class(out) <- "el"
+    class(out) <- "elt"
   } else {
     out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
-                maxit, tol, th, w)
+                maxit, maxit_l, tol, tol_l, th, w)
     out$df <- nrow(h$l)
     out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
     # out$par <- h$r
     out$npar <- ncol(h$l)
-    # out$coefficients <- object$coefficients
-    class(out) <- c("elt", "el")
+    class(out) <- "elt"
   }
   out
 }

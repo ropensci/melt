@@ -5,15 +5,17 @@ Rcpp::NumericVector eld_(
     const std::string method,
     const Eigen::Map<Eigen::VectorXd>& par0,
     const Eigen::Map<Eigen::MatrixXd>& x,
-    const int maxit,
-    const double tol,
+    const int maxit_l,
+    const double tol_l,
     const Rcpp::Nullable<double> th,
+    const int nthreads,
     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
       R_NilValue)
 {
   const int n = x.rows();
   const int p = par0.size();
-  const EL el(method, par0, x, maxit, tol, th_nloglr(p, th), wt);
+  const double test_th = th_nloglr(p, th);
+  const EL el(method, par0, x, maxit_l, tol_l, test_th, wt);
   // maximum empirical likelihood value
   const double mel = el.loglik();
   const Eigen::ArrayXd w = el.w;
@@ -22,7 +24,6 @@ Rcpp::NumericVector eld_(
   Rcpp::NumericVector eld(n);
   // #pragma omp parallel for
   for (int i = 0; i < n; ++i) {
-    // Rcpp::checkUserInterrupt();
     // leave-one-out matrix
     Eigen::MatrixXd loo_x(n - 1, x.cols());
     loo_x << x.topRows(i), x.bottomRows(n - 1 - i);
@@ -33,8 +34,8 @@ Rcpp::NumericVector eld_(
       loo_w << w.topRows(i), w.bottomRows(n - 1 - i);
       loo_w = ((n - 1) / loo_w.sum()) * loo_w;
     }
-    const EL loo_el(method, el.mele_fn(loo_x, loo_w), x, maxit, tol,
-                    th_nloglr(p, th), wt);
+    const EL loo_el(method, el.mele_fn(loo_x, loo_w), x, maxit_l, tol_l,
+                    test_th, wt);
     eld[i] = 2 * n * (mel - loo_el.loglik());
   }
 

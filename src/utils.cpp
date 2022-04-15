@@ -5,6 +5,27 @@ double th_nloglr(const int p, const Rcpp::Nullable<double> th)
   return (th.isNull())? 200.0 * p : Rcpp::as<double>(th);
 }
 
+Eigen::ArrayXd inverse_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
+{
+  return x.array().inverse();
+}
+Eigen::ArrayXd log_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
+{
+  return exp(x.array());
+}
+Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
+{
+  return 1.0 / (1.0 + exp(-x.array()));
+}
+Eigen::ArrayXd probit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
+{
+  Eigen::ArrayXd out(x.size());
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    out[i] = 0.5 * std::erfc(-x[i] * M_SQRT1_2);
+  }
+  return out;
+}
+
 Eigen::VectorXd mele_mean(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const Eigen::Ref<const Eigen::ArrayXd>& w)
 {
@@ -14,7 +35,6 @@ Eigen::VectorXd mele_mean(const Eigen::Ref<const Eigen::MatrixXd>& x,
     return (w.matrix().transpose() * x) / x.rows();
   }
 };
-
 Eigen::VectorXd mele_lm(const Eigen::Ref<const Eigen::MatrixXd>& data,
                         const Eigen::Ref<const Eigen::ArrayXd>& w)
 {
@@ -29,23 +49,11 @@ Eigen::VectorXd mele_lm(const Eigen::Ref<const Eigen::MatrixXd>& data,
   }
 };
 
-
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::MatrixXd>& x,
                        const Eigen::Ref<const Eigen::VectorXd>& par)
 {
   return x.rowwise() - par.transpose();
 }
-
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& par)
-{
-  // const Eigen::VectorXd y = data.col(0);
-  // const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  // return x.array().colwise() * (y - x * beta).array();
-  return x.rightCols(x.cols() - 1).array().colwise() *
-    (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
-}
-
 Eigen::VectorXd gr_nloglr_mean(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -62,6 +70,15 @@ Eigen::VectorXd gr_nloglr_mean(
   }
 }
 
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                     const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  // const Eigen::VectorXd y = data.col(0);
+  // const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  // return x.array().colwise() * (y - x * beta).array();
+  return x.rightCols(x.cols() - 1).array().colwise() *
+    (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
+}
 Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -81,25 +98,74 @@ Eigen::VectorXd gr_nloglr_lm(
   }
 }
 
-
-
-
-
-
-
-Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
+Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                            const Eigen::Ref<const Eigen::VectorXd>& par)
 {
-  return 1.0 / (1.0 + exp(-x.array()));
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  return x.array().colwise() *
+    ((y - log_linkinv(x * par)) * log_linkinv(x * par));
 }
+Eigen::VectorXd gr_nloglr_gauss_log(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w)
+{
+  const int n = g.rows();
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd numerator = y * log_linkinv(x * par) -
+    2.0 * log_linkinv(2.0 * x * par);
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
+  if (w.size() == 0) {
+    return (x.transpose() *
+            (x.array().colwise() * (numerator / denominator)).matrix()) * l / n;
+  } else {
+    return (x.transpose() *
+            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+            l / n;
+  }
+}
+
+Eigen::MatrixXd g_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                                const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  return x.array().colwise() *
+    (-(y - inverse_linkinv(x * par)) * inverse_linkinv(x * par).square());
+}
+Eigen::VectorXd gr_nloglr_gauss_inverse(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w)
+{
+  const int n = g.rows();
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd numerator = inverse_linkinv(x * par).cube() *
+    (2.0 * y - 3.0 * inverse_linkinv(x * par));
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
+  if (w.size() == 0) {
+    return (x.transpose() *
+            (x.array().colwise() * (numerator / denominator)).matrix()) * l / n;
+  } else {
+    return (x.transpose() *
+            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+            l / n;
+  }
+}
+
 Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
                             const Eigen::Ref<const Eigen::VectorXd>& par)
 {
   const Eigen::ArrayXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   return x.array().colwise() * (y - logit_linkinv(x * par));
-  // return data.rightCols(data.cols() - 1).array().colwise() *
-  //   (data.array().col(0) -
-  //   logit_linkinv(data.rightCols(data.cols() - 1) * par));
 }
 Eigen::VectorXd gr_nloglr_bin_logit(
     const Eigen::Ref<const Eigen::VectorXd>& l,
@@ -113,20 +179,17 @@ Eigen::VectorXd gr_nloglr_bin_logit(
   const Eigen::ArrayXd numerator =
     logit_linkinv(x * par) * (1.0 - logit_linkinv(x * par));
   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
-  return -(x.transpose() *
-           (x.array().colwise() * numerator / denominator).matrix()) * l / n;
-}
-
-
-
-Eigen::ArrayXd probit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
-{
-  Eigen::ArrayXd out(x.size());
-  for (unsigned int i = 0; i < x.size(); ++i) {
-    out[i] = 0.5 * std::erfc(-x[i] * M_SQRT1_2);
+  if (w.size() == 0) {
+    return -(x.transpose() *
+             (x.array().colwise() * (numerator / denominator)).matrix()) *
+             l / n;
+  } else {
+    return -(x.transpose() *
+             (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+             l / n;
   }
-  return out;
 }
+
 Eigen::MatrixXd g_bin_probit(const Eigen::Ref<const Eigen::MatrixXd>& data,
                              const Eigen::Ref<const Eigen::VectorXd>& par)
 {
@@ -146,8 +209,15 @@ Eigen::VectorXd gr_nloglr_bin_probit(
   const Eigen::ArrayXd numerator =
     -exp(-(x * par).array().square() * 0.5) * M_SQRT1_2 * M_2_SQRTPI * 0.5;
   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
-  return -(x.transpose() *
-           (x.array().colwise() * numerator / denominator).matrix()) * l / n;
+  if (w.size() == 0) {
+    return -(x.transpose() *
+             (x.array().colwise() * (numerator / denominator)).matrix()) *
+             l / n;
+  } else {
+    return -(x.transpose() *
+             (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+             l / n;
+  }
 }
 
 
@@ -155,39 +225,4 @@ Eigen::VectorXd gr_nloglr_bin_probit(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Eigen::ArrayXd linkinv_log(const Eigen::Ref<const Eigen::VectorXd>& x)
-{
-  return exp(x.array());
-}
-Eigen::MatrixXd g_gaussian_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
-                               const Eigen::Ref<const Eigen::VectorXd>& par)
-{
-  const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  return x.array().colwise() * (y - linkinv_log(x * par));
-}
-Eigen::VectorXd gr_nloglr_gaussian_log(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
-    const Eigen::Ref<const Eigen::VectorXd>& par)
-{
-  const int n = g.rows();
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd numerator = linkinv_log(x * par);
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
-  return -(x.transpose() *
-           (x.array().colwise() * numerator / denominator).matrix()) * l / n;
-}
 

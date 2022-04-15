@@ -1,4 +1,7 @@
 check_weights <- function(weights, nw) {
+  if (is.null(weights)) {
+    return(numeric(length = 0L))
+  }
   if (!is.numeric(weights))
     stop(gettextf("%s is not a numeric vector", sQuote("weights")), domain = NA)
   w <- as.vector(weights, mode = "numeric")
@@ -61,10 +64,22 @@ check_hypothesis <- function(lhs, rhs, p) {
 check_family <- function(family) {
   f <- family$family
   l <- family$link
-  if (!any(f == c("binomial")))
-    stop(gettextf("%s family not supported by 'el_glm'", sQuote(f)),
+  switch(f,
+    "gaussian" = {
+      if (!any(l == c("identity", "log", "inverse")))
+        stop(gettextf("%s family with %s link not supported by el_glm",
+                      sQuote(f), sQuote(l)), domain = NA)
+      },
+    "binomial" = {
+      if (!any(l == c("logit", "probit")))
+        stop(gettextf("%s family with %s link not supported by el_glm",
+                      sQuote(f), sQuote(l)), domain = NA)
+      },
+    stop(gettextf("%s family not supported by el_glm", sQuote(f)),
          domain = NA)
-  if (!any(l == c("logit", "probit")))
-    stop(gettextf("%s link not supported by 'el_glm'", sQuote(l)), domain = NA)
+  )
   list(family = f, link = l)
 }
+
+
+

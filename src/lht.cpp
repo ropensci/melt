@@ -8,13 +8,15 @@ Rcpp::List lht_(
     const Eigen::Map<Eigen::MatrixXd>& lhs,
     const Eigen::Map<Eigen::VectorXd>& rhs,
     const int maxit,
+    const int maxit_l,
     const double tol,
+    const double tol_l,
     const Rcpp::Nullable<double> th,
-    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
-      R_NilValue)
+    const Eigen::Map<Eigen::ArrayXd>& wt)
 {
-  const MINEL el(method, par0, x, lhs, rhs, maxit, tol,
-                 th_nloglr(lhs.rows(), th), wt);
+  const double test_th = th_nloglr(lhs.rows(), th);
+  const MINEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, test_th,
+                 wt);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(

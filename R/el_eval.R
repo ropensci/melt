@@ -62,12 +62,11 @@ el_eval <- function(g, weights = NULL, control = melt_control()) {
   }
   if (!inherits(control, "melt_control") || !is.list(control))
     stop("invalid 'control' supplied")
-  if (!is.null(weights)) {
-    weights <- check_weights(weights, n)
-  }
-  out <- eval_g_(mm, control$maxit_l, control$tol_l, control$th, weights)
+  w <- check_weights(weights, n)
+  out <- eval_g_(mm, control$maxit_l, control$tol_l, control$th, w)
   out$df <- p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
-  out$weights <- weights
+  if (!is.null(weights))
+    out$weights <- w
   out
 }
