@@ -61,10 +61,10 @@ EL::EL(
   const double tol_l,
   const double th,
   const Eigen::Ref<const Eigen::ArrayXd>& wt)
-  : l{Eigen::VectorXd::Zero(g.cols())},
+  : par{},
+    l{Eigen::VectorXd::Zero(g.cols())},
     mele_fn{},
     w{},
-    par{},
     maxit_l{maxit_l},
     tol_l{tol_l},
     th{th},
