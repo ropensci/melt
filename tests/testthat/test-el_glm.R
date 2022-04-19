@@ -106,3 +106,29 @@ test_that("invalid 'control'", {
     control = list(maxit = 2L)
   ))
 })
+
+test_that("same results with parallel computing (binomial)", {
+  skip_on_os("windows", arch = "i386")
+  skip_on_ci()
+  n <- 500
+  p <- 15
+  b <- rnorm(p, sd = 0.5)
+  x <- matrix(rnorm(n * p), ncol = p)
+  l <- 1 + x %*% as.vector(b)
+  mu <- 1 / (1 + exp(-l))
+  y <- rbinom(n, 1, mu)
+  df <- data.frame(cbind(y, x))
+  fit <- el_glm(y ~ ., family = binomial(link = "logit"), df,
+                control = control_el(tol = 1e-08, th = 1e+10, nthreads = 1))
+  fit2 <- el_glm(y ~ ., family = binomial(link = "logit"), df,
+                 control = control_el(tol = 1e-08, th = 1e+10, nthreads = 1))
+
+  fit3 <- el_glm(y ~ ., family = binomial(link = "probit"), df,
+                control = control_el(tol = 1e-08, th = 1e+10, nthreads = 1))
+  fit4 <- el_glm(y ~ ., family = binomial(link = "probit"), df,
+                 control = control_el(tol = 1e-08, th = 1e+10, nthreads = 1))
+  expect_equal(fit$optim, fit2$optim)
+  expect_equal(fit$par.tests, fit2$par.tests)
+  expect_equal(fit3$optim, fit4$optim)
+  expect_equal(fit3$par.tests, fit4$par.tests)
+})

@@ -29,12 +29,12 @@ ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
 }
 
-glm_ <- function(family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, wt) {
-    .Call(`_melt_glm_`, family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, wt)
+glm_ <- function(family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, w) {
+    .Call(`_melt_glm_`, family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, w)
 }
 
-lht_ <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, th, wt) {
-    .Call(`_melt_lht_`, method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, th, wt)
+lht_ <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, th, w) {
+    .Call(`_melt_lht_`, method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, th, w)
 }
 
 lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, w) {

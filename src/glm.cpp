@@ -13,14 +13,10 @@ Rcpp::List glm_(
     const double tol_l,
     const Rcpp::Nullable<double> th,
     const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd>& wt)
+    const Eigen::Map<Eigen::ArrayXd>& w)
 {
   const std::string method = family + "_" + link;
   const int p = x.cols() - 1;
-  // Eigen::ArrayXd w;
-  // if (wt.isNotNull()) {
-  //   w = Rcpp::as<Eigen::ArrayXd>(wt);
-  // }
 
   // overall test
   Eigen::VectorXd par(p);
@@ -37,18 +33,18 @@ Rcpp::List glm_(
     const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
     const double test_th = th_nloglr(p - 1, th);
     const MINEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l,
-                   test_th, wt);
+                   test_th, w);
     par = el.par;
     l = el.l;
     nllr = el.nllr;
     iter = el.iter;
     conv = el.conv;
-    logp = el.logp(x);
-    loglik = el.loglik();
+    logp = el.logp(x, w);
+    loglik = el.loglik(w);
   } else {
     par = Eigen::VectorXd::Zero(p);
     const double test_th = th_nloglr(p, th);
-    const EL el(method, par, x, maxit_l, tol_l, test_th, wt);
+    const EL el(method, par, x, maxit_l, tol_l, test_th, w);
     l = el.l;
     nllr = el.nllr;
     iter = el.iter;
@@ -67,7 +63,7 @@ Rcpp::List glm_(
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
     const MINEL par_test(method, par0, x, lhs, Eigen::VectorXd::Zero(1), maxit,
-                         maxit_l, tol, tol_l, test_th, wt);
+                         maxit_l, tol, tol_l, test_th, w);
     chisq_val[i] = 2.0 * par_test.nllr;
     par_conv[i] = par_test.conv;
   }

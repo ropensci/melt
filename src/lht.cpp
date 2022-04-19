@@ -12,11 +12,11 @@ Rcpp::List lht_(
     const double tol,
     const double tol_l,
     const Rcpp::Nullable<double> th,
-    const Eigen::Map<Eigen::ArrayXd>& wt)
+    const Eigen::Map<Eigen::ArrayXd>& w)
 {
   const double test_th = th_nloglr(lhs.rows(), th);
   const MINEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, test_th,
-                 wt);
+                 w);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
@@ -26,8 +26,8 @@ Rcpp::List lht_(
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-      Rcpp::Named("log.prob") = el.logp(x),
-      Rcpp::Named("loglik") = el.loglik(),
+      Rcpp::Named("log.prob") = el.logp(x, w),
+      Rcpp::Named("loglik") = el.loglik(w),
       Rcpp::Named("coefficients") = el.par,
       Rcpp::Named("statistic") = 2.0 * el.nllr);
   return result;

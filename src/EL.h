@@ -124,14 +124,17 @@ public:
                                 const Eigen::Ref<const Eigen::MatrixXd>&,
                                 const Eigen::Ref<const Eigen::MatrixXd>&,
                                 const Eigen::Ref<const Eigen::VectorXd>&,
-                                const Eigen::Ref<const Eigen::ArrayXd>&)>
+                                const Eigen::Ref<const Eigen::ArrayXd>&,
+                                const bool)>
     set_gr_fn(const std::string method);
 
   // methods
   // log probability
-  Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const;
+  // Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const;
+  Eigen::ArrayXd logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                      const Eigen::Ref<const Eigen::ArrayXd>& wt) const;
   // log-likelihood
-  double loglik() const;
+  double loglik(const Eigen::Ref<const Eigen::ArrayXd>& wt) const;
 
 private:
   // members
@@ -141,7 +144,7 @@ private:
   const double tol_l; // relative convergence tolerance
   const double th;  // threshold value for negative log-likelihood ratio
   const int n;      // sample size
-  Eigen::ArrayXd w; // weights
+  const bool weighted;      // sample size
   // estimating function
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd>&,
@@ -152,7 +155,8 @@ private:
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::VectorXd>&,
-      const Eigen::Ref<const Eigen::ArrayXd>&)> gr_fn;
+      const Eigen::Ref<const Eigen::ArrayXd>&,
+      const bool)> gr_fn;
 };
 
 class PSEUDO_LOG

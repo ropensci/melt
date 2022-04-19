@@ -59,7 +59,8 @@ Eigen::VectorXd gr_nloglr_mean(
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w)
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
 {
   // const int n = g.rows();
   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
@@ -68,10 +69,10 @@ Eigen::VectorXd gr_nloglr_mean(
   // } else {
   //   return -(w / denominator).sum() * l / n;
   // }
-  if (w.size() == 0) {
-    return -(1.0 / denominator).sum() * l;
-  } else {
+  if (weighted) {
     return -(w / denominator).sum() * l;
+  } else {
+    return -(1.0 / denominator).sum() * l;
   }
 }
 
@@ -89,7 +90,8 @@ Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w)
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
 {
   // const int n = g.rows();
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
@@ -101,11 +103,11 @@ Eigen::VectorXd gr_nloglr_lm(
   //   return -(x.transpose() * (x.array().colwise() *
   //            (w / denominator)).matrix()) * l / n;
   // }
-  if (w.size() == 0) {
-    const Eigen::MatrixXd xx = x.array().colwise() / denominator;
+  if (weighted) {
+    const Eigen::MatrixXd xx = x.array().colwise() * (w / denominator);
     return -(x.transpose() * xx) * l;
   } else {
-    const Eigen::MatrixXd xx = x.array().colwise() * (w / denominator);
+    const Eigen::MatrixXd xx = x.array().colwise() / denominator;
     return -(x.transpose() * xx) * l;
   }
 }
@@ -123,7 +125,8 @@ Eigen::VectorXd gr_nloglr_gauss_log(
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w)
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
 {
   const int n = g.rows();
   const Eigen::ArrayXd y = data.col(0);
@@ -154,7 +157,8 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w)
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
 {
   const int n = g.rows();
   const Eigen::ArrayXd y = data.col(0);
@@ -184,21 +188,29 @@ Eigen::VectorXd gr_nloglr_bin_logit(
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w)
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
 {
-  const int n = g.rows();
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd numerator =
     logit_linkinv(x * par) * (1.0 - logit_linkinv(x * par));
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
-  if (w.size() == 0) {
-    return -(x.transpose() *
-             (x.array().colwise() * (numerator / denominator)).matrix()) *
-             l / n;
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+  // if (w.size() == 0) {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (numerator / denominator)).matrix()) *
+  //            l / n;
+  // } else {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+  //            l / n;
+  // }
+  if (weighted) {
+    const Eigen::MatrixXd cx = x.array().colwise() *
+      (w * numerator / denominator);
+    return -(x.transpose() * cx) * l;
   } else {
-    return -(x.transpose() *
-             (x.array().colwise() * (w * numerator / denominator)).matrix()) *
-             l / n;
+    const Eigen::MatrixXd cx = x.array().colwise() * (numerator / denominator);
+    return -(x.transpose() * cx) * l;
   }
 }
 
@@ -214,21 +226,29 @@ Eigen::VectorXd gr_nloglr_bin_probit(
     const Eigen::Ref<const Eigen::MatrixXd>& g,
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w)
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
 {
-  const int n = g.rows();
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd numerator =
     -exp(-(x * par).array().square() * 0.5) * M_SQRT1_2 * M_2_SQRTPI * 0.5;
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
-  if (w.size() == 0) {
-    return -(x.transpose() *
-             (x.array().colwise() * (numerator / denominator)).matrix()) *
-             l / n;
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+  // if (w.size() == 0) {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (numerator / denominator)).matrix()) *
+  //            l / n;
+  // } else {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+  //            l / n;
+  // }
+  if (weighted) {
+    const Eigen::MatrixXd cx = x.array().colwise() *
+      (w * numerator / denominator);
+    return -(x.transpose() * cx) * l;
   } else {
-    return -(x.transpose() *
-             (x.array().colwise() * (w * numerator / denominator)).matrix()) *
-             l / n;
+    const Eigen::MatrixXd cx = x.array().colwise() * (numerator / denominator);
+    return -(x.transpose() * cx) * l;
   }
 }
 
