@@ -102,11 +102,11 @@ Eigen::VectorXd gr_nloglr_lm(
   //            (w / denominator)).matrix()) * l / n;
   // }
   if (w.size() == 0) {
-    return
-    -(x.transpose() * (x.array().colwise() / denominator).matrix()) * l;
+    const Eigen::MatrixXd xx = x.array().colwise() / denominator;
+    return -(x.transpose() * xx) * l;
   } else {
-    return -(x.transpose() * (x.array().colwise() *
-             (w / denominator)).matrix()) * l;
+    const Eigen::MatrixXd xx = x.array().colwise() * (w / denominator);
+    return -(x.transpose() * xx) * l;
   }
 }
 

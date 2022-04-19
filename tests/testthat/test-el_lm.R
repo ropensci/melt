@@ -84,7 +84,7 @@ test_that("same results with parallel computing", {
   y <- 1 + x %*% as.vector(b) + rnorm(n)
   df <- data.frame(y, x)
   fit <- el_lm(y ~ ., df, control = control_el(th = 1e+10, nthreads = 1))
-  fit2 <- el_lm(y ~ ., df, control = control_el(th = 1e+10))
+  fit2 <- el_lm(y ~ ., df, control = control_el(th = 1e+10, nthreads = 4))
   fit$call <- NULL
   fit2$call <- NULL
   expect_equal(fit, fit2)

@@ -13,8 +13,7 @@ Eigen::MatrixXd confint_(
     const double tol_l,
     const Rcpp::Nullable<double> th,
     const int nthreads,
-    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
-      R_NilValue)
+    const Eigen::Map<Eigen::ArrayXd>& w)
 {
   // parameter dimension
   const int p = par0.size();
@@ -25,10 +24,10 @@ Eigen::MatrixXd confint_(
   ci_vec.reserve(2 * n);
   // test threshold
   const double test_th = th_nloglr(1, th);
-  Eigen::ArrayXd w;
-  if (wt.isNotNull()) {
-    w = Rcpp::as<Eigen::ArrayXd>(wt);
-  }
+  // Eigen::ArrayXd w;
+  // if (wt.isNotNull()) {
+  //   w = Rcpp::as<Eigen::ArrayXd>(wt);
+  // }
   // #pragma omp parallel for num_threads(nthreads)
   for (int j : idx) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);

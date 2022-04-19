@@ -11,14 +11,13 @@ Rcpp::List lm_(
     const double tol_l,
     const Rcpp::Nullable<double> th,
     const int nthreads,
-    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
-      R_NilValue)
+    const Eigen::Map<Eigen::ArrayXd>& w)
 {
   const int p = x.cols() - 1;
-  Eigen::ArrayXd w;
-  if (wt.isNotNull()) {
-    w = Rcpp::as<Eigen::ArrayXd>(wt);
-  }
+  // Eigen::ArrayXd w;
+  // if (wt.isNotNull()) {
+  //   w = Rcpp::as<Eigen::ArrayXd>(wt);
+  // }
 
   // overall test
   Eigen::VectorXd par(p);
@@ -46,7 +45,7 @@ Rcpp::List lm_(
   } else {
     par = Eigen::VectorXd::Zero(p);
     const double test_th = th_nloglr(p, th);
-    const EL el("lm", par, x, maxit_l, tol_l, test_th, wt);
+    const EL el("lm", par, x, maxit_l, tol_l, test_th, w);
     l = el.l;
     nllr = el.nllr;
     iter = el.iter;
@@ -60,7 +59,7 @@ Rcpp::List lm_(
   Rcpp::LogicalVector par_conv(p);
   const double test_th = th_nloglr(1, th);
   // default(none) shared(p, maxit) schedule(auto)
-  #pragma omp parallel for num_threads(nthreads)
+  // #pragma omp parallel for num_threads(nthreads)
   for (int i = 0; i < p; ++i) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
@@ -70,8 +69,28 @@ Rcpp::List lm_(
     par_conv[i] = par_test.conv;
   }
 
+
+
+  // Eigen::MatrixXd lhs(p - 1, p);
+  // lhs.col(0) = Eigen::MatrixXd::Zero(p - 1, 1);
+  // lhs.rightCols(p - 1) = Eigen::MatrixXd::Identity(p - 1, p - 1);
+  // const Eigen::MatrixXd proj =
+  //   Eigen::MatrixXd::Identity(lhs.cols(), lhs.cols()) -
+  //   lhs.transpose() * (lhs * lhs.transpose()).inverse() * lhs;
+  // const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
+  // // parameter (constraint imposed)
+  // Eigen::VectorXd par2 = proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
+  // // estimating function
+  // Eigen::MatrixXd g = g_lm(x, par2);
+  // // lambda
+  // Eigen::VectorXd l2 = EL(g, maxit_l, tol_l, th_nloglr(p - 1, th), w).l;
+  // nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(g.rows()) + g * l, w);
+  // const double norm0 = (proj * gr_nloglr_lm(l, g, x, par, w)).norm();
+
+
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
+      // Rcpp::Named("tmp") = gr_nloglr_lm(l2, g, x, par2, w),
       Rcpp::Named("method") = "lm",
       Rcpp::Named("par") = par,
       Rcpp::Named("lambda") = l,

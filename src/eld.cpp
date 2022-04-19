@@ -9,8 +9,7 @@ Rcpp::NumericVector eld_(
     const double tol_l,
     const Rcpp::Nullable<double> th,
     const int nthreads,
-    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
-      R_NilValue)
+    const Eigen::Map<Eigen::ArrayXd>& wt)
 {
   const int n = x.rows();
   const int p = par0.size();

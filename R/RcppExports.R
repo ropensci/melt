@@ -9,19 +9,19 @@ get_rank_ <- function(x) {
     .Call(`_melt_get_rank_`, x)
 }
 
-confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, nthreads, wt = NULL) {
-    .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, nthreads, wt)
+confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, nthreads, w) {
+    .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, nthreads, w)
 }
 
-eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt = NULL) {
+eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
     .Call(`_melt_eld_`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
 }
 
-eval_ <- function(method, par0, x, maxit_l, tol_l, th, wt = NULL) {
+eval_ <- function(method, par0, x, maxit_l, tol_l, th, wt) {
     .Call(`_melt_eval_`, method, par0, x, maxit_l, tol_l, th, wt)
 }
 
-eval_g_ <- function(g, maxit_l, tol_l, th, wt = NULL) {
+eval_g_ <- function(g, maxit_l, tol_l, th, wt) {
     .Call(`_melt_eval_g_`, g, maxit_l, tol_l, th, wt)
 }
 
@@ -29,7 +29,7 @@ ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
 }
 
-glm_ <- function(family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, wt = NULL) {
+glm_ <- function(family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, wt) {
     .Call(`_melt_glm_`, family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, wt)
 }
 
@@ -37,8 +37,8 @@ lht_ <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, th, wt) 
     .Call(`_melt_lht_`, method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, th, wt)
 }
 
-lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, wt = NULL) {
-    .Call(`_melt_lm_`, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, wt)
+lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, w) {
+    .Call(`_melt_lm_`, x, par0, intercept, maxit, maxit_l, tol, tol_l, th, nthreads, w)
 }
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {

@@ -20,23 +20,31 @@ public:
   double nllr{0};             // negative log-likelihood ratio
   int iter{0};                // iterations performed in optimization
   bool conv{false};           // convergence status
-  Eigen::ArrayXd w;           // weights
+  const Eigen::ArrayXd w;           // weights
 
   // constructors
-  EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-     const int maxit_l,
-     const double tol_l,
-     const double th,
-     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
+  // EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
+  //    const int maxit_l,
+  //    const double tol_l,
+  //    const double th,
+  //    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
+  // EL(const std::string method,
+  //    const Eigen::Ref<const Eigen::VectorXd>& par0,
+  //    const Eigen::Ref<const Eigen::MatrixXd>& x,
+  //    const int maxit_l,
+  //    const double tol_l,
+  //    const double th,
+  //    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
+
+
+  // test
   EL(const std::string method,
      const Eigen::Ref<const Eigen::VectorXd>& par0,
      const Eigen::Ref<const Eigen::MatrixXd>& x,
      const int maxit_l,
      const double tol_l,
      const double th,
-     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
-
-  // test
+     const Eigen::Ref<const Eigen::ArrayXd>& wt);
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
      const int maxit_l,
      const double tol_l,
@@ -84,17 +92,17 @@ public:
 
   // constructors
   // minimization
-  MINEL(const std::string method,
-        const Eigen::Ref<const Eigen::VectorXd>& par0,
-        const Eigen::Ref<const Eigen::MatrixXd>& x,
-        const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-        const Eigen::Ref<const Eigen::VectorXd>& rhs,
-        const int maxit,
-        const int maxit_l,
-        const double tol,
-        const double tol_l,
-        const double th,
-        const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
+  // MINEL(const std::string method,
+  //       const Eigen::Ref<const Eigen::VectorXd>& par0,
+  //       const Eigen::Ref<const Eigen::MatrixXd>& x,
+  //       const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+  //       const Eigen::Ref<const Eigen::VectorXd>& rhs,
+  //       const int maxit,
+  //       const int maxit_l,
+  //       const double tol,
+  //       const double tol_l,
+  //       const double th,
+  //       const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
 
   MINEL(const std::string method,
         const Eigen::Ref<const Eigen::VectorXd>& par0,
