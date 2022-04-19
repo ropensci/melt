@@ -9,7 +9,7 @@ el_lm(
   data,
   weights = NULL,
   na.action,
-  control = melt_control(),
+  control = control_el(),
   model = TRUE,
   ...
 )
@@ -34,19 +34,80 @@ contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
 
 \item{control}{A list of control parameters set by
-\code{\link{melt_control}}.}
+\code{\link{control_el}}.}
 
-\item{model}{A logical. If \code{TRUE} the model matrix used for fitting is
+\item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
 returned.}
 
 \item{...}{Additional arguments to be passed to the low level regression
 fitting functions. See ‘Details’.}
 }
 \value{
-A list of class \code{c("el_lm", "el")}.
+A list of class \code{c("el_lm", "el")} with the following
+  components:
+  \item{optim}{A list with the following optimization results:
+    \itemize{
+      \item{\code{method } }{A character for method dispatch in internal
+      functions.}
+      \item{\code{par } }{The solution of the constrained minimization
+      problem.}
+      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
+      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
+      value.}
+      \item{\code{iterations } }{The number of iterations performed.}
+      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
+      convergence of the algorithm.}
+    }
+  }
+  \item{par.tests}{A list with the test results for each parameter:
+    \itemize{
+      \item{\code{statistic } }{A numeric vector of chi-squared statistics.}
+      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
+      convergence of the algorithm.}
+    }
+  }
+  \item{log.prob}{The log probabilities.}
+  \item{loglik}{The log likelihood value.}
+  \item{statistic}{The chi-square statistic.}
+  \item{df}{The degrees of freedom of the statistic.}
+  \item{p.value}{The \eqn{p}-value of the statistic.}
+  \item{par}{The value at which empricial likelihood is evaluated.}
+  \item{npar}{The number of parameters.}
+  \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
+  supplied}
+  \item{data.matrix}{The data matrix used for fitting if \code{model} is
+  \code{TRUE}.}
+  \item{coefficients}{The maximum empirical likelihood estimates of the
+  parameters.}
 }
 \description{
 Fits a linear model with empirical likelihood.
+}
+\details{
+Suppose that we observe \eqn{n} independent random variables
+  \eqn{(X_i, Y_i)} from a common distribution, where \eqn{X_i} is the
+  \eqn{p}-dimensional covariate (including the intercept if any) and
+  \eqn{Y_i} is the response. We consider the following linear regression
+  model:
+  \deqn{Y_i = X_i^\top \beta + \epsilon_i,}
+  where \eqn{\beta = (\beta_0, \dots, \beta_{p-1})} is an unknown
+  \eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
+  independent random variables that satisfy
+  \eqn{\textnormal{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
+  finite conditional variance. Then the least square estimator of \eqn{\beta}
+  solves the following estimating equation:
+  \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \beta)X_i = 0.}
+  \code{\link{el_lm}} first computes the parameter estimates by calling
+  \code{\link[stats]{lm.fit}} since the maximum empirical likelihood
+  estimator is the same as the least square estimator in our model. Next, it
+  performs hypothesis tests based on asymptotic chi-squared distribution of
+  empirical likelihood ratio statistics. Included in the tests are the
+  overall test with
+  \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
+  and the tests for each parameter with
+  \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
+  The test results are returned as \code{optim} and \code{par.tests},
+  respectively.
 }
 \examples{
 fit <- el_lm(mpg ~ wt, mtcars)
@@ -57,5 +118,5 @@ Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\link{melt_control}, \link{lht}
+\link{el_glm}, \link{control_el}, \link{lht}
 }

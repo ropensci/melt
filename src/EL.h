@@ -12,14 +12,15 @@ class EL
 {
 public:
   // members
-  Eigen::VectorXd l;  // Lagrange multiplier
+  const Eigen::VectorXd par;  // parameter value specified
+  Eigen::VectorXd l;          // Lagrange multiplier
   const std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                                       const Eigen::Ref<const Eigen::ArrayXd>&)>
-    mele_fn;          // maximum empirical likelihood estimator
-  double nllr{0};     // negative log-likelihood ratio
-  int iter{0};        // iterations performed in optimization
-  bool conv{false};   // convergence status
-  Eigen::ArrayXd w;   // weights
+    mele_fn;                  // maximum empirical likelihood estimator
+  double nllr{0};             // negative log-likelihood ratio
+  int iter{0};                // iterations performed in optimization
+  bool conv{false};           // convergence status
+  Eigen::ArrayXd w;           // weights
 
   // constructors
   EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -61,7 +62,6 @@ public:
 
 private:
   // members
-  const Eigen::VectorXd par;// parameter value
   const int maxit_l;          // maximum number of iterations
   const double tol_l;         // relative convergence tolerance
   const double th;          // threshold value for negative log-likelihood ratio
@@ -128,7 +128,9 @@ public:
 private:
   // members
   const int maxit;  // maximum number of iterations
+  const int maxit_l;  // maximum number of iterations
   const double tol; // relative convergence tolerance
+  const double tol_l; // relative convergence tolerance
   const double th;  // threshold value for negative log-likelihood ratio
   const int n;      // sample size
   Eigen::ArrayXd w; // weights

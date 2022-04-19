@@ -4,7 +4,7 @@
 \alias{lht}
 \title{Linear hypothesis test}
 \usage{
-lht(object, rhs = NULL, lhs = NULL, control = melt_control())
+lht(object, rhs = NULL, lhs = NULL, control = control_el())
 }
 \arguments{
 \item{object}{A fitted \code{"el"} object.}
@@ -20,38 +20,37 @@ the number of parameters in \code{object}. Defaults to \code{NULL}.
 See ‘Details’.}
 
 \item{control}{A list of control parameters set by
-\code{\link{melt_control}}.}
+\code{\link{control_el}}.}
 }
 \value{
-A list of class \code{"elt"} with the following
-  components:
-  \describe{
+A list of class \code{"elt"} with the following components:
   \item{optim}{A list with the following optimization results:
-    \describe{
-      \item{method}{The type of estimating function.}
-      \item{lambda}{The Lagrange multiplier of dual problem.}
-      \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
-      \item{iterations}{The number of iterations performed.}
-      \item{convergence}{A logical vector. \code{TRUE} indicates
+    \itemize{
+      \item{\code{method } }{A character for method dispatch in internal
+      functions.}
+      \item{\code{par } }{The solution of the constrained minimization
+      problem.}
+      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
+      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
+      value.}
+      \item{\code{iterations } }{The number of iterations performed.}
+      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
       convergence of the algorithm.}
     }
   }
-  \item{npar}{The number of parameters.}
   \item{log.prob}{The log probabilities.}
-  \item{loglik}{The log likelihood value evaluated at the estimated
-  coefficients}
-  \item{coefficients}{The solution of the optimization.}
+  \item{loglik}{The log likelihood value.}
   \item{statistic}{The chi-square statistic.}
   \item{df}{The degrees of freedom of the statistic.}
   \item{p.value}{The \eqn{p}-value of the statistic.}
-}
+  \item{npar}{The number of parameters.}
 }
 \description{
 Tests a linear hypothesis for objects inheriting from class \code{"el"}.
 }
 \details{
 \code{\link{lht}} performs the constrained minimization of
-  \eqn{l(\theta)} introduced in \code{\link{melt_control}}.
+  \eqn{l(\theta)} introduced in \code{\link{control_el}}.
   \code{rhs} and \code{lhs} cannot be both \code{NULL}. For non-\code{NULL}
   \code{lhs}, it is required that \code{lhs} have full row rank
   \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
@@ -82,9 +81,11 @@ lht(fit, lhs = lhs)
 
 # test of no treatment effect
 data("clothianidin")
-lhs2 <- matrix(c(1, -1, 0, 0,
-                 0, 1, -1, 0,
-                 0, 0, 1, -1), byrow = TRUE, nrow = 3L)
+lhs2 <- matrix(c(
+  1, -1, 0, 0,
+  0, 1, -1, 0,
+  0, 0, 1, -1
+), byrow = TRUE, nrow = 3L)
 fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 lht(fit2, lhs = lhs2)
 }
@@ -98,5 +99,5 @@ Qin, Jing, and Jerry Lawless. 1995.
   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 }
 \seealso{
-\link{melt_control}
+\link{control_el}
 }

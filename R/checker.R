@@ -2,53 +2,55 @@ check_weights <- function(weights, nw) {
   if (is.null(weights)) {
     return(numeric(length = 0L))
   }
-  if (!is.numeric(weights))
-    stop(gettextf("%s is not a numeric vector", sQuote("weights")), domain = NA)
+  if (!is.numeric(weights)) {
+    stop("'weights' is not a numeric vector")
+  }
   w <- as.vector(weights, mode = "numeric")
-  if (!all(is.finite(w)))
-    stop(gettextf("%s is not a finite numeric vector", sQuote("weights")),
-         domain = NA)
-  if (any(w < 0))
-    stop(gettextf("negative %s not allowed", sQuote("weights")), domain = NA)
-  if (length(w) != nw)
-    stop(gettextf("length of %s is incompatible with data", sQuote("weights")),
-         domain = NA)
+  if (!all(is.finite(w))) {
+    stop("'weights is not a finite numeric vector")
+  }
+  if (any(w < 0)) {
+    stop("negative 'weights' not allowed")
+  }
+  if (length(w) != nw) {
+    stop("length of 'weights' is incompatible with data")
+  }
   w <- (nw / sum(w)) * w
   w
 }
 
 check_rhs <- function(rhs, p) {
   rhs <- as.vector(rhs, mode = "numeric")
-  if (!is.numeric(rhs) || !all(is.finite(rhs)))
-    stop(gettextf("%s is not a finite numeric vector", sQuote("rhs")),
-         domain = NA)
-  if (length(rhs) != p)
-    stop(paste("length of 'rhs' should be "), p)
+  if (!is.numeric(rhs) || !all(is.finite(rhs))) {
+    stop("'rhs' is not a finite numeric vector")
+  }
+  if (length(rhs) != p) {
+    stop(gettextf("length of 'rhs' should be %d", p, domain = NA))
+  }
   rhs
 }
 
 check_lhs <- function(lhs, p) {
   lhs <- as.matrix(lhs)
-  if (!is.numeric(lhs) || !all(is.finite(lhs)))
-    stop(gettextf("%s is not a finite numeric matrix", sQuote("lhs")),
-         domain = NA)
-  if (ncol(lhs) != p)
-    stop(gettextf("%s and %s have incompatible dimensions", sQuote("object"),
-                  sQuote("lhs")), domain = NA)
+  if (!is.numeric(lhs) || !all(is.finite(lhs))) {
+    stop("'lhs' is not a finite numeric matrix")
+  }
+  if (ncol(lhs) != p) {
+    stop("'object' and 'lhs' have incompatible dimensions")
+  }
   q <- nrow(lhs)
-  if (q == 0L || q > p)
-    stop(gettextf("%s and %s have incompatible dimensions", sQuote("object"),
-                  sQuote("lhs")), domain = NA)
+  if (q == 0L || q > p) {
+    stop("'object' and 'lhs' have incompatible dimensions")
+  }
   if (get_rank_(lhs) != q) {
-    stop(gettextf("%s does not have full row rank", sQuote("lhs")), domain = NA)
+    stop("'lhs' does not have full row rank")
   }
   lhs
 }
 
 check_hypothesis <- function(lhs, rhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
-    stop(gettextf("either %s or %s must be provided", sQuote("rhs"),
-                  sQuote("lhs")), domain = NA)
+    stop("either 'rhs' or 'lhs' must be provided")
   } else if (is.null(lhs)) {
     rhs <- check_rhs(rhs, p)
   } else if (is.null(rhs)) {
@@ -66,20 +68,19 @@ check_family <- function(family) {
   l <- family$link
   switch(f,
     "gaussian" = {
-      if (!any(l == c("identity", "log", "inverse")))
-        stop(gettextf("%s family with %s link not supported by el_glm",
+      if (!any(l == c("identity", "log", "inverse"))) {
+        stop(gettextf("%s family with %s link not supported by 'el_glm'",
                       sQuote(f), sQuote(l)), domain = NA)
-      },
+      }
+    },
     "binomial" = {
-      if (!any(l == c("logit", "probit")))
-        stop(gettextf("%s family with %s link not supported by el_glm",
+      if (!any(l == c("logit", "probit"))) {
+        stop(gettextf("%s family with %s link not supported by 'el_glm'",
                       sQuote(f), sQuote(l)), domain = NA)
-      },
-    stop(gettextf("%s family not supported by el_glm", sQuote(f)),
+      }
+    },
+    stop(gettextf("%s family not supported by 'el_glm'", sQuote(f)),
          domain = NA)
   )
   list(family = f, link = l)
 }
-
-
-

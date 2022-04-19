@@ -28,7 +28,8 @@ A list with class \code{"el_aov"}.
 \examples{
 \dontrun{
 data("clothianidin")
-el_aov(clo ~ trt, clothianidin)}
+el_aov(clo ~ trt, clothianidin)
+}
 }
 \references{
 Owen, Art. 1991. “Empirical Likelihood for Linear Models.”

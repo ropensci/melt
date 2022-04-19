@@ -12,7 +12,7 @@
 #' @param cv A critical value for calibration of empirical likelihood ratio
 #'   statistic. Defaults to \code{qchisq(level, 1L)}.
 #' @param control A list of control parameters set by
-#'   \code{\link{melt_control}}.
+#'   \code{\link{control_el}}.
 #' @param ... Some methods for this generic function require extra arguments.
 #'   None are used in this method.
 #' @importFrom stats qchisq
@@ -26,16 +26,13 @@
 #'   \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-#' @seealso \link{melt_control}, \link{lht}
+#' @seealso \link{control_el}, \link{lht}
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' confint(fit)
 #' @export
 confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
-                       control = melt_control(),
-                       ...) {
-  if (inherits(object, "elt"))
-    stop("method not applicable for 'elt' object")
+                       control = control_el(), ...) {
   cf <- coef(object)
   # no confidence interval for empty model
   if (length(cf) == 0L) {
@@ -52,8 +49,11 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
     if (is.numeric(parm) && all(is.finite(parm))) {
       pnames <- pnames[parm]
       # idx <- match(pnames, names(cf))
-      idx <- if (is.null(names(cf))) match(pnames, idx) else
+      idx <- if (is.null(names(cf))) {
+        match(pnames, idx)
+      } else {
         match(pnames, names(cf))
+      }
     } else if (is.character(parm)) {
       idx <- match(parm, pnames)
       pnames <- parm
@@ -65,8 +65,9 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
   p <- length(idx)
   # check level
   if (!missing(level) &&
-      (length(level) != 1L || !is.finite(level) || level < 0 || level > 1))
+    (length(level) != 1L || !is.finite(level) || level < 0 || level > 1)) {
     stop("'level' must be a single number between 0 and 1")
+  }
   if (isTRUE(all.equal(level, 0))) {
     ci <- matrix(rep(cf[idx], 2L), ncol = 2L)
     colnames(ci) <- c("lower", "upper")
@@ -79,25 +80,33 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
   }
 
   # check control
-  if (!inherits(control, "melt_control") || !is.list(control))
+  if (!inherits(control, "control_el") || !is.list(control)) {
     stop("invalid 'control' supplied")
+  }
   method <- object$optim$method
   maxit <- control$maxit
   maxit_l <- control$maxit_l
   tol <- control$tol
   tol_l <- control$tol_l
   th <- control$th
+  nthreads <- control$nthreads
   w <- object$weights
-  if (is.null(w))
+  if (is.null(w)) {
     w <- numeric(length = 0L)
-  cv <- tryCatch(as.numeric(cv), warning = function(w) NA,
-                 error = function(e) NA)
-  if (any(length(cv) != 1L, is.na(cv), is.infinite(cv)))
+  }
+  cv <- tryCatch(as.numeric(cv),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  if (any(length(cv) != 1L, is.na(cv), is.infinite(cv))) {
     stop("'cv' is not a number")
-  if (cv < .Machine$double.eps)
+  }
+  if (cv < .Machine$double.eps) {
     stop("'cv' is too small")
-  if (!is.null(th) && cv > 2 * th)
+  }
+  if (!is.null(th) && cv > 2 * th) {
     stop("'cv' is too large")
+  }
 
   # compute the confidence interval matrix
   if (isTRUE(all.equal(level, 0))) {
@@ -111,10 +120,10 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
     idx_na <- which(is.na(idx))
     ci <- matrix(NA, nrow = p, ncol = 2L)
     ci[-idx_na, ] <- confint_(method, cf, object$data.matrix, cv, idx[-idx_na],
-                              maxit, tol, th, w)
+                              maxit, tol, th, nthreads, w)
   } else {
     ci <- confint_(method, cf, object$data.matrix, cv, idx, maxit, maxit_l, tol,
-                   tol_l, th, w)
+                   tol_l, th, nthreads, w)
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))
   ci
@@ -136,8 +145,9 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
 #' logLik(fit)
 #' @export
 logLik.el <- function(object, ...) {
-  if (!missing(...))
+  if (!missing(...)) {
     warning("extra arguments are not supported")
+  }
   p <- object$npar
   rhs <- object$coefficients
   out <- lht(object, rhs = rhs)
@@ -153,9 +163,11 @@ print.el <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
   out <- character()
   if (!is.null(x$statistic)) {
-    out <- c(out, paste("Chisq:", format(x$statistic, digits = digits)),
-             paste("df:", x$df),
-             paste("p-value:", format.pval(x$p.value, digits = digits)))
+    out <- c(
+      out, paste("Chisq:", format(x$statistic, digits = digits)),
+      paste("df:", x$df),
+      paste("p-value:", format.pval(x$p.value, digits = digits))
+    )
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
   if (!is.null(x$coefficients)) {
@@ -172,9 +184,11 @@ print.elt <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Linear Hypothesis Test:", x$optim$method, "\n\n")
   out <- character()
   if (!is.null(x$statistic)) {
-    out <- c(out, paste("Chisq:", format(x$statistic, digits = digits)),
-             paste("df:", x$df),
-             paste("p-value:", format.pval(x$p.value, digits = digits)))
+    out <- c(
+      out, paste("Chisq:", format(x$statistic, digits = digits)),
+      paste("df:", x$df),
+      paste("p-value:", format.pval(x$p.value, digits = digits))
+    )
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
   if (!is.null(x$coefficients)) {

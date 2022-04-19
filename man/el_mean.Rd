@@ -2,9 +2,9 @@
 % Please edit documentation in R/el_mean.R
 \name{el_mean}
 \alias{el_mean}
-\title{Empirical likelihood test for mean}
+\title{Empirical likelihood for the mean}
 \usage{
-el_mean(par, x, weights = NULL, control = melt_control(), model = TRUE)
+el_mean(par, x, weights = NULL, control = control_el(), model = TRUE)
 }
 \arguments{
 \item{par}{A numeric vector of parameter values to be tested.}
@@ -17,16 +17,42 @@ fitting process. Defaults to \code{NULL}, corresponding to identical
 weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters set by
-\code{\link{melt_control}}.}
+\code{\link{control_el}}.}
 
-\item{model}{A logical. If \code{TRUE} the model matrix used for fitting is
+\item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
 returned.}
 }
 \value{
-A list of class \code{"el"} as described in \code{\link{el_eval}}.
+A list of class \code{"el"} with the following components:
+  \item{optim}{A list with the following optimization results:
+    \itemize{
+      \item{\code{method } }{A character for method dispatch in internal
+      functions.}
+      \item{\code{par } }{The value at which empirical likelihood is
+      evaluated.}
+      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
+      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
+      value.}
+      \item{\code{iterations } }{The number of iterations performed.}
+      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
+      convergence of the algorithm.}
+    }
+  }
+  \item{log.prob}{The log probabilities.}
+  \item{loglik}{The log likelihood value.}
+  \item{statistic}{The chi-square statistic.}
+  \item{df}{The degrees of freedom of the statistic.}
+  \item{p.value}{The \eqn{p}-value of the statistic.}
+  \item{npar}{The number of parameters.}
+  \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
+  supplied}
+  \item{data.matrix}{The data matrix used for fitting if \code{model} is
+  \code{TRUE}.}
+  \item{coefficients}{The maximum empirical likelihood estimates of the
+  parameters.}
 }
 \description{
-Computes empirical likelihood for mean parameter.
+Computes empirical likelihood for the mean.
 }
 \examples{
 # scalar mean
@@ -39,7 +65,7 @@ par <- c(0, 0)
 x <- matrix(rnorm(100L), ncol = 2L)
 el_mean(par, x)
 
-# weighted EL
+# weighted data
 par <- c(0, 0)
 x <- matrix(rnorm(100), ncol = 2L)
 w <- rep(c(1, 2), each = 25L)
@@ -55,5 +81,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{el_eval}, \link{melt_control}
+\link{control_el}, \link{el_eval}, \link{lht}
 }

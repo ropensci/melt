@@ -8,10 +8,10 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
        const double tol_l,
        const double th,
        const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
-  : l{Eigen::VectorXd::Zero(g.cols())},
+  : par{},
+    l{Eigen::VectorXd::Zero(g.cols())},
     mele_fn{},
     w{},
-    par{},
     maxit_l{maxit_l},
     tol_l{tol_l},
     th{th},
@@ -38,10 +38,10 @@ EL::EL(
   const double tol_l,
   const double th,
   const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
-  : l{Eigen::VectorXd::Zero(par0.size())},
+  : par{par0},
+    l{Eigen::VectorXd::Zero(par0.size())},
     mele_fn{set_mele_fn(method)},
     w{},
-    par{par0},
     maxit_l{maxit_l},
     tol_l{tol_l},
     th{th},
@@ -189,7 +189,9 @@ MINEL::MINEL(const std::string method,
              const double th,
              const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
   : maxit{maxit},
+    maxit_l{maxit_l},
     tol{tol},
+    tol_l{tol_l},
     th{th},
     n{static_cast<int>(x.rows())},
     w{},
@@ -209,7 +211,7 @@ MINEL::MINEL(const std::string method,
   // estimating function
   Eigen::MatrixXd g = g_fn(x, par);
   // lambda
-  l = EL(g, maxit, tol, th, wt).l;
+  l = EL(g, maxit_l, tol_l, th, wt).l;
   // function value (-logLR)
   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, w);
   // function norm
@@ -223,7 +225,7 @@ MINEL::MINEL(const std::string method,
     // update estimating function
     Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
     // update lambda
-    Eigen::VectorXd l_tmp = EL(g_tmp, maxit, tol, th, wt).l;
+    Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
     // update function value
     const double f0 = nllr;
     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, w);
@@ -236,7 +238,7 @@ MINEL::MINEL(const std::string method,
       par_tmp = par - gamma * proj * gr_fn(l, g, x, par, w);
       // propose new lambda
       g_tmp = g_fn(x, par_tmp);
-      l_tmp = EL(g_tmp, maxit, tol, th, wt).l;
+      l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
       if (gamma < 1e-10) {
         nllr = f0;
         break;
@@ -256,6 +258,7 @@ MINEL::MINEL(const std::string method,
       conv = true;
     }
     ++iter;
+    Rcpp::Rcerr << "ddd" << "\n";
   }
 }
 
@@ -273,7 +276,9 @@ MINEL::MINEL(const std::string method,
              const double th,
              const Eigen::Ref<const Eigen::ArrayXd>& wt)
   : maxit{maxit},
+    maxit_l{maxit_l},
     tol{tol},
+    tol_l{tol_l},
     th{th},
     n{static_cast<int>(x.rows())},
     w{wt},
@@ -290,7 +295,7 @@ MINEL::MINEL(const std::string method,
   // estimating function
   Eigen::MatrixXd g = g_fn(x, par);
   // lambda
-  l = EL(g, maxit, tol, th, wt).l;
+  l = EL(g, maxit_l, tol_l, th, wt).l;
   // function value (-logLR)
   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
   // function norm
@@ -304,36 +309,45 @@ MINEL::MINEL(const std::string method,
     // update estimating function
     Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
     // update lambda
-    Eigen::VectorXd l_tmp = EL(g_tmp, maxit, tol, th, wt).l;
+    Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
     // update function value
     const double f0 = nllr;
     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
     // step halving to ensure that the updated function value be
     // strictly less than the current function value
-    while (f0 < nllr) {
+    while (f0 < nllr || nllr < 0) {
       // reduce step size
-      gamma *= 0.5;
+      gamma /= 2;
+      if (gamma < 1e-10) {
+        // nllr = f0;
+        break;
+      }
       // propose new parameter
       par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt);
       // propose new lambda
       g_tmp = g_fn(x, par_tmp);
-      l_tmp = EL(g_tmp, maxit, tol, th, wt).l;
-      if (gamma < 1e-10) {
-        nllr = f0;
-        break;
-      }
+      l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
       // propose new function value
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
     }
 
+    if (nllr >= f0) {
+      nllr = f0;
+      ++iter;
+      break;
+    }
+
     // update
-    const double step = (par - par_tmp).norm();
+    // const double step = (par - par_tmp).norm();
     par = std::move(par_tmp);
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    if ((proj * gr_fn(l, g, x, par, wt)).norm() < tol * norm0 + tol * tol ||
-        step < tol * par.norm() + tol * tol) {
+    // if ((proj * gr_fn(l, g, x, par, wt)).norm() < tol * norm0 + tol * tol ||
+    //     step < tol * par.norm() + tol * tol) {
+    //   conv = true;
+    // }
+    if ((proj * gr_fn(l, g, x, par, wt)).norm() < tol * norm0) {
       conv = true;
     }
     ++iter;

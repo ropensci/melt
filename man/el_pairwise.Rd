@@ -64,8 +64,10 @@ data("clothianidin")
 el_pairwise(clo ~ trt | blk, clothianidin, B = 1000)
 
 # comparisons with control
-el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB",
-            B = 500)
+el_pairwise(clo ~ trt | blk, clothianidin,
+  control = "Naked", method = "NB",
+  B = 500
+)
 
 }
 \references{

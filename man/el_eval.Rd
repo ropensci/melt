@@ -4,7 +4,7 @@
 \alias{el_eval}
 \title{Empirical likelihood with general estimating functions}
 \usage{
-el_eval(g, weights = NULL, control = melt_control())
+el_eval(g, weights = NULL, control = control_el())
 }
 \arguments{
 \item{g}{A numeric matrix, or an object that can be coerced to a numeric
@@ -16,29 +16,28 @@ fitting process. Defaults to \code{NULL}, corresponding to identical
 weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{A list of control parameters set by
-\code{\link{melt_control}}.}
+\code{\link{control_el}}.}
 }
 \value{
 A list with the following components:
-\describe{
   \item{optim}{A list with the following optimization results:
-    \describe{
-      \item{lambda}{The Lagrange multiplier of dual problem.}
-      \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
-      \item{iterations}{The number of iterations performed.}
-      \item{convergence}{A logical vector. \code{TRUE} indicates
+    \itemize{
+      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
+      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
+      value.}
+      \item{\code{iterations } }{The number of iterations performed.}
+      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
       convergence of the algorithm.}
     }
   }
-  \item{npar}{The number of parameters.}
   \item{log.prob}{The log probabilities.}
   \item{loglik}{The log likelihood value.}
   \item{statistic}{The chi-square statistic.}
   \item{df}{The degrees of freedom of the statistic.}
   \item{p.value}{The \eqn{p}-value of the statistic.}
-  \item{weights}{If non-\code{NULL} \code{weights} is supplied, the
-  rescaled weights are returned.}
-}
+  \item{npar}{The number of parameters.}
+  \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
+  supplied}
 }
 \description{
 Computes empirical likelihood with general estimating functions.
@@ -67,5 +66,5 @@ Qin, Jin, and Jerry Lawless. 1994.
   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 }
 \seealso{
-\link{melt_control}
+\link{control_el}
 }

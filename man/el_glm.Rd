@@ -10,7 +10,7 @@ el_glm(
   data,
   weights = NULL,
   na.action,
-  control = melt_control(),
+  control = control_el(),
   model = TRUE,
   start = NULL,
   etastart = NULL,
@@ -42,9 +42,9 @@ contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
 
 \item{control}{A list of control parameters set by
-\code{\link{melt_control}}.}
+\code{\link{control_el}}.}
 
-\item{model}{A logical. If \code{TRUE} the model matrix used for fitting is
+\item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
 returned.}
 
 \item{start}{Starting values for the parameters in the linear predictor.
@@ -60,7 +60,41 @@ Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
 \code{\link[stats]{glm.control}}.}
 }
 \value{
-A list of class \code{c("el_glm", "el_lm", "el")}.
+A list of class \code{c("el_glm", "el_lm", "el")} with the following
+  components:
+  \item{optim}{A list with the following optimization results:
+    \itemize{
+      \item{\code{method } }{A character for method dispatch in internal
+      functions.}
+      \item{\code{par } }{The solution of the constrained minimization
+      problem.}
+      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
+      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
+      value.}
+      \item{\code{iterations } }{The number of iterations performed.}
+      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
+      convergence of the algorithm.}
+    }
+  }
+  \item{par.tests}{A list with the test results for each parameter:
+    \itemize{
+      \item{\code{statistic } }{A numeric vector of chi-squared statistics.}
+      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
+      convergence of the algorithm.}
+    }
+  }
+  \item{log.prob}{The log probabilities.}
+  \item{loglik}{The log likelihood value.}
+  \item{statistic}{The chi-square statistic.}
+  \item{df}{The degrees of freedom of the statistic.}
+  \item{p.value}{The \eqn{p}-value of the statistic.}
+  \item{npar}{The number of parameters.}
+  \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
+  supplied}
+  \item{data.matrix}{The data matrix used for fitting if \code{model} is
+  \code{TRUE}.}
+  \item{coefficients}{The maximum empirical likelihood estimates of the
+  parameters.}
 }
 \description{
 Fits a generalized linear model with empirical likelihood.
@@ -82,5 +116,5 @@ Chen, Song Xi, and Hengjian Cui. 2003.
   Statistica Sinica 13: 69–81.
 }
 \seealso{
-\link{el_lm}, \link{lht}
+\link{el_lm}, \link{control_el}, \link{lht}
 }

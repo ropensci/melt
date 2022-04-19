@@ -9,31 +9,30 @@
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control A list of control parameters set by
-#'   \code{\link{melt_control}}.
+#'   \code{\link{control_el}}.
 #' @details \code{el_eval} evaluates empirical likelihood with a \eqn{n} by
 #'   \eqn{p} numeric matrix argument \code{g}, whose \eqn{i}th row is
 #'   \eqn{g(X_i, \theta)}. If \code{weights} is non \code{NULL}, the weights are
 #'   rescaled to add up to \eqn{n}.
 #' @return A list with the following components:
-#' \describe{
 #'   \item{optim}{A list with the following optimization results:
-#'     \describe{
-#'       \item{lambda}{The Lagrange multiplier of dual problem.}
-#'       \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
-#'       \item{iterations}{The number of iterations performed.}
-#'       \item{convergence}{A logical vector. \code{TRUE} indicates
+#'     \itemize{
+#'       \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
+#'       \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
+#'       value.}
+#'       \item{\code{iterations } }{The number of iterations performed.}
+#'       \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
 #'       convergence of the algorithm.}
 #'     }
 #'   }
-#'   \item{npar}{The number of parameters.}
 #'   \item{log.prob}{The log probabilities.}
 #'   \item{loglik}{The log likelihood value.}
 #'   \item{statistic}{The chi-square statistic.}
 #'   \item{df}{The degrees of freedom of the statistic.}
 #'   \item{p.value}{The \eqn{p}-value of the statistic.}
-#'   \item{weights}{If non-\code{NULL} \code{weights} is supplied, the
-#'   rescaled weights are returned.}
-#' }
+#'   \item{npar}{The number of parameters.}
+#'   \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
+#'   supplied}
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
@@ -41,7 +40,7 @@
 #' @references Qin, Jin, and Jerry Lawless. 1994.
 #'   “Empirical Likelihood and General Estimating Equations.”
 #'   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
-#' @seealso \link{melt_control}
+#' @seealso \link{control_el}
 #' @examples
 #' # test for variance with known mean
 #' x <- rnorm(100L)
@@ -49,24 +48,29 @@
 #' g <- x^2 - sigma^2
 #' el_eval(g)
 #' @export
-el_eval <- function(g, weights = NULL, control = melt_control()) {
+el_eval <- function(g, weights = NULL, control = control_el()) {
   mm <- as.matrix(g)
   n <- nrow(mm)
   p <- ncol(mm)
-  if (!is.numeric(mm) || !all(is.finite(mm)))
+  if (!is.numeric(mm) || !all(is.finite(mm))) {
     stop("'g' must be a finite numeric matrix")
-  if (n < 2L)
-    stop("not enough 'g' observations")
-  if (get_rank_(mm) != p || n <= p) {
-    stop("'g' must have full column rank");
   }
-  if (!inherits(control, "melt_control") || !is.list(control))
+  if (n < 2L) {
+    stop("not enough 'g' observations")
+  }
+  if (get_rank_(mm) != p || n <= p) {
+    stop("'g' must have full column rank")
+  }
+  if (!inherits(control, "control_el") || !is.list(control)) {
     stop("invalid 'control' supplied")
+  }
   w <- check_weights(weights, n)
   out <- eval_g_(mm, control$maxit_l, control$tol_l, control$th, w)
   out$df <- p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
-  if (!is.null(weights))
+  out$npar <- p
+  if (!is.null(weights)) {
     out$weights <- w
+  }
   out
 }

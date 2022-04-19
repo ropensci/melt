@@ -17,7 +17,8 @@
 #' @examples
 #' \dontrun{
 #' data("clothianidin")
-#' el_aov(clo ~ trt, clothianidin)}
+#' el_aov(clo ~ trt, clothianidin)
+#' }
 #' @importFrom stats .getXlevels setNames terms
 #' @export
 el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
@@ -121,9 +122,13 @@ el_aov <- function(formula, data, maxit = 1e04, abstol = 1e-8) {
 #' # test of no treatment effect
 #' data("clothianidin")
 #' el_test(clo ~ trt | blk, clothianidin,
-#'         lhs = matrix(c(1, -1, 0, 0,
-#'                        0, 1, -1, 0,
-#'                        0, 0, 1, -1), byrow = TRUE, nrow = 3))}
+#'   lhs = matrix(c(
+#'     1, -1, 0, 0,
+#'     0, 1, -1, 0,
+#'     0, 0, 1, -1
+#'   ), byrow = TRUE, nrow = 3)
+#' )
+#' }
 #' @importFrom stats reshape
 #' @export
 el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
@@ -137,14 +142,15 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
     length(f$variables) != 3L,
     # no other formula
     typeof(f$variables[[3L]]) != "language" ||
-    length(f$variables[[3L]]) != 3L,
+      length(f$variables[[3L]]) != 3L,
     # "|" operator needed
     f$variables[[3L]][[1L]] != "|",
     # no transformation of variables
     typeof(f$variables[[3L]][[2L]]) != "symbol" ||
-    typeof(f$variables[[3L]][[3L]]) != "symbol",
+      typeof(f$variables[[3L]][[3L]]) != "symbol",
     # distinct variables for treatment and block
-    f$variables[[3L]][[2L]] == f$variables[[3L]][[3L]])
+    f$variables[[3L]][[2L]] == f$variables[[3L]][[3L]]
+  )
   ) {
     stop("specify formula as 'response ~ treatment | block'")
   }
@@ -179,10 +185,11 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
   c <- unclass(table(mf[[3L]], mf[[2L]]))
   # model matrix
   x <- reshape(mf[order(mf[[2L]]), ],
-               idvar = names(mf)[3L],
-               timevar = names(mf)[2L],
-               v.names = names(mf)[1L],
-               direction = "wide")
+    idvar = names(mf)[3L],
+    timevar = names(mf)[2L],
+    v.names = names(mf)[1L],
+    direction = "wide"
+  )
   x <- x[order(x[[names(mf)[3L]]]), ]
   # replace NA with 0
   x[is.na(x)] <- 0
@@ -203,7 +210,8 @@ el_test <- function(formula, data, lhs, rhs = NULL, maxit = 1e04,
 
   ## test hypothesis
   out <- ELtest(gbd$model_matrix, gbd$incidence_matrix, lhs, rhs,
-                threshold = nrow(lhs) * 500, maxit, abstol)
+    threshold = nrow(lhs) * 500, maxit, abstol
+  )
   out$trt <- gbd$trt
   out$model.matrix <- gbd$model_matrix
   out$incidence.matrix <- gbd$incidence_matrix

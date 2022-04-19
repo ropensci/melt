@@ -46,7 +46,7 @@ Rcpp::List lm_(
   } else {
     par = Eigen::VectorXd::Zero(p);
     const double test_th = th_nloglr(p, th);
-    const EL el("lm", par0, x, maxit_l, tol_l, test_th, wt);
+    const EL el("lm", par, x, maxit_l, tol_l, test_th, wt);
     l = el.l;
     nllr = el.nllr;
     iter = el.iter;

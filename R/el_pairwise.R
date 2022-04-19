@@ -34,8 +34,10 @@
 #' el_pairwise(clo ~ trt | blk, clothianidin, B = 1000)
 #'
 #' # comparisons with control
-#' el_pairwise(clo ~ trt | blk, clothianidin, control = "Naked", method = "NB",
-#'             B = 500)
+#' el_pairwise(clo ~ trt | blk, clothianidin,
+#'   control = "Naked", method = "NB",
+#'   B = 500
+#' )
 #'
 #' @importFrom stats terms
 #' @export
@@ -53,14 +55,15 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
     length(f$variables) != 3,
     # no other formula
     typeof(f$variables[[3]]) != "language" ||
-    length(f$variables[[3]]) != 3,
+      length(f$variables[[3]]) != 3,
     # "|" operator needed
     f$variables[[3]][[1]] != "|",
     # no transformation of variables
     typeof(f$variables[[3]][[2]]) != "symbol" ||
-    typeof(f$variables[[3]][[3]]) != "symbol",
+      typeof(f$variables[[3]][[3]]) != "symbol",
     # distinct variables for treatment and block
-    f$variables[[3]][[2]] == f$variables[[3]][[3]])
+    f$variables[[3]][[2]] == f$variables[[3]][[3]]
+  )
   ) {
     stop("specify formula as 'response ~ treatment | block'.")
   }
@@ -95,10 +98,11 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
   c <- unclass(table(mf[[3L]], mf[[2L]]))
   # model matrix
   x <- reshape(mf[order(mf[[2L]]), ],
-               idvar = names(mf)[3L],
-               timevar = names(mf)[2L],
-               v.names = names(mf)[1L],
-               direction = "wide")
+    idvar = names(mf)[3L],
+    timevar = names(mf)[2L],
+    v.names = names(mf)[1L],
+    direction = "wide"
+  )
   x <- x[order(x[[names(mf)[3L]]]), ]
   # replace NA with 0
   x[is.na(x)] <- 0
@@ -122,9 +126,10 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
 
   ## pairwise comparisons
   out <- pairwise(gbd$model_matrix, gbd$incidence_matrix,
-                  control = ctrl, k, alpha, interval = TRUE,
-                  method, B, nthread, progress,
-                  threshold = 50, maxit, abstol)
+    control = ctrl, k, alpha, interval = TRUE,
+    method, B, nthread, progress,
+    threshold = 50, maxit, abstol
+  )
   out$trt <- gbd$trt
   out$control <- control
   out$model.matrix <- gbd$model_matrix
@@ -162,17 +167,22 @@ print.pairwise <- function(x, ...) {
       rname[i] <- paste(diff[i], "-", x$control)
     }
   }
-  out <- data.frame(row.names = rname, estimate  = x$estimate,
-                    statistic = x$statistic, lwr.ci = x$lower,
-                    upr.ci = x$upper,
-                    p.adj = round(x$p.adj, 4))
-  printCoefmat(out, digits = min(4L, getOption("digits")), cs.ind = c(1, 3, 4),
-               tst.ind = 2L, dig.tst = min(3L, getOption("digits")),
-               P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03)
+  out <- data.frame(
+    row.names = rname, estimate = x$estimate,
+    statistic = x$statistic, lwr.ci = x$lower,
+    upr.ci = x$upper,
+    p.adj = round(x$p.adj, 4)
+  )
+  printCoefmat(out,
+    digits = min(4L, getOption("digits")), cs.ind = c(1, 3, 4),
+    tst.ind = 2L, dig.tst = min(3L, getOption("digits")),
+    P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
+  )
   cat("\n")
   cat(paste(c("k", "level", "method", "cutoff"),
-            c(x$k, x$level, x$method, round(x$cutoff, 4)),
-            collapse = ", ", sep = ": "))
+    c(x$k, x$level, x$method, round(x$cutoff, 4)),
+    collapse = ", ", sep = ": "
+  ))
   cat("\n\n")
 }
 
@@ -202,5 +212,3 @@ print.pairwise <- function(x, ...) {
 #     row_names
 #   }
 # }
-
-

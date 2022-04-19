@@ -9,7 +9,7 @@
   parm,
   level = 0.95,
   cv = qchisq(level, 1L),
-  control = melt_control(),
+  control = control_el(),
   ...
 )
 }
@@ -26,7 +26,7 @@ parameters are considered.}
 statistic. Defaults to \code{qchisq(level, 1L)}.}
 
 \item{control}{A list of control parameters set by
-\code{\link{melt_control}}.}
+\code{\link{control_el}}.}
 
 \item{...}{Some methods for this generic function require extra arguments.
 None are used in this method.}
@@ -56,5 +56,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{melt_control}, \link{lht}
+\link{control_el}, \link{lht}
 }

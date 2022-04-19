@@ -12,6 +12,7 @@ Eigen::MatrixXd confint_(
     const double tol,
     const double tol_l,
     const Rcpp::Nullable<double> th,
+    const int nthreads,
     const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt =
       R_NilValue)
 {
@@ -28,7 +29,7 @@ Eigen::MatrixXd confint_(
   if (wt.isNotNull()) {
     w = Rcpp::as<Eigen::ArrayXd>(wt);
   }
-  // #pragma omp parallel for
+  // #pragma omp parallel for num_threads(nthreads)
   for (int j : idx) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(j - 1) = 1.0;

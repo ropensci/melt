@@ -3,9 +3,9 @@
 #' Computes empirical likelihood displacement for model diagnostics and outlier
 #'   detection.
 #'
-#' @param object An object of class \code{`el`}.
+#' @param object An object of class \code{"el"}.
 #' @param control A list of control parameters set by
-#'   \code{\link{melt_control}}.
+#'   \code{\link{control_el}}.
 #' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
 #'   on the full sample with \eqn{n} observations. The maximum empirical
 #'   likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
@@ -26,25 +26,31 @@
 #'   Measures for Empirical Likelihood of General Estimating Equations.”
 #'   Biometrika 95 (2): 489–507.
 #'   \doi{10.1093/biomet/asm094}.
-#' @seealso \link{el_eval}, \link{melt_control}, \link{plot.eld}
+#' @seealso \link{el_eval}, \link{control_el}, \link{plot.eld}
 #' @examples
 #' x <- rnorm(10L)
 #' y <- 10
 #' fit <- el_mean(0, c(x, y))
 #' eld(fit)
 #' @export
-eld <- function(object, control = melt_control()) {
-  if (!inherits(object, "el"))
+eld <- function(object, control = control_el()) {
+  if (!inherits(object, "el")) {
     stop("invalid 'object' supplied")
-  if (is.null(object$data.matrix))
+  }
+  if (is.null(object$data.matrix)) {
     stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
-  if (!inherits(control, "melt_control") || !is.list(control))
+  }
+  if (!inherits(control, "control_el") || !is.list(control)) {
     stop("invalid 'control' supplied")
+  }
   w <- object$weights
-  if (is.null(w))
+  if (is.null(w)) {
     w <- numeric(length = 0L)
-  out <- eld_(object$optim$method, object$coefficients, object$data.matrix,
-              control$maxit_l, control$tol_l, control$th, control$nthreads, w)
+  }
+  out <- eld_(
+    object$optim$method, object$coefficients, object$data.matrix,
+    control$maxit_l, control$tol_l, control$th, control$nthreads, w
+  )
   setNames(out, "eld")
   class(out) <- "eld"
   out
@@ -52,10 +58,10 @@ eld <- function(object, control = melt_control()) {
 
 #' Plot for eld objects
 #'
-#' Takes a fitted \code{`eld`} object and plots the empirical likelihood
+#' Takes a fitted \code{"eld"} object and plots the empirical likelihood
 #'   displacement values versus the observation index.
 #'
-#' @param x An object of class \code{`eld`}.
+#' @param x An object of class \code{"eld"}.
 #' @param ... Additional arguments to be passed to \code{\link[base]{plot}}.
 #' @param main A title for the plot.
 #' @param ylab A label for the y-axis.

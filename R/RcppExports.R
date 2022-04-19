@@ -9,8 +9,8 @@ get_rank_ <- function(x) {
     .Call(`_melt_get_rank_`, x)
 }
 
-confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, wt = NULL) {
-    .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, wt)
+confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, nthreads, wt = NULL) {
+    .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, th, nthreads, wt)
 }
 
 eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt = NULL) {

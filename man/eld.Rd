@@ -4,13 +4,13 @@
 \alias{eld}
 \title{Empirical likelihood displacement}
 \usage{
-eld(object, control = melt_control())
+eld(object, control = control_el())
 }
 \arguments{
-\item{object}{An object of class \code{`el`}.}
+\item{object}{An object of class \code{"el"}.}
 
 \item{control}{A list of control parameters set by
-\code{\link{melt_control}}.}
+\code{\link{control_el}}.}
 }
 \value{
 A numeric vector of class \code{"el"}.
@@ -50,5 +50,5 @@ Zhu, H., J. G. Ibrahim, N. Tang, and H. Zhang. 2008. “Diagnostic
   \doi{10.1093/biomet/asm094}.
 }
 \seealso{
-\link{el_eval}, \link{melt_control}, \link{plot.eld}
+\link{el_eval}, \link{control_el}, \link{plot.eld}
 }

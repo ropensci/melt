@@ -12,9 +12,9 @@
 #'   the number of parameters in \code{object}. Defaults to \code{NULL}.
 #'   See ‘Details’.
 #' @param control A list of control parameters set by
-#'   \code{\link{melt_control}}.
+#'   \code{\link{control_el}}.
 #' @details \code{\link{lht}} performs the constrained minimization of
-#'   \eqn{l(\theta)} introduced in \code{\link{melt_control}}.
+#'   \eqn{l(\theta)} introduced in \code{\link{control_el}}.
 #'   \code{rhs} and \code{lhs} cannot be both \code{NULL}. For non-\code{NULL}
 #'   \code{lhs}, it is required that \code{lhs} have full row rank
 #'   \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
@@ -32,35 +32,34 @@
 #'   and the problem reduces to evaluating at \eqn{r} as
 #'   \deqn{l(r).}
 #'   }
-#' @return A list of class \code{"elt"} with the following
-#'   components:
-#'   \describe{
+#' @return A list of class \code{"elt"} with the following components:
 #'   \item{optim}{A list with the following optimization results:
-#'     \describe{
-#'       \item{method}{The type of estimating function.}
-#'       \item{lambda}{The Lagrange multiplier of dual problem.}
-#'       \item{logLR}{The (weighted) empirical log-likelihood ratio value.}
-#'       \item{iterations}{The number of iterations performed.}
-#'       \item{convergence}{A logical vector. \code{TRUE} indicates
+#'     \itemize{
+#'       \item{\code{method } }{A character for method dispatch in internal
+#'       functions.}
+#'       \item{\code{par } }{The solution of the constrained minimization
+#'       problem.}
+#'       \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
+#'       \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
+#'       value.}
+#'       \item{\code{iterations } }{The number of iterations performed.}
+#'       \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
 #'       convergence of the algorithm.}
 #'     }
 #'   }
-#'   \item{npar}{The number of parameters.}
 #'   \item{log.prob}{The log probabilities.}
-#'   \item{loglik}{The log likelihood value evaluated at the estimated
-#'   coefficients}
-#'   \item{coefficients}{The solution of the optimization.}
+#'   \item{loglik}{The log likelihood value.}
 #'   \item{statistic}{The chi-square statistic.}
 #'   \item{df}{The degrees of freedom of the statistic.}
 #'   \item{p.value}{The \eqn{p}-value of the statistic.}
-#' }
+#'   \item{npar}{The number of parameters.}
 #' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
 #' "Empirical Likelihood for the Analysis of Experimental Designs,"
 #' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #' @references Qin, Jing, and Jerry Lawless. 1995.
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
 #'   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
-#' @seealso \link{melt_control}
+#' @seealso \link{control_el}
 #' @examples
 #' n <- 100L
 #' x1 <- rnorm(n)
@@ -73,20 +72,25 @@
 #'
 #' # test of no treatment effect
 #' data("clothianidin")
-#' lhs2 <- matrix(c(1, -1, 0, 0,
-#'                  0, 1, -1, 0,
-#'                  0, 0, 1, -1), byrow = TRUE, nrow = 3L)
+#' lhs2 <- matrix(c(
+#'   1, -1, 0, 0,
+#'   0, 1, -1, 0,
+#'   0, 0, 1, -1
+#' ), byrow = TRUE, nrow = 3L)
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 #' lht(fit2, lhs = lhs2)
 #' @export
-lht <- function(object, rhs = NULL, lhs = NULL, control = melt_control()) {
-  if (!inherits(object, "el"))
+lht <- function(object, rhs = NULL, lhs = NULL, control = control_el()) {
+  if (!inherits(object, "el")) {
     stop("invalid 'object' supplied")
-  if (is.null(object$data.matrix))
+  }
+  if (is.null(object$data.matrix)) {
     stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
+  }
   h <- check_hypothesis(lhs, rhs, object$npar)
-  if (!inherits(control, "melt_control") || !is.list(control))
+  if (!inherits(control, "control_el") || !is.list(control)) {
     stop("invalid 'control' supplied")
+  }
   method <- object$optim$method
   maxit <- control$maxit
   maxit_l <- control$maxit_l
@@ -94,22 +98,23 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = melt_control()) {
   tol_l <- control$tol_l
   th <- control$th
   w <- object$weights
-  if (is.null(w))
+  if (is.null(w)) {
     w <- numeric(length = 0L)
+  }
   if (is.null(lhs)) {
     out <- eval_(method, h$r, object$data.matrix, maxit_l, tol_l, th, w)
     out$df <- length(h$r)
     out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
-    out$par <- h$r
     out$npar <- length(h$r)
-    out$coefficients <- object$coefficients
+    # out$coefficients <- object$coefficients
     class(out) <- "elt"
   } else {
-    out <- lht_(method, object$coefficients, object$data.matrix, h$l, h$r,
-                maxit, maxit_l, tol, tol_l, th, w)
+    out <- lht_(
+      method, object$coefficients, object$data.matrix, h$l, h$r,
+      maxit, maxit_l, tol, tol_l, th, w
+    )
     out$df <- nrow(h$l)
     out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
-    # out$par <- h$r
     out$npar <- ncol(h$l)
     class(out) <- "elt"
   }

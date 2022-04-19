@@ -13,7 +13,7 @@
 )
 }
 \arguments{
-\item{x}{An object of class \code{`eld`}.}
+\item{x}{An object of class \code{"eld"}.}
 
 \item{...}{Additional arguments to be passed to \code{\link[base]{plot}}.}
 
@@ -24,7 +24,7 @@
 \item{pch}{A vector of plotting characters or symbols to use.}
 }
 \description{
-Takes a fitted \code{`eld`} object and plots the empirical likelihood
+Takes a fitted \code{"eld"} object and plots the empirical likelihood
   displacement values versus the observation index.
 }
 \examples{
