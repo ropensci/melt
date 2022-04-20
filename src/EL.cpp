@@ -77,7 +77,7 @@ EL::EL(
     tol_l{tol_l},
     th{th},
     n{static_cast<int>(x.rows())},
-    g_fn{set_g_fn(method)}
+    g_fn{EL::set_g_fn(method)}
 {
   set_el(g_fn(x, par), wt);
 }
@@ -116,14 +116,14 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
   std::map<std::string, std::function<Eigen::VectorXd(
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::ArrayXd>&)>>
-        g_map{{{"mean", mele_mean},
+        mele_map{{{"mean", mele_mean},
                {"lm", mele_lm},
                {"gaussian_identity", mele_lm},
                {"gaussian_log", mele_lm},
                {"gaussian_inverse", mele_lm},
                {"binomial_logit", mele_lm},
                {"binomial_probit", mele_lm}}};
-  return g_map[method];
+  return mele_map[method];
 }
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
@@ -312,8 +312,8 @@ MINEL::MINEL(const std::string method,
     th{th},
     n{static_cast<int>(x.rows())},
     weighted{wt.size() != 0},
-    g_fn{set_g_fn(method)},
-    gr_fn{set_gr_fn(method)}
+    g_fn{MINEL::set_g_fn(method)},
+    gr_fn{MINEL::set_gr_fn(method)}
 {
   /// initialization ///
   // orthogonal projection matrix
