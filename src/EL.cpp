@@ -369,16 +369,17 @@ MINEL::MINEL(const std::string method,
     }
 
     // update
-    // const double step = (par - par_tmp).norm();
+    const double step = (par - par_tmp).norm();
     par = std::move(par_tmp);
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    // if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol * norm0 + tol * tol ||
-    //     step < tol * par.norm() + tol * tol) {
+    // if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() <
+    //   tol * norm0 + tol * tol || step < tol * par.norm() + tol * tol) {
     //   conv = true;
     // }
-    if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol) {
+    if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol * norm0 ||
+        step < tol * par.norm() + tol * tol) {
       conv = true;
     }
     ++iter;
@@ -487,7 +488,7 @@ PSEUDO_LOG::PSEUDO_LOG(const Eigen::Ref<const Eigen::ArrayXd>& x,
   sqrt_neg_d2plog.resize(x.size());
 
   if (w.size() == 0) {
-    for (unsigned int i = 0; i < x.size(); ++i) {
+    for (int i = 0; i < x.size(); ++i) {
       if (n * x[i] < 1.0) {
         dplog[i] = a2 + 2.0 * a3 * x[i];
         sqrt_neg_d2plog[i] = a2 / 2.0;
@@ -499,7 +500,7 @@ PSEUDO_LOG::PSEUDO_LOG(const Eigen::Ref<const Eigen::ArrayXd>& x,
       }
     }
   } else {
-    for (unsigned int i = 0; i < x.size(); ++i) {
+    for (int i = 0; i < x.size(); ++i) {
       if (n * x[i] < w[i]) {
         dplog[i] = w[i] * (2.0 * n / w[i] - n * n * x[i] / (w[i] * w[i]));
         sqrt_neg_d2plog[i] = n / sqrt(w[i]);
@@ -519,7 +520,7 @@ Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x) {
   const double a1 = -std::log(n) - 1.5;
   const double a2 = 2.0 * n;
   const double a3 = -0.5 * n * n;
-  for (unsigned int i = 0; i < x.size(); ++i) {
+  for (int i = 0; i < x.size(); ++i) {
     if (n * x[i] < 1.0) {
       x[i] = a1 + a2 * x[i] + a3 * x[i] * x[i];
     } else {
@@ -536,7 +537,7 @@ Eigen::ArrayXd PSEUDO_LOG::plog(Eigen::VectorXd&& x,
   const double a2 = 2.0 * n;
   const double a3 = -0.5 * n * n;
   Eigen::ArrayXd out(x.size());
-  for (unsigned int i = 0; i < x.size(); ++i) {
+  for (int i = 0; i < x.size(); ++i) {
     if (n * x[i] < w[i]) {
       out[i] = (log(w[i] / n) - 1.5 + 2.0 * n *  x[i] / w[i] -
         0.5 * (n * n * x[i] * x[i]) / (w[i] * w[i]));
@@ -555,11 +556,11 @@ double PSEUDO_LOG::sum(const Eigen::Ref<const Eigen::VectorXd>& x,
   const double a3 = -0.5 * n * n;
   double out = 0;
   if (w.size() == 0) {
-    for (unsigned int i = 0; i < x.size(); ++i) {
+    for (int i = 0; i < x.size(); ++i) {
       out += n * x[i] < 1.0 ? a1 + a2 * x[i] + a3 * x[i] * x[i] : log(x[i]);
     }
   } else{
-    for (unsigned int i = 0; i < x.size(); ++i) {
+    for (int i = 0; i < x.size(); ++i) {
       out += n * x[i] < w[i] ?
       w[i] * (log(w[i] / n) - 1.5 + 2.0 * n *  x[i] / w[i] -
       0.5 * (n * n * x[i] * x[i]) / (w[i] * w[i])) :

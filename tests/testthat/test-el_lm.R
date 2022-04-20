@@ -77,7 +77,7 @@ test_that("empty model", {
 
 test_that("same results with parallel computing", {
   skip_on_os("windows", arch = "i386")
-  skip_on_ci()
+  # skip_on_ci()
   n <- 500
   p <- 15
   b <- rnorm(p)
@@ -88,4 +88,12 @@ test_that("same results with parallel computing", {
   fit2 <- el_lm(y ~ ., df, control = control_el(th = 1e+10, nthreads = 1))
   expect_equal(fit$optim, fit2$optim)
   expect_equal(fit$par.tests, fit2$par.tests)
+
+  w <- 1 + runif(n, min = -0.5, max = 0.5)
+  wfit <- el_lm(y ~ ., df, weights = w,
+               control = control_el(th = 1e+10, nthreads = 1))
+  wfit2 <- el_lm(y ~ ., df, weights = w,
+                control = control_el(th = 1e+10, nthreads = 1))
+  expect_equal(wfit$optim, wfit2$optim)
+  expect_equal(wfit$par.tests, wfit2$par.tests)
 })

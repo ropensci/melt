@@ -20,7 +20,7 @@ Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
 Eigen::ArrayXd probit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
 {
   Eigen::ArrayXd out(x.size());
-  for (unsigned int i = 0; i < x.size(); ++i) {
+  for (int i = 0; i < x.size(); ++i) {
     out[i] = 0.5 * std::erfc(-x[i] * M_SQRT1_2);
   }
   return out;
