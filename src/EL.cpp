@@ -1,5 +1,25 @@
 #include "EL.h"
 
+Eigen::VectorXd gr_nloglr_lm(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
+{
+  // const int n = g.rows();
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+  if (weighted) {
+    const Eigen::MatrixXd xx = x.array().colwise() * (w / denominator);
+    return -(x.transpose() * xx) * l;
+  } else {
+    const Eigen::MatrixXd xx = x.array().colwise() / denominator;
+    return -(x.transpose() * xx) * l;
+  }
+}
+
 /* EL class (evaluation)
  * Last updated: 04/07/22
  */
@@ -117,12 +137,12 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::ArrayXd>&)>>
         mele_map{{{"mean", mele_mean},
-               {"lm", mele_lm},
-               {"gaussian_identity", mele_lm},
-               {"gaussian_log", mele_lm},
-               {"gaussian_inverse", mele_lm},
-               {"binomial_logit", mele_lm},
-               {"binomial_probit", mele_lm}}};
+                  {"lm", mele_lm},
+                  {"gaussian_identity", mele_lm},
+                  {"gaussian_log", mele_lm},
+                  {"gaussian_inverse", mele_lm},
+                  {"binomial_logit", mele_lm},
+                  {"binomial_probit", mele_lm}}};
   return mele_map[method];
 }
 
@@ -325,8 +345,7 @@ MINEL::MINEL(const std::string method,
   // estimating function
   Eigen::MatrixXd g = g_fn(x, par);
   // lambda
-  // l = EL(g, maxit_l, tol_l, th, wt).l;
-  l = EL(method, par, x, maxit_l, tol_l, th, wt).l;
+  l = EL(g, maxit_l, tol_l, th, wt).l;
   // function value (-logLR)
   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
   // function norm
@@ -341,8 +360,7 @@ MINEL::MINEL(const std::string method,
     // update estimating function
     Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
     // update lambda
-    // Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
-    Eigen::VectorXd l_tmp = EL(method, par_tmp, x, maxit_l, tol_l, th, wt).l;
+    Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
     // update function value
     const double f0 = nllr;
     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
@@ -359,8 +377,7 @@ MINEL::MINEL(const std::string method,
       par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
       // propose new lambda
       g_tmp = g_fn(x, par_tmp);
-      // l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
-      l_tmp = EL(method, par_tmp, x, maxit_l, tol_l, th, wt).l;
+      l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
       // propose new function value
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
     }
@@ -381,7 +398,7 @@ MINEL::MINEL(const std::string method,
     //   tol * norm0 + tol * tol || step < tol * par.norm() + tol * tol) {
     //   conv = true;
     // }
-    if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol * norm0 ||
+    if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol ||
         step < tol * par.norm() + tol * tol) {
       conv = true;
     }

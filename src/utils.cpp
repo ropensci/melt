@@ -85,32 +85,32 @@ Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
   return x.rightCols(x.cols() - 1).array().colwise() *
     (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
 }
-Eigen::VectorXd gr_nloglr_lm(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
-{
-  // const int n = g.rows();
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
-  // if (w.size() == 0) {
-  //   return
-  //   -(x.transpose() * (x.array().colwise() / denominator).matrix()) * l / n;
-  // } else {
-  //   return -(x.transpose() * (x.array().colwise() *
-  //            (w / denominator)).matrix()) * l / n;
-  // }
-  if (weighted) {
-    const Eigen::MatrixXd xx = x.array().colwise() * (w / denominator);
-    return -(x.transpose() * xx) * l;
-  } else {
-    const Eigen::MatrixXd xx = x.array().colwise() / denominator;
-    return -(x.transpose() * xx) * l;
-  }
-}
+// Eigen::VectorXd gr_nloglr_lm(
+//     const Eigen::Ref<const Eigen::VectorXd>& l,
+//     const Eigen::Ref<const Eigen::MatrixXd>& g,
+//     const Eigen::Ref<const Eigen::MatrixXd>& data,
+//     const Eigen::Ref<const Eigen::VectorXd>& par,
+//     const Eigen::Ref<const Eigen::ArrayXd>& w,
+//     const bool weighted)
+// {
+//   // const int n = g.rows();
+//   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+//   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+//   // if (w.size() == 0) {
+//   //   return
+//   //   -(x.transpose() * (x.array().colwise() / denominator).matrix()) * l / n;
+//   // } else {
+//   //   return -(x.transpose() * (x.array().colwise() *
+//   //            (w / denominator)).matrix()) * l / n;
+//   // }
+//   if (weighted) {
+//     const Eigen::MatrixXd xx = x.array().colwise() * (w / denominator);
+//     return -(x.transpose() * xx) * l;
+//   } else {
+//     const Eigen::MatrixXd xx = x.array().colwise() / denominator;
+//     return -(x.transpose() * xx) * l;
+//   }
+// }
 
 Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
                             const Eigen::Ref<const Eigen::VectorXd>& par)

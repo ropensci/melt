@@ -178,4 +178,12 @@ public:
   static double sum(const Eigen::Ref<const Eigen::VectorXd>& x,
                     const Eigen::Ref<const Eigen::ArrayXd>& w);
 };
+
+Eigen::VectorXd gr_nloglr_lm(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted);
 #endif
