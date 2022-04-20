@@ -325,7 +325,8 @@ MINEL::MINEL(const std::string method,
   // estimating function
   Eigen::MatrixXd g = g_fn(x, par);
   // lambda
-  l = EL(g, maxit_l, tol_l, th, wt).l;
+  // l = EL(g, maxit_l, tol_l, th, wt).l;
+  l = EL(method, par, x, maxit_l, tol_l, th, wt).l;
   // function value (-logLR)
   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
   // function norm
@@ -340,7 +341,8 @@ MINEL::MINEL(const std::string method,
     // update estimating function
     Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
     // update lambda
-    Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
+    // Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
+    Eigen::VectorXd l_tmp = EL(method, par_tmp, x, maxit_l, tol_l, th, wt).l;
     // update function value
     const double f0 = nllr;
     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
@@ -357,7 +359,8 @@ MINEL::MINEL(const std::string method,
       par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
       // propose new lambda
       g_tmp = g_fn(x, par_tmp);
-      l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
+      // l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
+      l_tmp = EL(method, par_tmp, x, maxit_l, tol_l, th, wt).l;
       // propose new function value
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
     }
