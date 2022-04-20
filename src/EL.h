@@ -179,6 +179,9 @@ public:
                     const Eigen::Ref<const Eigen::ArrayXd>& w);
 };
 
+// lm
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                     const Eigen::Ref<const Eigen::VectorXd>& par);
 Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -208,6 +211,7 @@ Eigen::VectorXd gr_nloglr_bin_probit(
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted);
+
 
 // Poisson family
 Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& x,

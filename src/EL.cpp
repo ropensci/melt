@@ -1,5 +1,15 @@
 #include "EL.h"
 
+// lm
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                     const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  // const Eigen::VectorXd y = data.col(0);
+  // const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  // return x.array().colwise() * (y - x * beta).array();
+  return x.rightCols(x.cols() - 1).array().colwise() *
+    (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
+}
 Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
@@ -8,7 +18,6 @@ Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted)
 {
-  // const int n = g.rows();
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
   if (weighted) {
@@ -21,12 +30,13 @@ Eigen::VectorXd gr_nloglr_lm(
 }
 
 
+// Binomial family
 Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
                             const Eigen::Ref<const Eigen::VectorXd>& par)
 {
   const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  return x.array().colwise() * (y - logit_linkinv(x * par));
+  const Eigen::MatrixXd xmat = data.rightCols(data.cols() - 1);
+  return xmat.array().colwise() * (y - logit_linkinv(xmat * par));
 }
 Eigen::VectorXd gr_nloglr_bin_logit(
     const Eigen::Ref<const Eigen::VectorXd>& l,
@@ -78,15 +88,6 @@ Eigen::VectorXd gr_nloglr_bin_probit(
   const Eigen::ArrayXd numerator =
     -exp(-(x * par).array().square() * 0.5) * M_SQRT1_2 * M_2_SQRTPI * 0.5;
   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
-  // if (w.size() == 0) {
-  //   return -(x.transpose() *
-  //            (x.array().colwise() * (numerator / denominator)).matrix()) *
-  //            l / n;
-  // } else {
-  //   return -(x.transpose() *
-  //            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
-  //            l / n;
-  // }
   if (weighted) {
     const Eigen::MatrixXd cx = x.array().colwise() *
       (w * numerator / denominator);
@@ -116,8 +117,6 @@ Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   // const Eigen::ArrayXd numerator = log_linkinv(xmat * par);
   const Eigen::ArrayXd numerator = exp((xmat * par).array());
-  // Rcpp::Rcout << g.rows() << "\n";
-  // Rcpp::Rcout << g.cols() << "\n";
 
   const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + (g * l);
   const Eigen::ArrayXd c = numerator / denominator;

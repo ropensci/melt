@@ -56,7 +56,6 @@ Rcpp::List glm_(
   // parameter tests
   Rcpp::NumericVector chisq_val(p);
   Rcpp::LogicalVector par_conv(p);
-  // Eigen::VectorXd par_conv(p);
   const double test_th = th_nloglr(1, th);
   // default(none) shared(p, maxit) schedule(auto)
   #pragma omp parallel for num_threads(nthreads)
