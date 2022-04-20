@@ -79,6 +79,12 @@ check_family <- function(family) {
                       sQuote(f), sQuote(l)), domain = NA)
       }
     },
+    "poisson" = {
+      if (!any(l == c("log"))) {
+        stop(gettextf("%s family with %s link not supported by 'el_glm'",
+                      sQuote(f), sQuote(l)), domain = NA)
+      }
+    },
     stop(gettextf("%s family not supported by 'el_glm'", sQuote(f)),
          domain = NA)
   )

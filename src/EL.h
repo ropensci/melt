@@ -186,4 +186,36 @@ Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted);
+
+
+// Binomial family
+Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                            const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::VectorXd gr_nloglr_bin_logit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted);
+
+Eigen::MatrixXd g_bin_probit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                             const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::VectorXd gr_nloglr_bin_probit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted);
+
+// Poisson family
+Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                          const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
+                                  const Eigen::Ref<const Eigen::MatrixXd>& g,
+                                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                                  const Eigen::Ref<const Eigen::VectorXd>& par,
+                                  const Eigen::Ref<const Eigen::ArrayXd>& w,
+                                  const bool weighted);
 #endif

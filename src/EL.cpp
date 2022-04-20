@@ -20,6 +20,120 @@ Eigen::VectorXd gr_nloglr_lm(
   }
 }
 
+
+Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                            const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  return x.array().colwise() * (y - logit_linkinv(x * par));
+}
+Eigen::VectorXd gr_nloglr_bin_logit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
+{
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd numerator =
+    logit_linkinv(x * par) * (1.0 - logit_linkinv(x * par));
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+  // if (w.size() == 0) {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (numerator / denominator)).matrix()) *
+  //            l / n;
+  // } else {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+  //            l / n;
+  // }
+  if (weighted) {
+    const Eigen::MatrixXd cx = x.array().colwise() *
+      (w * numerator / denominator);
+    return -(x.transpose() * cx) * l;
+  } else {
+    const Eigen::MatrixXd cx = x.array().colwise() * (numerator / denominator);
+    return -(x.transpose() * cx) * l;
+  }
+}
+
+Eigen::MatrixXd g_bin_probit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+                             const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  return x.array().colwise() * (y - probit_linkinv(x * par));
+}
+Eigen::VectorXd gr_nloglr_bin_probit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
+{
+  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd numerator =
+    -exp(-(x * par).array().square() * 0.5) * M_SQRT1_2 * M_2_SQRTPI * 0.5;
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+  // if (w.size() == 0) {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (numerator / denominator)).matrix()) *
+  //            l / n;
+  // } else {
+  //   return -(x.transpose() *
+  //            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
+  //            l / n;
+  // }
+  if (weighted) {
+    const Eigen::MatrixXd cx = x.array().colwise() *
+      (w * numerator / denominator);
+    return -(x.transpose() * cx) * l;
+  } else {
+    const Eigen::MatrixXd cx = x.array().colwise() * (numerator / denominator);
+    return -(x.transpose() * cx) * l;
+  }
+}
+
+Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                          const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  // return xmat.array().colwise() * (y - log_linkinv(xmat * par));
+  return xmat.array().colwise() * (y - exp((xmat * par).array()));
+}
+Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
+                                  const Eigen::Ref<const Eigen::MatrixXd>& g,
+                                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                                  const Eigen::Ref<const Eigen::VectorXd>& par,
+                                  const Eigen::Ref<const Eigen::ArrayXd>& w,
+                                  const bool weighted)
+{
+  const int n = g.rows();
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  // const Eigen::ArrayXd numerator = log_linkinv(xmat * par);
+  const Eigen::ArrayXd numerator = exp((xmat * par).array());
+  // Rcpp::Rcout << g.rows() << "\n";
+  // Rcpp::Rcout << g.cols() << "\n";
+
+  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + (g * l);
+  const Eigen::ArrayXd c = numerator / denominator;
+
+  // if (weighted) {
+  //   const Eigen::MatrixXd cx = xmat.array().colwise() *
+  //     (w * numerator / denominator);
+  //   return -(xmat.transpose() * cx) * l;
+  // } else {
+  //   const Eigen::MatrixXd cx = xmat.array().colwise() * c;
+  //   return -(xmat.transpose() * cx) * l;
+  // }
+  const Eigen::MatrixXd cx = xmat.array().colwise() * c;
+  return -(xmat.transpose() * cx) * l;
+}
+
 /* EL class (evaluation)
  * Last updated: 04/07/22
  */
@@ -142,7 +256,8 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                   {"gaussian_log", mele_lm},
                   {"gaussian_inverse", mele_lm},
                   {"binomial_logit", mele_lm},
-                  {"binomial_probit", mele_lm}}};
+                  {"binomial_probit", mele_lm},
+                  {"poisson_log", mele_lm}}};
   return mele_map[method];
 }
 
@@ -159,7 +274,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"gaussian_log", g_gauss_log},
                {"gaussian_inverse", g_gauss_inverse},
                {"binomial_logit", g_bin_logit},
-               {"binomial_probit", g_bin_probit}}};
+               {"binomial_probit", g_bin_probit},
+               {"poisson_log", g_poi_log}}};
   return g_map[method];
 }
 
@@ -374,6 +490,7 @@ MINEL::MINEL(const std::string method,
         break;
       }
       // propose new parameter
+      // Rcpp::Rcout << l << "\n";
       par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
       // propose new lambda
       g_tmp = g_fn(x, par_tmp);
@@ -387,6 +504,8 @@ MINEL::MINEL(const std::string method,
       ++iter;
       break;
     }
+
+    // Rcpp::Rcout << l_tmp << "\n";
 
     // update
     const double step = (par - par_tmp).norm();
@@ -423,7 +542,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"gaussian_log", g_gauss_log},
                {"gaussian_inverse", g_gauss_inverse},
                {"binomial_logit", g_bin_logit},
-               {"binomial_probit", g_bin_probit}}};
+               {"binomial_probit", g_bin_probit},
+               {"poisson_log", g_poi_log}}};
   return g_map[method];
 }
 
@@ -448,7 +568,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
          {"gaussian_log", gr_nloglr_gauss_log},
          {"gaussian_inverse", gr_nloglr_gauss_inverse},
          {"binomial_logit", gr_nloglr_bin_logit},
-         {"binomial_probit", gr_nloglr_bin_probit}}};
+         {"binomial_probit", gr_nloglr_bin_probit},
+         {"poisson_log", gr_nloglr_poi_log}}};
   return gr_map[method];
 }
 
