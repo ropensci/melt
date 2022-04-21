@@ -27,10 +27,6 @@ Eigen::MatrixXd confint_(
   const double gamma = step_nloglr(x.rows(), step);
   // test threshold
   const double test_th = th_nloglr(1, th);
-  // Eigen::ArrayXd w;
-  // if (wt.isNotNull()) {
-  //   w = Rcpp::as<Eigen::ArrayXd>(wt);
-  // }
   // #pragma omp parallel for num_threads(nthreads)
   for (int j : idx) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);

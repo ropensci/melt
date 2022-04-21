@@ -74,13 +74,13 @@ check_family <- function(family) {
       }
     },
     "binomial" = {
-      if (!any(l == c("logit", "probit"))) {
+      if (!any(l == c("logit", "probit", "log"))) {
         stop(gettextf("%s family with %s link not supported by 'el_glm'",
                       sQuote(f), sQuote(l)), domain = NA)
       }
     },
     "poisson" = {
-      if (!any(l == c("log"))) {
+      if (!any(l == c("log", "identity", "sqrt"))) {
         stop(gettextf("%s family with %s link not supported by 'el_glm'",
                       sQuote(f), sQuote(l)), domain = NA)
       }

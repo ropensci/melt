@@ -37,6 +37,9 @@ eld <- function(object, control = control_el()) {
   if (!inherits(object, "el")) {
     stop("invalid 'object' supplied")
   }
+  if (inherits(object, "el_glm")) {
+    stop("not applicable for 'el_glm' object")
+  }
   if (is.null(object$data.matrix)) {
     stop("'object' has no 'data.matrix'; fit the model with 'model' = TRUE")
   }

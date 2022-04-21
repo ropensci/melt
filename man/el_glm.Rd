@@ -59,7 +59,7 @@ Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
 \code{\link[stats]{glm.control}}.}
 }
 \value{
-A list of class \code{c("el_glm", "el_lm", "el")} with the following
+A list of class \code{c("el_glm", "el")} with the following
   components:
   \item{optim}{A list with the following optimization results:
     \itemize{
@@ -97,6 +97,20 @@ A list of class \code{c("el_glm", "el_lm", "el")} with the following
 }
 \description{
 Fits a generalized linear model with empirical likelihood.
+}
+\details{
+The available families and link functions are as follows:
+  \itemize{
+  \item{\code{gaussian}}{: \code{identity}, \code{log}, and \code{inverse}.}
+  \item{\code{bimomial}}{: \code{logit}, \code{probit}, and \code{log}.}
+  \item{\code{poisson}}{: \code{log}, \code{identity}, and \code{sqrt}.}
+  }
+  Included in the tests are the overall test with
+  \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
+  and the tests for each parameter with
+  \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
+  The test results are returned as \code{optim} and \code{par.tests},
+  respectively.
 }
 \examples{
 n <- 50

@@ -102,10 +102,13 @@
 #'   corresponds to the degrees of freedom of the limiting chi-squared
 #'   distribution of the statistic.}
 #'   \item{nthreads}{Number of threads for parallel computation via OpenMP (if
-#'     available). It only applies to functions that involve multiple
-#'     evaluations or minimizations. Defaults to the half of the available
-#'     threads. For better performance, it is recommended to limit the number of
-#'     threads to the number of physical cores.}
+#'     available). Defaults to the half of the available threads. For better
+#'     performance, it is recommended to limit the number of threads to the
+#'     number of physical cores. Note that it only applies to the following
+#'     functions that involve multiple evaluations or minimizations:
+#'     \itemize{
+#'     \item{\code{\link{el_lm}}}
+#'     \item{\code{\link{el_glm}}}}}
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
 #'   Statistical Methods & Applications 19 (4): 463–76.

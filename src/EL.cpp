@@ -88,6 +88,35 @@ Eigen::VectorXd gr_nloglr_bin_probit(
   }
 }
 
+Eigen::MatrixXd g_bin_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                          const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  return xmat.array().colwise() * ((inverse(1.0 - logit_linkinv(xmat * par))) *
+                    (y - logit_linkinv(xmat * par)));
+}
+Eigen::VectorXd gr_nloglr_bin_log(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
+{
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::ArrayXd c = square((1.0 - logit_linkinv(xmat * par)).inverse()) *
+    logit_linkinv(xmat * par) * (y - 1.0) *
+    inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  if (weighted) {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * (w * c);
+    return (xmat.transpose() * cx) * l;
+  } else {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * c;
+    return (xmat.transpose() * cx) * l;
+  }
+}
 
 // poisson family
 Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
@@ -104,7 +133,6 @@ Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
                                   const Eigen::Ref<const Eigen::ArrayXd>& w,
                                   const bool weighted)
 {
-  const int n = g.rows();
   const Eigen::MatrixXd xmat = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd num = log_linkinv(xmat * par);
   const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + (g * l);
@@ -117,67 +145,69 @@ Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
   }
 }
 
+Eigen::MatrixXd g_poi_identity(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                               const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  return xmat.array().colwise() *
+    (inverse((xmat * par).array()) * (y - (xmat * par).array()));
+}
+Eigen::VectorXd gr_nloglr_poi_identity(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
+{
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::ArrayXd c =
+    -inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * y *
+    square(((xmat * par).array().inverse()));
+  if (weighted) {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * (w * c);
+    return (xmat.transpose() * cx) * l;
+  } else {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * c;
+    return (xmat.transpose() * cx) * l;
+  }
+}
+
+Eigen::MatrixXd g_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                           const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  return xmat.array().colwise() *
+    (2.0 * inverse((xmat * par).array()) * (y - square((xmat * par).array())));
+}
+Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
+                                   const Eigen::Ref<const Eigen::MatrixXd>& g,
+                                   const Eigen::Ref<const Eigen::MatrixXd>& x,
+                                   const Eigen::Ref<const Eigen::VectorXd>& par,
+                                   const Eigen::Ref<const Eigen::ArrayXd>& w,
+                                   const bool weighted)
+{
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::ArrayXd c =
+    -2.0 * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) *
+    (y * square(((xmat * par).array().inverse())) + 1.0);
+  if (weighted) {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * (w * c);
+    return (xmat.transpose() * cx) * l;
+  } else {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * c;
+    return (xmat.transpose() * cx) * l;
+  }
+}
+
+
 /* EL class (evaluation)
  * Last updated: 04/07/22
  */
-// EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-//        const int maxit_l,
-//        const double tol_l,
-//        const double th,
-//        const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
-//   : par{},
-//     l{Eigen::VectorXd::Zero(g.cols())},
-//     mele_fn{},
-//     w{},
-//     maxit_l{maxit_l},
-//     tol_l{tol_l},
-//     th{th},
-//     n{static_cast<int>(g.rows())},
-//     g_fn{}
-// {
-//   // if (wt.isNull()) {
-//   //   set_el(g);
-//   // } else {
-//   //   w = Rcpp::as<Eigen::ArrayXd>(wt);
-//   //   set_el(g, w);
-//   // }
-//   if (wt.isNotNull()) {
-//     w = Rcpp::as<Eigen::ArrayXd>(wt);
-//   }
-//   set_el(g, w);
-// }
-
-// EL::EL(
-//   const std::string method,
-//   const Eigen::Ref<const Eigen::VectorXd>& par0,
-//   const Eigen::Ref<const Eigen::MatrixXd>& x,
-//   const int maxit_l,
-//   const double tol_l,
-//   const double th,
-//   const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
-//   : par{par0},
-//     l{Eigen::VectorXd::Zero(par0.size())},
-//     mele_fn{set_mele_fn(method)},
-//     w{},
-//     maxit_l{maxit_l},
-//     tol_l{tol_l},
-//     th{th},
-//     n{static_cast<int>(x.rows())},
-//     g_fn{set_g_fn(method)}
-// {
-//   if (wt.isNotNull()) {
-//     w = Rcpp::as<Eigen::ArrayXd>(wt);
-//   }
-//   set_el(g_fn(x, par), w);
-// }
-
-
-
-
-
-
-
-
 EL::EL(
   const std::string method,
   const Eigen::Ref<const Eigen::VectorXd>& par0,
@@ -217,15 +247,6 @@ EL::EL(
   set_el(g, wt);
 }
 
-
-
-
-
-
-
-
-
-
 std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::ArrayXd>&)>
   EL::set_mele_fn(const std::string method)
@@ -240,7 +261,10 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                   {"gaussian_inverse", mele_lm},
                   {"binomial_logit", mele_lm},
                   {"binomial_probit", mele_lm},
-                  {"poisson_log", mele_lm}}};
+                  {"binomial_log", mele_lm},
+                  {"poisson_log", mele_lm},
+                  {"poisson_identity", mele_lm},
+                  {"poisson_sqrt", mele_lm}}};
   return mele_map[method];
 }
 
@@ -258,7 +282,10 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"gaussian_inverse", g_gauss_inverse},
                {"binomial_logit", g_bin_logit},
                {"binomial_probit", g_bin_probit},
-               {"poisson_log", g_poi_log}}};
+               {"binomial_log", g_bin_log},
+               {"poisson_log", g_poi_log},
+               {"poisson_identity", g_poi_identity},
+               {"poisson_sqrt", g_poi_sqrt}}};
   return g_map[method];
 }
 
@@ -383,7 +410,7 @@ MINEL::MINEL(const std::string method,
     while (f0 < nllr || nllr < 0) {
       // reduce step size
       gamma /= 2;
-      if (gamma < 1e-10) {
+      if (gamma < 1e-30) {
         break;
       }
       // propose new parameter
@@ -422,6 +449,9 @@ MINEL::MINEL(const std::string method,
         step < tol * par.norm() + tol * tol) {
       conv = true;
     }
+    // if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol) {
+    //   conv = true;
+    // }
     ++iter;
   }
 }
@@ -444,7 +474,10 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"gaussian_inverse", g_gauss_inverse},
                {"binomial_logit", g_bin_logit},
                {"binomial_probit", g_bin_probit},
-               {"poisson_log", g_poi_log}}};
+               {"binomial_log", g_bin_log},
+               {"poisson_log", g_poi_log},
+               {"poisson_identity", g_poi_identity},
+               {"poisson_sqrt", g_poi_sqrt}}};
   return g_map[method];
 }
 
@@ -470,20 +503,12 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
          {"gaussian_inverse", gr_nloglr_gauss_inverse},
          {"binomial_logit", gr_nloglr_bin_logit},
          {"binomial_probit", gr_nloglr_bin_probit},
-         {"poisson_log", gr_nloglr_poi_log}}};
+         {"binomial_log", gr_nloglr_bin_log},
+         {"poisson_log", gr_nloglr_poi_log},
+         {"poisson_identity", gr_nloglr_poi_identity},
+         {"poisson_sqrt", gr_nloglr_poi_sqrt}}};
   return gr_map[method];
 }
-
-// Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x) const
-// {
-//   if (w.size() == 0) {
-//     return
-//     -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fn(x, par) * l);
-//   } else {
-//     return log(w) - log(n) -
-//       PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fn(x, par) * l, w);
-//   }
-// }
 
 Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                            const Eigen::Ref<const Eigen::ArrayXd>& wt) const
@@ -496,15 +521,6 @@ Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
     -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fn(x, par) * l);
   }
 }
-
-// double MINEL::loglik() const
-// {
-//   if (w.size() == 0) {
-//     return -nllr - n * log(n);
-//   } else {
-//     return -nllr - (w * (log(n) - log(w))).sum();
-//   }
-// }
 
 double MINEL::loglik(const Eigen::Ref<const Eigen::ArrayXd>& wt) const
 {

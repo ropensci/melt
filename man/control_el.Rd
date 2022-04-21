@@ -60,10 +60,13 @@ A list of class \code{"control_el"} that specifies details of the
   corresponds to the degrees of freedom of the limiting chi-squared
   distribution of the statistic.}
   \item{nthreads}{Number of threads for parallel computation via OpenMP (if
-    available). It only applies to functions that involve multiple
-    evaluations or minimizations. Defaults to the half of the available
-    threads. For better performance, it is recommended to limit the number of
-    threads to the number of physical cores.}
+    available). Defaults to the half of the available threads. For better
+    performance, it is recommended to limit the number of threads to the
+    number of physical cores. Note that it only applies to the following
+    functions that involve multiple evaluations or minimizations:
+    \itemize{
+    \item{\code{\link{el_lm}}}
+    \item{\code{\link{el_glm}}}}}
 }
 \description{
 Specifies details of computation of (constrained) empirical likelihood.
