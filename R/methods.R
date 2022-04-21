@@ -88,6 +88,7 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
   maxit_l <- control$maxit_l
   tol <- control$tol
   tol_l <- control$tol_l
+  step <- control$step
   th <- control$th
   nthreads <- control$nthreads
   w <- object$weights
@@ -120,10 +121,10 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
     idx_na <- which(is.na(idx))
     ci <- matrix(NA, nrow = p, ncol = 2L)
     ci[-idx_na, ] <- confint_(method, cf, object$data.matrix, cv, idx[-idx_na],
-                              maxit, tol, th, nthreads, w)
+                              maxit, tol, step, th, nthreads, w)
   } else {
     ci <- confint_(method, cf, object$data.matrix, cv, idx, maxit, maxit_l, tol,
-                   tol_l, th, nthreads, w)
+                   tol_l, step, th, nthreads, w)
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))
   ci

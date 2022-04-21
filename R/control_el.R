@@ -6,15 +6,17 @@
 #'   empirical likelihood. Defaults to \code{200}.
 #' @param maxit_l Maximum number of iterations of evaluation of empirical
 #'   likelihood. Defaults to \code{50}.
-#' @param tol Relative convergence tolerance for the constrained
-#'   minimization. Defaults to \code{1e-06}.
+#' @param tol Convergence tolerance for the constrained minimization.
+#'   Defaults to \code{1e-06}.
 #' @param tol_l Relative convergence tolerance for the evaluation. Defaults
 #'   to \code{1e-06}.
+#' @param step Step size for projected gradient method. Defaults to \code{NULL}
+#'   and set to the reciprocal of sample size.
 #' @param th Threshold for negative empirical log-likelihood ratio value.
 #'   The iteration stops if the value exceeds the threshold. Defaults to
-#'   \code{NULL}. See ‘Value’.
+#'   \code{NULL}.
 #' @param nthreads Number of threads for parallel computation via OpenMP (if
-#'     available). See ‘Value’.
+#'     available).
 #' @details Let \eqn{X_i} be independent and identically distributed
 #'   \eqn{p}-dimensional random variables from an unknown distribution \eqn{F}
 #'   for \eqn{i = 1, \dots, n}. For a parameter of interest \eqn{\theta(F) \in
@@ -37,10 +39,10 @@
 #'   Then the empirical log-likelihood ratio is given by
 #'   \deqn{\log\mathcal{R}(\theta) =  \max_{\lambda}\sum_{i = 1}^n
 #'   \log(1 + \lambda^\top g(X_i, \theta)).}
-#'   Let \eqn{l(\theta)} denote the minus twice the empirical log-likelihood
-#'   ratio function. Under some regularity conditions, it is known that
-#'   \eqn{l(\theta_0)} converges in distribution to \eqn{\chi^2_p},
-#'   where \eqn{\chi^2_p} has a chi-squared distribution with \eqn{p} degrees of
+#'   Let \eqn{l(\theta)} denote the minus twice empirical log-likelihood ratio
+#'   function. Under some regularity conditions, it is known that
+#'   \eqn{l(\theta_0)} converges in distribution to \eqn{\chi^2_p}, where
+#'   \eqn{\chi^2_p} has a chi-squared distribution with \eqn{p} degrees of
 #'   freedom.
 #'
 #'   Inference for \eqn{\theta} often involves a hypothesis testing
@@ -63,13 +65,21 @@
 #'   As described above, evaluating \eqn{l(\theta)} involves optimization with
 #'   respect to \eqn{\lambda}. This problem can be efficiently solved by the
 #'   Newton-Raphson method when the interior of convex hull constructed from
-#'   the set of \eqn{g(X_i, \theta)} contains the zero vector. Minimization of
-#'   \eqn{l(\theta)} with respect to \eqn{\theta}, on the other hand, is
-#'   computationally expensive since it implicitly involves the evaluation step.
-#'   Further, depending on the form of \eqn{g(X_i, \theta)}, the optimization
-#'   problem can be nonconvex and have multiple local minima. For this reason,
-#'   \strong{melt} only considers linear hypotheses and uses projected gradient
-#'   descent method for the minimization of \eqn{l(\theta)}.
+#'   the set of \eqn{g(X_i, \theta)} contains the zero vector.
+#'
+#'   Minimization of \eqn{l(\theta)} with respect to \eqn{\theta}, on the other
+#'   hand, is computationally expensive since it implicitly involves the
+#'   evaluation step. Further, depending on the form of \eqn{g(X_i, \theta)} and
+#'   the constraint, the optimization problem can be nonconvex and have multiple
+#'   local minima. For this reason, \strong{melt} only considers linear
+#'   hypotheses and performs local minimization of \eqn{l(\theta)} using
+#'   projected gradient descent method. With the orthogonal projection matrix
+#'   \eqn{P} and a step size \eqn{\gamma}, the algorithm updates \eqn{\theta} as
+#'   \deqn{\theta^{(k + 1)} \leftarrow \theta^{(k)} -
+#'   \gamma P \nabla l(\theta^{(k)}),}
+#'   where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
+#'   \eqn{\theta^{(k)}}. The first order optimality condition is
+#'   \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
 #' @return A list of class \code{"control_el"} that specifies details of the
 #'   optimization with respect to \eqn{\lambda} and \eqn{\theta} with the
 #'   following components:
@@ -77,15 +87,15 @@
 #'   respect to \eqn{\theta}.}
 #'   \item{maxit_l}{Maximum number of iterations for the optimization with
 #'   respect to \eqn{\lambda}.}
-#'   \item{tol}{Relative convergence tolerance, denoted by \eqn{\epsilon}.
-#'   With the orthogonal projector matrix \eqn{P} and an initial value
-#'   \eqn{\theta^{(0)}}, the iteration stops when
-#'   \deqn{\|P \nabla l(\theta^{(k)})\| \leq
-#'   \epsilon\|P \nabla l(\theta^{(0)})\|.}}
-#'   \item{tol_l}{Relative convergence tolerance, denoted by \eqn{\delta}.
-#'   The iteration stops when
-#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| \leq
+#'   \item{tol}{Convergence tolerance denoted by \eqn{\epsilon}. The iteration
+#'   stops when
+#'   \deqn{\|P \nabla l(\theta^{(k)})\| < \epsilon.}}
+#'   \item{tol_l}{Relative convergence tolerance denoted by \eqn{\delta}. The
+#'   iteration stops when
+#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| <
 #'   \delta\|\lambda^{(k - 1)}\| + \delta^2.}}
+#'   \item{step}{Step size \eqn{\gamma} for the projected gradient descent
+#'   method.}
 #'   \item{th}{Threshold for the negative empirical log-likelihood ratio value.
 #'   The iteration stops if the value exceeds the threshold. Defaults to
 #'   \code{NULL} and sets the threshold to \code{200 * d}, where \code{d}
@@ -114,8 +124,8 @@
 #' @examples
 #' optcfg <- control_el(maxit = 300L, th = 200, nthreads = 1L)
 #' @export
-control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06,
-                         tol_l = 1e-06, th = NULL, nthreads) {
+control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
+                       step = NULL, th = NULL, nthreads) {
   # maxit: integer (positive)
   maxit <- tryCatch(as.integer(maxit), warning = function(w) NA,
                     error = function(e) NA)
@@ -143,7 +153,6 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06,
   if (tol < .Machine$double.eps) {
     stop("'tol' is too small")
   }
-
   # tol_l: numeric (positive, finite)
   tol_l <- tryCatch(as.numeric(tol_l), warning = function(w) NA,
                     error = function(e) NA)
@@ -152,6 +161,17 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06,
   }
   if (tol_l < .Machine$double.eps) {
     stop("'tol' is too small")
+  }
+  # step: numeric (positive, finite)
+  if (!is.null(step)) {
+    step <- tryCatch(as.numeric(step), warning = function(w) NA,
+                     error = function(e) NA)
+    if (any(length(step) != 1L, is.na(step), is.infinite(step))) {
+      stop("'step' is not a number")
+    }
+    if (step < .Machine$double.eps) {
+      stop("'step' is too small")
+    }
   }
   # th: numeric (positive, finite)
   if (!is.null(th)) {
@@ -184,7 +204,7 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06,
     }
   }
   out <- list(maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l,
-              th = th, nthreads = nthreads)
+              step = step, th = th, nthreads = nthreads)
   class(out) <- "control_el"
   out
 }

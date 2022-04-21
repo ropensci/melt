@@ -96,6 +96,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = control_el()) {
   maxit_l <- control$maxit_l
   tol <- control$tol
   tol_l <- control$tol_l
+  step <- control$step
   th <- control$th
   w <- object$weights
   if (is.null(w)) {
@@ -111,7 +112,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = control_el()) {
   } else {
     out <- lht_(
       method, object$coefficients, object$data.matrix, h$l, h$r,
-      maxit, maxit_l, tol, tol_l, th, w
+      maxit, maxit_l, tol, tol_l, step, th, w
     )
     out$df <- nrow(h$l)
     out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)

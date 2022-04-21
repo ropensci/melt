@@ -11,6 +11,7 @@ Eigen::MatrixXd confint_(
     const int maxit_l,
     const double tol,
     const double tol_l,
+    const Rcpp::Nullable<double> step,
     const Rcpp::Nullable<double> th,
     const int nthreads,
     const Eigen::Map<Eigen::ArrayXd>& w)
@@ -22,6 +23,8 @@ Eigen::MatrixXd confint_(
   // confidence intervals (vector)
   std::vector<double> ci_vec;
   ci_vec.reserve(2 * n);
+  // step size
+  const double gamma = step_nloglr(x.rows(), step);
   // test threshold
   const double test_th = th_nloglr(1, th);
   // Eigen::ArrayXd w;
@@ -39,7 +42,7 @@ Eigen::MatrixXd confint_(
     // lower bound for lower endpoint
     while (2.0 * MINEL(method, par0, x, lhs,
                        Eigen::Matrix<double, 1, 1>(lower_lb), maxit, maxit_l,
-                       tol, tol_l, test_th, w).nllr <= cutoff) {
+                       tol, tol_l, gamma, test_th, w).nllr <= cutoff) {
       lower_ub = lower_lb;
       lower_lb -= 1.0 / std::log(x.rows());
     }
@@ -47,7 +50,8 @@ Eigen::MatrixXd confint_(
     while (lower_ub - lower_lb > tol) {
       if (2.0 * MINEL(method, par0, x, lhs,
                       Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2.0),
-                      maxit, maxit_l, tol, tol_l, test_th, w).nllr > cutoff) {
+                      maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
+            cutoff) {
         lower_lb = (lower_lb + lower_ub) / 2.0;
       } else {
         lower_ub = (lower_lb + lower_ub) / 2.0;
@@ -61,7 +65,7 @@ Eigen::MatrixXd confint_(
     // upper bound for upper endpoint
     while (2.0 * MINEL(method, par0, x, lhs,
                        Eigen::Matrix<double, 1, 1>(upper_ub), maxit, maxit_l,
-                       tol, tol_l, test_th, w).nllr <= cutoff) {
+                       tol, tol_l, gamma, test_th, w).nllr <= cutoff) {
       upper_lb = upper_ub;
       upper_ub += 1.0 / std::log(x.rows());
     }
@@ -69,7 +73,8 @@ Eigen::MatrixXd confint_(
     while (upper_ub - upper_lb > tol) {
       if (2.0 * MINEL(method, par0, x, lhs,
                       Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2.0),
-                      maxit, maxit_l, tol, tol_l, test_th, w).nllr > cutoff) {
+                      maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
+            cutoff) {
         upper_ub = (upper_lb + upper_ub) / 2.0;
       } else {
         upper_lb = (upper_lb + upper_ub) / 2.0;

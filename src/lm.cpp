@@ -1,23 +1,20 @@
 #include "EL.h"
 
 // [[Rcpp::export]]
-Rcpp::List lm_(
-    const Eigen::Map<Eigen::MatrixXd>& x,
-    const Eigen::Map<Eigen::VectorXd>& par0,
-    const bool intercept,
-    const int maxit,
-    const int maxit_l,
-    const double tol,
-    const double tol_l,
-    const Rcpp::Nullable<double> th,
-    const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd>& w)
+Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
+               const Eigen::Map<Eigen::VectorXd>& par0,
+               const bool intercept,
+               const int maxit,
+               const int maxit_l,
+               const double tol,
+               const double tol_l,
+               const Rcpp::Nullable<double> step,
+               const Rcpp::Nullable<double> th,
+               const int nthreads,
+               const Eigen::Map<Eigen::ArrayXd>& w)
 {
   const int p = x.cols() - 1;
-  // Eigen::ArrayXd w;
-  // if (wt.isNotNull()) {
-  //   w = Rcpp::as<Eigen::ArrayXd>(wt);
-  // }
+  const double gamma = step_nloglr(x.rows(), step);
 
   // overall test
   Eigen::VectorXd par(p);
@@ -33,7 +30,7 @@ Rcpp::List lm_(
     lhs.rightCols(p - 1) = Eigen::MatrixXd::Identity(p - 1, p - 1);
     const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
     const double test_th = th_nloglr(p - 1, th);
-    const MINEL el("lm", par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l,
+    const MINEL el("lm", par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
                    test_th, w);
     par = el.par;
     l = el.l;
@@ -64,7 +61,7 @@ Rcpp::List lm_(
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
     const MINEL par_test("lm", par0, x, lhs, Eigen::VectorXd::Zero(1), maxit,
-                         maxit_l, tol, tol_l, test_th, w);
+                         maxit_l, tol, tol_l, gamma, test_th, w);
     chisq_val[i] = 2.0 * par_test.nllr;
     par_conv[i] = par_test.conv;
   }

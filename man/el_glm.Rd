@@ -34,8 +34,7 @@ from \code{environment(formula)}.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
 fitting process. Defaults to \code{NULL}, corresponding to identical
-weights. If non-\code{NULL}, weighted empirical likelihood is computed.
-See ‘Details’.}
+weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{na.action}{A function which indicates what should happen when the data
 contain \code{NA}s. The default is set by the \code{na.action} setting of

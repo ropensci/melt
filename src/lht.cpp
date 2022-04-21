@@ -11,12 +11,14 @@ Rcpp::List lht_(
     const int maxit_l,
     const double tol,
     const double tol_l,
+    const Rcpp::Nullable<double> step,
     const Rcpp::Nullable<double> th,
     const Eigen::Map<Eigen::ArrayXd>& w)
 {
   const double test_th = th_nloglr(lhs.rows(), th);
-  const MINEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, test_th,
-                 w);
+  const double gamma = step_nloglr(x.rows(), step);
+  const MINEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
+                 test_th, w);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(

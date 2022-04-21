@@ -3,6 +3,7 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
+// #include <cmath>
 #include "utils.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -113,6 +114,7 @@ public:
         const int maxit_l,
         const double tol,
         const double tol_l,
+        const double gamma2,
         const double th,
         const Eigen::Ref<const Eigen::ArrayXd>& wt);
 
@@ -138,13 +140,14 @@ public:
 
 private:
   // members
-  const int maxit;  // maximum number of iterations
+  const int maxit;    // maximum number of iterations
   const int maxit_l;  // maximum number of iterations
-  const double tol; // relative convergence tolerance
+  const double tol;   // relative convergence tolerance
   const double tol_l; // relative convergence tolerance
-  const double th;  // threshold value for negative log-likelihood ratio
-  const int n;      // sample size
-  const bool weighted;      // sample size
+  double gamma;       // step size
+  const double th;    // threshold value for negative log-likelihood ratio
+  const int n;        // sample size
+  const bool weighted;// weighted?
   // estimating function
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd>&,
@@ -192,7 +195,7 @@ Eigen::VectorXd gr_nloglr_lm(
 
 
 // Binomial family
-Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
                             const Eigen::Ref<const Eigen::VectorXd>& par);
 Eigen::VectorXd gr_nloglr_bin_logit(
     const Eigen::Ref<const Eigen::VectorXd>& l,
@@ -214,11 +217,11 @@ Eigen::VectorXd gr_nloglr_bin_probit(
 
 
 // Poisson family
-Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
+Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
                           const Eigen::Ref<const Eigen::VectorXd>& par);
 Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
                                   const Eigen::Ref<const Eigen::MatrixXd>& g,
-                                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                                  const Eigen::Ref<const Eigen::MatrixXd>& data,
                                   const Eigen::Ref<const Eigen::VectorXd>& par,
                                   const Eigen::Ref<const Eigen::ArrayXd>& w,
                                   const bool weighted);

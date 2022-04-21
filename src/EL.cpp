@@ -18,24 +18,25 @@ Eigen::VectorXd gr_nloglr_lm(
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted)
 {
+  const double n = static_cast<double>(g.rows());
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+  const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + g * l;
   if (weighted) {
-    const Eigen::MatrixXd xx = x.array().colwise() * (w / denominator);
+    const Eigen::MatrixXd xx = x.array().colwise() * (w / denom);
     return -(x.transpose() * xx) * l;
   } else {
-    const Eigen::MatrixXd xx = x.array().colwise() / denominator;
+    const Eigen::MatrixXd xx = x.array().colwise() / denom;
     return -(x.transpose() * xx) * l;
   }
 }
 
 
-// Binomial family
-Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& data,
+// binomial family
+Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
                             const Eigen::Ref<const Eigen::VectorXd>& par)
 {
-  const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd xmat = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return xmat.array().colwise() * (y - logit_linkinv(xmat * par));
 }
 Eigen::VectorXd gr_nloglr_bin_logit(
@@ -47,24 +48,14 @@ Eigen::VectorXd gr_nloglr_bin_logit(
     const bool weighted)
 {
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd numerator =
+  const Eigen::ArrayXd num =
     logit_linkinv(x * par) * (1.0 - logit_linkinv(x * par));
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
-  // if (w.size() == 0) {
-  //   return -(x.transpose() *
-  //            (x.array().colwise() * (numerator / denominator)).matrix()) *
-  //            l / n;
-  // } else {
-  //   return -(x.transpose() *
-  //            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
-  //            l / n;
-  // }
+  const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + g * l;
   if (weighted) {
-    const Eigen::MatrixXd cx = x.array().colwise() *
-      (w * numerator / denominator);
+    const Eigen::MatrixXd cx = x.array().colwise() * (w * num / denom);
     return -(x.transpose() * cx) * l;
   } else {
-    const Eigen::MatrixXd cx = x.array().colwise() * (numerator / denominator);
+    const Eigen::MatrixXd cx = x.array().colwise() * (num / denom);
     return -(x.transpose() * cx) * l;
   }
 }
@@ -85,52 +76,45 @@ Eigen::VectorXd gr_nloglr_bin_probit(
     const bool weighted)
 {
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd numerator =
+  const Eigen::ArrayXd num =
     -exp(-(x * par).array().square() * 0.5) * M_SQRT1_2 * M_2_SQRTPI * 0.5;
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
+  const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + g * l;
   if (weighted) {
-    const Eigen::MatrixXd cx = x.array().colwise() *
-      (w * numerator / denominator);
+    const Eigen::MatrixXd cx = x.array().colwise() * (w * num / denom);
     return -(x.transpose() * cx) * l;
   } else {
-    const Eigen::MatrixXd cx = x.array().colwise() * (numerator / denominator);
+    const Eigen::MatrixXd cx = x.array().colwise() * (num / denom);
     return -(x.transpose() * cx) * l;
   }
 }
 
-Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
+
+// poisson family
+Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
                           const Eigen::Ref<const Eigen::VectorXd>& par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  // return xmat.array().colwise() * (y - log_linkinv(xmat * par));
-  return xmat.array().colwise() * (y - exp((xmat * par).array()));
+  const Eigen::ArrayXd y = data.col(0);
+  const Eigen::MatrixXd xmat = data.rightCols(data.cols() - 1);
+  return xmat.array().colwise() * (y - log_linkinv(xmat * par));
 }
 Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
                                   const Eigen::Ref<const Eigen::MatrixXd>& g,
-                                  const Eigen::Ref<const Eigen::MatrixXd>& x,
+                                  const Eigen::Ref<const Eigen::MatrixXd>& data,
                                   const Eigen::Ref<const Eigen::VectorXd>& par,
                                   const Eigen::Ref<const Eigen::ArrayXd>& w,
                                   const bool weighted)
 {
   const int n = g.rows();
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  // const Eigen::ArrayXd numerator = log_linkinv(xmat * par);
-  const Eigen::ArrayXd numerator = exp((xmat * par).array());
-
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + (g * l);
-  const Eigen::ArrayXd c = numerator / denominator;
-
-  // if (weighted) {
-  //   const Eigen::MatrixXd cx = xmat.array().colwise() *
-  //     (w * numerator / denominator);
-  //   return -(xmat.transpose() * cx) * l;
-  // } else {
-  //   const Eigen::MatrixXd cx = xmat.array().colwise() * c;
-  //   return -(xmat.transpose() * cx) * l;
-  // }
-  const Eigen::MatrixXd cx = xmat.array().colwise() * c;
-  return -(xmat.transpose() * cx) * l;
+  const Eigen::MatrixXd xmat = data.rightCols(data.cols() - 1);
+  const Eigen::ArrayXd num = log_linkinv(xmat * par);
+  const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + (g * l);
+  if (weighted) {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * (w * num / denom);
+    return -(xmat.transpose() * cx) * l;
+  } else {
+    const Eigen::MatrixXd cx = xmat.array().colwise() * (num / denom);
+    return -(xmat.transpose() * cx) * l;
+  }
 }
 
 /* EL class (evaluation)
@@ -340,95 +324,8 @@ double EL::loglik() const
 
 
 /* MINEL class (minimization)
- * Last updated: 04/14/22
+ * Last updated: 04/20/22
  */
-// MINEL::MINEL(const std::string method,
-//              const Eigen::Ref<const Eigen::VectorXd>& par0,
-//              const Eigen::Ref<const Eigen::MatrixXd>& x,
-//              const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-//              const Eigen::Ref<const Eigen::VectorXd>& rhs,
-//              const int maxit,
-//              const int maxit_l,
-//              const double tol,
-//              const double tol_l,
-//              const double th,
-//              const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt)
-//   : maxit{maxit},
-//     maxit_l{maxit_l},
-//     tol{tol},
-//     tol_l{tol_l},
-//     th{th},
-//     n{static_cast<int>(x.rows())},
-//     w{},
-//     g_fn{set_g_fn(method)},
-//     gr_fn{set_gr_fn(method)}
-// {
-//   /// initialization ///
-//   if (wt.isNotNull()) {
-//     w = Rcpp::as<Eigen::ArrayXd>(wt);
-//   }
-//   // orthogonal projection matrix
-//   const Eigen::MatrixXd proj =
-//     Eigen::MatrixXd::Identity(lhs.cols(), lhs.cols()) -
-//     lhs.transpose() * (lhs * lhs.transpose()).inverse() * lhs;
-//   // parameter (constraint imposed)
-//   par = proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
-//   // estimating function
-//   Eigen::MatrixXd g = g_fn(x, par);
-//   // lambda
-//   l = EL(g, maxit_l, tol_l, th, wt).l;
-//   // function value (-logLR)
-//   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, w);
-//   // function norm
-//   const double norm0 = (proj * gr_fn(l, g, x, par, w)).norm();
-//
-//   /// minimization (projected gradient descent) ///
-//   double gamma = 1.0;
-//   while (!conv && iter != maxit && nllr <= th) {
-//     // update parameter
-//     Eigen::VectorXd par_tmp = par - gamma * proj * gr_fn(l, g, x, par, w);
-//     // update estimating function
-//     Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
-//     // update lambda
-//     Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
-//     // update function value
-//     const double f0 = nllr;
-//     nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, w);
-//     // step halving to ensure that the updated function value be
-//     // strictly less than the current function value
-//     while (f0 < nllr) {
-//       // reduce step size
-//       gamma *= 0.5;
-//       // propose new parameter
-//       par_tmp = par - gamma * proj * gr_fn(l, g, x, par, w);
-//       // propose new lambda
-//       g_tmp = g_fn(x, par_tmp);
-//       l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
-//       if (gamma < 1e-10) {
-//         nllr = f0;
-//         break;
-//       }
-//       // propose new function value
-//       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, w);
-//     }
-//
-//     // update
-//     const double step = (par - par_tmp).norm();
-//     par = std::move(par_tmp);
-//     l = std::move(l_tmp);
-//     g = std::move(g_tmp);
-//     // convergence check
-//     if ((proj * gr_fn(l, g, x, par, w)).norm() < tol * norm0 + tol * tol ||
-//         step < tol * par.norm() + tol * tol) {
-//       conv = true;
-//     }
-//     ++iter;
-//     Rcpp::Rcerr << "ddd" << "\n";
-//   }
-// }
-
-
-
 MINEL::MINEL(const std::string method,
              const Eigen::Ref<const Eigen::VectorXd>& par0,
              const Eigen::Ref<const Eigen::MatrixXd>& x,
@@ -438,12 +335,14 @@ MINEL::MINEL(const std::string method,
              const int maxit_l,
              const double tol,
              const double tol_l,
+             const double step,
              const double th,
              const Eigen::Ref<const Eigen::ArrayXd>& wt)
   : maxit{maxit},
     maxit_l{maxit_l},
     tol{tol},
     tol_l{tol_l},
+    gamma{step},
     th{th},
     n{static_cast<int>(x.rows())},
     weighted{wt.size() != 0},
@@ -467,7 +366,7 @@ MINEL::MINEL(const std::string method,
   const double norm0 = (proj * gr_fn(l, g, x, par, wt, weighted)).norm();
 
   /// minimization (projected gradient descent) ///
-  double gamma = 1.0;
+  // double gamma = 1.0;
   while (!conv && iter != maxit && nllr <= th) {
     // update parameter
     Eigen::VectorXd par_tmp =
@@ -485,11 +384,9 @@ MINEL::MINEL(const std::string method,
       // reduce step size
       gamma /= 2;
       if (gamma < 1e-10) {
-        // nllr = f0;
         break;
       }
       // propose new parameter
-      // Rcpp::Rcout << l << "\n";
       par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
       // propose new lambda
       g_tmp = g_fn(x, par_tmp);
@@ -502,9 +399,14 @@ MINEL::MINEL(const std::string method,
       nllr = f0;
       ++iter;
       break;
+    } else if (std::isnan(nllr)) {
+      // return initial values
+      par =
+        proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
+      Eigen::MatrixXd g = g_fn(x, par);
+      l = EL(g, maxit_l, tol_l, th, wt).l;
+      nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
     }
-
-    // Rcpp::Rcout << l_tmp << "\n";
 
     // update
     const double step = (par - par_tmp).norm();

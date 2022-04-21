@@ -12,7 +12,6 @@
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
-#'   See ‘Details’.
 #' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s. The default is set by the \code{na.action} setting of
 #'   \code{\link[base]{options}}, and is \code{na.fail} if that is unset.
@@ -36,11 +35,11 @@
 #'   solves the following estimating equation:
 #'   \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \beta)X_i = 0.}
 #'   \code{\link{el_lm}} first computes the parameter estimates by calling
-#'   \code{\link[stats]{lm.fit}} since the maximum empirical likelihood
-#'   estimator is the same as the least square estimator in our model. Next, it
-#'   performs hypothesis tests based on asymptotic chi-squared distribution of
-#'   empirical likelihood ratio statistics. Included in the tests are the
-#'   overall test with
+#'   \code{\link[stats]{lm.fit}} (with \code{...} if any) since the maximum
+#'   empirical likelihood estimator is the same as the least square estimator in
+#'   our model. Next, it performs hypothesis tests based on asymptotic
+#'   chi-squared distribution of empirical likelihood ratio statistics. Included
+#'   in the tests are the overall test with
 #'   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
 #'   and the tests for each parameter with
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
@@ -140,10 +139,9 @@ el_lm <- function(formula, data, weights = NULL, na.action,
   mm <- cbind(y, x)
   p <- ncol(x)
   w <- check_weights(w, nrow(mm))
-  out <- lm_(
-    mm, z$coefficients, intercept, control$maxit, control$maxit_l,
-    control$tol, control$tol_l, control$th, control$nthreads, w
-  )
+  out <- lm_(mm, z$coefficients, intercept, control$maxit, control$maxit_l,
+             control$tol, control$tol_l, control$step, control$th,
+             control$nthreads, w)
   out$df <- if (intercept && p > 1L) p - 1L else p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
   out$npar <- p
