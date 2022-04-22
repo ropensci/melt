@@ -159,7 +159,7 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
       contrasts = attr(X, "contrasts"),
       xlevels = .getXlevels(mt, mf)
     )),
-    class = c(out$class, c("el_glm", "el_lm", "el"))
+    class = c(out$class, c("el_glm", "el"))
     ))
   }
 
@@ -196,6 +196,93 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
     method = "glm.fit", contrasts = attr(X, "contrasts"),
     xlevels = .getXlevels(mt, mf)
   )),
-  class = c(out$class, c("el_glm", "el_lm", "el"))
+  class = c(out$class, c("el_glm", "el"))
   )
+}
+
+#' @export
+print.el_glm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+  cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
+      "\n\n", sep = "")
+  if (length(x$coefficients) == 0L) {
+    cat("No coefficients\n")
+  } else {
+    cat("Coefficients:\n")
+    print.default(format(x$coefficients, digits = digits), print.gap = 2L,
+                  quote = FALSE)
+  }
+  cat("\n")
+  invisible(x)
+}
+
+#' @export
+summary.el_glm <- function(object, ...) {
+  if (!inherits(object, "el_glm")) {
+    stop("invalid 'el_glm' object")
+  }
+  z <- object
+  p <- z$npar
+  if (p == 0L) {
+    ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
+    ans$coefficients <-
+      matrix(NA_real_, 0L, 3L,
+             dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)")))
+    ans$aliased <- is.na(z$coefficients)
+    class(ans) <- "summary.el_glm"
+    return(ans)
+  }
+  if (is.null(z$terms)) {
+    stop("invalid 'el_glm' object:  no 'terms' component")
+  }
+  ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
+  ans$coefficients <- cbind(
+    Estimate = z$coefficients,
+    Chisq = z$par.tests$statistic,
+    `Pr(>Chisq)` = pchisq(z$par.tests$statistic, df = 1L, lower.tail = FALSE)
+  )
+  ans$aliased <- is.na(z$coefficients)
+  if (p != attr(z$terms, "intercept")) {
+    ans$chisq.statistic <- c(value = z$statistic, df = z$df)
+  }
+  if (!is.null(z$na.action))
+    ans$na.action <- z$na.action
+  class(ans) <- "summary.el_glm"
+  ans
+}
+
+#' @importFrom stats naprint pchisq
+#' @export
+print.summary.el_glm <- function(x, digits = max(3L, getOption("digits") - 3L),
+                                signif.stars = getOption("show.signif.stars"),
+                                ...) {
+  cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n",
+      sep = "")
+  if (length(x$aliased) == 0L) {
+    cat("\nNo Coefficients\n")
+  } else {
+    cat("\nCoefficients:\n")
+    coefs <- x$coefficients
+    if (any(aliased <- x$aliased)) {
+      cn <- names(aliased)
+      coefs <-
+        matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
+      coefs[!aliased, ] <- x$coefficients
+    }
+    printCoefmat(coefs, digits = digits, signif.stars = signif.stars,
+                 P.values = TRUE, has.Pvalue = TRUE, na.print = "NA", ...)
+  }
+  cat("\n")
+  if (nzchar(mess <- naprint(x$na.action))) {
+    cat("  (", mess, ")\n", sep = "")
+  }
+  if (!is.null(x$chisq.statistic)) {
+    out <- c(
+      paste("Chisq:", format(x$chisq.statistic[1L], digits = digits)),
+      paste("df:", x$chisq.statistic[2L]),
+      paste("p-value:", format.pval(
+        pchisq(x$chisq.statistic[1L], x$chisq.statistic[2L],
+               lower.tail = FALSE), digits = digits)))
+    cat(strwrap(paste(out, collapse = ", ")), "\n\n")
+  }
+  invisible(x)
 }

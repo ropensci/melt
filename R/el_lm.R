@@ -160,21 +160,16 @@ el_lm <- function(formula, data, weights = NULL, na.action,
   )
 }
 
-#' @importFrom stats coef
 #' @export
 print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-  cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
-    "\n\n",
-    sep = ""
-  )
-  if (length(coef(x)) == 0L) {
+  cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n\n",
+      sep = "")
+  if (length(x$coefficients) == 0L) {
     cat("No coefficients\n")
   } else {
     cat("Coefficients:\n")
-    print.default(format(coef(x), digits = digits),
-      print.gap = 2L,
-      quote = FALSE
-    )
+    print.default(format(x$coefficients, digits = digits), print.gap = 2L,
+                  quote = FALSE)
   }
   cat("\n")
   invisible(x)
@@ -191,7 +186,7 @@ summary.el_lm <- function(object, ...) {
     ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
     ans$coefficients <-
       matrix(NA_real_, 0L, 3L,
-             dimnames = list(NULL, c("Estimate", "chisq value", "p-value")))
+             dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)")))
     ans$aliased <- is.na(z$coefficients)
     class(ans) <- "summary.el_lm"
     return(ans)
@@ -202,15 +197,13 @@ summary.el_lm <- function(object, ...) {
   ans <- z[c("call", "terms", if (!is.null(z$weights)) "weights")]
   ans$coefficients <- cbind(
     Estimate = z$coefficients,
-    `chisq value` = z$par.tests$statistic,
-    # `Pr(>Chisq)` = pchisq(z$par.tests$statistic, df = 1L, lower.tail = FALSE)
-    `p-value` = pchisq(z$par.tests$statistic, df = 1L, lower.tail = FALSE)
+    Chisq = z$par.tests$statistic,
+    `Pr(>Chisq)` = pchisq(z$par.tests$statistic, df = 1L, lower.tail = FALSE)
   )
   ans$aliased <- is.na(z$coefficients)
   if (p != attr(z$terms, "intercept")) {
-    # df.int <- if (attr(z$terms, "intercept")) 1L else 0L
-    # ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = p - df.int)
-    ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = z$df)
+    # ans$chisq.statistic <- c(value = -2 * z$optim$logLR, df = z$df)
+    ans$chisq.statistic <- c(value = z$statistic, df = z$df)
   }
   if (!is.null(z$na.action))
     ans$na.action <- z$na.action
@@ -253,11 +246,7 @@ print.summary.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L),
       paste("df:", x$chisq.statistic[2L]),
       paste("p-value:", format.pval(
         pchisq(x$chisq.statistic[1L], x$chisq.statistic[2L],
-          lower.tail = FALSE
-        ),
-        digits = digits
-      ))
-    )
+               lower.tail = FALSE), digits = digits)))
     cat(strwrap(paste(out, collapse = ", ")), "\n\n")
   }
   invisible(x)

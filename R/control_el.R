@@ -20,7 +20,7 @@
 #' @details Let \eqn{X_i} be independent and identically distributed
 #'   \eqn{p}-dimensional random variables from an unknown distribution \eqn{F}
 #'   for \eqn{i = 1, \dots, n}. For a parameter of interest \eqn{\theta(F) \in
-#'   {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional estimating function
+#'   {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth estimating function
 #'   \eqn{g(X_i, \theta)} with a moment condition
 #'   \deqn{\textnormal{E}[g(X_i, \theta)] = 0.}
 #'   We assume that there exists an unique \eqn{\theta_0} that solves the above
