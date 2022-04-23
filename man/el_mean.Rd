@@ -57,18 +57,18 @@ Computes empirical likelihood for the mean.
 \examples{
 # scalar mean
 par <- 0
-x <- rnorm(100L)
+x <- rnorm(100)
 el_mean(par, x)
 
 # vector mean
 par <- c(0, 0)
-x <- matrix(rnorm(100L), ncol = 2L)
+x <- matrix(rnorm(100), ncol = 2)
 el_mean(par, x)
 
 # weighted data
 par <- c(0, 0)
-x <- matrix(rnorm(100), ncol = 2L)
-w <- rep(c(1, 2), each = 25L)
+x <- matrix(rnorm(100), ncol = 2)
+w <- rep(c(1, 2), each = 25)
 el_mean(par, x, w)
 }
 \references{

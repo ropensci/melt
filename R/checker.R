@@ -63,6 +63,21 @@ check_hypothesis <- function(lhs, rhs, p) {
   list(l = lhs, r = rhs)
 }
 
+check_cv <- function(cv, th) {
+  cv <- tryCatch(as.numeric(cv), warning = function(w) NA,
+                 error = function(e) NA)
+  if (any(length(cv) != 1L, is.na(cv), is.infinite(cv))) {
+    stop("'cv' is not a number")
+  }
+  if (cv < .Machine$double.eps) {
+    stop("'cv' is too small")
+  }
+  if (!is.null(th) && cv > 2 * th) {
+    stop("'cv' is too large")
+  }
+  cv
+}
+
 check_family <- function(family) {
   f <- family$family
   l <- family$link

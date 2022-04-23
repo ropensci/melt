@@ -20,7 +20,7 @@
 intervals, either a vector of numbers or a vector of names. If missing, all
 parameters are considered.}
 
-\item{level}{A confidence level required.}
+\item{level}{A confidence level required. Defaults to \code{0.95}.}
 
 \item{cv}{A critical value for calibration of empirical likelihood ratio
 statistic. Defaults to \code{qchisq(level, 1L)}.}

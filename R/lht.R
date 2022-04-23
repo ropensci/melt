@@ -98,10 +98,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = control_el()) {
   tol_l <- control$tol_l
   step <- control$step
   th <- control$th
-  w <- object$weights
-  if (is.null(w)) {
-    w <- numeric(length = 0L)
-  }
+  w <- if (is.null(object$weights)) numeric(length = 0L) else object$weights
   if (is.null(lhs)) {
     out <- eval_(method, h$r, object$data.matrix, maxit_l, tol_l, th, w)
     out$df <- length(h$r)

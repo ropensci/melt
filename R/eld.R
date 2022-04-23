@@ -46,10 +46,7 @@ eld <- function(object, control = control_el()) {
   if (!inherits(control, "control_el") || !is.list(control)) {
     stop("invalid 'control' supplied")
   }
-  w <- object$weights
-  if (is.null(w)) {
-    w <- numeric(length = 0L)
-  }
+  w <- if (is.null(object$weights)) numeric(length = 0L) else object$weights
   out <- eld_(
     object$optim$method, object$coefficients, object$data.matrix,
     control$maxit_l, control$tol_l, control$th, control$nthreads, w

@@ -14,7 +14,8 @@ BugReports: https://github.com/markean/melt/issues
 License: GPL (>= 2)
 Depends: R (>= 3.6.0)
 Imports: 
-    Rcpp (>= 1.0.6),
+    methods,
+    Rcpp (>= 1.0.8),
     stats
 LinkingTo: 
     Rcpp, 

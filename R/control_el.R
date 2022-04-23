@@ -107,6 +107,7 @@
 #'     number of physical cores. Note that it only applies to the following
 #'     functions that involve multiple evaluations or minimizations:
 #'     \itemize{
+#'     \item{\code{\link{confreg}}}
 #'     \item{\code{\link{el_lm}}}
 #'     \item{\code{\link{el_glm}}}}}
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.

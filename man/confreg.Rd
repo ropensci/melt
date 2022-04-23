@@ -9,37 +9,39 @@ confreg(
   parm,
   level = 0.95,
   cv = qchisq(level, 2L),
-  n = 50,
+  npoints = 50L,
   control = control_el()
 )
 }
 \arguments{
 \item{object}{A fitted \code{"el"} object.}
 
-\item{parm}{A specification of which parameters are to be given confidence
-intervals, either a vector of numbers or a vector of names. If missing, all
-parameters are considered.}
+\item{parm}{A specification of which parameters are to be given a confidence
+region, either a vector of numbers or a vector of names. It should be a
+vector of length two of the form \code{c(x, y)}. If missing, the first two
+parameter in \code{object} are considered.}
 
-\item{level}{A confidence level required.}
+\item{level}{A confidence level required. Defaults to \code{0.95}.}
 
 \item{cv}{A critical value for calibration of empirical likelihood ratio
 statistic. Defaults to \code{qchisq(level, 2L)}.}
 
+\item{npoints}{Number of boundary points to compute. Defaults to \code{50}.}
+
 \item{control}{A list of control parameters set by \code{\link{control_el}}.}
 }
 \value{
-A matrix with columns giving lower and upper confidence limits for
- each parameter. In contrast to other methods that rely on studentization,
- the lower and upper limits obtained from empirical likelihood do not
- correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in
- \%, respectively.
+An S4 object of class \code{"\link{ConfregEL}"}.
 }
 \description{
-Computes confidence region for two model parameters in a fitted model.
+Computes boundary points of a two-dimensional confidence region for model
+  parameters.
 }
 \examples{
-fit <- el_lm(formula = mpg ~ wt, data = mtcars)
-confint(fit)
+par <- c(0, 0, 0)
+x <- matrix(rnorm(90), ncol = 3)
+fit <- el_mean(par, x)
+confreg(fit, c(1, 3))
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
