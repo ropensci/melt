@@ -12,7 +12,7 @@ Description: Performs multiple empirical likelihood tests for regression analysi
 URL: https://github.com/markean/melt
 BugReports: https://github.com/markean/melt/issues
 License: GPL (>= 2)
-Depends: R (>= 3.6.0)
+Depends: R (>= 4.0.0)
 Imports: 
     methods,
     Rcpp (>= 1.0.8),

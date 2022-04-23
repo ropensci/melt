@@ -4,7 +4,7 @@
 \name{ConfregEL-class}
 \alias{ConfregEL-class}
 \alias{ConfregEL}
-\title{An S4 class \code{"ConfregEL"}}
+\title{An S4 class \code{ConfregEL}}
 \description{
 An S4 class for a two-dimensional confidence region.
 }

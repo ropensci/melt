@@ -10,7 +10,7 @@ test_that("invalid 'object", {
   eld <- eld(fit)
   pdf(NULL)
   plot(eld)
-  expect_length(eld, n)
+  expect_length(eld@eld, n)
   lhs <- matrix(c(1, -1), nrow = 1)
   fit2 <- lht(fit, lhs = lhs)
   expect_error(eld(df))

@@ -14,10 +14,10 @@
 #' @param npoints Number of boundary points to compute. Defaults to \code{50}.
 #' @param control A list of control parameters set by \code{\link{control_el}}.
 #' @importFrom stats qchisq
-#' @return An S4 object of class \code{"\link{ConfregEL}"}.
+#' @return An S4 object of class \code{\link{ConfregEL}}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-#' @seealso \link{control_el}, \link{confint.el}, \link{lht}
+#' @seealso \link{confint.el}, \link{control_el}, \link{lht}
 #' @examples
 #' par <- c(0, 0, 0)
 #' x <- matrix(rnorm(90), ncol = 3)

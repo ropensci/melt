@@ -31,7 +31,7 @@ statistic. Defaults to \code{qchisq(level, 2L)}.}
 \item{control}{A list of control parameters set by \code{\link{control_el}}.}
 }
 \value{
-An S4 object of class \code{"\link{ConfregEL}"}.
+An S4 object of class \code{\link{ConfregEL}}.
 }
 \description{
 Computes boundary points of a two-dimensional confidence region for model
@@ -48,5 +48,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{control_el}, \link{confint.el}
+\link{confint.el}, \link{control_el}, \link{lht}
 }

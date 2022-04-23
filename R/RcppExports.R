@@ -17,6 +17,10 @@ confreg_ <- function(method, par0, x, cutoff, d, maxit, maxit_l, tol, tol_l, ste
     .Call(`_melt_confreg_`, method, par0, x, cutoff, d, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
+ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
+    .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
+}
+
 eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
     .Call(`_melt_eld_`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
 }
@@ -27,10 +31,6 @@ eval_ <- function(method, par0, x, maxit_l, tol_l, th, wt) {
 
 eval_g_ <- function(g, maxit_l, tol_l, th, wt) {
     .Call(`_melt_eval_g_`, g, maxit_l, tol_l, th, wt)
-}
-
-ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_melt_ELtest`, x, c, lhs, rhs, threshold, maxit, abstol)
 }
 
 glm_ <- function(family, link, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {

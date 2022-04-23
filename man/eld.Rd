@@ -13,7 +13,7 @@ eld(object, control = control_el())
 \code{\link{control_el}}.}
 }
 \value{
-A numeric vector of class \code{"el"}.
+An S4 object of class \code{\link{ELD}}.
 }
 \description{
 Computes empirical likelihood displacement for model diagnostics and outlier
