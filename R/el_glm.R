@@ -200,7 +200,7 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
   )
 }
 
-#' @export
+#' @exportS3Method print el_glm
 print.el_glm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
       "\n\n", sep = "")
@@ -251,7 +251,7 @@ summary.el_glm <- function(object, ...) {
 }
 
 #' @importFrom stats naprint pchisq
-#' @export
+#' @exportS3Method print summary.el_glm
 print.summary.el_glm <- function(x, digits = max(3L, getOption("digits") - 3L),
                                 signif.stars = getOption("show.signif.stars"),
                                 ...) {

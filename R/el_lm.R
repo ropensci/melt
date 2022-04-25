@@ -160,7 +160,7 @@ el_lm <- function(formula, data, weights = NULL, na.action,
   )
 }
 
-#' @export
+#' @exportS3Method print el_lm
 print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n\n",
       sep = "")
@@ -212,7 +212,7 @@ summary.el_lm <- function(object, ...) {
 }
 
 #' @importFrom stats naprint pchisq
-#' @export
+#' @exportS3Method print summary.el_lm
 print.summary.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L),
                                 signif.stars = getOption("show.signif.stars"),
                                 ...) {

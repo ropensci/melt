@@ -144,16 +144,15 @@ el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
   out
 }
 
-#' @noRd
 #' @importFrom stats printCoefmat
-#' @export
+#' @exportS3Method print pairwise
 print.pairwise <- function(x, ...) {
   stopifnot(inherits(x, "melt"))
   cat("\nEmpirical Likelihood Multiple Hypothesis Testing\n\n")
   # set row names
   if (is.null(x$control)) {
     cat("Test: all pairwise comparisons\n\n")
-    rname <- vector("character", length = 0)
+    rname <- vector("character", length = 0L)
     for (i in 1L:(length(x$trt) - 1L)) {
       for (j in (i + 1L):length(x$trt)) {
         rname <- c(rname, paste(x$trt[i], "-", x$trt[j]))
@@ -171,7 +170,7 @@ print.pairwise <- function(x, ...) {
     row.names = rname, estimate = x$estimate,
     statistic = x$statistic, lwr.ci = x$lower,
     upr.ci = x$upper,
-    p.adj = round(x$p.adj, 4)
+    p.adj = round(x$p.adj, 4L)
   )
   printCoefmat(out,
     digits = min(4L, getOption("digits")), cs.ind = c(1, 3, 4),

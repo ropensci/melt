@@ -142,8 +142,7 @@ logLik.el <- function(object, ...) {
   val
 }
 
-#' @noRd
-#' @export
+#' @exportS3Method print el
 print.el <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
   out <- character()
@@ -163,8 +162,7 @@ print.el <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   invisible(x)
 }
 
-#' @noRd
-#' @export
+#' @exportS3Method print elt
 print.elt <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("\nEmpirical Likelihood Linear Hypothesis Test:", x$optim$method, "\n\n")
   out <- character()

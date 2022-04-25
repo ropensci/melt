@@ -95,7 +95,6 @@ el_mean <- function(par, x, weights = NULL, control = control_el(),
   out <- eval_("mean", par, mm, control$maxit_l, control$tol_l, control$th, w)
   out$df <- p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
-  # out$par <- par
   out$npar <- p
   if (!is.null(weights)) {
     out$weights <- w
