@@ -38,48 +38,6 @@ setClass("EL",
   )
 )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #' S4 class \code{ConfregEL}
 #'
 #' S4 class for confidence region.
@@ -102,9 +60,6 @@ setClass("ConfregEL",
     pnames = NA_character_
   )
 )
-
-
-
 
 #' S4 class \code{ELD}
 #'

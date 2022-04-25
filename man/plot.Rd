@@ -6,12 +6,14 @@
 \alias{plot,ELD-method}
 \title{Plot methods for objects that inherit from class \linkS4class{EL}}
 \usage{
-\S4method{plot}{ConfregEL}(x, ...)
+\S4method{plot}{ConfregEL}(x, y, ...)
 
-\S4method{plot}{ELD}(x, ...)
+\S4method{plot}{ELD}(x, y, ...)
 }
 \arguments{
 \item{x}{Object for plotting.}
+
+\item{y}{Not used.}
 
 \item{...}{Further graphical parameters (see \code{\link[graphics]{par}}).}
 }
@@ -24,8 +26,8 @@ Provides plot methods for objects of class \linkS4class{ConfregEL} or
 \item \code{ConfregEL}: Plots a two-dimensional confidence region for model
 parameters.
 
-\item \code{ELD}: Plots the empirical likelihood displacement values versus
-the observation index.
+\item \code{ELD}: Plots empirical likelihood displacement values versus
+observation index.
 }}
 
 \seealso{

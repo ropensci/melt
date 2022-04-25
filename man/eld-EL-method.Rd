@@ -8,7 +8,7 @@
 \S4method{eld}{EL}(object, control = control_el())
 }
 \arguments{
-\item{object}{Fitted linkS4class{EL} object.}
+\item{object}{Fitted \linkS4class{EL} object.}
 
 \item{control}{List of control parameters set by \code{\link{control_el}}.}
 }

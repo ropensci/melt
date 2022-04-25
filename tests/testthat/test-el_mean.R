@@ -14,9 +14,9 @@ test_that("probabilities add up to 1", {
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(par, x, control = optcfg)
+  fit <- el_mean2(par, x, control = optcfg)
   expect_output(print(fit))
-  expect_equal(sum(exp(fit$log.prob)), 1)
+  expect_equal(sum(exp(fit@logp)), 1)
 })
 
 test_that("probabilities add up to 1 (weighted)", {
@@ -37,7 +37,7 @@ test_that("identical weights == no weights", {
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   a1 <- el_mean2(par, x, control = optcfg)
   a2 <- el_mean2(par, x, weights = w, control = optcfg)
-  a2@weights <- w
+  a2@weights <- a1@weights
   expect_equal(a1, a2)
 })
 

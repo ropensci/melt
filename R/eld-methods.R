@@ -3,7 +3,7 @@
 #' Computes empirical likelihood displacement for model diagnostics and outlier
 #'   detection.
 #'
-#' @param object Fitted linkS4class{EL} object.
+#' @param object Fitted \linkS4class{EL} object.
 #' @param control List of control parameters set by \code{\link{control_el}}.
 #' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
 #'   on the full sample with \eqn{n} observations. The maximum empirical
