@@ -39,7 +39,7 @@ setMethod(
       stop("invalid 'control' supplied")
     }
     if (is(object, "GLM")) {
-      stop("'eld' method is not applicable to 'GLM' object")
+      stop("'eld' method is not applicable to a 'GLM' object")
     }
     if (length(object@dataMatrix) == 0L) {
       stop("'object' has no 'dataMatrix'; fit the model with 'model' = TRUE")

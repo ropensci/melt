@@ -25,12 +25,11 @@ Rcpp::List lht_(
       Rcpp::Named("method") = method,
       Rcpp::Named("par") = el.par,
       Rcpp::Named("lambda") = el.l,
-      Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-      Rcpp::Named("log.prob") = el.logp(x, w),
-      Rcpp::Named("loglik") = el.loglik(w),
-      Rcpp::Named("coefficients") = el.par,
-      Rcpp::Named("statistic") = 2.0 * el.nllr);
+    Rcpp::Named("logp") = el.logp(x, w),
+    Rcpp::Named("logl") = el.loglik(w),
+    Rcpp::Named("loglr") = -el.nllr,
+    Rcpp::Named("statistic") = 2.0 * el.nllr);
   return result;
 }

@@ -44,7 +44,7 @@
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as \code{optim} and \code{par.tests},
 #'   respectively.
-#' @return S4 object of class of class \linkS4class{LM}
+#' @return S4 object of class of class \linkS4class{LM}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_glm}, \link{control_el}, \link{lht}

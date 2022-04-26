@@ -39,6 +39,9 @@
 #' @export
 el_mean2 <- function(par, x, weights = NULL, control = control_el(),
                      model = TRUE) {
+  if (!inherits(control, "control_el") || !is.list(control)) {
+    stop("invalid 'control' supplied")
+  }
   mm <- as.matrix(x)
   n <- nrow(mm)
   p <- ncol(mm)
@@ -56,9 +59,6 @@ el_mean2 <- function(par, x, weights = NULL, control = control_el(),
   }
   if (length(par) != p) {
     stop("'par' and 'x' have incompatible dimensions")
-  }
-  if (!inherits(control, "control_el") || !is.list(control)) {
-    stop("invalid 'control' supplied")
   }
   w <- check_weights(weights, n)
   if (!is.null(weights)) {
