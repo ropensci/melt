@@ -79,6 +79,7 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
       Rcpp::Named("convergence") = par_conv),
     Rcpp::Named("log.prob") = logp,
     Rcpp::Named("loglik") = loglik,
+    Rcpp::Named("loglr") = -nllr,
     Rcpp::Named("statistic") = 2.0 * nllr);
   return result;
 }

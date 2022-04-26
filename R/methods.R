@@ -136,7 +136,7 @@ logLik.el <- function(object, ...) {
   p <- object$npar
   rhs <- object$coefficients
   out <- lht(object, rhs = rhs)
-  val <- out$loglik
+  val <- out$logl
   attr(val, "df") <- p
   class(val) <- "logLik"
   val

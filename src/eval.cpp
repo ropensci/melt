@@ -18,11 +18,11 @@ Rcpp::List eval_(
       Rcpp::Named("method") = method,
       Rcpp::Named("par") = el.par,
       Rcpp::Named("lambda") = el.l,
-      Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-    Rcpp::Named("log.prob") = el.logp(x),
-    Rcpp::Named("loglik") = el.loglik(),
+    Rcpp::Named("logp") = el.logp(x),
+    Rcpp::Named("logl") = el.loglik(),
+    Rcpp::Named("loglr") = -el.nllr,
     Rcpp::Named("statistic") = 2.0 * el.nllr);
   return result;
 }
@@ -44,8 +44,9 @@ Rcpp::List eval_g_(
       Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
-    Rcpp::Named("log.prob") = el.logp_g(g),
-    Rcpp::Named("loglik") = el.loglik(),
+    Rcpp::Named("logp") = el.logp_g(g),
+    Rcpp::Named("logl") = el.loglik(),
+    Rcpp::Named("loglr") = -el.nllr,
     Rcpp::Named("statistic") = 2.0 * el.nllr);
   return result;
 }

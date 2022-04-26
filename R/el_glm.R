@@ -215,7 +215,7 @@ print.el_glm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   invisible(x)
 }
 
-#' @export
+#' @exportS3Method summary el_glm
 summary.el_glm <- function(object, ...) {
   if (!inherits(object, "el_glm")) {
     stop("invalid 'el_glm' object")

@@ -5,7 +5,7 @@
 #   y <- 1 + x + rnorm(n)
 #   df <- data.frame(y, x)
 #   optcfg <- control_el(tol = 1e-08, th = 1e+10)
-#   fit <- el_lm(y ~ x, df, control = optcfg)
+#   fit <- el_lm2(y ~ x, df, control = optcfg)
 #   expect_error(eld(fit, control = list(maxit = 20L)))
 #   eld <- eld(fit)
 #   pdf(NULL)

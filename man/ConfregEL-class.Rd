@@ -3,8 +3,7 @@
 \docType{class}
 \name{ConfregEL-class}
 \alias{ConfregEL-class}
-\alias{ConfregEL}
-\title{S4 class \code{ConfregEL}}
+\title{S4 class \linkS4class{ConfregEL}}
 \description{
 S4 class for confidence region.
 }
@@ -24,3 +23,6 @@ statistic.}
 \item{\code{pnames}}{Character vector of length two for the name of parameters.}
 }}
 
+\examples{
+showClass("ConfregEL")
+}

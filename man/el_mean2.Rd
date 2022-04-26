@@ -22,7 +22,7 @@ non-\code{NULL}, weighted empirical likelihood is computed.}
 is returned.}
 }
 \value{
-An S4 object of class \code{\link{EL}}.
+An S4 object of class \linkS4class{EL}.
 }
 \description{
 Computes empirical likelihood for the mean.
@@ -31,18 +31,18 @@ Computes empirical likelihood for the mean.
 # scalar mean
 par <- 0
 x <- rnorm(100)
-el_mean(par, x)
+el_mean2(par, x)
 
 # vector mean
 par <- c(0, 0)
 x <- matrix(rnorm(100), ncol = 2)
-el_mean(par, x)
+el_mean2(par, x)
 
 # weighted data
 par <- c(0, 0)
 x <- matrix(rnorm(100), ncol = 2)
 w <- rep(c(1, 2), each = 25)
-el_mean(par, x, w)
+el_mean2(par, x, w)
 }
 \references{
 Glenn, N.L., and Yichuan Zhao. 2007.

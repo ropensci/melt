@@ -3,8 +3,7 @@
 \docType{class}
 \name{ELD-class}
 \alias{ELD-class}
-\alias{ELD}
-\title{S4 class \code{ELD}}
+\title{S4 class \linkS4class{ELD}}
 \description{
 S4 class for empirical likelihood displacement.
 }
@@ -14,3 +13,6 @@ S4 class for empirical likelihood displacement.
 \item{\code{eld}}{Numeric vector of empirical likelihood displacement values.}
 }}
 
+\examples{
+showClass("ELD")
+}

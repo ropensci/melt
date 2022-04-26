@@ -48,7 +48,7 @@ test_that("loglik to loglr", {
   par <- runif(1, min(x), max(x))
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean2(par, x, control = optcfg)
-  expect_equal(fit@logl + n * log(n), fit@optim$logLR)
+  expect_equal(fit@logl + n * log(n), fit@loglr)
 })
 
 test_that("loglik to loglr (weighted)", {
@@ -60,7 +60,7 @@ test_that("loglik to loglr (weighted)", {
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean2(par, x, weights = w, control = optcfg)
   w <- fit@weights
-  expect_equal(fit@logl + sum(w * (log(n) - log(w))), fit@optim$logLR)
+  expect_equal(fit@logl + sum(w * (log(n) - log(w))), fit@loglr)
 })
 
 test_that("non-full rank", {

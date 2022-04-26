@@ -20,7 +20,7 @@ test_that("probabilities add up to 1", {
   par <- runif(1, min(x), max(x))
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
-  expect_equal(sum(exp(fit$log.prob)), 1)
+  expect_equal(sum(exp(fit$logp)), 1)
 })
 
 test_that("probabilities add up to 1 (weighted)", {
@@ -30,7 +30,7 @@ test_that("probabilities add up to 1 (weighted)", {
   w <- 1 + runif(10, min = -0.5, max = 0.5)
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
-  expect_equal(sum(exp(fit$log.prob)), 1)
+  expect_equal(sum(exp(fit$logp)), 1)
 })
 
 test_that("loglik to loglr", {
@@ -40,7 +40,7 @@ test_that("loglik to loglr", {
   par <- runif(1, min(x), max(x))
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
-  expect_equal(fit$loglik + n * log(n), fit$optim$logLR)
+  expect_equal(fit$logl + n * log(n), fit$loglr)
 })
 
 test_that("loglik to loglr (weighted)", {
@@ -52,7 +52,7 @@ test_that("loglik to loglr (weighted)", {
   optcfg <- control_el(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
   w <- fit$weights
-  expect_equal(fit$loglik + sum(w * (log(n) - log(w))), fit$optim$logLR)
+  expect_equal(fit$logl + sum(w * (log(n) - log(w))), fit$loglr)
 })
 
 test_that("identical weights == no weights", {

@@ -11,7 +11,7 @@
 #' @param control List of control parameters set by \code{\link{control_el}}.
 #' @param model Logical. If \code{TRUE} the data matrix used for model fitting
 #'   is returned.
-#' @return An S4 object of class \code{\link{EL}}.
+#' @return An S4 object of class \linkS4class{EL}.
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
@@ -23,18 +23,18 @@
 #' # scalar mean
 #' par <- 0
 #' x <- rnorm(100)
-#' el_mean(par, x)
+#' el_mean2(par, x)
 #'
 #' # vector mean
 #' par <- c(0, 0)
 #' x <- matrix(rnorm(100), ncol = 2)
-#' el_mean(par, x)
+#' el_mean2(par, x)
 #'
 #' # weighted data
 #' par <- c(0, 0)
 #' x <- matrix(rnorm(100), ncol = 2)
 #' w <- rep(c(1, 2), each = 25)
-#' el_mean(par, x, w)
+#' el_mean2(par, x, w)
 #' @importFrom methods new
 #' @export
 el_mean2 <- function(par, x, weights = NULL, control = control_el(),
@@ -68,12 +68,9 @@ el_mean2 <- function(par, x, weights = NULL, control = control_el(),
   }
   el <- eval_("mean", par, mm, control$maxit_l, control$tol_l, control$th, w)
   new("EL",
-    optim = el$optim,
-    logp = el$log.prob,
-    logl = el$loglik,
+    optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
     statistic = el$statistic, df = p,
-    pval = pchisq(el$statistic, df = p, lower.tail = FALSE),
-    npar = p,
+    pval = pchisq(el$statistic, df = p, lower.tail = FALSE), npar = p,
     weights = w,
     dataMatrix = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = est

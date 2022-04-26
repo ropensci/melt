@@ -4,22 +4,21 @@
 \alias{plot}
 \alias{plot,ConfregEL-method}
 \alias{plot,ELD-method}
-\title{Plot methods for objects that inherit from class \linkS4class{EL}}
+\title{Plot methods}
 \usage{
 \S4method{plot}{ConfregEL}(x, y, ...)
 
 \S4method{plot}{ELD}(x, y, ...)
 }
 \arguments{
-\item{x}{Object for plotting.}
+\item{x}{Object to be plotted.}
 
 \item{y}{Not used.}
 
 \item{...}{Further graphical parameters (see \code{\link[graphics]{par}}).}
 }
 \description{
-Provides plot methods for objects of class \linkS4class{ConfregEL} or
-  \linkS4class{ELD}.
+Provides plot methods for objects that inherit from class \linkS4class{EL}.
 }
 \section{Methods (by class)}{
 \itemize{

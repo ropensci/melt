@@ -1,15 +1,35 @@
 #' @describeIn plot Plots a two-dimensional confidence region for model
 #'   parameters.
-#' @importFrom graphics polygon
-setMethod("plot", "ConfregEL", function(x, y, ...) {
-  plot(x@points[, 1L], x@points[, 2L], ...)
-  polygon(x@points[, 1L], x@points[, 2L], ...)
+#' @importFrom graphics points polygon plot.default text
+setMethod("plot", "ConfregEL", function(x, ...) {
+  args <- list(...)
+  if (!exists("xlab", args)) {
+    args$main <- paste(sprintf("%0.1f%%", 100 * x@level), "Confidence Region")
+  }
+  if (!exists("xlab", args)) {
+    args$xlab <- x@pnames[1L]
+  }
+  if (!exists("ylab", args)) {
+    args$ylab <- x@pnames[2L]
+  }
+  if (!exists("pch", args)) {
+    args$pch <- 20L
+  }
+  if (!exists("cex", args)) {
+    args$cex <- 0.5
+  }
+  args$x <- x@points[, 1L]
+  args$y <- x@points[, 2L]
+  do.call(plot.default, args)
+  do.call(polygon, args)
+  points(x@estimates[1L], x@estimates[2L], pch = args$pch, cex = args$cex)
+  text(x@estimates[1L], x@estimates[2L], expression(hat(theta)), pos = 4L)
 })
 
 #' @describeIn plot Plots empirical likelihood displacement values versus
 #'   observation index.
-#' @exportMethod plot
-setMethod("plot", "ELD", function(x, y, ...) {
+#' @importFrom graphics polygon plot.default
+setMethod("plot", "ELD", function(x, ...) {
   args <- list(...)
   if (!exists("xlab", args)) {
     args$main <- "Empirical Likelihood Displacement"
@@ -21,5 +41,5 @@ setMethod("plot", "ELD", function(x, y, ...) {
     args$pch <- 21
   }
   args$x <- x@eld
-  do.call(plot, args)
+  do.call(plot.default, args)
 })

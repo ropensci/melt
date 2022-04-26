@@ -30,6 +30,7 @@
 #' y <- 10
 #' fit <- el_mean2(0, c(x, y))
 #' eld(fit)
+#' @importFrom methods is
 #' @aliases eld
 setMethod(
   "eld", "EL",
@@ -37,8 +38,8 @@ setMethod(
     if (!inherits(control, "control_el") || !is.list(control)) {
       stop("invalid 'control' supplied")
     }
-    if (inherits(object, "el_glm")) {
-      stop("method is not applicable to 'el_glm' object")
+    if (is(object, "GLM")) {
+      stop("'eld' method is not applicable to 'GLM' object")
     }
     if (length(object@dataMatrix) == 0L) {
       stop("'object' has no 'dataMatrix'; fit the model with 'model' = TRUE")

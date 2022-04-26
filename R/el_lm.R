@@ -175,7 +175,7 @@ print.el_lm <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   invisible(x)
 }
 
-#' @export
+#' @exportS3Method summary el_lm
 summary.el_lm <- function(object, ...) {
   if (!inherits(object, "el_lm")) {
     stop("invalid 'el_lm' object")

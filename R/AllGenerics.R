@@ -10,30 +10,42 @@ setGeneric("confreg", function(object, parm, level = 0.95,
   standardGeneric("confreg")
 })
 
-
-#' Plot methods for objects that inherit from class \linkS4class{EL}
+#' Plot methods
 #'
-#' Provides plot methods for objects of class \linkS4class{ConfregEL} or
-#'   \linkS4class{ELD}.
+#' Provides plot methods for objects that inherit from class \linkS4class{EL}.
 #'
-#' @param x Object for plotting.
+#' @param x Object to be plotted.
 #' @param y Not used.
 #' @param ... Further graphical parameters (see \code{\link[graphics]{par}}).
 #' @usage NULL
 #' @seealso \link{confreg}, \link{eld}
 #' @exportMethod plot
-setGeneric("plot", function(x, y, ...) standardGeneric("plot"), signature = "x")
+setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
+#' Print methods
+#'
+#' Provides print methods for objects that inherit from class \linkS4class{EL}.
+#'
+#' @name print-method
+#' @param x Object to be printed.
+#' @param ... Further arguments passed to other methods.
+#' @param digits Number of significant digits to be passed to
+#'   \code{\link[base]{format}}.
+#' @param signif.stars Logical. If \code{TRUE}, ‘significance stars’ are printed
+#'   for each coefficient.
+#' @usage NULL
+#' @exportMethod print
+setGeneric("print", function(x, ...) standardGeneric("print"))
 
-#' #' Plot methods for objects that inherit from class \linkS4class{EL}
-#' #'
-#' #' Provides plot methods for S4 objects that inherit from class \linkS4class{EL}.
-#' #'
-#' #' @param x An S4 object of class \code{\link{EL}}.
-#' #' @param y An S4 object of class \code{\link{EL}}.
-#' #' @param digits An S4 object of class \code{\link{EL}}.
-#' #' @param ... further arguments passed to or from other methods.
-#' setGeneric("print", function(x, y, digits, ...) standardGeneric("print"))
+#' Summary methods
 #'
+#' Provides summary methods for objects that inherit from class
+#'   \linkS4class{EL}.
 #'
-#' setMethod("show", "EL", function(object) print(object))
+#' @name summary-method
+#' @param object Object for which a summary is desired.
+#' @param ... Additional arguments affecting the summary produced.
+#' @usage NULL
+#' @exportMethod summary
+setGeneric("summary", function(object, ...) standardGeneric("summary"))
+
