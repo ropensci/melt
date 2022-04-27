@@ -2,9 +2,9 @@
 #'
 #' Computes confidence intervals for one or more parameters in a fitted model.
 #' Package \strong{melt} adds a method for objects inheriting from class
-#' \code{"el"}.
+#' \linkS4class{EL}.
 #'
-#' @param object A fitted \code{"el"} object.
+#' @param object A fitted \linkS4class{EL} object.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
@@ -12,7 +12,7 @@
 #' @param cv A critical value for calibration of empirical likelihood ratio
 #'   statistic. Defaults to \code{qchisq(level, 1L)}.
 #' @param control A list of control parameters set by
-#'   \code{\link{control_el}}.
+#'   \code{\link{el_control}}.
 #' @param ... Some methods for this generic function require extra arguments.
 #'   None are used in this method.
 #' @importFrom stats qchisq
@@ -26,13 +26,12 @@
 #'   \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-#' @seealso \link{confreg}, \link{control_el}, \link{lht}
+#' @seealso \link{confreg}, \link{el_control}, \link{lht}
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
-#' confint(fit)
 #' @export
 confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
-                       control = control_el(), ...) {
+                       control = el_control(), ...) {
   est <- object$coefficients
   # no confidence interval for empty model
   if (length(est) == 0L) {
@@ -80,17 +79,17 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
   }
 
   # check control
-  if (!inherits(control, "control_el") || !is.list(control)) {
-    stop("invalid 'control' supplied")
+  if (!is(control, "ControlEL")) {
+    stop("invalid 'control' specified")
   }
   method <- object$optim$method
-  maxit <- control$maxit
-  maxit_l <- control$maxit_l
-  tol <- control$tol
-  tol_l <- control$tol_l
-  step <- control$step
-  th <- control$th
-  nthreads <- control$nthreads
+  maxit <- control@maxit
+  maxit_l <- control@maxit_l
+  tol <- control@tol
+  tol_l <- control@tol_l
+  step <- control@step
+  th <- control@th
+  nthreads <- control@nthreads
   w <- if (is.null(object$weights)) numeric(length = 0L) else object$weights
   cv <- check_cv(cv, th)
   # compute the confidence interval matrix
@@ -114,70 +113,6 @@ confint.el <- function(object, parm, level = 0.95, cv = qchisq(level, 1L),
   ci
 }
 
-#' Empirical log-likelihood
-#'
-#' Extracts empirical log-likelihood of a model represented by
-#'   \code{object} evaluated at the estimated coefficients. Package
-#'   \strong{melt} adds a method for objects inheriting from class \code{"el"}.
-#'
-#' @param object A fitted \code{"el"} object.
-#' @param ... Some methods for this generic function require extra arguments.
-#'   None are used in this method.
-#' @return An object of class \code{"logLik"} with an attribute \code{df} that
-#'   gives the number of (estimated) parameters in the model.
-#' @examples
-#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
-#' logLik(fit)
-#' @export
-logLik.el <- function(object, ...) {
-  if (!missing(...)) {
-    warning("extra arguments are not supported")
-  }
-  p <- object$npar
-  rhs <- object$coefficients
-  out <- lht(object, rhs = rhs)
-  val <- out$logl
-  attr(val, "df") <- p
-  class(val) <- "logLik"
-  val
-}
 
-#' @exportS3Method print el
-print.el <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-  cat("\nEmpirical Likelihood Test:", x$optim$method, "\n\n")
-  out <- character()
-  if (!is.null(x$statistic)) {
-    out <- c(
-      out, paste("Chisq:", format(x$statistic, digits = digits)),
-      paste("df:", x$df),
-      paste("p-value:", format.pval(x$p.value, digits = digits))
-    )
-  }
-  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
-  if (!is.null(x$coefficients)) {
-    cat("maximum EL estimates:\n")
-    print(x$coefficients, digits = digits, ...)
-  }
-  cat("\n")
-  invisible(x)
-}
 
-#' @exportS3Method print elt
-print.elt <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-  cat("\nEmpirical Likelihood Linear Hypothesis Test:", x$optim$method, "\n\n")
-  out <- character()
-  if (!is.null(x$statistic)) {
-    out <- c(
-      out, paste("Chisq:", format(x$statistic, digits = digits)),
-      paste("df:", x$df),
-      paste("p-value:", format.pval(x$p.value, digits = digits))
-    )
-  }
-  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
-  if (!is.null(x$coefficients)) {
-    cat("maximum EL estimates:\n")
-    print(x$coefficients, digits = digits, ...)
-  }
-  cat("\n")
-  invisible(x)
-}
+

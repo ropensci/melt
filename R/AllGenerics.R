@@ -1,12 +1,12 @@
 #' @exportMethod eld
-setGeneric("eld", function(object, control = control_el()) {
+setGeneric("eld", function(object, control = el_control()) {
   standardGeneric("eld")
 })
 
 #' @exportMethod confreg
 setGeneric("confreg", function(object, parm, level = 0.95,
                                cv = qchisq(level, 2L), npoints = 50L,
-                               control = control_el()) {
+                               control = el_control()) {
   standardGeneric("confreg")
 })
 
@@ -48,4 +48,17 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' @usage NULL
 #' @exportMethod summary
 setGeneric("summary", function(object, ...) standardGeneric("summary"))
+
+
+
+
+
+
+#' @exportMethod logLik
+setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
+
+
+
+
+
 

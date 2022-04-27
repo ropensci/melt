@@ -34,6 +34,7 @@ setMethod(
 setMethod("show", "EL", function(object) print(object))
 
 #' @rdname print-method
+#' @importFrom stats naprint pchisq
 setMethod(
   "print", "SummaryLM",
   function(x, digits = max(3L, getOption("digits") - 3L),

@@ -4,7 +4,7 @@
 #'   detection.
 #'
 #' @param object Fitted \linkS4class{EL} object.
-#' @param control List of control parameters set by \code{\link{control_el}}.
+#' @param control List of control parameters set by \code{\link{el_control}}.
 #' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
 #'   on the full sample with \eqn{n} observations. The maximum empirical
 #'   likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
@@ -24,29 +24,29 @@
 #'   Measures for Empirical Likelihood of General Estimating Equations.”
 #'   Biometrika 95 (2): 489–507.
 #'   \doi{10.1093/biomet/asm094}.
-#' @seealso \link{el_eval}, \link{control_el}, \link{plot}
+#' @seealso \link{el_control}, \link{el_eval}, \link{plot}
 #' @examples
 #' x <- rnorm(10L)
 #' y <- 10
-#' fit <- el_mean2(0, c(x, y))
+#' fit <- el_mean(0, c(x, y))
 #' eld(fit)
 #' @importFrom methods is
 #' @aliases eld
 setMethod(
   "eld", "EL",
-  function(object, control = control_el()) {
-    if (!inherits(control, "control_el") || !is.list(control)) {
-      stop("invalid 'control' supplied")
-    }
+  function(object, control = el_control()) {
     if (is(object, "GLM")) {
       stop("'eld' method is not applicable to a 'GLM' object")
     }
     if (length(object@dataMatrix) == 0L) {
       stop("'object' has no 'dataMatrix'; fit the model with 'model' = TRUE")
     }
+    if (!is(control, "ControlEL")) {
+      stop("invalid 'control' specified")
+    }
     new("ELD", eld = eld_(
       object@optim$method, object@coefficients, object@dataMatrix,
-      control$maxit_l, control$tol_l, control$th, control$nthreads,
+      control@maxit_l, control@tol_l, control@th, control@nthreads,
       object@weights
     ))
   }

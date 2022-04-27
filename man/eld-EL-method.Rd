@@ -5,12 +5,12 @@
 \alias{eld}
 \title{Empirical likelihood displacement}
 \usage{
-\S4method{eld}{EL}(object, control = control_el())
+\S4method{eld}{EL}(object, control = el_control())
 }
 \arguments{
 \item{object}{Fitted \linkS4class{EL} object.}
 
-\item{control}{List of control parameters set by \code{\link{control_el}}.}
+\item{control}{List of control parameters set by \code{\link{el_control}}.}
 }
 \value{
 S4 object of class \linkS4class{ELD}.
@@ -34,7 +34,7 @@ Let \eqn{L(\theta)} be the empirical log-likelihood function based
 \examples{
 x <- rnorm(10L)
 y <- 10
-fit <- el_mean2(0, c(x, y))
+fit <- el_mean(0, c(x, y))
 eld(fit)
 }
 \references{
@@ -49,5 +49,5 @@ Zhu, H., J. G. Ibrahim, N. Tang, and H. Zhang. 2008. “Diagnostic
   \doi{10.1093/biomet/asm094}.
 }
 \seealso{
-\link{el_eval}, \link{control_el}, \link{plot}
+\link{el_control}, \link{el_eval}, \link{plot}
 }

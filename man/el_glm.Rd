@@ -10,7 +10,7 @@ el_glm(
   data,
   weights = NULL,
   na.action,
-  control = control_el(),
+  control = el_control(),
   model = TRUE,
   start = NULL,
   etastart = NULL,
@@ -40,8 +40,7 @@ weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
 
-\item{control}{A list of control parameters set by
-\code{\link{control_el}}.}
+\item{control}{A list of control parameters set by \code{\link{el_control}}.}
 
 \item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
 returned.}
@@ -59,41 +58,7 @@ Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
 \code{\link[stats]{glm.control}}.}
 }
 \value{
-A list of class \code{c("el_glm", "el")} with the following
-  components:
-  \item{optim}{A list with the following optimization results:
-    \itemize{
-      \item{\code{method } }{A character for method dispatch in internal
-      functions.}
-      \item{\code{par } }{The solution of the constrained minimization
-      problem.}
-      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
-      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
-      value.}
-      \item{\code{iterations } }{The number of iterations performed.}
-      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
-      convergence of the algorithm.}
-    }
-  }
-  \item{par.tests}{A list with the test results for each parameter:
-    \itemize{
-      \item{\code{statistic } }{A numeric vector of chi-squared statistics.}
-      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
-      convergence of the algorithm.}
-    }
-  }
-  \item{log.prob}{The log probabilities.}
-  \item{loglik}{The log likelihood value.}
-  \item{statistic}{The chi-square statistic.}
-  \item{df}{The degrees of freedom of the statistic.}
-  \item{p.value}{The \eqn{p}-value of the statistic.}
-  \item{npar}{The number of parameters.}
-  \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
-  supplied}
-  \item{data.matrix}{The data matrix used for fitting if \code{model} is
-  \code{TRUE}.}
-  \item{coefficients}{The maximum empirical likelihood estimates of the
-  parameters.}
+S4 object of class of \linkS4class{GLM}.
 }
 \description{
 Fits a generalized linear model with empirical likelihood.
@@ -109,7 +74,7 @@ The available families and link functions are as follows:
   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
   and the tests for each parameter with
   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
-  The test results are returned as \code{optim} and \code{par.tests},
+  The test results are returned as \code{optim} and \code{parTests},
   respectively.
 }
 \examples{
@@ -129,5 +94,5 @@ Chen, Song Xi, and Hengjian Cui. 2003.
   Statistica Sinica 13: 69–81.
 }
 \seealso{
-\link{el_lm}, \link{control_el}, \link{lht}
+\link{el_control}, \link{el_lm}, \link{lht}
 }

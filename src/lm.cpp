@@ -23,7 +23,7 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
   int iter{};
   bool conv{};
   Eigen::ArrayXd logp(x.rows());
-  double loglik{};
+  double logl{};
   if (intercept && p > 1) {
     Eigen::MatrixXd lhs(p - 1, p);
     lhs.col(0) = Eigen::MatrixXd::Zero(p - 1, 1);
@@ -38,7 +38,7 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
     iter = el.iter;
     conv = el.conv;
     logp = el.logp(x, w);
-    loglik = el.loglik(w);
+    logl = el.loglik(w);
   } else {
     par = Eigen::VectorXd::Zero(p);
     const double test_th = th_nloglr(p, th);
@@ -48,7 +48,7 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
     iter = el.iter;
     conv = el.conv;
     logp = el.logp(x);
-    loglik = el.loglik();
+    logl = el.loglik();
   }
 
   // parameter tests
@@ -71,14 +71,13 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
       Rcpp::Named("method") = "lm",
       Rcpp::Named("par") = par,
       Rcpp::Named("lambda") = l,
-      Rcpp::Named("logLR") = -nllr,
       Rcpp::Named("iterations") = iter,
       Rcpp::Named("convergence") = conv),
-    Rcpp::Named("par.tests") = Rcpp::List::create(
+    Rcpp::Named("parTests") = Rcpp::List::create(
       Rcpp::Named("statistic") = chisq_val,
       Rcpp::Named("convergence") = par_conv),
-    Rcpp::Named("log.prob") = logp,
-    Rcpp::Named("loglik") = loglik,
+    Rcpp::Named("logp") = logp,
+    Rcpp::Named("logl") = logl,
     Rcpp::Named("loglr") = -nllr,
     Rcpp::Named("statistic") = 2.0 * nllr);
   return result;

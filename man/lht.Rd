@@ -4,59 +4,40 @@
 \alias{lht}
 \title{Linear hypothesis test}
 \usage{
-lht(object, rhs = NULL, lhs = NULL, control = control_el())
+lht(object, rhs = NULL, lhs = NULL, control = el_control())
 }
 \arguments{
-\item{object}{A fitted \code{"el"} object.}
+\item{object}{Fitted \linkS4class{EL} object.}
 
-\item{rhs}{A numeric vector for the right-hand-side of hypothesis, with as
+\item{rhs}{Numeric vector for the right-hand-side of hypothesis, with as
 many entries as the rows in \code{lhs}. Defaults to \code{NULL}. See
 ‘Details’.}
 
-\item{lhs}{A numeric matrix, or an object that can be coerced to a numeric
+\item{lhs}{Numeric matrix, or an object that can be coerced to a numeric
 matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 linear combination of parameters. The number of columns should be equal to
 the number of parameters in \code{object}. Defaults to \code{NULL}.
 See ‘Details’.}
 
-\item{control}{A list of control parameters set by
-\code{\link{control_el}}.}
+\item{control}{List of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-A list of class \code{"elt"} with the following components:
-  \item{optim}{A list with the following optimization results:
-    \itemize{
-      \item{\code{method } }{A character for method dispatch in internal
-      functions.}
-      \item{\code{par } }{The solution of the constrained minimization
-      problem.}
-      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
-      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
-      value.}
-      \item{\code{iterations } }{The number of iterations performed.}
-      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
-      convergence of the algorithm.}
-    }
-  }
-  \item{log.prob}{The log probabilities.}
-  \item{loglik}{The log likelihood value.}
-  \item{statistic}{The chi-square statistic.}
-  \item{df}{The degrees of freedom of the statistic.}
-  \item{p.value}{The \eqn{p}-value of the statistic.}
-  \item{npar}{The number of parameters.}
+S4 object of class of class \linkS4class{EL} or \linkS4class{MinEL}.
 }
 \description{
-Tests a linear hypothesis for objects inheriting from class \code{"el"}.
+Tests a linear hypothesis for objects that inherit from class
+  \linkS4class{EL}.
 }
 \details{
 \code{\link{lht}} performs the constrained minimization of
-  \eqn{l(\theta)} introduced in \code{\link{control_el}}.
+  \eqn{l(\theta)} introduced in \code{\link{el_control}}.
   \code{rhs} and \code{lhs} cannot be both \code{NULL}. For non-\code{NULL}
   \code{lhs}, it is required that \code{lhs} have full row rank
   \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
   parameters in the fitted model.
 
-  Depending on the specification of \code{rhs} and \code{lhs}, we have the following three cases:
+  Depending on the specification of \code{rhs} and \code{lhs}, we have the
+  following three cases:
   \enumerate{
   \item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the
   constrained minimization is performed with the right-hand-side \eqn{r} and
@@ -99,5 +80,5 @@ Qin, Jing, and Jerry Lawless. 1995.
   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 }
 \seealso{
-\link{control_el}
+\link{el_control}
 }

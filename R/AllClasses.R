@@ -66,7 +66,30 @@ setClass("MinEL", contains = "EL")
 
 #' S4 class \linkS4class{LM}
 #'
-#' S4 class for empirical likelihood with linear models.
+#' S4 class for linear models with empirical likelihood.
+#'
+#' @slot parTests List with the test results for each parameter:
+#'   \itemize{
+#'   \item{\code{statistic } }{Numeric vector of chi-squared statistics.}
+#'   \item{\code{convergence } }{Logical vector. \code{TRUE} indicates
+#'   convergence of the algorithm.}
+#'   }
+#' @slot misc List with the following optimization results:
+#'   \itemize{
+#'   \item{\code{method } }{Character for method dispatch in internal
+#'   functions.}
+#'   \item{\code{par } }{Value at which empirical likelihood is minimized.}
+#'   \item{\code{lambda } }{Lagrange multiplier of the dual problem.}
+#'   \item{\code{iterations } }{Number of iterations performed.}
+#'   \item{\code{convergence } }{Convergence status.}
+#'   }
+#' @examples
+#' showClass("LM")
+setClass("LM", contains = "MinEL", slots = c(parTests = "list", misc = "list"))
+
+#' S4 class \linkS4class{GLM}
+#'
+#' S4 class for generalized linear models with empirical likelihood.
 #'
 #' @slot parTests List with the test results for each parameter:
 #'   \itemize{
@@ -94,14 +117,8 @@ setClass("MinEL", contains = "EL")
 #' @slot dataMatrix Data matrix used for model fitting.
 #' @slot coefficients Maximum empirical likelihood estimates of the parameters.
 #' @examples
-#' showClass("LM")
-setClass("LM",
-  contains = "MinEL",
-  slots = c(
-    parTests = "list", na.action = "ANY", xlevels = "ANY", call = "ANY",
-    terms = "ANY"
-  )
-)
+#' showClass("GLM")
+setClass("GLM", contains = "LM")
 
 #' S4 class \linkS4class{ConfregEL}
 #'
@@ -159,3 +176,48 @@ setClass("SummaryLM", slots = c(
   parMatrix = "matrix", weighted = "logical", na.action = "ANY", call = "ANY",
   terms = "ANY", aliased = "logical"
 ))
+
+#' S4 class \linkS4class{ControlEL}
+#'
+#' S4 class for details of computation of empirical likelihood.
+#'
+#' @slot maxit Maximum number of iterations for the optimization with
+#'   respect to \eqn{\theta}.
+#' @slot maxit_l Maximum number of iterations for the optimization with
+#'   respect to \eqn{\lambda}.
+#' @slot tol Convergence tolerance denoted by \eqn{\epsilon}. The iteration
+#'   stops when
+#'   \deqn{\|P \nabla l(\theta^{(k)})\| < \epsilon.}
+#' @slot tol_l Relative convergence tolerance denoted by \eqn{\delta}. The
+#'   iteration stops when
+#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| <
+#'   \delta\|\lambda^{(k - 1)}\| + \delta^2.}
+#' @slot step Step size \eqn{\gamma} for the projected gradient descent
+#'   method.
+#' @slot th Threshold for the negative empirical log-likelihood ratio value.
+#'   The iteration stops if the value exceeds the threshold. Defaults to
+#'   \code{NULL} and sets the threshold to \code{200 * d}, where \code{d}
+#'   corresponds to the degrees of freedom of the limiting chi-squared
+#'   distribution of the statistic.
+#' @slot nthreads Number of threads for parallel computation via OpenMP (if
+#'   available). Defaults to the half of the available threads. For better
+#'   performance, it is recommended to limit the number of threads to the
+#'   number of physical cores. Note that it only applies to the following
+#'   functions that involve multiple evaluations or minimizations:
+#'   \itemize{
+#'   \item{\code{\link{confreg}}}
+#'   \item{\code{\link{el_lm}}}
+#'   \item{\code{\link{el_glm}}}
+#'   \item{\code{\link{eld}}}}
+#' @examples
+#' showClass("ControlEL")
+setClass("ControlEL",
+  slots = c(
+    maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
+    step = "ANY", th = "ANY", nthreads = "integer"
+  ),
+  prototype = list(
+    maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
+    step = NULL, th = NULL, nthreads = NULL
+  )
+)

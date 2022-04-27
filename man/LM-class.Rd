@@ -5,7 +5,7 @@
 \alias{LM-class}
 \title{S4 class \linkS4class{LM}}
 \description{
-S4 class for empirical likelihood with linear models.
+S4 class for linear models with empirical likelihood.
 }
 \section{Slots}{
 
@@ -17,7 +17,7 @@ S4 class for empirical likelihood with linear models.
 convergence of the algorithm.}
 }}
 
-\item{\code{optim}}{List with the following optimization results:
+\item{\code{misc}}{List with the following optimization results:
 \itemize{
 \item{\code{method } }{Character for method dispatch in internal
 functions.}
@@ -26,26 +26,6 @@ functions.}
 \item{\code{iterations } }{Number of iterations performed.}
 \item{\code{convergence } }{Convergence status.}
 }}
-
-\item{\code{logp}}{Log probabilities obtained from empirical likelihood.}
-
-\item{\code{logl}}{Empirical log-likelihood.}
-
-\item{\code{loglr}}{Empirical log-likelihood ratio.}
-
-\item{\code{statistic}}{Minus twice the empirical log-likelihood ratio.}
-
-\item{\code{df}}{Degrees of freedom of the statistic.}
-
-\item{\code{pval}}{\eqn{p}-value of the statistic.}
-
-\item{\code{npar}}{Number of parameters.}
-
-\item{\code{weights}}{Rescaled weights used for model fitting.}
-
-\item{\code{dataMatrix}}{Data matrix used for model fitting.}
-
-\item{\code{coefficients}}{Maximum empirical likelihood estimates of the parameters.}
 }}
 
 \examples{

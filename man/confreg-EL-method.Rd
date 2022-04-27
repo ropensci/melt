@@ -11,7 +11,7 @@
   level = 0.95,
   cv = qchisq(level, 2L),
   npoints = 50L,
-  control = control_el()
+  control = el_control()
 )
 }
 \arguments{
@@ -29,7 +29,7 @@ statistic. Defaults to \code{qchisq(level, 2L)}.}
 
 \item{npoints}{Number of boundary points to compute. Defaults to \code{50}.}
 
-\item{control}{List of control parameters set by \code{\link{control_el}}.}
+\item{control}{List of control parameters set by \code{\link{el_control}}.}
 }
 \value{
 S4 object of class \linkS4class{ConfregEL}.
@@ -41,7 +41,7 @@ Computes boundary points of a two-dimensional confidence region for model
 \examples{
 par <- c(0, 0, 0)
 x <- matrix(rnorm(90), ncol = 3)
-fit <- el_mean2(par, x)
+fit <- el_mean(par, x)
 confreg(fit, parm = c(1, 3))
 }
 \references{
@@ -49,5 +49,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{confint.el}, \link{control_el}, \link{lht}, \link{plot}
+\link{confint.el}, \link{el_control}, \link{lht}, \link{plot}
 }

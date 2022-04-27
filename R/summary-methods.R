@@ -1,5 +1,6 @@
 #' @describeIn summary-method Summarizes the results of the overall test and the
 #'   tests for each parameter.
+#' @importFrom stats pchisq
 setMethod(
   "summary", "LM",
   function(object, ...) {
@@ -11,8 +12,9 @@ setMethod(
         parMatrix = matrix(NA_real_, 0L, 3L,
           dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chis)"))
         ),
-        weighted = length(z@weights) != 0L, na.action = z@na.action,
-        call = z@call, terms = z@terms, aliased = is.na(z@coefficients)
+        weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
+        call = z@misc$call, terms = z@misc$terms,
+        aliased = is.na(z@coefficients)
       ))
     }
     new("SummaryLM",
@@ -22,8 +24,8 @@ setMethod(
         Chisq = z@parTests$statistic,
         `Pr(>Chisq)` = pchisq(z@parTests$statistic, df = 1L, lower.tail = FALSE)
       ),
-      weighted = length(z@weights) != 0L, na.action = z@na.action,
-      call = z@call, terms = z@terms, aliased = is.na(z@coefficients)
+      weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
+      call = z@misc$call, terms = z@misc$terms, aliased = is.na(z@coefficients)
     )
   }
 )

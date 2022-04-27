@@ -12,25 +12,22 @@
 #' @param cv Critical value for calibration of empirical likelihood ratio
 #'   statistic. Defaults to \code{qchisq(level, 2L)}.
 #' @param npoints Number of boundary points to compute. Defaults to \code{50}.
-#' @param control List of control parameters set by \code{\link{control_el}}.
+#' @param control List of control parameters set by \code{\link{el_control}}.
 #' @importFrom stats qchisq
 #' @return S4 object of class \linkS4class{ConfregEL}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-#' @seealso \link{confint.el}, \link{control_el}, \link{lht}, \link{plot}
+#' @seealso \link{confint.el}, \link{el_control}, \link{lht}, \link{plot}
 #' @examples
 #' par <- c(0, 0, 0)
 #' x <- matrix(rnorm(90), ncol = 3)
-#' fit <- el_mean2(par, x)
+#' fit <- el_mean(par, x)
 #' confreg(fit, parm = c(1, 3))
 #' @aliases confreg
 setMethod(
   "confreg", "EL",
   function(object, parm, level = 0.95, cv = qchisq(level, 2L), npoints = 50L,
-           control = control_el()) {
-    if (!inherits(control, "control_el") || !is.list(control)) {
-      stop("invalid 'control' supplied")
-    }
+           control = el_control()) {
     est <- object@coefficients
     if (length(est) == 0L) {
       stop("'confreg' method is not applicable to an empty model")
@@ -79,7 +76,7 @@ setMethod(
     } else if (isTRUE(all.equal(level, 1))) {
       stop("'level' must be a number between 0 and 1")
     }
-    cv <- check_cv(cv, control$th)
+    cv <- check_cv(cv, control@th)
     npoints <- as.integer(npoints)
     if (npoints <= 0) {
       stop("'npoints' must be a positive integer")
@@ -87,10 +84,13 @@ setMethod(
     w <- if (is.null(object@weights)) numeric(length = 0L) else object@weights
     ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]
     circ <- rbind(cos(ang), sin(ang))
+    if (!is(control, "ControlEL")) {
+      stop("invalid 'control' specified")
+    }
     cr <- confreg_(
       object@optim$method, est, object@dataMatrix, cv, circ,
-      control$maxit, control$maxit_l, control$tol, control$tol_l,
-      control$step, control$th, control$nthreads, w
+      control@maxit, control@maxit_l, control@tol, control@tol_l,
+      control@step, control@th, control@nthreads, w
     )
     new("ConfregEL",
         points = t(circ) * cr + rep(est, each = ncol(circ)),

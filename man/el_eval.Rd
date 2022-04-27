@@ -2,9 +2,9 @@
 % Please edit documentation in R/el_eval.R
 \name{el_eval}
 \alias{el_eval}
-\title{Empirical likelihood with general estimating functions}
+\title{Empirical likelihood for general estimating functions}
 \usage{
-el_eval(g, weights = NULL, control = control_el())
+el_eval(g, weights = NULL, control = el_control())
 }
 \arguments{
 \item{g}{A numeric matrix, or an object that can be coerced to a numeric
@@ -15,8 +15,7 @@ function.}
 fitting process. Defaults to \code{NULL}, corresponding to identical
 weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
-\item{control}{A list of control parameters set by
-\code{\link{control_el}}.}
+\item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
 A list with the following components:
@@ -37,7 +36,7 @@ A list with the following components:
   \item{p.value}{The \eqn{p}-value of the statistic.}
   \item{npar}{The number of parameters.}
   \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
-  supplied}
+  supplied.}
 }
 \description{
 Computes empirical likelihood with general estimating functions.
@@ -66,5 +65,5 @@ Qin, Jin, and Jerry Lawless. 1994.
   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 }
 \seealso{
-\link{control_el}
+\link{el_control}
 }

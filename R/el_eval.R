@@ -1,4 +1,4 @@
-#' Empirical likelihood with general estimating functions
+#' Empirical likelihood for general estimating functions
 #'
 #' Computes empirical likelihood with general estimating functions.
 #'
@@ -8,8 +8,7 @@
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
-#' @param control A list of control parameters set by
-#'   \code{\link{control_el}}.
+#' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @details \code{el_eval} evaluates empirical likelihood with a \eqn{n} by
 #'   \eqn{p} numeric matrix argument \code{g}, whose \eqn{i}th row is
 #'   \eqn{g(X_i, \theta)}. If \code{weights} is non \code{NULL}, the weights are
@@ -32,7 +31,7 @@
 #'   \item{p.value}{The \eqn{p}-value of the statistic.}
 #'   \item{npar}{The number of parameters.}
 #'   \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
-#'   supplied}
+#'   supplied.}
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
@@ -40,15 +39,16 @@
 #' @references Qin, Jin, and Jerry Lawless. 1994.
 #'   “Empirical Likelihood and General Estimating Equations.”
 #'   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
-#' @seealso \link{control_el}
+#' @seealso \link{el_control}
 #' @examples
 #' # test for variance with known mean
 #' x <- rnorm(100L)
 #' sigma <- 1
 #' g <- x^2 - sigma^2
 #' el_eval(g)
+#' @importFrom stats pchisq
 #' @export
-el_eval <- function(g, weights = NULL, control = control_el()) {
+el_eval <- function(g, weights = NULL, control = el_control()) {
   mm <- as.matrix(g)
   n <- nrow(mm)
   p <- ncol(mm)
@@ -61,11 +61,11 @@ el_eval <- function(g, weights = NULL, control = control_el()) {
   if (get_rank_(mm) != p || n <= p) {
     stop("'g' must have full column rank")
   }
-  if (!inherits(control, "control_el") || !is.list(control)) {
-    stop("invalid 'control' supplied")
+  if (!is(control, "ControlEL")) {
+    stop("invalid 'control' specified")
   }
   w <- check_weights(weights, n)
-  out <- eval_g_(mm, control$maxit_l, control$tol_l, control$th, w)
+  out <- eval_g_(mm, control@maxit_l, control@tol_l, control@th, w)
   out$df <- p
   out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
   out$npar <- p

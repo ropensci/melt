@@ -80,36 +80,7 @@
 #'   where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
 #'   \eqn{\theta^{(k)}}. The first order optimality condition is
 #'   \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
-#' @return A list of class \code{"control_el"} that specifies details of the
-#'   optimization with respect to \eqn{\lambda} and \eqn{\theta} with the
-#'   following components:
-#'   \item{maxit}{Maximum number of iterations for the optimization with
-#'   respect to \eqn{\theta}.}
-#'   \item{maxit_l}{Maximum number of iterations for the optimization with
-#'   respect to \eqn{\lambda}.}
-#'   \item{tol}{Convergence tolerance denoted by \eqn{\epsilon}. The iteration
-#'   stops when
-#'   \deqn{\|P \nabla l(\theta^{(k)})\| < \epsilon.}}
-#'   \item{tol_l}{Relative convergence tolerance denoted by \eqn{\delta}. The
-#'   iteration stops when
-#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| <
-#'   \delta\|\lambda^{(k - 1)}\| + \delta^2.}}
-#'   \item{step}{Step size \eqn{\gamma} for the projected gradient descent
-#'   method.}
-#'   \item{th}{Threshold for the negative empirical log-likelihood ratio value.
-#'   The iteration stops if the value exceeds the threshold. Defaults to
-#'   \code{NULL} and sets the threshold to \code{200 * d}, where \code{d}
-#'   corresponds to the degrees of freedom of the limiting chi-squared
-#'   distribution of the statistic.}
-#'   \item{nthreads}{Number of threads for parallel computation via OpenMP (if
-#'     available). Defaults to the half of the available threads. For better
-#'     performance, it is recommended to limit the number of threads to the
-#'     number of physical cores. Note that it only applies to the following
-#'     functions that involve multiple evaluations or minimizations:
-#'     \itemize{
-#'     \item{\code{\link{confreg}}}
-#'     \item{\code{\link{el_lm}}}
-#'     \item{\code{\link{el_glm}}}}}
+#' @return S4 object of class of \linkS4class{ControlEL}.
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
 #'   Statistical Methods & Applications 19 (4): 463–76.
@@ -126,13 +97,15 @@
 #'   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 #' @seealso \link{el_eval}, \link{lht}
 #' @examples
-#' optcfg <- control_el(maxit = 300L, th = 200, nthreads = 1L)
+#' optcfg <- el_control(maxit = 300L, th = 200, nthreads = 1L)
 #' @export
-control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
+el_control <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
                        step = NULL, th = NULL, nthreads) {
   # maxit: integer (positive)
-  maxit <- tryCatch(as.integer(maxit), warning = function(w) NA,
-                    error = function(e) NA)
+  maxit <- tryCatch(as.integer(maxit),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
   if (any(length(maxit) != 1L, is.na(maxit))) {
     stop("'maxit' is not an integer")
   }
@@ -140,8 +113,10 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
     stop("'maxit' is not a positive integer")
   }
   # maxit_l: integer (positive)
-  maxit_l <- tryCatch(as.integer(maxit_l), warning = function(w) NA,
-                      error = function(e) NA)
+  maxit_l <- tryCatch(as.integer(maxit_l),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
   if (any(length(maxit_l) != 1L, is.na(maxit_l))) {
     stop("'maxit_l' is not an integer")
   }
@@ -149,8 +124,10 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
     stop("'maxit_l' is not a positive integer")
   }
   # tol: numeric (positive, finite)
-  tol <- tryCatch(as.numeric(tol), warning = function(w) NA,
-                  error = function(e) NA)
+  tol <- tryCatch(as.numeric(tol),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
   if (any(length(tol) != 1L, is.na(tol), is.infinite(tol))) {
     stop("'tol' is not a number")
   }
@@ -158,8 +135,10 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
     stop("'tol' is too small")
   }
   # tol_l: numeric (positive, finite)
-  tol_l <- tryCatch(as.numeric(tol_l), warning = function(w) NA,
-                    error = function(e) NA)
+  tol_l <- tryCatch(as.numeric(tol_l),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
   if (any(length(tol_l) != 1L, is.na(tol_l), is.infinite(tol_l))) {
     stop("'tol' is not a number")
   }
@@ -168,8 +147,10 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
   }
   # step: numeric (positive, finite)
   if (!is.null(step)) {
-    step <- tryCatch(as.numeric(step), warning = function(w) NA,
-                     error = function(e) NA)
+    step <- tryCatch(as.numeric(step),
+      warning = function(w) NA,
+      error = function(e) NA
+    )
     if (any(length(step) != 1L, is.na(step), is.infinite(step))) {
       stop("'step' is not a number")
     }
@@ -179,8 +160,10 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
   }
   # th: numeric (positive, finite)
   if (!is.null(th)) {
-    th <- tryCatch(as.numeric(th), warning = function(w) NA,
-                   error = function(e) NA)
+    th <- tryCatch(as.numeric(th),
+      warning = function(w) NA,
+      error = function(e) NA
+    )
     if (any(length(th) != 1L, is.na(th), is.infinite(th))) {
       stop("'th' is not a number")
     }
@@ -191,10 +174,12 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
   # nthreads: integer (positive)
   max_threads <- max_threads_()
   if (missing(nthreads)) {
-    nthreads <- max(1L, max_threads / 2L)
+    nthreads <- as.integer(max(1L, max_threads / 2L))
   } else {
-    nthreads <- tryCatch(as.integer(nthreads), warning = function(w) NA,
-                         error = function(e) NA)
+    nthreads <- tryCatch(as.integer(nthreads),
+      warning = function(w) NA,
+      error = function(e) NA
+    )
     if (any(length(nthreads) != 1L, is.na(nthreads))) {
       stop("'nthreads' is not an integer")
     }
@@ -207,8 +192,8 @@ control_el <- function(maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
       nthreads <- max_threads
     }
   }
-  out <- list(maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l,
-              step = step, th = th, nthreads = nthreads)
-  class(out) <- "control_el"
-  out
+  new("ControlEL",
+    maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
+    th = th, nthreads = nthreads
+  )
 }

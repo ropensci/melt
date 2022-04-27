@@ -4,52 +4,25 @@
 \alias{el_mean}
 \title{Empirical likelihood for the mean}
 \usage{
-el_mean(par, x, weights = NULL, control = control_el(), model = TRUE)
+el_mean(par, x, weights = NULL, control = el_control(), model = TRUE)
 }
 \arguments{
-\item{par}{A numeric vector of parameter values to be tested.}
+\item{par}{Numeric vector of parameter values to be tested.}
 
-\item{x}{A numeric matrix, or an object that can be coerced to a numeric
+\item{x}{Numeric matrix, or an object that can be coerced to a numeric
 matrix. Each row corresponds to an observation.}
 
-\item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to \code{NULL}, corresponding to identical
-weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
+\item{weights}{Optional numeric vector of weights to be used in the fitting
+process. Defaults to \code{NULL}, corresponding to identical weights. If
+non-\code{NULL}, weighted empirical likelihood is computed.}
 
-\item{control}{A list of control parameters set by
-\code{\link{control_el}}.}
+\item{control}{List of control parameters set by \code{\link{el_control}}.}
 
-\item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
-returned.}
+\item{model}{Logical. If \code{TRUE} the data matrix used for model fitting
+is returned.}
 }
 \value{
-A list of class \code{"el"} with the following components:
-  \item{optim}{A list with the following optimization results:
-    \itemize{
-      \item{\code{method } }{A character for method dispatch in internal
-      functions.}
-      \item{\code{par } }{The value at which empirical likelihood is
-      evaluated.}
-      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
-      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
-      value.}
-      \item{\code{iterations } }{The number of iterations performed.}
-      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
-      convergence of the algorithm.}
-    }
-  }
-  \item{log.prob}{The log probabilities.}
-  \item{loglik}{The log likelihood value.}
-  \item{statistic}{The chi-square statistic.}
-  \item{df}{The degrees of freedom of the statistic.}
-  \item{p.value}{The \eqn{p}-value of the statistic.}
-  \item{npar}{The number of parameters.}
-  \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
-  supplied}
-  \item{data.matrix}{The data matrix used for fitting if \code{model} is
-  \code{TRUE}.}
-  \item{coefficients}{The maximum empirical likelihood estimates of the
-  parameters.}
+An S4 object of class \linkS4class{EL}.
 }
 \description{
 Computes empirical likelihood for the mean.
@@ -81,5 +54,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{control_el}, \link{el_eval}, \link{lht}
+\link{el_control}, \link{el_eval}, \link{lht}
 }
