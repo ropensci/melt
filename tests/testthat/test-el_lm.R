@@ -77,7 +77,6 @@ test_that("empty model", {
 
 test_that("same results with parallel computing", {
   skip_on_os("windows", arch = "i386")
-  # skip_on_ci()
   n <- 500
   p <- 15
   b <- rnorm(p)

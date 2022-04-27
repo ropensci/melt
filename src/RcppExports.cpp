@@ -56,16 +56,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // confreg_
-Rcpp::NumericVector confreg_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const double cutoff, const Eigen::Map<Eigen::MatrixXd>& d, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& w);
-RcppExport SEXP _melt_confreg_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP cutoffSEXP, SEXP dSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wSEXP) {
+Rcpp::NumericVector confreg_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const int npar, const double cutoff, const Rcpp::IntegerVector idx, const Eigen::Map<Eigen::MatrixXd>& circ, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& w);
+RcppExport SEXP _melt_confreg_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP nparSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP circSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const int >::type npar(nparSEXP);
     Rcpp::traits::input_parameter< const double >::type cutoff(cutoffSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type idx(idxSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type circ(circSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit_l(maxit_lSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
@@ -74,7 +76,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
     Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
-    rcpp_result_gen = Rcpp::wrap(confreg_(method, par0, x, cutoff, d, maxit, maxit_l, tol, tol_l, step, th, nthreads, w));
+    rcpp_result_gen = Rcpp::wrap(confreg_(method, par0, x, npar, cutoff, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -239,7 +241,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_max_threads_", (DL_FUNC) &_melt_max_threads_, 0},
     {"_melt_get_rank_", (DL_FUNC) &_melt_get_rank_, 1},
     {"_melt_confint_", (DL_FUNC) &_melt_confint_, 13},
-    {"_melt_confreg_", (DL_FUNC) &_melt_confreg_, 13},
+    {"_melt_confreg_", (DL_FUNC) &_melt_confreg_, 15},
     {"_melt_ELtest", (DL_FUNC) &_melt_ELtest, 7},
     {"_melt_eld_", (DL_FUNC) &_melt_eld_, 8},
     {"_melt_eval_", (DL_FUNC) &_melt_eval_, 7},

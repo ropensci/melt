@@ -13,8 +13,8 @@ confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, s
     .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-confreg_ <- function(method, par0, x, cutoff, d, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
-    .Call(`_melt_confreg_`, method, par0, x, cutoff, d, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+confreg_ <- function(method, par0, x, npar, cutoff, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
+    .Call(`_melt_confreg_`, method, par0, x, npar, cutoff, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
 ELtest <- function(x, c, lhs, rhs, threshold, maxit = 1e4L, abstol = 1e-8) {

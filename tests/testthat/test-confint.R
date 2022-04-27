@@ -4,10 +4,10 @@ test_that("invalid 'level'", {
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
-  # expect_error(confint(fit, level = -1))
-  # expect_error(confint(fit, level = 2))
-  # expect_error(confint(fit, level = Inf))
-  # expect_error(confint(fit, level = c(0, 0)))
+  expect_error(confint(fit, level = -1))
+  expect_error(confint(fit, level = 2))
+  expect_error(confint(fit, level = Inf))
+  expect_error(confint(fit, level = c(0, 0)))
 })
 
 test_that("invalid 'parm'", {
@@ -16,10 +16,10 @@ test_that("invalid 'parm'", {
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
-  # expect_error(confint(fit, parm = NA))
-  # expect_error(confint(fit, parm = NULL))
-  # expect_error(confint(fit, parm = NaN))
-  # expect_error(confint(fit, parm = Inf))
+  expect_error(confint(fit, parm = NA))
+  expect_error(confint(fit, parm = NULL))
+  expect_error(confint(fit, parm = NaN))
+  expect_error(confint(fit, parm = Inf))
 })
 
 test_that("'level' == 1", {
@@ -28,9 +28,9 @@ test_that("'level' == 1", {
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
-  # ci <- confint(fit, level = 1)
-  # expect_equal(ci[1], -Inf)
-  # expect_equal(ci[2], Inf)
+  ci <- confint(fit, level = 1)
+  expect_equal(ci[1], -Inf)
+  expect_equal(ci[2], Inf)
 })
 
 test_that("'level' == 0", {
@@ -39,8 +39,8 @@ test_that("'level' == 0", {
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, control = optcfg)
-  # ci <- confint(fit, level = 0)
-  # expect_equal(ci[2] - ci[1], 0)
+  ci <- confint(fit, level = 0)
+  expect_equal(ci[2] - ci[1], 0)
 })
 
 test_that("empty model", {
@@ -50,6 +50,6 @@ test_that("empty model", {
   y <- 1 + x + rnorm(n)
   df <- data.frame(y, x)
   fit <- el_lm(y ~ -1, df)
-  # ci <- confint(fit)
-  # expect_equal(nrow(ci), 0)
+  ci <- confint(fit)
+  expect_equal(nrow(ci), 0)
 })
