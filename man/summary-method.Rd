@@ -8,7 +8,7 @@
 \S4method{summary}{LM}(object, ...)
 }
 \arguments{
-\item{object}{Object for which a summary is desired.}
+\item{object}{An object for which a summary is desired.}
 
 \item{...}{Additional arguments affecting the summary produced.}
 }

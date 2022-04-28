@@ -3,16 +3,16 @@
 #' Tests a linear hypothesis for objects that inherit from class
 #'   \linkS4class{EL}.
 #'
-#' @param object Fitted \linkS4class{EL} object.
-#' @param rhs Numeric vector for the right-hand-side of hypothesis, with as
+#' @param object A fitted \linkS4class{EL} object.
+#' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
 #'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}. See
 #'   ‘Details’.
-#' @param lhs Numeric matrix, or an object that can be coerced to a numeric
+#' @param lhs A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 #'   linear combination of parameters. The number of columns should be equal to
 #'   the number of parameters in \code{object}. Defaults to \code{NULL}.
 #'   See ‘Details’.
-#' @param control List of control parameters set by \code{\link{el_control}}.
+#' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @details \code{\link{lht}} performs the constrained minimization of
 #'   \eqn{l(\theta)} introduced in \code{\link{el_control}}.
 #'   \code{rhs} and \code{lhs} cannot be both \code{NULL}. For non-\code{NULL}
@@ -33,7 +33,8 @@
 #'   and the problem reduces to evaluating at \eqn{r} as
 #'   \deqn{l(r).}
 #'   }
-#' @return S4 object of class of class \linkS4class{EL} or \linkS4class{MinEL}.
+#' @return An S4 object of class of class \linkS4class{EL} or
+#'   \linkS4class{MinEL}.
 #' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
 #' "Empirical Likelihood for the Analysis of Experimental Designs,"
 #' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.

@@ -80,7 +80,7 @@
 #'   where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
 #'   \eqn{\theta^{(k)}}. The first order optimality condition is
 #'   \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
-#' @return S4 object of class of \linkS4class{ControlEL}.
+#' @return An S4 object of class of \linkS4class{ControlEL}.
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
 #'   Statistical Methods & Applications 19 (4): 463–76.

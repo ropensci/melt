@@ -10,7 +10,7 @@ S4 class for empirical likelihood.
 \section{Slots}{
 
 \describe{
-\item{\code{optim}}{List with the following optimization results:
+\item{\code{optim}}{A list with the following optimization results:
 \itemize{
 \item{\code{method } }{Character for method dispatch in internal
 functions.}

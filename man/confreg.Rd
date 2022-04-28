@@ -15,24 +15,25 @@
 )
 }
 \arguments{
-\item{object}{Fitted \linkS4class{EL} object.}
+\item{object}{A fitted \linkS4class{EL} object.}
 
-\item{parm}{Specification of which parameters are to be given a confidence
+\item{parm}{A specification of which parameters are to be given a confidence
 region, either a vector of numbers or a vector of names. It should be a
 vector of length two of the form \code{c(x, y)}. If missing, the first two
 parameter in \code{object} are considered.}
 
-\item{level}{Confidence level required. Defaults to \code{0.95}.}
+\item{level}{A confidence level required. Defaults to \code{0.95}.}
 
-\item{cv}{Critical value for calibration of empirical likelihood ratio
+\item{cv}{A critical value for calibration of empirical likelihood ratio
 statistic. Defaults to \code{qchisq(level, 2L)}.}
 
-\item{npoints}{Number of boundary points to compute. Defaults to \code{50}.}
+\item{npoints}{The number of boundary points to compute. Defaults to
+\code{50}.}
 
-\item{control}{List of control parameters set by \code{\link{el_control}}.}
+\item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-S4 object of class \linkS4class{ConfregEL}.
+An S4 object of class \linkS4class{ConfregEL}.
 }
 \description{
 Computes boundary points of a two-dimensional confidence region for model

@@ -8,12 +8,12 @@
 \S4method{eld}{EL}(object, control = el_control())
 }
 \arguments{
-\item{object}{Fitted \linkS4class{EL} object.}
+\item{object}{A fitted \linkS4class{EL} object.}
 
-\item{control}{List of control parameters set by \code{\link{el_control}}.}
+\item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-S4 object of class \linkS4class{ELD}.
+An S4 object of class \linkS4class{ELD}.
 }
 \description{
 Computes empirical likelihood displacement for model diagnostics and outlier

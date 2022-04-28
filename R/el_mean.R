@@ -2,14 +2,14 @@
 #'
 #' Computes empirical likelihood for the mean.
 #'
-#' @param par Numeric vector of parameter values to be tested.
-#' @param x Numeric matrix, or an object that can be coerced to a numeric
+#' @param par A numeric vector of parameter values to be tested.
+#' @param x A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. Each row corresponds to an observation.
-#' @param weights Optional numeric vector of weights to be used in the fitting
-#'   process. Defaults to \code{NULL}, corresponding to identical weights. If
-#'   non-\code{NULL}, weighted empirical likelihood is computed.
-#' @param control List of control parameters set by \code{\link{el_control}}.
-#' @param model Logical. If \code{TRUE} the data matrix used for model fitting
+#' @param weights An optional numeric vector of weights to be used in the
+#'   fitting process. Defaults to \code{NULL}, corresponding to identical
+#'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
+#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param model A logical. If \code{TRUE} the data matrix used for model fitting
 #'   is returned.
 #' @return An S4 object of class \linkS4class{EL}.
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.

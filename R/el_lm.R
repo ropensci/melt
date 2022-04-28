@@ -2,21 +2,21 @@
 #'
 #' Fits a linear model with empirical likelihood.
 #'
-#' @param formula Object of class \code{"\link[stats]{formula}"} (or one that
+#' @param formula An object of class \code{"\link[stats]{formula}"} (or one that
 #'   can be coerced to that class): a symbolic description of the model to be
 #'   fitted.
-#' @param data Optional data frame, list or environment (or object coercible by
-#'   \code{\link[base]{as.data.frame}} to a data frame) containing the variables
-#'   in the formula. If not found in data, the variables are taken from
-#'   \code{environment(formula)}.
-#' @param weights Optional numeric vector of weights to be used in the fitting
-#'   process. Defaults to \code{NULL}, corresponding to identical weights. If
-#'   non-\code{NULL}, weighted empirical likelihood is computed.
-#' @param na.action Function which indicates what should happen when the data
+#' @param data An optional data frame, list or environment (or object coercible
+#'   by \code{\link[base]{as.data.frame}} to a data frame) containing the
+#'   variables in the formula. If not found in data, the variables are taken
+#'   from \code{environment(formula)}.
+#' @param weights An optional numeric vector of weights to be used in the
+#'   fitting process. Defaults to \code{NULL}, corresponding to identical
+#'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
+#' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s. The default is set by the \code{na.action} setting of
 #'   \code{\link[base]{options}}, and is \code{na.fail} if that is unset.
-#' @param control List of control parameters set by \code{\link{el_control}}.
-#' @param model Logical. If \code{TRUE} the data matrix used for fitting is
+#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param model A logical. If \code{TRUE} the data matrix used for fitting is
 #'   returned.
 #' @param ... Additional arguments to be passed to the low level regression
 #'   fitting functions. See ‘Details’.
@@ -44,7 +44,7 @@
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as \code{optim} and \code{parTests},
 #'   respectively.
-#' @return S4 object of class of \linkS4class{LM}.
+#' @return An S4 object of class of \linkS4class{LM}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_control}, \link{el_glm}, \link{lht}

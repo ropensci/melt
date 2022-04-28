@@ -38,7 +38,7 @@ The iteration stops if the value exceeds the threshold. Defaults to
 available).}
 }
 \value{
-S4 object of class of \linkS4class{ControlEL}.
+An S4 object of class of \linkS4class{ControlEL}.
 }
 \description{
 Specifies details of computation of (constrained) empirical likelihood.

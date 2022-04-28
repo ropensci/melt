@@ -98,19 +98,17 @@ Eigen::VectorXd gr_nloglr_gauss_log(
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted)
 {
-  const int n = g.rows();
   const Eigen::ArrayXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd numerator = y * log_linkinv(x * par) -
-    2.0 * log_linkinv(2.0 * x * par);
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
-  if (w.size() == 0) {
-    return (x.transpose() *
-            (x.array().colwise() * (numerator / denominator)).matrix()) * l / n;
+  const Eigen::ArrayXd c = (y * log_linkinv(x * par) -
+    2.0 * log_linkinv(2.0 * x * par)) *
+    inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  if (weighted) {
+    const Eigen::MatrixXd cx = x.array().colwise() * (w * c);
+    return -(x.transpose() * cx) * l;
   } else {
-    return (x.transpose() *
-            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
-            l / n;
+    const Eigen::MatrixXd cx = x.array().colwise() * c;
+    return -(x.transpose() * cx) * l;
   }
 }
 

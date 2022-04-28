@@ -7,22 +7,23 @@
 lht(object, rhs = NULL, lhs = NULL, control = el_control())
 }
 \arguments{
-\item{object}{Fitted \linkS4class{EL} object.}
+\item{object}{A fitted \linkS4class{EL} object.}
 
-\item{rhs}{Numeric vector for the right-hand-side of hypothesis, with as
+\item{rhs}{A numeric vector for the right-hand-side of hypothesis, with as
 many entries as the rows in \code{lhs}. Defaults to \code{NULL}. See
 ‘Details’.}
 
-\item{lhs}{Numeric matrix, or an object that can be coerced to a numeric
+\item{lhs}{A numeric matrix, or an object that can be coerced to a numeric
 matrix. It specifies the left-hand-side of hypothesis. Each row gives a
 linear combination of parameters. The number of columns should be equal to
 the number of parameters in \code{object}. Defaults to \code{NULL}.
 See ‘Details’.}
 
-\item{control}{List of control parameters set by \code{\link{el_control}}.}
+\item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-S4 object of class of class \linkS4class{EL} or \linkS4class{MinEL}.
+An S4 object of class of class \linkS4class{EL} or
+  \linkS4class{MinEL}.
 }
 \description{
 Tests a linear hypothesis for objects that inherit from class

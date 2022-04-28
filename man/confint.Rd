@@ -23,14 +23,12 @@ parameters are considered.}
 
 \item{level}{A confidence level required. Defaults to \code{0.95}.}
 
-\item{...}{Some methods for this generic function require extra arguments.
-None are used in this method.}
+\item{...}{Not used.}
 
 \item{cv}{A critical value for calibration of empirical likelihood ratio
 statistic. Defaults to \code{qchisq(level, 1L)}.}
 
-\item{control}{A list of control parameters set by
-\code{\link{el_control}}.}
+\item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
 A matrix with columns giving lower and upper confidence limits for

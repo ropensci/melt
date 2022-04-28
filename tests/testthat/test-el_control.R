@@ -1,5 +1,4 @@
 test_that("invalid control parameters", {
-  skip_on_os("windows", arch = "i386")
   expect_error(el_control(eee = 10))
   expect_error(el_control(maxit = NA))
   expect_error(el_control(maxit = 0.1))

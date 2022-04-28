@@ -15,33 +15,33 @@ el_lm(
 )
 }
 \arguments{
-\item{formula}{Object of class \code{"\link[stats]{formula}"} (or one that
+\item{formula}{An object of class \code{"\link[stats]{formula}"} (or one that
 can be coerced to that class): a symbolic description of the model to be
 fitted.}
 
-\item{data}{Optional data frame, list or environment (or object coercible by
-\code{\link[base]{as.data.frame}} to a data frame) containing the variables
-in the formula. If not found in data, the variables are taken from
-\code{environment(formula)}.}
+\item{data}{An optional data frame, list or environment (or object coercible
+by \code{\link[base]{as.data.frame}} to a data frame) containing the
+variables in the formula. If not found in data, the variables are taken
+from \code{environment(formula)}.}
 
-\item{weights}{Optional numeric vector of weights to be used in the fitting
-process. Defaults to \code{NULL}, corresponding to identical weights. If
-non-\code{NULL}, weighted empirical likelihood is computed.}
+\item{weights}{An optional numeric vector of weights to be used in the
+fitting process. Defaults to \code{NULL}, corresponding to identical
+weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
-\item{na.action}{Function which indicates what should happen when the data
+\item{na.action}{A function which indicates what should happen when the data
 contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
 
-\item{control}{List of control parameters set by \code{\link{el_control}}.}
+\item{control}{A list of control parameters set by \code{\link{el_control}}.}
 
-\item{model}{Logical. If \code{TRUE} the data matrix used for fitting is
+\item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
 returned.}
 
 \item{...}{Additional arguments to be passed to the low level regression
 fitting functions. See ‘Details’.}
 }
 \value{
-S4 object of class of \linkS4class{LM}.
+An S4 object of class of \linkS4class{LM}.
 }
 \description{
 Fits a linear model with empirical likelihood.

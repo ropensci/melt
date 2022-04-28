@@ -10,17 +10,17 @@ S4 class for confidence region.
 \section{Slots}{
 
 \describe{
-\item{\code{points}}{Numeric matrix with two columns for boundary points of a
+\item{\code{points}}{A numeric matrix with two columns for boundary points of a
 confidence region.}
 
-\item{\code{estimates}}{Numeric vector of length two for parameter estimates.}
+\item{\code{estimates}}{A numeric vector of length two for parameter estimates.}
 
-\item{\code{level}}{Confidence level required.}
+\item{\code{level}}{A confidence level required.}
 
-\item{\code{cv}}{Critical value for calibration of empirical likelihood ratio
+\item{\code{cv}}{A critical value for calibration of empirical likelihood ratio
 statistic.}
 
-\item{\code{pnames}}{Character vector of length two for the name of parameters.}
+\item{\code{pnames}}{A character vector of length two for the name of parameters.}
 }}
 
 \examples{

@@ -4,6 +4,7 @@
 \alias{print-method}
 \alias{print,EL-method}
 \alias{print,SummaryLM-method}
+\alias{print,logLikEL-method}
 \title{Print methods}
 \usage{
 \S4method{print}{EL}(x, digits = max(3L, getOption("digits") - 3L), ...)
@@ -14,13 +15,15 @@
   signif.stars = getOption("show.signif.stars"),
   ...
 )
+
+\S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
 }
 \arguments{
-\item{x}{Object to be printed.}
+\item{x}{An object to be printed.}
 
 \item{...}{Further arguments passed to other methods.}
 
-\item{digits}{Number of significant digits to be passed to
+\item{digits}{The number of significant digits to be passed to
 \code{\link[base]{format}}.}
 
 \item{signif.stars}{Logical. If \code{TRUE}, ‘significance stars’ are printed

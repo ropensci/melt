@@ -2,7 +2,7 @@
 #'
 #' S4 class for empirical likelihood.
 #'
-#' @slot optim List with the following optimization results:
+#' @slot optim A list with the following optimization results:
 #'   \itemize{
 #'   \item{\code{method } }{Character for method dispatch in internal
 #'   functions.}
@@ -35,13 +35,24 @@ setClass("EL",
     weights = numeric(), dataMatrix = matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = numeric()
   )
+  # slots = c(
+  #   optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
+  #   statistic = "numeric", df = "integer", pval = "numeric", npar = "integer",
+  #   weights = "numeric", dataMatrix = "ANY", coefficients = "numeric"
+  # ),
+  # prototype = list(
+  #   optim = list(), logp = numeric(), logl = numeric(), loglr = numeric(),
+  #   statistic = numeric(), df = 0L, pval = numeric(), npar = 0L,
+  #   weights = numeric(),
+  #   coefficients = numeric()
+  # )
 )
 
 #' S4 class \linkS4class{MinEL}
 #'
 #' S4 class for constrained empirical likelihood.
 #'
-#' @slot optim List with the following optimization results:
+#' @slot optim A list with the following optimization results:
 #'   \itemize{
 #'   \item{\code{method } }{Character for method dispatch in internal
 #'   functions.}
@@ -68,13 +79,13 @@ setClass("MinEL", contains = "EL")
 #'
 #' S4 class for linear models with empirical likelihood.
 #'
-#' @slot parTests List with the test results for each parameter:
+#' @slot parTests A list with the test results for each parameter:
 #'   \itemize{
 #'   \item{\code{statistic } }{Numeric vector of chi-squared statistics.}
 #'   \item{\code{convergence } }{Logical vector. \code{TRUE} indicates
 #'   convergence of the algorithm.}
 #'   }
-#' @slot misc List with the following optimization results:
+#' @slot misc A list with the following optimization results:
 #'   \itemize{
 #'   \item{\code{method } }{Character for method dispatch in internal
 #'   functions.}
@@ -91,13 +102,13 @@ setClass("LM", contains = "MinEL", slots = c(parTests = "list", misc = "list"))
 #'
 #' S4 class for generalized linear models with empirical likelihood.
 #'
-#' @slot parTests List with the test results for each parameter:
+#' @slot parTests A list with the test results for each parameter:
 #'   \itemize{
 #'   \item{\code{statistic } }{Numeric vector of chi-squared statistics.}
 #'   \item{\code{convergence } }{Logical vector. \code{TRUE} indicates
 #'   convergence of the algorithm.}
 #'   }
-#' @slot optim List with the following optimization results:
+#' @slot optim A list with the following optimization results:
 #'   \itemize{
 #'   \item{\code{method } }{Character for method dispatch in internal
 #'   functions.}
@@ -124,13 +135,13 @@ setClass("GLM", contains = "LM")
 #'
 #' S4 class for confidence region.
 #'
-#' @slot points Numeric matrix with two columns for boundary points of a
+#' @slot points A numeric matrix with two columns for boundary points of a
 #'   confidence region.
-#' @slot estimates Numeric vector of length two for parameter estimates.
-#' @slot level Confidence level required.
-#' @slot cv Critical value for calibration of empirical likelihood ratio
+#' @slot estimates A numeric vector of length two for parameter estimates.
+#' @slot level A confidence level required.
+#' @slot cv A critical value for calibration of empirical likelihood ratio
 #'   statistic.
-#' @slot pnames Character vector of length two for the name of parameters.
+#' @slot pnames A character vector of length two for the name of parameters.
 #' @examples
 #' showClass("ConfregEL")
 setClass("ConfregEL",
@@ -148,7 +159,7 @@ setClass("ConfregEL",
 #'
 #' S4 class for empirical likelihood displacement.
 #'
-#' @slot eld Numeric vector of empirical likelihood displacement values.
+#' @slot eld A numeric vector of empirical likelihood displacement values.
 #' @examples
 #' showClass("ELD")
 setClass("ELD", slots = c(eld = "numeric"))
@@ -221,3 +232,14 @@ setClass("ControlEL",
     step = NULL, th = NULL, nthreads = NULL
   )
 )
+
+#' S4 class \linkS4class{logLikEL}
+#'
+#' S4 class for empirical log-likelihood.
+#'
+#' @slot logLik Empirical log-likelihood.
+#' @slot df Degrees of freedom or the number of (estimated) parameters in the
+#'   model.
+#' @examples
+#' showClass("logLikEL")
+setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))

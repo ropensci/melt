@@ -92,3 +92,17 @@ setMethod(
   }
 )
 setMethod("show", "SummaryLM", function(object) print(object))
+
+#' @rdname print-method
+setMethod(
+  "print", "logLikEL",
+  function(x, digits = getOption("digits"), ...) {
+    cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
+      collapse = ", "
+    ),
+    " (df=", format(x@df), ")\n", sep = ""
+    )
+    invisible(x)
+  }
+)
+setMethod("show", "logLikEL", function(object) print(object))

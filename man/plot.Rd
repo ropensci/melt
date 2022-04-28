@@ -11,7 +11,7 @@
 \S4method{plot}{ELD}(x, y, ...)
 }
 \arguments{
-\item{x}{Object to be plotted.}
+\item{x}{An object to be plotted.}
 
 \item{y}{Not used.}
 

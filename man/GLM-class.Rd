@@ -10,14 +10,14 @@ S4 class for generalized linear models with empirical likelihood.
 \section{Slots}{
 
 \describe{
-\item{\code{parTests}}{List with the test results for each parameter:
+\item{\code{parTests}}{A list with the test results for each parameter:
 \itemize{
 \item{\code{statistic } }{Numeric vector of chi-squared statistics.}
 \item{\code{convergence } }{Logical vector. \code{TRUE} indicates
 convergence of the algorithm.}
 }}
 
-\item{\code{optim}}{List with the following optimization results:
+\item{\code{optim}}{A list with the following optimization results:
 \itemize{
 \item{\code{method } }{Character for method dispatch in internal
 functions.}
