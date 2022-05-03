@@ -41,7 +41,7 @@
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as \code{optim} and \code{parTests},
 #'   respectively.
-#' @return S4 object of class of \linkS4class{GLM}.
+#' @return An object of class of \linkS4class{GLM}.
 #' @references Chen, Song Xi, and Hengjian Cui. 2003.
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
 #'   Statistica Sinica 13: 69–81.
@@ -150,7 +150,7 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
   new("GLM",
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
     statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,
-    dataMatrix = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
+    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = fit$coefficients, parTests = el$parTests,
     misc = list(
       family = fit$family, iter = fit$iter, converged = fit$converged,

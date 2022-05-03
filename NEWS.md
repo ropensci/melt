@@ -1,3 +1,19 @@
+# melt 1.5.0
+* The package depends on more recent version of R (>= 4.0.0).
+
+* S4 classes, generics, and methods are adopted throughout the package.
+
+* Generic functions `confreg` and `eld` are added.
+
+* `el_control` function is added for specifying `control` argument. Plain list it no longer accepted.
+
+* `el_glm` function is added for generalized linear models. More families and link functions will be supported in a future release.
+
+* `confint` has additional `cv` argument for a user-supplied critical value.
+
+* `el_aov` is removed. 
+
+
 # melt 1.4.0
 * C++14 standards are used for the package.
 

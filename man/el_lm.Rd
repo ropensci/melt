@@ -41,7 +41,7 @@ returned.}
 fitting functions. See ‘Details’.}
 }
 \value{
-An S4 object of class of \linkS4class{LM}.
+An object of class of \linkS4class{LM}.
 }
 \description{
 Fits a linear model with empirical likelihood.

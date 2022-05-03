@@ -42,7 +42,6 @@ coercible
 confint
 confreg
 el
-empricial
 et
 eval
 glm
@@ -51,7 +50,6 @@ lm
 minimizations
 nonconvex
 optimality
-rescaled
 stars’
 studentization
 th

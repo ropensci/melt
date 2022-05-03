@@ -33,7 +33,7 @@ statistic. Defaults to \code{qchisq(level, 2L)}.}
 \item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-An S4 object of class \linkS4class{ConfregEL}.
+An object of class \linkS4class{ConfregEL}.
 }
 \description{
 Computes boundary points of a two-dimensional confidence region for model

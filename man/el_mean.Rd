@@ -22,7 +22,7 @@ weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 is returned.}
 }
 \value{
-An S4 object of class \linkS4class{EL}.
+An object of class \linkS4class{EL}.
 }
 \description{
 Computes empirical likelihood for the mean.
@@ -45,11 +45,6 @@ w <- rep(c(1, 2), each = 25)
 el_mean(par, x, w)
 }
 \references{
-Glenn, N.L., and Yichuan Zhao. 2007.
-  “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-  Computational Statistics & Data Analysis 51 (10): 5130–41.
-  \doi{10.1016/j.csda.2006.07.032}.
-
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }

@@ -84,7 +84,7 @@ setMethod(
 
     if (length(x@statistic) != 0L) {
       cat(
-        "EL minimization:",
+        "Constrained EL:",
         if (x@convergence) "converged" else "not converged", "\n\n"
       )
     }
@@ -100,7 +100,8 @@ setMethod(
     cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
       collapse = ", "
     ),
-    " (df=", format(x@df), ")\n", sep = ""
+    " (df=", format(x@df), ")\n",
+    sep = ""
     )
     invisible(x)
   }

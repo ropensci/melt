@@ -13,7 +13,7 @@
 \item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-An S4 object of class \linkS4class{ELD}.
+An object of class \linkS4class{ELD}.
 }
 \description{
 Computes empirical likelihood displacement for model diagnostics and outlier

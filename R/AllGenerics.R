@@ -15,7 +15,7 @@
 #'   If \eqn{\textnormal{ELD}_i } is large, then the \eqn{i}th observation is an
 #'   influential point and can be inspected as a possible outlier. \code{eld}
 #'   computes \eqn{\textnormal{ELD}_i } for \eqn{i = 1, \dots, n }.
-#' @return An S4 object of class \linkS4class{ELD}.
+#' @return An object of class \linkS4class{ELD}.
 #' @references Lazar, Nicole A. 2005. “Assessing the Effect of Individual Data
 #'   Points on Inference From Empirical Likelihood.” Journal of Computational
 #'   and Graphical Statistics 14 (3): 626–42.
@@ -103,7 +103,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #'   \code{50}.
 #' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @importFrom stats qchisq
-#' @return An S4 object of class \linkS4class{ConfregEL}.
+#' @return An object of class \linkS4class{ConfregEL}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 #' @seealso \link{confint}, \link{el_control}, \link{lht}, \link{plot}
@@ -127,7 +127,7 @@ setGeneric("confreg", function(object, parm, level = 0.95,
 #'
 #' @param object A fitted \linkS4class{EL} object.
 #' @param ... Not used.
-#' @return An S4 object of class \linkS4class{logLikEL}.
+#' @return An object of class \linkS4class{logLikEL}.
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' logLik(fit)

@@ -11,11 +11,7 @@
 #' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @param model A logical. If \code{TRUE} the data matrix used for model fitting
 #'   is returned.
-#' @return An S4 object of class \linkS4class{EL}.
-#' @references Glenn, N.L., and Yichuan Zhao. 2007.
-#'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-#'   Computational Statistics & Data Analysis 51 (10): 5130–41.
-#'   \doi{10.1016/j.csda.2006.07.032}.
+#' @return An object of class \linkS4class{EL}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 #' @seealso \link{el_control}, \link{el_eval}, \link{lht}
@@ -73,7 +69,7 @@ el_mean <- function(par, x, weights = NULL, control = el_control(),
     statistic = el$statistic, df = p,
     pval = pchisq(el$statistic, df = p, lower.tail = FALSE), npar = p,
     weights = w,
-    dataMatrix = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
+    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = est
   )
 }

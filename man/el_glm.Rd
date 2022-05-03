@@ -58,7 +58,7 @@ Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
 \code{\link[stats]{glm.control}}.}
 }
 \value{
-S4 object of class of \linkS4class{GLM}.
+An object of class of \linkS4class{GLM}.
 }
 \description{
 Fits a generalized linear model with empirical likelihood.

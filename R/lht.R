@@ -14,11 +14,10 @@
 #'   See ‘Details’.
 #' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @details \code{\link{lht}} performs the constrained minimization of
-#'   \eqn{l(\theta)} introduced in \code{\link{el_control}}.
-#'   \code{rhs} and \code{lhs} cannot be both \code{NULL}. For non-\code{NULL}
-#'   \code{lhs}, it is required that \code{lhs} have full row rank
-#'   \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
-#'   parameters in the fitted model.
+#'   \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
+#'   cannot be both \code{NULL}. For non-\code{NULL} \code{lhs}, it is required
+#'   that \code{lhs} have full row rank \eqn{q \leq p} and \eqn{p} be equal to
+#'   \code{object$npar}, the number of parameters in the fitted model.
 #'
 #'   Depending on the specification of \code{rhs} and \code{lhs}, we have the
 #'   following three cases:
@@ -33,11 +32,12 @@
 #'   and the problem reduces to evaluating at \eqn{r} as
 #'   \deqn{l(r).}
 #'   }
-#' @return An S4 object of class of class \linkS4class{EL} or
-#'   \linkS4class{MinEL}.
-#' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
-#' "Empirical Likelihood for the Analysis of Experimental Designs,"
-#' \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
+#' @return If \code{lhs} is \code{NULL}, an object of class \linkS4class{EL}
+#' is returned. Otherwise, an object of class \linkS4class{CEL} is returned.
+#' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
+#'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
+#'   Statistical Methods & Applications 19 (4): 463–76.
+#'   \doi{10.1007/s10260-010-0137-9}.
 #' @references Qin, Jing, and Jerry Lawless. 1995.
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
 #'   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
@@ -65,11 +65,11 @@
 #' @importFrom stats pchisq
 #' @export
 lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
-  if (all(!is(object, c("EL")), !is(object, c("MinEL")))) {
+  if (all(!is(object, c("EL")), !is(object, c("CEL")))) {
     stop("invalid 'object' supplied")
   }
-  if (length(object@dataMatrix) == 0L) {
-    stop("'object' has no 'dataMatrix'; fit the model with 'model' = TRUE")
+  if (length(object@data) == 0L) {
+    stop("'object' has no 'data'; fit the model with 'model' = TRUE")
   }
   h <- check_hypothesis(lhs, rhs, object@npar)
   if (!is(control, "ControlEL")) {
@@ -84,7 +84,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
   th <- control@th
   w <- object@weights
   if (is.null(lhs)) {
-    el <- eval_(method, h$r, object@dataMatrix, maxit_l, tol_l, th, w)
+    el <- eval_(method, h$r, object@data, maxit_l, tol_l, th, w)
     p <- length(h$r)
     return(new("EL",
       optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
@@ -94,10 +94,10 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
     ))
   }
   el <- lht_(
-    method, object@coefficients, object@dataMatrix, h$l, h$r,
+    method, object@coefficients, object@data, h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )
-  new("MinEL",
+  new("CEL",
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
     statistic = el$statistic, df = nrow(h$l),
     pval = pchisq(el$statistic, df = nrow(h$l), lower.tail = FALSE),

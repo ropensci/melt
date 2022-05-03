@@ -44,7 +44,7 @@
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as \code{optim} and \code{parTests},
 #'   respectively.
-#' @return An S4 object of class of \linkS4class{LM}.
+#' @return An object of class of \linkS4class{LM}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_control}, \link{el_glm}, \link{lht}
@@ -82,10 +82,14 @@ el_lm <- function(formula, data, weights = NULL, na.action,
     x <- NULL
     mm <- cbind(y, x)
     return(new("LM",
-      optim = list(method = "lm", par = numeric(), lambda = numeric(),
-                   iterations = integer(), convergence = logical()),
-      misc = list(call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
-                  na.action = attr(mf, "na.action"))
+      optim = list(
+        method = "lm", par = numeric(), lambda = numeric(),
+        iterations = integer(), convergence = logical()
+      ),
+      misc = list(
+        call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
+        na.action = attr(mf, "na.action")
+      )
     ))
   } else {
     x <- model.matrix(mt, mf, NULL)
@@ -112,9 +116,11 @@ el_lm <- function(formula, data, weights = NULL, na.action,
   new("LM",
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
     statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,
-    dataMatrix = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
+    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = z$coefficients, parTests = el$parTests,
-    misc = list(call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
-                na.action = attr(mf, "na.action"))
+    misc = list(
+      call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
+      na.action = attr(mf, "na.action")
+    )
   )
 }

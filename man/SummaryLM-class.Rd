@@ -17,9 +17,9 @@ for the overall test of the model.}
 
 \item{\code{convergence}}{Convergence status of the minimization.}
 
-\item{\code{parMatrix}}{Numeric matrix of the test results of the parameters.}
+\item{\code{parMatrix}}{A numeric matrix of the test results of the parameters.}
 
-\item{\code{weighted}}{Logical for whether the given model is weighted or not.}
+\item{\code{weighted}}{A logical for whether the given model is weighted or not.}
 
 \item{\code{na.action}}{Information returned by \code{\link[stats]{model.frame}} on
 the special handling of NAs.}

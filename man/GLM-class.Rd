@@ -5,49 +5,9 @@
 \alias{GLM-class}
 \title{S4 class \linkS4class{GLM}}
 \description{
-S4 class for generalized linear models with empirical likelihood.
+S4 class for generalized linear models with empirical likelihood. It inherits
+from \linkS4class{LM} class.
 }
-\section{Slots}{
-
-\describe{
-\item{\code{parTests}}{A list with the test results for each parameter:
-\itemize{
-\item{\code{statistic } }{Numeric vector of chi-squared statistics.}
-\item{\code{convergence } }{Logical vector. \code{TRUE} indicates
-convergence of the algorithm.}
-}}
-
-\item{\code{optim}}{A list with the following optimization results:
-\itemize{
-\item{\code{method } }{Character for method dispatch in internal
-functions.}
-\item{\code{par } }{Value at which empirical likelihood is minimized.}
-\item{\code{lambda } }{Lagrange multiplier of the dual problem.}
-\item{\code{iterations } }{Number of iterations performed.}
-\item{\code{convergence } }{Convergence status.}
-}}
-
-\item{\code{logp}}{Log probabilities obtained from empirical likelihood.}
-
-\item{\code{logl}}{Empirical log-likelihood.}
-
-\item{\code{loglr}}{Empirical log-likelihood ratio.}
-
-\item{\code{statistic}}{Minus twice the empirical log-likelihood ratio.}
-
-\item{\code{df}}{Degrees of freedom of the statistic.}
-
-\item{\code{pval}}{\eqn{p}-value of the statistic.}
-
-\item{\code{npar}}{Number of parameters.}
-
-\item{\code{weights}}{Rescaled weights used for model fitting.}
-
-\item{\code{dataMatrix}}{Data matrix used for model fitting.}
-
-\item{\code{coefficients}}{Maximum empirical likelihood estimates of the parameters.}
-}}
-
 \examples{
 showClass("GLM")
 }

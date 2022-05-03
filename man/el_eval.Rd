@@ -21,22 +21,20 @@ weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 A list with the following components:
   \item{optim}{A list with the following optimization results:
     \itemize{
-      \item{\code{lambda } }{The Lagrange multiplier of dual problem.}
-      \item{\code{logLR } }{The (weighted) empirical log-likelihood ratio
-      value.}
-      \item{\code{iterations } }{The number of iterations performed.}
-      \item{\code{convergence } }{A logical vector. \code{TRUE} indicates
-      convergence of the algorithm.}
+    \item{\code{lambda } }{Lagrange multiplier of the dual problem.}
+    \item{\code{iterations } }{Number of iterations performed.}
+    \item{\code{convergence } }{Convergence status.}
     }
   }
-  \item{log.prob}{The log probabilities.}
-  \item{loglik}{The log likelihood value.}
-  \item{statistic}{The chi-square statistic.}
-  \item{df}{The degrees of freedom of the statistic.}
-  \item{p.value}{The \eqn{p}-value of the statistic.}
-  \item{npar}{The number of parameters.}
-  \item{weights}{The rescaled weights if non-\code{NULL} \code{weights} is
-  supplied.}
+  \item{logp}{Log probabilities obtained from empirical likelihood.}
+  \item{logl}{Empirical log-likelihood.}
+  \item{loglr}{Empirical log-likelihood ratio.}
+  \item{statistic}{Minus twice the empirical log-likelihood ratio statistic that
+  has an asymptotic chi-square distribution.}
+  \item{df}{Degrees of freedom of the statistic.}
+  \item{pval}{\eqn{p}-value of the statistic.}
+  \item{npar}{Number of parameters.}
+  \item{weights}{Rescaled weights used for model fitting.}
 }
 \description{
 Computes empirical likelihood with general estimating functions.
@@ -44,8 +42,9 @@ Computes empirical likelihood with general estimating functions.
 \details{
 \code{el_eval} evaluates empirical likelihood with a \eqn{n} by
   \eqn{p} numeric matrix argument \code{g}, whose \eqn{i}th row is
-  \eqn{g(X_i, \theta)}. If \code{weights} is non \code{NULL}, the weights are
-  rescaled to add up to \eqn{n}.
+  \eqn{g(X_i, \theta)}. Since the estimating function can be arbitrary,
+  \code{el_eval} does not return an object of class \linkS4class{EL}, and the
+  associated generics and methods are not applicable.
 }
 \examples{
 # test for variance with known mean
@@ -55,11 +54,6 @@ g <- x^2 - sigma^2
 el_eval(g)
 }
 \references{
-Glenn, N.L., and Yichuan Zhao. 2007.
-  “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-  Computational Statistics & Data Analysis 51 (10): 5130–41.
-  \doi{10.1016/j.csda.2006.07.032}.
-
 Qin, Jin, and Jerry Lawless. 1994.
   “Empirical Likelihood and General Estimating Equations.”
   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.

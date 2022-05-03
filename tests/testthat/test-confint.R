@@ -1,5 +1,4 @@
 test_that("invalid 'level'", {
-  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
@@ -11,7 +10,6 @@ test_that("invalid 'level'", {
 })
 
 test_that("invalid 'parm'", {
-  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
@@ -23,7 +21,6 @@ test_that("invalid 'parm'", {
 })
 
 test_that("'level' == 1", {
-  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
@@ -34,7 +31,6 @@ test_that("'level' == 1", {
 })
 
 test_that("'level' == 0", {
-  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
@@ -44,7 +40,6 @@ test_that("'level' == 0", {
 })
 
 test_that("empty model", {
-  skip_on_os("windows", arch = "i386")
   n <- 100
   x <- rnorm(n)
   y <- 1 + x + rnorm(n)

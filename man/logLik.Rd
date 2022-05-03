@@ -13,7 +13,7 @@
 \item{...}{Not used.}
 }
 \value{
-An S4 object of class \linkS4class{logLikEL}.
+An object of class \linkS4class{logLikEL}.
 }
 \description{
 Extracts empirical log-likelihood from a model evaluated at the estimated

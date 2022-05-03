@@ -5,27 +5,26 @@
 \alias{LM-class}
 \title{S4 class \linkS4class{LM}}
 \description{
-S4 class for linear models with empirical likelihood.
+S4 class for linear models with empirical likelihood. It inherits from
+\linkS4class{CEL} class.
+}
+\details{
+If there is no intercept in a model, \code{optim}
+slot need to be understood in terms of \linkS4class{EL} class since
+constrained optimization is not involved in the overall test.
 }
 \section{Slots}{
 
 \describe{
 \item{\code{parTests}}{A list with the test results for each parameter:
 \itemize{
-\item{\code{statistic } }{Numeric vector of chi-squared statistics.}
-\item{\code{convergence } }{Logical vector. \code{TRUE} indicates
-convergence of the algorithm.}
+\item{\code{statistic } }{A numeric vector of chi-squared statistics.}
+\item{\code{convergence } }{Convergence status of tests for each parameter.
+}
 }}
 
-\item{\code{misc}}{A list with the following optimization results:
-\itemize{
-\item{\code{method } }{Character for method dispatch in internal
-functions.}
-\item{\code{par } }{Value at which empirical likelihood is minimized.}
-\item{\code{lambda } }{Lagrange multiplier of the dual problem.}
-\item{\code{iterations } }{Number of iterations performed.}
-\item{\code{convergence } }{Convergence status.}
-}}
+\item{\code{misc}}{A list with miscellaneous outputs from a model fitting function.
+They are used in other generics and methods.}
 }}
 
 \examples{

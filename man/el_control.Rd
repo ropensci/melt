@@ -6,7 +6,7 @@
 \usage{
 el_control(
   maxit = 200L,
-  maxit_l = 50L,
+  maxit_l = 25L,
   tol = 1e-06,
   tol_l = 1e-06,
   step = NULL,
@@ -19,7 +19,7 @@ el_control(
 empirical likelihood. Defaults to \code{200}.}
 
 \item{maxit_l}{Maximum number of iterations of evaluation of empirical
-likelihood. Defaults to \code{50}.}
+likelihood. Defaults to \code{25}.}
 
 \item{tol}{Convergence tolerance for the constrained minimization.
 Defaults to \code{1e-06}.}
@@ -38,98 +38,13 @@ The iteration stops if the value exceeds the threshold. Defaults to
 available).}
 }
 \value{
-An S4 object of class of \linkS4class{ControlEL}.
+An object of class of \linkS4class{ControlEL}.
 }
 \description{
 Specifies details of computation of (constrained) empirical likelihood.
 }
-\details{
-Let \eqn{X_i} be independent and identically distributed
-  \eqn{p}-dimensional random variables from an unknown distribution \eqn{F}
-  for \eqn{i = 1, \dots, n}. For a parameter of interest \eqn{\theta(F) \in
-  {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth estimating function
-  \eqn{g(X_i, \theta)} with a moment condition
-  \deqn{\textnormal{E}[g(X_i, \theta)] = 0.}
-  We assume that there exists an unique \eqn{\theta_0} that solves the above
-  equation. Given a value of \eqn{\theta}, the (profile) empirical likelihood
-  ratio is defined by
-  \deqn{\mathcal{R}(\theta) =
-  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
-  \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
-  \right\}.}
-  The Lagrange multiplier \eqn{\lambda \equiv \lambda(\theta)} of the dual
-  problem leads to
-  \deqn{p_i = \frac{1}{n}\frac{1}{1 + \lambda^\top g(X_i, \theta)},}
-  where \eqn{\lambda} solves
-  \deqn{\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}
-  {1 + \lambda^\top g(X_i, \theta)} = 0.}
-  Then the empirical log-likelihood ratio is given by
-  \deqn{\log\mathcal{R}(\theta) =  \max_{\lambda}\sum_{i = 1}^n
-  \log(1 + \lambda^\top g(X_i, \theta)).}
-  Let \eqn{l(\theta)} denote the minus twice empirical log-likelihood ratio
-  function. Under some regularity conditions, it is known that
-  \eqn{l(\theta_0)} converges in distribution to \eqn{\chi^2_p}, where
-  \eqn{\chi^2_p} has a chi-squared distribution with \eqn{p} degrees of
-  freedom.
-
-  Inference for \eqn{\theta} often involves a hypothesis testing
-  through a constraint on the parameter space. Consider a linear hypothesis
-  of the form \deqn{L\theta = r,} where the left-hand-side \eqn{L} is a
-  \eqn{q} by \eqn{p} matrix and the right-hand-side \eqn{r} is a
-  \eqn{q}-dimensional vector. With additional conditions,
-  \eqn{l(\theta)} converges in distribution to \eqn{\chi^2_q} under the
-  constraint of hypothesis, i.e.,
-  \deqn{\min_{\theta: L\theta = r} l(\theta) \to_d \chi^2_q .}
-
-  Most of the functions provided by \strong{melt} perform either of the two
-  tasks:
-  \itemize{
-  \item Evaluating \eqn{l(\theta)} for a specific value of \eqn{\theta},
-  e.g., \code{\link{el_eval}} and \code{\link{el_mean}}.
-  \item Minimizing \eqn{l(\theta)} subject to a constraint, e.g.,
-  \code{\link{el_lm}} and \code{\link{lht}}.
-  }
-  As described above, evaluating \eqn{l(\theta)} involves optimization with
-  respect to \eqn{\lambda}. This problem can be efficiently solved by the
-  Newton-Raphson method when the interior of convex hull constructed from
-  the set of \eqn{g(X_i, \theta)} contains the zero vector.
-
-  Minimization of \eqn{l(\theta)} with respect to \eqn{\theta}, on the other
-  hand, is computationally expensive since it implicitly involves the
-  evaluation step. Further, depending on the form of \eqn{g(X_i, \theta)} and
-  the constraint, the optimization problem can be nonconvex and have multiple
-  local minima. For this reason, \strong{melt} only considers linear
-  hypotheses and performs local minimization of \eqn{l(\theta)} using
-  projected gradient descent method. With the orthogonal projection matrix
-  \eqn{P} and a step size \eqn{\gamma}, the algorithm updates \eqn{\theta} as
-  \deqn{\theta^{(k + 1)} \leftarrow \theta^{(k)} -
-  \gamma P \nabla l(\theta^{(k)}),}
-  where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
-  \eqn{\theta^{(k)}}. The first order optimality condition is
-  \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
-}
 \examples{
 optcfg <- el_control(maxit = 300L, th = 200, nthreads = 1L)
-}
-\references{
-Adimari, Gianfranco, and Annamaria Guolo. 2010.
-  “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-  Statistical Methods & Applications 19 (4): 463–76.
-  \doi{10.1007/s10260-010-0137-9}.
-
-Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-  The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-
-Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
-  The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
-
-Qin, Jin, and Jerry Lawless. 1994.
-  “Empirical Likelihood and General Estimating Equations.”
-  The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
-
-Qin, Jing, and Jerry Lawless. 1995.
-  “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-  Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 }
 \seealso{
 \link{el_eval}, \link{lht}

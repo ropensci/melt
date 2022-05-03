@@ -22,8 +22,8 @@ See ‘Details’.}
 \item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-An S4 object of class of class \linkS4class{EL} or
-  \linkS4class{MinEL}.
+If \code{lhs} is \code{NULL}, an object of class \linkS4class{EL}
+is returned. Otherwise, an object of class \linkS4class{CEL} is returned.
 }
 \description{
 Tests a linear hypothesis for objects that inherit from class
@@ -31,11 +31,10 @@ Tests a linear hypothesis for objects that inherit from class
 }
 \details{
 \code{\link{lht}} performs the constrained minimization of
-  \eqn{l(\theta)} introduced in \code{\link{el_control}}.
-  \code{rhs} and \code{lhs} cannot be both \code{NULL}. For non-\code{NULL}
-  \code{lhs}, it is required that \code{lhs} have full row rank
-  \eqn{q \leq p} and \eqn{p} be equal to \code{object$npar}, the number of
-  parameters in the fitted model.
+  \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
+  cannot be both \code{NULL}. For non-\code{NULL} \code{lhs}, it is required
+  that \code{lhs} have full row rank \eqn{q \leq p} and \eqn{p} be equal to
+  \code{object$npar}, the number of parameters in the fitted model.
 
   Depending on the specification of \code{rhs} and \code{lhs}, we have the
   following three cases:
@@ -72,9 +71,10 @@ fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 lht(fit2, lhs = lhs2)
 }
 \references{
-Kim, E., MacEachern, S., and Peruggia, M., (2021),
-"Empirical Likelihood for the Analysis of Experimental Designs,"
-\href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
+Adimari, Gianfranco, and Annamaria Guolo. 2010.
+  “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
+  Statistical Methods & Applications 19 (4): 463–76.
+  \doi{10.1007/s10260-010-0137-9}.
 
 Qin, Jing, and Jerry Lawless. 1995.
   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”

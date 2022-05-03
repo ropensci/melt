@@ -41,7 +41,6 @@ Rcpp::List eval_g_(
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
       Rcpp::Named("lambda") = el.l,
-      Rcpp::Named("logLR") = -el.nllr,
       Rcpp::Named("iterations") = el.iter,
       Rcpp::Named("convergence") = el.conv),
     Rcpp::Named("logp") = el.logp_g(g),
