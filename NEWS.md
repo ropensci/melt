@@ -1,3 +1,6 @@
+# melt 1.5.1
+* bugs in test files fixed.
+
 # melt 1.5.0
 * The package depends on more recent version of R (>= 4.0.0).
 

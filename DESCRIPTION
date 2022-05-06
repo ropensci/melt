@@ -1,7 +1,7 @@
 Package: melt
 Type: Package
 Title: Multiple Empirical Likelihood Tests
-Version: 1.5.0
+Version: 1.5.1
 Description: Performs multiple empirical likelihood tests for regression analysis. 
     Much of its functionality and syntax mimics the corresponding base R functions. 
     The core computational routines are implemented using the 'Eigen' C++ library 

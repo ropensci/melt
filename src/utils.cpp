@@ -159,4 +159,3 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
 
 
 
-

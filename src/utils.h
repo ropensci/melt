@@ -47,4 +47,8 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
                 const Eigen::Ref<const Eigen::VectorXd>& par,
                 const Eigen::Ref<const Eigen::ArrayXd>& w,
                 const bool weighted);
+
+
+
+
 #endif

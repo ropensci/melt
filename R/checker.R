@@ -9,7 +9,7 @@ check_weights <- function(weights, nw) {
   if (!all(is.finite(w))) {
     stop("'weights is not a finite numeric vector")
   }
-  if (any(w < 0)) {
+  if (any(w <= 0)) {
     stop("negative 'weights' not allowed")
   }
   if (length(w) != nw) {
@@ -94,6 +94,12 @@ check_family <- function(family) {
                       sQuote(f), sQuote(l)), domain = NA)
       }
     },
+    # "quasibinomial" = {
+    #   if (!any(l == c("logit"))) {
+    #     stop(gettextf("%s family with %s link not supported by 'el_glm'",
+    #                   sQuote(f), sQuote(l)), domain = NA)
+    #   }
+    # },
     "poisson" = {
       if (!any(l == c("log", "identity", "sqrt"))) {
         stop(gettextf("%s family with %s link not supported by 'el_glm'",

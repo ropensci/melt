@@ -206,6 +206,65 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
 }
 
 
+// quasibinomial family
+Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                             const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  const int p = x.cols() - 1;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(p);
+
+  Eigen::MatrixXd out(x.rows(), p + 1);
+  out.leftCols(p) = xmat.array().colwise() * (y - logit_linkinv(xmat * beta));
+  // out.rightCols(1) = square(y - logit_linkinv(xmat * beta)) *
+  //   inverse(phi * phi * logit_linkinv(xmat * beta) *
+  //   (1.0 - logit_linkinv(xmat * beta))) - 1.0 / phi;
+  out.col(p) = inverse(phi * phi * logit_linkinv(xmat * beta) *
+    (1.0 - logit_linkinv(xmat * beta))) *
+    square(y - logit_linkinv(xmat * beta)) - 1.0 / phi;
+  return out;
+}
+Eigen::VectorXd gr_nloglr_qbin_logit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted)
+{
+  const int p = x.cols() - 1;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  Eigen::ArrayXd c(x.rows());
+  if (weighted) {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  } else {
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+
+  Eigen::ArrayXd c2 = inverse(phi * phi * logit_linkinv(xmat * beta) *
+    (1.0 - logit_linkinv(xmat * beta))) *
+    (square(logit_linkinv(xmat * beta)) * (1.0 - 2.0 * y) +
+    square(y) * (2.0 * logit_linkinv(xmat * beta) - 1.0));
+
+  Eigen::MatrixXd out = Eigen::MatrixXd::Zero(p + 1, p + 1);
+  out.topLeftCorner(p, p) = xmat.transpose() *
+    (xmat.array().colwise() * c).matrix();
+  out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c2).colwise().sum();
+  out.topRightCorner(p, 1) =
+    (xmat.array().colwise() * c2).colwise().sum().transpose();
+  out(p, p) = (c * (-2.0 * logit_linkinv(xmat * beta) *
+    (1.0 - logit_linkinv(xmat * beta)) *
+    square(y - logit_linkinv(xmat * beta)) * std::pow(phi, -3) +
+    std::pow(phi, -2))).sum();
+  return out * l;
+}
+
+
 /* EL class (evaluation)
  * Last updated: 04/07/22
  */
@@ -265,7 +324,8 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                   {"binomial_log", mele_lm},
                   {"poisson_log", mele_lm},
                   {"poisson_identity", mele_lm},
-                  {"poisson_sqrt", mele_lm}}};
+                  {"poisson_sqrt", mele_lm},
+                  {"quasibinomial_logit", mele_lm}}};
   return mele_map[method];
 }
 
@@ -286,7 +346,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"binomial_log", g_bin_log},
                {"poisson_log", g_poi_log},
                {"poisson_identity", g_poi_identity},
-               {"poisson_sqrt", g_poi_sqrt}}};
+               {"poisson_sqrt", g_poi_sqrt},
+               {"quasibinomial_logit", g_qbin_logit}}};
   return g_map[method];
 }
 
@@ -478,7 +539,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"binomial_log", g_bin_log},
                {"poisson_log", g_poi_log},
                {"poisson_identity", g_poi_identity},
-               {"poisson_sqrt", g_poi_sqrt}}};
+               {"poisson_sqrt", g_poi_sqrt},
+               {"quasibinomial_logit", g_qbin_logit}}};
   return g_map[method];
 }
 
@@ -507,7 +569,8 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
          {"binomial_log", gr_nloglr_bin_log},
          {"poisson_log", gr_nloglr_poi_log},
          {"poisson_identity", gr_nloglr_poi_identity},
-         {"poisson_sqrt", gr_nloglr_poi_sqrt}}};
+         {"poisson_sqrt", gr_nloglr_poi_sqrt},
+         {"quasibinomial_logit", gr_nloglr_qbin_logit}}};
   return gr_map[method];
 }
 

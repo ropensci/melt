@@ -117,6 +117,7 @@ test_that("invalid 'control'", {
 test_that("same results with parallel computing (binomial)", {
   skip_on_os("windows", arch = "i386")
   # skip_on_ci()
+  skip_on_cran()
   n <- 500
   p <- 15
   b <- rnorm(p, sd = 0.5)

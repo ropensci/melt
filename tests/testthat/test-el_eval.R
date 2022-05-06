@@ -40,7 +40,7 @@ test_that("loglik to loglr", {
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
-  expect_equal(fit$logl + n * log(n), fit$loglr)
+  expect_equal(fit$logl + n * log(n), fit$loglr, tolerance = 1e-07)
 })
 
 test_that("loglik to loglr (weighted)", {
@@ -52,7 +52,8 @@ test_that("loglik to loglr (weighted)", {
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
   w <- fit$weights
-  expect_equal(fit$logl + sum(w * (log(n) - log(w))), fit$loglr)
+  expect_equal(fit$logl + sum(w * (log(n) - log(w))), fit$loglr,
+               tolerance = 1e-07)
 })
 
 test_that("identical weights == no weights", {

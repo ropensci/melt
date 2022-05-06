@@ -1,5 +1,5 @@
 test_that("output", {
-  skip_on_os("windows", arch = "i386")
+  skip_on_cran()
   data("clothianidin")
   out1 <- el_pairwise(clo ~ trt | blk, clothianidin, B = 500, progress = TRUE)
   out2 <- el_pairwise(clo ~ trt | blk, clothianidin,

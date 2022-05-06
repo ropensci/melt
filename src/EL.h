@@ -114,7 +114,7 @@ public:
         const int maxit_l,
         const double tol,
         const double tol_l,
-        const double gamma2,
+        const double step,
         const double th,
         const Eigen::Ref<const Eigen::ArrayXd>& wt);
 
@@ -252,4 +252,21 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
                                    const Eigen::Ref<const Eigen::VectorXd>& par,
                                    const Eigen::Ref<const Eigen::ArrayXd>& w,
                                    const bool weighted);
+
+
+
+
+
+
+
+// quasibinomial family
+Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                             const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::VectorXd gr_nloglr_qbin_logit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted);
 #endif
