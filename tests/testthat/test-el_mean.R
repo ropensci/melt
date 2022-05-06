@@ -10,7 +10,6 @@ test_that("convergence check", {
 })
 
 test_that("probabilities add up to 1", {
-  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
@@ -20,13 +19,12 @@ test_that("probabilities add up to 1", {
 })
 
 test_that("probabilities add up to 1 (weighted)", {
-  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   w <- 1 + runif(10, min = -0.5, max = 0.5)
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(par, x, weights = w, optcfg)
-  expect_equal(sum(exp(fit@logp)), 1)
+  expect_equal(sum(exp(fit@logp)), 1, tolerance = 1e-7)
 })
 
 test_that("identical weights == no weights", {
