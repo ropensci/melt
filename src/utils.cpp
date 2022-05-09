@@ -20,7 +20,8 @@ Eigen::ArrayXd log_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
 }
 Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
 {
-  return 1.0 / (1.0 + exp(-x.array()));
+  // return 1.0 / (1.0 + exp(-x.array()));
+  return inverse(1.0 + exp(-x.array()));
 }
 Eigen::ArrayXd probit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x)
 {
