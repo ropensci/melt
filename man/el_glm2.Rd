@@ -55,6 +55,9 @@ Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
 \item{mustart}{Starting values for the vector of means. Defaults to
 \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
 
+\item{input}{Starting values for the vector of means. Defaults to
+\code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
+
 \item{...}{Additional arguments to be passed to
 \code{\link[stats]{glm.control}}.}
 }

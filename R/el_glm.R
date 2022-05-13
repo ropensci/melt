@@ -201,6 +201,8 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
 #'   \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.
 #' @param mustart Starting values for the vector of means. Defaults to
 #'   \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.
+#' @param input Starting values for the vector of means. Defaults to
+#'   \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.
 #' @param ... Additional arguments to be passed to
 #'   \code{\link[stats]{glm.control}}.
 #' @details The available families and link functions are as follows:

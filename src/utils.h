@@ -48,7 +48,7 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
                 const Eigen::Ref<const Eigen::ArrayXd>& w,
                 const bool weighted);
 
-
-
+// quantile function
+double quantileRcpp(const Rcpp::NumericVector& x, double prob);
 
 #endif

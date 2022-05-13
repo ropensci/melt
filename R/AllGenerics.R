@@ -36,9 +36,9 @@ setGeneric("eld", function(object, control = el_control()) {
   standardGeneric("eld")
 })
 
-#' Maximum empirical likelihood estimates
+#' Model coefficients
 #'
-#' Extracts model coefficients from a model.
+#' Extracts maximum empirical likelihood estimates from a model.
 #'
 #' @name coef-method
 #' @param object A fitted \linkS4class{EL} object.

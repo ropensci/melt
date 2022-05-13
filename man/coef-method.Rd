@@ -3,7 +3,7 @@
 \name{coef-method}
 \alias{coef-method}
 \alias{coef,EL-method}
-\title{Maximum empirical likelihood estimates}
+\title{Model coefficients}
 \usage{
 \S4method{coef}{EL}(object, ...)
 }
@@ -13,7 +13,7 @@
 \item{...}{Not used.}
 }
 \description{
-Extracts model coefficients from a model.
+Extracts maximum empirical likelihood estimates from a model.
 }
 \examples{
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)

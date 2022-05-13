@@ -148,7 +148,11 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
 
 
 
-
+double quantileRcpp(const Rcpp::NumericVector& x, double prob) {
+  Rcpp::Environment stats("package:stats");
+  Rcpp::Function quantile = stats["quantile"];
+  return Rcpp::as<double>(quantile(x, Rcpp::Named("probs") = prob));
+}
 
 
 

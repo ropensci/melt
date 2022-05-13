@@ -112,15 +112,57 @@ Rcpp::List glm2_(
     const int nthreads,
     const Eigen::Map<Eigen::ArrayXd>& w)
 {
+  const int n = x.rows();
   const std::string method = family + "_" + link;
   const int p = x.cols() - 1;
   const double gamma = step_nloglr(x.rows(), step);
 
   Eigen::VectorXd par = par0;
-  par(1) = -0.0055;
+  par(1) = 0;
 
   const double test_th = th_nloglr(p - 1, th);
   const EL el(method, par, x, maxit_l, tol_l, test_th, w);
+
+  const Eigen::MatrixXd g = g_qbin_logit(x, par);
+  Eigen::VectorXd l = (g.transpose() * g).ldlt().solve(g.colwise().sum());
+  double th2 = th_nloglr(p, th);
+  double nllr{0};             // negative log-likelihood ratio
+  int iter{0};                // iterations performed in optimization
+  bool conv{false};           // convergence status
+
+  const PSEUDO_LOG pl(Eigen::VectorXd::Ones(n) + g * l, w);
+  // J matrix
+  Eigen::MatrixXd J;
+
+
+  while (!conv && iter != maxit_l && nllr <= th2) {
+    // pseudo log
+    const PSEUDO_LOG pl(Eigen::VectorXd::Ones(n) + g * l, w);
+    // J matrix
+    J = g.array().colwise() * pl.sqrt_neg_d2plog;
+    // propose new lambda by NR method with least square
+    // Eigen::VectorXd step = (J.transpose() * J).ldlt().solve(
+    //   J.transpose() * (pl.dplog / pl.sqrt_neg_d2plog).matrix());
+    Eigen::VectorXd step =
+      J.colPivHouseholderQr().solve((pl.dplog / pl.sqrt_neg_d2plog).matrix());
+
+    // update function value
+    nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step), w);
+    Rcpp::Rcout << nllr << "\n";
+    // step halving to ensure increase in function value
+    if (nllr < pl.plog_sum) {
+      step /= 2;
+      nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * (l + step), w);
+    }
+    // convergence check
+    if (step.norm() < tol_l * l.norm() + tol_l * tol_l) {
+      conv = true;
+    }
+    ++iter;
+    // update lambda
+    l += step;
+  }
+  Eigen::MatrixXd H = J.transpose() * J;
 
   // // overall test
   // Eigen::VectorXd par(p + 1);
@@ -178,12 +220,14 @@ Rcpp::List glm2_(
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("method") = method,
-    Rcpp::Named("par") = el.par,
-    Rcpp::Named("lambda") = el.l,
-    Rcpp::Named("iterations") = el.iter,
-    Rcpp::Named("convergence") = el.conv,
-    Rcpp::Named("nllr") = el.nllr,
+    Rcpp::Named("par") = par,
+    Rcpp::Named("lambda") = l,
+    Rcpp::Named("lambda2") = el.l,
+    Rcpp::Named("iterations") = iter,
+    Rcpp::Named("convergence") = conv,
+    Rcpp::Named("nllr") = nllr,
+    Rcpp::Named("nllr2") = el.nllr,
     Rcpp::Named("tmp") = g_qbin_logit(x, par),
-    Rcpp::Named("tmp2") = g_bin_logit(x, par));
+    Rcpp::Named("h") = H);
   return result;
 }

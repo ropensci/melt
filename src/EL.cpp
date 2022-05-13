@@ -218,7 +218,10 @@ Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
   const Eigen::MatrixXd xmat = x.rightCols(p);
 
   Eigen::MatrixXd out(x.rows(), p + 1);
-  out.leftCols(p) = xmat.array().colwise() * (y - logit_linkinv(xmat * beta));
+  out.leftCols(p) = xmat.array().colwise() *
+    (y - logit_linkinv(xmat * beta));
+  // out.leftCols(p) =std::pow(n, -8) *(xmat.array().colwise() *
+  //   (y - logit_linkinv(xmat * beta)));
   // out.leftCols(p) = xmat.array().colwise() *
   //   (1.0 / phi * (y - logit_linkinv(xmat * beta)));
   // out.rightCols(1) = square(y - logit_linkinv(xmat * beta)) *
@@ -228,11 +231,11 @@ Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
   out.col(p) = inverse(phi * phi * logit_linkinv(xmat * beta) *
     (1.0 - logit_linkinv(xmat * beta))) *
     square(y - logit_linkinv(xmat * beta)) - 1.0 / phi;
-
+  // out.col(p) = out.col(p) / 20.0;
   // out.col(p) = inverse(logit_linkinv(xmat * beta) *
   //   (1.0 - logit_linkinv(xmat * beta))) *
   //   square(y - logit_linkinv(xmat * beta)) - phi;
-  return 100 * n * n * n * out;
+  return out;
 }
 Eigen::VectorXd gr_nloglr_qbin_logit(
     const Eigen::Ref<const Eigen::VectorXd>& l,
