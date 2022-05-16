@@ -49,12 +49,8 @@ lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthrea
     .Call(`_melt_lm_`, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-cov2 <- function(method, est, x) {
-    .Call(`_melt_cov2`, method, est, x)
-}
-
-mht_ <- function(method, lhs, x, est, q, m, B) {
-    .Call(`_melt_mht_`, method, lhs, x, est, q, m, B)
+mht_ <- function(method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, nthreads, wt, q, m, level, B) {
+    .Call(`_melt_mht_`, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, nthreads, wt, q, m, level, B)
 }
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {

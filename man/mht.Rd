@@ -2,7 +2,7 @@
 % Please edit documentation in R/mht.R
 \name{mht}
 \alias{mht}
-\title{Linear hypothesis test}
+\title{Multiple tests with empirical likelihood}
 \usage{
 mht(
   object,
@@ -10,6 +10,7 @@ mht(
   lhs = NULL,
   control = el_control(),
   calibrate = c("mvchisq", "boot"),
+  level = 0.95,
   B = 10000
 )
 }

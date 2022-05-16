@@ -28,10 +28,10 @@ Authors@R:
              role = c("aut", "cre")),
       person(given = "Steven",
              family = "MacEachern",
-             role = c("aut", "ths")),
+             role = c("ctb", "ths")),
       person(given = "Mario",
              family = "Peruggia",
-             role = c("aut", "ths")))
+             role = c("ctb", "ths")))
 Suggests: 
     spelling,
     covr,

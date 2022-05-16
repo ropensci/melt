@@ -236,33 +236,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cov2
-Eigen::MatrixXd cov2(const std::string method, const Eigen::Map<Eigen::VectorXd>& est, const Eigen::Map<Eigen::MatrixXd>& x);
-RcppExport SEXP _melt_cov2(SEXP methodSEXP, SEXP estSEXP, SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type est(estSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(cov2(method, est, x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // mht_
-Rcpp::List mht_(const std::string method, const Eigen::Map<Eigen::MatrixXd>& lhs, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& est, const Eigen::Map<Eigen::VectorXi>& q, const int m, const int B);
-RcppExport SEXP _melt_mht_(SEXP methodSEXP, SEXP lhsSEXP, SEXP xSEXP, SEXP estSEXP, SEXP qSEXP, SEXP mSEXP, SEXP BSEXP) {
+Rcpp::List mht_(const std::string method, const Eigen::Map<Eigen::VectorXd>& est, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& rhs, const Eigen::Map<Eigen::MatrixXd>& lhs, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& wt, const Eigen::Map<Eigen::VectorXi>& q, const int m, const double level, const int B);
+RcppExport SEXP _melt_mht_(SEXP methodSEXP, SEXP estSEXP, SEXP xSEXP, SEXP rhsSEXP, SEXP lhsSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wtSEXP, SEXP qSEXP, SEXP mSEXP, SEXP levelSEXP, SEXP BSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type lhs(lhsSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type est(estSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type rhs(rhsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type lhs(lhsSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit_l(maxit_lSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type step(stepSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type wt(wtSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXi>& >::type q(qSEXP);
     Rcpp::traits::input_parameter< const int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const double >::type level(levelSEXP);
     Rcpp::traits::input_parameter< const int >::type B(BSEXP);
-    rcpp_result_gen = Rcpp::wrap(mht_(method, lhs, x, est, q, m, B));
+    rcpp_result_gen = Rcpp::wrap(mht_(method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, nthreads, wt, q, m, level, B));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -303,8 +300,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_glm2_", (DL_FUNC) &_melt_glm2_, 13},
     {"_melt_lht_", (DL_FUNC) &_melt_lht_, 12},
     {"_melt_lm_", (DL_FUNC) &_melt_lm_, 11},
-    {"_melt_cov2", (DL_FUNC) &_melt_cov2, 3},
-    {"_melt_mht_", (DL_FUNC) &_melt_mht_, 7},
+    {"_melt_mht_", (DL_FUNC) &_melt_mht_, 17},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
     {NULL, NULL, 0}
 };

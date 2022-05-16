@@ -1,34 +1,6 @@
 #include "EL.h"
 
-// lm
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& par)
-{
-  // const Eigen::VectorXd y = data.col(0);
-  // const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  // return x.array().colwise() * (y - x * beta).array();
-  return x.rightCols(x.cols() - 1).array().colwise() *
-    (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
-}
-Eigen::VectorXd gr_nloglr_lm(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
-{
-  const double n = static_cast<double>(g.rows());
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + g * l;
-  if (weighted) {
-    const Eigen::MatrixXd xx = x.array().colwise() * (w / denom);
-    return -(x.transpose() * xx) * l;
-  } else {
-    const Eigen::MatrixXd xx = x.array().colwise() / denom;
-    return -(x.transpose() * xx) * l;
-  }
-}
+
 
 
 // binomial family
@@ -210,7 +182,7 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
 Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
                              const Eigen::Ref<const Eigen::VectorXd>& par)
 {
-  const double n = static_cast<int>(x.rows());
+  const double n = static_cast<double>(x.rows());
   const int p = x.cols() - 1;
   const Eigen::VectorXd beta = par.head(p);
   const double phi = par(p);

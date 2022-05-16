@@ -1,4 +1,4 @@
-#' Linear hypothesis test
+#' Multiple tests with empirical likelihood
 #'
 #' Tests a linear hypothesis for objects that inherit from class
 #'   \linkS4class{EL}.
@@ -67,7 +67,7 @@
 #' @importFrom stats pchisq
 #' @export
 mht <- function(object, rhs = NULL, lhs = NULL, control = el_control(),
-                calibrate = c("mvchisq", "boot"), B = 10000) {
+                calibrate = c("mvchisq", "boot"), level = 0.95, B = 10000) {
   if (length(object@data) == 0L) {
     stop("'object' has no 'data'; fit the model with 'model' = TRUE")
   }
@@ -77,7 +77,17 @@ mht <- function(object, rhs = NULL, lhs = NULL, control = el_control(),
   p <- object@npar
   h <- check_mht_(lhs, rhs, p)
   est <- coef(object)
-  x <- object@data
-  # mht_(object@optim$method, h$l, x, est, h$q, h$m, B)
-  h
+
+  method <- object@optim$method
+  maxit <- control@maxit
+  maxit_l <- control@maxit_l
+  tol <- control@tol
+  tol_l <- control@tol_l
+  step <- control@step
+  th <- control@th
+  nthreads <- control@nthreads
+  w <- object@weights
+
+  mht_(method, est, object@data, h$r, h$l, maxit, maxit_l, tol, tol_l, step, th,
+       nthreads, w, h$q, h$m, level, B)
 }

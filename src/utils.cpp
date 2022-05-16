@@ -55,32 +55,55 @@ Eigen::VectorXd mele_lm(const Eigen::Ref<const Eigen::MatrixXd>& data,
   }
 };
 
+
 Eigen::MatrixXd g_mean(const Eigen::Ref<const Eigen::MatrixXd>& x,
                        const Eigen::Ref<const Eigen::VectorXd>& par)
 {
   return x.rowwise() - par.transpose();
 }
-Eigen::VectorXd gr_nloglr_mean(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
+Eigen::VectorXd gr_nloglr_mean(const Eigen::Ref<const Eigen::VectorXd>& l,
+                               const Eigen::Ref<const Eigen::MatrixXd>& g,
+                               const Eigen::Ref<const Eigen::MatrixXd>& x,
+                               const Eigen::Ref<const Eigen::VectorXd>& par,
+                               const Eigen::Ref<const Eigen::ArrayXd>& w,
+                               const bool weighted)
 {
-  // const int n = g.rows();
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(g.rows()) + g * l;
-  // if (w.size() == 0) {
-  //   return -(1.0 / denominator).sum() * l / n;
-  // } else {
-  //   return -(w / denominator).sum() * l / n;
-  // }
+  Eigen::ArrayXd c(x.rows());
   if (weighted) {
-    return -(w / denominator).sum() * l;
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
   } else {
-    return -(1.0 / denominator).sum() * l;
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
   }
+  return c.sum() * l;
 }
+
+Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                     const Eigen::Ref<const Eigen::VectorXd>& par)
+{
+  return x.rightCols(x.cols() - 1).array().colwise() *
+    (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
+}
+Eigen::VectorXd gr_nloglr_lm(const Eigen::Ref<const Eigen::VectorXd>& l,
+                             const Eigen::Ref<const Eigen::MatrixXd>& g,
+                             const Eigen::Ref<const Eigen::MatrixXd>& x,
+                             const Eigen::Ref<const Eigen::VectorXd>& par,
+                             const Eigen::Ref<const Eigen::ArrayXd>& w,
+                             const bool weighted)
+{
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  Eigen::ArrayXd c(x.rows());
+  if (weighted) {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  } else {
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+  return -(xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
+}
+
+
+
+
+
 
 
 Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
