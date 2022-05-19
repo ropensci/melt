@@ -3,11 +3,6 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
-// #include <cmath>
-#include "utils.h"
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 
 class EL
 {

@@ -1,4 +1,5 @@
 #include "EL.h"
+#include "utils.h"
 
 // [[Rcpp::export]]
 Rcpp::NumericVector eld_(

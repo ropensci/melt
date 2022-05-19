@@ -31,6 +31,8 @@ See ‘Details’.}
 
 \item{calibrate}{A list of control parameters set by \code{\link{el_control}}.}
 
+\item{level}{level.}
+
 \item{B}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{

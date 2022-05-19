@@ -1,10 +1,7 @@
 #ifndef MHT_UTILS_H_
 #define MHT_UTILS_H_
 
-#include "utils.h"
-#ifdef _OPENMP
-#include <omp.h>
-#endif
+#include <RcppEigen.h>
 
 Eigen::RowVectorXd rmvn(const Eigen::Ref<const Eigen::MatrixXd>& sqrt);
 

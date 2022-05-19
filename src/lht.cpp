@@ -1,19 +1,19 @@
 #include "EL.h"
+#include "utils.h"
 
 // [[Rcpp::export]]
-Rcpp::List lht_(
-    const std::string method,
-    const Eigen::Map<Eigen::VectorXd>& par0,
-    const Eigen::Map<Eigen::MatrixXd>& x,
-    const Eigen::Map<Eigen::MatrixXd>& lhs,
-    const Eigen::Map<Eigen::VectorXd>& rhs,
-    const int maxit,
-    const int maxit_l,
-    const double tol,
-    const double tol_l,
-    const Rcpp::Nullable<double> step,
-    const Rcpp::Nullable<double> th,
-    const Eigen::Map<Eigen::ArrayXd>& w)
+Rcpp::List lht_(const std::string method,
+                const Eigen::Map<Eigen::VectorXd>& par0,
+                const Eigen::Map<Eigen::MatrixXd>& x,
+                const Eigen::Map<Eigen::MatrixXd>& lhs,
+                const Eigen::Map<Eigen::VectorXd>& rhs,
+                const int maxit,
+                const int maxit_l,
+                const double tol,
+                const double tol_l,
+                const Rcpp::Nullable<double> step,
+                const Rcpp::Nullable<double> th,
+                const Eigen::Map<Eigen::ArrayXd>& w)
 {
   const double test_th = th_nloglr(lhs.rows(), th);
   const double gamma = step_nloglr(x.rows(), step);

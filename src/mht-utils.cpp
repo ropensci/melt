@@ -1,4 +1,10 @@
 #include "mht-utils.h"
+#include "utils.h"
+#include <map>
+#include <string>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 Eigen::RowVectorXd rmvn(const Eigen::Ref<const Eigen::MatrixXd>& sqrt) {
   Eigen::RowVectorXd u(sqrt.cols());

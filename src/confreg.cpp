@@ -1,4 +1,8 @@
 #include "EL.h"
+#include "utils.h"
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 // [[Rcpp::export]]
 Rcpp::NumericVector confreg_(

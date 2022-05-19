@@ -14,6 +14,7 @@
 #'   See ‘Details’.
 #' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @param calibrate A list of control parameters set by \code{\link{el_control}}.
+#' @param level level.
 #' @param B A list of control parameters set by \code{\link{el_control}}.
 #' @details \code{\link{lht}} performs the constrained minimization of
 #'   \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
