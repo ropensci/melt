@@ -422,6 +422,55 @@ MINEL::MINEL(const std::string method,
     g_fn{MINEL::set_g_fn(method)},
     gr_fn{MINEL::set_gr_fn(method)}
 {
+  std::map<std::string, std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&)>>
+        g_map{{{"mean", g_mean},
+               {"lm", g_lm},
+               {"gaussian_identity", g_lm},
+               {"gaussian_log", g_gauss_log},
+               {"gaussian_inverse", g_gauss_inverse},
+               {"binomial_logit", g_bin_logit},
+               {"binomial_probit", g_bin_probit},
+               {"binomial_log", g_bin_log},
+               {"poisson_log", g_poi_log},
+               {"poisson_identity", g_poi_identity},
+               {"poisson_sqrt", g_poi_sqrt},
+               {"quasibinomial_logit", g_qbin_logit}}};
+  std::map<std::string, std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::VectorXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&,
+      const Eigen::Ref<const Eigen::ArrayXd>&,
+      const bool)>>
+        gr_map{
+          {{"mean", gr_nloglr_mean},
+           {"lm", gr_nloglr_lm},
+           {"gaussian_identity", gr_nloglr_lm},
+           {"gaussian_log", gr_nloglr_gauss_log},
+           {"gaussian_inverse", gr_nloglr_gauss_inverse},
+           {"binomial_logit", gr_nloglr_bin_logit},
+           {"binomial_probit", gr_nloglr_bin_probit},
+           {"binomial_log", gr_nloglr_bin_log},
+           {"poisson_log", gr_nloglr_poi_log},
+           {"poisson_identity", gr_nloglr_poi_identity},
+           {"poisson_sqrt", gr_nloglr_poi_sqrt},
+           {"quasibinomial_logit", gr_nloglr_qbin_logit}}};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /// initialization ///
   // orthogonal projection matrix
   const Eigen::MatrixXd proj =
@@ -430,22 +479,30 @@ MINEL::MINEL(const std::string method,
   // parameter (constraint imposed)
   par = proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
   // estimating function
-  Eigen::MatrixXd g = g_fn(x, par);
+  // Eigen::MatrixXd g = g_fn(x, par);
+  Eigen::MatrixXd g = g_map[method](x, par);
+
   // lambda
   l = EL(g, maxit_l, tol_l, th, wt).l;
   // function value (-logLR)
   nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
   // function norm
-  const double norm0 = (proj * gr_fn(l, g, x, par, wt, weighted)).norm();
+  // const double norm0 = (proj * gr_fn(l, g, x, par, wt, weighted)).norm();
+  const double norm0 = (proj * gr_map[method](l, g, x, par, wt, weighted)).norm();
 
   /// minimization (projected gradient descent) ///
   // double gamma = 1.0;
   while (!conv && iter != maxit && nllr <= th) {
     // update parameter
+    // Eigen::VectorXd par_tmp =
+    //   par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
     Eigen::VectorXd par_tmp =
-      par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
+      par - gamma * proj * gr_map[method](l, g, x, par, wt, weighted);
+
     // update estimating function
-    Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
+    // Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
+    Eigen::MatrixXd g_tmp = g_map[method](x, par_tmp);
+
     // update lambda
     Eigen::VectorXd l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
     // update function value
@@ -460,9 +517,12 @@ MINEL::MINEL(const std::string method,
         break;
       }
       // propose new parameter
-      par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
+      // par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
+      par_tmp = par - gamma * proj * gr_map[method](l, g, x, par, wt, weighted);
+
       // propose new lambda
-      g_tmp = g_fn(x, par_tmp);
+      // g_tmp = g_fn(x, par_tmp);
+      g_tmp = g_map[method](x, par_tmp);
       l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
       // propose new function value
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
@@ -476,7 +536,9 @@ MINEL::MINEL(const std::string method,
       // return initial values
       par =
         proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
-      Eigen::MatrixXd g = g_fn(x, par);
+      // Eigen::MatrixXd g = g_fn(x, par);
+      Eigen::MatrixXd g = g_map[method](x, par);
+
       l = EL(g, maxit_l, tol_l, th, wt).l;
       nllr = PSEUDO_LOG::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
     }
@@ -491,10 +553,17 @@ MINEL::MINEL(const std::string method,
     //   tol * norm0 + tol * tol || step < tol * par.norm() + tol * tol) {
     //   conv = true;
     // }
-    if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol ||
+    //
+    // if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol ||
+    //     step < tol * par.norm() + tol * tol) {
+    //   conv = true;
+    // }
+    if ((proj * gr_map[method](l, g, x, par, wt, weighted)).norm() < tol ||
         step < tol * par.norm() + tol * tol) {
       conv = true;
     }
+
+
     // if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol) {
     //   conv = true;
     // }
