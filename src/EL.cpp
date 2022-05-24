@@ -429,9 +429,9 @@ MINEL::MINEL(const std::string method,
     gamma{step},
     th{th},
     n{static_cast<int>(x.rows())},
-    weighted{wt.size() != 0}
-    // g_fn{MINEL::set_g_fn(method)},
-    // gr_fn{MINEL::set_gr_fn(method)}
+    weighted{wt.size() != 0},
+    g_fn{MINEL::set_g_fn(method)},
+    gr_fn{MINEL::set_gr_fn(method)}
 {
   /// initialization ///
   // orthogonal projection matrix
@@ -514,63 +514,6 @@ MINEL::MINEL(const std::string method,
   }
 }
 
-<<<<<<< HEAD
-
-
-
-
-// std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
-//                               const Eigen::Ref<const Eigen::VectorXd>&)>
-//   MINEL::set_g_fn(const std::string method)
-// {
-//   std::map<std::string, std::function<Eigen::MatrixXd(
-//       const Eigen::Ref<const Eigen::MatrixXd>&,
-//       const Eigen::Ref<const Eigen::VectorXd>&)>>
-//         g_map{{{"mean", g_mean},
-//                {"lm", g_lm},
-//                {"gaussian_identity", g_lm},
-//                {"gaussian_log", g_gauss_log},
-//                {"gaussian_inverse", g_gauss_inverse},
-//                {"binomial_logit", g_bin_logit},
-//                {"binomial_probit", g_bin_probit},
-//                {"binomial_log", g_bin_log},
-//                {"poisson_log", g_poi_log},
-//                {"poisson_identity", g_poi_identity},
-//                {"poisson_sqrt", g_poi_sqrt},
-//                {"quasibinomial_logit", g_qbin_logit}}};
-//   return g_map[method];
-// }
-//
-// std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
-//                               const Eigen::Ref<const Eigen::MatrixXd>&,
-//                               const Eigen::Ref<const Eigen::MatrixXd>&,
-//                               const Eigen::Ref<const Eigen::VectorXd>&,
-//                               const Eigen::Ref<const Eigen::ArrayXd>&,
-//                               const bool)>
-//   MINEL::set_gr_fn(const std::string method)
-// {
-//   std::map<std::string, std::function<Eigen::MatrixXd(
-//       const Eigen::Ref<const Eigen::VectorXd>&,
-//       const Eigen::Ref<const Eigen::MatrixXd>&,
-//       const Eigen::Ref<const Eigen::MatrixXd>&,
-//       const Eigen::Ref<const Eigen::VectorXd>&,
-//       const Eigen::Ref<const Eigen::ArrayXd>&,
-//       const bool)>> gr_map{
-//         {{"mean", gr_nloglr_mean},
-//          {"lm", gr_nloglr_lm},
-//          {"gaussian_identity", gr_nloglr_lm},
-//          {"gaussian_log", gr_nloglr_gauss_log},
-//          {"gaussian_inverse", gr_nloglr_gauss_inverse},
-//          {"binomial_logit", gr_nloglr_bin_logit},
-//          {"binomial_probit", gr_nloglr_bin_probit},
-//          {"binomial_log", gr_nloglr_bin_log},
-//          {"poisson_log", gr_nloglr_poi_log},
-//          {"poisson_identity", gr_nloglr_poi_identity},
-//          {"poisson_sqrt", gr_nloglr_poi_sqrt},
-//          {"quasibinomial_logit", gr_nloglr_qbin_logit}}};
-//   return gr_map[method];
-// }
-=======
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>
   MINEL::set_g_fn(const std::string method)
@@ -622,20 +565,17 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
          {"quasibinomial_logit", gr_nloglr_qbin_logit}}};
   return gr_map[method];
 }
->>>>>>> 662468a (working on ubuntu ci issue)
 
 Eigen::ArrayXd MINEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
                            const Eigen::Ref<const Eigen::ArrayXd>& wt) const
 {
-  // if (weighted) {
-  //   return log(wt) - log(n) -
-  //     PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fn(x, par) * l, wt);
-  // } else {
-  //   return
-  //   -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fn(x, par) * l);
-  // }
-
-  return Eigen::VectorXd::Ones(n);
+  if (weighted) {
+    return log(wt) - log(n) -
+      PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fn(x, par) * l, wt);
+  } else {
+    return
+    -log(n) - PSEUDO_LOG::plog(Eigen::VectorXd::Ones(n) + g_fn(x, par) * l);
+  }
 }
 
 double MINEL::loglik(const Eigen::Ref<const Eigen::ArrayXd>& wt) const

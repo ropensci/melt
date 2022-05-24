@@ -11,7 +11,7 @@ test_that("probabilities add up to 1", {
   fit <- el_glm(y ~ x + x2, family = binomial, df, control = optcfg)
   expect_output(print(fit))
   expect_output(print(summary(fit)))
-  # expect_equal(sum(exp(fit@logp)), 1)
+  expect_equal(sum(exp(fit@logp)), 1)
 })
 
 test_that("probabilities add up to 1 (weighted)", {
@@ -28,7 +28,7 @@ test_that("probabilities add up to 1 (weighted)", {
   fit <- el_glm(y ~ x + x2, family = binomial, df, control = optcfg)
   expect_output(print(fit))
   expect_output(print(summary(fit)))
-  # expect_equal(sum(exp(fit@logp)), 1)
+  expect_equal(sum(exp(fit@logp)), 1)
 })
 
 test_that("loglik to loglr", {

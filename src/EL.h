@@ -100,18 +100,17 @@ public:
         const double step,
         const double th,
         const Eigen::Ref<const Eigen::ArrayXd>& wt);
-
-  // // functions for constructors
-  // std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
-  //                               const Eigen::Ref<const Eigen::VectorXd>&)>
-  //   set_g_fn(const std::string method);
-  // std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
-  //                               const Eigen::Ref<const Eigen::MatrixXd>&,
-  //                               const Eigen::Ref<const Eigen::MatrixXd>&,
-  //                               const Eigen::Ref<const Eigen::VectorXd>&,
-  //                               const Eigen::Ref<const Eigen::ArrayXd>&,
-  //                               const bool)>
-  //   set_gr_fn(const std::string method);
+  // functions for constructors
+  std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
+                                const Eigen::Ref<const Eigen::VectorXd>&)>
+    set_g_fn(const std::string method);
+  std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
+                                const Eigen::Ref<const Eigen::MatrixXd>&,
+                                const Eigen::Ref<const Eigen::MatrixXd>&,
+                                const Eigen::Ref<const Eigen::VectorXd>&,
+                                const Eigen::Ref<const Eigen::ArrayXd>&,
+                                const bool)>
+    set_gr_fn(const std::string method);
 
   // methods
   // log probability
@@ -131,18 +130,18 @@ private:
   const double th;    // threshold value for negative log-likelihood ratio
   const int n;        // sample size
   const bool weighted;// weighted?
-  // // estimating function
-  // const std::function<Eigen::MatrixXd(
-  //     const Eigen::Ref<const Eigen::MatrixXd>&,
-  //     const Eigen::Ref<const Eigen::VectorXd>&)> g_fn;
-  // // gradient function of negative log likelihood ratio function
-  // const std::function<Eigen::MatrixXd(
-  //     const Eigen::Ref<const Eigen::VectorXd>&,
-  //     const Eigen::Ref<const Eigen::MatrixXd>&,
-  //     const Eigen::Ref<const Eigen::MatrixXd>&,
-  //     const Eigen::Ref<const Eigen::VectorXd>&,
-  //     const Eigen::Ref<const Eigen::ArrayXd>&,
-  //     const bool)> gr_fn;
+  // estimating function
+  const std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&)> g_fn;
+  // gradient function of negative log likelihood ratio function
+  const std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::VectorXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&,
+      const Eigen::Ref<const Eigen::ArrayXd>&,
+      const bool)> gr_fn;
 };
 
 class PSEUDO_LOG
