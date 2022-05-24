@@ -1,5 +1,6 @@
 #include "mht-utils.h"
 #include "utils.h"
+#include "EL.h"
 #include <map>
 #include <string>
 #ifdef _OPENMP

@@ -77,28 +77,7 @@ Eigen::VectorXd gr_nloglr_mean(const Eigen::Ref<const Eigen::VectorXd>& l,
   return c.sum() * l;
 }
 
-Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& par)
-{
-  return x.rightCols(x.cols() - 1).array().colwise() *
-    (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
-}
-Eigen::VectorXd gr_nloglr_lm(const Eigen::Ref<const Eigen::VectorXd>& l,
-                             const Eigen::Ref<const Eigen::MatrixXd>& g,
-                             const Eigen::Ref<const Eigen::MatrixXd>& x,
-                             const Eigen::Ref<const Eigen::VectorXd>& par,
-                             const Eigen::Ref<const Eigen::ArrayXd>& w,
-                             const bool weighted)
-{
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  Eigen::ArrayXd c(x.rows());
-  if (weighted) {
-    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
-  } else {
-    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
-  }
-  return -(xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
-}
+
 
 
 
