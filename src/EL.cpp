@@ -299,17 +299,7 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::ArrayXd>&)>>
         mele_map{{{"mean", mele_mean},
-                  {"lm", mele_lm},
-                  {"gaussian_identity", mele_lm},
-                  {"gaussian_log", mele_lm},
-                  {"gaussian_inverse", mele_lm},
-                  {"binomial_logit", mele_lm},
-                  {"binomial_probit", mele_lm},
-                  {"binomial_log", mele_lm},
-                  {"poisson_log", mele_lm},
-                  {"poisson_identity", mele_lm},
-                  {"poisson_sqrt", mele_lm},
-                  {"quasibinomial_logit", mele_lm}}};
+                  {"lm", mele_lm}}};
   return mele_map[method];
 }
 
