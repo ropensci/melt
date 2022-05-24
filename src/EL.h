@@ -88,18 +88,6 @@ public:
 
   // constructors
   // minimization
-  // MINEL(const std::string method,
-  //       const Eigen::Ref<const Eigen::VectorXd>& par0,
-  //       const Eigen::Ref<const Eigen::MatrixXd>& x,
-  //       const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-  //       const Eigen::Ref<const Eigen::VectorXd>& rhs,
-  //       const int maxit,
-  //       const int maxit_l,
-  //       const double tol,
-  //       const double tol_l,
-  //       const double th,
-  //       const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
-
   MINEL(const std::string method,
         const Eigen::Ref<const Eigen::VectorXd>& par0,
         const Eigen::Ref<const Eigen::MatrixXd>& x,
@@ -113,17 +101,17 @@ public:
         const double th,
         const Eigen::Ref<const Eigen::ArrayXd>& wt);
 
-  // functions for constructors
-  std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
-                                const Eigen::Ref<const Eigen::VectorXd>&)>
-    set_g_fn(const std::string method);
-  std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
-                                const Eigen::Ref<const Eigen::MatrixXd>&,
-                                const Eigen::Ref<const Eigen::MatrixXd>&,
-                                const Eigen::Ref<const Eigen::VectorXd>&,
-                                const Eigen::Ref<const Eigen::ArrayXd>&,
-                                const bool)>
-    set_gr_fn(const std::string method);
+  // // functions for constructors
+  // std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
+  //                               const Eigen::Ref<const Eigen::VectorXd>&)>
+  //   set_g_fn(const std::string method);
+  // std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
+  //                               const Eigen::Ref<const Eigen::MatrixXd>&,
+  //                               const Eigen::Ref<const Eigen::MatrixXd>&,
+  //                               const Eigen::Ref<const Eigen::VectorXd>&,
+  //                               const Eigen::Ref<const Eigen::ArrayXd>&,
+  //                               const bool)>
+  //   set_gr_fn(const std::string method);
 
   // methods
   // log probability
@@ -143,18 +131,18 @@ private:
   const double th;    // threshold value for negative log-likelihood ratio
   const int n;        // sample size
   const bool weighted;// weighted?
-  // estimating function
-  const std::function<Eigen::MatrixXd(
-      const Eigen::Ref<const Eigen::MatrixXd>&,
-      const Eigen::Ref<const Eigen::VectorXd>&)> g_fn;
-  // gradient function of negative log likelihood ratio function
-  const std::function<Eigen::MatrixXd(
-      const Eigen::Ref<const Eigen::VectorXd>&,
-      const Eigen::Ref<const Eigen::MatrixXd>&,
-      const Eigen::Ref<const Eigen::MatrixXd>&,
-      const Eigen::Ref<const Eigen::VectorXd>&,
-      const Eigen::Ref<const Eigen::ArrayXd>&,
-      const bool)> gr_fn;
+  // // estimating function
+  // const std::function<Eigen::MatrixXd(
+  //     const Eigen::Ref<const Eigen::MatrixXd>&,
+  //     const Eigen::Ref<const Eigen::VectorXd>&)> g_fn;
+  // // gradient function of negative log likelihood ratio function
+  // const std::function<Eigen::MatrixXd(
+  //     const Eigen::Ref<const Eigen::VectorXd>&,
+  //     const Eigen::Ref<const Eigen::MatrixXd>&,
+  //     const Eigen::Ref<const Eigen::MatrixXd>&,
+  //     const Eigen::Ref<const Eigen::VectorXd>&,
+  //     const Eigen::Ref<const Eigen::ArrayXd>&,
+  //     const bool)> gr_fn;
 };
 
 class PSEUDO_LOG
