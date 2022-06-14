@@ -48,3 +48,16 @@ test_that("empty model", {
   ci <- confint(fit)
   expect_equal(nrow(ci), 0)
 })
+
+test_that("no effect of nthreads", {
+  n <- 100
+  x <- rnorm(n)
+  x2 <- rnorm(n)
+  y <- 1 + 2 * x + 3 * x2 + rnorm(n)
+  df <- data.frame(y, x, x2)
+  fit <- el_lm(y ~ x + x2)
+  parm <- sample(c(1, 2, 3), size = 3, replace = TRUE)
+  ci1 <- confint(fit, parm = parm, control = el_control(nthreads = 1L))
+  ci2 <- confint(fit, parm = parm)
+  expect_equal(ci1, ci2)
+})
