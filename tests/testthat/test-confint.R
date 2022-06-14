@@ -56,7 +56,7 @@ test_that("no effect of nthreads", {
   y <- 1 + 2 * x + 3 * x2 + rnorm(n)
   df <- data.frame(y, x, x2)
   fit <- el_lm(y ~ x + x2)
-  parm <- sample(c(1, 2, 3), size = 3, replace = TRUE)
+  parm <- sample(c(1, 2, 3), size = 10, replace = TRUE)
   ci1 <- confint(fit, parm = parm, control = el_control(nthreads = 1L))
   ci2 <- confint(fit, parm = parm)
   expect_equal(ci1, ci2)

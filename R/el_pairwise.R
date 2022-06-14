@@ -4,6 +4,7 @@
 #'   designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise
 #'   error rate) controlling procedures are available: asymptotic Monte Carlo
 #'   (AMC) and nonparametric bootstrap (NB).
+#' \emph{This function is deprecated and will be removed in a future release.}
 #'
 #' @param formula A formula object. It must specify variables for response,
 #'   treatment, and block as 'response ~ treatment | block'. Note that the use
@@ -39,11 +40,13 @@
 #'   B = 500
 #' )
 #'
-#' @importFrom stats terms
+#' @importFrom stats terms reshape
 #' @export
 el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
                         method = c("AMC", "NB"), B, nthread = 1,
                         progress = TRUE, maxit = 10000, abstol = 1e-08) {
+  .Deprecated(msg = "'el_pairwise' function is deprecated. It will be replaced by a formal method in a future release.")
+
   ## check method
   method <- match.arg(method)
 

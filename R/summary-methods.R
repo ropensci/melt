@@ -1,4 +1,4 @@
-#' @describeIn summary-method Summarizes the results of the overall test and the
+#' @describeIn summary Summarizes the results of the overall test and the
 #'   tests for each parameter.
 #' @importFrom stats pchisq
 setMethod(

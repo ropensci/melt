@@ -2,12 +2,12 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "melt",
-  "description": "Performs multiple empirical likelihood tests for regression analysis. Much of its functionality and syntax mimics the corresponding base R functions. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Additional functions are available for multiple testing for the analysis of experimental designs. Details of the testing procedures are given in Kim et al. (2021) <arxiv:2112.09206>. ",
+  "description": "Performs multiple empirical likelihood tests for linear and generalized linear models. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Details of multiple testing procedures are given in Kim et al. (2021) <arxiv:2112.09206>.",
   "name": "melt: Multiple Empirical Likelihood Tests",
   "codeRepository": "https://github.com/markean/melt",
   "issueTracker": "https://github.com/markean/melt/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "1.5.0",
+  "version": "1.5.1.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -61,18 +61,6 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "spelling",
-      "name": "spelling",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=spelling"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
       "provider": {
@@ -106,6 +94,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "spelling",
+      "name": "spelling",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=spelling"
     },
     {
       "@type": "SoftwareApplication",
@@ -153,7 +153,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "12986.127KB",
+  "fileSize": "18792.492KB",
   "releaseNotes": "https://github.com/markean/melt/blob/master/NEWS.md",
   "readme": "https://github.com/markean/melt/blob/master/README.md",
   "contIntegration": ["https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/markean/melt?branch=master"],

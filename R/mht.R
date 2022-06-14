@@ -79,7 +79,7 @@
 #'   h <- check_mht_(lhs, rhs, p)
 #'   est <- coef(object)
 #'
-#'   method <- getMethod(object)
+#'   method <- getMethodEL(object)
 #'   maxit <- control@maxit
 #'   maxit_l <- control@maxit_l
 #'   tol <- control@tol

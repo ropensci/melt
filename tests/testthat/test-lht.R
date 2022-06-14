@@ -82,11 +82,23 @@ test_that("when lht == eval", {
   expect_equal(fit@optim$lambda, fit2@optim$lambda)
 })
 
-test_that("invalid 'control", {
+test_that("invalid 'control'", {
   skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
   fit <- el_mean(par, x)
   expect_error(lht(fit, lhs = 1, control = list(maxit = 200L)))
+})
+
+test_that("vector lhs", {
+  n <- 100
+  x <- rnorm(n)
+  x2 <- rnorm(n)
+  y <- 1 + x + x2 + rnorm(n)
+  df <- data.frame(y, x, x2)
+  optcfg <- el_control(tol = 1e-08, th = 1e+10)
+  fit <- el_lm(y ~ x + x2, df, control = optcfg)
+  expect_error(lht(fit, lhs = c(1, -1, 0, 0)))
+  expect_s4_class(lht(fit, lhs = c(1, -1, 0)), "CEL")
 })

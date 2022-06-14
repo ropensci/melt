@@ -16,10 +16,10 @@ coverage](https://codecov.io/gh/markean/melt/branch/master/graph/badge.svg)](htt
 
 The R package **melt** provides a unified framework for data analysis
 with empirical likelihood methods. A collection of functions are
-available for basic regression analysis and hypothesis testing. Much of
-its functionality and syntax mimics the corresponding base R functions.
-The core computational routines are implemented with the ‘Eigen’ C++
-library and ‘RcppEigen’ interface, with OpenMP for parallel computation.
+available for regression analysis and hypothesis testing. Much of its
+functionality and syntax mimics the corresponding base R functions. The
+core computational routines are implemented with the ‘Eigen’ C++ library
+and ‘RcppEigen’ interface, with OpenMP for parallel computation.
 Additional functions are available for multiple testing for the analysis
 of experimental designs. Details of the testing procedures are given in
 [Kim et al. (2021)](https://arxiv.org/abs/2112.09206).
@@ -48,8 +48,8 @@ library(melt)
 # one sample test for mean
 fit1 <- el_mean(par = 0, x = rnorm(n = 100))
 confint(fit1)
-#>        lower      upper
-#> 1 -0.3927377 0.01727951
+#>        lower     upper
+#> 1 -0.1610344 0.2269519
 
 
 # linear regression

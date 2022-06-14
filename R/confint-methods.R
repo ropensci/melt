@@ -52,7 +52,7 @@ setMethod(
     if (!is(control, "ControlEL")) {
       stop("invalid 'control' specified")
     }
-    method <- getMethod(object)
+    method <- getMethodEL(object)
     maxit <- control@maxit
     maxit_l <- control@maxit_l
     tol <- control@tol

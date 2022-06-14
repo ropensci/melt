@@ -4,14 +4,13 @@
 #'   \linkS4class{EL}.
 #'
 #' @param object A fitted \linkS4class{EL} object.
-#' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
-#'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}. See
-#'   ‘Details’.
-#' @param lhs A numeric matrix, or an object that can be coerced to a numeric
-#'   matrix. It specifies the left-hand-side of hypothesis. Each row gives a
-#'   linear combination of parameters. The number of columns should be equal to
-#'   the number of parameters in \code{object}. Defaults to \code{NULL}.
-#'   See ‘Details’.
+#' @param rhs A numeric vector or a column matrix for the right-hand-side of
+#'   hypothesis, with as many entries as the rows in \code{lhs}. Defaults to
+#'   \code{NULL}. See ‘Details’.
+#' @param lhs A numeric matrix or a vector (treated as a row matrix) for the
+#'   left-hand-side of hypothesis. Each row gives a linear combination of the
+#'   parameters in \code{object}. The number of columns should be equal to the
+#'   number of parameters. Defaults to \code{NULL}. See ‘Details’.
 #' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @details \code{\link{lht}} performs the constrained minimization of
 #'   \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
@@ -25,9 +24,9 @@
 #'   \item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the
 #'   constrained minimization is performed with the right-hand-side \eqn{r} and
 #'   the left-hand-side \eqn{L} as
-#'   \deqn{\min_{\theta: L\theta = r} l(\theta).}
+#'   \deqn{\inf_{\theta: L\theta = r} l(\theta).}
 #'   \item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as
-#'   \deqn{\min_{\theta: L\theta = 0} l(\theta).}
+#'   \deqn{\inf_{\theta: L\theta = 0} l(\theta).}
 #'   \item If \code{lhs} is \code{NULL}, \eqn{L} is set to the identity matrix
 #'   and the problem reduces to evaluating at \eqn{r} as
 #'   \deqn{l(r).}
@@ -49,7 +48,7 @@
 #' y <- 1 + x1 + x2 + rnorm(n)
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
-#' lhs <- matrix(c(0, 1, -1), nrow = 1L)
+#' lhs <- c(0, 1, -1)
 #' lht(fit, lhs = lhs)
 #'
 #' # test of no treatment effect
@@ -75,7 +74,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
   if (!is(control, "ControlEL")) {
     stop("invalid 'control' specified")
   }
-  method <- getMethod(object)
+  method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
   tol <- control@tol

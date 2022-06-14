@@ -1,44 +1,57 @@
+# melt 1.5.2
+* `lht()` accepts both numeric vector and matrix for `lhs` and `rhs` arguments.
+
+* OpenMP parallelization is available for `confint()` by specifying `nthreads` through `control` argument.
+
+* `el_test()` is removed.
+
+* `el_pairwise()` is deprecated and will be removed in a future release. 
+
+
 # melt 1.5.1
 * bugs in test files fixed.
+
 
 # melt 1.5.0
 * The package depends on more recent version of R (>= 4.0.0).
 
 * S4 classes, generics, and methods are adopted throughout the package.
 
-* Generic functions `confreg` and `eld` are added.
+* Generic functions `confreg()` and `eld()` are added.
 
-* `el_control` function is added for specifying `control` argument. Plain list it no longer accepted.
+* `el_control()` function is added for specifying `control` argument. Plain list it no longer accepted.
 
-* `el_glm` function is added for generalized linear models. More families and link functions will be supported in a future release.
+* `el_glm()` function is added for generalized linear models. More families and link functions will be supported in a future release.
 
-* `confint` has additional `cv` argument for a user-supplied critical value.
+* `confint()` has additional `cv` argument for a user-supplied critical value.
 
-* `el_aov` is removed. 
+* `el_aov()` is removed. 
+
+* `el_test()` is deprecated and will be removed in a future release. 
 
 
 # melt 1.4.0
 * C++14 standards are used for the package.
 
-* `lht` function added for linear hypothesis testing.
+* `lht()` is added for linear hypothesis testing.
 
-* Generic functions `confint` and `logLik` added for `el_test` class.
+* Generic functions `confint()` and `logLik()` are added for `el_test` class.
 
 * `el_test` objects additionally return `npar`, `log.prob`, and `loglik`.
 
-* `el_aov` deprecated in favor of `el_lm`. It will be removed in a future release. 
+* `el_aov()` deprecated in favor of `el_lm()`. It will be removed in a future release. 
 
 
 # melt 1.3.0
-* `el_eval` function added for direct computation with custom estimating functions.
+* `el_eval()` function added for direct computation with custom estimating functions.
 
 * `melt` class replaced by `el_test` class.
 
-* `el_mean` and `el_lm` accepts an optional `weights` argument for weighted EL. Arguments on optimization are now handled by a new `control` argument. It will be used in other functions in future releases.
+* `el_mean()` and `el_lm()` accepts an optional `weights` argument for weighted EL. Arguments on optimization are now handled by a new `control` argument. It will be used in other functions in future releases.
 
 
 # melt 1.2.0
-* `el_lm` function added for linear regression analysis.
+* `el_lm()` function added for linear regression analysis.
 
 * Dependence on R version updated to '3.6.0'.
 
@@ -49,17 +62,17 @@
 
 * DESCRIPTION file modified. 
 
-* `el_aov` function added for one-way analysis of variance. It only supports one variable at the moment.
+* `el_aov()` function added for one-way analysis of variance. It only supports one variable at the moment.
 
 
 # melt 1.0.1
 
 * Fixed header file issues related to OpenMP and C++ array class.
 
-* `el_pairwise` documentation specifies the use of OpenMP for NB procedure.
+* `el_pairwise()` documentation specifies the use of OpenMP for NB procedure.
 
 
 # melt 1.0.0
-* Currently, 4 functions are available: `el_mean`, `el_test`, `el_pairwise`, and `el_mht`.
+* Currently, 4 functions are available: `el_mean()`, `el_test()`, `el_pairwise()`, and `el_mht()`.
 
 * `clothianidin` data set added.

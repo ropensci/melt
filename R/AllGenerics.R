@@ -48,7 +48,6 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @usage NULL
 #' @exportMethod coef
 setGeneric("coef", function(object, ...) standardGeneric("coef"))
-setMethod("coef", "EL", function(object, ...) {object@coefficients})
 
 
 
@@ -153,7 +152,6 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #'
 #' Provides print methods for objects that inherit from class \linkS4class{EL}.
 #'
-#' @name print-method
 #' @param x An object to be printed.
 #' @param ... Further arguments passed to other methods.
 #' @param digits The number of significant digits to be passed to
@@ -169,12 +167,11 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' Provides summary methods for objects that inherit from class
 #'   \linkS4class{EL}.
 #'
-#' @name summary-method
 #' @param object An object for which a summary is desired.
 #' @param ... Additional arguments affecting the summary produced.
 #' @usage NULL
 #' @exportMethod summary
 setGeneric("summary", function(object, ...) standardGeneric("summary"))
 
-setGeneric("getMethod", function(x) standardGeneric("getMethod"))
-setMethod("getMethod", "EL", function(x) {x@method})
+setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
+setMethod("getMethodEL", "EL", function(x) {x@method})

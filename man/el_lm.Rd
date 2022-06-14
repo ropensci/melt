@@ -52,23 +52,23 @@ Suppose that we observe \eqn{n} independent random variables
   \eqn{p}-dimensional covariate (including the intercept if any) and
   \eqn{Y_i} is the response. We consider the following linear regression
   model:
-  \deqn{Y_i = X_i^\top \beta + \epsilon_i,}
-  where \eqn{\beta = (\beta_0, \dots, \beta_{p-1})} is an unknown
+  \deqn{Y_i = X_i^\top \theta + \epsilon_i,}
+  where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
   \eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
   independent random variables that satisfy
   \eqn{\textnormal{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
-  finite conditional variance. Then the least square estimator of \eqn{\beta}
+  finite conditional variance. Then the least square estimator of \eqn{\theta}
   solves the following estimating equation:
-  \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \beta)X_i = 0.}
+  \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
   \code{\link{el_lm}} first computes the parameter estimates by calling
   \code{\link[stats]{lm.fit}} (with \code{...} if any) since the maximum
   empirical likelihood estimator is the same as the least square estimator in
   our model. Next, it performs hypothesis tests based on asymptotic
   chi-squared distribution of empirical likelihood ratio statistics. Included
   in the tests are the overall test with
-  \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
+  \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
   and the tests for each parameter with
-  \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
+  \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
   The test results are returned as \code{optim} and \code{parTests},
   respectively.
 }

@@ -40,6 +40,7 @@ performance, it is recommended to limit the number of threads to the
 number of physical cores. Note that it only applies to the following
 functions that involve multiple evaluations or minimizations:
 \itemize{
+\item{\code{\link{confint}}}
 \item{\code{\link{confreg}}}
 \item{\code{\link{el_lm}}}
 \item{\code{\link{el_glm}}}

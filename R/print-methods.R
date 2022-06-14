@@ -1,8 +1,8 @@
-#' @rdname print-method
+#' @rdname print
 setMethod(
   "print", "EL",
   function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-    cat("\nEmpirical Likelihood:", getMethod(x), "\n\n")
+    cat("\nEmpirical Likelihood:", getMethodEL(x), "\n\n")
     if (length(coef(x)) != 0L) {
       cat("Maximum EL estimates:\n")
       print.default(coef(x), digits = digits, ...)
@@ -33,7 +33,7 @@ setMethod(
 )
 setMethod("show", "EL", function(object) print(object))
 
-#' @rdname print-method
+#' @rdname print
 #' @importFrom stats naprint pchisq
 setMethod(
   "print", "SummaryLM",
@@ -93,7 +93,7 @@ setMethod(
 )
 setMethod("show", "SummaryLM", function(object) print(object))
 
-#' @rdname print-method
+#' @rdname print
 setMethod(
   "print", "logLikEL",
   function(x, digits = getOption("digits"), ...) {

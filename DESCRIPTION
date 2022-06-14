@@ -1,42 +1,38 @@
-Package: melt
 Type: Package
+Package: melt
 Title: Multiple Empirical Likelihood Tests
 Version: 1.5.1.9000
-Description: Performs multiple empirical likelihood tests for linear and generalized linear models. 
-    The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' 
-    interface, with OpenMP for parallel computation. Details of multiple testing procedures are 
-    given in Kim et al. (2021) <arxiv:2112.09206>. 
+Authors@R: c(
+    person("Eunseop", "Kim", , "kim.7302@osu.edu", role = c("aut", "cre")),
+    person("Steven", "MacEachern", role = c("aut", "ths")),
+    person("Mario", "Peruggia", role = c("aut", "ths"))
+  )
+Description: Performs multiple empirical likelihood tests for linear and
+    generalized linear models.  The core computational routines are
+    implemented using the 'Eigen' C++ library and 'RcppEigen' interface,
+    with OpenMP for parallel computation. Details of multiple testing
+    procedures are given in Kim et al. (2021) <arxiv:2112.09206>.
+License: GPL (>= 2)
 URL: https://github.com/markean/melt
 BugReports: https://github.com/markean/melt/issues
-License: GPL (>= 2)
-Depends: R (>= 4.0.0)
+Depends: 
+    R (>= 4.0.0)
 Imports: 
     methods,
     Rcpp (>= 1.0.8),
     stats
-LinkingTo: 
-    Rcpp, 
-    RcppEigen,
-    RcppProgress
-Encoding: UTF-8
-RoxygenNote: 7.1.2
-NeedsCompilation: yes
-Authors@R: 
-    c(person(given = "Eunseop", 
-             family = "Kim", 
-             email = "kim.7302@osu.edu", 
-             role = c("aut", "cre")),
-      person(given = "Steven",
-             family = "MacEachern",
-             role = c("ctb", "ths")),
-      person(given = "Mario",
-             family = "Peruggia",
-             role = c("ctb", "ths")))
 Suggests: 
-    spelling,
     covr,
     knitr,
     rmarkdown,
+    spelling,
     testthat (>= 3.0.0)
+LinkingTo: 
+    Rcpp,
+    RcppEigen,
+    RcppProgress
 Config/testthat/edition: 3
+Encoding: UTF-8
 Language: en-US
+NeedsCompilation: yes
+RoxygenNote: 7.2.0
