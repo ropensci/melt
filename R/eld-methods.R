@@ -13,7 +13,7 @@ setMethod(
       stop("invalid 'control' specified")
     }
     new("ELD", eld = eld_(
-      object@optim$method, object@coefficients, object@data, control@maxit_l,
+      getMethod(object), object@coefficients, object@data, control@maxit_l,
       control@tol_l, control@th, control@nthreads, object@weights
     ))
   }

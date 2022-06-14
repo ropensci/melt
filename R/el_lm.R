@@ -82,13 +82,13 @@ el_lm <- function(formula, data, weights = NULL, na.action,
     x <- NULL
     mm <- cbind(y, x)
     return(new("LM",
-      optim = list(
-        method = "lm", par = numeric(), lambda = numeric(),
-        iterations = integer(), convergence = logical()
-      ),
       misc = list(
         call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
         na.action = attr(mf, "na.action")
+      ),
+      optim = list(
+        par = numeric(), lambda = numeric(), iterations = integer(),
+        convergence = logical()
       )
     ))
   } else {

@@ -75,7 +75,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
   if (!is(control, "ControlEL")) {
     stop("invalid 'control' specified")
   }
-  method <- object@optim$method
+  method <- getMethod(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
   tol <- control@tol
@@ -90,7 +90,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
       optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
       statistic = el$statistic, df = p,
       pval = pchisq(el$statistic, df = p, lower.tail = FALSE), npar = p,
-      weights = w
+      weights = w, method = method
     ))
   }
   el <- lht_(
@@ -101,6 +101,6 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
     statistic = el$statistic, df = nrow(h$l),
     pval = pchisq(el$statistic, df = nrow(h$l), lower.tail = FALSE),
-    npar = ncol(h$l), weights = w
+    npar = ncol(h$l), weights = w, method = method
   )
 }
