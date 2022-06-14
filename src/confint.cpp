@@ -20,25 +20,25 @@ Eigen::MatrixXd confint_(
     const int nthreads,
     const Eigen::Map<Eigen::ArrayXd>& w)
 {
-  // parameter dimension
+  // parameter length
   const int p = par0.size();
   // number of confidence intervals
   const int n = idx.size();
-  // confidence intervals (vector)
-  std::vector<double> ci_vec;
-  ci_vec.reserve(2 * n);
+  // matrix of confidence intervals
+  Eigen::MatrixXd ci(n, 2);
+
   // step size
   const double gamma = step_nloglr(x.rows(), step);
   // test threshold
   const double test_th = th_nloglr(1, th);
-  // #pragma omp parallel for num_threads(nthreads)
-  for (int j : idx) {
+  #pragma omp parallel for num_threads(nthreads)
+  for (int i = 0; i < n; ++i) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
-    lhs(j - 1) = 1.0;
+    lhs(idx[i] - 1) = 1.0;
 
     // lower endpoint
-    double lower_ub = par0[j - 1];
-    double lower_lb = par0[j - 1] - 1.0 / std::log(x.rows());
+    double lower_ub = par0[idx[i] - 1];
+    double lower_lb = par0[idx[i] - 1] - 1.0 / std::log(x.rows());
     // lower bound for lower endpoint
     while (2.0 * MINEL(method, par0, x, lhs,
                        Eigen::Matrix<double, 1, 1>(lower_lb), maxit, maxit_l,
@@ -57,11 +57,11 @@ Eigen::MatrixXd confint_(
         lower_ub = (lower_lb + lower_ub) / 2.0;
       }
     }
-    ci_vec.push_back(lower_ub);
+    ci(i, 0) = lower_ub;
 
     // upper endpoint
-    double upper_lb = par0[j - 1];
-    double upper_ub = par0[j - 1] + 1.0 / std::log(x.rows());
+    double upper_lb = par0[idx[i] - 1];
+    double upper_ub = par0[idx[i] - 1] + 1.0 / std::log(x.rows());
     // upper bound for upper endpoint
     while (2.0 * MINEL(method, par0, x, lhs,
                        Eigen::Matrix<double, 1, 1>(upper_ub), maxit, maxit_l,
@@ -80,10 +80,8 @@ Eigen::MatrixXd confint_(
         upper_lb = (upper_lb + upper_ub) / 2.0;
       }
     }
-    ci_vec.push_back(upper_lb);
+    ci(i, 1) = upper_lb;
   }
 
-  // transform into a matrix
-  Eigen::MatrixXd ci = Eigen::Map<Eigen::MatrixXd>(ci_vec.data(), 2, n);
-  return ci.transpose();
+  return ci;
 }
