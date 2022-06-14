@@ -22,7 +22,7 @@
 #'   \deqn{\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}
 #'   {1 + \lambda^\top g(X_i, \theta)} = 0.}
 #'   Then the empirical log-likelihood ratio is given by
-#'   \deqn{\log\mathcal{R}(\theta) =  \max_{\lambda}\sum_{i = 1}^n
+#'   \deqn{\log\mathcal{R}(\theta) = -\sum_{i = 1}^n
 #'   \log(1 + \lambda^\top g(X_i, \theta)).}
 #'   This problem can be efficiently solved by the Newton-Raphson method when
 #'   the zero vector is contained in the interior of the convex hull of
@@ -52,6 +52,7 @@
 #' @slot weights Rescaled weights used for model fitting.
 #' @slot data Data matrix used for model fitting.
 #' @slot coefficients Maximum empirical likelihood estimates of the parameters.
+#' @slot method Character for method dispatch in internal functions.
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
@@ -65,25 +66,15 @@ setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
     statistic = "numeric", df = "integer", pval = "numeric", npar = "integer",
-    weights = "numeric", data = "matrix", coefficients = "numeric"
+    weights = "numeric", data = "matrix", coefficients = "numeric",
+    method = "character"
   ),
   prototype = list(
     optim = list(), logp = numeric(), logl = numeric(), loglr = numeric(),
     statistic = numeric(), df = 0L, pval = numeric(), npar = 0L,
     weights = numeric(), data = matrix(NA_real_, nrow = 0L, ncol = 0L),
-    coefficients = numeric()
+    coefficients = numeric(), method = NA_character_
   )
-  # slots = c(
-  #   optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
-  #   statistic = "numeric", df = "integer", pval = "numeric", npar = "integer",
-  #   weights = "numeric", data = "ANY", coefficients = "numeric"
-  # ),
-  # prototype = list(
-  #   optim = list(), logp = numeric(), logl = numeric(), loglr = numeric(),
-  #   statistic = numeric(), df = 0L, pval = numeric(), npar = 0L,
-  #   weights = numeric(),
-  #   coefficients = numeric()
-  # )
 )
 
 #' S4 class \linkS4class{CEL}
@@ -135,6 +126,7 @@ setClass("EL",
 #' @slot weights Rescaled weights used for model fitting.
 #' @slot data Data matrix used for model fitting.
 #' @slot coefficients Maximum empirical likelihood estimates of the parameters.
+#' @slot method Character for method dispatch in internal functions.
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
 #'   Statistical Methods & Applications 19 (4): 463–76.

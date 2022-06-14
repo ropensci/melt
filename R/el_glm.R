@@ -331,7 +331,7 @@ el_glm2 <- function(formula, family = gaussian, data, weights = NULL, na.action,
   #   statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,
   #   data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
   #   coefficients = fit$coefficients,
-  #   # parTests = el$parTests,
+  #   parTests = el$parTests,
   #   misc = list(
   #     family = fit$family, iter = fit$iter, rdf = fit$df.residual,
   #     converged = fit$converged, boundary = fit$boundary, call = cl,

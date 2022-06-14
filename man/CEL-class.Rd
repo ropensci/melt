@@ -67,6 +67,8 @@ statistic that has an asymptotic chi-square distribution.}
 \item{\code{data}}{Data matrix used for model fitting.}
 
 \item{\code{coefficients}}{Maximum empirical likelihood estimates of the parameters.}
+
+\item{\code{method}}{Character for method dispatch in internal functions.}
 }}
 
 \examples{

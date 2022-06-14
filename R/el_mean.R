@@ -70,6 +70,6 @@ el_mean <- function(par, x, weights = NULL, control = el_control(),
     pval = pchisq(el$statistic, df = p, lower.tail = FALSE), npar = p,
     weights = w,
     data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
-    coefficients = est
+    coefficients = est, method = "mean"
   )
 }

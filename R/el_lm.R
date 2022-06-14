@@ -107,20 +107,20 @@ el_lm <- function(formula, data, weights = NULL, na.action,
     stop("invalid 'control' specified")
   }
   el <- lm_(
-    mm, z$coefficients, intercept, control@maxit, control@maxit_l,
-    control@tol, control@tol_l, control@step, control@th,
-    control@nthreads, w
+    mm, z$coefficients, intercept, control@maxit, control@maxit_l, control@tol,
+    control@tol_l, control@step, control@th, control@nthreads, w
   )
   df <- if (intercept && p > 1L) p - 1L else p
   pval <- pchisq(el$statistic, df = df, lower.tail = FALSE)
   new("LM",
-    optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-    statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,
-    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
-    coefficients = z$coefficients, parTests = el$parTests,
+    parTests = el$parTests,
     misc = list(
       call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
-    )
+    ),
+    optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
+    statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,
+    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
+    coefficients = z$coefficients, method = "lm"
   )
 }

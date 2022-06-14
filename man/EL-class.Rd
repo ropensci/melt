@@ -28,7 +28,7 @@ Let \eqn{X_i} be independent and identically distributed
   \deqn{\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}
   {1 + \lambda^\top g(X_i, \theta)} = 0.}
   Then the empirical log-likelihood ratio is given by
-  \deqn{\log\mathcal{R}(\theta) =  \max_{\lambda}\sum_{i = 1}^n
+  \deqn{\log\mathcal{R}(\theta) = -\sum_{i = 1}^n
   \log(1 + \lambda^\top g(X_i, \theta)).}
   This problem can be efficiently solved by the Newton-Raphson method when
   the zero vector is contained in the interior of the convex hull of
@@ -72,6 +72,8 @@ has an asymptotic chi-square distribution.}
 \item{\code{data}}{Data matrix used for model fitting.}
 
 \item{\code{coefficients}}{Maximum empirical likelihood estimates of the parameters.}
+
+\item{\code{method}}{Character for method dispatch in internal functions.}
 }}
 
 \examples{

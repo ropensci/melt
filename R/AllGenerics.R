@@ -173,3 +173,6 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' @usage NULL
 #' @exportMethod summary
 setGeneric("summary", function(object, ...) standardGeneric("summary"))
+
+setGeneric("getMethod", function(x) standardGeneric("getMethod"))
+setMethod("getMethod", "EL", function(x) x@method)
