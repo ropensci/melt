@@ -19,9 +19,12 @@ check_weights <- function(weights, nw) {
   w
 }
 
-check_rhs <- function(rhs, p) {
-  rhs <- as.vector(rhs, mode = "numeric")
-  if (!is.numeric(rhs) || !all(is.finite(rhs))) {
+check_rhs_ <- function(rhs, p) {
+  UseMethod("check_rhs_", rhs)
+}
+
+check_rhs_.numeric <- function(rhs, p) {
+  if (isFALSE(all(is.finite(rhs)))) {
     stop("'rhs' is not a finite numeric vector")
   }
   if (length(rhs) != p) {
@@ -30,9 +33,43 @@ check_rhs <- function(rhs, p) {
   rhs
 }
 
-check_lhs <- function(lhs, p) {
-  lhs <- as.matrix(lhs)
-  if (!is.numeric(lhs) || !all(is.finite(lhs))) {
+check_rhs_.matrix <- function(rhs, p) {
+  if (ncol(rhs) == 1L) {
+    stop(gettextf("'rhs' is not a vector"))
+  }
+  if (isFALSE(all(is.finite(rhs)))) {
+    stop("'rhs' is not a finite numeric vector")
+  }
+  if (nrow(rhs) != p) {
+    stop(gettextf("length of 'rhs' should be %d", p, domain = NA))
+  }
+  rhs
+}
+
+check_lhs_ <- function(lhs, p) {
+  UseMethod("check_lhs_", lhs)
+}
+
+check_lhs_.numeric <- function(lhs, p) {
+  if (isFALSE(all(is.finite(lhs)))) {
+    stop("'lhs' is not a finite numeric matrix")
+  }
+  dim(lhs) <- c(1L, length(lhs))
+  if (ncol(lhs) != p) {
+    stop("'object' and 'lhs' have incompatible dimensions")
+  }
+  q <- nrow(lhs)
+  if (q == 0L || q > p) {
+    stop("'object' and 'lhs' have incompatible dimensions")
+  }
+  if (get_rank_(lhs) != q) {
+    stop("'lhs' must have full row rank")
+  }
+  lhs
+}
+
+check_lhs_.matrix <- function(lhs, p) {
+  if (isFALSE(all(is.finite(lhs)))) {
     stop("'lhs' is not a finite numeric matrix")
   }
   if (ncol(lhs) != p) {
@@ -52,13 +89,13 @@ check_hypothesis <- function(lhs, rhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either 'rhs' or 'lhs' must be provided")
   } else if (is.null(lhs)) {
-    rhs <- check_rhs(rhs, p)
+    rhs <- check_rhs_(rhs, p)
   } else if (is.null(rhs)) {
-    lhs <- check_lhs(lhs, p)
+    lhs <- check_lhs_(lhs, p)
     rhs <- rep(0, nrow(lhs))
   } else {
-    lhs <- check_lhs(lhs, p)
-    rhs <- check_rhs(rhs, nrow(lhs))
+    lhs <- check_lhs_(lhs, p)
+    rhs <- check_rhs_(rhs, nrow(lhs))
   }
   list(l = lhs, r = rhs)
 }
