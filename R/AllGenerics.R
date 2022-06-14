@@ -49,6 +49,9 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @usage NULL
 #' @exportMethod coef
 setGeneric("coef", function(object, ...) standardGeneric("coef"))
+setMethod("coef", "EL", function(object, ...) {object@coefficients})
+
+
 
 #' Confidence intervals for model parameters
 #'
@@ -175,4 +178,4 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 setGeneric("summary", function(object, ...) standardGeneric("summary"))
 
 setGeneric("getMethod", function(x) standardGeneric("getMethod"))
-setMethod("getMethod", "EL", function(x) x@method)
+setMethod("getMethod", "EL", function(x) {x@method})

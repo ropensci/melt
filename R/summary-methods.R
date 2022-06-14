@@ -14,18 +14,18 @@ setMethod(
         ),
         weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
         call = z@misc$call, terms = z@misc$terms,
-        aliased = is.na(z@coefficients)
+        aliased = is.na(coef(z))
       ))
     }
     new("SummaryLM",
       statistic = z@statistic, df = z@df, convergence = z@optim$convergence,
       parMatrix = cbind(
-        Estimate = z@coefficients,
+        Estimate = coef(z),
         Chisq = z@parTests$statistic,
         `Pr(>Chisq)` = pchisq(z@parTests$statistic, df = 1L, lower.tail = FALSE)
       ),
       weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
-      call = z@misc$call, terms = z@misc$terms, aliased = is.na(z@coefficients)
+      call = z@misc$call, terms = z@misc$terms, aliased = is.na(coef(z))
     )
   }
 )

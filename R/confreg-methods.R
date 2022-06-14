@@ -3,7 +3,7 @@ setMethod(
   "confreg", "EL",
   function(object, parm, level = 0.95, cv = qchisq(level, 2L), npoints = 50L,
            control = el_control()) {
-    est <- object@coefficients
+    est <- coef(object)
     if (length(est) == 0L) {
       stop("'confreg' method is not applicable to an empty model")
     } else if (length(est) == 1L) {
@@ -68,7 +68,7 @@ setMethod(
       stop("invalid 'control' specified")
     }
     cr <- confreg_(
-      getMethod(object), object@coefficients, object@data, object@npar,
+      getMethod(object), coef(object), object@data, object@npar,
       cv, idx, circ, control@maxit, control@maxit_l, control@tol, control@tol_l,
       control@step, control@th, control@nthreads, w
     )
