@@ -71,15 +71,14 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
   }
 
   Rcpp::List result = Rcpp::List::create(
+    Rcpp::Named("parTests") = Rcpp::List::create(
+      Rcpp::Named("statistic") = chisq_val,
+      Rcpp::Named("convergence") = par_conv),
     Rcpp::Named("optim") = Rcpp::List::create(
-      Rcpp::Named("method") = "lm",
       Rcpp::Named("par") = par,
       Rcpp::Named("lambda") = l,
       Rcpp::Named("iterations") = iter,
       Rcpp::Named("convergence") = conv),
-    Rcpp::Named("parTests") = Rcpp::List::create(
-      Rcpp::Named("statistic") = chisq_val,
-      Rcpp::Named("convergence") = par_conv),
     Rcpp::Named("logp") = logp,
     Rcpp::Named("logl") = logl,
     Rcpp::Named("loglr") = -nllr,

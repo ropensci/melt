@@ -2,7 +2,7 @@
 setMethod(
   "print", "EL",
   function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-    cat("\nEmpirical Likelihood:", x@optim$method, "\n\n")
+    cat("\nEmpirical Likelihood:", getMethod(x), "\n\n")
     if (length(x@coefficients) != 0L) {
       cat("Maximum EL estimates:\n")
       print.default(x@coefficients, digits = digits, ...)
