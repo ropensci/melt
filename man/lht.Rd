@@ -4,7 +4,13 @@
 \alias{lht}
 \title{Linear hypothesis test}
 \usage{
-lht(object, rhs = NULL, lhs = NULL, control = el_control())
+lht(
+  object,
+  rhs = NULL,
+  lhs = NULL,
+  calibrate = c("chisq", "F", "boot"),
+  control = el_control()
+)
 }
 \arguments{
 \item{object}{A fitted \linkS4class{EL} object.}
@@ -17,6 +23,8 @@ hypothesis, with as many entries as the rows in \code{lhs}. Defaults to
 left-hand-side of hypothesis. Each row gives a linear combination of the
 parameters in \code{object}. The number of columns should be equal to the
 number of parameters. Defaults to \code{NULL}. See ‘Details’.}
+
+\item{calibrate}{sefgrdgdr}
 
 \item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }

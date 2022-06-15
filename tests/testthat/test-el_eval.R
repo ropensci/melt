@@ -20,7 +20,7 @@ test_that("probabilities add up to 1", {
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, control = optcfg)
-  expect_equal(sum(exp(fit$logp)), 1)
+  expect_equal(sum(exp(fit$logp)), 1, tolerance = 1e-07)
 })
 
 test_that("probabilities add up to 1 (weighted)", {

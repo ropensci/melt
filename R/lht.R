@@ -11,7 +11,7 @@
 #'   left-hand-side of hypothesis. Each row gives a linear combination of the
 #'   parameters in \code{object}. The number of columns should be equal to the
 #'   number of parameters. Defaults to \code{NULL}. See ‘Details’.
-#' @param calibrate aaa
+#' @param calibrate sefgrdgdr
 #' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @details \code{\link{lht}} performs the constrained minimization of
 #'   \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
@@ -88,6 +88,16 @@ lht <- function(object, rhs = NULL, lhs = NULL,
     # boot only applies here!
     el <- eval_(method, h$r, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(h$r)
+
+    # what happens for f calibration
+    if (method == "mean") {
+      # stop("sdfsdf")
+      n <- nrow(getDataMatrix(object))
+
+      pval <- pf(el$statistic * (n - p) / (p * (n - 1)), df1 = p, df2 = n - p,
+                 lower.tail = FALSE)
+    }
+
     return(new("EL",
       optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
       statistic = el$statistic, df = p,
