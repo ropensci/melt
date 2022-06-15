@@ -94,3 +94,32 @@ test_that("invalid 'par", {
   expect_error(el_mean(par, x, control = optcfg))
   expect_error(el_mean(0, x, control = list(maxit = 200)))
 })
+
+
+
+
+
+
+test_that("identical result for mean", {
+  n <- 100
+  w <- 1 + runif(n, min = -0.5, max = 0.5)
+  p <- 2
+  par <- rnorm(p)
+  x <- matrix(rnorm(n * p), ncol = p)
+  fit1 <- el_mean(par, x, control = el_control(th = 1e+10))
+  fit2 <- el_mean(par, x, control = el_control(th = 1e+10))
+  expect_equal(fit1, fit2)
+
+  wfit1 <- el_mean(par, x, weights = w, control = el_control(th = 1e+10))
+  wfit2 <- el_mean(par, x, weights = w, control = el_control(th = 1e+10))
+  expect_equal(wfit1, wfit2)
+
+  lhs <- c(1, 0)
+  lht1 <- lht(fit1, lhs = lhs)
+  lht2 <- lht(fit2, lhs = lhs)
+  expect_equal(lht1, lht2)
+
+  lht3 <- lht(wfit1, lhs = lhs)
+  lht4 <- lht(wfit2, lhs = lhs)
+  expect_equal(lht3, lht4)
+})
