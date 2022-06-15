@@ -3,7 +3,7 @@ setMethod(
   "confint", "EL",
   function(object, parm, level = 0.95, ..., cv = qchisq(level, 1L),
            control = el_control()) {
-    est <- object@coefficients
+    est <- coef(object)
     # no confidence interval for empty model
     if (length(est) == 0L) {
       ci <- matrix(, nrow = 0L, ncol = 2L)
@@ -35,7 +35,7 @@ setMethod(
     p <- length(idx)
     # check level
     if (!missing(level) &&
-        (length(level) != 1L || !is.finite(level) || level < 0 || level > 1)) {
+      (length(level) != 1L || !is.finite(level) || level < 0 || level > 1)) {
       stop("'level' must be a number between 0 and 1")
     }
     if (isTRUE(all.equal(level, 0))) {
@@ -73,18 +73,18 @@ setMethod(
     } else if (any(is.na(idx))) {
       idx_na <- which(is.na(idx))
       ci <- matrix(NA, nrow = p, ncol = 2L)
-      ci[-idx_na, ] <- confint_(method, est, object@data, cv, idx[-idx_na],
-                                maxit, maxit_l, tol, tol_l, step, th, nthreads,
-                                w)
+      ci[-idx_na, ] <- confint_(
+        method, est, getDataMatrix(object), cv,
+        idx[-idx_na], maxit, maxit_l, tol, tol_l, step,
+        th, nthreads, w
+      )
     } else {
-      ci <- confint_(method, est, object@data, cv, idx, maxit, maxit_l,
-                     tol, tol_l, step, th, nthreads, w)
+      ci <- confint_(
+        method, est, getDataMatrix(object), cv, idx, maxit,
+        maxit_l, tol, tol_l, step, th, nthreads, w
+      )
     }
     dimnames(ci) <- list(pnames, c("lower", "upper"))
     ci
   }
 )
-
-
-
-

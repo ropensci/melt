@@ -68,7 +68,7 @@ setMethod(
       stop("invalid 'control' specified")
     }
     cr <- confreg_(
-      getMethodEL(object), coef(object), object@data, object@npar,
+      getMethodEL(object), coef(object), getDataMatrix(object), object@npar,
       cv, idx, circ, control@maxit, control@maxit_l, control@tol, control@tol_l,
       control@step, control@th, control@nthreads, w
     )

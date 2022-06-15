@@ -11,6 +11,7 @@
 #'   left-hand-side of hypothesis. Each row gives a linear combination of the
 #'   parameters in \code{object}. The number of columns should be equal to the
 #'   number of parameters. Defaults to \code{NULL}. See ‘Details’.
+#' @param calibrate aaa
 #' @param control A list of control parameters set by \code{\link{el_control}}.
 #' @details \code{\link{lht}} performs the constrained minimization of
 #'   \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
@@ -63,11 +64,12 @@
 #' @importFrom methods is
 #' @importFrom stats pchisq
 #' @export
-lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
+lht <- function(object, rhs = NULL, lhs = NULL,
+                calibrate = c("chisq", "F", "boot"), control = el_control()) {
   if (all(!is(object, c("EL")), !is(object, c("CEL")))) {
     stop("invalid 'object' supplied")
   }
-  if (length(object@data) == 0L) {
+  if (length(getDataMatrix(object)) == 0L) {
     stop("'object' has no 'data'; fit the model with 'model' = TRUE")
   }
   h <- check_hypothesis(lhs, rhs, object@npar)
@@ -83,7 +85,8 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
   th <- control@th
   w <- object@weights
   if (is.null(lhs)) {
-    el <- eval_(method, h$r, object@data, maxit_l, tol_l, th, w)
+    # boot only applies here!
+    el <- eval_(method, h$r, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(h$r)
     return(new("EL",
       optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
@@ -93,7 +96,7 @@ lht <- function(object, rhs = NULL, lhs = NULL, control = el_control()) {
     ))
   }
   el <- lht_(
-    method, object@coefficients, object@data, h$l, h$r,
+    method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )
   new("CEL",

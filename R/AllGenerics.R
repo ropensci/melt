@@ -175,3 +175,6 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 
 setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
 setMethod("getMethodEL", "EL", function(x) {x@method})
+
+setGeneric("getDataMatrix", function(x) standardGeneric("getDataMatrix"))
+setMethod("getDataMatrix", "EL", function(x) {x@data})
