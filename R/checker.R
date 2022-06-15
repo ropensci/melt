@@ -137,14 +137,14 @@ check_family <- function(family) {
         ), domain = NA)
       }
     },
-    "quasibinomial" = {
-      if (!any(l == c("logit"))) {
-        stop(gettextf(
-          "%s family with %s link not supported by 'el_glm'",
-          sQuote(f), sQuote(l)
-        ), domain = NA)
-      }
-    },
+    # "quasibinomial" = {
+    #   if (!any(l == c("logit"))) {
+    #     stop(gettextf(
+    #       "%s family with %s link not supported by 'el_glm'",
+    #       sQuote(f), sQuote(l)
+    #     ), domain = NA)
+    #   }
+    # },
     "poisson" = {
       if (!any(l == c("log", "identity", "sqrt"))) {
         stop(gettextf(

@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/markean/melt",
   "issueTracker": "https://github.com/markean/melt/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "1.5.1.9000",
+  "version": "1.5.2",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -153,7 +153,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "18792.492KB",
+  "fileSize": "15453.341KB",
   "releaseNotes": "https://github.com/markean/melt/blob/master/NEWS.md",
   "readme": "https://github.com/markean/melt/blob/master/README.md",
   "contIntegration": ["https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/markean/melt?branch=master"],

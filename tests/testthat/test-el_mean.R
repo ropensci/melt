@@ -95,12 +95,7 @@ test_that("invalid 'par", {
   expect_error(el_mean(0, x, control = list(maxit = 200)))
 })
 
-
-
-
-
-
-test_that("identical result for mean", {
+test_that("identical results for repeated executions", {
   n <- 100
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   p <- 2

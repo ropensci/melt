@@ -2,16 +2,14 @@
 .Rhistory
 .RData
 .Ruserdata
+.Rprofile
 .Rproj
 src/*.o
 src/*.so
 src/*.dll
 src/.vscode
-melt.Rproj
 .vscode
 .VSCodeCounter
 data-raw
 ignore
-.Rprofile
-renv
 inst/doc
