@@ -8,7 +8,7 @@ lht(
   object,
   rhs = NULL,
   lhs = NULL,
-  calibrate = c("chisq", "F", "boot"),
+  calibrate = c("chisq", "boot", "f"),
   control = el_control()
 )
 }

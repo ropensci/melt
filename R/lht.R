@@ -65,7 +65,7 @@
 #' @importFrom stats pchisq
 #' @export
 lht <- function(object, rhs = NULL, lhs = NULL,
-                calibrate = c("chisq", "F", "boot"), control = el_control()) {
+                calibrate = c("chisq", "boot", "f"), control = el_control()) {
   if (all(!is(object, c("EL")), !is(object, c("CEL")))) {
     stop("invalid 'object' supplied")
   }
@@ -76,6 +76,7 @@ lht <- function(object, rhs = NULL, lhs = NULL,
   if (!is(control, "ControlEL")) {
     stop("invalid 'control' specified")
   }
+  calibrate <- match.arg(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
@@ -85,25 +86,24 @@ lht <- function(object, rhs = NULL, lhs = NULL,
   th <- control@th
   w <- object@weights
   if (is.null(lhs)) {
-    # boot only applies here!
+    if (calibrate == "f" && method != "mean") {
+      stop("F calibration is applicable only to the mean")
+    }
     el <- eval_(method, h$r, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(h$r)
-
-    # what happens for f calibration
-    if (method == "mean") {
-      # stop("sdfsdf")
-      n <- nrow(getDataMatrix(object))
-
-      pval <- pf(el$statistic * (n - p) / (p * (n - 1)), df1 = p, df2 = n - p,
-                 lower.tail = FALSE)
-    }
-
+    pval <- calibrate_pval_(calibrate, el$statistic, p, object)
     return(new("EL",
       optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-      statistic = el$statistic, df = p,
-      pval = pchisq(el$statistic, df = p, lower.tail = FALSE), npar = p,
-      weights = w, method = method
+      statistic = el$statistic, df = p, pval = pval, npar = p, weights = w,
+      method = method
     ))
+  }
+  # proceed with chi-square calibration for non-NULL 'lhs'
+  if (calibrate == "f") {
+    stop("F calibration is applicable only when 'lhs' is NULL")
+  }
+  if (calibrate == "boot") {
+    stop("bootstrap calibration is applicable only when 'lhs' is NULL")
   }
   el <- lht_(
     method, coef(object), getDataMatrix(object), h$l, h$r,

@@ -160,8 +160,6 @@ check_family <- function(family) {
   paste(f, l, sep = "_")
 }
 
-
-
 # check_mht_ <- function(lhs, rhs, p) {
 #   if (is.null(rhs) && is.null(lhs)) {
 #     stop("either 'rhs' or 'lhs' must be provided")
