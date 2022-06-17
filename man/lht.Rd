@@ -12,81 +12,13 @@ lht(
   control = el_control()
 )
 }
-\arguments{
-\item{object}{A fitted \linkS4class{EL} object.}
-
-\item{rhs}{A numeric vector or a column matrix for the right-hand-side of
-hypothesis, with as many entries as the rows in \code{lhs}. Defaults to
-\code{NULL}. See ‘Details’.}
-
-\item{lhs}{A numeric matrix or a vector (treated as a row matrix) for the
-left-hand-side of hypothesis. Each row gives a linear combination of the
-parameters in \code{object}. The number of columns should be equal to the
-number of parameters. Defaults to \code{NULL}. See ‘Details’.}
-
-\item{calibrate}{sefgrdgdr}
-
-\item{control}{A list of control parameters set by \code{\link{el_control}}.}
-}
-\value{
-If \code{lhs} is \code{NULL}, an object of class \linkS4class{EL}
-is returned. Otherwise, an object of class \linkS4class{CEL} is returned.
-}
 \description{
-Tests a linear hypothesis for objects that inherit from class
-  \linkS4class{EL}.
-}
-\details{
-\code{\link{lht}} performs the constrained minimization of
-  \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
-  cannot be both \code{NULL}. For non-\code{NULL} \code{lhs}, it is required
-  that \code{lhs} have full row rank \eqn{q \leq p} and \eqn{p} be equal to
-  \code{object$npar}, the number of parameters in the fitted model.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-  Depending on the specification of \code{rhs} and \code{lhs}, we have the
-  following three cases:
-  \enumerate{
-  \item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the
-  constrained minimization is performed with the right-hand-side \eqn{r} and
-  the left-hand-side \eqn{L} as
-  \deqn{\inf_{\theta: L\theta = r} l(\theta).}
-  \item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as
-  \deqn{\inf_{\theta: L\theta = 0} l(\theta).}
-  \item If \code{lhs} is \code{NULL}, \eqn{L} is set to the identity matrix
-  and the problem reduces to evaluating at \eqn{r} as
-  \deqn{l(r).}
-  }
-}
-\examples{
-n <- 100L
-x1 <- rnorm(n)
-x2 <- rnorm(n)
-y <- 1 + x1 + x2 + rnorm(n)
-df <- data.frame(y, x1, x2)
-fit <- el_lm(y ~ x1 + x2, df)
-lhs <- c(0, 1, -1)
-lht(fit, lhs = lhs)
-
-# test of no treatment effect
-data("clothianidin")
-lhs2 <- matrix(c(
-  1, -1, 0, 0,
-  0, 1, -1, 0,
-  0, 0, 1, -1
-), byrow = TRUE, nrow = 3L)
-fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-lht(fit2, lhs = lhs2)
-}
-\references{
-Adimari, Gianfranco, and Annamaria Guolo. 2010.
-  “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-  Statistical Methods & Applications 19 (4): 463–76.
-  \doi{10.1007/s10260-010-0137-9}.
-
-Qin, Jing, and Jerry Lawless. 1995.
-  “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-  Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
+\code{\link{lht}} was renamed to \code{\link{elt}} to avoid conflicts with
+other packages.
 }
 \seealso{
-\link{el_control}
+\link{elt}
 }
+\keyword{internal}

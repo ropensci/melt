@@ -8,7 +8,8 @@
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
-#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   \code{\link{el_control}}.
 #' @details \code{el_eval} evaluates empirical likelihood with a \eqn{n} by
 #'   \eqn{p} numeric matrix argument \code{g}, whose \eqn{i}th row is
 #'   \eqn{g(X_i, \theta)}. Since the estimating function can be arbitrary,

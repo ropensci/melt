@@ -15,7 +15,8 @@
 #' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s. The default is set by the \code{na.action} setting of
 #'   \code{\link[base]{options}}, and is \code{na.fail} if that is unset.
-#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   \code{\link{el_control}}.
 #' @param model A logical. If \code{TRUE} the data matrix used for fitting is
 #'   returned.
 #' @param ... Additional arguments to be passed to the low level regression
@@ -49,8 +50,16 @@
 #'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 #' @seealso \link{el_control}, \link{el_glm}, \link{lht}
 #' @examples
-#' fit <- el_lm(mpg ~ wt, mtcars)
+#' df <- data.frame(y = rnorm(50), x = rnorm(50))
+#' fit <- el_lm(y ~ x, df)
 #' summary(fit)
+#'
+#' fit2 <- el_lm(y ~ x, df, weights = rep(c(1, 2), each = 25))
+#' summary(fit2)
+#'
+#' df[1, 2] <- NA
+#' fit3 <- el_lm(y ~ x, df, na.action = na.omit)
+#' summary(fit3)
 #' @importFrom stats .getXlevels is.empty.model lm.fit lm.wfit model.matrix
 #'   model.response model.weights pchisq
 #' @export

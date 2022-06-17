@@ -23,7 +23,7 @@ stops when
 \item{\code{tol_l}}{Relative convergence tolerance denoted by \eqn{\delta}. The
 iteration stops when
 \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| <
-\delta\|\lambda^{(k - 1)}\| + \delta^2.}}
+  \delta\|\lambda^{(k - 1)}\| + \delta^2.}}
 
 \item{\code{step}}{Step size \eqn{\gamma} for the projected gradient descent
 method.}

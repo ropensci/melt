@@ -18,7 +18,8 @@
 #' @param na.action A function which indicates what should happen when the data
 #'   contain \code{NA}s. The default is set by the \code{na.action} setting of
 #'   \code{\link[base]{options}}, and is \code{na.fail} if that is unset.
-#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   \code{\link{el_control}}.
 #' @param model A logical. If \code{TRUE} the data matrix used for fitting is
 #'   returned.
 #' @param start Starting values for the parameters in the linear predictor.

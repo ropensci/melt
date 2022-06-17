@@ -17,7 +17,7 @@ An object of class \linkS4class{logLikEL}.
 }
 \description{
 Extracts empirical log-likelihood from a model evaluated at the estimated
-  coefficients.
+coefficients.
 }
 \examples{
 fit <- el_lm(formula = mpg ~ wt, data = mtcars)

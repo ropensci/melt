@@ -32,7 +32,8 @@ weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
 
-\item{control}{A list of control parameters set by \code{\link{el_control}}.}
+\item{control}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link{el_control}}.}
 
 \item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
 returned.}
@@ -48,37 +49,45 @@ Fits a linear model with empirical likelihood.
 }
 \details{
 Suppose that we observe \eqn{n} independent random variables
-  \eqn{(X_i, Y_i)} from a common distribution, where \eqn{X_i} is the
-  \eqn{p}-dimensional covariate (including the intercept if any) and
-  \eqn{Y_i} is the response. We consider the following linear regression
-  model:
-  \deqn{Y_i = X_i^\top \theta + \epsilon_i,}
-  where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
-  \eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
-  independent random variables that satisfy
-  \eqn{\textnormal{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
-  finite conditional variance. Then the least square estimator of \eqn{\theta}
-  solves the following estimating equation:
-  \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
-  \code{\link{el_lm}} first computes the parameter estimates by calling
-  \code{\link[stats]{lm.fit}} (with \code{...} if any) since the maximum
-  empirical likelihood estimator is the same as the least square estimator in
-  our model. Next, it performs hypothesis tests based on asymptotic
-  chi-squared distribution of empirical likelihood ratio statistics. Included
-  in the tests are the overall test with
-  \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
-  and the tests for each parameter with
-  \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
-  The test results are returned as \code{optim} and \code{parTests},
-  respectively.
+\eqn{(X_i, Y_i)} from a common distribution, where \eqn{X_i} is the
+\eqn{p}-dimensional covariate (including the intercept if any) and
+\eqn{Y_i} is the response. We consider the following linear regression
+model:
+\deqn{Y_i = X_i^\top \theta + \epsilon_i,}
+where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
+\eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
+independent random variables that satisfy
+\eqn{\textnormal{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
+finite conditional variance. Then the least square estimator of \eqn{\theta}
+solves the following estimating equation:
+\deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
+\code{\link{el_lm}} first computes the parameter estimates by calling
+\code{\link[stats]{lm.fit}} (with \code{...} if any) since the maximum
+empirical likelihood estimator is the same as the least square estimator in
+our model. Next, it performs hypothesis tests based on asymptotic
+chi-squared distribution of empirical likelihood ratio statistics. Included
+in the tests are the overall test with
+\deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
+and the tests for each parameter with
+\deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
+The test results are returned as \code{optim} and \code{parTests},
+respectively.
 }
 \examples{
-fit <- el_lm(mpg ~ wt, mtcars)
+df <- data.frame(y = rnorm(50), x = rnorm(50))
+fit <- el_lm(y ~ x, df)
 summary(fit)
+
+fit2 <- el_lm(y ~ x, df, weights = rep(c(1, 2), each = 25))
+summary(fit2)
+
+df[1, 2] <- NA
+fit3 <- el_lm(y ~ x, df, na.action = na.omit)
+summary(fit3)
 }
 \references{
 Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
-  The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
+The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 }
 \seealso{
 \link{el_control}, \link{el_glm}, \link{lht}

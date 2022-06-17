@@ -65,17 +65,17 @@ Fits a generalized linear model with empirical likelihood.
 }
 \details{
 The available families and link functions are as follows:
-  \itemize{
-  \item{\code{gaussian}}{: \code{identity}, \code{log}, and \code{inverse}.}
-  \item{\code{bimomial}}{: \code{logit}, \code{probit}, and \code{log}.}
-  \item{\code{poisson}}{: \code{log}, \code{identity}, and \code{sqrt}.}
-  }
-  Included in the tests are the overall test with
-  \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
-  and the tests for each parameter with
-  \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
-  The test results are returned as \code{optim} and \code{parTests},
-  respectively.
+\itemize{
+\item{\code{gaussian}}{: \code{identity}, \code{log}, and \code{inverse}.}
+\item{\code{bimomial}}{: \code{logit}, \code{probit}, and \code{log}.}
+\item{\code{poisson}}{: \code{log}, \code{identity}, and \code{sqrt}.}
+}
+Included in the tests are the overall test with
+\deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
+and the tests for each parameter with
+\deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
+The test results are returned as \code{optim} and \code{parTests},
+respectively.
 }
 \examples{
 n <- 50
@@ -90,8 +90,8 @@ summary(fit)
 }
 \references{
 Chen, Song Xi, and Hengjian Cui. 2003.
-  “An Extended Empirical Likelihood for Generalized Linear Models.”
-  Statistica Sinica 13: 69–81.
+“An Extended Empirical Likelihood for Generalized Linear Models.”
+Statistica Sinica 13: 69–81.
 }
 \seealso{
 \link{el_control}, \link{el_lm}, \link{lht}

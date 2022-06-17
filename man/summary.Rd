@@ -14,7 +14,7 @@
 }
 \description{
 Provides summary methods for objects that inherit from class
-  \linkS4class{EL}.
+\linkS4class{EL}.
 }
 \section{Methods (by class)}{
 \itemize{

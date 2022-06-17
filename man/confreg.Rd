@@ -22,22 +22,24 @@ region, either a vector of numbers or a vector of names. It should be a
 vector of length two of the form \code{c(x, y)}. If missing, the first two
 parameter in \code{object} are considered.}
 
-\item{level}{A confidence level required. Defaults to \code{0.95}.}
+\item{level}{A single numeric for the confidence level required. Defaults to
+\code{0.95}.}
 
-\item{cv}{A critical value for calibration of empirical likelihood ratio
-statistic. Defaults to \code{qchisq(level, 2L)}.}
+\item{cv}{A single numeric for the critical value for calibration of
+empirical likelihood ratio statistic. Defaults to \code{qchisq(level, 2L)}.}
 
-\item{npoints}{The number of boundary points to compute. Defaults to
-\code{50}.}
+\item{npoints}{A single integer for the number of boundary points to compute.
+Defaults to \code{50}.}
 
-\item{control}{A list of control parameters set by \code{\link{el_control}}.}
+\item{control}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link{el_control}}.}
 }
 \value{
 An object of class \linkS4class{ConfregEL}.
 }
 \description{
 Computes boundary points of a two-dimensional confidence region for model
-  parameters.
+parameters.
 }
 \examples{
 par <- c(0, 0, 0)
@@ -47,7 +49,7 @@ confreg(fit, parm = c(1, 3))
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-  The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
+The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
 \link{confint}, \link{el_control}, \link{lht}, \link{plot}

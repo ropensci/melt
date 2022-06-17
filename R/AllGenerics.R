@@ -4,7 +4,8 @@
 #'   detection.
 #'
 #' @param object A fitted \linkS4class{EL} object.
-#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   \code{\link{el_control}}.
 #' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
 #'   on the full sample with \eqn{n} observations. The maximum empirical
 #'   likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
@@ -64,7 +65,8 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' @param level A confidence level required. Defaults to \code{0.95}.
 #' @param cv A critical value for calibration of empirical likelihood ratio
 #'   statistic. Defaults to \code{qchisq(level, 1L)}.
-#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   \code{\link{el_control}}.
 #' @param ... Not used.
 #' @importFrom stats qchisq
 #' @return A matrix with columns giving lower and upper confidence limits for
@@ -77,7 +79,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'   \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-#' @seealso \link{confreg}, \link{el_control}, \link{lht}
+#' @seealso \link{confreg}, \link{el_control}, \link{elt}
 #' @usage NULL
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
@@ -97,17 +99,19 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #'   region, either a vector of numbers or a vector of names. It should be a
 #'   vector of length two of the form \code{c(x, y)}. If missing, the first two
 #'   parameter in \code{object} are considered.
-#' @param level A confidence level required. Defaults to \code{0.95}.
-#' @param cv A critical value for calibration of empirical likelihood ratio
-#'   statistic. Defaults to \code{qchisq(level, 2L)}.
-#' @param npoints The number of boundary points to compute. Defaults to
-#'   \code{50}.
-#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param level A single numeric for the confidence level required. Defaults to
+#'   \code{0.95}.
+#' @param cv A single numeric for the critical value for calibration of
+#'   empirical likelihood ratio statistic. Defaults to \code{qchisq(level, 2L)}.
+#' @param npoints A single integer for the number of boundary points to compute.
+#'   Defaults to \code{50}.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   \code{\link{el_control}}.
 #' @importFrom stats qchisq
 #' @return An object of class \linkS4class{ConfregEL}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-#' @seealso \link{confint}, \link{el_control}, \link{lht}, \link{plot}
+#' @seealso \link{confint}, \link{el_control}, \link{elt}, \link{plot}
 #' @usage NULL
 #' @examples
 #' par <- c(0, 0, 0)

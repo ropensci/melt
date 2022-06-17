@@ -18,7 +18,7 @@
 #' @param nthreads Number of threads for parallel computation via OpenMP (if
 #'     available).
 #' @return An object of class of \linkS4class{ControlEL}.
-#' @seealso \link{el_eval}, \link{lht}
+#' @seealso \link{el_eval}, \link{elt}
 #' @examples
 #' optcfg <- el_control(maxit = 300L, th = 200, nthreads = 1L)
 #' @export

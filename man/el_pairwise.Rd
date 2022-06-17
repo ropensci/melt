@@ -54,9 +54,9 @@ A list with class \code{c("pairwise", "melt")}.
 }
 \description{
 Tests all pairwise comparisons or comparisons with control for general block
-  designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise
-  error rate) controlling procedures are available: asymptotic Monte Carlo
-  (AMC) and nonparametric bootstrap (NB).
+designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise
+error rate) controlling procedures are available: asymptotic Monte Carlo
+(AMC) and nonparametric bootstrap (NB).
 \emph{This function is deprecated and will be removed in a future release.}
 }
 \examples{

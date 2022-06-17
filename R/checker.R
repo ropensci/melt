@@ -101,19 +101,26 @@ check_hypothesis <- function(lhs, rhs, p) {
 }
 
 check_cv <- function(cv, th) {
-  cv <- tryCatch(as.numeric(cv),
-    warning = function(w) NA,
-    error = function(e) NA
+  # cv <- tryCatch(as.numeric(cv),
+  #   warning = function(w) NA,
+  #   error = function(e) NA
+  # )
+  # if (any(length(cv) != 1L, is.na(cv), is.infinite(cv))) {
+  #   stop("'cv' is not a number")
+  # }
+  # if (cv < .Machine$double.eps) {
+  #   stop("'cv' is too small")
+  # }
+  # if (!is.null(th) && cv > 2 * th) {
+  #   stop("'cv' is too large")
+  # }
+  stopifnot(
+    "'cv' is not a single numeric2" = (is.numeric(cv)),
+    "'cv' is not a single numeric" = (length(cv) == 1L),
+    "'cv' is not a finite single numeric" = (is.finite(cv)),
+    "'cv' is too small" = (cv >= .Machine$double.eps),
+    "'cv' is too large" = (isTRUE(is.null(th) || cv <= 2 * th))
   )
-  if (any(length(cv) != 1L, is.na(cv), is.infinite(cv))) {
-    stop("'cv' is not a number")
-  }
-  if (cv < .Machine$double.eps) {
-    stop("'cv' is too small")
-  }
-  if (!is.null(th) && cv > 2 * th) {
-    stop("'cv' is too large")
-  }
   cv
 }
 

@@ -28,14 +28,15 @@ parameters are considered.}
 \item{cv}{A critical value for calibration of empirical likelihood ratio
 statistic. Defaults to \code{qchisq(level, 1L)}.}
 
-\item{control}{A list of control parameters set by \code{\link{el_control}}.}
+\item{control}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link{el_control}}.}
 }
 \value{
 A matrix with columns giving lower and upper confidence limits for
- each parameter. In contrast to other methods that rely on studentization,
- the lower and upper limits obtained from empirical likelihood do not
- correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in
- \%, respectively.
+each parameter. In contrast to other methods that rely on studentization,
+the lower and upper limits obtained from empirical likelihood do not
+correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in
+\\%, respectively.
 }
 \description{
 Computes confidence intervals for one or more parameters in a fitted model.
@@ -48,11 +49,11 @@ confint(fit)
 }
 \references{
 Kim, E., MacEachern, S., and Peruggia, M., (2021),
-  "Empirical Likelihood for the Analysis of Experimental Designs,"
-  \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
+"Empirical Likelihood for the Analysis of Experimental Designs,"
+\href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-  The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
+The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
 \link{confreg}, \link{el_control}, \link{lht}

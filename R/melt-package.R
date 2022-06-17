@@ -1,5 +1,6 @@
 ## usethis namespace: start
-#' @useDynLib melt, .registration = TRUE
+#' @importFrom lifecycle deprecated
 #' @importFrom Rcpp sourceCpp
+#' @useDynLib melt, .registration = TRUE
 ## usethis namespace: end
 NULL

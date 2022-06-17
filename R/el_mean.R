@@ -8,7 +8,8 @@
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
-#' @param control A list of control parameters set by \code{\link{el_control}}.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   \code{\link{el_control}}.
 #' @param model A logical. If \code{TRUE} the data matrix used for model fitting
 #'   is returned.
 #' @return An object of class \linkS4class{EL}.
@@ -42,9 +43,10 @@ el_mean <- function(par, x, weights = NULL, control = el_control(),
   if (!is.numeric(mm) || !all(is.finite(mm))) {
     stop("'x' must be a finite numeric matrix")
   }
-  if (n < 2L) {
-    stop("not enough 'x' observations")
-  }
+  # if (n < 2L) {
+  #   stop("not enough 'x' observations")
+  # }
+  stopifnot("not enough 'x' observations" = (n >= 2L))
   if (get_rank_(mm) != p || n <= p) {
     stop("'x' must have full column rank")
   }
