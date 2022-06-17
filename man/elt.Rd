@@ -26,7 +26,8 @@ number of parameters. Defaults to \code{NULL}. See ‘Details’.}
 
 \item{calibrate}{sefgrdgdr}
 
-\item{control}{A list of control parameters set by \code{\link{el_control}}.}
+\item{control}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link{el_control}}.}
 }
 \value{
 If \code{lhs} is \code{NULL}, an object of class \linkS4class{EL}

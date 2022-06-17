@@ -16,7 +16,7 @@
 #' #' @param calibrate A list of control parameters set by \code{\link{el_control}}.
 #' #' @param level level.
 #' #' @param B A list of control parameters set by \code{\link{el_control}}.
-#' #' @details \code{\link{lht}} performs the constrained minimization of
+#' #' @details \code{\link{elt}} performs the constrained minimization of
 #' #'   \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
 #' #'   cannot be both \code{NULL}. For non-\code{NULL} \code{lhs}, it is required
 #' #'   that \code{lhs} have full row rank \eqn{q \leq p} and \eqn{p} be equal to
@@ -53,7 +53,7 @@
 #' #' df <- data.frame(y, x1, x2)
 #' #' fit <- el_lm(y ~ x1 + x2, df)
 #' #' lhs <- matrix(c(0, 1, -1), nrow = 1L)
-#' #' lht(fit, lhs = lhs)
+#' #' elt(fit, lhs = lhs)
 #' #'
 #' #' # test of no treatment effect
 #' #' data("clothianidin")
@@ -63,7 +63,7 @@
 #' #'   0, 0, 1, -1
 #' #' ), byrow = TRUE, nrow = 3L)
 #' #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-#' #' lht(fit2, lhs = lhs2)
+#' #' elt(fit2, lhs = lhs2)
 #' #' @importFrom methods is
 #' #' @importFrom stats pchisq
 #' #' @export

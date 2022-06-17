@@ -62,7 +62,7 @@ confint(fit3)
 lhs <- matrix(c(1, -1, 0, 0,
                 0, 1, -1, 0,
                 0, 0, 1, -1), byrow = TRUE, nrow = 3)
-lht(fit3, lhs = lhs)
+elt(fit3, lhs = lhs)
 
 
 # logistic regression

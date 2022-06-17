@@ -48,8 +48,8 @@ library(melt)
 # one sample test for mean
 fit1 <- el_mean(par = 0, x = rnorm(n = 100))
 confint(fit1)
-#>        lower     upper
-#> 1 -0.1610344 0.2269519
+#>       lower     upper
+#> 1 -0.274624 0.1589018
 
 
 # linear regression
@@ -107,7 +107,7 @@ confint(fit3)
 lhs <- matrix(c(1, -1, 0, 0,
                 0, 1, -1, 0,
                 0, 0, 1, -1), byrow = TRUE, nrow = 3)
-lht(fit3, lhs = lhs)
+elt(fit3, lhs = lhs)
 #> 
 #> Empirical Likelihood: lm 
 #> 

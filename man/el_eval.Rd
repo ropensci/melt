@@ -15,7 +15,8 @@ function.}
 fitting process. Defaults to \code{NULL}, corresponding to identical
 weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
-\item{control}{A list of control parameters set by \code{\link{el_control}}.}
+\item{control}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link{el_control}}.}
 }
 \value{
 A list with the following components:
@@ -47,11 +48,10 @@ Computes empirical likelihood with general estimating functions.
 associated generics and methods are not applicable.
 }
 \examples{
-# test for variance with known mean
-x <- rnorm(100L)
-sigma <- 1
-g <- x^2 - sigma^2
-el_eval(g)
+x <- rnorm(50)
+par <- 0
+g <- x - par
+el_eval(g, weights = rep(c(1, 2), each = 25))
 }
 \references{
 Qin, Jin, and Jerry Lawless. 1994.

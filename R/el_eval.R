@@ -37,37 +37,29 @@
 #'   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 #' @seealso \link{el_control}
 #' @examples
-#' # test for variance with known mean
-#' x <- rnorm(100L)
-#' sigma <- 1
-#' g <- x^2 - sigma^2
-#' el_eval(g)
+#' x <- rnorm(50)
+#' par <- 0
+#' g <- x - par
+#' el_eval(g, weights = rep(c(1, 2), each = 25))
 #' @importFrom stats pchisq
 #' @export
 el_eval <- function(g, weights = NULL, control = el_control()) {
   mm <- as.matrix(g)
   n <- nrow(mm)
   p <- ncol(mm)
-  if (!is.numeric(mm) || !all(is.finite(mm))) {
-    stop("'g' must be a finite numeric matrix")
-  }
-  if (n < 2L) {
-    stop("not enough 'g' observations")
-  }
-  if (get_rank_(mm) != p || n <= p) {
-    stop("'g' must have full column rank")
-  }
-  if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
-  }
+  stopifnot(
+    "not enough observations in 'g' " = (n >= 2L),
+    "'g' must have full column rank" = (n > p),
+    "'g' must be a numeric matrix" = (is.numeric(mm)),
+    "'g' must be a finite numeric matrix" = (all(is.finite(mm))),
+    "'g' must have full column rank" = (get_rank_(mm) == p),
+    "invalid 'control' specified" = (is(control, "ControlEL"))
+  )
   w <- check_weights(weights, n)
   out <- eval_g_(mm, control@maxit_l, control@tol_l, control@th, w)
   out$df <- p
-  out$p.value <- pchisq(out$statistic, df = out$df, lower.tail = FALSE)
+  out$p.value <- pchisq(q = out$statistic, df = out$df, lower.tail = FALSE)
   out$npar <- p
-  # if (!is.null(weights)) {
-  #   out$weights <- w
-  # }
   out$weights <- w
   out
 }

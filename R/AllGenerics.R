@@ -62,9 +62,11 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
-#' @param level A confidence level required. Defaults to \code{0.95}.
-#' @param cv A critical value for calibration of empirical likelihood ratio
-#'   statistic. Defaults to \code{qchisq(level, 1L)}.
+#' @param level A single numeric for the confidence level required. Defaults to
+#'   \code{0.95}.
+#' @param cv A single numeric for the critical value for calibration of
+#'   empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
+#'   \code{qchisq(level, 1L)}.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
 #' @param ... Not used.
@@ -82,8 +84,8 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' @seealso \link{confreg}, \link{el_control}, \link{elt}
 #' @usage NULL
 #' @examples
-#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
-#' confint(fit)
+#' fit <- el_lm(formula = mpg ~ ., data = mtcars)
+#' confint(fit, parm = c(2, 3))
 #' @exportMethod confint
 setGeneric("confint", function(object, parm, level = 0.95, ...)
   standardGeneric("confint")
@@ -102,7 +104,8 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @param level A single numeric for the confidence level required. Defaults to
 #'   \code{0.95}.
 #' @param cv A single numeric for the critical value for calibration of
-#'   empirical likelihood ratio statistic. Defaults to \code{qchisq(level, 2L)}.
+#'   empirical likelihood ratio statistic. Defaults to NULL and set to
+#'   \code{qchisq(level, 2L)}.
 #' @param npoints A single integer for the number of boundary points to compute.
 #'   Defaults to \code{50}.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
@@ -114,14 +117,11 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @seealso \link{confint}, \link{el_control}, \link{elt}, \link{plot}
 #' @usage NULL
 #' @examples
-#' par <- c(0, 0, 0)
-#' x <- matrix(rnorm(90), ncol = 3)
-#' fit <- el_mean(par, x)
-#' confreg(fit, parm = c(1, 3))
+#' fit <- el_lm(formula = mpg ~ ., data = mtcars)
+#' confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2L))
 #' @exportMethod confreg
-setGeneric("confreg", function(object, parm, level = 0.95,
-                               cv = qchisq(level, 2L), npoints = 50L,
-                               control = el_control()) {
+setGeneric("confreg", function(object, parm, level = 0.95, cv = NULL,
+                               npoints = 50L, control = el_control()) {
   standardGeneric("confreg")
 })
 

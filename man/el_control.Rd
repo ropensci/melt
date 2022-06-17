@@ -47,5 +47,5 @@ Specifies details of computation of (constrained) empirical likelihood.
 optcfg <- el_control(maxit = 300L, th = 200, nthreads = 1L)
 }
 \seealso{
-\link{el_eval}, \link{lht}
+\link{el_eval}, \link{elt}
 }

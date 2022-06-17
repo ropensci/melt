@@ -106,7 +106,7 @@ elt <- function(object, rhs = NULL, lhs = NULL,
   if (calibrate == "boot") {
     stop("bootstrap calibration is applicable only when 'lhs' is NULL")
   }
-  el <- lht_(
+  el <- elt_(
     method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )

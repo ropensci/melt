@@ -1,8 +1,7 @@
 #' @rdname confint
 setMethod(
   "confint", "EL",
-  function(object, parm, level = 0.95, ..., cv = qchisq(level, 1L),
-           control = el_control()) {
+  function(object, parm, level = 0.95, ..., cv = NULL, control = el_control()) {
     est <- coef(object)
     # no confidence interval for empty model
     if (length(est) == 0L) {
@@ -33,11 +32,7 @@ setMethod(
     }
     # number of rows of the confidence interval matrix
     p <- length(idx)
-    # check level
-    if (!missing(level) &&
-      (length(level) != 1L || !is.finite(level) || level < 0 || level > 1)) {
-      stop("'level' must be a number between 0 and 1")
-    }
+    level <- check_level_(level)
     if (isTRUE(all.equal(level, 0))) {
       ci <- matrix(rep(est[idx], 2L), ncol = 2L)
       colnames(ci) <- c("lower", "upper")
@@ -61,7 +56,7 @@ setMethod(
     th <- control@th
     nthreads <- control@nthreads
     w <- if (is.null(object@weights)) numeric(length = 0L) else object@weights
-    cv <- check_cv(cv, th)
+    cv <- if (is.null(cv)) qchisq(level, 1L) else check_cv_(cv, th)
     # compute the confidence interval matrix
     if (isTRUE(all.equal(level, 0))) {
       ci <- matrix(rep(est[idx], 2L), ncol = 2L)

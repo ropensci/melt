@@ -1,7 +1,7 @@
 #' @rdname confreg
 setMethod(
   "confreg", "EL",
-  function(object, parm, level = 0.95, cv = qchisq(level, 2L), npoints = 50L,
+  function(object, parm, level = 0.95, cv = NULL, npoints = 50L,
            control = el_control()) {
     est <- coef(object)
     if (length(est) == 0L) {
@@ -41,10 +41,7 @@ setMethod(
       est <- est[idx]
       pnames <- pnames[idx]
     }
-    if (!missing(level) &&
-        (length(level) != 1L || !is.finite(level) || level < 0 || level > 1)) {
-      stop("'level' must be a number between 0 and 1")
-    }
+    level <- check_level_(level)
     if (isTRUE(all.equal(level, 0))) {
       return(new("ConfregEL",
                  points = est, estimates = est, level = level, cv = cv,
@@ -53,10 +50,7 @@ setMethod(
     } else if (isTRUE(all.equal(level, 1))) {
       stop("'level' must be a number between 0 and 1")
     }
-    if (missing(level) && !missing(cv)) {
-      level <- NA_real_
-    }
-    cv <- check_cv(cv, control@th)
+    cv <- if (is.null(cv)) qchisq(level, 2L) else check_cv_(cv, control@th)
     npoints <- as.integer(npoints)
     if (npoints <= 0) {
       stop("'npoints' must be a positive integer")

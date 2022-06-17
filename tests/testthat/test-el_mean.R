@@ -110,11 +110,11 @@ test_that("identical results for repeated executions", {
   expect_equal(wfit1, wfit2)
 
   lhs <- c(1, 0)
-  lht1 <- lht(fit1, lhs = lhs)
-  lht2 <- lht(fit2, lhs = lhs)
-  expect_equal(lht1, lht2)
+  elt1 <- elt(fit1, lhs = lhs)
+  elt2 <- elt(fit2, lhs = lhs)
+  expect_equal(elt1, elt2)
 
-  lht3 <- lht(wfit1, lhs = lhs)
-  lht4 <- lht(wfit2, lhs = lhs)
-  expect_equal(lht3, lht4)
+  elt3 <- elt(wfit1, lhs = lhs)
+  elt4 <- elt(wfit2, lhs = lhs)
+  expect_equal(elt3, elt4)
 })

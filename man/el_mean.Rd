@@ -19,8 +19,8 @@ weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}
 
-\item{model}{A logical. If \code{TRUE} the data matrix used for model fitting
-is returned.}
+\item{model}{A signle logical. If \code{TRUE} the data matrix used for model
+fitting is returned.}
 }
 \value{
 An object of class \linkS4class{EL}.
@@ -50,5 +50,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{el_control}, \link{el_eval}, \link{lht}
+\link{el_control}, \link{el_eval}, \link{elt}
 }

@@ -9,7 +9,7 @@ setMethod(
       stop("method is not applicable to an empty model")
     }
     p <- object@npar
-    out <- lht(object, rhs = coef(object))
+    out <- elt(object, rhs = coef(object))
     val <- out@logl
     new("logLikEL", logLik = val, df = p)
   }

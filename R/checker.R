@@ -100,20 +100,18 @@ check_hypothesis <- function(lhs, rhs, p) {
   list(l = lhs, r = rhs)
 }
 
-check_cv <- function(cv, th) {
-  # cv <- tryCatch(as.numeric(cv),
-  #   warning = function(w) NA,
-  #   error = function(e) NA
-  # )
-  # if (any(length(cv) != 1L, is.na(cv), is.infinite(cv))) {
-  #   stop("'cv' is not a number")
-  # }
-  # if (cv < .Machine$double.eps) {
-  #   stop("'cv' is too small")
-  # }
-  # if (!is.null(th) && cv > 2 * th) {
-  #   stop("'cv' is too large")
-  # }
+check_level_ <- function(level) {
+  stopifnot(
+    "'level' is not a single numeric" = (is.numeric(level)),
+    "'level' is not a single numeric" = (length(level) == 1L),
+    "'level' is not a finite single numeric" = (is.finite(level)),
+    "'level' must be a single numeric between 0 and 1" =
+      (isTRUE(level >= 0 && level <= 1))
+  )
+  level
+}
+
+check_cv_ <- function(cv, th) {
   stopifnot(
     "'cv' is not a single numeric2" = (is.numeric(cv)),
     "'cv' is not a single numeric" = (length(cv) == 1L),

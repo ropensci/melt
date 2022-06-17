@@ -21,6 +21,10 @@ eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
     .Call(`_melt_eld_`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
 }
 
+elt_ <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w) {
+    .Call(`_melt_elt_`, method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w)
+}
+
 eval_ <- function(method, par0, x, maxit_l, tol_l, th, wt) {
     .Call(`_melt_eval_`, method, par0, x, maxit_l, tol_l, th, wt)
 }
@@ -31,10 +35,6 @@ eval_g_ <- function(g, maxit_l, tol_l, th, wt) {
 
 glm_ <- function(method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_glm_`, method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
-}
-
-lht_ <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w) {
-    .Call(`_melt_lht_`, method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w)
 }
 
 lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {

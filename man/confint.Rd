@@ -5,14 +5,7 @@
 \alias{confint,EL-method}
 \title{Confidence intervals for model parameters}
 \usage{
-\S4method{confint}{EL}(
-  object,
-  parm,
-  level = 0.95,
-  ...,
-  cv = qchisq(level, 1L),
-  control = el_control()
-)
+\S4method{confint}{EL}(object, parm, level = 0.95, ..., cv = NULL, control = el_control())
 }
 \arguments{
 \item{object}{A fitted \linkS4class{EL} object.}
@@ -21,12 +14,14 @@
 intervals, either a vector of numbers or a vector of names. If missing, all
 parameters are considered.}
 
-\item{level}{A confidence level required. Defaults to \code{0.95}.}
+\item{level}{A single numeric for the confidence level required. Defaults to
+\code{0.95}.}
 
 \item{...}{Not used.}
 
-\item{cv}{A critical value for calibration of empirical likelihood ratio
-statistic. Defaults to \code{qchisq(level, 1L)}.}
+\item{cv}{A single numeric for the critical value for calibration of
+empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
+\code{qchisq(level, 1L)}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}
@@ -44,8 +39,8 @@ Package \strong{melt} adds a method for objects inheriting from class
 \linkS4class{EL}.
 }
 \examples{
-fit <- el_lm(formula = mpg ~ wt, data = mtcars)
-confint(fit)
+fit <- el_lm(formula = mpg ~ ., data = mtcars)
+confint(fit, parm = c(2, 3))
 }
 \references{
 Kim, E., MacEachern, S., and Peruggia, M., (2021),
@@ -56,5 +51,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{confreg}, \link{el_control}, \link{lht}
+\link{confreg}, \link{el_control}, \link{elt}
 }

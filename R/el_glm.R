@@ -46,7 +46,7 @@
 #' @references Chen, Song Xi, and Hengjian Cui. 2003.
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
 #'   Statistica Sinica 13: 69–81.
-#' @seealso \link{el_control}, \link{el_lm}, \link{lht}
+#' @seealso \link{el_control}, \link{el_lm}, \link{elt}
 #' @examples
 #' n <- 50
 #' x <- rnorm(n)
@@ -222,7 +222,7 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
 #' #' @references Chen, Song Xi, and Hengjian Cui. 2003.
 #' #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
 #' #'   Statistica Sinica 13: 69–81.
-#' #' @seealso \link{el_control}, \link{el_lm}, \link{lht}
+#' #' @seealso \link{el_control}, \link{el_lm}, \link{elt}
 #' #' @examples
 #' #' n <- 50
 #' #' x <- rnorm(n)

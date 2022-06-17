@@ -40,7 +40,8 @@ weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
 
-\item{control}{A list of control parameters set by \code{\link{el_control}}.}
+\item{control}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link{el_control}}.}
 
 \item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
 returned.}
@@ -94,5 +95,5 @@ Chen, Song Xi, and Hengjian Cui. 2003.
 Statistica Sinica 13: 69–81.
 }
 \seealso{
-\link{el_control}, \link{el_lm}, \link{lht}
+\link{el_control}, \link{el_lm}, \link{elt}
 }

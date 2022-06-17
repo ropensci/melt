@@ -9,7 +9,7 @@
   object,
   parm,
   level = 0.95,
-  cv = qchisq(level, 2L),
+  cv = NULL,
   npoints = 50L,
   control = el_control()
 )
@@ -26,7 +26,8 @@ parameter in \code{object} are considered.}
 \code{0.95}.}
 
 \item{cv}{A single numeric for the critical value for calibration of
-empirical likelihood ratio statistic. Defaults to \code{qchisq(level, 2L)}.}
+empirical likelihood ratio statistic. Defaults to NULL and set to
+\code{qchisq(level, 2L)}.}
 
 \item{npoints}{A single integer for the number of boundary points to compute.
 Defaults to \code{50}.}
@@ -42,15 +43,13 @@ Computes boundary points of a two-dimensional confidence region for model
 parameters.
 }
 \examples{
-par <- c(0, 0, 0)
-x <- matrix(rnorm(90), ncol = 3)
-fit <- el_mean(par, x)
-confreg(fit, parm = c(1, 3))
+fit <- el_lm(formula = mpg ~ ., data = mtcars)
+confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2L))
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{confint}, \link{el_control}, \link{lht}, \link{plot}
+\link{confint}, \link{el_control}, \link{elt}, \link{plot}
 }

@@ -48,7 +48,7 @@
 #' @return An object of class of \linkS4class{LM}.
 #' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 #'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
-#' @seealso \link{el_control}, \link{el_glm}, \link{lht}
+#' @seealso \link{el_control}, \link{el_glm}, \link{elt}
 #' @examples
 #' df <- data.frame(y = rnorm(50), x = rnorm(50))
 #' fit <- el_lm(y ~ x, df)

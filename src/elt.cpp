@@ -2,7 +2,7 @@
 #include "utils.h"
 
 // [[Rcpp::export]]
-Rcpp::List lht_(const std::string method,
+Rcpp::List elt_(const std::string method,
                 const Eigen::Map<Eigen::VectorXd>& par0,
                 const Eigen::Map<Eigen::MatrixXd>& x,
                 const Eigen::Map<Eigen::MatrixXd>& lhs,
@@ -22,7 +22,6 @@ Rcpp::List lht_(const std::string method,
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(
-      Rcpp::Named("method") = method,
       Rcpp::Named("par") = el.par,
       Rcpp::Named("lambda") = el.l,
       Rcpp::Named("iterations") = el.iter,
