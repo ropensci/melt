@@ -10,10 +10,10 @@ S4 class for empirical log-likelihood.
 \section{Slots}{
 
 \describe{
-\item{\code{logLik}}{Empirical log-likelihood.}
+\item{\code{logLik}}{A single numeric for the empirical log-likelihood.}
 
-\item{\code{df}}{Degrees of freedom or the number of (estimated) parameters in the
-model.}
+\item{\code{df}}{A single integer for the degrees of freedom or the number of
+(estimated) parameters in the model.}
 }}
 
 \examples{

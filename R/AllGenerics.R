@@ -37,19 +37,20 @@ setGeneric("eld", function(object, control = el_control()) {
   standardGeneric("eld")
 })
 
+
 #' Model coefficients
 #'
 #' Extracts maximum empirical likelihood estimates from a model.
 #'
 #' @param object A fitted \linkS4class{EL} object.
 #' @param ... Not used.
+#' @return A numeric vector of the maximum empirical likelihood estimates.
 #' @examples
 #' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
 #' coef(fit)
 #' @usage NULL
 #' @exportMethod coef
 setGeneric("coef", function(object, ...) standardGeneric("coef"))
-
 
 
 #' Confidence intervals for model parameters
@@ -91,6 +92,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
   standardGeneric("confint")
 )
 
+
 #' Confidence region for model parameters
 #'
 #' Computes boundary points of a two-dimensional confidence region for model
@@ -125,6 +127,7 @@ setGeneric("confreg", function(object, parm, level = 0.95, cv = NULL,
   standardGeneric("confreg")
 })
 
+
 #' Empirical log-likelihood
 #'
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
@@ -152,6 +155,7 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #' @exportMethod plot
 setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
+
 #' Print methods
 #'
 #' Provides print methods for objects that inherit from class \linkS4class{EL}.
@@ -160,11 +164,12 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #' @param ... Further arguments passed to other methods.
 #' @param digits The number of significant digits to be passed to
 #'   \code{\link[base]{format}}.
-#' @param signif.stars Logical. If \code{TRUE}, ‘significance stars’ are printed
-#'   for each coefficient.
+#' @param signif.stars A single logical. If \code{TRUE}, ‘significance stars’
+#'   are printed for each coefficient.
 #' @usage NULL
 #' @exportMethod print
 setGeneric("print", function(x, ...) standardGeneric("print"))
+
 
 #' Summary methods
 #'
@@ -182,3 +187,6 @@ setMethod("getMethodEL", "EL", function(x) {x@method})
 
 setGeneric("getDataMatrix", function(x) standardGeneric("getDataMatrix"))
 setMethod("getDataMatrix", "EL", function(x) {x@data})
+
+setGeneric("getWeights", function(x) standardGeneric("getWeights"))
+setMethod("getWeights", "EL", function(x) {x@weights})

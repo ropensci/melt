@@ -20,8 +20,8 @@
 #'   \code{\link[base]{options}}, and is \code{na.fail} if that is unset.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
-#' @param model A logical. If \code{TRUE} the data matrix used for fitting is
-#'   returned.
+#' @param model A single logical. If \code{TRUE} the data matrix used for
+#'   fitting is returned.
 #' @param start Starting values for the parameters in the linear predictor.
 #'   Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.
 #' @param etastart Starting values for the linear predictor. Defaults to
@@ -133,7 +133,7 @@ el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
     control = glm_control, intercept = intercept,
     singular.ok = FALSE
   )
-  method <- check_family(fit$family)
+  method <- check_family_(fit$family)
   mm <- cbind(fit$y, X)
   p <- ncol(X)
   w <- check_weights(w, nrow(mm))

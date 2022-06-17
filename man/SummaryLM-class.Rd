@@ -10,16 +10,18 @@ S4 class for a summary of \linkS4class{LM} objects.
 \section{Slots}{
 
 \describe{
-\item{\code{statistic}}{Minus twice the constrained empirical log-likelihood ratio
-for the overall test of the model.}
+\item{\code{statistic}}{A single numeric for the minus twice the empirical
+log-likelihood ratio for the overall test of the model.}
 
-\item{\code{df}}{Degrees of freedom of the statistic.}
+\item{\code{df}}{A single integer for the degrees of freedom of the statistic.}
 
-\item{\code{convergence}}{Convergence status of the minimization.}
+\item{\code{convergence}}{A single logical for the convergence status of the
+constrained minimization.}
 
 \item{\code{parMatrix}}{A numeric matrix of the test results of the parameters.}
 
-\item{\code{weighted}}{A logical for whether the given model is weighted or not.}
+\item{\code{weighted}}{A single logical for whether the given model is weighted or
+not.}
 
 \item{\code{na.action}}{Information returned by \code{\link[stats]{model.frame}} on
 the special handling of NAs.}
@@ -28,7 +30,7 @@ the special handling of NAs.}
 
 \item{\code{terms}}{\code{\link[stats]{terms}} object used.}
 
-\item{\code{aliased}}{Named logical vector showing if the original coefficients are
+\item{\code{aliased}}{A named logical vector showing if the original coefficients are
 aliased.}
 }}
 

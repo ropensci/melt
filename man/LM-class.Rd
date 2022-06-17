@@ -18,9 +18,10 @@ constrained optimization is not involved in the overall test.
 \describe{
 \item{\code{parTests}}{A list with the test results for each parameter:
 \itemize{
-\item{\code{statistic } }{A numeric vector of chi-squared statistics.}
-\item{\code{convergence } }{Convergence status of tests for each parameter.
-}
+\item{\code{statistic } }{A numeric vector of the empirical likelihood
+ratio statistics.}
+\item{\code{convergence } }{A logical vector of the convergence status of
+tests for each parameter.}
 }}
 
 \item{\code{misc}}{A list with miscellaneous outputs from a model fitting function.

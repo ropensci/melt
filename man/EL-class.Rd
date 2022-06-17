@@ -44,36 +44,39 @@ Under some regularity conditions, it is known that
 \describe{
 \item{\code{optim}}{A list with the following optimization results:
 \itemize{
-\item{\code{method } }{Character for method dispatch in internal
-functions.}
-\item{\code{par } }{Parameter value specified.}
-\item{\code{lambda } }{Lagrange multiplier of the dual problem.}
-\item{\code{iterations } }{Number of iterations performed.}
-\item{\code{convergence } }{Convergence status.}
+\item{\code{par } }{A numeric vector of the specified parameters.}
+\item{\code{lambda } }{A numeric vector of the Lagrange multipliers.}
+\item{\code{iterations } }{A single integer for the number of iterations
+performed.}
+\item{\code{convergence } }{A single logical for the convergence status.}
 }}
 
-\item{\code{logp}}{Log probabilities obtained from empirical likelihood.}
+\item{\code{logp}}{A numeric vector of  the log probabilities obtained from
+empirical likelihood.}
 
-\item{\code{logl}}{Empirical log-likelihood.}
+\item{\code{logl}}{A single numeric for the empirical log-likelihood.}
 
-\item{\code{loglr}}{Empirical log-likelihood ratio.}
+\item{\code{loglr}}{A single numeric for the empirical log-likelihood ratio.}
 
-\item{\code{statistic}}{Minus twice the empirical log-likelihood ratio statistic that
-has an asymptotic chi-square distribution.}
+\item{\code{statistic}}{A single numeric for the minus twice the empirical
+log-likelihood ratio statistic that has an asymptotic chi-square
+distribution.}
 
-\item{\code{df}}{Degrees of freedom of the statistic.}
+\item{\code{df}}{A single integer for the degrees of freedom of the statistic.}
 
-\item{\code{pval}}{\eqn{p}-value of the statistic.}
+\item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
 
-\item{\code{npar}}{Number of parameters.}
+\item{\code{npar}}{A single integer for the number of parameters.}
 
-\item{\code{weights}}{Rescaled weights used for model fitting.}
+\item{\code{weights}}{A numeric vector of rescaled weights used for model fitting.}
 
-\item{\code{data}}{Data matrix used for model fitting.}
+\item{\code{data}}{A numeric matrix for the data used for model fitting.}
 
-\item{\code{coefficients}}{Maximum empirical likelihood estimates of the parameters.}
+\item{\code{coefficients}}{A numeric vector of the maximum empirical likelihood
+estimates of the parameters.}
 
-\item{\code{method}}{Character for method dispatch in internal functions.}
+\item{\code{method}}{A single character for the method dispatch in internal
+functions.}
 }}
 
 \examples{

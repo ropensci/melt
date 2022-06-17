@@ -55,7 +55,7 @@ setMethod(
     if (npoints <= 0) {
       stop("'npoints' must be a positive integer")
     }
-    w <- if (is.null(object@weights)) numeric(length = 0L) else object@weights
+    w <- getWeights(object)
     ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]
     circ <- rbind(cos(ang), sin(ang))
     if (!is(control, "ControlEL")) {

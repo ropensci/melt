@@ -24,7 +24,8 @@ left-hand-side of hypothesis. Each row gives a linear combination of the
 parameters in \code{object}. The number of columns should be equal to the
 number of parameters. Defaults to \code{NULL}. See ‘Details’.}
 
-\item{calibrate}{sefgrdgdr}
+\item{calibrate}{A single character for the calibration method. Defaults to
+\code{chisq}. See ‘Details’.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}
@@ -65,18 +66,18 @@ x2 <- rnorm(n)
 y <- 1 + x1 + x2 + rnorm(n)
 df <- data.frame(y, x1, x2)
 fit <- el_lm(y ~ x1 + x2, df)
-lhs <- c(0, 1, -1)
-elt(fit, lhs = lhs)
+elt(fit, lhs = c(0, 1, -1))
+elt(fit, lhs = c(0, 1, 1), rhs = 2)
 
 # test of no treatment effect
 data("clothianidin")
-lhs2 <- matrix(c(
+lhs <- matrix(c(
   1, -1, 0, 0,
   0, 1, -1, 0,
   0, 0, 1, -1
-), byrow = TRUE, nrow = 3L)
+), byrow = TRUE, nrow = 3)
 fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-elt(fit2, lhs = lhs2)
+elt(fit2, lhs = lhs)
 }
 \references{
 Adimari, Gianfranco, and Annamaria Guolo. 2010.

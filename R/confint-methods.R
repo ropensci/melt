@@ -55,7 +55,7 @@ setMethod(
     step <- control@step
     th <- control@th
     nthreads <- control@nthreads
-    w <- if (is.null(object@weights)) numeric(length = 0L) else object@weights
+    w <- getWeights(object)
     cv <- if (is.null(cv)) qchisq(level, 1L) else check_cv_(cv, th)
     # compute the confidence interval matrix
     if (isTRUE(all.equal(level, 0))) {
@@ -69,9 +69,8 @@ setMethod(
       idx_na <- which(is.na(idx))
       ci <- matrix(NA, nrow = p, ncol = 2L)
       ci[-idx_na, ] <- confint_(
-        method, est, getDataMatrix(object), cv,
-        idx[-idx_na], maxit, maxit_l, tol, tol_l, step,
-        th, nthreads, w
+        method, est, getDataMatrix(object), cv, idx[-idx_na], maxit, maxit_l,
+        tol, tol_l, step, th, nthreads, w
       )
     } else {
       ci <- confint_(

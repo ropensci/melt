@@ -12,6 +12,9 @@
 
 \item{...}{Not used.}
 }
+\value{
+A numeric vector of the maximum empirical likelihood estimates.
+}
 \description{
 Extracts maximum empirical likelihood estimates from a model.
 }

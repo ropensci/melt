@@ -35,8 +35,8 @@ contain \code{NA}s. The default is set by the \code{na.action} setting of
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}
 
-\item{model}{A logical. If \code{TRUE} the data matrix used for fitting is
-returned.}
+\item{model}{A single logical. If \code{TRUE} the data matrix used for
+fitting is returned.}
 
 \item{...}{Additional arguments to be passed to the low level regression
 fitting functions. See ‘Details’.}
@@ -58,8 +58,8 @@ where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
 \eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
 independent random variables that satisfy
 \eqn{\textnormal{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
-finite conditional variance. Then the least square estimator of \eqn{\theta}
-solves the following estimating equation:
+finite conditional variance. Then the least square estimator of
+\eqn{\theta} solves the following estimating equation:
 \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
 \code{\link{el_lm}} first computes the parameter estimates by calling
 \code{\link[stats]{lm.fit}} (with \code{...} if any) since the maximum

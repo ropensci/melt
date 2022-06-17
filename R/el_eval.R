@@ -3,8 +3,7 @@
 #' Computes empirical likelihood with general estimating functions.
 #'
 #' @param g A numeric matrix, or an object that can be coerced to a numeric
-#'   matrix. Each row corresponds to an observation of an estimating
-#'   function.
+#'   matrix. Each row corresponds to an observation of an estimating function.
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
@@ -26,8 +25,8 @@
 #'   \item{logp}{Log probabilities obtained from empirical likelihood.}
 #'   \item{logl}{Empirical log-likelihood.}
 #'   \item{loglr}{Empirical log-likelihood ratio.}
-#'   \item{statistic}{Minus twice the empirical log-likelihood ratio statistic that
-#'   has an asymptotic chi-square distribution.}
+#'   \item{statistic}{Minus twice the empirical log-likelihood ratio statistic
+#'   that has an asymptotic chi-square distribution.}
 #'   \item{df}{Degrees of freedom of the statistic.}
 #'   \item{pval}{\eqn{p}-value of the statistic.}
 #'   \item{npar}{Number of parameters.}

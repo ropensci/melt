@@ -15,27 +15,27 @@ el_control(
 )
 }
 \arguments{
-\item{maxit}{Maximum number of iterations for constrained minimization of
-empirical likelihood. Defaults to \code{200}.}
+\item{maxit}{A single integer for the maximum number of iterations for
+constrained minimization of empirical likelihood. Defaults to \code{200}.}
 
-\item{maxit_l}{Maximum number of iterations of evaluation of empirical
-likelihood. Defaults to \code{25}.}
+\item{maxit_l}{A single integer for the maximum number of iterations for
+evaluation of empirical likelihood. Defaults to \code{25}.}
 
-\item{tol}{Convergence tolerance for the constrained minimization.
-Defaults to \code{1e-06}.}
+\item{tol}{A single numeric for the convergence tolerance for the constrained
+minimization. Defaults to \code{1e-06}.}
 
-\item{tol_l}{Relative convergence tolerance for the evaluation. Defaults
-to \code{1e-06}.}
+\item{tol_l}{A single numeric for the relative convergence tolerance for the
+evaluation. Defaults to \code{1e-06}.}
 
-\item{step}{Step size for projected gradient method. Defaults to \code{NULL}
-and set to the reciprocal of sample size.}
+\item{step}{A single numeric for the step size for projected gradient descent
+method. Defaults to \code{NULL} and set to the reciprocal of sample size.}
 
-\item{th}{Threshold for negative empirical log-likelihood ratio value.
-The iteration stops if the value exceeds the threshold. Defaults to
-\code{NULL}.}
+\item{th}{A single numeric for the threshold for negative empirical
+log-likelihood ratio value. The iteration stops if the value exceeds the
+threshold. Defaults to \code{NULL}.}
 
-\item{nthreads}{Number of threads for parallel computation via OpenMP (if
-available).}
+\item{nthreads}{A single integer for the number of threads for parallel
+computation via OpenMP (if available).}
 }
 \value{
 An object of class of \linkS4class{ControlEL}.

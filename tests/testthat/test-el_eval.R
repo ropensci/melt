@@ -30,7 +30,7 @@ test_that("probabilities add up to 1 (weighted)", {
   w <- 1 + runif(10, min = -0.5, max = 0.5)
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_eval(x - par, w, optcfg)
-  expect_equal(sum(exp(fit$logp)), 1)
+  expect_equal(sum(exp(fit$logp)), 1, tolerance = 1e-07)
 })
 
 test_that("loglik to loglr", {

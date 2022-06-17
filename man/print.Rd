@@ -26,8 +26,8 @@
 \item{digits}{The number of significant digits to be passed to
 \code{\link[base]{format}}.}
 
-\item{signif.stars}{Logical. If \code{TRUE}, ‘significance stars’ are printed
-for each coefficient.}
+\item{signif.stars}{A single logical. If \code{TRUE}, ‘significance stars’
+are printed for each coefficient.}
 }
 \description{
 Provides print methods for objects that inherit from class \linkS4class{EL}.

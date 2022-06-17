@@ -11,7 +11,8 @@
 #'   left-hand-side of hypothesis. Each row gives a linear combination of the
 #'   parameters in \code{object}. The number of columns should be equal to the
 #'   number of parameters. Defaults to \code{NULL}. See ‘Details’.
-#' @param calibrate sefgrdgdr
+#' @param calibrate A single character for the calibration method. Defaults to
+#' \code{chisq}. See ‘Details’.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
 #' @details \code{\link{elt}} performs the constrained minimization of
@@ -50,33 +51,30 @@
 #' y <- 1 + x1 + x2 + rnorm(n)
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
-#' lhs <- c(0, 1, -1)
-#' elt(fit, lhs = lhs)
+#' elt(fit, lhs = c(0, 1, -1))
+#' elt(fit, lhs = c(0, 1, 1), rhs = 2)
 #'
 #' # test of no treatment effect
 #' data("clothianidin")
-#' lhs2 <- matrix(c(
+#' lhs <- matrix(c(
 #'   1, -1, 0, 0,
 #'   0, 1, -1, 0,
 #'   0, 0, 1, -1
-#' ), byrow = TRUE, nrow = 3L)
+#' ), byrow = TRUE, nrow = 3)
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-#' elt(fit2, lhs = lhs2)
+#' elt(fit2, lhs = lhs)
 #' @importFrom methods is
 #' @importFrom stats pchisq
 #' @export
 elt <- function(object, rhs = NULL, lhs = NULL,
                 calibrate = c("chisq", "boot", "f"), control = el_control()) {
-  if (all(!is(object, c("EL")), !is(object, c("CEL")))) {
-    stop("invalid 'object' supplied")
-  }
-  if (length(getDataMatrix(object)) == 0L) {
-    stop("'object' has no 'data'; fit the model with 'model' = TRUE")
-  }
-  h <- check_hypothesis(lhs, rhs, object@npar)
-  if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
-  }
+  stopifnot(
+    "invalid 'object' supplied" = (is(object, "EL")),
+    "'object' has no 'data'; fit the model with 'model' = TRUE" =
+      (length(getDataMatrix(object)) > 1L),
+    "invalid 'control' specified" = (is(control, "ControlEL"))
+  )
+  h <- check_hypothesis_(lhs, rhs, object@npar)
   calibrate <- match.arg(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -85,7 +83,7 @@ elt <- function(object, rhs = NULL, lhs = NULL,
   tol_l <- control@tol_l
   step <- control@step
   th <- control@th
-  w <- object@weights
+  w <- getWeights(object)
   if (is.null(lhs)) {
     if (calibrate == "f" && method != "mean") {
       stop("F calibration is applicable only to the mean")
@@ -100,12 +98,11 @@ elt <- function(object, rhs = NULL, lhs = NULL,
     ))
   }
   # proceed with chi-square calibration for non-NULL 'lhs'
-  if (calibrate == "f") {
-    stop("F calibration is applicable only when 'lhs' is NULL")
-  }
-  if (calibrate == "boot") {
-    stop("bootstrap calibration is applicable only when 'lhs' is NULL")
-  }
+  stopifnot(
+    "bootstrap calibration is applicable only when 'lhs' is NULL" =
+      (calibrate != "boot"),
+    "F calibration is applicable only when 'lhs' is NULL" = (calibrate != "f")
+  )
   el <- elt_(
     method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w

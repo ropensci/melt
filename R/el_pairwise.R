@@ -1,10 +1,14 @@
 #' Empirical likelihood pairwise comparisons
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
 #' Tests all pairwise comparisons or comparisons with control for general block
 #'   designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise
 #'   error rate) controlling procedures are available: asymptotic Monte Carlo
 #'   (AMC) and nonparametric bootstrap (NB).
-#' \emph{This function is deprecated and will be removed in a future release.}
+#'
+#' @description \emph{This function is deprecated and will be removed in a
+#'   future release.}
 #'
 #' @param formula A formula object. It must specify variables for response,
 #'   treatment, and block as 'response ~ treatment | block'. Note that the use

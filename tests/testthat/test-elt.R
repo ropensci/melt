@@ -3,9 +3,8 @@ test_that("invalid 'object", {
   n <- 10
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
-  w <- 1 + runif(n, min = -0.5, max = 0.5)
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- el_eval(x - par, w, control = optcfg)
+  fit <- el_eval(x - par, control = optcfg)
   expect_error(elt(fit, lhs = 1, control = optcfg))
   x <- rnorm(10)
   y <- 1 + x + rnorm(10)

@@ -3,15 +3,13 @@
 setMethod(
   "eld", "EL",
   function(object, control = el_control()) {
-    if (is(object, "GLM")) {
-      stop("'eld' method is not applicable to a 'GLM' object")
-    }
-    if (length(getDataMatrix(object)) == 0L) {
-      stop("'object' has no 'data'; fit the model with 'model' = TRUE")
-    }
-    if (!is(control, "ControlEL")) {
-      stop("invalid 'control' specified")
-    }
+    stopifnot(
+      "'eld' method is not applicable to a 'GLM' object" =
+        (!is(object, "GLM")),
+      "'object' has no 'data'; fit the model with 'model' = TRUE" =
+        (length(getDataMatrix(object)) > 1L),
+      "invalid 'control' specified" = (is(control, "ControlEL"))
+    )
     new("ELD", eld = eld_(
       getMethodEL(object), coef(object), getDataMatrix(object), control@maxit_l,
       control@tol_l, control@th, control@nthreads, object@weights

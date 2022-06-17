@@ -8,8 +8,7 @@ el_eval(g, weights = NULL, control = el_control())
 }
 \arguments{
 \item{g}{A numeric matrix, or an object that can be coerced to a numeric
-matrix. Each row corresponds to an observation of an estimating
-function.}
+matrix. Each row corresponds to an observation of an estimating function.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
 fitting process. Defaults to \code{NULL}, corresponding to identical
@@ -30,8 +29,8 @@ A list with the following components:
 \item{logp}{Log probabilities obtained from empirical likelihood.}
 \item{logl}{Empirical log-likelihood.}
 \item{loglr}{Empirical log-likelihood ratio.}
-\item{statistic}{Minus twice the empirical log-likelihood ratio statistic that
-has an asymptotic chi-square distribution.}
+\item{statistic}{Minus twice the empirical log-likelihood ratio statistic
+that has an asymptotic chi-square distribution.}
 \item{df}{Degrees of freedom of the statistic.}
 \item{pval}{\eqn{p}-value of the statistic.}
 \item{npar}{Number of parameters.}

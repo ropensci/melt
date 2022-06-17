@@ -15,10 +15,10 @@ confidence region.}
 
 \item{\code{estimates}}{A numeric vector of length two for parameter estimates.}
 
-\item{\code{level}}{A confidence level required.}
+\item{\code{level}}{A single numeric for the confidence level required.}
 
-\item{\code{cv}}{A critical value for calibration of empirical likelihood ratio
-statistic.}
+\item{\code{cv}}{A single numeric for the critical value for calibration of empirical
+likelihood ratio statistic.}
 
 \item{\code{pnames}}{A character vector of length two for the name of parameters.}
 }}

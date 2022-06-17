@@ -85,7 +85,7 @@ check_lhs_.matrix <- function(lhs, p) {
   lhs
 }
 
-check_hypothesis <- function(lhs, rhs, p) {
+check_hypothesis_ <- function(lhs, rhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either 'rhs' or 'lhs' must be provided")
   } else if (is.null(lhs)) {
@@ -122,7 +122,7 @@ check_cv_ <- function(cv, th) {
   cv
 }
 
-check_family <- function(family) {
+check_family_ <- function(family) {
   f <- family$family
   l <- family$link
   switch(f,

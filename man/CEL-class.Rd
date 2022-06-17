@@ -38,37 +38,13 @@ where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
 \describe{
 \item{\code{optim}}{A list with the following optimization results:
 \itemize{
-\item{\code{method } }{Character for method dispatch in internal
-functions.}
-\item{\code{par } }{Parameter value that minimizes the constrained
-empirical likelihood.}
-\item{\code{lambda } }{Lagrange multiplier of the dual problem.}
-\item{\code{iterations } }{Number of iterations performed.}
-\item{\code{convergence } }{Convergence status.}
+\item{\code{par } }{A numeric vector of the parameter value that minimizes
+the empirical likelihood subject to the constraints.}
+\item{\code{lambda } }{A numeric vector of the Lagrange multipliers.}
+\item{\code{iterations } }{A single integer for the number of iterations
+performed.}
+\item{\code{convergence } }{A single logical for the convergence status.}
 }}
-
-\item{\code{logp}}{Log probabilities obtained from constrained empirical likelihood.}
-
-\item{\code{logl}}{Constrained empirical log-likelihood.}
-
-\item{\code{loglr}}{Constrained empirical log-likelihood ratio.}
-
-\item{\code{statistic}}{Minus twice the constrained empirical log-likelihood ratio
-statistic that has an asymptotic chi-square distribution.}
-
-\item{\code{df}}{Degrees of freedom of the statistic.}
-
-\item{\code{pval}}{\eqn{p}-value of the statistic.}
-
-\item{\code{npar}}{Number of parameters.}
-
-\item{\code{weights}}{Rescaled weights used for model fitting.}
-
-\item{\code{data}}{Data matrix used for model fitting.}
-
-\item{\code{coefficients}}{Maximum empirical likelihood estimates of the parameters.}
-
-\item{\code{method}}{Character for method dispatch in internal functions.}
 }}
 
 \examples{

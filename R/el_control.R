@@ -2,21 +2,21 @@
 #'
 #' Specifies details of computation of (constrained) empirical likelihood.
 #'
-#' @param maxit Maximum number of iterations for constrained minimization of
-#'   empirical likelihood. Defaults to \code{200}.
-#' @param maxit_l Maximum number of iterations of evaluation of empirical
-#'   likelihood. Defaults to \code{25}.
-#' @param tol Convergence tolerance for the constrained minimization.
-#'   Defaults to \code{1e-06}.
-#' @param tol_l Relative convergence tolerance for the evaluation. Defaults
-#'   to \code{1e-06}.
-#' @param step Step size for projected gradient method. Defaults to \code{NULL}
-#'   and set to the reciprocal of sample size.
-#' @param th Threshold for negative empirical log-likelihood ratio value.
-#'   The iteration stops if the value exceeds the threshold. Defaults to
-#'   \code{NULL}.
-#' @param nthreads Number of threads for parallel computation via OpenMP (if
-#'     available).
+#' @param maxit A single integer for the maximum number of iterations for
+#'   constrained minimization of empirical likelihood. Defaults to \code{200}.
+#' @param maxit_l A single integer for the maximum number of iterations for
+#'   evaluation of empirical likelihood. Defaults to \code{25}.
+#' @param tol A single numeric for the convergence tolerance for the constrained
+#'   minimization. Defaults to \code{1e-06}.
+#' @param tol_l A single numeric for the relative convergence tolerance for the
+#'   evaluation. Defaults to \code{1e-06}.
+#' @param step A single numeric for the step size for projected gradient descent
+#'   method. Defaults to \code{NULL} and set to the reciprocal of sample size.
+#' @param th A single numeric for the threshold for negative empirical
+#'   log-likelihood ratio value. The iteration stops if the value exceeds the
+#'   threshold. Defaults to \code{NULL}.
+#' @param nthreads A single integer for the number of threads for parallel
+#'   computation via OpenMP (if available).
 #' @return An object of class of \linkS4class{ControlEL}.
 #' @seealso \link{el_eval}, \link{elt}
 #' @examples

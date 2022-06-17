@@ -53,11 +53,15 @@ Defaults to 1e-08.}
 A list with class \code{c("pairwise", "melt")}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Tests all pairwise comparisons or comparisons with control for general block
 designs. Two single step asymptotic \eqn{k}-FWER (generalized family-wise
 error rate) controlling procedures are available: asymptotic Monte Carlo
 (AMC) and nonparametric bootstrap (NB).
-\emph{This function is deprecated and will be removed in a future release.}
+
+\emph{This function is deprecated and will be removed in a
+future release.}
 }
 \examples{
 # all pairwise comparisons
