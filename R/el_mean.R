@@ -10,7 +10,7 @@
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
-#' @param model A signle logical. If \code{TRUE} the data matrix used for model
+#' @param model A single logical. If \code{TRUE} the data matrix used for model
 #'   fitting is returned.
 #' @return An object of class \linkS4class{EL}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
