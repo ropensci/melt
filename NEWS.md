@@ -5,9 +5,9 @@ melt 1.5.3
 
 * `elt` accepts additional argument `calibrate`.
 
+### MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to NULL.
 
-### MINOR IMPROVEMENTS
 * `optim` slot of `CEL` class no longer has `method` element.
 
 ### BUG FIXES

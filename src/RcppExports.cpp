@@ -218,6 +218,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// tt2
+double tt2(const int B, const int seed, const int nthreads, const Eigen::MatrixXd mat);
+RcppExport SEXP _melt_tt2(SEXP BSEXP, SEXP seedSEXP, SEXP nthreadsSEXP, SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const int >::type seed(seedSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd >::type mat(matSEXP);
+    rcpp_result_gen = Rcpp::wrap(tt2(B, seed, nthreads, mat));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_melt_max_threads_", (DL_FUNC) &_melt_max_threads_, 0},
@@ -231,6 +245,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_glm_", (DL_FUNC) &_melt_glm_, 12},
     {"_melt_lm_", (DL_FUNC) &_melt_lm_, 11},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 13},
+    {"_melt_tt2", (DL_FUNC) &_melt_tt2, 4},
     {NULL, NULL, 0}
 };
 

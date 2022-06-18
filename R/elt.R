@@ -11,6 +11,7 @@
 #'   left-hand-side of hypothesis. Each row gives a linear combination of the
 #'   parameters in \code{object}. The number of columns should be equal to the
 #'   number of parameters. Defaults to \code{NULL}. See ‘Details’.
+#' @param alpha A single numeric for the significance level. Defaults to \code{0.05}.
 #' @param calibrate A single character for the calibration method. Defaults to
 #' \code{chisq}. See ‘Details’.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
@@ -66,7 +67,7 @@
 #' @importFrom methods is
 #' @importFrom stats pchisq
 #' @export
-elt <- function(object, rhs = NULL, lhs = NULL,
+elt <- function(object, rhs = NULL, lhs = NULL, alpha = 0.05,
                 calibrate = c("chisq", "boot", "f"), control = el_control()) {
   stopifnot(
     "invalid 'object' supplied" = (is(object, "EL")),
@@ -90,11 +91,11 @@ elt <- function(object, rhs = NULL, lhs = NULL,
     }
     el <- eval_(method, h$r, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(h$r)
-    pval <- calibrate_pval_(calibrate, el$statistic, p, object)
+    tt <- tt_(calibrate, el$statistic, p, alpha, object)
     return(new("EL",
       optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-      statistic = el$statistic, df = p, pval = pval, npar = p, weights = w,
-      method = method
+      statistic = el$statistic, df = p, pval = tt["pval"], npar = p,
+      weights = w, method = method
     ))
   }
   # proceed with chi-square calibration for non-NULL 'lhs'

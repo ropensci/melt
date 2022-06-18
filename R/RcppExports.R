@@ -45,3 +45,7 @@ pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, 
     .Call(`_melt_pairwise`, x, c, control, k, level, interval, method, B, nthread, progress, threshold, maxit, abstol)
 }
 
+tt2 <- function(B, seed, nthreads, mat) {
+    .Call(`_melt_tt2`, B, seed, nthreads, mat)
+}
+

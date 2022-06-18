@@ -66,7 +66,6 @@ test_that("non-full rank", {
 })
 
 test_that("empty model", {
-  skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
   y <- 1 + x + rnorm(n)
@@ -75,9 +74,17 @@ test_that("empty model", {
   expect_output(print(summary(fit)))
 })
 
+test_that("invalid 'control'", {
+  n <- 10
+  x <- rnorm(n)
+  y <- 1 + x + rnorm(n)
+  df <- data.frame(y, x)
+  expect_error(el_lm(y ~ x, df, control = list()))
+})
+
 test_that("same results with parallel computing", {
   skip_on_os("windows", arch = "i386")
-  n <- 500
+  n <- 400
   p <- 15
   b <- rnorm(p)
   x <- matrix(rnorm(n * p), ncol = p)

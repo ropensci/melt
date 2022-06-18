@@ -65,6 +65,9 @@
 #' @export
 el_lm <- function(formula, data, weights = NULL, na.action,
                   control = el_control(), model = TRUE, ...) {
+  if (!is(control, "ControlEL")) {
+    stop("invalid 'control' specified")
+  }
   cl <- match.call()
   if (missing(data)) {
     data <- environment(formula)
@@ -112,9 +115,6 @@ el_lm <- function(formula, data, weights = NULL, na.action,
   mm <- cbind(y, x)
   p <- ncol(x)
   w <- check_weights(w, nrow(mm))
-  if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
-  }
   el <- lm_(
     mm, z$coefficients, intercept, control@maxit, control@maxit_l, control@tol,
     control@tol_l, control@step, control@th, control@nthreads, w

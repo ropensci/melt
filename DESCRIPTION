@@ -21,7 +21,7 @@ Imports:
     lifecycle,
     methods,
     Rcpp (>= 1.0.8),
-    stats,
+    stats
 Suggests: 
     covr,
     knitr,
@@ -29,6 +29,7 @@ Suggests:
     spelling,
     testthat (>= 3.0.0)
 LinkingTo: 
+    dqrng,
     Rcpp,
     RcppEigen,
     RcppProgress

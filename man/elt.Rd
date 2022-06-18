@@ -8,6 +8,7 @@ elt(
   object,
   rhs = NULL,
   lhs = NULL,
+  alpha = 0.05,
   calibrate = c("chisq", "boot", "f"),
   control = el_control()
 )
@@ -23,6 +24,8 @@ hypothesis, with as many entries as the rows in \code{lhs}. Defaults to
 left-hand-side of hypothesis. Each row gives a linear combination of the
 parameters in \code{object}. The number of columns should be equal to the
 number of parameters. Defaults to \code{NULL}. See ‘Details’.}
+
+\item{alpha}{A single numeric for the significance level. Defaults to \code{0.05}.}
 
 \item{calibrate}{A single character for the calibration method. Defaults to
 \code{chisq}. See ‘Details’.}

@@ -8,6 +8,7 @@ lht(
   object,
   rhs = NULL,
   lhs = NULL,
+  alpha = 0.05,
   calibrate = c("chisq", "boot", "f"),
   control = el_control()
 )
