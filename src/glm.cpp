@@ -1,23 +1,25 @@
 #include "EL.h"
 #include "utils.h"
+#include <RcppEigen.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+#include <string>
+#include <vector>
 
 // [[Rcpp::export]]
-Rcpp::List glm_(
-    const std::string method,
-    const Eigen::Map<Eigen::MatrixXd>& x,
-    const Eigen::Map<Eigen::VectorXd>& par0,
-    const bool intercept,
-    const int maxit,
-    const int maxit_l,
-    const double tol,
-    const double tol_l,
-    const Rcpp::Nullable<double> step,
-    const Rcpp::Nullable<double> th,
-    const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd>& w)
+Rcpp::List glm_(const std::string method,
+                const Eigen::Map<Eigen::MatrixXd>& x,
+                const Eigen::Map<Eigen::VectorXd>& par0,
+                const bool intercept,
+                const int maxit,
+                const int maxit_l,
+                const double tol,
+                const double tol_l,
+                const Rcpp::Nullable<double> step,
+                const Rcpp::Nullable<double> th,
+                const int nthreads,
+                const Eigen::Map<Eigen::ArrayXd>& w)
 {
   const int p = x.cols() - 1;
   const double gamma = step_nloglr(x.rows(), step);
@@ -58,11 +60,13 @@ Rcpp::List glm_(
   }
 
   // parameter tests
-  Rcpp::NumericVector chisq_val(p);
-  Rcpp::LogicalVector par_conv(p);
+  std::vector<double> chisq_val(p);
+  std::vector<bool> par_conv(p);
   const double test_th = th_nloglr(1, th);
   // default(none) shared(p, maxit) schedule(auto)
+  #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
+  #endif
   for (int i = 0; i < p; ++i) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;

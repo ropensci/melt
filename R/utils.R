@@ -2,7 +2,10 @@
 tt_ <- function(calibrate, statistic, p, alpha, object) {
   switch(calibrate,
     "chisq" = {
-      c(cv = 1, pval = pchisq(q = statistic, df = p, lower.tail = FALSE))
+      c(
+        cv = qchisq(p = 1 - alpha, df = p),
+        pval = pchisq(q = statistic, df = p, lower.tail = FALSE)
+      )
     },
     "boot" = {
       stop("not yet")
@@ -10,10 +13,14 @@ tt_ <- function(calibrate, statistic, p, alpha, object) {
     },
     "f" = {
       n <- nrow(getDataMatrix(object))
-      c(cv = 3, pval = pf(
-        q = statistic * (n - p) / (p * (n - 1)), df1 = p,
-        df2 = n - p, lower.tail = FALSE
-      ))
+      # check!
+      c(
+        cv = qf(p = 1 - alpha, df1 = p, df2 = n - p) * (n - p) / (p * (n - 1)),
+        pval = pf(
+          q = statistic * (n - p) / (p * (n - 1)), df1 = p,
+          df2 = n - p, lower.tail = FALSE
+        )
+      )
     }
   )
 }

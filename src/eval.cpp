@@ -1,15 +1,16 @@
 #include "EL.h"
 #include "utils.h"
+#include <RcppEigen.h>
+#include <string>
 
 // [[Rcpp::export]]
-Rcpp::List eval_(
-    const std::string method,
-    const Eigen::Map<Eigen::VectorXd>& par0,
-    const Eigen::Map<Eigen::MatrixXd>& x,
-    const int maxit_l,
-    const double tol_l,
-    const Rcpp::Nullable<double> th,
-    const Eigen::Map<Eigen::ArrayXd>& wt)
+Rcpp::List eval_(const std::string method,
+                 const Eigen::Map<Eigen::VectorXd>& par0,
+                 const Eigen::Map<Eigen::MatrixXd>& x,
+                 const int maxit_l,
+                 const double tol_l,
+                 const Rcpp::Nullable<double> th,
+                 const Eigen::Map<Eigen::ArrayXd>& wt)
 {
   const double test_th = th_nloglr(par0.size(), th);
   const EL el(method, par0, x, maxit_l, tol_l, test_th, wt);
@@ -28,12 +29,11 @@ Rcpp::List eval_(
 }
 
 // [[Rcpp::export]]
-Rcpp::List eval_g_(
-    const Eigen::Map<Eigen::MatrixXd>& g,
-    const int maxit_l,
-    const double tol_l,
-    const Rcpp::Nullable<double> th,
-    const Eigen::Map<Eigen::ArrayXd>& wt)
+Rcpp::List eval_g_(const Eigen::Map<Eigen::MatrixXd>& g,
+                   const int maxit_l,
+                   const double tol_l,
+                   const Rcpp::Nullable<double> th,
+                   const Eigen::Map<Eigen::ArrayXd>& wt)
 {
   const double test_th = th_nloglr(g.cols(), th);
   const EL el(g, maxit_l, tol_l, test_th, wt);

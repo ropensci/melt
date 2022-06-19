@@ -7,7 +7,6 @@ test_that("probabilities add up to 1", {
   df <- data.frame(y, x, x2)
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
-  # expect_output(print(formula(fit)))
   expect_output(print(fit))
   expect_output(print(summary(fit)))
   expect_equal(sum(exp(fit@logp)), 1)
@@ -72,6 +71,14 @@ test_that("empty model", {
   df <- data.frame(y, x)
   fit <- el_lm(y ~ 0, df)
   expect_output(print(summary(fit)))
+})
+
+test_that("multiple responses", {
+  n <- 10
+  x <- rnorm(n)
+  y <- 1 + x + rnorm(n)
+  df <- data.frame(y, x)
+  expect_error(el_lm(cbind(y , x) ~ 1, df))
 })
 
 test_that("invalid 'control'", {

@@ -42,15 +42,16 @@ coercible
 confint
 confreg
 el
+elt
 et
 eval
 glm
-lht
 lm
 minimizations
 nonconvex
 optimality
 parallelization
+rescaled
 stars’
 studentization
 th

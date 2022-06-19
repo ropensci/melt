@@ -75,6 +75,7 @@ elt <- function(object, rhs = NULL, lhs = NULL, alpha = 0.05,
       (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
+  # check alpha
   h <- check_hypothesis_(lhs, rhs, object@npar)
   calibrate <- match.arg(calibrate)
   method <- getMethodEL(object)

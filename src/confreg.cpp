@@ -1,29 +1,30 @@
 #include "EL.h"
 #include "utils.h"
+#include <RcppEigen.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+#include <string>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector confreg_(
-    const std::string method,
-    const Eigen::Map<Eigen::VectorXd>& par0,
-    const Eigen::Map<Eigen::MatrixXd>& x,
-    const int npar,
-    const double cutoff,
-    const Rcpp::IntegerVector& idx,
-    const Eigen::Map<Eigen::MatrixXd>& circ,
-    const int maxit,
-    const int maxit_l,
-    const double tol,
-    const double tol_l,
-    const Rcpp::Nullable<double> step,
-    const Rcpp::Nullable<double> th,
-    const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd>& w)
+Rcpp::NumericVector confreg_(const std::string method,
+                             const Eigen::Map<Eigen::VectorXd>& par0,
+                             const Eigen::Map<Eigen::MatrixXd>& x,
+                             const int npar,
+                             const double cutoff,
+                             const Rcpp::IntegerVector& idx,
+                             const Eigen::Map<Eigen::MatrixXd>& circ,
+                             const int maxit,
+                             const int maxit_l,
+                             const double tol,
+                             const double tol_l,
+                             const Rcpp::Nullable<double> step,
+                             const Rcpp::Nullable<double> th,
+                             const int nthreads,
+                             const Eigen::Map<Eigen::ArrayXd>& w)
 {
   // confidence region (vector)
-  Rcpp::NumericVector cr(circ.cols());
+  std::vector<double> cr(circ.cols());
   // step size
   const double gamma = step_nloglr(x.rows(), step);
   // test threshold
@@ -34,7 +35,9 @@ Rcpp::NumericVector confreg_(
   lhs(1, idx[1] - 1) = 1;
   // estimates
   const Eigen::Vector2d est{par0(idx[0] - 1), par0(idx[1] - 1)};
+  #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
+  #endif
   for (int i = 0; i < circ.cols(); ++i) {
     const Eigen::Vector2d direction = circ.col(i);
     // lower endpoint
@@ -56,7 +59,8 @@ Rcpp::NumericVector confreg_(
         lower_ub = avg;
       }
     }
-    cr(i) = lower_ub;
+    cr[i] = lower_ub;
   }
-  return cr;
+  const Rcpp::NumericVector out = Rcpp::wrap(cr);
+  return out;
 }

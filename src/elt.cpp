@@ -1,5 +1,7 @@
 #include "EL.h"
 #include "utils.h"
+#include <RcppEigen.h>
+#include <string>
 
 // [[Rcpp::export]]
 Rcpp::List elt_(const std::string method,

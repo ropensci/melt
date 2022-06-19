@@ -1,8 +1,10 @@
 #include "EL.h"
 #include "utils.h"
+#include <RcppEigen.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+#include <vector>
 
 // [[Rcpp::export]]
 Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
@@ -56,11 +58,13 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
   }
 
   // parameter tests
-  Rcpp::NumericVector chisq_val(p);
-  Rcpp::LogicalVector par_conv(p);
+  std::vector<double> chisq_val(p);
+  std::vector<bool> par_conv(p);
   const double test_th = th_nloglr(1, th);
   // default(none) shared(p, maxit) schedule(auto)
+  #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
+  #endif
   for (int i = 0; i < p; ++i) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;

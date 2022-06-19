@@ -15,7 +15,6 @@ double tt2(const int B, const int seed, const int nthreads,
   // initialize seed
   dqrng::xoshiro256plus gen(seed);
 
-  // subtract 1 because in C++ indices start with 0
   std::uniform_int_distribution<> dist(0, n - 1);
 
   std::vector<double> bootstrap2(B);

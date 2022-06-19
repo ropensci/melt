@@ -19,7 +19,7 @@ weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}
 
-\item{model}{A signle logical. If \code{TRUE} the data matrix used for model
+\item{model}{A single logical. If \code{TRUE} the data matrix used for model
 fitting is returned.}
 }
 \value{

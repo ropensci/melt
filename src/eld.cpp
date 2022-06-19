@@ -1,16 +1,20 @@
 #include "EL.h"
 #include "utils.h"
+#include <RcppEigen.h>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+#include <string>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector eld_(
-    const std::string method,
-    const Eigen::Map<Eigen::VectorXd>& par0,
-    const Eigen::Map<Eigen::MatrixXd>& x,
-    const int maxit_l,
-    const double tol_l,
-    const Rcpp::Nullable<double> th,
-    const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd>& wt)
+Rcpp::NumericVector eld_(const std::string method,
+                         const Eigen::Map<Eigen::VectorXd>& par0,
+                         const Eigen::Map<Eigen::MatrixXd>& x,
+                         const int maxit_l,
+                         const double tol_l,
+                         const Rcpp::Nullable<double> th,
+                         const int nthreads,
+                         const Eigen::Map<Eigen::ArrayXd>& wt)
 {
   const int n = x.rows();
   const int p = par0.size();
@@ -21,7 +25,7 @@ Rcpp::NumericVector eld_(
   const Eigen::ArrayXd w = el.w;
   const bool weighted = w.size() != 0;
 
-  Rcpp::NumericVector eld(n);
+  std::vector<double> eld(n);
   // #pragma omp parallel for
   for (int i = 0; i < n; ++i) {
     // leave-one-out matrix
@@ -38,6 +42,6 @@ Rcpp::NumericVector eld_(
                     test_th, wt);
     eld[i] = 2 * n * (mel - loo_el.loglik());
   }
-
-  return eld;
+  const Rcpp::NumericVector out = Rcpp::wrap(eld);
+  return out;
 }
