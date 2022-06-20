@@ -81,6 +81,18 @@ test_that("multiple responses", {
   expect_error(el_lm(cbind(y , x) ~ 1, df))
 })
 
+test_that("invalid 'weights'", {
+  n <- 10
+  x <- rnorm(n)
+  y <- 1 + x + rnorm(n)
+  df <- data.frame(y, x)
+  w <- 1 + runif(n, min = -0.5, max = 0.5)
+  w[1] <- -1
+  expect_error(el_lm(y ~ x, df, weights = w))
+  w[1] <- "error"
+  expect_error(el_lm(y ~ x, df, weights = w))
+})
+
 test_that("invalid 'control'", {
   n <- 10
   x <- rnorm(n)

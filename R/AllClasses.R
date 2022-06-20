@@ -160,6 +160,7 @@ setClass("LM", contains = "CEL", slots = c(parTests = "list", misc = "list"))
 #' showClass("GLM")
 setClass("GLM", contains = "LM")
 
+
 #' S4 class \linkS4class{ConfregEL}
 #'
 #' S4 class for confidence region.
@@ -184,40 +185,6 @@ setClass("ConfregEL",
   )
 )
 
-#' S4 class \linkS4class{ELD}
-#'
-#' S4 class for empirical likelihood displacement.
-#'
-#' @slot eld A numeric vector of empirical likelihood displacement values.
-#' @examples
-#' showClass("ELD")
-setClass("ELD", slots = c(eld = "numeric"))
-
-#' S4 class \linkS4class{SummaryLM}
-#'
-#' S4 class for a summary of \linkS4class{LM} objects.
-#'
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio for the overall test of the model.
-#' @slot df A single integer for the degrees of freedom of the statistic.
-#' @slot convergence A single logical for the convergence status of the
-#'   constrained minimization.
-#' @slot parMatrix A numeric matrix of the test results of the parameters.
-#' @slot weighted A single logical for whether the given model is weighted or
-#'   not.
-#' @slot na.action Information returned by \code{\link[stats]{model.frame}} on
-#'   the special handling of NAs.
-#' @slot call Matched call.
-#' @slot terms \code{\link[stats]{terms}} object used.
-#' @slot aliased A named logical vector showing if the original coefficients are
-#'   aliased.
-#' @examples
-#' showClass("SummaryLM")
-setClass("SummaryLM", slots = c(
-  statistic = "numeric", df = "integer", convergence = "logical",
-  parMatrix = "matrix", weighted = "logical", na.action = "ANY", call = "ANY",
-  terms = "ANY", aliased = "logical"
-))
 
 #' S4 class \linkS4class{ControlEL}
 #'
@@ -258,13 +225,47 @@ setClass("SummaryLM", slots = c(
 setClass("ControlEL",
   slots = c(
     maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
-    step = "ANY", th = "ANY", nthreads = "integer"
+    step = "ANY", th = "ANY", nthreads = "integer", seed = "integer",
+    B = "integer"
   ),
   prototype = list(
     maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
     step = NULL, th = NULL, nthreads = NULL
   )
 )
+
+
+#' S4 class \linkS4class{ELD}
+#'
+#' S4 class for empirical likelihood displacement.
+#'
+#' @slot eld A numeric vector of empirical likelihood displacement values.
+#' @examples
+#' showClass("ELD")
+setClass("ELD", slots = c(eld = "numeric"))
+
+
+#' S4 class \linkS4class{ELT}
+#'
+#' S4 class for empirical likelihood test.
+#'
+#' @slot optim A list with the optimization results.
+#' @slot alpha A single numeric for the minus twice the empirical
+#'   log-likelihood ratio for the overall test of the model.
+#' @slot logl A single numeric for the
+#' @slot statistic A single numeric for .
+#' @slot cv A single numeric for the critical value.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot calibrate A single character for the calibration method.
+#' @examples
+#' showClass("ELT")
+setClass("ELT",
+  slots = c(
+    optim = "list", alpha = "numeric", logl = "numeric", statistic = "numeric",
+    cv = "numeric", pval = "numeric", calibrate = "character"
+  )
+)
+
 
 #' S4 class \linkS4class{logLikEL}
 #'
@@ -276,3 +277,30 @@ setClass("ControlEL",
 #' @examples
 #' showClass("logLikEL")
 setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))
+
+
+#' S4 class \linkS4class{SummaryLM}
+#'
+#' S4 class for a summary of \linkS4class{LM} objects.
+#'
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio for the overall test of the model.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot convergence A single logical for the convergence status of the
+#'   constrained minimization.
+#' @slot parMatrix A numeric matrix of the test results of the parameters.
+#' @slot weighted A single logical for whether the given model is weighted or
+#'   not.
+#' @slot na.action Information returned by \code{\link[stats]{model.frame}} on
+#'   the special handling of NAs.
+#' @slot call Matched call.
+#' @slot terms \code{\link[stats]{terms}} object used.
+#' @slot aliased A named logical vector showing if the original coefficients are
+#'   aliased.
+#' @examples
+#' showClass("SummaryLM")
+setClass("SummaryLM", slots = c(
+  statistic = "numeric", df = "integer", convergence = "logical",
+  parMatrix = "matrix", weighted = "logical", na.action = "ANY", call = "ANY",
+  terms = "ANY", aliased = "logical"
+))

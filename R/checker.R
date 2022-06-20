@@ -100,6 +100,17 @@ check_hypothesis_ <- function(lhs, rhs, p) {
   list(l = lhs, r = rhs)
 }
 
+check_alpha_ <- function(alpha) {
+  stopifnot(
+    "'alpha' is not a single numeric" = (is.numeric(alpha)),
+    "'alpha' is not a single numeric" = (length(alpha) == 1L),
+    "'alpha' is not a finite single numeric" = (is.finite(alpha)),
+    "'alpha' must be a single numeric between 0 and 1" =
+      (isTRUE(alpha >= 0 && alpha <= 1))
+  )
+  alpha
+}
+
 check_level_ <- function(level) {
   stopifnot(
     "'level' is not a single numeric" = (is.numeric(level)),
@@ -113,7 +124,7 @@ check_level_ <- function(level) {
 
 check_cv_ <- function(cv, th) {
   stopifnot(
-    "'cv' is not a single numeric2" = (is.numeric(cv)),
+    "'cv' is not a single numeric" = (is.numeric(cv)),
     "'cv' is not a single numeric" = (length(cv) == 1L),
     "'cv' is not a finite single numeric" = (is.finite(cv)),
     "'cv' is too small" = (cv >= .Machine$double.eps),

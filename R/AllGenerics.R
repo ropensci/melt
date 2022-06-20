@@ -59,7 +59,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' Package \strong{melt} adds a method for objects inheriting from class
 #' \linkS4class{EL}.
 #'
-#' @param object A fitted \linkS4class{EL} object.
+#' @param object An object of class \linkS4class{EL}.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
@@ -98,7 +98,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' Computes boundary points of a two-dimensional confidence region for model
 #'   parameters.
 #'
-#' @param object A fitted \linkS4class{EL} object.
+#' @param object An object of class \linkS4class{EL}.
 #' @param parm A specification of which parameters are to be given a confidence
 #'   region, either a vector of numbers or a vector of names. It should be a
 #'   vector of length two of the form \code{c(x, y)}. If missing, the first two
@@ -133,7 +133,7 @@ setGeneric("confreg", function(object, parm, level = 0.95, cv = NULL,
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
 #'   coefficients.
 #'
-#' @param object A fitted \linkS4class{EL} object.
+#' @param object An object of class \linkS4class{EL}.
 #' @param ... Not used.
 #' @return An object of class \linkS4class{logLikEL}.
 #' @examples

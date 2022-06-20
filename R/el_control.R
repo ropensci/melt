@@ -17,84 +17,80 @@
 #'   threshold. Defaults to \code{NULL}.
 #' @param nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available).
+#' @param seed A single integer for the number of .
+#' @param B A single integer for the number of . Defaults to \code{10000L}.
 #' @return An object of class of \linkS4class{ControlEL}.
 #' @seealso \link{el_eval}, \link{elt}
 #' @examples
 #' optcfg <- el_control(maxit = 300L, th = 200, nthreads = 1L)
 #' @export
 el_control <- function(maxit = 200L, maxit_l = 25L, tol = 1e-06, tol_l = 1e-06,
-                       step = NULL, th = NULL, nthreads) {
-  # maxit: integer (positive)
+                       step = NULL, th = NULL, nthreads,
+                       seed = sample.int(.Machine$integer.max, 1L),
+                       B = 10000L) {
+  # maxit: single integer (positive)
   maxit <- tryCatch(as.integer(maxit),
     warning = function(w) NA,
     error = function(e) NA
   )
-  if (any(length(maxit) != 1L, is.na(maxit))) {
-    stop("'maxit' is not an integer")
-  }
-  if (maxit < 1) {
-    stop("'maxit' is not a positive integer")
-  }
-  # maxit_l: integer (positive)
+  stopifnot(
+    "'maxit' must be a single integer" = (isTRUE(!is.na(maxit))),
+    "'maxit' must be a positive single integer" = (maxit > 0L)
+  )
+  # maxit_l: single integer (positive)
   maxit_l <- tryCatch(as.integer(maxit_l),
     warning = function(w) NA,
     error = function(e) NA
   )
-  if (any(length(maxit_l) != 1L, is.na(maxit_l))) {
-    stop("'maxit_l' is not an integer")
-  }
-  if (maxit_l < 1) {
-    stop("'maxit_l' is not a positive integer")
-  }
-  # tol: numeric (positive, finite)
+  stopifnot(
+    "'maxit_l' must be a single integer" = (isTRUE(!is.na(maxit_l))),
+    "'maxit_l' must be a positive single integer" = (maxit_l > 0L)
+  )
+  # tol: single numeric (positive, finite)
   tol <- tryCatch(as.numeric(tol),
     warning = function(w) NA,
     error = function(e) NA
   )
-  if (any(length(tol) != 1L, is.na(tol), is.infinite(tol))) {
-    stop("'tol' is not a number")
-  }
-  if (tol < .Machine$double.eps) {
-    stop("'tol' is too small")
-  }
-  # tol_l: numeric (positive, finite)
+  stopifnot(
+    "'tol' must be a single numeric" = (isTRUE(!is.na(tol))),
+    "'tol' must be a finite single numeric" = (is.finite(tol)),
+    "'tol' is too small" = (tol >= .Machine$double.eps)
+  )
+  # tol_l: single numeric (positive, finite)
   tol_l <- tryCatch(as.numeric(tol_l),
     warning = function(w) NA,
     error = function(e) NA
   )
-  if (any(length(tol_l) != 1L, is.na(tol_l), is.infinite(tol_l))) {
-    stop("'tol' is not a number")
-  }
-  if (tol_l < .Machine$double.eps) {
-    stop("'tol' is too small")
-  }
-  # step: numeric (positive, finite)
+  stopifnot(
+    "'tol_l' must be a single numeric" = (isTRUE(!is.na(tol_l))),
+    "'tol_l' must be a finite single numeric" = (is.finite(tol_l)),
+    "'tol_l' is too small" = (tol_l >= .Machine$double.eps)
+  )
+  # step: single numeric (positive, finite)
   if (!is.null(step)) {
     step <- tryCatch(as.numeric(step),
       warning = function(w) NA,
       error = function(e) NA
     )
-    if (any(length(step) != 1L, is.na(step), is.infinite(step))) {
-      stop("'step' is not a number")
-    }
-    if (step < .Machine$double.eps) {
-      stop("'step' is too small")
-    }
+    stopifnot(
+      "'step' must be a single numeric" = (isTRUE(!is.na(step))),
+      "'step' must be a finite single numeric" = (is.finite(step)),
+      "'step' is too small" = (step >= .Machine$double.eps)
+    )
   }
-  # th: numeric (positive, finite)
+  # th: single numeric (positive, finite)
   if (!is.null(th)) {
     th <- tryCatch(as.numeric(th),
       warning = function(w) NA,
       error = function(e) NA
     )
-    if (any(length(th) != 1L, is.na(th), is.infinite(th))) {
-      stop("'th' is not a number")
-    }
-    if (th < .Machine$double.eps) {
-      stop("'th' is too small")
-    }
+    stopifnot(
+      "'th' must be a single numeric" = (isTRUE(!is.na(th))),
+      "'th' must be a finite single numeric" = (is.finite(th)),
+      "'th' is too small" = (th >= .Machine$double.eps)
+    )
   }
-  # nthreads: integer (positive)
+  # nthreads: single integer (positive, finite)
   max_threads <- max_threads_()
   if (missing(nthreads)) {
     nthreads <- as.integer(max(1L, max_threads / 2L))
@@ -103,9 +99,9 @@ el_control <- function(maxit = 200L, maxit_l = 25L, tol = 1e-06, tol_l = 1e-06,
       warning = function(w) NA,
       error = function(e) NA
     )
-    if (any(length(nthreads) != 1L, is.na(nthreads))) {
-      stop("'nthreads' is not an integer")
-    }
+    stopifnot(
+      "'nthreads' must be a single integer" = (isTRUE(!is.na(nthreads)))
+    )
     if (nthreads < 1) {
       warning("'nthreads' is set to 1")
       nthreads <- 1L
@@ -115,8 +111,20 @@ el_control <- function(maxit = 200L, maxit_l = 25L, tol = 1e-06, tol_l = 1e-06,
       nthreads <- max_threads
     }
   }
+  # seed: single integer (finite)
+  seed <- tryCatch(as.integer(seed),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot("'seed' must be a single integer" = (isTRUE(!is.na(seed))))
+  # B: single integer (positive, finite)
+  B <- tryCatch(as.integer(B), warning = function(w) NA, error = function(e) NA)
+  stopifnot(
+    "'B' must be a single integer" = (isTRUE(!is.na(B))),
+    "'B' must be a positive single integer" = (B > 0L)
+  )
   new("ControlEL",
     maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
-    th = th, nthreads = nthreads
+    th = th, nthreads = nthreads, seed = seed, B = B
   )
 }

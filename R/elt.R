@@ -1,9 +1,9 @@
-#' Linear hypothesis test
+#' Empirical likelihood test
 #'
 #' Tests a linear hypothesis for objects that inherit from class
 #'   \linkS4class{EL}.
 #'
-#' @param object A fitted \linkS4class{EL} object.
+#' @param object An object of class \linkS4class{EL}.
 #' @param rhs A numeric vector or a column matrix for the right-hand-side of
 #'   hypothesis, with as many entries as the rows in \code{lhs}. Defaults to
 #'   \code{NULL}. See ‘Details’.
@@ -75,8 +75,8 @@ elt <- function(object, rhs = NULL, lhs = NULL, alpha = 0.05,
       (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  # check alpha
   h <- check_hypothesis_(lhs, rhs, object@npar)
+  alpha <- check_alpha_(alpha)
   calibrate <- match.arg(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -90,13 +90,13 @@ elt <- function(object, rhs = NULL, lhs = NULL, alpha = 0.05,
     if (calibrate == "f" && method != "mean") {
       stop("F calibration is applicable only to the mean")
     }
-    el <- eval_(method, h$r, getDataMatrix(object), maxit_l, tol_l, th, w)
-    p <- length(h$r)
-    tt <- tt_(calibrate, el$statistic, p, alpha, object)
-    return(new("EL",
-      optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-      statistic = el$statistic, df = p, pval = tt["pval"], npar = p,
-      weights = w, method = method
+    par <- h$r
+    el <- eval_(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
+    p <- length(par)
+    cal <- calibrate_(alpha, el$statistic, calibrate, p, par, object, control)
+    return(new("ELT",
+      optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
+      cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
     ))
   }
   # proceed with chi-square calibration for non-NULL 'lhs'
@@ -109,10 +109,10 @@ elt <- function(object, rhs = NULL, lhs = NULL, alpha = 0.05,
     method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )
-  new("CEL",
-    optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-    statistic = el$statistic, df = nrow(h$l),
+  new("ELT",
+    optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
+    cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
     pval = pchisq(el$statistic, df = nrow(h$l), lower.tail = FALSE),
-    npar = ncol(h$l), weights = w, method = method
+    calibrate = calibrate
   )
 }

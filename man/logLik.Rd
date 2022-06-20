@@ -8,7 +8,7 @@
 \S4method{logLik}{EL}(object, ...)
 }
 \arguments{
-\item{object}{A fitted \linkS4class{EL} object.}
+\item{object}{An object of class \linkS4class{EL}.}
 
 \item{...}{Not used.}
 }

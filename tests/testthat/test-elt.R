@@ -90,7 +90,7 @@ test_that("invalid 'control'", {
   expect_error(elt(fit, lhs = 1, control = list(maxit = 200L)))
 })
 
-test_that("vector lhs", {
+test_that("vector 'lhs'", {
   n <- 100
   x <- rnorm(n)
   x2 <- rnorm(n)
@@ -99,5 +99,5 @@ test_that("vector lhs", {
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
   expect_error(elt(fit, lhs = c(1, -1, 0, 0)))
-  expect_s4_class(elt(fit, lhs = c(1, -1, 0)), "CEL")
+  expect_s4_class(elt(fit, lhs = c(1, -1, 0)), "ELT")
 })

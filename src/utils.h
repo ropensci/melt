@@ -51,6 +51,10 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
 
 
 // quantile function
-double quantileRcpp(const Rcpp::NumericVector& x, double prob);
+// double quantileRcpp(const Rcpp::NumericVector& x, double prob);
+
+std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
+                              const Eigen::Ref<const Eigen::VectorXd>&)>
+  g_fn2(const std::string method);
 
 #endif

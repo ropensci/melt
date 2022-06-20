@@ -11,7 +11,9 @@ el_control(
   tol_l = 1e-06,
   step = NULL,
   th = NULL,
-  nthreads
+  nthreads,
+  seed = sample.int(.Machine$integer.max, 1L),
+  B = 10000L
 )
 }
 \arguments{
@@ -36,6 +38,10 @@ threshold. Defaults to \code{NULL}.}
 
 \item{nthreads}{A single integer for the number of threads for parallel
 computation via OpenMP (if available).}
+
+\item{seed}{A single integer for the number of .}
+
+\item{B}{A single integer for the number of . Defaults to \code{10000L}.}
 }
 \value{
 An object of class of \linkS4class{ControlEL}.

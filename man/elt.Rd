@@ -2,7 +2,7 @@
 % Please edit documentation in R/elt.R
 \name{elt}
 \alias{elt}
-\title{Linear hypothesis test}
+\title{Empirical likelihood test}
 \usage{
 elt(
   object,
@@ -14,7 +14,7 @@ elt(
 )
 }
 \arguments{
-\item{object}{A fitted \linkS4class{EL} object.}
+\item{object}{An object of class \linkS4class{EL}.}
 
 \item{rhs}{A numeric vector or a column matrix for the right-hand-side of
 hypothesis, with as many entries as the rows in \code{lhs}. Defaults to

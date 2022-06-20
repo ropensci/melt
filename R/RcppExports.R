@@ -9,6 +9,10 @@ get_rank_ <- function(x) {
     .Call(`_melt_get_rank_`, x)
 }
 
+boot_ <- function(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt) {
+    .Call(`_melt_boot_`, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt)
+}
+
 confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
@@ -43,9 +47,5 @@ lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthrea
 
 pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
     .Call(`_melt_pairwise`, x, c, control, k, level, interval, method, B, nthread, progress, threshold, maxit, abstol)
-}
-
-tt2 <- function(B, seed, nthreads, mat) {
-    .Call(`_melt_tt2`, B, seed, nthreads, mat)
 }
 

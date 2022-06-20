@@ -8,7 +8,7 @@
 \S4method{confint}{EL}(object, parm, level = 0.95, ..., cv = NULL, control = el_control())
 }
 \arguments{
-\item{object}{A fitted \linkS4class{EL} object.}
+\item{object}{An object of class \linkS4class{EL}.}
 
 \item{parm}{A specification of which parameters are to be given confidence
 intervals, either a vector of numbers or a vector of names. If missing, all

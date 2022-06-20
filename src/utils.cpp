@@ -150,14 +150,23 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
 
 
 
-double quantileRcpp(const Rcpp::NumericVector& x, const double prob) {
-  Rcpp::Environment stats("package:stats");
-  Rcpp::Function quantile = stats["quantile"];
-  return Rcpp::as<double>(quantile(x, Rcpp::Named("probs") = prob));
+// double quantileRcpp(const Rcpp::NumericVector& x, const double prob) {
+//   Rcpp::Environment stats("package:stats");
+//   Rcpp::Function quantile = stats["quantile"];
+//   return Rcpp::as<double>(quantile(x, Rcpp::Named("probs") = prob));
+// }
+
+
+std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
+                              const Eigen::Ref<const Eigen::VectorXd>&)>
+  g_fn2(const std::string method)
+{
+  std::map<std::string, std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd>&,
+      const Eigen::Ref<const Eigen::VectorXd>&)>>
+        g_map{{{"mean", g_mean}}};
+  return g_map[method];
 }
-
-
-
 
 
 
