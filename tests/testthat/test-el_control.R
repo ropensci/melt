@@ -8,6 +8,8 @@ test_that("invalid control parameters", {
   expect_error(el_control(tol = -1))
   expect_error(el_control(tol_l = Inf))
   expect_error(el_control(tol_l = -1))
+  expect_error(el_control(step = Inf))
+  expect_error(el_control(step = -1))
   expect_error(el_control(th = Inf))
   expect_error(el_control(th = -10))
   expect_error(el_control(nthreads = c(10, 20)))

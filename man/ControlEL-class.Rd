@@ -5,7 +5,7 @@
 \alias{ControlEL-class}
 \title{S4 class \linkS4class{ControlEL}}
 \description{
-S4 class for details of computation of empirical likelihood.
+S4 class for computational details of empirical likelihood.
 }
 \section{Slots}{
 
@@ -29,25 +29,19 @@ by \eqn{\delta}. The iteration stops when
 gradient descent method.}
 
 \item{\code{th}}{A single numeric for the threshold for the negative empirical
-log-likelihood ratio. The iteration stops if the value exceeds the
-threshold. Defaults to \code{NULL} and sets the threshold to
-\code{200 * d}, where \code{d} corresponds to the degrees of freedom of the
-limiting chi-squared distribution of the statistic.}
+log-likelihood ratio.}
 
 \item{\code{nthreads}}{A single integer for the number of threads for parallel
-computation via OpenMP (if available). Defaults to the half of the
-available threads. For better performance, it is generally recommended to
-limit the number of threads to the number of physical cores. Note that it
-only applies to the following functions that involve multiple evaluations
-or minimizations:
-\itemize{
-\item{\code{\link{confint}}}
-\item{\code{\link{confreg}}}
-\item{\code{\link{el_lm}}}
-\item{\code{\link{el_glm}}}
-\item{\code{\link{eld}}}}}
+computation via OpenMP (if available).}
+
+\item{\code{seed}}{A single integer for the seed for random number generation.}
+
+\item{\code{B}}{A single integer for the number of bootstrap replicates.}
 }}
 
 \examples{
 showClass("ControlEL")
+}
+\seealso{
+\link{el_control}
 }

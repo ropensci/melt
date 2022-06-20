@@ -1,5 +1,10 @@
-melt 1.5.3
+melt 1.6.0
 =========================
+### BREAKING CHANGES
+* `lifecycle` package adopted to manage the life cycle of exported functions.
+
+* `elt` accepts additional argument `calibrate`.
+
 ### NEW FEATURES
 * `lifecycle` package adopted to manage the life cycle of exported functions.
 

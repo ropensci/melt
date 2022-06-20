@@ -1,6 +1,6 @@
 #' Control parameters for computation
 #'
-#' Specifies details of computation of (constrained) empirical likelihood.
+#' Specifies computational details of (constrained) empirical likelihood.
 #'
 #' @param maxit A single integer for the maximum number of iterations for
 #'   constrained minimization of empirical likelihood. Defaults to \code{200}.
@@ -12,17 +12,35 @@
 #'   evaluation. Defaults to \code{1e-06}.
 #' @param step A single numeric for the step size for projected gradient descent
 #'   method. Defaults to \code{NULL} and set to the reciprocal of sample size.
-#' @param th A single numeric for the threshold for negative empirical
-#'   log-likelihood ratio value. The iteration stops if the value exceeds the
-#'   threshold. Defaults to \code{NULL}.
+#' @param th A single numeric for the threshold for the negative empirical
+#'   log-likelihood ratio. The iteration stops if the value exceeds the
+#'   threshold. Defaults to \code{NULL} and sets the threshold to
+#'   \code{200 * d}, where \code{d} corresponds to the degrees of freedom of the
+#'   limiting chi-squared distribution of the statistic.
 #' @param nthreads A single integer for the number of threads for parallel
-#'   computation via OpenMP (if available).
-#' @param seed A single integer for the number of .
-#' @param B A single integer for the number of . Defaults to \code{10000L}.
+#'   computation via OpenMP (if available). Defaults to the half of the
+#'   available threads. For better performance, it is generally recommended to
+#'   limit the number of threads to the number of physical cores. Note that it
+#'   only applies to the following functions that involve multiple evaluations
+#'   or minimizations: \code{\link{confint}}, \code{\link{confreg}},
+#'   \code{\link{el_lm}}, \code{\link{el_glm}}, \code{\link{eld}}, and
+#'   \code{\link{elt}}.
+#' @param seed A single integer for the seed for random number generation. It
+#'   only applies to \code{\link{elt}} when \code{calibrate} is set to
+#'   \code{"boot"}. Defaults to a random integer generated from 1 to the maximum
+#'   integer supported by \R on the machine, which is determined by
+#'   \code{\link{set.seed}}. Only one seed is needed even when multiple threads
+#'   are used with \code{nthreads}. Each thread is given a separate seed to
+#'   produce a non-overlapping but reproducible sequence of random numbers. The
+#'   \code{xoshiro256+} pseudo-random number generator is used internally to
+#'   work with OpenMP.
+#' @param B A single integer for the number of bootstrap replicates. It only
+#'   applies to \code{\link{elt}} when \code{calibrate} is set to \code{"boot"}.
+#'   Defaults to \code{10000L}.
 #' @return An object of class of \linkS4class{ControlEL}.
 #' @seealso \link{el_eval}, \link{elt}
 #' @examples
-#' optcfg <- el_control(maxit = 300L, th = 200, nthreads = 1L)
+#' optcfg <- el_control(maxit = 300, th = 200, nthreads = 1)
 #' @export
 el_control <- function(maxit = 200L, maxit_l = 25L, tol = 1e-06, tol_l = 1e-06,
                        step = NULL, th = NULL, nthreads,

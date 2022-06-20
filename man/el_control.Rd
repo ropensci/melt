@@ -32,25 +32,43 @@ evaluation. Defaults to \code{1e-06}.}
 \item{step}{A single numeric for the step size for projected gradient descent
 method. Defaults to \code{NULL} and set to the reciprocal of sample size.}
 
-\item{th}{A single numeric for the threshold for negative empirical
-log-likelihood ratio value. The iteration stops if the value exceeds the
-threshold. Defaults to \code{NULL}.}
+\item{th}{A single numeric for the threshold for the negative empirical
+log-likelihood ratio. The iteration stops if the value exceeds the
+threshold. Defaults to \code{NULL} and sets the threshold to
+\code{200 * d}, where \code{d} corresponds to the degrees of freedom of the
+limiting chi-squared distribution of the statistic.}
 
 \item{nthreads}{A single integer for the number of threads for parallel
-computation via OpenMP (if available).}
+computation via OpenMP (if available). Defaults to the half of the
+available threads. For better performance, it is generally recommended to
+limit the number of threads to the number of physical cores. Note that it
+only applies to the following functions that involve multiple evaluations
+or minimizations: \code{\link{confint}}, \code{\link{confreg}},
+\code{\link{el_lm}}, \code{\link{el_glm}}, \code{\link{eld}}, and
+\code{\link{elt}}.}
 
-\item{seed}{A single integer for the number of .}
+\item{seed}{A single integer for the seed for random number generation. It
+only applies to \code{\link{elt}} when \code{calibrate} is set to
+\code{"boot"}. Defaults to a random integer generated from 1 to the maximum
+integer supported by \R on the machine, which is determined by
+\code{\link{set.seed}}. Only one seed is needed even when multiple threads
+are used with \code{nthreads}. Each thread is given a separate seed to
+produce a non-overlapping but reproducible sequence of random numbers. The
+\code{xoshiro256+} pseudo-random number generator is used internally to
+work with OpenMP.}
 
-\item{B}{A single integer for the number of . Defaults to \code{10000L}.}
+\item{B}{A single integer for the number of bootstrap replicates. It only
+applies to \code{\link{elt}} when \code{calibrate} is set to \code{"boot"}.
+Defaults to \code{10000L}.}
 }
 \value{
 An object of class of \linkS4class{ControlEL}.
 }
 \description{
-Specifies details of computation of (constrained) empirical likelihood.
+Specifies computational details of (constrained) empirical likelihood.
 }
 \examples{
-optcfg <- el_control(maxit = 300L, th = 200, nthreads = 1L)
+optcfg <- el_control(maxit = 300, th = 200, nthreads = 1)
 }
 \seealso{
 \link{el_eval}, \link{elt}

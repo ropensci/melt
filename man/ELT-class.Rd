@@ -12,18 +12,18 @@ S4 class for empirical likelihood test.
 \describe{
 \item{\code{optim}}{A list with the optimization results.}
 
-\item{\code{alpha}}{A single numeric for the minus twice the empirical
-log-likelihood ratio for the overall test of the model.}
+\item{\code{alpha}}{A single numeric for the significance level.}
 
-\item{\code{logl}}{A single numeric for the}
+\item{\code{logl}}{A single numeric for the (constrained) empirical log-likelihood.}
 
-\item{\code{statistic}}{A single numeric for .}
+\item{\code{statistic}}{A single numeric for the minus twice the (constrained)
+empirical log-likelihood ratio.}
 
 \item{\code{cv}}{A single numeric for the critical value.}
 
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
 
-\item{\code{calibrate}}{A single character for the calibration method.}
+\item{\code{calibrate}}{A single character for the calibration method used.}
 }}
 
 \examples{

@@ -2,6 +2,7 @@
 #include "EL.h"
 #include <xoshiro.h>
 #include <dqrng.h>
+#include <boost/random/uniform_int_distribution.hpp>
 #include <RcppEigen.h>
 #ifdef _OPENMP
 #include <omp.h>
@@ -32,7 +33,7 @@ Rcpp::NumericVector boot_(const int B,
   // initialize seed
   dqrng::xoshiro256plus gen(seed);
   // discrete uniform distribution
-  std::uniform_int_distribution<int> u(0, n - 1);
+  boost::random::uniform_int_distribution<> u(0, n - 1);
 
   std::vector<double> boot_statistic(B);
   const double test_th = th_nloglr(par.size(), th);

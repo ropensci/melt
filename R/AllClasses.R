@@ -188,7 +188,7 @@ setClass("ConfregEL",
 
 #' S4 class \linkS4class{ControlEL}
 #'
-#' S4 class for details of computation of empirical likelihood.
+#' S4 class for computational details of empirical likelihood.
 #'
 #' @slot maxit A single integer for the maximum number of iterations for the
 #'   optimization with respect to \eqn{\theta}.
@@ -204,22 +204,12 @@ setClass("ConfregEL",
 #' @slot step A single numeric for the step size \eqn{\gamma} for the projected
 #'   gradient descent method.
 #' @slot th A single numeric for the threshold for the negative empirical
-#'   log-likelihood ratio. The iteration stops if the value exceeds the
-#'   threshold. Defaults to \code{NULL} and sets the threshold to
-#'   \code{200 * d}, where \code{d} corresponds to the degrees of freedom of the
-#'   limiting chi-squared distribution of the statistic.
+#'   log-likelihood ratio.
 #' @slot nthreads A single integer for the number of threads for parallel
-#'   computation via OpenMP (if available). Defaults to the half of the
-#'   available threads. For better performance, it is generally recommended to
-#'   limit the number of threads to the number of physical cores. Note that it
-#'   only applies to the following functions that involve multiple evaluations
-#'   or minimizations:
-#'   \itemize{
-#'   \item{\code{\link{confint}}}
-#'   \item{\code{\link{confreg}}}
-#'   \item{\code{\link{el_lm}}}
-#'   \item{\code{\link{el_glm}}}
-#'   \item{\code{\link{eld}}}}
+#'   computation via OpenMP (if available).
+#' @slot seed A single integer for the seed for random number generation.
+#' @slot B A single integer for the number of bootstrap replicates.
+#' @seealso \link{el_control}
 #' @examples
 #' showClass("ControlEL")
 setClass("ControlEL",
@@ -227,10 +217,6 @@ setClass("ControlEL",
     maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
     step = "ANY", th = "ANY", nthreads = "integer", seed = "integer",
     B = "integer"
-  ),
-  prototype = list(
-    maxit = 200L, maxit_l = 50L, tol = 1e-06, tol_l = 1e-06,
-    step = NULL, th = NULL, nthreads = NULL
   )
 )
 
@@ -250,13 +236,13 @@ setClass("ELD", slots = c(eld = "numeric"))
 #' S4 class for empirical likelihood test.
 #'
 #' @slot optim A list with the optimization results.
-#' @slot alpha A single numeric for the minus twice the empirical
-#'   log-likelihood ratio for the overall test of the model.
-#' @slot logl A single numeric for the
-#' @slot statistic A single numeric for .
+#' @slot alpha A single numeric for the significance level.
+#' @slot logl A single numeric for the (constrained) empirical log-likelihood.
+#' @slot statistic A single numeric for the minus twice the (constrained)
+#'   empirical log-likelihood ratio.
 #' @slot cv A single numeric for the critical value.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot calibrate A single character for the calibration method.
+#' @slot calibrate A single character for the calibration method used.
 #' @examples
 #' showClass("ELT")
 setClass("ELT",

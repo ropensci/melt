@@ -81,6 +81,11 @@ test_that("when elt == eval", {
   expect_equal(fit@optim$lambda, fit2@optim$lambda)
 })
 
+test_that("invalid 'calibrate'", {
+  fit <- el_lm(mpg ~ wt, data = mtcars)
+  expect_error(elt(fit, rhs = c(1, 1), calibrate = "f"))
+})
+
 test_that("invalid 'control'", {
   skip_on_os("windows", arch = "i386")
   n <- 10

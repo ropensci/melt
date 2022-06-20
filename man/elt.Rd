@@ -25,17 +25,19 @@ left-hand-side of hypothesis. Each row gives a linear combination of the
 parameters in \code{object}. The number of columns should be equal to the
 number of parameters. Defaults to \code{NULL}. See ‘Details’.}
 
-\item{alpha}{A single numeric for the significance level. Defaults to \code{0.05}.}
+\item{alpha}{A single numeric for the significance level. Defaults to
+\code{0.05}.}
 
 \item{calibrate}{A single character for the calibration method. Defaults to
-\code{chisq}. See ‘Details’.}
+\code{"chisq"}. See ‘Details’.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}
 }
 \value{
-If \code{lhs} is \code{NULL}, an object of class \linkS4class{EL}
-is returned. Otherwise, an object of class \linkS4class{CEL} is returned.
+An object of class of \linkS4class{ELT}. If \code{lhs} is
+non-\code{NULL}, the \code{optim} slot corresponds to that of
+\linkS4class{CEL}. Otherwise, it corresponds to that of \linkS4class{EL}.
 }
 \description{
 Tests a linear hypothesis for objects that inherit from class
@@ -46,7 +48,7 @@ Tests a linear hypothesis for objects that inherit from class
 \eqn{l(\theta)} described in \linkS4class{CEL}. \code{rhs} and \code{lhs}
 cannot be both \code{NULL}. For non-\code{NULL} \code{lhs}, it is required
 that \code{lhs} have full row rank \eqn{q \leq p} and \eqn{p} be equal to
-\code{object$npar}, the number of parameters in the fitted model.
+the number of parameters in the \code{object}.
 
 Depending on the specification of \code{rhs} and \code{lhs}, we have the
 following three cases:
@@ -56,14 +58,21 @@ constrained minimization is performed with the right-hand-side \eqn{r} and
 the left-hand-side \eqn{L} as
 \deqn{\inf_{\theta: L\theta = r} l(\theta).}
 \item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as
-\deqn{\inf_{\theta: L\theta = 0} l(\theta).}
+\eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
 \item If \code{lhs} is \code{NULL}, \eqn{L} is set to the identity matrix
-and the problem reduces to evaluating at \eqn{r} as
-\deqn{l(r).}
+and the problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
 }
+
+\code{calibrate} specifies the calibration method used. Three methods are
+available: \code{"chisq"} (chi-square calibration), \code{"boot"}
+(bootstrap calibration), and \code{"f"} (\eqn{F} calibration).
+\code{"boot"} is applicable only when \code{lhs} is \code{NULL}. The
+\code{nthreads}, \code{seed}, and \code{B} slots in \code{control} apply to
+the bootstrap procedure. \code{"f"} is applicable only to the mean
+parameter when \code{lhs} is \code{NULL}.
 }
 \examples{
-n <- 100L
+n <- 100
 x1 <- rnorm(n)
 x2 <- rnorm(n)
 y <- 1 + x1 + x2 + rnorm(n)
