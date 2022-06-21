@@ -54,11 +54,11 @@ test_that("when elt == eval", {
   x <- rnorm(n)
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   par <- runif(1, min(x), max(x))
-  fit <- el_mean(par, x, control = optcfg)
+  fit <- el_mean(x, par, control = optcfg)
   fit2 <- elt(fit, rhs = par, control = optcfg)
   expect_equal(fit@optim$lambda, fit2@optim$lambda)
   # mean (weighted)
-  fit <- el_mean(par, x, weights = w, control = optcfg)
+  fit <- el_mean(x, par, weights = w, control = optcfg)
   fit2 <- elt(fit, rhs = par, control = optcfg)
   expect_equal(fit@optim$lambda, fit2@optim$lambda)
   # lm
@@ -88,7 +88,7 @@ test_that("invalid 'control'", {
   n <- 10
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
-  fit <- el_mean(par, x)
+  fit <- el_mean(x, par)
   expect_error(elt(fit, lhs = 1, control = list(maxit = 200L)))
 })
 
@@ -111,7 +111,7 @@ test_that("calibration", {
   n <- 20
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
-  fit <- el_mean(par, x)
+  fit <- el_mean(x, par)
   out <- elt(fit, rhs = 0.2, calibrate = "f")
   out2 <- elt(fit, rhs = 0.2, calibrate = "boot")
   expect_s4_class(out, "ELT")

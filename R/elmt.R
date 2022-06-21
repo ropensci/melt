@@ -3,6 +3,29 @@
 #' #' Tests a linear hypothesis for objects that inherit from class
 #' #'   \linkS4class{EL}.
 #' #'
+#' #' @export
+#' elmt <- function() {
+#'   cat("multiple test")
+#' }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' #' Multiple tests with empirical likelihood
+#' #'
+#' #' Tests a linear hypothesis for objects that inherit from class
+#' #'   \linkS4class{EL}.
+#' #'
 #' #' @param object A fitted \linkS4class{EL} object.
 #' #' @param rhs A numeric vector for the right-hand-side of hypothesis, with as
 #' #'   many entries as the rows in \code{lhs}. Defaults to \code{NULL}. See

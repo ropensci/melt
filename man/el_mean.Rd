@@ -4,13 +4,13 @@
 \alias{el_mean}
 \title{Empirical likelihood for the mean}
 \usage{
-el_mean(par, x, weights = NULL, control = el_control(), model = TRUE)
+el_mean(x, par, weights = NULL, control = el_control(), model = TRUE)
 }
 \arguments{
-\item{par}{A numeric vector of parameter values to be tested.}
-
 \item{x}{A numeric matrix, or an object that can be coerced to a numeric
 matrix. Each row corresponds to an observation.}
+
+\item{par}{A numeric vector of parameter values to be tested.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
 fitting process. Defaults to \code{NULL}, corresponding to identical
@@ -30,20 +30,20 @@ Computes empirical likelihood for the mean.
 }
 \examples{
 # scalar mean
-par <- 0
 x <- rnorm(100)
-el_mean(par, x)
+par <- 0
+el_mean(x, par)
 
 # vector mean
-par <- c(0, 0)
 x <- matrix(rnorm(100), ncol = 2)
-el_mean(par, x)
+par <- c(0, 0)
+el_mean(x, par)
 
 # weighted data
-par <- c(0, 0)
 x <- matrix(rnorm(100), ncol = 2)
+par <- c(0, 0)
 w <- rep(c(1, 2), each = 25)
-el_mean(par, x, w)
+el_mean(x, par, w)
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”

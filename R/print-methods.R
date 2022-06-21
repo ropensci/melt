@@ -1,46 +1,45 @@
 #' @rdname print
-setMethod(
-  "print", "EL",
-  function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-    cat("\nEmpirical Likelihood:", getMethodEL(x), "\n\n")
-    if (length(coef(x)) != 0L) {
-      cat("Maximum EL estimates:\n")
-      print.default(coef(x), digits = digits, ...)
-    }
-    cat("\n")
-
-    out <- character()
-    if (length(x@statistic) != 0L) {
-      out <- c(
-        out, paste("Chisq:", format.default(x@statistic, digits = digits)),
-        paste("df:", x@df),
-        paste("Pr(>Chisq):", format.pval(x@pval, digits = digits))
-      )
-    } else {
-      out <- c("Empty model")
-    }
-    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-
-    if (length(x@statistic) != 0L) {
-      cat(
-        "\nEL evaluation:",
-        if (x@optim$convergence) "converged" else "not converged", "\n"
-      )
-    }
-    cat("\n")
-    invisible(x)
+setMethod("print", "EL", function(x,
+                                  digits = max(3L, getOption("digits") - 3L),
+                                  ...) {
+  cat("\nEmpirical Likelihood:", getMethodEL(x), "\n\n")
+  if (length(coef(x)) != 0L) {
+    cat("Maximum EL estimates:\n")
+    print.default(coef(x), digits = digits, ...)
   }
-)
+  cat("\n")
+
+  out <- character()
+  if (length(x@statistic) != 0L) {
+    out <- c(
+      out, paste("Chisq:", format.default(x@statistic, digits = digits)),
+      paste("df:", x@df),
+      paste("Pr(>Chisq):", format.pval(x@pval, digits = digits))
+    )
+  } else {
+    out <- c("Empty model")
+  }
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
+
+  if (length(x@statistic) != 0L) {
+    cat(
+      "\nEL evaluation:",
+      if (x@optim$convergence) "converged" else "not converged", "\n"
+    )
+  }
+  cat("\n")
+  invisible(x)
+})
 setMethod("show", "EL", function(object) print(object))
 
 
 #' @rdname print
 #' @importFrom stats naprint pchisq
 setMethod(
-  "print", "SummaryLM",
-  function(x, digits = max(3L, getOption("digits") - 3L),
-           signif.stars = getOption("show.signif.stars"),
-           ...) {
+  "print", "SummaryLM", function(x,
+                                 digits = max(3L, getOption("digits") - 3L),
+                                 signif.stars = getOption("show.signif.stars"),
+                                 ...) {
     cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
       "\n",
       sep = ""
@@ -96,9 +95,7 @@ setMethod("show", "SummaryLM", function(object) print(object))
 
 
 #' @rdname print
-setMethod(
-  "print", "logLikEL",
-  function(x, digits = getOption("digits"), ...) {
+setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
     cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
       collapse = ", "
     ),
@@ -112,9 +109,7 @@ setMethod("show", "logLikEL", function(object) print(object))
 
 
 #' @rdname print
-setMethod(
-  "print", "ELT",
-  function(x, digits = getOption("digits"), ...) {
+setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
     cat("\nEmpirical Likelihood Test\n\n")
     method <- switch(x@calibrate,
       "chisq" = "Chi-square",

@@ -45,10 +45,19 @@
 #' )
 #'
 #' @importFrom stats terms reshape
+#' @keywords internal
 #' @export
-el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
-                        method = c("AMC", "NB"), B, nthread = 1,
-                        progress = TRUE, maxit = 10000, abstol = 1e-08) {
+el_pairwise <- function(formula,
+                        data,
+                        control = NULL,
+                        k = 1,
+                        alpha = 0.05,
+                        method = c("AMC", "NB"),
+                        B,
+                        nthread = 1,
+                        progress = TRUE,
+                        maxit = 10000,
+                        abstol = 1e-08) {
   lifecycle::deprecate_warn("1.5.2", "el_pairwise()")
 
   ## check method

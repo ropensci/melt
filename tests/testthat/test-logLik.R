@@ -4,7 +4,7 @@ test_that("logLik at maximum EL estimates", {
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(par, x, control = optcfg)
+  fit <- el_mean(x, par, control = optcfg)
   loglik <- suppressWarnings(logLik(fit, REML = T))
   expect_output(show(loglik))
   expect_output(print(loglik))

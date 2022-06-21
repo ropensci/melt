@@ -76,8 +76,12 @@
 #' @importFrom methods is
 #' @importFrom stats pchisq
 #' @export
-elt <- function(object, rhs = NULL, lhs = NULL, alpha = 0.05,
-                calibrate = c("chisq", "boot", "f"), control = el_control()) {
+elt <- function(object,
+                rhs = NULL,
+                lhs = NULL,
+                alpha = 0.05,
+                calibrate = c("chisq", "boot", "f"),
+                control = el_control()) {
   stopifnot(
     "invalid 'object' supplied" = (is(object, "EL")),
     "'object' has no 'data'; fit the model with 'model' = TRUE" =

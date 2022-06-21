@@ -35,7 +35,7 @@ computes \eqn{\textnormal{ELD}_i } for \eqn{i = 1, \dots, n }.
 \examples{
 x <- rnorm(10L)
 y <- 10
-fit <- el_mean(0, c(x, y))
+fit <- el_mean(c(x, y), 0)
 eld(fit)
 }
 \references{

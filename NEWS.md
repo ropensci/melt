@@ -1,25 +1,21 @@
 melt 1.6.0
 =========================
 ### BREAKING CHANGES
-* `lifecycle` package adopted to manage the life cycle of exported functions.
-
-* `elt` accepts additional argument `calibrate`.
+* The order of arguments of `el_mean()` changed to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par`.
 
 ### NEW FEATURES
-* `lifecycle` package adopted to manage the life cycle of exported functions.
+* DESCRIPTION file updated with new package dependencies (`graphics`, `lifecycle`, `BH`, and `dqrng`).
 
-* `elt` accepts additional argument `calibrate`.
+* `lht()` is renamed to `elt()`, which accepts additional arguments `alpha` and `calibrate`.
 
 ### MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to NULL.
-
-* `optim` slot of `CEL` class no longer has `method` element.
 
 ### BUG FIXES
 * unit test error fixed.
 
 ### DEPRECATED AND DEFUNCT
-* `lht()` is deprecated to avoid conflicts with other packages. It is renamed to `elt()` and will be removed in a future release. 
+* `el_pairwise()` is removed from the documentation index.
 
 
 melt 1.5.2

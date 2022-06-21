@@ -63,8 +63,13 @@
 #' @importFrom stats .getXlevels is.empty.model lm.fit lm.wfit model.matrix
 #'   model.response model.weights pchisq
 #' @export
-el_lm <- function(formula, data, weights = NULL, na.action,
-                  control = el_control(), model = TRUE, ...) {
+el_lm <- function(formula,
+                  data,
+                  weights = NULL,
+                  na.action,
+                  control = el_control(),
+                  model = TRUE,
+                  ...) {
   if (!is(control, "ControlEL")) {
     stop("invalid 'control' specified")
   }

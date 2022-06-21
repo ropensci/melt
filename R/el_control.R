@@ -29,10 +29,10 @@
 #'   only applies to \code{\link{elt}} when \code{calibrate} is set to
 #'   \code{"boot"}. Defaults to a random integer generated from 1 to the maximum
 #'   integer supported by \R on the machine, which is determined by
-#'   \code{\link{set.seed}}. Only one seed is needed even when multiple threads
-#'   are used with \code{nthreads}. Each thread is given a separate seed to
-#'   produce a non-overlapping but reproducible sequence of random numbers. The
-#'   \code{xoshiro256+} pseudo-random number generator is used internally to
+#'   \code{\link[base]{set.seed}}. Only one seed is needed even when multiple
+#'   threads are used with \code{nthreads}. Each thread is given a separate seed
+#'   to produce a non-overlapping but reproducible sequence of random numbers.
+#'   The \code{xoshiro256+} pseudo-random number generator is used internally to
 #'   work with OpenMP.
 #' @param B A single integer for the number of bootstrap replicates. It only
 #'   applies to \code{\link{elt}} when \code{calibrate} is set to \code{"boot"}.
@@ -42,8 +42,13 @@
 #' @examples
 #' optcfg <- el_control(maxit = 300, th = 200, nthreads = 1)
 #' @export
-el_control <- function(maxit = 200L, maxit_l = 25L, tol = 1e-06, tol_l = 1e-06,
-                       step = NULL, th = NULL, nthreads,
+el_control <- function(maxit = 200L,
+                       maxit_l = 25L,
+                       tol = 1e-06,
+                       tol_l = 1e-06,
+                       step = NULL,
+                       th = NULL,
+                       nthreads,
                        seed = sample.int(.Machine$integer.max, 1L),
                        B = 10000L) {
   # maxit: single integer (positive)

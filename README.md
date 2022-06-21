@@ -5,6 +5,9 @@
 
 <!-- badges: start -->
 
+[![Project Status: Active - The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
 [![R-CMD-check](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml)
@@ -48,8 +51,8 @@ library(melt)
 # one sample test for mean
 fit1 <- el_mean(par = 0, x = rnorm(n = 100))
 confint(fit1)
-#>       lower     upper
-#> 1 -0.274624 0.1589018
+#>        lower     upper
+#> 1 -0.1625339 0.2170646
 
 
 # linear regression
@@ -109,12 +112,13 @@ lhs <- matrix(c(1, -1, 0, 0,
                 0, 0, 1, -1), byrow = TRUE, nrow = 3)
 elt(fit3, lhs = lhs)
 #> 
-#> Empirical Likelihood: lm 
+#> Empirical Likelihood Test
 #> 
+#> Significance level: 0.05, Calibration: Chi-square 
 #> 
-#> Chisq: 26.6, df: 3, Pr(>Chisq): 7.148e-06
+#> Statistic: 26.59804, Critical value: 7.814728 
 #> 
-#> EL evaluation: converged
+#> p-value: 7.147731e-06
 
 
 # logistic regression

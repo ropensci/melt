@@ -59,9 +59,17 @@
 #' summary(fit)
 #' @importFrom stats gaussian glm.fit model.extract model.weights pchisq
 #' @export
-el_glm <- function(formula, family = gaussian, data, weights = NULL, na.action,
-                   control = el_control(), model = TRUE, start = NULL,
-                   etastart = NULL, mustart = NULL, ...) {
+el_glm <- function(formula,
+                   family = gaussian,
+                   data,
+                   weights = NULL,
+                   na.action,
+                   control = el_control(),
+                   model = TRUE,
+                   start = NULL,
+                   etastart = NULL,
+                   mustart = NULL,
+                   ...) {
   cl <- match.call()
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())

@@ -18,24 +18,27 @@
 #' @seealso \link{el_control}, \link{el_eval}, \link{elt}
 #' @examples
 #' # scalar mean
-#' par <- 0
 #' x <- rnorm(100)
-#' el_mean(par, x)
+#' par <- 0
+#' el_mean(x, par)
 #'
 #' # vector mean
-#' par <- c(0, 0)
 #' x <- matrix(rnorm(100), ncol = 2)
-#' el_mean(par, x)
+#' par <- c(0, 0)
+#' el_mean(x, par)
 #'
 #' # weighted data
-#' par <- c(0, 0)
 #' x <- matrix(rnorm(100), ncol = 2)
+#' par <- c(0, 0)
 #' w <- rep(c(1, 2), each = 25)
-#' el_mean(par, x, w)
+#' el_mean(x, par, w)
 #' @importFrom methods is new
 #' @importFrom stats pchisq
 #' @export
-el_mean <- function(par, x, weights = NULL, control = el_control(),
+el_mean <- function(x,
+                    par,
+                    weights = NULL,
+                    control = el_control(),
                     model = TRUE) {
   mm <- as.matrix(x)
   n <- nrow(mm)

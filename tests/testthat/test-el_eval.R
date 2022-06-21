@@ -63,8 +63,8 @@ test_that("identical weights == no weights", {
   g <- x - par
   w <- rep(runif(1), length(x))
   optcfg <- el_control(maxit_l = 20L, tol_l = 1e-08, th = 1e+10)
-  a1 <- el_mean(par, x, control = optcfg)
-  a2 <- el_mean(par, x, weights = w, control = optcfg)
+  a1 <- el_mean(x, par, control = optcfg)
+  a2 <- el_mean(x, par, weights = w, control = optcfg)
   expect_equal(a1@optim, a2@optim)
 })
 

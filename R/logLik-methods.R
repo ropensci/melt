@@ -1,7 +1,5 @@
 #' @rdname logLik
-setMethod(
-  "logLik", "EL",
-  function(object, ...) {
+setMethod("logLik", "EL", function(object, ...) {
     if (!missing(...)) {
       warning("extra arguments are not supported")
     }
