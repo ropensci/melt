@@ -1,4 +1,4 @@
-#' Linear hypothesis test
+#' Empirical likelihood test
 #'
 #' @description
 #' `r lifecycle::badge("deprecated")`

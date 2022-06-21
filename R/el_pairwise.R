@@ -49,7 +49,7 @@
 el_pairwise <- function(formula, data, control = NULL, k = 1, alpha = 0.05,
                         method = c("AMC", "NB"), B, nthread = 1,
                         progress = TRUE, maxit = 10000, abstol = 1e-08) {
-  .Deprecated(msg = "'el_pairwise' function is deprecated. It will be replaced by a formal method in a future release.")
+  lifecycle::deprecate_warn("1.5.2", "el_pairwise()")
 
   ## check method
   method <- match.arg(method)

@@ -33,6 +33,7 @@ setMethod(
 )
 setMethod("show", "EL", function(object) print(object))
 
+
 #' @rdname print
 #' @importFrom stats naprint pchisq
 setMethod(
@@ -93,6 +94,7 @@ setMethod(
 )
 setMethod("show", "SummaryLM", function(object) print(object))
 
+
 #' @rdname print
 setMethod(
   "print", "logLikEL",
@@ -107,3 +109,20 @@ setMethod(
   }
 )
 setMethod("show", "logLikEL", function(object) print(object))
+
+
+#' @describeIn ELT prints test results
+setMethod(
+  "print", "ELT",
+  function(x, digits = getOption("digits"), ...) {
+    # cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
+    #                                    collapse = ", "
+    # ),
+    # " (df=", format(x@df), ")\n",
+    # sep = ""
+    # )
+    cat(x@pval)
+    invisible(x)
+  }
+)
+setMethod("show", "ELT", function(object) print(object))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lht.R
 \name{lht}
 \alias{lht}
-\title{Linear hypothesis test}
+\title{Empirical likelihood test}
 \usage{
 lht(
   object,

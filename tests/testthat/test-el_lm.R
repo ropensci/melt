@@ -7,8 +7,12 @@ test_that("probabilities add up to 1", {
   df <- data.frame(y, x, x2)
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
+  expect_visible(fit)
+  # expect_output(show(fit))
   expect_output(print(fit))
+  expect_visible(summary(fit))
   expect_output(print(summary(fit)))
+  # expect_output(show(summary(fit)))
   expect_equal(sum(exp(fit@logp)), 1)
 })
 
