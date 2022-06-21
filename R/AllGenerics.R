@@ -56,7 +56,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' Confidence intervals for model parameters
 #'
 #' Computes confidence intervals for one or more parameters in a fitted model.
-#' Package \strong{melt} adds a method for objects inheriting from class
+#' The package \pkg{melt} adds a method for objects inheriting from class
 #' \linkS4class{EL}.
 #'
 #' @param object An object of class \linkS4class{EL}.
@@ -158,7 +158,7 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
 #' Print methods
 #'
-#' Provides print methods for objects that inherit from class \linkS4class{EL}.
+#' Provides print methods for the objects from the package \pkg{melt}.
 #'
 #' @param x An object to be printed.
 #' @param ... Further arguments passed to other methods.

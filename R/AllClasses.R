@@ -99,8 +99,8 @@ setClass("EL",
 #'   computationally expensive since it implicitly involves the
 #'   evaluation step as described in \linkS4class{EL}. Further, depending on the
 #'   form of \eqn{g(X_i, \theta)} and the constraint, the optimization problem
-#'   can be nonconvex and have multiple local minima. For this reason,
-#'   \strong{melt} only considers linear hypotheses and performs local
+#'   can be nonconvex and have multiple local minima. For this reason, the
+#'   package \pkg{melt} only considers linear hypotheses and performs local
 #'   minimization of \eqn{l(\theta)} using projected gradient descent method.
 #'   With the orthogonal projection matrix \eqn{P} and a step size \eqn{\gamma},
 #'   the algorithm updates \eqn{\theta} as

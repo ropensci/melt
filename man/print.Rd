@@ -5,6 +5,7 @@
 \alias{print,EL-method}
 \alias{print,SummaryLM-method}
 \alias{print,logLikEL-method}
+\alias{print,ELT-method}
 \title{Print methods}
 \usage{
 \S4method{print}{EL}(x, digits = max(3L, getOption("digits") - 3L), ...)
@@ -17,6 +18,8 @@
 )
 
 \S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
+
+\S4method{print}{ELT}(x, digits = getOption("digits"), ...)
 }
 \arguments{
 \item{x}{An object to be printed.}
@@ -30,5 +33,5 @@
 are printed for each coefficient.}
 }
 \description{
-Provides print methods for objects that inherit from class \linkS4class{EL}.
+Provides print methods for the objects from the package \pkg{melt}.
 }

@@ -1,5 +1,4 @@
 test_that("invalid 'object", {
-  skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
@@ -14,7 +13,6 @@ test_that("invalid 'object", {
 })
 
 test_that("invalid 'lhs' and 'rhs'", {
-  skip_on_os("windows", arch = "i386")
   n <- 100
   x <- rnorm(n)
   x2 <- rnorm(n)
@@ -87,7 +85,6 @@ test_that("invalid 'calibrate'", {
 })
 
 test_that("invalid 'control'", {
-  skip_on_os("windows", arch = "i386")
   n <- 10
   x <- rnorm(n)
   par <- runif(1, min(x), max(x))
@@ -104,5 +101,19 @@ test_that("vector 'lhs'", {
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
   expect_error(elt(fit, lhs = c(1, -1, 0, 0)))
-  expect_s4_class(elt(fit, lhs = c(1, -1, 0)), "ELT")
+  out <- elt(fit, lhs = c(1, -1, 0))
+  expect_s4_class(out, "ELT")
+  expect_output(show(out))
+  expect_output(print(out))
+})
+
+test_that("calibration", {
+  n <- 20
+  x <- rnorm(n)
+  par <- runif(1, min(x), max(x))
+  fit <- el_mean(par, x)
+  out <- elt(fit, rhs = 0.2, calibrate = "f")
+  out2 <- elt(fit, rhs = 0.2, calibrate = "boot")
+  expect_s4_class(out, "ELT")
+  expect_s4_class(out2, "ELT")
 })

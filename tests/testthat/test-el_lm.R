@@ -7,12 +7,6 @@ test_that("probabilities add up to 1", {
   df <- data.frame(y, x, x2)
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
-  expect_visible(fit)
-  # expect_output(show(fit))
-  expect_output(print(fit))
-  expect_visible(summary(fit))
-  expect_output(print(summary(fit)))
-  # expect_output(show(summary(fit)))
   expect_equal(sum(exp(fit@logp)), 1)
 })
 
@@ -125,4 +119,29 @@ test_that("same results with parallel computing", {
                 control = el_control(th = 1e+10))
   expect_equal(wfit@optim, wfit2@optim)
   expect_equal(wfit@parTests, wfit2@parTests)
+})
+
+test_that("print method", {
+  n <- 100
+  x <- rnorm(n)
+  x2 <- rnorm(n)
+  y <- 1 + 0.1 * x - 0.1 * x2 + rnorm(n)
+  df <- data.frame(y, x, x2)
+  optcfg <- el_control(tol = 1e-08, th = 1e+10)
+  fit <- el_lm(y ~ x + x2, df, control = optcfg)
+  expect_output(show(fit))
+  expect_output(print(fit))
+  out <- summary(fit)
+  expect_output(print(out))
+  expect_output(show(out))
+  fit@statistic <- numeric()
+  expect_output(print(fit))
+
+  df2 <- df
+  df2[1, 1] <- NA
+  fit2 <- el_lm(y ~ x + x2, df2, control = optcfg)
+  expect_output(print(summary(fit2)))
+
+  out@aliased <- c(TRUE, TRUE, TRUE)
+  expect_output(print(out))
 })

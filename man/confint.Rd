@@ -35,7 +35,7 @@ correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in
 }
 \description{
 Computes confidence intervals for one or more parameters in a fitted model.
-Package \strong{melt} adds a method for objects inheriting from class
+The package \pkg{melt} adds a method for objects inheriting from class
 \linkS4class{EL}.
 }
 \examples{
