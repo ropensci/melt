@@ -1,5 +1,5 @@
-// #ifndef MHT_UTILS_H_
-// #define MHT_UTILS_H_
+// #ifndef ELMT_UTILS_H_
+// #define ELMT_UTILS_H_
 //
 // #include <RcppEigen.h>
 //

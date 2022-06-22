@@ -34,7 +34,7 @@ setMethod("show", "EL", function(object) print(object))
 
 
 #' @rdname print
-#' @importFrom stats naprint pchisq
+#' @importFrom stats naprint pchisq printCoefmat
 setMethod(
   "print", "SummaryLM", function(x,
                                  digits = max(3L, getOption("digits") - 3L),

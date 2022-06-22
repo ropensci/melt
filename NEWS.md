@@ -6,6 +6,8 @@ melt 1.6.0
 ### NEW FEATURES
 * New package dependencies added (`graphics`, `lifecycle`, `BH`, and `dqrng`).
 
+* Generic function `weights()` is added.
+
 * `lht()` is renamed to `elt()`, which accepts additional arguments `alpha` and `calibrate`.
 
 ### MINOR IMPROVEMENTS
@@ -15,7 +17,7 @@ melt 1.6.0
 * unit test error fixed.
 
 ### DEPRECATED AND DEFUNCT
-* `el_pairwise()` is removed from the documentation index.
+* `el_pairwise()` is removed.
 
 
 melt 1.5.2

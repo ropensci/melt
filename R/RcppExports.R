@@ -45,7 +45,3 @@ lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthrea
     .Call(`_melt_lm_`, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e4L, nthread = 1L, progress = TRUE, threshold = 50, maxit = 1e4L, abstol = 1e-8) {
-    .Call(`_melt_pairwise`, x, c, control, k, level, interval, method, B, nthread, progress, threshold, maxit, abstol)
-}
-
