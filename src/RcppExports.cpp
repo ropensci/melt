@@ -118,6 +118,47 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// elmt_mvchisq_
+Rcpp::NumericVector elmt_mvchisq_(const std::string method, const Eigen::Map<Eigen::VectorXd>& est, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::MatrixXd>& lhs, const Eigen::Map<Eigen::VectorXi>& q, const int m, const int B);
+RcppExport SEXP _melt_elmt_mvchisq_(SEXP methodSEXP, SEXP estSEXP, SEXP xSEXP, SEXP lhsSEXP, SEXP qSEXP, SEXP mSEXP, SEXP BSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type est(estSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type lhs(lhsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXi>& >::type q(qSEXP);
+    Rcpp::traits::input_parameter< const int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const int >::type B(BSEXP);
+    rcpp_result_gen = Rcpp::wrap(elmt_mvchisq_(method, est, x, lhs, q, m, B));
+    return rcpp_result_gen;
+END_RCPP
+}
+// elmt_statistic_
+Rcpp::NumericVector elmt_statistic_(const Eigen::Map<Eigen::VectorXi>& q, const int m, const std::string method, const Eigen::Map<Eigen::VectorXd>& est, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& rhs, const Eigen::Map<Eigen::MatrixXd>& lhs, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& w);
+RcppExport SEXP _melt_elmt_statistic_(SEXP qSEXP, SEXP mSEXP, SEXP methodSEXP, SEXP estSEXP, SEXP xSEXP, SEXP rhsSEXP, SEXP lhsSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP wSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXi>& >::type q(qSEXP);
+    Rcpp::traits::input_parameter< const int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type est(estSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type rhs(rhsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type lhs(lhsSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit_l(maxit_lSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type step(stepSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
+    rcpp_result_gen = Rcpp::wrap(elmt_statistic_(q, m, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w));
+    return rcpp_result_gen;
+END_RCPP
+}
 // elt_
 Rcpp::List elt_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::MatrixXd>& lhs, const Eigen::Map<Eigen::VectorXd>& rhs, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& w);
 RcppExport SEXP _melt_elt_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP lhsSEXP, SEXP rhsSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP wSEXP) {
@@ -223,6 +264,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_confint_", (DL_FUNC) &_melt_confint_, 13},
     {"_melt_confreg_", (DL_FUNC) &_melt_confreg_, 15},
     {"_melt_eld_", (DL_FUNC) &_melt_eld_, 8},
+    {"_melt_elmt_mvchisq_", (DL_FUNC) &_melt_elmt_mvchisq_, 7},
+    {"_melt_elmt_statistic_", (DL_FUNC) &_melt_elmt_statistic_, 14},
     {"_melt_elt_", (DL_FUNC) &_melt_elt_, 12},
     {"_melt_eval_", (DL_FUNC) &_melt_eval_, 7},
     {"_melt_eval_g_", (DL_FUNC) &_melt_eval_g_, 5},

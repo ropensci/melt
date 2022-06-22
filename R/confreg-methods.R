@@ -52,7 +52,12 @@ setMethod("confreg", "EL", function(object,
   } else if (isTRUE(all.equal(level, 1))) {
     stop("'level' must be a number between 0 and 1")
   }
-  cv <- if (is.null(cv)) qchisq(level, 2L) else check_cv_(cv, control@th)
+  if (is.null(cv)) {
+    cv <- qchisq(level, 2L)
+  } else {
+    cv <- check_cv_(cv, control@th)
+    level <- NA_real_
+  }
   npoints <- as.integer(npoints)
   if (npoints <= 0) {
     stop("'npoints' must be a positive integer")

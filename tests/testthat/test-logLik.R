@@ -1,10 +1,7 @@
 test_that("logLik at maximum EL estimates", {
-  skip_on_os("windows", arch = "i386")
-  n <- 10
-  x <- rnorm(n)
-  par <- runif(1, min(x), max(x))
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(x, par, control = optcfg)
+  data("airquality")
+  n <- nrow(airquality)
+  fit <- el_lm(Wind ~ Temp, data = airquality)
   loglik <- suppressWarnings(logLik(fit, REML = T))
   expect_output(show(loglik))
   expect_output(print(loglik))
@@ -12,10 +9,7 @@ test_that("logLik at maximum EL estimates", {
 })
 
 test_that("empty model", {
-  n <- 10
-  x <- rnorm(n)
-  y <- 1 + x + rnorm(n)
-  df <- data.frame(x, y)
-  fit <- el_lm(y ~ 0, df)
+  data("mtcars")
+  fit <- el_lm(mpg ~ 0, mtcars)
   expect_error(logLik(fit))
 })

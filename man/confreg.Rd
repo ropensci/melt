@@ -27,7 +27,7 @@ parameter in \code{object} are considered.}
 
 \item{cv}{A single numeric for the critical value for calibration of
 empirical likelihood ratio statistic. Defaults to NULL and set to
-\code{qchisq(level, 2L)}.}
+\code{qchisq(level, 2L)}. If non-\code{NULL}, \code{level} is ignored.}
 
 \item{npoints}{A single integer for the number of boundary points to compute.
 Defaults to \code{50}.}

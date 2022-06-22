@@ -25,6 +25,14 @@ eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
     .Call(`_melt_eld_`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
 }
 
+elmt_mvchisq_ <- function(method, est, x, lhs, q, m, B) {
+    .Call(`_melt_elmt_mvchisq_`, method, est, x, lhs, q, m, B)
+}
+
+elmt_statistic_ <- function(q, m, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w) {
+    .Call(`_melt_elmt_statistic_`, q, m, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w)
+}
+
 elt_ <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w) {
     .Call(`_melt_elt_`, method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w)
 }

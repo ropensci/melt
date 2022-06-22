@@ -21,7 +21,7 @@ parameters are considered.}
 
 \item{cv}{A single numeric for the critical value for calibration of
 empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
-\code{qchisq(level, 1L)}.}
+\code{qchisq(level, 1L)}. If non-\code{NULL}, \code{level} is ignored.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}

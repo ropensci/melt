@@ -50,7 +50,6 @@ test_that("loglik to loglr (weighted)", {
 })
 
 test_that("non-full rank", {
-  skip_on_os("windows", arch = "i386")
   n <- 100
   x <- rnorm(n)
   x2 <- x

@@ -67,7 +67,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'   \code{0.95}.
 #' @param cv A single numeric for the critical value for calibration of
 #'   empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
-#'   \code{qchisq(level, 1L)}.
+#'   \code{qchisq(level, 1L)}. If non-\code{NULL}, \code{level} is ignored.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
 #' @param ... Not used.
@@ -107,7 +107,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #'   \code{0.95}.
 #' @param cv A single numeric for the critical value for calibration of
 #'   empirical likelihood ratio statistic. Defaults to NULL and set to
-#'   \code{qchisq(level, 2L)}.
+#'   \code{qchisq(level, 2L)}. If non-\code{NULL}, \code{level} is ignored.
 #' @param npoints A single integer for the number of boundary points to compute.
 #'   Defaults to \code{50}.
 #' @param control An object of class \linkS4class{ControlEL} constructed by

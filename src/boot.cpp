@@ -7,6 +7,7 @@
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+#include <string>
 #include <random>
 #include <vector>
 

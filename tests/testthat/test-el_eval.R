@@ -69,7 +69,6 @@ test_that("identical weights == no weights", {
 })
 
 test_that("non-full rank", {
-  skip_on_os("windows", arch = "i386")
   g <- matrix(c(1, 1, 2, 2), ncol = 2)
   w <- c(1, 2)
   optcfg <- el_control(maxit_l = 20L, tol_l = 1e-08, th = 1e+10)
@@ -78,14 +77,12 @@ test_that("non-full rank", {
 })
 
 test_that("invalid 'g'", {
-  skip_on_os("windows", arch = "i386")
   optcfg <- el_control(maxit_l = 20L, tol_l = 1e-08, th = 1e+10)
   expect_error(el_eval(matrix(rnorm(2), ncol = 2), control = optcfg))
   expect_error(el_eval(matrix(c(1, 1, 2, NA), ncol = 2), control = optcfg))
 })
 
 test_that("invalid 'control'", {
-  skip_on_os("windows", arch = "i386")
   x <- rnorm(10)
   par <- runif(1, min(x), max(x))
   expect_error(el_eval(x - par, control = list(maxit = 200L)))

@@ -180,8 +180,7 @@ setClass("ConfregEL",
     pnames = "character"
   ),
   prototype = list(
-    points = NULL, estimates = NA_real_, level = NA_real_, cv = NA_real_,
-    pnames = NA_character_
+    points = NULL, estimates = NA_real_, cv = NA_real_, pnames = NA_character_
   )
 )
 
