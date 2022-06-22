@@ -141,7 +141,7 @@ el_glm <- function(formula,
     control = glm_control, intercept = intercept,
     singular.ok = FALSE
   )
-  method <- check_family_(fit$family)
+  method <- validate_family(fit$family)
   mm <- cbind(fit$y, X)
   p <- ncol(X)
   w <- check_weights_(w, nrow(mm))

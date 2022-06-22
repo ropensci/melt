@@ -88,8 +88,8 @@ elt <- function(object,
       (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  h <- check_hypothesis_(lhs, rhs, object@npar)
-  alpha <- check_alpha_(alpha)
+  h <- validate_hypothesis(lhs, rhs, object@npar)
+  validate_alpha(alpha)
   calibrate <- match.arg(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit

@@ -32,7 +32,7 @@ setMethod(
     }
     # number of rows of the confidence interval matrix
     p <- length(idx)
-    level <- check_level_(level)
+    validate_level(level)
     if (isTRUE(all.equal(level, 0))) {
       ci <- matrix(rep(est[idx], 2L), ncol = 2L)
       colnames(ci) <- c("lower", "upper")
@@ -56,7 +56,7 @@ setMethod(
     th <- control@th
     nthreads <- control@nthreads
     w <- getWeights(object)
-    cv <- if (is.null(cv)) qchisq(level, 1L) else check_cv_(cv, th)
+    cv <- if (is.null(cv)) qchisq(level, 1L) else validate_cv(cv, th)
     # compute the confidence interval matrix
     if (isTRUE(all.equal(level, 0))) {
       ci <- matrix(rep(est[idx], 2L), ncol = 2L)

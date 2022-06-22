@@ -1,15 +1,10 @@
 test_that("invalid 'object", {
-  n <- 10
-  x <- rnorm(n)
-  par <- runif(1, min(x), max(x))
+  data("mtcars")
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- el_eval(x - par, control = optcfg)
+  fit <- el_eval(mtcars$mpg, control = optcfg)
   expect_error(elt(fit, lhs = 1, control = optcfg))
-  x <- rnorm(10)
-  y <- 1 + x + rnorm(10)
-  df <- data.frame(x, y)
-  fit <- el_lm(y ~ 0., df)
-  expect_error(elt(fit, lhs = 1, control = optcfg))
+  fit2 <- el_lm(mpg ~ 0, mtcars)
+  expect_error(elt(fit2, lhs = 1, control = optcfg))
 })
 
 test_that("invalid 'lhs' and 'rhs'", {
@@ -25,6 +20,12 @@ test_that("invalid 'lhs' and 'rhs'", {
   expect_error(elt(fit, control = optcfg))
   expect_error(elt(fit, rhs = c(NA, 0), lhs = lhs, control = optcfg))
   expect_error(elt(fit, rhs = c(1, 0), lhs = lhs, control = optcfg))
+  expect_error(elt(fit, rhs = matrix(c(1, 0, 0), ncol = 3), lhs = lhs,
+                   control = optcfg))
+  expect_error(elt(fit, rhs = matrix(c(1, 0, 0), ncol = 1), lhs = lhs,
+                   control = optcfg))
+  expect_error(elt(fit, rhs = matrix(c("error"), ncol = 1), lhs = lhs,
+                   control = optcfg))
 
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   fit2 <- el_lm(y ~ x + x2, df, weights = w, control = optcfg)
@@ -80,15 +81,14 @@ test_that("when elt == eval", {
 })
 
 test_that("invalid 'calibrate'", {
+  data("mtcars")
   fit <- el_lm(mpg ~ wt, data = mtcars)
   expect_error(elt(fit, rhs = c(1, 1), calibrate = "f"))
 })
 
 test_that("invalid 'control'", {
-  n <- 10
-  x <- rnorm(n)
-  par <- runif(1, min(x), max(x))
-  fit <- el_mean(x, par)
+  data("sleep")
+  fit <- el_mean(sleep$extra, 0)
   expect_error(elt(fit, lhs = 1, control = list(maxit = 200L)))
 })
 
@@ -108,12 +108,10 @@ test_that("vector 'lhs'", {
 })
 
 test_that("calibration", {
-  n <- 20
-  x <- rnorm(n)
-  par <- runif(1, min(x), max(x))
-  fit <- el_mean(x, par)
-  out <- elt(fit, rhs = 0.2, calibrate = "f")
-  out2 <- elt(fit, rhs = 0.2, calibrate = "boot")
+  data("women")
+  fit <- el_mean(women$height, 65)
+  out <- elt(fit, rhs = 67, calibrate = "f")
+  out2 <- elt(fit, rhs = 67, calibrate = "boot")
   expect_s4_class(out, "ELT")
   expect_s4_class(out2, "ELT")
 })

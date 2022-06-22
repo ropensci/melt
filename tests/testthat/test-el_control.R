@@ -1,5 +1,5 @@
-test_that("invalid control parameters", {
-  expect_error(el_control(eee = 10))
+test_that("invalid 'control'", {
+  # expect_error(el_control(eee = 10))
   expect_error(el_control(maxit = NA))
   expect_error(el_control(maxit = 0.1))
   expect_error(el_control(maxit_l = NA))

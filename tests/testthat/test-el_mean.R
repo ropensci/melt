@@ -1,7 +1,7 @@
 test_that("convergence check", {
-  skip_on_os("windows", arch = "i386")
-  x <- c(-1.5, 1.5, rnorm(10))
-  grid <- seq(-1, 1, length.out = 1000)
+  data("women")
+  x <- women$weight
+  grid <- seq(120, 160, length.out = 1000)
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   conv <- function(par) {
     el_mean(x, par, control = optcfg)@optim$convergence
@@ -10,8 +10,9 @@ test_that("convergence check", {
 })
 
 test_that("probabilities add up to 1", {
-  x <- rnorm(10)
-  par <- runif(1, min(x), max(x))
+  data("women")
+  x <- women$height
+  par <- 65
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(x, par, control = optcfg)
   expect_output(print(fit))
@@ -19,45 +20,45 @@ test_that("probabilities add up to 1", {
 })
 
 test_that("probabilities add up to 1 (weighted)", {
-  x <- rnorm(10)
-  par <- runif(1, min(x), max(x))
-  w <- 1 + runif(10, min = -0.5, max = 0.5)
+  data("women")
+  x <- women$height
+  par <- 65
+  w <- women$weight
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(x, par, weights = w, optcfg)
   expect_equal(sum(exp(fit@logp)), 1, tolerance = 1e-7)
 })
 
 test_that("identical weights == no weights", {
-  skip_on_os("windows", arch = "i386")
-  x <- rnorm(10)
-  par <- runif(1, min(x), max(x))
-  w <- rep(runif(1), length(x))
+  data("women")
+  x <- women$height
+  par <- 65
+  w <- rep(0.5, length(x))
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  a1 <- el_mean(x, par, control = optcfg)
-  a2 <- el_mean(x, par, weights = w, control = optcfg)
-  a2@weights <- a1@weights
-  expect_equal(a1, a2)
+  fit1 <- el_mean(x, par, control = optcfg)
+  fit2 <- el_mean(x, par, weights = w, control = optcfg)
+  fit2@weights <- numeric()
+  expect_equal(fit1, fit2)
 })
 
 test_that("loglik to loglr", {
-  skip_on_os("windows", arch = "i386")
-  n <- 10
-  x <- rnorm(n)
-  par <- runif(1, min(x), max(x))
+  data("sleep")
+  x <- sleep$extra
+  n <- length(x)
+  par <- 0
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(x, par, control = optcfg)
   expect_equal(fit@logl + n * log(n), fit@loglr)
 })
 
 test_that("loglik to loglr (weighted)", {
-  skip_on_os("windows", arch = "i386")
-  n <- 10
-  x <- rnorm(n)
-  par <- runif(1, min(x), max(x))
-  w <- 1 + runif(n, min = -0.5, max = 0.5)
+  data("women")
+  x <- women$height
+  n <- length(x)
+  par <- 65
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(x, par, weights = w, control = optcfg)
-  w <- fit@weights
+  fit <- el_mean(x, par, weights = women$weight, control = optcfg)
+  w <- weights(fit)
   expect_equal(fit@logl + sum(w * (log(n) - log(w))), fit@loglr)
 })
 
@@ -74,30 +75,26 @@ test_that("invalid 'x", {
   par <- 0
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   expect_error(el_mean(c(1, Inf), par, control = optcfg))
-  expect_error(el_mean(rnorm(1), par, control = optcfg))
+  expect_error(el_mean(10, par, control = optcfg))
 })
 
 test_that("invalid 'par", {
-  x <- matrix(c(1, 1, 2, 2), ncol = 2L)
+  data("sleep")
+  x <- sleep$extra
   par <- 0
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  expect_error(el_mean(x, par, control = optcfg))
-  expect_error(el_mean(rnorm(10), NA, control = optcfg))
-  expect_error(el_mean(rnorm(10), NULL, control = optcfg))
-  expect_error(el_mean(rnorm(10), Inf, control = optcfg))
-  expect_error(el_mean(rnorm(10), NaN, control = optcfg))
-  x <- rnorm(10)
-  par <- c(0, 0)
-  expect_error(el_mean(x, par, control = optcfg))
-  expect_error(el_mean(x, 0, control = list(maxit = 200)))
+  expect_error(el_mean(x, NA, control = optcfg))
+  expect_error(el_mean(x, NULL, control = optcfg))
+  expect_error(el_mean(x, Inf, control = optcfg))
+  expect_error(el_mean(x, NaN, control = optcfg))
+  expect_error(el_mean(x, c(0, 0), control = optcfg))
 })
 
 test_that("identical results for repeated executions", {
-  n <- 100
-  w <- 1 + runif(n, min = -0.5, max = 0.5)
-  p <- 2
-  par <- rnorm(p)
-  x <- matrix(rnorm(n * p), ncol = p)
+  data("women")
+  x <- women$height
+  par <- 65
+  w <- women$weight
   fit1 <- el_mean(x, par, control = el_control(th = 1e+10))
   fit2 <- el_mean(x, par, control = el_control(th = 1e+10))
   expect_equal(fit1, fit2)
@@ -106,7 +103,7 @@ test_that("identical results for repeated executions", {
   wfit2 <- el_mean(x, par, weights = w, control = el_control(th = 1e+10))
   expect_equal(wfit1, wfit2)
 
-  lhs <- c(1, 0)
+  lhs <- 4
   elt1 <- elt(fit1, lhs = lhs)
   elt2 <- elt(fit2, lhs = lhs)
   expect_equal(elt1, elt2)

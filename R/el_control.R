@@ -52,32 +52,32 @@ el_control <- function(maxit = 200L,
                        seed = sample.int(.Machine$integer.max, 1L),
                        B = 10000L) {
   # maxit: single integer (positive)
-  maxit <- check_maxit_(maxit)
+  maxit <- validate_maxit(maxit)
   # maxit_l: single integer (positive)
-  maxit_l <- check_maxit_(maxit_l)
+  maxit_l <- validate_maxit(maxit_l)
   # tol: single numeric (positive, finite)
-  tol <- check_tol_(tol)
+  tol <- validate_tol(tol)
   # tol_l: single numeric (positive, finite)
-  tol_l <- check_tol_l_(tol_l)
+  tol_l <- validate_tol_l(tol_l)
   # step: single numeric (positive, finite)
   if (!is.null(step)) {
-    step <- check_step_(step)
+    step <- validate_step(step)
   }
   # th: single numeric (positive, finite)
   if (!is.null(th)) {
-    th <- check_th_(th)
+    th <- validate_th(th)
   }
   # nthreads: single integer (positive, finite)
   max_threads <- max_threads_()
   if (missing(nthreads)) {
     nthreads <- as.integer(max(1L, max_threads / 2L))
   } else {
-    nthreads <- check_nthreads_(nthreads, max_threads)
+    nthreads <- validate_nthreads(nthreads, max_threads)
   }
   # seed: single integer (finite)
-  seed <- check_seed_(seed)
+  seed <- validate_seed(seed)
   # B: single integer (positive, finite)
-  B <- check_B_(B)
+  B <- validate_B(B)
   new("ControlEL",
     maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
     th = th, nthreads = nthreads, seed = seed, B = B

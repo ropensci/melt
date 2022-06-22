@@ -5,6 +5,9 @@ setMethod("confreg", "EL", function(object,
                                     cv = NULL,
                                     npoints = 50L,
                                     control = el_control()) {
+  if (!is(control, "ControlEL")) {
+    stop("invalid 'control' specified")
+  }
   est <- coef(object)
   if (length(est) == 0L) {
     stop("'confreg' method is not applicable to an empty model")
@@ -43,11 +46,11 @@ setMethod("confreg", "EL", function(object,
     est <- est[idx]
     pnames <- pnames[idx]
   }
-  level <- check_level_(level)
+  validate_level(level)
   if (isTRUE(all.equal(level, 0))) {
     return(new("ConfregEL",
-      points = est, estimates = est, level = level, cv = cv,
-      pnames = c("x", "y")
+      points = matrix(est, nrow = 1L), estimates = est, level = level, cv = Inf,
+      pnames = as.character(pnames)
     ))
   } else if (isTRUE(all.equal(level, 1))) {
     stop("'level' must be a number between 0 and 1")
@@ -55,7 +58,7 @@ setMethod("confreg", "EL", function(object,
   if (is.null(cv)) {
     cv <- qchisq(level, 2L)
   } else {
-    cv <- check_cv_(cv, control@th)
+    cv <- validate_cv(cv, control@th)
     level <- NA_real_
   }
   npoints <- as.integer(npoints)
@@ -65,9 +68,6 @@ setMethod("confreg", "EL", function(object,
   w <- getWeights(object)
   ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]
   circ <- rbind(cos(ang), sin(ang))
-  if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
-  }
   cr <- confreg_(
     getMethodEL(object), coef(object), getDataMatrix(object), object@npar,
     cv, idx, circ, control@maxit, control@maxit_l, control@tol, control@tol_l,

@@ -63,7 +63,7 @@ elmt <- function(object,
   h <- check_mht_(lhs, rhs, p)
   # return(h)
 
-  alpha <- check_alpha_(alpha)
+  validate_alpha(alpha)
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
