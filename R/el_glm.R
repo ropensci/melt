@@ -144,7 +144,7 @@ el_glm <- function(formula,
   method <- check_family_(fit$family)
   mm <- cbind(fit$y, X)
   p <- ncol(X)
-  w <- check_weights(w, nrow(mm))
+  w <- check_weights_(w, nrow(mm))
   if (!is(control, "ControlEL")) {
     stop("invalid 'control' specified")
   }

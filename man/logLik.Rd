@@ -20,6 +20,6 @@ Extracts empirical log-likelihood from a model evaluated at the estimated
 coefficients.
 }
 \examples{
-fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+fit <- el_lm(mpg ~ wt, data = mtcars)
 logLik(fit)
 }

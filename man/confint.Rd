@@ -3,7 +3,7 @@
 \name{confint}
 \alias{confint}
 \alias{confint,EL-method}
-\title{Confidence intervals for model parameters}
+\title{Confidence interval for model parameters}
 \usage{
 \S4method{confint}{EL}(object, parm, level = 0.95, ..., cv = NULL, control = el_control())
 }
@@ -39,7 +39,7 @@ The package \pkg{melt} adds a method for objects inheriting from class
 \linkS4class{EL}.
 }
 \examples{
-fit <- el_lm(formula = mpg ~ ., data = mtcars)
+fit <- el_lm(mpg ~ ., data = mtcars)
 confint(fit, parm = c(2, 3))
 }
 \references{

@@ -8,10 +8,12 @@ el_eval(g, weights = NULL, control = el_control())
 }
 \arguments{
 \item{g}{A numeric matrix, or an object that can be coerced to a numeric
-matrix. Each row corresponds to an observation of an estimating function.}
+matrix. Each row corresponds to an observation of an estimating function.
+The number of rows must be greater than the number of columns.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to \code{NULL}, corresponding to identical
+fitting process. The length of the vector must be the same as the number of
+rows in \code{g}. Defaults to \code{NULL}, corresponding to identical
 weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by

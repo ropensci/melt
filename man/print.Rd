@@ -35,3 +35,20 @@ are printed for each coefficient.}
 \description{
 Provides print methods for the objects from the package \pkg{melt}.
 }
+\examples{
+# model
+fit <- el_lm(mpg ~ wt, data = mtcars)
+
+# output
+fit
+
+# empirical log-likelihood
+logLik(fit)
+
+# output summary
+summary(fit)
+
+# equivalent results by testing each parameter separately
+elt(fit, lhs = c(1, 0))
+elt(fit, lhs = c(0, 1))
+}

@@ -22,3 +22,7 @@ Provides summary methods for objects that inherit from class
 tests for each parameter.
 }}
 
+\examples{
+fit <- el_lm(mpg ~ wt, data = mtcars)
+summary(fit)
+}

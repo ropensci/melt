@@ -10,6 +10,7 @@ test_that("deprecated", {
 test_that("deprecated", {
   skip_on_cran()
   data("clothianidin")
+  set.seed(456)
   withr::local_options(lifecycle_verbosity = "quiet")
   out1 <- el_pairwise(clo ~ trt | blk, clothianidin, B = 500, progress = TRUE)
   out2 <- el_pairwise(clo ~ trt | blk, clothianidin,
@@ -25,7 +26,7 @@ test_that("deprecated", {
   )
   expect_warning(
     el_pairwise(clo ~ trt | blk, clothianidin[1:10, ],
-      B = 100, progress = FALSE
+      B = 10, progress = FALSE
     )
   )
   expect_warning(el_pairwise(clo ~ trt | blk, clothianidin[1:50, ],

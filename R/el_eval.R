@@ -4,8 +4,10 @@
 #'
 #' @param g A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix. Each row corresponds to an observation of an estimating function.
+#'   The number of rows must be greater than the number of columns.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. Defaults to \code{NULL}, corresponding to identical
+#'   fitting process. The length of the vector must be the same as the number of
+#'   rows in \code{g}. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
@@ -54,7 +56,7 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
     "'g' must have full column rank" = (get_rank_(mm) == p),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  w <- check_weights(weights, n)
+  w <- check_weights_(weights, n)
   out <- eval_g_(mm, control@maxit_l, control@tol_l, control@th, w)
   out$df <- p
   out$p.value <- pchisq(q = out$statistic, df = out$df, lower.tail = FALSE)

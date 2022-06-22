@@ -43,7 +43,7 @@ Computes boundary points of a two-dimensional confidence region for model
 parameters.
 }
 \examples{
-fit <- el_lm(formula = mpg ~ ., data = mtcars)
+fit <- el_lm(mpg ~ ., data = mtcars)
 confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2L))
 }
 \references{

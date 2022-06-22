@@ -8,12 +8,15 @@ el_mean(x, par, weights = NULL, control = el_control(), model = TRUE)
 }
 \arguments{
 \item{x}{A numeric matrix, or an object that can be coerced to a numeric
-matrix. Each row corresponds to an observation.}
+matrix. Each row corresponds to an observation. The number of rows must be
+greater than the number of columns.}
 
-\item{par}{A numeric vector of parameter values to be tested.}
+\item{par}{A numeric vector of parameter values to be tested. The length of
+the vector must be the same as the number of columns in \code{x}.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to \code{NULL}, corresponding to identical
+fitting process. The length of the vector must be the same as the number of
+rows in \code{x}. Defaults to \code{NULL}, corresponding to identical
 weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by

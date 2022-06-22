@@ -4,7 +4,7 @@ melt 1.6.0
 * The order of arguments of `el_mean()` changed to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par`.
 
 ### NEW FEATURES
-* DESCRIPTION file updated with new package dependencies (`graphics`, `lifecycle`, `BH`, and `dqrng`).
+* New package dependencies added (`graphics`, `lifecycle`, `BH`, and `dqrng`).
 
 * `lht()` is renamed to `elt()`, which accepts additional arguments `alpha` and `calibrate`.
 

@@ -20,7 +20,7 @@
 #     stop("'x' must be a vector")
 #   }
 #
-#   w <- check_weights(weights, n)
+#   w <- check_weights_(weights, n)
 #   if (!is.null(weights)) {
 #     #
 #     est <- colSums(mm * w) / n

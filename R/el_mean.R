@@ -2,11 +2,14 @@
 #'
 #' Computes empirical likelihood for the mean.
 #'
-#' @param par A numeric vector of parameter values to be tested.
 #' @param x A numeric matrix, or an object that can be coerced to a numeric
-#'   matrix. Each row corresponds to an observation.
+#'   matrix. Each row corresponds to an observation. The number of rows must be
+#'   greater than the number of columns.
+#' @param par A numeric vector of parameter values to be tested. The length of
+#'   the vector must be the same as the number of columns in \code{x}.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. Defaults to \code{NULL}, corresponding to identical
+#'   fitting process. The length of the vector must be the same as the number of
+#'   rows in \code{x}. Defaults to \code{NULL}, corresponding to identical
 #'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
@@ -40,21 +43,16 @@ el_mean <- function(x,
                     weights = NULL,
                     control = el_control(),
                     model = TRUE) {
-  mm <- as.matrix(x)
+  mm <- check_x_(x)
   n <- nrow(mm)
   p <- ncol(mm)
   stopifnot(
-    "not enough observations in 'x'" = (n >= 2L),
-    "'x' must have full column rank" = (n > p),
-    "'x' must be a numeric matrix" = (is.numeric(mm)),
-    "'x' must be a finite numeric matrix" = (all(is.finite(mm))),
-    "'x' must have full column rank" = (get_rank_(mm) == p),
     "'par' must be a numeric vector" = (is.numeric(par)),
     "'par' must be a finite numeric vector" = (all(is.finite(par))),
     "'par' and 'x' have incompatible dimensions" = (length(par) == p),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  w <- check_weights(weights, n)
+  w <- check_weights_(weights, n)
   if (!is.null(weights)) {
     est <- colSums(mm * w) / n
   } else {

@@ -46,14 +46,14 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @param ... Not used.
 #' @return A numeric vector of the maximum empirical likelihood estimates.
 #' @examples
-#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+#' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' coef(fit)
 #' @usage NULL
 #' @exportMethod coef
 setGeneric("coef", function(object, ...) standardGeneric("coef"))
 
 
-#' Confidence intervals for model parameters
+#' Confidence interval for model parameters
 #'
 #' Computes confidence intervals for one or more parameters in a fitted model.
 #' The package \pkg{melt} adds a method for objects inheriting from class
@@ -85,7 +85,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' @seealso \link{confreg}, \link{el_control}, \link{elt}
 #' @usage NULL
 #' @examples
-#' fit <- el_lm(formula = mpg ~ ., data = mtcars)
+#' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confint(fit, parm = c(2, 3))
 #' @exportMethod confint
 setGeneric("confint", function(object, parm, level = 0.95, ...)
@@ -119,7 +119,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @seealso \link{confint}, \link{el_control}, \link{elt}, \link{plot}
 #' @usage NULL
 #' @examples
-#' fit <- el_lm(formula = mpg ~ ., data = mtcars)
+#' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2L))
 #' @exportMethod confreg
 setGeneric("confreg", function(object, parm, level = 0.95, cv = NULL,
@@ -137,7 +137,7 @@ setGeneric("confreg", function(object, parm, level = 0.95, cv = NULL,
 #' @param ... Not used.
 #' @return An object of class \linkS4class{logLikEL}.
 #' @examples
-#' fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+#' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' logLik(fit)
 #' @usage NULL
 #' @exportMethod logLik
@@ -150,8 +150,19 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #' @param x An object to be plotted.
 #' @param y Not used.
 #' @param ... Further graphical parameters (see \code{\link[graphics]{par}}).
-#' @usage NULL
 #' @seealso \link{confreg}, \link{eld}
+#' @usage NULL
+#' @examples
+#' # model
+#' fit <- el_lm(hp ~ wt, data = mtcars)
+#'
+#' # confidence region
+#' out1 <- confreg(fit, npoints = 500)
+#' plot(out1)
+#'
+#' # empirical likelihood displacement
+#' out2 <- eld(fit)
+#' plot(out2)
 #' @exportMethod plot
 setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
@@ -167,6 +178,22 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #' @param signif.stars A single logical. If \code{TRUE}, ‘significance stars’
 #'   are printed for each coefficient.
 #' @usage NULL
+#' @examples
+#' # model
+#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#'
+#' # output
+#' fit
+#'
+#' # empirical log-likelihood
+#' logLik(fit)
+#'
+#' # output summary
+#' summary(fit)
+#'
+#' # equivalent results by testing each parameter separately
+#' elt(fit, lhs = c(1, 0))
+#' elt(fit, lhs = c(0, 1))
 #' @exportMethod print
 setGeneric("print", function(x, ...) standardGeneric("print"))
 
@@ -179,8 +206,31 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' @param object An object for which a summary is desired.
 #' @param ... Additional arguments affecting the summary produced.
 #' @usage NULL
+#' @examples
+#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' summary(fit)
 #' @exportMethod summary
 setGeneric("summary", function(object, ...) standardGeneric("summary"))
+
+
+#' Model weights
+#'
+#' Extracts model weights from objects that inherit from class
+#'   \linkS4class{EL}. The weights are rescaled to up to the total number of
+#'   observations in the fitting procedure.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}.
+#' @param ... Not used.
+#' @usage NULL
+#' @examples
+#' data("airquality")
+#' x <- airquality$Wind
+#' w <- airquality$Day
+#' fit <- el_mean(x, par = 10, weights = w)
+#' weights(fit)
+#' @exportMethod weights
+setGeneric("weights", function(object, ...) standardGeneric("weights"))
+
 
 setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
 setMethod("getMethodEL", "EL", function(x) {x@method})

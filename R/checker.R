@@ -1,4 +1,17 @@
-check_weights <- function(weights, nw) {
+check_x_ <- function(x) {
+  x <- as.matrix(x)
+  stopifnot(
+    "'x' must have at least two observations" = (nrow(x) >= 2L),
+    "'x' must must have larger number of rows than columns" =
+      (nrow(x) > ncol(x)),
+    "'x' must be a numeric matrix" = (is.numeric(x)),
+    "'x' must be a finite numeric matrix" = (all(is.finite(x))),
+    "'x' must have full column rank" = (get_rank_(x) == ncol(x))
+  )
+  x
+}
+
+check_weights_ <- function(weights, nw) {
   if (is.null(weights)) {
     return(numeric(length = 0L))
   }
@@ -17,6 +30,117 @@ check_weights <- function(weights, nw) {
   }
   w <- (nw / sum(w)) * w
   w
+}
+
+check_maxit_ <- function(maxit) {
+  maxit <- tryCatch(as.integer(maxit),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'maxit' must be a single integer" = (isTRUE(!is.na(maxit))),
+    "'maxit' must be a positive single integer" = (maxit > 0L)
+  )
+  maxit
+}
+
+check_maxit_l_ <- function(maxit_l) {
+  maxit_l <- tryCatch(as.integer(maxit_l),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'maxit_l' must be a single integer" = (isTRUE(!is.na(maxit_l))),
+    "'maxit_l' must be a positive single integer" = (maxit_l > 0L)
+  )
+  maxit_l
+}
+
+check_tol_ <- function(tol) {
+  tol <- tryCatch(as.numeric(tol),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'tol' must be a single numeric" = (isTRUE(!is.na(tol))),
+    "'tol' must be a finite single numeric" = (is.finite(tol)),
+    "'tol' is too small" = (tol >= .Machine$double.eps)
+  )
+  tol
+}
+
+check_tol_l_ <- function(tol_l) {
+  tol_l <- tryCatch(as.numeric(tol_l),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'tol_l' must be a single numeric" = (isTRUE(!is.na(tol_l))),
+    "'tol_l' must be a finite single numeric" = (is.finite(tol_l)),
+    "'tol_l' is too small" = (tol_l >= .Machine$double.eps)
+  )
+  tol_l
+}
+
+check_step_ <- function(step) {
+  step <- tryCatch(as.numeric(step),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'step' must be a single numeric" = (isTRUE(!is.na(step))),
+    "'step' must be a finite single numeric" = (is.finite(step)),
+    "'step' is too small" = (step >= .Machine$double.eps)
+  )
+  step
+}
+
+check_th_ <- function(th) {
+  th <- tryCatch(as.numeric(th),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'th' must be a single numeric" = (isTRUE(!is.na(th))),
+    "'th' must be a finite single numeric" = (is.finite(th)),
+    "'th' is too small" = (th >= .Machine$double.eps)
+  )
+  th
+}
+
+check_nthreads_ <- function(nthreads, max_threads) {
+  nthreads <- tryCatch(as.integer(nthreads),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot("'nthreads' must be a single integer" = (isTRUE(!is.na(nthreads))))
+  if (nthreads < 1) {
+    warning("'nthreads' is set to 1")
+    nthreads <- 1L
+  }
+  if (nthreads > max_threads) {
+    warning("'nthreads' is set to the maximum number of threads available")
+    nthreads <- max_threads
+  }
+  nthreads
+}
+
+check_seed_ <- function(seed) {
+  seed <- tryCatch(as.integer(seed),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot("'seed' must be a single integer" = (isTRUE(!is.na(seed))))
+  seed
+}
+
+check_B_ <- function(B) {
+  B <- tryCatch(as.integer(B), warning = function(w) NA, error = function(e) NA)
+  stopifnot(
+    "'B' must be a single integer" = (isTRUE(!is.na(B))),
+    "'B' must be a positive single integer" = (B > 0L)
+  )
+  B
 }
 
 check_rhs_ <- function(rhs, p) {

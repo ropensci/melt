@@ -19,6 +19,6 @@ A numeric vector of the maximum empirical likelihood estimates.
 Extracts maximum empirical likelihood estimates from a model.
 }
 \examples{
-fit <- el_lm(formula = mpg ~ wt, data = mtcars)
+fit <- el_lm(mpg ~ wt, data = mtcars)
 coef(fit)
 }
