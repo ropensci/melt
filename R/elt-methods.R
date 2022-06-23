@@ -13,7 +13,7 @@ setMethod("elt", "EL", function(object,
       (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  h <- validate_hypothesis(lhs, rhs, object@npar)
+  h <- validate_hypothesis(rhs, lhs, object@npar)
   validate_alpha(alpha)
   calibrate <- match.arg(calibrate)
   method <- getMethodEL(object)

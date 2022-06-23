@@ -60,7 +60,7 @@ elmt <- function(object,
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
   p <- object@npar
-  h <- check_mht_(lhs, rhs, p)
+  h <- validate_hypotheses(rhs, lhs, p)
   # return(h)
 
   validate_alpha(alpha)

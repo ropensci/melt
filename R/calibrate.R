@@ -1,6 +1,6 @@
 #' Calibrate critical value and p-value
 #'
-#' Calibrate critical value and p-value in [elt()]
+#' Calibrate critical value and p-value in [elt()].
 #'
 #' @param alpha A single numeric.
 #' @param statistic A single numeric.

@@ -1,9 +1,9 @@
-#' Validate maxit
+#' Validate `maxit`
 #'
-#' Validate maxit in [el_control()]
+#' Validate `maxit` in [el_control()].
 #'
 #' @param maxit A single integer.
-#'
+#' @return A single integer.
 #' @noRd
 validate_maxit <- function(maxit) {
   maxit <- tryCatch(as.integer(maxit),
@@ -17,12 +17,12 @@ validate_maxit <- function(maxit) {
   maxit
 }
 
-#' Validate maxit_l
+#' Validate `maxit_l`
 #'
-#' Validate maxit_l in [el_control()]
+#' Validate `maxit_l` in [el_control()].
 #'
 #' @param maxit_l A single integer.
-#'
+#' @return A single integer.
 #' @noRd
 validate_maxit_l <- function(maxit_l) {
   maxit_l <- tryCatch(as.integer(maxit_l),
@@ -36,12 +36,12 @@ validate_maxit_l <- function(maxit_l) {
   maxit_l
 }
 
-#' Validate tol
+#' Validate `tol`
 #'
-#' Validate tol in [el_control()]
+#' Validate `tol` in [el_control()].
 #'
 #' @param tol A single numeric.
-#'
+#' @return A single numeric.
 #' @noRd
 validate_tol <- function(tol) {
   tol <- tryCatch(as.numeric(tol),
@@ -56,12 +56,12 @@ validate_tol <- function(tol) {
   tol
 }
 
-#' Validate tol_l
+#' Validate `tol_l`
 #'
-#' Validate tol_l in [el_control()]
+#' Validate `tol_l` in [el_control()].
 #'
 #' @param tol_l A single numeric.
-#'
+#' @return A single numeric.
 #' @noRd
 validate_tol_l <- function(tol_l) {
   tol_l <- tryCatch(as.numeric(tol_l),
@@ -76,12 +76,12 @@ validate_tol_l <- function(tol_l) {
   tol_l
 }
 
-#' Validate step
+#' Validate `step`
 #'
-#' Validate step in [el_control()]
+#' Validate `step` in [el_control()].
 #'
 #' @param step A single numeric.
-#'
+#' @return A single numeric.
 #' @noRd
 validate_step <- function(step) {
   step <- tryCatch(as.numeric(step),
@@ -96,12 +96,12 @@ validate_step <- function(step) {
   step
 }
 
-#' Validate th
+#' Validate `th`
 #'
-#' Validate th in [el_control()]
+#' Validate `th` in [el_control()].
 #'
 #' @param th A single numeric.
-#'
+#' @return A single numeric.
 #' @noRd
 validate_th <- function(th) {
   th <- tryCatch(as.numeric(th),
@@ -116,13 +116,13 @@ validate_th <- function(th) {
   th
 }
 
-#' Validate nthreads
+#' Validate `nthreads`
 #'
-#' Validate nthreads in [el_control()]
+#' Validate `nthreads` in [el_control()].
 #'
 #' @param nthreads A single integer.
 #' @param max_threads A single integer.
-#'
+#' @return A single integer.
 #' @noRd
 validate_nthreads <- function(nthreads, max_threads) {
   nthreads <- tryCatch(as.integer(nthreads),
@@ -141,12 +141,12 @@ validate_nthreads <- function(nthreads, max_threads) {
   nthreads
 }
 
-#' Validate seed
+#' Validate `seed`
 #'
-#' Validate seed in [el_control()]
+#' Validate `seed` in [el_control()].
 #'
 #' @param seed A single integer.
-#'
+#' @return A single integer.
 #' @noRd
 validate_seed <- function(seed) {
   seed <- tryCatch(as.integer(seed),
@@ -157,12 +157,12 @@ validate_seed <- function(seed) {
   seed
 }
 
-#' Validate B
+#' Validate `B`
 #'
-#' Validate B in [el_control()]
+#' Validate `B` in [el_control()].
 #'
 #' @param B A single integer.
-#'
+#' @return A single integer.
 #' @noRd
 validate_B <- function(B) {
   B <- tryCatch(as.integer(B), warning = function(w) NA, error = function(e) NA)
@@ -231,13 +231,23 @@ check_weights_ <- function(weights, nw) {
 
 
 
-
-
+#' Validate `rhs`
+#'
+#' Validate `rhs` in [elt()].
+#'
+#' @param rhs A numeric vector or a column matrix.
+#' @param p A single integer.
 #' @noRd
 validate_rhs <- function(rhs, p) {
   UseMethod("validate_rhs", rhs)
 }
 
+#' Validate `rhs`
+#'
+#' Validate `rhs` in [elt()].
+#'
+#' @param rhs A numeric vector.
+#' @param p A single integer.
 #' @noRd
 validate_rhs.numeric <- function(rhs, p) {
   stopifnot("'rhs' must be a finite numeric vector" = (all(is.finite(rhs))))
@@ -246,6 +256,12 @@ validate_rhs.numeric <- function(rhs, p) {
   }
 }
 
+#' Validate `rhs`
+#'
+#' Validate `rhs` in [elt()].
+#'
+#' @param rhs A numeric matrix.
+#' @param p A single integer.
 #' @noRd
 validate_rhs.matrix <- function(rhs, p) {
   stopifnot(
@@ -257,11 +273,25 @@ validate_rhs.matrix <- function(rhs, p) {
   }
 }
 
+#' Validate `lhs`
+#'
+#' Validate `lhs` in [elt()].
+#'
+#' @param lhs A numeric matrix or a vector (treated as a row matrix).
+#' @param p A single integer.
+#' @return A numeric matrix.
 #' @noRd
 validate_lhs <- function(lhs, p) {
   UseMethod("validate_lhs", lhs)
 }
 
+#' Validate `lhs`
+#'
+#' Validate `lhs` in [elt()].
+#'
+#' @param lhs A numeric vector.
+#' @param p A single integer.
+#' @return A numeric matrix.
 #' @noRd
 validate_lhs.numeric <- function(lhs, p) {
   stopifnot(
@@ -272,6 +302,13 @@ validate_lhs.numeric <- function(lhs, p) {
   matrix(lhs, nrow = 1L)
 }
 
+#' Validate `lhs`
+#'
+#' Validate `lhs` in [elt()].
+#'
+#' @param lhs A numeric matrix.
+#' @param p A single integer.
+#' @return A numeric matrix.
 #' @noRd
 validate_lhs.matrix <- function(lhs, p) {
   q <- nrow(lhs)
@@ -284,8 +321,16 @@ validate_lhs.matrix <- function(lhs, p) {
   lhs
 }
 
+#' Validate `rhs` and `lhs`
+#'
+#' Validate `rhs` and `lhs` in [elt()].
+#'
+#' @param rhs A numeric vector or a column matrix.
+#' @param lhs A numeric matrix or a vector (treated as a row matrix).
+#' @param p A single integer.
+#' @return A list.
 #' @noRd
-validate_hypothesis <- function(lhs, rhs, p) {
+validate_hypothesis <- function(rhs, lhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either 'rhs' or 'lhs' must be provided")
   } else if (is.null(lhs)) {
@@ -300,6 +345,11 @@ validate_hypothesis <- function(lhs, rhs, p) {
   list(l = lhs, r = rhs)
 }
 
+#' Validate `alpha`
+#'
+#' Validate `alpha` in [elt()].
+#'
+#' @param alpha A single numeric.
 #' @noRd
 validate_alpha <- function(alpha) {
   stopifnot(
@@ -310,6 +360,15 @@ validate_alpha <- function(alpha) {
   )
 }
 
+
+
+
+
+#' Validate `level`
+#'
+#' Validate `level` in [confint()] and [confreg()].
+#'
+#' @param level A single numeric.
 #' @noRd
 validate_level <- function(level) {
   stopifnot(
@@ -320,6 +379,13 @@ validate_level <- function(level) {
   )
 }
 
+#' Validate `cv`
+#'
+#' Validate `cv` in [confint()] and [confreg()].
+#'
+#' @param cv A single numeric.
+#' @param th A single numeric.
+#' @return A single numeric.
 #' @noRd
 validate_cv <- function(cv, th) {
   stopifnot(
@@ -340,6 +406,15 @@ validate_cv <- function(cv, th) {
   cv
 }
 
+
+
+
+#' Validate `family`
+#'
+#' Validate `family` in [el_glm()].
+#'
+#' @param family An object of class [`family`].
+#' @return A single character.
 #' @noRd
 validate_family <- function(family) {
   f <- family$family
@@ -397,8 +472,16 @@ validate_family <- function(family) {
 
 
 
-
-check_mht_ <- function(lhs, rhs, p) {
+#' Validate `rhs` and `lhs`
+#'
+#' Validate `rhs` and `lhs` in [elt()].
+#'
+#' @param rhs A xxx xxx
+#' @param lhs A xxx xxx
+#' @param p A single integer.
+#' @return A list.
+#' @noRd
+validate_hypotheses <- function(rhs, lhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either 'rhs' or 'lhs' must be provided")
   } else if (is.null(lhs)) {
