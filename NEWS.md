@@ -2,8 +2,10 @@
 ### BREAKING CHANGES
 * The order of arguments of `el_mean()` changed to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par` as `el_mean(x, par)`.
 
+* `lht()` is renamed to `elt()`.
+
 ### NEW FEATURES
-* New package dependencies added (`graphics`, `lifecycle`, `BH`, and `dqrng`).
+* New package dependencies added (`BH`, `dqrng`, and `graphics`).
 
 * New `elmt()` performs multiple testing with empirical likelihood.
 
@@ -20,8 +22,6 @@
 * unit test errors fixed.
 
 ### DEPRECATED AND DEFUNCT
-* `lht()` is deprecated to avoid conflicts with other packages. 
-
 * `el_pairwise()` is removed.
 
 
