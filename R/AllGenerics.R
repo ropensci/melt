@@ -33,7 +33,9 @@
 #' fit <- el_mean(c(x, y), 0)
 #' eld(fit)
 #' @exportMethod eld
-setGeneric("eld", function(object, ...) {standardGeneric("eld")})
+setGeneric("eld", function(object, ...) {
+  standardGeneric("eld")
+})
 
 
 #' Empirical likelihood test
@@ -41,7 +43,8 @@ setGeneric("eld", function(object, ...) {standardGeneric("eld")})
 #' Tests a linear hypothesis for objects that inherit from class
 #'   \linkS4class{EL}.
 #'
-#' @param object An object of class \linkS4class{EL}.
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param rhs A numeric vector or a column matrix for the right-hand-side of
 #'   hypothesis, with as many entries as the rows in `lhs`. Defaults to `NULL`.
 #'   See ‘Details’.
@@ -111,14 +114,17 @@ setGeneric("eld", function(object, ...) {standardGeneric("eld")})
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 #' elt(fit2, lhs = lhs)
 #' @exportMethod elt
-setGeneric("elt", function(object, ...) {standardGeneric("elt")})
+setGeneric("elt", function(object, ...) {
+  standardGeneric("elt")
+})
 
 
 #' Model coefficients
 #'
 #' Extracts maximum empirical likelihood estimates from a model.
 #'
-#' @param object A fitted \linkS4class{EL} object.
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Not used.
 #' @return A numeric vector of the maximum empirical likelihood estimates.
 #' @examples
@@ -135,7 +141,8 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' The package \pkg{melt} adds a method for objects inheriting from class
 #' \linkS4class{EL}.
 #'
-#' @param object An object of class \linkS4class{EL}.
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
@@ -153,9 +160,6 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'  the lower and upper limits obtained from empirical likelihood do not
 #'  correspond to the `(1 - level) / 2` and `1 - (1 - level) / 2` in %,
 #'  respectively.
-#' @references Kim, E., MacEachern, S., and Peruggia, M., (2021),
-#'   "Empirical Likelihood for the Analysis of Experimental Designs,"
-#'   \href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 #' @seealso \link{confreg}, \link{el_control}, \link{elt}
@@ -164,8 +168,9 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confint(fit, parm = c(2, 3))
 #' @exportMethod confint
-setGeneric("confint", function(object, parm, level = 0.95, ...)
-  standardGeneric("confint")
+setGeneric(
+  "confint",
+  function(object, parm, level = 0.95, ...) standardGeneric("confint")
 )
 
 
@@ -174,7 +179,8 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' Computes boundary points of a two-dimensional confidence region for model
 #'   parameters.
 #'
-#' @param object An object of class \linkS4class{EL}.
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param parm A specification of which parameters are to be given a confidence
 #'   region, either a vector of numbers or a vector of names. It should be a
 #'   vector of length two of the form `c(x, y)`. If missing, the first two
@@ -199,7 +205,9 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
 #' @exportMethod confreg
-setGeneric("confreg", function(object, ...) {standardGeneric("confreg")})
+setGeneric("confreg", function(object, ...) {
+  standardGeneric("confreg")
+})
 
 
 #' Empirical log-likelihood
@@ -207,7 +215,8 @@ setGeneric("confreg", function(object, ...) {standardGeneric("confreg")})
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
 #'   coefficients.
 #'
-#' @param object An object of class \linkS4class{EL}.
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Not used.
 #' @return An object of class \linkS4class{logLikEL}.
 #' @examples
@@ -293,9 +302,11 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 #'   \linkS4class{EL}. The weights are rescaled to up to the total number of
 #'   observations in the fitting procedure.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}.
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Not used.
 #' @usage NULL
+#' @return A numeric vector the rescaled weights.
 #' @examples
 #' data("airquality")
 #' x <- airquality$Wind
@@ -307,10 +318,16 @@ setGeneric("weights", function(object, ...) standardGeneric("weights"))
 
 
 setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
-setMethod("getMethodEL", "EL", function(x) {x@method})
+setMethod("getMethodEL", "EL", function(x) {
+  x@method
+})
 
 setGeneric("getDataMatrix", function(x) standardGeneric("getDataMatrix"))
-setMethod("getDataMatrix", "EL", function(x) {x@data})
+setMethod("getDataMatrix", "EL", function(x) {
+  x@data
+})
 
 setGeneric("getWeights", function(x) standardGeneric("getWeights"))
-setMethod("getWeights", "EL", function(x) {x@weights})
+setMethod("getWeights", "EL", function(x) {
+  x@weights
+})

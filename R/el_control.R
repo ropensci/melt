@@ -38,7 +38,7 @@
 #' @return An object of class of \linkS4class{ControlEL}.
 #' @seealso [el_eval()], [elt()]
 #' @examples
-#' optcfg <- el_control(maxit = 300, th = 200, nthreads = 1)
+#' optcfg <- el_control(maxit = 300, step = 0.01, th = 200, nthreads = 1)
 #' @export
 el_control <- function(maxit = 200L,
                        maxit_l = 25L,

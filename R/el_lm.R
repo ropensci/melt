@@ -71,6 +71,7 @@ el_lm <- function(formula,
   if (!is(control, "ControlEL")) {
     stop("invalid 'control' specified")
   }
+  validate_model(model)
   cl <- match.call()
   if (missing(data)) {
     data <- environment(formula)

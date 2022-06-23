@@ -52,7 +52,10 @@
 #' mu <- 1 / (1 + exp(-l))
 #' y <- rbinom(n, 1, mu)
 #' df <- data.frame(y, x, x2)
-#' fit <- el_glm(y ~ x + x2, family = binomial, df)
+#' fit <- el_glm(y ~ x + x2,
+#'   family = binomial, df, weights = NULL,
+#'   na.action = na.omit, start = NULL, etastart = NULL, mustart = NULL
+#' )
 #' summary(fit)
 #' @importFrom stats gaussian glm.fit model.extract model.weights pchisq
 #' @export
@@ -67,6 +70,10 @@ el_glm <- function(formula,
                    etastart = NULL,
                    mustart = NULL,
                    ...) {
+  if (!is(control, "ControlEL")) {
+    stop("invalid 'control' specified")
+  }
+  validate_model(model)
   cl <- match.call()
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
@@ -142,9 +149,6 @@ el_glm <- function(formula,
   mm <- cbind(fit$y, X)
   p <- ncol(X)
   w <- check_weights_(w, nrow(mm))
-  if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
-  }
   el <- glm_(
     method, mm, fit$coefficients, intercept,
     control@maxit, control@maxit_l, control@tol, control@tol_l,

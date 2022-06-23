@@ -58,6 +58,7 @@ el_mean <- function(x,
   } else {
     est <- colMeans(mm)
   }
+  validate_model(model)
   el <- eval_("mean", par, mm, control@maxit_l, control@tol_l, control@th, w)
   new("EL",
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,

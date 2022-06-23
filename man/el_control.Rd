@@ -66,7 +66,7 @@ An object of class of \linkS4class{ControlEL}.
 Specifies computational details of (constrained) empirical likelihood.
 }
 \examples{
-optcfg <- el_control(maxit = 300, th = 200, nthreads = 1)
+optcfg <- el_control(maxit = 300, step = 0.01, th = 200, nthreads = 1)
 }
 \seealso{
 \code{\link[=el_eval]{el_eval()}}, \code{\link[=elt]{elt()}}

@@ -20,12 +20,18 @@ test_that("invalid 'lhs' and 'rhs'", {
   expect_error(elt(fit, control = optcfg))
   expect_error(elt(fit, rhs = c(NA, 0), lhs = lhs, control = optcfg))
   expect_error(elt(fit, rhs = c(1, 0), lhs = lhs, control = optcfg))
-  expect_error(elt(fit, rhs = matrix(c(1, 0, 0), ncol = 3), lhs = lhs,
-                   control = optcfg))
-  expect_error(elt(fit, rhs = matrix(c(1, 0, 0), ncol = 1), lhs = lhs,
-                   control = optcfg))
-  expect_error(elt(fit, rhs = matrix(c("error"), ncol = 1), lhs = lhs,
-                   control = optcfg))
+  expect_error(elt(fit,
+    rhs = matrix(c(1, 0, 0), ncol = 3), lhs = lhs,
+    control = optcfg
+  ))
+  expect_error(elt(fit,
+    rhs = matrix(c(1, 0, 0), ncol = 1), lhs = lhs,
+    control = optcfg
+  ))
+  expect_error(elt(fit,
+    rhs = matrix(c("error"), ncol = 1), lhs = lhs,
+    control = optcfg
+  ))
 
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   fit2 <- el_lm(y ~ x + x2, df, weights = w, control = optcfg)

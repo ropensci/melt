@@ -73,6 +73,8 @@ elmt <- function(object,
   th <- control@th
 
 
-  elmt_statistic_(h$q, h$m, method, coef(object), getDataMatrix(object), h$r, h$l,
-                  maxit, maxit_l, tol, tol_l, step, th, getWeights(object))
+  elmt_statistic_(
+    h$q, h$m, method, coef(object), getDataMatrix(object), h$r, h$l,
+    maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
+  )
 }

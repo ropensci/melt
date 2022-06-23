@@ -96,40 +96,38 @@ setMethod("show", "SummaryLM", function(object) print(object))
 
 #' @rdname print
 setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
-    cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
-      collapse = ", "
-    ),
-    " (df=", format(x@df), ")\n",
-    sep = ""
-    )
-    invisible(x)
-  }
-)
+  cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
+    collapse = ", "
+  ),
+  " (df=", format(x@df), ")\n",
+  sep = ""
+  )
+  invisible(x)
+})
 setMethod("show", "logLikEL", function(object) print(object))
 
 
 #' @rdname print
 setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
-    cat("\nEmpirical Likelihood Test\n\n")
-    method <- switch(x@calibrate,
-      "chisq" = "Chi-square",
-      "boot" = "Bootstrap",
-      "f" = "F"
-    )
-    out <- character()
-    out <- c(
-      out, paste("Significance level:", x@alpha),
-      paste("Calibration:", method)
-    )
-    cat(strwrap(paste(out, collapse = ", ")), "\n\n")
-    out2 <- character()
-    out2 <- c(
-      out2, paste("Statistic:", format.default(x@statistic, digits = digits)),
-      paste("Critical value:", format.default(x@cv, digits = digits))
-    )
-    cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
-    cat("p-value:", format.pval(x@pval, digits = digits), "\n\n")
-    invisible(x)
-  }
-)
+  cat("\nEmpirical Likelihood Test\n\n")
+  method <- switch(x@calibrate,
+    "chisq" = "Chi-square",
+    "boot" = "Bootstrap",
+    "f" = "F"
+  )
+  out <- character()
+  out <- c(
+    out, paste("Significance level:", x@alpha),
+    paste("Calibration:", method)
+  )
+  cat(strwrap(paste(out, collapse = ", ")), "\n\n")
+  out2 <- character()
+  out2 <- c(
+    out2, paste("Statistic:", format.default(x@statistic, digits = digits)),
+    paste("Critical value:", format.default(x@cv, digits = digits))
+  )
+  cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
+  cat("p-value:", format.pval(x@pval, digits = digits), "\n\n")
+  invisible(x)
+})
 setMethod("show", "ELT", function(object) print(object))

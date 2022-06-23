@@ -8,9 +8,13 @@
 \S4method{weights}{EL}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}.}
+\item{object}{An object that inherit from class \linkS4class{EL}, including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{...}{Not used.}
+}
+\value{
+A numeric vector the rescaled weights.
 }
 \description{
 Extracts model weights from objects that inherit from class

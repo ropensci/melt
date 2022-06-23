@@ -15,7 +15,8 @@
 )
 }
 \arguments{
-\item{object}{An object of class \linkS4class{EL}.}
+\item{object}{An object that inherit from class \linkS4class{EL}, including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{rhs}{A numeric vector or a column matrix for the right-hand-side of
 hypothesis, with as many entries as the rows in \code{lhs}. Defaults to \code{NULL}.

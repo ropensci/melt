@@ -15,7 +15,8 @@
 )
 }
 \arguments{
-\item{object}{An object of class \linkS4class{EL}.}
+\item{object}{An object that inherit from class \linkS4class{EL}, including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{parm}{A specification of which parameters are to be given a confidence
 region, either a vector of numbers or a vector of names. It should be a

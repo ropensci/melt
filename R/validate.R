@@ -180,7 +180,13 @@ validate_B <- function(B) {
 
 
 
-
+#' @noRd
+validate_model <- function(model) {
+  stopifnot(
+    "'model' must be a single logical" = (is.logical(model)),
+    "'model' must be a single logical" = (length(model) == 1L)
+  )
+}
 
 
 

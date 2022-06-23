@@ -33,8 +33,8 @@ setMethod("elt", "EL", function(object,
     p <- length(par)
     cal <- calibrate(alpha, el$statistic, calibrate, p, par, object, control)
     return(new("ELT",
-               optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
-               cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
+      optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
+      cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
     ))
   }
   # proceed with chi-square calibration for non-NULL 'lhs'
@@ -48,9 +48,9 @@ setMethod("elt", "EL", function(object,
     maxit, maxit_l, tol, tol_l, step, th, w
   )
   new("ELT",
-      optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
-      cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
-      pval = pchisq(el$statistic, df = nrow(h$l), lower.tail = FALSE),
-      calibrate = calibrate
+    optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
+    cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
+    pval = pchisq(el$statistic, df = nrow(h$l), lower.tail = FALSE),
+    calibrate = calibrate
   )
 })

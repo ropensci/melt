@@ -75,7 +75,7 @@ test_that("multiple responses", {
   x <- rnorm(n)
   y <- 1 + x + rnorm(n)
   df <- data.frame(y, x)
-  expect_error(el_lm(cbind(y , x) ~ 1, df))
+  expect_error(el_lm(cbind(y, x) ~ 1, df))
 })
 
 test_that("invalid 'weights'", {
@@ -109,10 +109,14 @@ test_that("same results with parallel computing", {
   expect_equal(fit@parTests, fit2@parTests)
 
   w <- 1 + runif(n, min = -0.5, max = 0.5)
-  wfit <- el_lm(y ~ ., df, weights = w,
-               control = el_control(th = 1e+10, nthreads = 1))
-  wfit2 <- el_lm(y ~ ., df, weights = w,
-                control = el_control(th = 1e+10))
+  wfit <- el_lm(y ~ ., df,
+    weights = w,
+    control = el_control(th = 1e+10, nthreads = 1)
+  )
+  wfit2 <- el_lm(y ~ ., df,
+    weights = w,
+    control = el_control(th = 1e+10)
+  )
   expect_equal(wfit@optim, wfit2@optim)
   expect_equal(wfit@parTests, wfit2@parTests)
 })

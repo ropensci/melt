@@ -8,7 +8,8 @@
 \S4method{logLik}{EL}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \linkS4class{EL}.}
+\item{object}{An object that inherit from class \linkS4class{EL}, including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{...}{Not used.}
 }

@@ -8,7 +8,8 @@
 \S4method{confint}{EL}(object, parm, level = 0.95, ..., cv = NULL, control = el_control())
 }
 \arguments{
-\item{object}{An object of class \linkS4class{EL}.}
+\item{object}{An object that inherit from class \linkS4class{EL}, including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{parm}{A specification of which parameters are to be given confidence
 intervals, either a vector of numbers or a vector of names. If missing, all
@@ -43,10 +44,6 @@ fit <- el_lm(mpg ~ ., data = mtcars)
 confint(fit, parm = c(2, 3))
 }
 \references{
-Kim, E., MacEachern, S., and Peruggia, M., (2021),
-"Empirical Likelihood for the Analysis of Experimental Designs,"
-\href{https://arxiv.org/abs/2112.09206}{arxiv:2112.09206}.
-
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }

@@ -4,8 +4,10 @@
 setMethod("plot", "ConfregEL", function(x, ...) {
   args <- list(...)
   if (!exists("main", args)) {
-    args$main <- paste(if (!is.na(x@level)) sprintf("%0.1f%%", 100 * x@level),
-                       "Confidence Region")
+    args$main <- paste(
+      if (!is.na(x@level)) sprintf("%0.1f%%", 100 * x@level),
+      "Confidence Region"
+    )
   }
   if (!exists("xlab", args)) {
     args$xlab <- x@pnames[1L]

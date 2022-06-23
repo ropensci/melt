@@ -56,8 +56,10 @@ test_that("loglik to loglr (weighted)", {
   df <- data.frame(y, x, x2)
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- suppressWarnings(el_glm(y ~ x + x2, family = binomial, df,
-                                  weights = w, control = optcfg))
+  fit <- suppressWarnings(el_glm(y ~ x + x2,
+    family = binomial, df,
+    weights = w, control = optcfg
+  ))
   w <- fit@weights
   expect_equal(fit@logl + sum(w * (log(n) - log(w))), fit@loglr)
 })
@@ -127,33 +129,53 @@ test_that("same results with parallel computing (binomial)", {
   y <- rbinom(n, 1, mu)
   w <- 1 + runif(n, min = -0.5, max = 0.5)
   df <- data.frame(cbind(y, x))
-  lfit <- el_glm(y ~ ., family = binomial(link = "logit"), df,
-                control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1))
-  lfit2 <- el_glm(y ~ ., family = binomial(link = "logit"), df,
-                 control = el_control(tol = 1e-08, th = 1e+10))
+  lfit <- el_glm(y ~ .,
+    family = binomial(link = "logit"), df,
+    control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1)
+  )
+  lfit2 <- el_glm(y ~ .,
+    family = binomial(link = "logit"), df,
+    control = el_control(tol = 1e-08, th = 1e+10)
+  )
   expect_equal(lfit@optim, lfit2@optim)
   expect_equal(lfit@parTests, lfit2@parTests)
   wlfit <- suppressWarnings(
-    el_glm(y ~ ., family = binomial(link = "logit"), df, weights = w,
-           control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1)))
+    el_glm(y ~ .,
+      family = binomial(link = "logit"), df, weights = w,
+      control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1)
+    )
+  )
   wlfit2 <- suppressWarnings(
-    el_glm(y ~ ., family = binomial(link = "logit"), df, weights = w,
-           control = el_control(tol = 1e-08, th = 1e+10)))
+    el_glm(y ~ .,
+      family = binomial(link = "logit"), df, weights = w,
+      control = el_control(tol = 1e-08, th = 1e+10)
+    )
+  )
   expect_equal(wlfit@optim, wlfit2@optim)
   expect_equal(wlfit@parTests, wlfit2@parTests)
 
-  pfit <- el_glm(y ~ ., family = binomial(link = "probit"), df,
-                control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1))
-  pfit2 <- el_glm(y ~ ., family = binomial(link = "probit"), df,
-                 control = el_control(tol = 1e-08, th = 1e+10))
+  pfit <- el_glm(y ~ .,
+    family = binomial(link = "probit"), df,
+    control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1)
+  )
+  pfit2 <- el_glm(y ~ .,
+    family = binomial(link = "probit"), df,
+    control = el_control(tol = 1e-08, th = 1e+10)
+  )
   expect_equal(pfit@optim, pfit2@optim)
   expect_equal(pfit@parTests, pfit2@parTests)
   wpfit <- suppressWarnings(
-    el_glm(y ~ ., family = binomial(link = "probit"), df, weights = w,
-           control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1)))
+    el_glm(y ~ .,
+      family = binomial(link = "probit"), df, weights = w,
+      control = el_control(tol = 1e-08, th = 1e+10, nthreads = 1)
+    )
+  )
   wpfit2 <- suppressWarnings(
-    el_glm(y ~ ., family = binomial(link = "probit"), df, weights = w,
-           control = el_control(tol = 1e-08, th = 1e+10)))
+    el_glm(y ~ .,
+      family = binomial(link = "probit"), df, weights = w,
+      control = el_control(tol = 1e-08, th = 1e+10)
+    )
+  )
   expect_equal(wpfit@optim, wpfit2@optim)
   expect_equal(wpfit@parTests, wpfit2@parTests)
 })

@@ -83,7 +83,10 @@ l <- -2 + 0.2 * x + 3 * x2
 mu <- 1 / (1 + exp(-l))
 y <- rbinom(n, 1, mu)
 df <- data.frame(y, x, x2)
-fit <- el_glm(y ~ x + x2, family = binomial, df)
+fit <- el_glm(y ~ x + x2,
+  family = binomial, df, weights = NULL,
+  na.action = na.omit, start = NULL, etastart = NULL, mustart = NULL
+)
 summary(fit)
 }
 \references{
