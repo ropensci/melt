@@ -15,3 +15,19 @@ test_that("invalid 'object", {
   expect_error(eld(fit))
   expect_error(eld(fit2))
 })
+
+test_that("weights", {
+  data("sleep")
+  optcfg <- el_control(tol = 1e-08, th = 1e+10)
+  fit <- el_lm(extra ~ ID, sleep, weights = as.numeric(group), control = optcfg)
+  expect_s4_class(eld(fit), "ELD")
+})
+
+test_that("mean", {
+  data("women")
+  optcfg <- el_control(tol = 1e-08, th = 1e+10)
+  fit <- el_mean(women$height, par = 67)
+  fit2 <- el_mean(women$height, par = 67, weights = women$weight)
+  expect_s4_class(eld(fit), "ELD")
+  expect_s4_class(eld(fit2), "ELD")
+})

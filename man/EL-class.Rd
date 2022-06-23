@@ -51,8 +51,8 @@ performed.}
 \item{\code{convergence } }{A single logical for the convergence status.}
 }}
 
-\item{\code{logp}}{A numeric vector of  the log probabilities obtained from
-empirical likelihood.}
+\item{\code{logp}}{A numeric vector of the log probabilities obtained from empirical
+likelihood.}
 
 \item{\code{logl}}{A single numeric for the empirical log-likelihood.}
 

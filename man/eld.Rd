@@ -11,7 +11,7 @@
 \item{object}{A fitted \linkS4class{EL} object.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link{el_control}}.}
+\code{\link[=el_control]{el_control()}}.}
 }
 \value{
 An object of class \linkS4class{ELD}.

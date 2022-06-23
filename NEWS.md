@@ -44,15 +44,13 @@
 
 # melt 1.5.0
 ### NEW FEATURES
-* The package depends on more recent version of R (>= 4.0.0).
-
 * S4 classes, generics, and methods are adopted throughout the package.
 
-* New `confreg()` constructs confidence regions
+* New `confreg()` constructs confidence regions.
 
 * New `eld()` computes empirical likelihood displacement values.
 
-* New `el_control()` specifies `control` argument. Plain list it no longer accepted.
+* New `el_control()` the specifies `control` argument. 
 
 * New `el_glm()` performs empirical likelihood tests to generalized linear models. More families and link functions will be supported in a future release.
 
@@ -66,11 +64,11 @@
 
 # melt 1.4.0
 ### NEW FEATURES
-* C++14 standards are used for the package.
-
 * New `lht()` performs linear hypothesis testing.
 
-* Generics `confint()` and `logLik()` are added for `el_test` class.
+* New `confint()` constructs confidence intervals.
+
+* New `logLik()` extracts empirical log-likelihood.
 
 * `el_test` objects additionally return `npar`, `log.prob`, and `loglik`.
 
@@ -89,14 +87,12 @@
 
 # melt 1.2.0
 ### NEW FEATURES
-* Dependence on R version updated to '3.6.0'.
-
 * New `el_lm()` performs empirical likelihood tests for linear models.
 
 
 # melt 1.1.0
 ### NEW FEATURES
-* New `el_aov()` performs one-way analysis of variance. It only supports one variable at the moment.
+* New `el_aov()` performs one-way analysis of variance. 
 
 
 # melt 1.0.1

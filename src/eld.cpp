@@ -5,6 +5,7 @@
 #include <omp.h>
 #endif
 #include <string>
+#include <vector>
 
 // [[Rcpp::export]]
 Rcpp::NumericVector eld_(const std::string method,

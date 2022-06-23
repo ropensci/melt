@@ -1,15 +1,10 @@
 test_that("convergence check", {
-  skip_on_os("windows", arch = "i386")
-  x <- c(-1.5, 1.5, rnorm(10))
-  grid <- seq(-1, 1, length.out = 1000)
+  data("women")
+  x <- women$weight
+  grid <- seq(120, 160, length.out = 1000)
+  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   conv <- function(par) {
-    el_eval(x - par,
-      control =
-        el_control(
-          maxit_l = 20L, tol_l = 1e-08,
-          th = 1e+10
-        )
-    )$optim$convergence
+    el_eval(x - par, control = optcfg)$optim$convergence
   }
   expect_true(all(vapply(grid, conv, FUN.VALUE = logical(1))))
 })
@@ -53,7 +48,8 @@ test_that("loglik to loglr (weighted)", {
   fit <- el_eval(x - par, w, optcfg)
   w <- fit$weights
   expect_equal(fit$logl + sum(w * (log(n) - log(w))), fit$loglr,
-               tolerance = 1e-07)
+    tolerance = 1e-07
+  )
 })
 
 test_that("identical weights == no weights", {
@@ -78,12 +74,11 @@ test_that("non-full rank", {
 
 test_that("invalid 'g'", {
   optcfg <- el_control(maxit_l = 20L, tol_l = 1e-08, th = 1e+10)
-  expect_error(el_eval(matrix(rnorm(2), ncol = 2), control = optcfg))
+  expect_error(el_eval(matrix(c(1, 1), ncol = 2), control = optcfg))
   expect_error(el_eval(matrix(c(1, 1, 2, NA), ncol = 2), control = optcfg))
 })
 
 test_that("invalid 'control'", {
-  x <- rnorm(10)
-  par <- runif(1, min(x), max(x))
-  expect_error(el_eval(x - par, control = list(maxit = 200L)))
+  data("women")
+  expect_error(el_eval(women$height - 67, control = list(maxit = 200L)))
 })

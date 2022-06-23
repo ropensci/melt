@@ -3,9 +3,10 @@
 
 #include "eigen_config.h"
 #include <RcppEigen.h>
+#include <functional>
+#include <string>
 
-class EL
-{
+class EL {
 public:
   // members
   const Eigen::VectorXd par;  // parameter value specified
@@ -19,21 +20,6 @@ public:
   const Eigen::ArrayXd w;           // weights
 
   // constructors
-  // EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
-  //    const int maxit_l,
-  //    const double tol_l,
-  //    const double th,
-  //    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
-  // EL(const std::string method,
-  //    const Eigen::Ref<const Eigen::VectorXd>& par0,
-  //    const Eigen::Ref<const Eigen::MatrixXd>& x,
-  //    const int maxit_l,
-  //    const double tol_l,
-  //    const double th,
-  //    const Rcpp::Nullable<const Eigen::Map<const Eigen::ArrayXd>&> wt);
-
-
-  // test
   EL(const std::string method,
      const Eigen::Ref<const Eigen::VectorXd>& par0,
      const Eigen::Ref<const Eigen::MatrixXd>& x,
@@ -76,8 +62,7 @@ private:
       const Eigen::Ref<const Eigen::VectorXd>&)> g_fn;
 };
 
-class MINEL
-{
+class MINEL {
 public:
   // members
   Eigen::VectorXd par;  // parameter value (solution of optimization problem)
@@ -144,8 +129,7 @@ private:
       const bool)> gr_fn;
 };
 
-class PSEUDO_LOG
-{
+class PSEUDO_LOG {
 public:
   // members
   Eigen::ArrayXd dplog;

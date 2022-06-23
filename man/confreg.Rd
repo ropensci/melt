@@ -34,7 +34,7 @@ empirical likelihood ratio statistic. Defaults to NULL and set to
 Defaults to \code{50}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link{el_control}}.}
+\code{\link[=el_control]{el_control()}}.}
 }
 \value{
 An object of class \linkS4class{ConfregEL}.
@@ -45,12 +45,12 @@ parameters.
 }
 \examples{
 fit <- el_lm(mpg ~ ., data = mtcars)
-confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2L))
+confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{confint}, \link{el_control}, \link{elt}, \link{plot}
+\code{\link[=confint]{confint()}}, \code{\link[=el_control]{el_control()}}, \code{\link[=elt]{elt()}}, \code{\link[=plot]{plot()}}
 }

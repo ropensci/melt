@@ -1,5 +1,5 @@
-#include "EL.h"
 #include "utils.h"
+#include "EL.h"
 #include <RcppEigen.h>
 #include <string>
 

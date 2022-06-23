@@ -2,51 +2,48 @@
 #'
 #' Fits a generalized linear model with empirical likelihood.
 #'
-#' @param formula An object of class \code{"\link[stats]{formula}"} (or one that
-#'   can be coerced to that class): a symbolic description of the model to be
-#'   fitted.
+#' @param formula An object of class [`formula`] (or one that can be coerced to
+#'   that class): a symbolic description of the model to be fitted.
 #' @param family A description of the error distribution and link function to be
 #'   used in the model. Only the result of a call to a family function is
 #'   supported. See ‘Details’.
 #' @param data An optional data frame, list or environment (or object coercible
-#'   by \code{\link[base]{as.data.frame}} to a data frame) containing the
-#'   variables in the formula. If not found in data, the variables are taken
-#'   from \code{environment(formula)}.
+#'   by [as.data.frame()] to a data frame) containing the variables in the
+#'   formula. If not found in data, the variables are taken from
+#'   `environment(formula)`.
 #' @param weights An optional numeric vector of weights to be used in the
-#'   fitting process. Defaults to \code{NULL}, corresponding to identical
-#'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
+#'   fitting process. Defaults to `NULL`, corresponding to identical weights. If
+#'   non-`NULL`, weighted empirical likelihood is computed.
 #' @param na.action A function which indicates what should happen when the data
-#'   contain \code{NA}s. The default is set by the \code{na.action} setting of
-#'   \code{\link[base]{options}}, and is \code{na.fail} if that is unset.
+#'   contain `NA`s. The default is set by the `na.action` setting of
+#'   [`options`], and is `na.fail` if that is unset.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   \code{\link{el_control}}.
-#' @param model A single logical. If \code{TRUE} the data matrix used for
-#'   fitting is returned.
+#'   [el_control()].
+#' @param model A single logical. If `TRUE` the data matrix used for fitting is
+#'   returned.
 #' @param start Starting values for the parameters in the linear predictor.
-#'   Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.
-#' @param etastart Starting values for the linear predictor. Defaults to
-#'   \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.
-#' @param mustart Starting values for the vector of means. Defaults to
-#'   \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.
-#' @param ... Additional arguments to be passed to
-#'   \code{\link[stats]{glm.control}}.
+#'   Defaults to `NULL` and is passed to [glm.fit()].
+#' @param etastart Starting values for the linear predictor. Defaults to `NULL`
+#'   and is passed to [glm.fit()].
+#' @param mustart Starting values for the vector of means. Defaults to `NULL`
+#'   and is passed to [glm.fit()].
+#' @param ... Additional arguments to be passed to [glm.control()].
 #' @details The available families and link functions are as follows:
 #'   \itemize{
-#'   \item{\code{gaussian}}{: \code{identity}, \code{log}, and \code{inverse}.}
-#'   \item{\code{bimomial}}{: \code{logit}, \code{probit}, and \code{log}.}
-#'   \item{\code{poisson}}{: \code{log}, \code{identity}, and \code{sqrt}.}
+#'   \item{`gaussian`}{: `identity`, `log`, and `inverse`.}
+#'   \item{`bimomial`}{: `logit`, `probit`, and `log`.}
+#'   \item{`poisson`}{: `log`, `identity`, and `sqrt`.}
 #'   }
 #'   Included in the tests are the overall test with
 #'   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
 #'   and the tests for each parameter with
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
-#'   The test results are returned as \code{optim} and \code{parTests},
-#'   respectively.
+#'   The test results are returned as `optim` and `parTests`, respectively.
 #' @return An object of class of \linkS4class{GLM}.
 #' @references Chen, Song Xi, and Hengjian Cui. 2003.
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
 #'   Statistica Sinica 13: 69–81.
-#' @seealso \link{el_control}, \link{el_lm}, \link{elt}
+#' @seealso [el_control()], [el_lm()], [elt()]
 #' @examples
 #' n <- 50
 #' x <- rnorm(n)

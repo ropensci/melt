@@ -15,28 +15,27 @@ el_lm(
 )
 }
 \arguments{
-\item{formula}{An object of class \code{"\link[stats]{formula}"} (or one that
-can be coerced to that class): a symbolic description of the model to be
-fitted.}
+\item{formula}{An object of class \code{\link{formula}} (or one that can be coerced to
+that class): a symbolic description of the model to be fitted.}
 
 \item{data}{An optional data frame, list or environment (or object coercible
-by \code{\link[base]{as.data.frame}} to a data frame) containing the
-variables in the formula. If not found in data, the variables are taken
-from \code{environment(formula)}.}
+by \code{\link[=as.data.frame]{as.data.frame()}} to a data frame) containing the variables in
+\code{formula}. If not found in data, the variables are taken from
+\code{environment(formula)}.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to \code{NULL}, corresponding to identical
-weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
+fitting process. Defaults to \code{NULL}, corresponding to identical weights. If
+non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{na.action}{A function which indicates what should happen when the data
 contain \code{NA}s. The default is set by the \code{na.action} setting of
-\code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
+\code{\link{options}}, and is \code{na.fail} if that is unset.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link{el_control}}.}
+\code{\link[=el_control]{el_control()}}.}
 
-\item{model}{A single logical. If \code{TRUE} the data matrix used for
-fitting is returned.}
+\item{model}{A single logical. If \code{TRUE} the data matrix used for fitting is
+returned.}
 
 \item{...}{Additional arguments to be passed to the low level regression
 fitting functions. See ‘Details’.}
@@ -61,17 +60,16 @@ independent random variables that satisfy
 finite conditional variance. Then the least square estimator of
 \eqn{\theta} solves the following estimating equation:
 \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
-\code{\link{el_lm}} first computes the parameter estimates by calling
-\code{\link[stats]{lm.fit}} (with \code{...} if any) since the maximum
-empirical likelihood estimator is the same as the least square estimator in
-our model. Next, it performs hypothesis tests based on asymptotic
-chi-squared distribution of empirical likelihood ratio statistics. Included
-in the tests are the overall test with
+\code{\link[=el_lm]{el_lm()}} first computes the parameter estimates by calling \code{\link[=lm.fit]{lm.fit()}}
+(with \code{...} if any) since the maximum empirical
+likelihood estimator is the same as the least square estimator in our
+model. Next, it performs hypothesis tests based on asymptotic chi-squared
+distribution of empirical likelihood ratio statistics. Included in the
+tests are the overall test with
 \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
 and the tests for each parameter with
 \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
-The test results are returned as \code{optim} and \code{parTests},
-respectively.
+The test results are returned as \code{optim} and \code{parTests}, respectively.
 }
 \examples{
 df <- data.frame(y = rnorm(50), x = rnorm(50))
@@ -90,5 +88,5 @@ Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
 The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\link{el_control}, \link{el_glm}, \link{elt}
+\code{\link[=el_control]{el_control()}}, \code{\link[=el_glm]{el_glm()}}, \code{\link[=elt]{elt()}}
 }

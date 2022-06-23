@@ -2,8 +2,7 @@
 #include "utils.h"
 
 Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                     const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                     const Eigen::Ref<const Eigen::VectorXd>& par) {
   return x.rightCols(x.cols() - 1).array().colwise() *
     (x.col(0) - x.rightCols(x.cols() - 1) * par).array();
 }
@@ -12,8 +11,7 @@ Eigen::VectorXd gr_nloglr_lm(const Eigen::Ref<const Eigen::VectorXd>& l,
                              const Eigen::Ref<const Eigen::MatrixXd>& x,
                              const Eigen::Ref<const Eigen::VectorXd>& par,
                              const Eigen::Ref<const Eigen::ArrayXd>& w,
-                             const bool weighted)
-{
+                             const bool weighted) {
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   Eigen::ArrayXd c(x.rows());
   if (weighted) {
@@ -27,8 +25,7 @@ Eigen::VectorXd gr_nloglr_lm(const Eigen::Ref<const Eigen::VectorXd>& l,
 
 // binomial family
 Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                            const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                            const Eigen::Ref<const Eigen::VectorXd>& par) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return xmat.array().colwise() * (y - logit_linkinv(xmat * par));
@@ -39,8 +36,7 @@ Eigen::VectorXd gr_nloglr_bin_logit(
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
-{
+    const bool weighted) {
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd num =
     logit_linkinv(x * par) * (1.0 - logit_linkinv(x * par));
@@ -55,8 +51,7 @@ Eigen::VectorXd gr_nloglr_bin_logit(
 }
 
 Eigen::MatrixXd g_bin_probit(const Eigen::Ref<const Eigen::MatrixXd>& data,
-                             const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                             const Eigen::Ref<const Eigen::VectorXd>& par) {
   const Eigen::ArrayXd y = data.col(0);
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   return x.array().colwise() * (y - probit_linkinv(x * par));
@@ -67,8 +62,7 @@ Eigen::VectorXd gr_nloglr_bin_probit(
     const Eigen::Ref<const Eigen::MatrixXd>& data,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
-{
+    const bool weighted) {
   const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd num =
     -exp(-(x * par).array().square() * 0.5) * M_SQRT1_2 * M_2_SQRTPI * 0.5;
@@ -83,8 +77,7 @@ Eigen::VectorXd gr_nloglr_bin_probit(
 }
 
 Eigen::MatrixXd g_bin_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                          const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                          const Eigen::Ref<const Eigen::VectorXd>& par) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return xmat.array().colwise() * ((inverse(1.0 - log_linkinv(xmat * par))) *
@@ -96,8 +89,7 @@ Eigen::VectorXd gr_nloglr_bin_log(
     const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
-{
+    const bool weighted) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   const Eigen::ArrayXd c = square((1.0 - log_linkinv(xmat * par)).inverse()) *
@@ -115,8 +107,7 @@ Eigen::VectorXd gr_nloglr_bin_log(
 
 // poisson family
 Eigen::MatrixXd g_poi_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
-                          const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                          const Eigen::Ref<const Eigen::VectorXd>& par) {
   const Eigen::ArrayXd y = data.col(0);
   const Eigen::MatrixXd xmat = data.rightCols(data.cols() - 1);
   return xmat.array().colwise() * (y - log_linkinv(xmat * par));
@@ -126,8 +117,7 @@ Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
                                   const Eigen::Ref<const Eigen::MatrixXd>& data,
                                   const Eigen::Ref<const Eigen::VectorXd>& par,
                                   const Eigen::Ref<const Eigen::ArrayXd>& w,
-                                  const bool weighted)
-{
+                                  const bool weighted) {
   const Eigen::MatrixXd xmat = data.rightCols(data.cols() - 1);
   const Eigen::ArrayXd num = log_linkinv(xmat * par);
   const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + (g * l);
@@ -141,8 +131,7 @@ Eigen::VectorXd gr_nloglr_poi_log(const Eigen::Ref<const Eigen::VectorXd>& l,
 }
 
 Eigen::MatrixXd g_poi_identity(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                               const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                               const Eigen::Ref<const Eigen::VectorXd>& par) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return xmat.array().colwise() *
@@ -154,8 +143,7 @@ Eigen::VectorXd gr_nloglr_poi_identity(
     const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
-{
+    const bool weighted) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   const Eigen::ArrayXd c =
@@ -171,8 +159,7 @@ Eigen::VectorXd gr_nloglr_poi_identity(
 }
 
 Eigen::MatrixXd g_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                           const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                           const Eigen::Ref<const Eigen::VectorXd>& par) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return xmat.array().colwise() *
@@ -183,8 +170,7 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
                                    const Eigen::Ref<const Eigen::MatrixXd>& x,
                                    const Eigen::Ref<const Eigen::VectorXd>& par,
                                    const Eigen::Ref<const Eigen::ArrayXd>& w,
-                                   const bool weighted)
-{
+                                   const bool weighted) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   const Eigen::ArrayXd c =
@@ -202,8 +188,7 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
 
 // quasibinomial family
 Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                             const Eigen::Ref<const Eigen::VectorXd>& par)
-{
+                             const Eigen::Ref<const Eigen::VectorXd>& par) {
   const double n = static_cast<double>(x.rows());
   const int p = x.cols() - 1;
   const Eigen::VectorXd beta = par.head(p);
@@ -237,8 +222,7 @@ Eigen::VectorXd gr_nloglr_qbin_logit(
     const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted)
-{
+    const bool weighted) {
   const int p = x.cols() - 1;
   const Eigen::VectorXd beta = par.head(p);
   const double phi = par(p);
@@ -273,14 +257,13 @@ Eigen::VectorXd gr_nloglr_qbin_logit(
 /* EL class (evaluation)
  * Last updated: 04/07/22
  */
-EL::EL(
-  const std::string method,
-  const Eigen::Ref<const Eigen::VectorXd>& par0,
-  const Eigen::Ref<const Eigen::MatrixXd>& x,
-  const int maxit_l,
-  const double tol_l,
-  const double th,
-  const Eigen::Ref<const Eigen::ArrayXd>& wt)
+EL::EL(const std::string method,
+       const Eigen::Ref<const Eigen::VectorXd>& par0,
+       const Eigen::Ref<const Eigen::MatrixXd>& x,
+       const int maxit_l,
+       const double tol_l,
+       const double th,
+       const Eigen::Ref<const Eigen::ArrayXd>& wt)
   : par{par0},
     l{Eigen::VectorXd::Zero(par0.size())},
     mele_fn{set_mele_fn(method)},
@@ -293,12 +276,11 @@ EL::EL(
 {
   set_el(g_fn(x, par), wt);
 }
-EL::EL(
-  const Eigen::Ref<const Eigen::MatrixXd>& g,
-  const int maxit_l,
-  const double tol_l,
-  const double th,
-  const Eigen::Ref<const Eigen::ArrayXd>& wt)
+EL::EL(const Eigen::Ref<const Eigen::MatrixXd>& g,
+       const int maxit_l,
+       const double tol_l,
+       const double th,
+       const Eigen::Ref<const Eigen::ArrayXd>& wt)
   : par{},
     l{Eigen::VectorXd::Zero(g.cols())},
     mele_fn{},
@@ -314,8 +296,7 @@ EL::EL(
 
 std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::ArrayXd>&)>
-  EL::set_mele_fn(const std::string method)
-{
+  EL::set_mele_fn(const std::string method) {
   std::map<std::string, std::function<Eigen::VectorXd(
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::ArrayXd>&)>>
@@ -326,8 +307,7 @@ std::function<Eigen::VectorXd(const Eigen::Ref<const Eigen::MatrixXd>&,
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>
-  EL::set_g_fn(const std::string method)
-{
+  EL::set_g_fn(const std::string method) {
   std::map<std::string, std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::VectorXd>&)>>
@@ -347,8 +327,7 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
 }
 
 void EL::set_el(const Eigen::Ref<const Eigen::MatrixXd>& g,
-                const Eigen::Ref<const Eigen::ArrayXd>& w)
-{
+                const Eigen::Ref<const Eigen::ArrayXd>& w) {
   // maximization
   while (!conv && iter != maxit_l && nllr <= th) {
     // pseudo log

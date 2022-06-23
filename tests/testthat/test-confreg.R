@@ -47,6 +47,10 @@ test_that("invalid 'cv'", {
   data("mtcars")
   fit <- el_lm(mpg ~ hp, data = mtcars)
   expect_error(confreg(fit, parm = c(1, 2), cv = 1e+10))
+  expect_error(confreg(fit,
+    parm = c(1, 2), cv = 1e+10,
+    control = el_control(th = 100)
+  ))
 })
 
 test_that("invalid 'npoints'", {

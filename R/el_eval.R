@@ -7,21 +7,21 @@
 #'   The number of rows must be greater than the number of columns.
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. The length of the vector must be the same as the number of
-#'   rows in \code{g}. Defaults to \code{NULL}, corresponding to identical
-#'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
+#'   rows in `g`. Defaults to `NULL`, corresponding to identical weights. If
+#'   non-`NULL`, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   \code{\link{el_control}}.
-#' @details \code{el_eval} evaluates empirical likelihood with a \eqn{n} by
-#'   \eqn{p} numeric matrix argument \code{g}, whose \eqn{i}th row is
+#'   [el_control()].
+#' @details `el_eval` evaluates empirical likelihood with a \eqn{n} by
+#'   \eqn{p} numeric matrix argument `g`, whose \eqn{i}th row is
 #'   \eqn{g(X_i, \theta)}. Since the estimating function can be arbitrary,
-#'   \code{el_eval} does not return an object of class \linkS4class{EL}, and the
+#'   `el_eval` does not return an object of class \linkS4class{EL}, and the
 #'   associated generics and methods are not applicable.
 #' @return A list with the following components:
 #'   \item{optim}{A list with the following optimization results:
 #'     \itemize{
-#'     \item{\code{lambda } }{Lagrange multiplier of the dual problem.}
-#'     \item{\code{iterations } }{Number of iterations performed.}
-#'     \item{\code{convergence } }{Convergence status.}
+#'     \item{`lambda ` }{Lagrange multiplier of the dual problem.}
+#'     \item{`iterations ` }{Number of iterations performed.}
+#'     \item{`convergence ` }{Convergence status.}
 #'     }
 #'   }
 #'   \item{logp}{Log probabilities obtained from empirical likelihood.}
@@ -36,7 +36,7 @@
 #' @references Qin, Jin, and Jerry Lawless. 1994.
 #'   “Empirical Likelihood and General Estimating Equations.”
 #'   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
-#' @seealso \link{el_control}
+#' @seealso [el_control()]
 #' @examples
 #' x <- rnorm(50)
 #' par <- 0

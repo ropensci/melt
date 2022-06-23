@@ -9,9 +9,9 @@ S4 class for linear models with empirical likelihood. It inherits from
 \linkS4class{CEL} class.
 }
 \details{
-If there is no intercept in a model, \code{optim}
-slot need to be understood in terms of \linkS4class{EL} class since
-constrained optimization is not involved in the overall test.
+If there is no intercept in a model, \code{optim} slot need to be
+understood in terms of \linkS4class{EL} class since constrained optimization
+is not involved in the overall test.
 }
 \section{Slots}{
 

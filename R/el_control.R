@@ -22,23 +22,21 @@
 #'   available threads. For better performance, it is generally recommended to
 #'   limit the number of threads to the number of physical cores. Note that it
 #'   only applies to the following functions that involve multiple evaluations
-#'   or minimizations: \code{\link{confint}}, \code{\link{confreg}},
-#'   \code{\link{el_lm}}, \code{\link{el_glm}}, \code{\link{eld}}, and
-#'   \code{\link{elt}}.
+#'   or minimizations: [confint()], [confreg()], [el_lm()], [el_glm()], [eld()],
+#'   and [elt()].
 #' @param seed A single integer for the seed for random number generation. It
-#'   only applies to \code{\link{elt}} when `calibrate` is set to `"boot"`.
-#'   Defaults to a random integer generated from 1 to the maximum integer
-#'   supported by \R on the machine, which is determined by
-#'   \code{\link[base]{set.seed}}. Only one seed is needed even when multiple
-#'   threads are used with `nthreads`. Each thread is given a separate seed
-#'   to produce a non-overlapping but reproducible sequence of random numbers.
-#'   The Xoshiro256+ pseudo-random number generator is used internally to work
-#'   with OpenMP.
+#'   only applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to a
+#'   random integer generated from 1 to the maximum integer supported by \R on
+#'   the machine, which is determined by [base::set.seed()]. Only one seed is
+#'   needed even when multiple threads are used with `nthreads`. Each thread is
+#'   given a separate seed to produce a non-overlapping but reproducible
+#'   sequence of random numbers. The Xoshiro256+ pseudo-random number generator
+#'   is used internally to work with OpenMP.
 #' @param B A single integer for the number of bootstrap replicates. It only
-#'   applies to \code{\link{elt}} when `calibrate` is set to `"boot"`. Defaults
-#'   to `10000`.
+#'   applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to
+#'   `10000`.
 #' @return An object of class of \linkS4class{ControlEL}.
-#' @seealso \link{el_eval}, \link{elt}
+#' @seealso [el_eval()], [elt()]
 #' @examples
 #' optcfg <- el_control(maxit = 300, th = 200, nthreads = 1)
 #' @export

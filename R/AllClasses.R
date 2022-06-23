@@ -34,14 +34,14 @@
 #'   \eqn{p} degrees of freedom.
 #' @slot optim A list with the following optimization results:
 #'   \itemize{
-#'   \item{\code{par } }{A numeric vector of the specified parameters.}
-#'   \item{\code{lambda } }{A numeric vector of the Lagrange multipliers.}
-#'   \item{\code{iterations } }{A single integer for the number of iterations
+#'   \item{`par ` }{A numeric vector of the specified parameters.}
+#'   \item{`lambda ` }{A numeric vector of the Lagrange multipliers.}
+#'   \item{`iterations ` }{A single integer for the number of iterations
 #'   performed.}
-#'   \item{\code{convergence } }{A single logical for the convergence status.}
+#'   \item{`convergence ` }{A single logical for the convergence status.}
 #'   }
-#' @slot logp A numeric vector of  the log probabilities obtained from
-#'   empirical likelihood.
+#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#'   likelihood.
 #' @slot logl A single numeric for the empirical log-likelihood.
 #' @slot loglr A single numeric for the empirical log-likelihood ratio.
 #' @slot statistic A single numeric for the minus twice the empirical
@@ -84,8 +84,8 @@ setClass("EL",
 #' S4 class \linkS4class{CEL}
 #'
 #' S4 class for constrained empirical likelihood. It inherits from
-#' \linkS4class{EL} class. Note that \code{optim} slot has constrained
-#' optimization results with respect to parameters, not the Lagrange multiplier.
+#' \linkS4class{EL} class. Note that `optim` slot has constrained optimization
+#' results with respect to parameters, not the Lagrange multiplier.
 #'
 #' @details Let \eqn{l(\theta)} denote the minus twice the empirical
 #'   log-likelihood ratio function. We consider a linear hypothesis of the form
@@ -111,12 +111,12 @@ setClass("EL",
 #'   \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
 #' @slot optim A list with the following optimization results:
 #'   \itemize{
-#'   \item{\code{par } }{A numeric vector of the parameter value that minimizes
-#'   the empirical likelihood subject to the constraints.}
-#'   \item{\code{lambda } }{A numeric vector of the Lagrange multipliers.}
-#'   \item{\code{iterations } }{A single integer for the number of iterations
+#'   \item{`par ` }{A numeric vector of the parameter value that minimizes the
+#'   empirical likelihood subject to the constraints.}
+#'   \item{`lambda ` }{A numeric vector of the Lagrange multipliers.}
+#'   \item{`iterations ` }{A single integer for the number of iterations
 #'   performed.}
-#'   \item{\code{convergence } }{A single logical for the convergence status.}
+#'   \item{`convergence ` }{A single logical for the convergence status.}
 #'   }
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
@@ -135,14 +135,14 @@ setClass("CEL", contains = "EL")
 #' S4 class for linear models with empirical likelihood. It inherits from
 #' \linkS4class{CEL} class.
 #'
-#' @details If there is no intercept in a model, \code{optim}
-#' slot need to be understood in terms of \linkS4class{EL} class since
-#' constrained optimization is not involved in the overall test.
+#' @details If there is no intercept in a model, `optim` slot need to be
+#' understood in terms of \linkS4class{EL} class since constrained optimization
+#' is not involved in the overall test.
 #' @slot parTests A list with the test results for each parameter:
 #'   \itemize{
-#'   \item{\code{statistic } }{A numeric vector of the empirical likelihood
+#'   \item{`statistic ` }{A numeric vector of the empirical likelihood
 #'   ratio statistics.}
-#'   \item{\code{convergence } }{A logical vector of the convergence status of
+#'   \item{`convergence ` }{A logical vector of the convergence status of
 #'   tests for each parameter.}
 #'   }
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
@@ -276,10 +276,10 @@ setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))
 #' @slot parMatrix A numeric matrix of the test results of the parameters.
 #' @slot weighted A single logical for whether the given model is weighted or
 #'   not.
-#' @slot na.action Information returned by \code{\link[stats]{model.frame}} on
-#'   the special handling of NAs.
+#' @slot na.action Information returned by [`model.frame`] on the special
+#'   handling of NAs.
 #' @slot call Matched call.
-#' @slot terms \code{\link[stats]{terms}} object used.
+#' @slot terms [`terms`] object used.
 #' @slot aliased A named logical vector showing if the original coefficients are
 #'   aliased.
 #' @examples

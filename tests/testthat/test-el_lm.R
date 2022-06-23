@@ -91,11 +91,8 @@ test_that("invalid 'weights'", {
 })
 
 test_that("invalid 'control'", {
-  n <- 10
-  x <- rnorm(n)
-  y <- 1 + x + rnorm(n)
-  df <- data.frame(y, x)
-  expect_error(el_lm(y ~ x, df, control = list()))
+  data("mtcars")
+  expect_error(el_lm(mpg ~ ., mtcars, control = list()))
 })
 
 test_that("same results with parallel computing", {
@@ -143,4 +140,11 @@ test_that("print method", {
 
   out@aliased <- c(TRUE, TRUE, TRUE)
   expect_output(print(out))
+})
+
+test_that("no intercept", {
+  data("mtcars")
+  optcfg <- el_control(tol = 1e-08, th = 1e+10)
+  fit <- el_lm(mpg ~ -1 + ., mtcars, control = optcfg)
+  expect_s4_class(fit, "LM")
 })

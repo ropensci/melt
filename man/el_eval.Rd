@@ -13,11 +13,11 @@ The number of rows must be greater than the number of columns.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
 fitting process. The length of the vector must be the same as the number of
-rows in \code{g}. Defaults to \code{NULL}, corresponding to identical
-weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
+rows in \code{g}. Defaults to \code{NULL}, corresponding to identical weights. If
+non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link{el_control}}.}
+\code{\link[=el_control]{el_control()}}.}
 }
 \value{
 A list with the following components:
@@ -60,5 +60,5 @@ Qin, Jin, and Jerry Lawless. 1994.
 The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 }
 \seealso{
-\link{el_control}
+\code{\link[=el_control]{el_control()}}
 }

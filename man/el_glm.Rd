@@ -19,44 +19,42 @@ el_glm(
 )
 }
 \arguments{
-\item{formula}{An object of class \code{"\link[stats]{formula}"} (or one that
-can be coerced to that class): a symbolic description of the model to be
-fitted.}
+\item{formula}{An object of class \code{\link{formula}} (or one that can be coerced to
+that class): a symbolic description of the model to be fitted.}
 
 \item{family}{A description of the error distribution and link function to be
 used in the model. Only the result of a call to a family function is
 supported. See ‘Details’.}
 
 \item{data}{An optional data frame, list or environment (or object coercible
-by \code{\link[base]{as.data.frame}} to a data frame) containing the
-variables in the formula. If not found in data, the variables are taken
-from \code{environment(formula)}.}
+by \code{\link[=as.data.frame]{as.data.frame()}} to a data frame) containing the variables in the
+formula. If not found in data, the variables are taken from
+\code{environment(formula)}.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to \code{NULL}, corresponding to identical
-weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
+fitting process. Defaults to \code{NULL}, corresponding to identical weights. If
+non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{na.action}{A function which indicates what should happen when the data
 contain \code{NA}s. The default is set by the \code{na.action} setting of
-\code{\link[base]{options}}, and is \code{na.fail} if that is unset.}
+\code{\link{options}}, and is \code{na.fail} if that is unset.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link{el_control}}.}
+\code{\link[=el_control]{el_control()}}.}
 
-\item{model}{A single logical. If \code{TRUE} the data matrix used for
-fitting is returned.}
+\item{model}{A single logical. If \code{TRUE} the data matrix used for fitting is
+returned.}
 
 \item{start}{Starting values for the parameters in the linear predictor.
-Defaults to \code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
+Defaults to \code{NULL} and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
-\item{etastart}{Starting values for the linear predictor. Defaults to
-\code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
+\item{etastart}{Starting values for the linear predictor. Defaults to \code{NULL}
+and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
-\item{mustart}{Starting values for the vector of means. Defaults to
-\code{NULL} and is passed to \code{\link[stats]{glm.fit}}.}
+\item{mustart}{Starting values for the vector of means. Defaults to \code{NULL}
+and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
-\item{...}{Additional arguments to be passed to
-\code{\link[stats]{glm.control}}.}
+\item{...}{Additional arguments to be passed to \code{\link[=glm.control]{glm.control()}}.}
 }
 \value{
 An object of class of \linkS4class{GLM}.
@@ -75,8 +73,7 @@ Included in the tests are the overall test with
 \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
 and the tests for each parameter with
 \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
-The test results are returned as \code{optim} and \code{parTests},
-respectively.
+The test results are returned as \code{optim} and \code{parTests}, respectively.
 }
 \examples{
 n <- 50
@@ -95,5 +92,5 @@ Chen, Song Xi, and Hengjian Cui. 2003.
 Statistica Sinica 13: 69–81.
 }
 \seealso{
-\link{el_control}, \link{el_lm}, \link{elt}
+\code{\link[=el_control]{el_control()}}, \code{\link[=el_lm]{el_lm()}}, \code{\link[=elt]{elt()}}
 }

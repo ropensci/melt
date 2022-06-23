@@ -1,3 +1,191 @@
+#' Validate maxit
+#'
+#' Validate maxit in [el_control()]
+#'
+#' @param maxit A single integer.
+#'
+#' @noRd
+validate_maxit <- function(maxit) {
+  maxit <- tryCatch(as.integer(maxit),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'maxit' must be a single integer" = (isTRUE(!is.na(maxit))),
+    "'maxit' must be a positive single integer" = (maxit > 0L)
+  )
+  maxit
+}
+
+#' Validate maxit_l
+#'
+#' Validate maxit_l in [el_control()]
+#'
+#' @param maxit_l A single integer.
+#'
+#' @noRd
+validate_maxit_l <- function(maxit_l) {
+  maxit_l <- tryCatch(as.integer(maxit_l),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'maxit_l' must be a single integer" = (isTRUE(!is.na(maxit_l))),
+    "'maxit_l' must be a positive single integer" = (maxit_l > 0L)
+  )
+  maxit_l
+}
+
+#' Validate tol
+#'
+#' Validate tol in [el_control()]
+#'
+#' @param tol A single numeric.
+#'
+#' @noRd
+validate_tol <- function(tol) {
+  tol <- tryCatch(as.numeric(tol),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'tol' must be a single numeric" = (isTRUE(!is.na(tol))),
+    "'tol' must be a finite single numeric" = (is.finite(tol)),
+    "'tol' is too small" = (tol >= .Machine$double.eps)
+  )
+  tol
+}
+
+#' Validate tol_l
+#'
+#' Validate tol_l in [el_control()]
+#'
+#' @param tol_l A single numeric.
+#'
+#' @noRd
+validate_tol_l <- function(tol_l) {
+  tol_l <- tryCatch(as.numeric(tol_l),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'tol_l' must be a single numeric" = (isTRUE(!is.na(tol_l))),
+    "'tol_l' must be a finite single numeric" = (is.finite(tol_l)),
+    "'tol_l' is too small" = (tol_l >= .Machine$double.eps)
+  )
+  tol_l
+}
+
+#' Validate step
+#'
+#' Validate step in [el_control()]
+#'
+#' @param step A single numeric.
+#'
+#' @noRd
+validate_step <- function(step) {
+  step <- tryCatch(as.numeric(step),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'step' must be a single numeric" = (isTRUE(!is.na(step))),
+    "'step' must be a finite single numeric" = (is.finite(step)),
+    "'step' is too small" = (step >= .Machine$double.eps)
+  )
+  step
+}
+
+#' Validate th
+#'
+#' Validate th in [el_control()]
+#'
+#' @param th A single numeric.
+#'
+#' @noRd
+validate_th <- function(th) {
+  th <- tryCatch(as.numeric(th),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "'th' must be a single numeric" = (isTRUE(!is.na(th))),
+    "'th' must be a finite single numeric" = (is.finite(th)),
+    "'th' is too small" = (th >= .Machine$double.eps)
+  )
+  th
+}
+
+#' Validate nthreads
+#'
+#' Validate nthreads in [el_control()]
+#'
+#' @param nthreads A single integer.
+#' @param max_threads A single integer.
+#'
+#' @noRd
+validate_nthreads <- function(nthreads, max_threads) {
+  nthreads <- tryCatch(as.integer(nthreads),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot("'nthreads' must be a single integer" = (isTRUE(!is.na(nthreads))))
+  if (nthreads < 1) {
+    warning("'nthreads' is set to 1")
+    nthreads <- 1L
+  }
+  if (nthreads > max_threads) {
+    warning("'nthreads' is set to the maximum number of threads available")
+    nthreads <- max_threads
+  }
+  nthreads
+}
+
+#' Validate seed
+#'
+#' Validate seed in [el_control()]
+#'
+#' @param seed A single integer.
+#'
+#' @noRd
+validate_seed <- function(seed) {
+  seed <- tryCatch(as.integer(seed),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot("'seed' must be a single integer" = (isTRUE(!is.na(seed))))
+  seed
+}
+
+#' Validate B
+#'
+#' Validate B in [el_control()]
+#'
+#' @param B A single integer.
+#'
+#' @noRd
+validate_B <- function(B) {
+  B <- tryCatch(as.integer(B), warning = function(w) NA, error = function(e) NA)
+  stopifnot(
+    "'B' must be a single integer" = (isTRUE(!is.na(B))),
+    "'B' must be a positive single integer" = (B > 0L)
+  )
+  B
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' @noRd
 check_x_ <- function(x) {
   x <- as.matrix(x)
   stopifnot(
@@ -11,6 +199,7 @@ check_x_ <- function(x) {
   x
 }
 
+#' @noRd
 check_weights_ <- function(weights, nw) {
   if (is.null(weights)) {
     return(numeric(length = 0L))
@@ -32,121 +221,24 @@ check_weights_ <- function(weights, nw) {
   w
 }
 
-validate_maxit <- function(maxit) {
-  maxit <- tryCatch(as.integer(maxit),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot(
-    "'maxit' must be a single integer" = (isTRUE(!is.na(maxit))),
-    "'maxit' must be a positive single integer" = (maxit > 0L)
-  )
-  maxit
-}
 
-validate_maxit_l <- function(maxit_l) {
-  maxit_l <- tryCatch(as.integer(maxit_l),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot(
-    "'maxit_l' must be a single integer" = (isTRUE(!is.na(maxit_l))),
-    "'maxit_l' must be a positive single integer" = (maxit_l > 0L)
-  )
-  maxit_l
-}
 
-validate_tol <- function(tol) {
-  tol <- tryCatch(as.numeric(tol),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot(
-    "'tol' must be a single numeric" = (isTRUE(!is.na(tol))),
-    "'tol' must be a finite single numeric" = (is.finite(tol)),
-    "'tol' is too small" = (tol >= .Machine$double.eps)
-  )
-  tol
-}
 
-validate_tol_l <- function(tol_l) {
-  tol_l <- tryCatch(as.numeric(tol_l),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot(
-    "'tol_l' must be a single numeric" = (isTRUE(!is.na(tol_l))),
-    "'tol_l' must be a finite single numeric" = (is.finite(tol_l)),
-    "'tol_l' is too small" = (tol_l >= .Machine$double.eps)
-  )
-  tol_l
-}
 
-validate_step <- function(step) {
-  step <- tryCatch(as.numeric(step),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot(
-    "'step' must be a single numeric" = (isTRUE(!is.na(step))),
-    "'step' must be a finite single numeric" = (is.finite(step)),
-    "'step' is too small" = (step >= .Machine$double.eps)
-  )
-  step
-}
 
-validate_th <- function(th) {
-  th <- tryCatch(as.numeric(th),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot(
-    "'th' must be a single numeric" = (isTRUE(!is.na(th))),
-    "'th' must be a finite single numeric" = (is.finite(th)),
-    "'th' is too small" = (th >= .Machine$double.eps)
-  )
-  th
-}
 
-validate_nthreads <- function(nthreads, max_threads) {
-  nthreads <- tryCatch(as.integer(nthreads),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot("'nthreads' must be a single integer" = (isTRUE(!is.na(nthreads))))
-  if (nthreads < 1) {
-    warning("'nthreads' is set to 1")
-    nthreads <- 1L
-  }
-  if (nthreads > max_threads) {
-    warning("'nthreads' is set to the maximum number of threads available")
-    nthreads <- max_threads
-  }
-  nthreads
-}
 
-validate_seed <- function(seed) {
-  seed <- tryCatch(as.integer(seed),
-    warning = function(w) NA,
-    error = function(e) NA
-  )
-  stopifnot("'seed' must be a single integer" = (isTRUE(!is.na(seed))))
-  seed
-}
 
-validate_B <- function(B) {
-  B <- tryCatch(as.integer(B), warning = function(w) NA, error = function(e) NA)
-  stopifnot(
-    "'B' must be a single integer" = (isTRUE(!is.na(B))),
-    "'B' must be a positive single integer" = (B > 0L)
-  )
-  B
-}
 
+
+
+
+#' @noRd
 validate_rhs <- function(rhs, p) {
   UseMethod("validate_rhs", rhs)
 }
 
+#' @noRd
 validate_rhs.numeric <- function(rhs, p) {
   stopifnot("'rhs' must be a finite numeric vector" = (all(is.finite(rhs))))
   if (length(rhs) != p) {
@@ -154,6 +246,7 @@ validate_rhs.numeric <- function(rhs, p) {
   }
 }
 
+#' @noRd
 validate_rhs.matrix <- function(rhs, p) {
   stopifnot(
     "'rhs' must be a vector" = (ncol(rhs) == 1L),
@@ -164,10 +257,12 @@ validate_rhs.matrix <- function(rhs, p) {
   }
 }
 
+#' @noRd
 validate_lhs <- function(lhs, p) {
   UseMethod("validate_lhs", lhs)
 }
 
+#' @noRd
 validate_lhs.numeric <- function(lhs, p) {
   stopifnot(
     "'lhs' must be a finite numeric vector" = (all(is.finite(lhs))),
@@ -177,6 +272,7 @@ validate_lhs.numeric <- function(lhs, p) {
   matrix(lhs, nrow = 1L)
 }
 
+#' @noRd
 validate_lhs.matrix <- function(lhs, p) {
   q <- nrow(lhs)
   stopifnot(
@@ -188,6 +284,7 @@ validate_lhs.matrix <- function(lhs, p) {
   lhs
 }
 
+#' @noRd
 validate_hypothesis <- function(lhs, rhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either 'rhs' or 'lhs' must be provided")
@@ -203,16 +300,17 @@ validate_hypothesis <- function(lhs, rhs, p) {
   list(l = lhs, r = rhs)
 }
 
-
+#' @noRd
 validate_alpha <- function(alpha) {
   stopifnot(
     "'alpha' must be a finite single numeric" = (is.numeric(alpha)),
     "'alpha' must be a finite single numeric" = (length(alpha) == 1L),
     "'alpha' must be a finite single numeric" = (is.finite(alpha)),
-    "'alpha' must be between 0 and 1" = (isTRUE(alpha >= 0 && alpha <= 1))
+    "'alpha' must be between 0 and 1" = (isTRUE(alpha > 0 && alpha < 1))
   )
 }
 
+#' @noRd
 validate_level <- function(level) {
   stopifnot(
     "'level' must be a finite single numeric" = (is.numeric(level)),
@@ -222,6 +320,7 @@ validate_level <- function(level) {
   )
 }
 
+#' @noRd
 validate_cv <- function(cv, th) {
   stopifnot(
     "'cv' must be a finite single numeric" = (is.numeric(cv)),
@@ -241,6 +340,7 @@ validate_cv <- function(cv, th) {
   cv
 }
 
+#' @noRd
 validate_family <- function(family) {
   f <- family$family
   l <- family$link
@@ -307,15 +407,19 @@ check_mht_ <- function(lhs, rhs, p) {
       ncol = p,
       byrow = TRUE
     )
+    q <- attr(rhs, "q")
+    m <- attr(rhs, "m")
   } else if (is.null(rhs)) {
     lhs <- check_lhs2_(lhs, p)
     rhs <- rep(0, nrow(lhs))
+    q <- attr(lhs, "q")
+    m <- attr(lhs, "m")
   } else {
     rhs <- check_rhs2_(rhs, p)
     lhs <- check_lhs2_(lhs, p)
+    q <- attr(lhs, "q")
+    m <- attr(lhs, "m")
   }
-  q <- attr(lhs, "q")
-  m <- attr(lhs, "m")
   if (any(
     length(rhs) != nrow(lhs), isFALSE(all.equal(attr(rhs, "q"), q)),
     attr(rhs, "m") != m

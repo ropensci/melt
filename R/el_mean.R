@@ -12,13 +12,13 @@
 #'   rows in `x`. Defaults to `NULL`, corresponding to identical weights.
 #'   If non-`NULL`, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   \code{\link{el_control}}.
+#'   [el_control()].
 #' @param model A single logical. If `TRUE` the data matrix used for model
 #'   fitting is returned.
 #' @return An object of class \linkS4class{EL}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 #'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
-#' @seealso \link{el_control}, \link{el_eval}, \link{elt}
+#' @seealso [el_control()], [el_eval()], [elt()]
 #' @examples
 #' # scalar mean
 #' x <- rnorm(100)

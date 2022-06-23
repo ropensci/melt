@@ -15,7 +15,7 @@
 
 \item{y}{Not used.}
 
-\item{...}{Further graphical parameters (see \code{\link[graphics]{par}}).}
+\item{...}{Further graphical parameters (see \code{\link{par}}).}
 }
 \description{
 Provides plot methods for objects that inherit from class \linkS4class{EL}.
@@ -42,5 +42,5 @@ out2 <- eld(fit)
 plot(out2)
 }
 \seealso{
-\link{confreg}, \link{eld}
+\code{\link[=confreg]{confreg()}}, \code{\link[=eld]{eld()}}
 }

@@ -23,12 +23,12 @@ constrained minimization.}
 \item{\code{weighted}}{A single logical for whether the given model is weighted or
 not.}
 
-\item{\code{na.action}}{Information returned by \code{\link[stats]{model.frame}} on
-the special handling of NAs.}
+\item{\code{na.action}}{Information returned by \code{\link{model.frame}} on the special
+handling of NAs.}
 
 \item{\code{call}}{Matched call.}
 
-\item{\code{terms}}{\code{\link[stats]{terms}} object used.}
+\item{\code{terms}}{\code{\link{terms}} object used.}
 
 \item{\code{aliased}}{A named logical vector showing if the original coefficients are
 aliased.}

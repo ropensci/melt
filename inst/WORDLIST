@@ -1,4 +1,3 @@
-AMC
 Adimari
 Annamaria
 Behaviour
@@ -11,7 +10,6 @@ Details’
 EL
 Eigen
 Eigen’
-FWER
 Gianfranco
 Github
 Guolo
@@ -31,6 +29,7 @@ RcppEigen’
 Rescaled
 Sinica
 Statistica
+Xoshiro
 Yichuan
 Zhang
 Zhao
@@ -45,8 +44,6 @@ el
 elt
 et
 eval
-glm
-lm
 minimizations
 nonconvex
 optimality

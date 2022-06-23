@@ -1,9 +1,10 @@
-#include "EL.h"
 #include "utils.h"
+#include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+#include <string>
 #include <vector>
 
 // [[Rcpp::export]]
@@ -17,8 +18,7 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
                const Rcpp::Nullable<double> step,
                const Rcpp::Nullable<double> th,
                const int nthreads,
-               const Eigen::Map<Eigen::ArrayXd>& w)
-{
+               const Eigen::Map<Eigen::ArrayXd>& w) {
   const int p = x.cols() - 1;
   const double gamma = step_nloglr(x.rows(), step);
 
@@ -61,7 +61,6 @@ Rcpp::List lm_(const Eigen::Map<Eigen::MatrixXd>& x,
   std::vector<double> chisq_val(p);
   std::vector<bool> par_conv(p);
   const double test_th = th_nloglr(1, th);
-  // default(none) shared(p, maxit) schedule(auto)
   #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
   #endif

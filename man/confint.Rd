@@ -24,14 +24,14 @@ empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
 \code{qchisq(level, 1L)}. If non-\code{NULL}, \code{level} is ignored.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link{el_control}}.}
+\code{\link[=el_control]{el_control()}}.}
 }
 \value{
 A matrix with columns giving lower and upper confidence limits for
 each parameter. In contrast to other methods that rely on studentization,
 the lower and upper limits obtained from empirical likelihood do not
-correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in
-\\%, respectively.
+correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in \%,
+respectively.
 }
 \description{
 Computes confidence intervals for one or more parameters in a fitted model.

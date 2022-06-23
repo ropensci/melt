@@ -6,8 +6,8 @@
 \title{S4 class \linkS4class{CEL}}
 \description{
 S4 class for constrained empirical likelihood. It inherits from
-\linkS4class{EL} class. Note that \code{optim} slot has constrained
-optimization results with respect to parameters, not the Lagrange multiplier.
+\linkS4class{EL} class. Note that \code{optim} slot has constrained optimization
+results with respect to parameters, not the Lagrange multiplier.
 }
 \details{
 Let \eqn{l(\theta)} denote the minus twice the empirical
@@ -38,8 +38,8 @@ where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
 \describe{
 \item{\code{optim}}{A list with the following optimization results:
 \itemize{
-\item{\code{par } }{A numeric vector of the parameter value that minimizes
-the empirical likelihood subject to the constraints.}
+\item{\code{par } }{A numeric vector of the parameter value that minimizes the
+empirical likelihood subject to the constraints.}
 \item{\code{lambda } }{A numeric vector of the Lagrange multipliers.}
 \item{\code{iterations } }{A single integer for the number of iterations
 performed.}

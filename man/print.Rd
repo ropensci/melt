@@ -26,8 +26,7 @@
 
 \item{...}{Further arguments passed to other methods.}
 
-\item{digits}{The number of significant digits to be passed to
-\code{\link[base]{format}}.}
+\item{digits}{The number of significant digits to be passed to \code{\link[=format]{format()}}.}
 
 \item{signif.stars}{A single logical. If \code{TRUE}, ‘significance stars’
 are printed for each coefficient.}

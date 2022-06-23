@@ -2,6 +2,7 @@
 #define EL_UTILS_H_
 
 #include <RcppEigen.h>
+#include <functional>
 
 double step_nloglr(const int n, const Rcpp::Nullable<double> step);
 double th_nloglr(const int p, const Rcpp::Nullable<double> th);
@@ -32,26 +33,23 @@ Eigen::VectorXd gr_nloglr_mean(const Eigen::Ref<const Eigen::VectorXd>& l,
 Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
                                const Eigen::Ref<const Eigen::VectorXd>& par);
 Eigen::VectorXd gr_nloglr_gauss_log(
-                const Eigen::Ref<const Eigen::VectorXd>& l,
-                const Eigen::Ref<const Eigen::MatrixXd>& g,
-                const Eigen::Ref<const Eigen::MatrixXd>& data,
-                const Eigen::Ref<const Eigen::VectorXd>& par,
-                const Eigen::Ref<const Eigen::ArrayXd>& w,
-                const bool weighted);
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted);
 
 Eigen::MatrixXd g_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd>& data,
                                 const Eigen::Ref<const Eigen::VectorXd>& par);
 Eigen::VectorXd gr_nloglr_gauss_inverse(
-                const Eigen::Ref<const Eigen::VectorXd>& l,
-                const Eigen::Ref<const Eigen::MatrixXd>& g,
-                const Eigen::Ref<const Eigen::MatrixXd>& data,
-                const Eigen::Ref<const Eigen::VectorXd>& par,
-                const Eigen::Ref<const Eigen::ArrayXd>& w,
-                const bool weighted);
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted);
 
-
-// quantile function
-// double quantileRcpp(const Rcpp::NumericVector& x, double prob);
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>
