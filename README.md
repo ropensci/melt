@@ -10,7 +10,7 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
-[![R-CMD-check](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/markean/melt/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/markean/melt/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/markean/melt/actions/workflows/check-standard.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/markean/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/markean/melt?branch=master)
 <!-- badges: end -->
@@ -51,8 +51,8 @@ library(melt)
 # one sample test for mean
 fit1 <- el_mean(par = 0, x = rnorm(n = 100))
 confint(fit1)
-#>        lower     upper
-#> 1 -0.1625339 0.2170646
+#>        lower      upper
+#> 1 -0.3551038 0.01087163
 
 
 # linear regression
