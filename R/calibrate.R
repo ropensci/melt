@@ -1,5 +1,5 @@
 #' @importFrom stats pf qf quantile
-calibrate_ <- function(alpha, statistic, calibrate, p, par, object, control) {
+calibrate <- function(alpha, statistic, calibrate, p, par, object, control) {
   switch(calibrate,
     "chisq" = {
       c(

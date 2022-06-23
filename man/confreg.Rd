@@ -23,11 +23,12 @@ vector of length two of the form \code{c(x, y)}. If missing, the first two
 parameter in \code{object} are considered.}
 
 \item{level}{A single numeric for the confidence level required. Defaults to
-\code{0.95}.}
+\code{0.95}. It is ignored if \code{cv} is non-\code{NULL}.}
 
 \item{cv}{A single numeric for the critical value for calibration of
 empirical likelihood ratio statistic. Defaults to NULL and set to
-\code{qchisq(level, 2L)}. If non-\code{NULL}, \code{level} is ignored.}
+\code{qchisq(level, 2L)}. It must be compatible with the \code{th} value in
+\code{control}.}
 
 \item{npoints}{A single integer for the number of boundary points to compute.
 Defaults to \code{50}.}

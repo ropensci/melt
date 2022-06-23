@@ -227,9 +227,17 @@ validate_cv <- function(cv, th) {
     "'cv' must be a finite single numeric" = (is.numeric(cv)),
     "'cv' must be a finite single numeric" = (length(cv) == 1L),
     "'cv' must be a finite single numeric" = (is.finite(cv)),
-    "'cv' is too small" = (cv >= .Machine$double.eps),
-    "'cv' is too large" = (cv < max(200, 2 * th))
+    "'cv' is too small" = (cv >= .Machine$double.eps)
   )
+  if (is.null(th)) {
+    if (cv > 400) {
+      stop("'cv' is too large compared to 'th'")
+    }
+  } else {
+    if (cv > 2 * th) {
+      stop("'cv' is too large compared to 'th'")
+    }
+  }
   cv
 }
 

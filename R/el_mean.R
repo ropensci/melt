@@ -6,14 +6,14 @@
 #'   matrix. Each row corresponds to an observation. The number of rows must be
 #'   greater than the number of columns.
 #' @param par A numeric vector of parameter values to be tested. The length of
-#'   the vector must be the same as the number of columns in \code{x}.
+#'   the vector must be the same as the number of columns in `x`.
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. The length of the vector must be the same as the number of
-#'   rows in \code{x}. Defaults to \code{NULL}, corresponding to identical
-#'   weights. If non-\code{NULL}, weighted empirical likelihood is computed.
+#'   rows in `x`. Defaults to `NULL`, corresponding to identical weights.
+#'   If non-`NULL`, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
-#' @param model A single logical. If \code{TRUE} the data matrix used for model
+#' @param model A single logical. If `TRUE` the data matrix used for model
 #'   fitting is returned.
 #' @return An object of class \linkS4class{EL}.
 #' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”

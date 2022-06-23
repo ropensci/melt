@@ -101,15 +101,16 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @param object An object of class \linkS4class{EL}.
 #' @param parm A specification of which parameters are to be given a confidence
 #'   region, either a vector of numbers or a vector of names. It should be a
-#'   vector of length two of the form \code{c(x, y)}. If missing, the first two
-#'   parameter in \code{object} are considered.
+#'   vector of length two of the form `c(x, y)`. If missing, the first two
+#'   parameter in `object` are considered.
 #' @param level A single numeric for the confidence level required. Defaults to
-#'   \code{0.95}.
+#'   \code{0.95}. It is ignored if `cv` is non-`NULL`.
 #' @param cv A single numeric for the critical value for calibration of
 #'   empirical likelihood ratio statistic. Defaults to NULL and set to
-#'   \code{qchisq(level, 2L)}. If non-\code{NULL}, \code{level} is ignored.
+#'   \code{qchisq(level, 2L)}. It must be compatible with the `th` value in
+#'   `control`.
 #' @param npoints A single integer for the number of boundary points to compute.
-#'   Defaults to \code{50}.
+#'   Defaults to `50`.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   \code{\link{el_control}}.
 #' @importFrom stats qchisq

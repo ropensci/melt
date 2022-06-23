@@ -106,7 +106,7 @@ elt <- function(object,
     par <- h$r
     el <- eval_(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(par)
-    cal <- calibrate_(alpha, el$statistic, calibrate, p, par, object, control)
+    cal <- calibrate(alpha, el$statistic, calibrate, p, par, object, control)
     return(new("ELT",
       optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
       cv = cal["cv"], pval = cal["pval"], calibrate = calibrate

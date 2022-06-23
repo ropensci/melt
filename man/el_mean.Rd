@@ -16,8 +16,8 @@ the vector must be the same as the number of columns in \code{x}.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
 fitting process. The length of the vector must be the same as the number of
-rows in \code{x}. Defaults to \code{NULL}, corresponding to identical
-weights. If non-\code{NULL}, weighted empirical likelihood is computed.}
+rows in \code{x}. Defaults to \code{NULL}, corresponding to identical weights.
+If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link{el_control}}.}

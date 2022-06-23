@@ -6,10 +6,11 @@ test_that("normal", {
   df <- data.frame(y, x, x2)
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(y ~ x + x2, df, control = optcfg)
-  cr <- confreg(fit, parm = c(1, 2))
+  cr <- confreg(fit, parm = c(1, 2), cv = 6)
   pdf(NULL)
   plot(cr)
   expect_s4_class(cr, "ConfregEL")
+  expect_s4_class(confreg(fit), "ConfregEL")
 })
 
 test_that("empty model", {
@@ -31,6 +32,8 @@ test_that("invalid 'parm'", {
   expect_error(confreg(fit, parm = c(1, 1)))
   expect_error(confreg(fit, parm = c("error", "error2")))
   expect_error(confreg(fit, parm = c(NaN, NA)))
+  names(fit@coefficients) <- NULL
+  expect_error(confreg(fit, parm = c("error", "error2")))
 })
 
 test_that("invalid 'level'", {
@@ -50,4 +53,10 @@ test_that("invalid 'npoints'", {
   data("mtcars")
   fit <- el_lm(mpg ~ hp, data = mtcars)
   expect_error(confreg(fit, parm = c(1, 2), npoints = -10))
+})
+
+test_that("invalid 'control'", {
+  data("mtcars")
+  fit <- el_lm(mpg ~ hp, data = mtcars)
+  expect_error(confreg(fit, parm = c(1, 2), control = list(maxit = 10)))
 })

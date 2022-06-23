@@ -1,29 +1,31 @@
-melt 1.6.0
-=========================
+# melt 1.5.2.9000 (development version)
 ### BREAKING CHANGES
-* The order of arguments of `el_mean()` changed to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par`.
+* The order of arguments of `el_mean()` changed to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par` as `el_mean(x, par)`.
 
 ### NEW FEATURES
 * New package dependencies added (`graphics`, `lifecycle`, `BH`, and `dqrng`).
 
-* `elmt()` is added for multiple testing with empirical likelihood.
+* New `elmt()` performs multiple testing with empirical likelihood.
 
-* Generic function `weights()` is added.
+* New `weights()` extracts rescaled weights.
 
-* `lht()` is renamed to `elt()`, which accepts additional arguments `alpha` and `calibrate`.
+* New `elt()` replaces `lht()`. It accepts additional arguments `alpha` and `calibrate`.
 
 ### MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to `NULL`. If non-`NULL`, `level` is ignored.
 
 ### BUG FIXES
-* unit test error fixed.
+* `confint()` and `confreg()` check if the `cv` argument is compatible with the `th` value set by `control_el()`.
+
+* unit test errors fixed.
 
 ### DEPRECATED AND DEFUNCT
+* `lht()` is deprecated to avoid conflicts with other packages. 
+
 * `el_pairwise()` is removed.
 
 
-melt 1.5.2
-=========================
+# melt 1.5.2
 ### NEW FEATURES
 * `lht()` accepts both numeric vector and matrix for `lhs` and `rhs` arguments.
 
@@ -35,26 +37,26 @@ melt 1.5.2
 * `el_pairwise()` is deprecated and will be removed in a future release. 
 
 
-melt 1.5.1
-=========================
+# melt 1.5.1
 ### BUG FIXES
 * unit test error fixed.
 
 
-melt 1.5.0
-=========================
+# melt 1.5.0
 ### NEW FEATURES
 * The package depends on more recent version of R (>= 4.0.0).
 
 * S4 classes, generics, and methods are adopted throughout the package.
 
-* Generic functions `confreg()` and `eld()` are added.
+* New `confreg()` constructs confidence regions
 
-* `el_control()` function is added for specifying `control` argument. Plain list it no longer accepted.
+* New `eld()` computes empirical likelihood displacement values.
 
-* `el_glm()` function is added for generalized linear models. More families and link functions will be supported in a future release.
+* New `el_control()` specifies `control` argument. Plain list it no longer accepted.
 
-* `confint()` has additional `cv` argument for a user-supplied critical value.
+* New `el_glm()` performs empirical likelihood tests to generalized linear models. More families and link functions will be supported in a future release.
+
+* `confint()` gains `cv` argument for a user-supplied critical value.
 
 ### DEPRECATED AND DEFUNCT
 * `el_aov()` is removed. 
@@ -62,54 +64,48 @@ melt 1.5.0
 * `el_test()` is deprecated and will be removed in a future release. 
 
 
-melt 1.4.0
-=========================
+# melt 1.4.0
 ### NEW FEATURES
 * C++14 standards are used for the package.
 
-* `lht()` is added for linear hypothesis testing.
+* New `lht()` performs linear hypothesis testing.
 
-* Generic functions `confint()` and `logLik()` are added for `el_test` class.
+* Generics `confint()` and `logLik()` are added for `el_test` class.
 
 * `el_test` objects additionally return `npar`, `log.prob`, and `loglik`.
 
 ### DEPRECATED AND DEFUNCT
-* `el_aov()` deprecated in favor of `el_lm()`. It will be removed in a future release. 
+* `el_aov()` is deprecated in favor of `el_lm()`. It will be removed in a future release. 
 
 
-melt 1.3.0
-=========================
+# melt 1.3.0
 ### NEW FEATURES
-* `el_eval()` function added for direct computation with custom estimating functions.
+* `el_eval()` is added for direct computation with custom estimating functions.
 
 * `melt` class replaced by `el_test` class.
 
 * `el_mean()` and `el_lm()` accepts an optional `weights` argument for weighted EL. Arguments on optimization are now handled by a new `control` argument. It will be used in other functions in future releases.
 
 
-melt 1.2.0
-=========================
+# melt 1.2.0
 ### NEW FEATURES
 * Dependence on R version updated to '3.6.0'.
 
-* `el_lm()` function added for linear regression analysis.
+* New `el_lm()` performs empirical likelihood tests for linear models.
 
 
-melt 1.1.0
-=========================
+# melt 1.1.0
 ### NEW FEATURES
-* `el_aov()` function added for one-way analysis of variance. It only supports one variable at the moment.
+* New `el_aov()` performs one-way analysis of variance. It only supports one variable at the moment.
 
 
-melt 1.0.1
-=========================
+# melt 1.0.1
 ### BUG FIXES
 * Fixed header file issues related to OpenMP and C++ array class.
 
 
-melt 1.0.0
-=========================
+# melt 1.0.0
 ### NEW FEATURES
 * Currently, 4 functions are available: `el_mean()`, `el_test()`, `el_pairwise()`, and `el_mht()`.
 
-* `clothianidin` data set added.
+* `clothianidin` data set is added.

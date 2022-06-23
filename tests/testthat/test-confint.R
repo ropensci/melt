@@ -44,7 +44,12 @@ test_that("empty model", {
 
 test_that("no effect of nthreads", {
   data("mtcars")
-  fit <- el_lm(mpg ~ disp + hp + wt + qsec, mtcars)
+  mpg <- mtcars$mpg
+  disp <- mtcars$disp
+  hp <- mtcars$hp
+  wt <- mtcars$wt
+  qsec = mtcars$qsec
+  fit <- el_lm(mpg ~ disp + hp + wt + qsec)
   parm <- rep(c(2, 5, 1), times = 10)
   ci1 <- confint(fit, parm = parm, control = el_control(nthreads = 1L))
   ci2 <- confint(fit, parm = parm)

@@ -17,8 +17,8 @@ confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, s
     .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-confreg_ <- function(method, par0, x, npar, cutoff, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
-    .Call(`_melt_confreg_`, method, par0, x, npar, cutoff, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+confreg_ <- function(method, par0, x, npar, cv, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
+    .Call(`_melt_confreg_`, method, par0, x, npar, cv, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
 eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {

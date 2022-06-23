@@ -4,14 +4,16 @@
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+#include <algorithm>
 #include <string>
+#include <vector>
 
 // [[Rcpp::export]]
 Rcpp::NumericVector confreg_(const std::string method,
                              const Eigen::Map<Eigen::VectorXd>& par0,
                              const Eigen::Map<Eigen::MatrixXd>& x,
                              const int npar,
-                             const double cutoff,
+                             const double cv,
                              const Rcpp::IntegerVector& idx,
                              const Eigen::Map<Eigen::MatrixXd>& circ,
                              const int maxit,
@@ -45,7 +47,7 @@ Rcpp::NumericVector confreg_(const std::string method,
     double lower_ub = 0;
     // lower bound for lower endpoint
     while (2.0 * MINEL(method, par0, x, lhs, est + lower_lb * direction, maxit,
-                       maxit_l, tol, tol_l, gamma, test_th, w).nllr <= cutoff) {
+                       maxit_l, tol, tol_l, gamma, test_th, w).nllr <= cv) {
       lower_ub = lower_lb;
       lower_lb -= 1.0;
     }
@@ -53,7 +55,7 @@ Rcpp::NumericVector confreg_(const std::string method,
     while (lower_ub - lower_lb > tol) {
       const double avg = (lower_lb + lower_ub) / 2.0;
       if (2.0 * MINEL(method, par0, x, lhs, est + avg * direction, maxit,
-                      maxit_l, tol, tol_l, gamma, test_th, w).nllr > cutoff) {
+                      maxit_l, tol, tol_l, gamma, test_th, w).nllr > cv) {
         lower_lb = avg;
       } else {
         lower_ub = avg;
