@@ -20,7 +20,7 @@ Depends:
 Imports: 
     graphics,
     methods,
-    Rcpp (>= 1.0.8),
+    Rcpp,
     stats
 Suggests: 
     covr,
