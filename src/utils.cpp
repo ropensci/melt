@@ -1,8 +1,9 @@
 #include "utils.h"
 #include <RcppEigen.h>
 #include <cmath>
-#include <map>
 #include <functional>
+#include <map>
+#include <string>
 
 double step_nloglr(const int n, const Rcpp::Nullable<double> step) {
   return (step.isNull())? static_cast<double>(1.0 / n) : Rcpp::as<double>(step);

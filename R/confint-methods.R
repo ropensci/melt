@@ -5,6 +5,9 @@ setMethod("confint", "EL", function(object,
                                     ...,
                                     cv = NULL,
                                     control = el_control()) {
+  if (!is(control, "ControlEL")) {
+    stop("invalid 'control' specified")
+  }
   est <- coef(object)
   # no confidence interval for empty model
   if (length(est) == 0L) {
@@ -20,11 +23,10 @@ setMethod("confint", "EL", function(object,
   if (!missing(parm)) {
     if (is.numeric(parm) && all(is.finite(parm))) {
       pnames <- pnames[parm]
-      # idx <- match(pnames, names(est))
-      idx <- if (is.null(names(est))) {
-        match(pnames, idx)
+      if (is.null(names(est))) {
+        idx <- match(pnames, idx)
       } else {
-        match(pnames, names(est))
+        idx <- match(pnames, names(est))
       }
     } else if (is.character(parm)) {
       idx <- match(parm, pnames)
@@ -47,9 +49,6 @@ setMethod("confint", "EL", function(object,
     return(ci)
   }
 
-  if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
-  }
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
@@ -61,12 +60,7 @@ setMethod("confint", "EL", function(object,
   w <- getWeights(object)
   cv <- if (is.null(cv)) qchisq(level, 1L) else validate_cv(cv, th)
   # compute the confidence interval matrix
-  if (isTRUE(all.equal(level, 0))) {
-    ci <- matrix(rep(est[idx], 2L), ncol = 2L)
-  } else if (isTRUE(all.equal(level, 1))) {
-    ci <- matrix(NA, nrow = p, ncol = 2L)
-    ci[which(!is.na(idx)), ] <- c(-Inf, Inf)
-  } else if (all(is.na(idx))) {
+  if (all(is.na(idx))) {
     ci <- matrix(NA, nrow = p, ncol = 2L)
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))

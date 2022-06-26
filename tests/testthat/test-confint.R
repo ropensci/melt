@@ -1,3 +1,13 @@
+test_that("invalid 'parm'", {
+  data("women")
+  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
+  fit <- el_mean(women$height, 67, control = optcfg)
+  expect_error(confint(fit, parm = NA))
+  expect_error(confint(fit, parm = NULL))
+  expect_error(confint(fit, parm = NaN))
+  expect_error(confint(fit, parm = Inf))
+})
+
 test_that("invalid 'level'", {
   data("women")
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
@@ -8,14 +18,9 @@ test_that("invalid 'level'", {
   expect_error(confint(fit, level = c(0, 0)))
 })
 
-test_that("invalid 'parm'", {
+test_that("invalid 'control'", {
   data("women")
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(women$height, 67, control = optcfg)
-  expect_error(confint(fit, parm = NA))
-  expect_error(confint(fit, parm = NULL))
-  expect_error(confint(fit, parm = NaN))
-  expect_error(confint(fit, parm = Inf))
+  expect_error(el_mean(women$height, 67, control = list(maxit = 200)))
 })
 
 test_that("'level' == 1", {
@@ -42,7 +47,7 @@ test_that("empty model", {
   expect_equal(nrow(ci), 0)
 })
 
-test_that("no effect of nthreads", {
+test_that("'nthreads' == 1", {
   data("mtcars")
   mpg <- mtcars$mpg
   disp <- mtcars$disp
@@ -54,4 +59,17 @@ test_that("no effect of nthreads", {
   ci1 <- confint(fit, parm = parm, control = el_control(nthreads = 1L))
   ci2 <- confint(fit, parm = parm)
   expect_equal(ci1, ci2)
+})
+
+test_that("unnamed coefficients", {
+  data("faithful")
+  fit <- el_mean(as.matrix(faithful), par = c(4, 60))
+  names(fit@coefficients) <- NULL
+  expect_type(confint(fit), "double")
+})
+
+test_that("character specification for 'parm'", {
+  data("faithful")
+  fit <- el_mean(as.matrix(faithful), par = c(4, 60))
+  expect_type(confint(fit, parm = c("eruptions", "eruptions2")), "double")
 })
