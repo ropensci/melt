@@ -4,13 +4,13 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector elmt_mvchisq_(const std::string method,
-                                  const Eigen::Map<Eigen::VectorXd>& est,
-                                  const Eigen::Map<Eigen::MatrixXd>& x,
-                                  const Eigen::Map<Eigen::MatrixXd>& lhs,
-                                  const Eigen::Map<Eigen::VectorXi>& q,
-                                  const int m,
-                                  const int B) {
+Rcpp::NumericVector computeCommonCutoff(const std::string method,
+                                        const Eigen::Map<Eigen::VectorXd>& est,
+                                        const Eigen::Map<Eigen::MatrixXd>& x,
+                                        const Eigen::Map<Eigen::MatrixXd>& lhs,
+                                        const Eigen::Map<Eigen::VectorXi>& q,
+                                        const int m,
+                                        const int B) {
   // sample covariance with plug-in estimate
   const Eigen::MatrixXd s = cov(method, est, x);
   // sqrt of sample covariance

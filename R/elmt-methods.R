@@ -11,8 +11,7 @@ setMethod("elmt", "EL", function(object,
       (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  p <- object@npar
-  h <- validate_hypotheses(rhs, lhs, p)
+  h <- validate_hypotheses(rhs, lhs, object@npar)
   # return(h)
 
   alpha <- validate_alpha(alpha)
@@ -25,11 +24,12 @@ setMethod("elmt", "EL", function(object,
   th <- control@th
 
 
-  out <- elmt_statistic_(
-    h$q, h$m, method, coef(object), getDataMatrix(object), h$r, h$l,
+  out <- testMultipleHypotheses(
+    h$q, h$m, 10000, method, coef(object), getDataMatrix(object), h$r, h$l,
     maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("MELT",
-      statistic = out
+      statistic = out$tmp,
+      cutoff = out$tmp2
   )
 })

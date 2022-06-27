@@ -13,6 +13,10 @@ boot_ <- function(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt) {
     .Call(`_melt_boot_`, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt)
 }
 
+computeCommonCutoff <- function(method, est, x, lhs, q, m, B) {
+    .Call(`_melt_computeCommonCutoff`, method, est, x, lhs, q, m, B)
+}
+
 confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
@@ -23,14 +27,6 @@ confreg_ <- function(method, par0, x, npar, cv, idx, circ, maxit, maxit_l, tol, 
 
 eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
     .Call(`_melt_eld_`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
-}
-
-elmt_mvchisq_ <- function(method, est, x, lhs, q, m, B) {
-    .Call(`_melt_elmt_mvchisq_`, method, est, x, lhs, q, m, B)
-}
-
-elmt_statistic_ <- function(q, m, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w) {
-    .Call(`_melt_elmt_statistic_`, q, m, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w)
 }
 
 elt_ <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w) {
@@ -49,7 +45,11 @@ glm_ <- function(method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, t
     .Call(`_melt_glm_`, method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-lm_ <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
-    .Call(`_melt_lm_`, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+testLM <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
+    .Call(`_melt_testLM`, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+}
+
+testMultipleHypotheses <- function(q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, wt) {
+    .Call(`_melt_testMultipleHypotheses`, q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, wt)
 }
 

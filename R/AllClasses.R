@@ -262,7 +262,7 @@ setClass("ELT",
 #' showClass("MELT")
 setClass("MELT",
   slots = c(
-    statistic = "numeric"
+    statistic = "numeric", cutoff = "numeric"
   )
 )
 
