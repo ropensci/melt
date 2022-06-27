@@ -27,7 +27,7 @@
 #' @param seed A single integer for the seed for random number generation. It
 #'   only applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to a
 #'   random integer generated from 1 to the maximum integer supported by \R on
-#'   the machine, which is determined by [base::set.seed()]. Only one seed is
+#'   the machine, which is determined by [set.seed()]. Only one seed is
 #'   needed even when multiple threads are used with `nthreads`. Each thread is
 #'   given a separate seed to produce a non-overlapping but reproducible
 #'   sequence of random numbers. The Xoshiro256+ pseudo-random number generator
@@ -59,7 +59,7 @@ el_control <- function(maxit = 200L,
   if (!is.null(th)) {
     th <- validate_th(th)
   }
-  max_threads <- max_threads_()
+  max_threads <- get_max_threads()
   if (missing(nthreads)) {
     nthreads <- as.integer(max(1L, max_threads / 2L))
   } else {

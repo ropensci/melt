@@ -205,7 +205,7 @@ check_x_ <- function(x) {
       (nrow(x) > ncol(x)),
     "'x' must be a numeric matrix" = (is.numeric(x)),
     "'x' must be a finite numeric matrix" = (all(is.finite(x))),
-    "'x' must have full column rank" = (get_rank_(x) == ncol(x))
+    "'x' must have full column rank" = (get_rank(x) == ncol(x))
   )
   x
 }
@@ -313,7 +313,7 @@ validate_lhs <- function(lhs, p) {
 validate_lhs.numeric <- function(lhs, p) {
   stopifnot(
     "'lhs' must be a finite numeric vector" = (all(is.finite(lhs))),
-    "'lhs' must have full row rank" = (get_rank_(lhs) == 1L)
+    "'lhs' must have full row rank" = (get_rank(lhs) == 1L)
   )
   if (length(lhs) != p) {
     stop(gettextf("length of 'lhs' must be %d", p, domain = NA))
@@ -334,7 +334,7 @@ validate_lhs.matrix <- function(lhs, p) {
   stopifnot(
     "'lhs' must be a finite numeric matrix" = (all(is.finite(lhs))),
     "'lhs' must have full row rank" =
-      (isTRUE(q >= 1L && q <= p && get_rank_(lhs) == q))
+      (isTRUE(q >= 1L && q <= p && get_rank(lhs) == q))
   )
   if (ncol(lhs) != p) {
     stop(gettextf("'lhs' must have %d columns", p, domain = NA))
@@ -638,7 +638,7 @@ validate_lhses.matrix <- function(lhs, p) {
     "'lhs' must be a finite numeric matrix" =
       (isTRUE(is.numeric(lhs) && all(is.finite(lhs)))),
     "every row of 'lhs' must be a nonzero vector" =
-      (all(apply(lhs, 1L, get_rank_)))
+      (all(apply(lhs, 1L, get_rank)))
   )
   if (ncol(lhs) != p) {
     stop(gettextf("'lhs' must have %d columns", p, domain = NA))
@@ -668,7 +668,7 @@ validate_lhses.list <- function(lhs, p) {
       }, TRUE))),
     "every matrix in 'lhs' must have full row rank" =
       (all(vapply(lhs, \(x) {
-        nrow(x) >= 1L && nrow(x) <= p && get_rank_(x) == nrow(x)
+        nrow(x) >= 1L && nrow(x) <= p && get_rank(x) == nrow(x)
       }, TRUE)))
   )
   if (any(vapply(lhs, \(x) {

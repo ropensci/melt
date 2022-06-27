@@ -91,7 +91,6 @@ test_that("invalid 'weights'", {
 })
 
 test_that("invalid 'control'", {
-  data("mtcars")
   expect_error(el_lm(mpg ~ ., mtcars, control = list()))
 })
 
@@ -147,7 +146,6 @@ test_that("print method", {
 })
 
 test_that("no intercept", {
-  data("mtcars")
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_lm(mpg ~ -1 + ., mtcars, control = optcfg)
   expect_s4_class(fit, "LM")

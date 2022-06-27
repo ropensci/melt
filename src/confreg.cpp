@@ -1,10 +1,9 @@
-#include "EL.h"
 #include "utils.h"
+#include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
-#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -23,8 +22,7 @@ Rcpp::NumericVector confreg_(const std::string method,
                              const Rcpp::Nullable<double> step,
                              const Rcpp::Nullable<double> th,
                              const int nthreads,
-                             const Eigen::Map<Eigen::ArrayXd>& w)
-{
+                             const Eigen::Map<Eigen::ArrayXd>& w) {
   // confidence region (vector)
   std::vector<double> cr(circ.cols());
   // step size

@@ -1,7 +1,3 @@
-data("mtcars")
-data("sleep")
-data("women")
-
 test_that("invalid 'object", {
   n <- nrow(mtcars)
   fit <- el_lm(mpg ~ hp, mtcars)

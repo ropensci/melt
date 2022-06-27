@@ -25,8 +25,7 @@ See ‘Details’.}
 \item{control}{A list of control parameters set by \code{\link{el_control}}.}
 }
 \value{
-If \code{lhs} is \code{NULL}, an object of class \linkS4class{EL}
-is returned. Otherwise, an object of class \linkS4class{CEL} is returned.
+An object of class of \linkS4class{MELT}.
 }
 \description{
 Tests a linear hypothesis for objects that inherit from class

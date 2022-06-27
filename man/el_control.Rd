@@ -49,7 +49,7 @@ and \code{\link[=elt]{elt()}}.}
 \item{seed}{A single integer for the seed for random number generation. It
 only applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to a
 random integer generated from 1 to the maximum integer supported by \R on
-the machine, which is determined by \code{\link[base:Random]{base::set.seed()}}. Only one seed is
+the machine, which is determined by \code{\link[=set.seed]{set.seed()}}. Only one seed is
 needed even when multiple threads are used with \code{nthreads}. Each thread is
 given a separate seed to produce a non-overlapping but reproducible
 sequence of random numbers. The Xoshiro256+ pseudo-random number generator

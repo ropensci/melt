@@ -73,8 +73,7 @@ setGeneric("eld", function(object, ...) {
 #'   and the problem reduces to evaluating at \eqn{r} as
 #'   \deqn{l(r).}
 #'   }
-#' @return If \code{lhs} is \code{NULL}, an object of class \linkS4class{EL}
-#' is returned. Otherwise, an object of class \linkS4class{CEL} is returned.
+#' @return An object of class of \linkS4class{MELT}.
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
 #'   Statistical Methods & Applications 19 (4): 463–76.

@@ -11,24 +11,24 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// max_threads_
-int max_threads_();
-RcppExport SEXP _melt_max_threads_() {
+// get_max_threads
+int get_max_threads();
+RcppExport SEXP _melt_get_max_threads() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(max_threads_());
+    rcpp_result_gen = Rcpp::wrap(get_max_threads());
     return rcpp_result_gen;
 END_RCPP
 }
-// get_rank_
-int get_rank_(const Eigen::Map<Eigen::MatrixXd>& x);
-RcppExport SEXP _melt_get_rank_(SEXP xSEXP) {
+// get_rank
+int get_rank(const Eigen::Map<Eigen::MatrixXd>& x);
+RcppExport SEXP _melt_get_rank(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_rank_(x));
+    rcpp_result_gen = Rcpp::wrap(get_rank(x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -258,8 +258,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_melt_max_threads_", (DL_FUNC) &_melt_max_threads_, 0},
-    {"_melt_get_rank_", (DL_FUNC) &_melt_get_rank_, 1},
+    {"_melt_get_max_threads", (DL_FUNC) &_melt_get_max_threads, 0},
+    {"_melt_get_rank", (DL_FUNC) &_melt_get_rank, 1},
     {"_melt_boot_", (DL_FUNC) &_melt_boot_, 10},
     {"_melt_confint_", (DL_FUNC) &_melt_confint_, 13},
     {"_melt_confreg_", (DL_FUNC) &_melt_confreg_, 15},

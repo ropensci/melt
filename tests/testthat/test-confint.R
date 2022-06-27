@@ -1,5 +1,4 @@
 test_that("invalid 'parm'", {
-  data("women")
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(women$height, 67, control = optcfg)
   expect_error(confint(fit, parm = NA))
@@ -9,7 +8,6 @@ test_that("invalid 'parm'", {
 })
 
 test_that("invalid 'level'", {
-  data("women")
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(women$height, 67, control = optcfg)
   expect_error(confint(fit, level = -1))
@@ -19,13 +17,11 @@ test_that("invalid 'level'", {
 })
 
 test_that("invalid 'control'", {
-  data("women")
   fit <- el_mean(women$height, 67)
   expect_error(confint(fit, control = list(maxit = 67)))
 })
 
 test_that("'level' == 1", {
-  data("women")
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(women$height, 67, control = optcfg)
   ci <- confint(fit, level = 1)
@@ -34,7 +30,6 @@ test_that("'level' == 1", {
 })
 
 test_that("'level' == 0", {
-  data("women")
   optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   fit <- el_mean(women$height, 67, control = optcfg)
   ci <- confint(fit, level = 0)
@@ -42,14 +37,12 @@ test_that("'level' == 0", {
 })
 
 test_that("empty model", {
-  data("mtcars")
   fit <- el_lm(mpg ~ -1, mtcars)
   ci <- confint(fit)
   expect_equal(nrow(ci), 0)
 })
 
 test_that("'nthreads' == 1", {
-  data("mtcars")
   mpg <- mtcars$mpg
   disp <- mtcars$disp
   hp <- mtcars$hp
@@ -63,7 +56,6 @@ test_that("'nthreads' == 1", {
 })
 
 test_that("unnamed coefficients", {
-  data("faithful")
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
   names(fit@coefficients) <- NULL
   expect_type(confint(fit, parm = c(1, 2)), "double")
@@ -71,7 +63,6 @@ test_that("unnamed coefficients", {
 })
 
 test_that("character specification for 'parm'", {
-  data("faithful")
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
   expect_type(confint(fit, parm = c("eruptions2", "eruptions3")), "double")
   expect_type(confint(fit, parm = c("eruptions", "eruptions2")), "double")
