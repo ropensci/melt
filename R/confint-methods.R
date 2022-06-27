@@ -37,7 +37,7 @@ setMethod("confint", "EL", function(object,
   }
   # number of rows of the confidence interval matrix
   p <- length(idx)
-  validate_level(level)
+  level <- validate_level(level)
   if (isTRUE(all.equal(level, 0))) {
     ci <- matrix(rep(est[idx], 2L), ncol = 2L)
     colnames(ci) <- c("lower", "upper")

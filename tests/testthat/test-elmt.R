@@ -1,6 +1,7 @@
+data("mtcars")
+fit <- el_lm(mpg ~ cyl + disp, mtcars)
+
 test_that("invalid 'rhs'", {
-  data("mtcars")
-  fit <- el_lm(mpg ~ cyl + disp, mtcars)
   # no hypothesis
   expect_error(elmt(fit))
   # single hypothesis
@@ -14,8 +15,6 @@ test_that("invalid 'rhs'", {
 })
 
 test_that("invalid 'lhs'", {
-  data("mtcars")
-  fit <- el_lm(mpg ~ cyl + disp, mtcars)
   # single hypothesis
   expect_error(elmt(fit, lhs = matrix(c(1, 1, 1), nrow = 1)))
   expect_error(elmt(fit, lhs = list(c(1))))
@@ -42,9 +41,11 @@ test_that("invalid 'lhs'", {
 })
 
 test_that("invalid 'alpha'", {
-  data("mtcars")
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_lm(mpg ~ cyl + disp, mtcars, control = optcfg)
   rhs <- list(c(0, 0, 0), c(1, 1, 1))
   expect_error(elmt(fit, rhs = rhs, alpha = 1))
+})
+
+test_that("'rhs' == NULL", {
+  lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
+  expect_s4_class(elmt(fit, lhs = lhs), "MELT")
 })

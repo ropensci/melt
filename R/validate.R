@@ -178,14 +178,19 @@ validate_B <- function(B) {
 
 
 
-
-
+#' Validate `model`
+#'
+#' Validate `model` in [el_glm()], [el_lm()], and [el_mean()].
+#'
+#' @param model A single logical.
+#' @return A single logical.
 #' @noRd
 validate_model <- function(model) {
   stopifnot(
-    "'model' must be a single logical" = (is.logical(model)),
-    "'model' must be a single logical" = (length(model) == 1L)
+    "'model' must be a single logical" =
+      (isTRUE(is.logical(model) && length(model) == 1L))
   )
+  model
 }
 
 
@@ -243,6 +248,7 @@ check_weights_ <- function(weights, nw) {
 #'
 #' @param rhs A numeric vector or a column matrix.
 #' @param p A single integer.
+#' @return A numeric vector.
 #' @noRd
 validate_rhs <- function(rhs, p) {
   UseMethod("validate_rhs", rhs)
@@ -254,12 +260,14 @@ validate_rhs <- function(rhs, p) {
 #'
 #' @param rhs A numeric vector.
 #' @param p A single integer.
+#' @return A numeric vector.
 #' @noRd
 validate_rhs.numeric <- function(rhs, p) {
   stopifnot("'rhs' must be a finite numeric vector" = (all(is.finite(rhs))))
   if (length(rhs) != p) {
     stop(gettextf("length of 'rhs' must be %d", p, domain = NA))
   }
+  rhs
 }
 
 #' Validate `rhs`
@@ -268,6 +276,7 @@ validate_rhs.numeric <- function(rhs, p) {
 #'
 #' @param rhs A numeric matrix.
 #' @param p A single integer.
+#' @return A numeric vector.
 #' @noRd
 validate_rhs.matrix <- function(rhs, p) {
   stopifnot(
@@ -277,6 +286,8 @@ validate_rhs.matrix <- function(rhs, p) {
   if (nrow(rhs) != p) {
     stop(gettextf("length of 'rhs' must be %d", p, domain = NA))
   }
+  attr(rhs, "dim") <- NULL
+  rhs
 }
 
 #' Validate `lhs`
@@ -302,9 +313,11 @@ validate_lhs <- function(lhs, p) {
 validate_lhs.numeric <- function(lhs, p) {
   stopifnot(
     "'lhs' must be a finite numeric vector" = (all(is.finite(lhs))),
-    "'object' and 'lhs' have incompatible dimensions" = (length(lhs) == p),
     "'lhs' must have full row rank" = (get_rank_(lhs) == 1L)
   )
+  if (length(lhs) != p) {
+    stop(gettextf("length of 'lhs' must be %d", p, domain = NA))
+  }
   matrix(lhs, nrow = 1L)
 }
 
@@ -320,10 +333,12 @@ validate_lhs.matrix <- function(lhs, p) {
   q <- nrow(lhs)
   stopifnot(
     "'lhs' must be a finite numeric matrix" = (all(is.finite(lhs))),
-    "'object' and 'lhs' have incompatible dimensions" =
-      (isTRUE(q > 0L && q <= p && ncol(lhs) == p)),
-    "'lhs' must have full row rank" = (get_rank_(lhs) == q)
+    "'lhs' must have full row rank" =
+      (isTRUE(q >= 1L && q <= p && get_rank_(lhs) == q))
   )
+  if (ncol(lhs) != p) {
+    stop(gettextf("'lhs' must have %d columns", p, domain = NA))
+  }
   lhs
 }
 
@@ -340,13 +355,13 @@ validate_hypothesis <- function(rhs, lhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either 'rhs' or 'lhs' must be provided")
   } else if (is.null(lhs)) {
-    validate_rhs(rhs, p)
+    rhs <- validate_rhs(rhs, p)
   } else if (is.null(rhs)) {
     lhs <- validate_lhs(lhs, p)
     rhs <- rep(0, nrow(lhs))
   } else {
     lhs <- validate_lhs(lhs, p)
-    validate_rhs(rhs, nrow(lhs))
+    rhs <- validate_rhs(rhs, nrow(lhs))
   }
   list(l = lhs, r = rhs)
 }
@@ -356,6 +371,7 @@ validate_hypothesis <- function(rhs, lhs, p) {
 #' Validate `alpha` in [elt()].
 #'
 #' @param alpha A single numeric.
+#' @return A single numeric.
 #' @noRd
 validate_alpha <- function(alpha) {
   stopifnot(
@@ -363,6 +379,7 @@ validate_alpha <- function(alpha) {
       (isTRUE(is.numeric(alpha) && length(alpha) == 1L && is.finite(alpha))),
     "'alpha' must be between 0 and 1" = (isTRUE(alpha > 0 && alpha < 1))
   )
+  alpha
 }
 
 
@@ -374,6 +391,7 @@ validate_alpha <- function(alpha) {
 #' Validate `level` in [confint()] and [confreg()].
 #'
 #' @param level A single numeric.
+#' @return A single numeric.
 #' @noRd
 validate_level <- function(level) {
   stopifnot(
@@ -381,6 +399,7 @@ validate_level <- function(level) {
       (isTRUE(is.numeric(level) && length(level) == 1L && is.finite(level))),
     "'level' must be between 0 and 1" = (isTRUE(level >= 0 && level <= 1))
   )
+  level
 }
 
 #' Validate `cv`
@@ -479,13 +498,13 @@ validate_family <- function(family) {
 #'
 #' Validate `rhs` and `lhs` in [elmt()].
 #'
-#' @param rhs A xxx xxx
-#' @param lhs A xxx xxx
+#' @param rhs A numeric vector (column matrix) or a list of numeric vectors.
+#' @param lhs A numeric matrix or a list of numeric matrices.
 #' @param p A single integer.
 #' @return A list.
 #' @noRd
 validate_hypotheses <- function(rhs, lhs, p) {
-  if (is.null(rhs) && is.null(lhs)) {
+  if (isTRUE(is.null(rhs) && is.null(lhs))) {
     stop("either 'rhs' or 'lhs' must be provided")
   } else if (is.null(lhs)) {
     rhs <- validate_rhses(rhs, p)
@@ -505,13 +524,15 @@ validate_hypotheses <- function(rhs, lhs, p) {
     lhs <- validate_lhses(lhs, p)
     q <- attr(lhs, "q")
     m <- attr(lhs, "m")
+    stopifnot(
+      "'rhs' and 'lhs' have incompatible dimensions" =
+        ((isTRUE(all.equal(attr(rhs, "q"), q)) && attr(rhs, "m") == m))
+    )
   }
-  if (any(
-    length(rhs) != nrow(lhs), isFALSE(all.equal(attr(rhs, "q"), q)),
-    attr(rhs, "m") != m
-  )) {
-    stop("'rhs' and 'lhs' are incompatible")
-  }
+  stopifnot(
+    "'rhs' and 'lhs' have incompatible dimensions" =
+      (length(rhs) == nrow(lhs))
+  )
   list(r = rhs, l = lhs, q = q, m = m)
 }
 
@@ -584,11 +605,6 @@ validate_rhses.list <- function(rhs, p) {
         is.numeric(x) && all(is.finite(x))
       }, TRUE)))
   )
-  if (any(vapply(rhs, \(x) {
-    length(x) != p
-  }, FALSE))) {
-    stop(gettextf("length of every vector in 'rhs' must be %d", p, domain = NA))
-  }
   out <- do.call(c, rhs)
   attr(out, "q") <- c(0L, cumsum(vapply(rhs, length, 1L)))
   attr(out, "m") <- m
@@ -625,7 +641,7 @@ validate_lhses.matrix <- function(lhs, p) {
       (all(apply(lhs, 1L, get_rank_)))
   )
   if (ncol(lhs) != p) {
-    stop(gettextf("number of columns in 'lhs' must be %d", p, domain = NA))
+    stop(gettextf("'lhs' must have %d columns", p, domain = NA))
   }
   attr(lhs, "q") <- c(0L, cumsum(rep(1L, m)))
   attr(lhs, "m") <- m

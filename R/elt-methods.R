@@ -8,13 +8,12 @@ setMethod("elt", "EL", function(object,
                                 calibrate = c("chisq", "boot", "f"),
                                 control = el_control()) {
   stopifnot(
-    "invalid 'object' supplied" = (is(object, "EL")),
     "'object' has no 'data'; fit the model with 'model' = TRUE" =
       (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
   h <- validate_hypothesis(rhs, lhs, object@npar)
-  validate_alpha(alpha)
+  alpha <- validate_alpha(alpha)
   calibrate <- match.arg(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit

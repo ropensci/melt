@@ -1,8 +1,10 @@
+data("mtcars")
+data("sleep")
+data("women")
+
 test_that("invalid 'object", {
-  data("mtcars")
   n <- nrow(mtcars)
-  optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- el_lm(mpg ~ hp, mtcars, control = optcfg)
+  fit <- el_lm(mpg ~ hp, mtcars)
   expect_error(eld(fit, control = list(maxit = 20L)))
   eld <- eld(fit)
   pdf(NULL)
@@ -17,15 +19,11 @@ test_that("invalid 'object", {
 })
 
 test_that("weights", {
-  data("sleep")
-  optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- el_lm(extra ~ ID, sleep, weights = as.numeric(group), control = optcfg)
+  fit <- el_lm(extra ~ ID, sleep, weights = as.numeric(group))
   expect_s4_class(eld(fit), "ELD")
 })
 
 test_that("mean", {
-  data("women")
-  optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_mean(women$height, par = 67)
   fit2 <- el_mean(women$height, par = 67, weights = women$weight)
   expect_s4_class(eld(fit), "ELD")

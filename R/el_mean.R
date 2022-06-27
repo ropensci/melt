@@ -44,21 +44,23 @@ el_mean <- function(x,
                     control = el_control(),
                     model = TRUE) {
   mm <- check_x_(x)
-  n <- nrow(mm)
-  p <- ncol(mm)
   stopifnot(
-    "'par' must be a numeric vector" = (is.numeric(par)),
-    "'par' must be a finite numeric vector" = (all(is.finite(par))),
-    "'par' and 'x' have incompatible dimensions" = (length(par) == p),
+    "'par' must be a finite numeric vector" =
+      (isTRUE(is.numeric(par) && all(is.finite(par)))),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
+  n <- nrow(mm)
+  p <- ncol(mm)
+  if (length(par) != p) {
+    stop(gettextf("length of 'par' must be %d", p, domain = NA))
+  }
   w <- check_weights_(weights, n)
   if (!is.null(weights)) {
     est <- colSums(mm * w) / n
   } else {
     est <- colMeans(mm)
   }
-  validate_model(model)
+  model <- validate_model(model)
   el <- eval_("mean", par, mm, control@maxit_l, control@tol_l, control@th, w)
   new("EL",
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,

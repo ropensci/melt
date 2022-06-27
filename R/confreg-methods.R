@@ -46,7 +46,7 @@ setMethod("confreg", "EL", function(object,
     est <- est[idx]
     pnames <- pnames[idx]
   }
-  validate_level(level)
+  level <- validate_level(level)
   if (isTRUE(all.equal(level, 0))) {
     return(new("ConfregEL",
       points = matrix(est, nrow = 1L), estimates = est, level = level, cv = Inf,

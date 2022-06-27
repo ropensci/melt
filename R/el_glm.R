@@ -73,7 +73,7 @@ el_glm <- function(formula,
   if (!is(control, "ControlEL")) {
     stop("invalid 'control' specified")
   }
-  validate_model(model)
+  model <- validate_model(model)
   cl <- match.call()
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
