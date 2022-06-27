@@ -112,3 +112,12 @@ test_that("identical results for repeated executions", {
   elt4 <- elt(wfit2, lhs = lhs)
   expect_equal(elt3, elt4)
 })
+
+test_that("identical weights == no weights", {
+  x <- women$height
+  w <- rep(mean(women$weight), length(x))
+  par <- 60
+  fit <- el_mean(x, par)
+  fit2 <- el_mean(x, par, weights = w)
+  expect_equal(fit@optim, fit2@optim)
+})

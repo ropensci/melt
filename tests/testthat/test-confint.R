@@ -1,6 +1,5 @@
 test_that("invalid 'parm'", {
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(women$height, 67, control = optcfg)
+  fit <- el_mean(women$height, 67)
   expect_error(confint(fit, parm = NA))
   expect_error(confint(fit, parm = NULL))
   expect_error(confint(fit, parm = NaN))
@@ -8,8 +7,7 @@ test_that("invalid 'parm'", {
 })
 
 test_that("invalid 'level'", {
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(women$height, 67, control = optcfg)
+  fit <- el_mean(women$height, 67)
   expect_error(confint(fit, level = -1))
   expect_error(confint(fit, level = 2))
   expect_error(confint(fit, level = Inf))
@@ -22,16 +20,14 @@ test_that("invalid 'control'", {
 })
 
 test_that("'level' == 1", {
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(women$height, 67, control = optcfg)
+  fit <- el_mean(women$height, 67)
   ci <- confint(fit, level = 1)
   expect_equal(ci[1], -Inf)
   expect_equal(ci[2], Inf)
 })
 
 test_that("'level' == 0", {
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
-  fit <- el_mean(women$height, 67, control = optcfg)
+  fit <- el_mean(women$height, 67)
   ci <- confint(fit, level = 0)
   expect_equal(ci[2] - ci[1], 0)
 })

@@ -1,3 +1,12 @@
+test_that("invalid 'formula'", {
+  expect_error(el_glm(cbind(group, ID) ~ extra, family = binomial, sleep))
+})
+
+test_that("invalid 'family' link", {
+  expect_error(el_glm(ID ~ extra, family = binomial("cauchit"), sleep))
+  expect_error(el_glm(ID ~ extra, family = binomial("cloglog"), sleep))
+})
+
 test_that("probabilities add up to 1", {
   skip_on_os("windows", arch = "i386")
   n <- 50

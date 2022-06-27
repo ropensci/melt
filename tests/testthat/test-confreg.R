@@ -42,11 +42,10 @@ test_that("invalid 'control'", {
 
 test_that("plot method", {
   fit <- el_lm(mpg ~ disp + hp + wt, data = mtcars)
-  cr <- confreg(fit, parm = c(1, 2), cv = 6)
+  cr <- confreg(fit)
+  cr2 <- confreg(fit, parm = c(1, 2), cv = 6)
   pdf(NULL)
-  expect_invisible(plot(cr))
-  # expect_s4_class(cr, "ConfregEL")
-  # expect_s4_class(confreg(fit), "ConfregEL")
+  expect_invisible(plot(cr2))
 })
 
 

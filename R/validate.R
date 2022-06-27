@@ -237,10 +237,29 @@ check_weights_ <- function(weights, nw) {
 
 
 
-
-
-
-
+#' Validate `rhs` and `lhs`
+#'
+#' Validate `rhs` and `lhs` in [elt()].
+#'
+#' @param rhs A numeric vector or a column matrix.
+#' @param lhs A numeric matrix or a vector (treated as a row matrix).
+#' @param p A single integer.
+#' @return A list.
+#' @noRd
+validate_hypothesis <- function(rhs, lhs, p) {
+  if (is.null(rhs) && is.null(lhs)) {
+    stop("either 'rhs' or 'lhs' must be provided")
+  } else if (is.null(lhs)) {
+    rhs <- validate_rhs(rhs, p)
+  } else if (is.null(rhs)) {
+    lhs <- validate_lhs(lhs, p)
+    rhs <- rep(0, nrow(lhs))
+  } else {
+    lhs <- validate_lhs(lhs, p)
+    rhs <- validate_rhs(rhs, nrow(lhs))
+  }
+  list(l = lhs, r = rhs)
+}
 
 #' Validate `rhs`
 #'
@@ -342,29 +361,14 @@ validate_lhs.matrix <- function(lhs, p) {
   lhs
 }
 
-#' Validate `rhs` and `lhs`
-#'
-#' Validate `rhs` and `lhs` in [elt()].
-#'
-#' @param rhs A numeric vector or a column matrix.
-#' @param lhs A numeric matrix or a vector (treated as a row matrix).
-#' @param p A single integer.
-#' @return A list.
-#' @noRd
-validate_hypothesis <- function(rhs, lhs, p) {
-  if (is.null(rhs) && is.null(lhs)) {
-    stop("either 'rhs' or 'lhs' must be provided")
-  } else if (is.null(lhs)) {
-    rhs <- validate_rhs(rhs, p)
-  } else if (is.null(rhs)) {
-    lhs <- validate_lhs(lhs, p)
-    rhs <- rep(0, nrow(lhs))
-  } else {
-    lhs <- validate_lhs(lhs, p)
-    rhs <- validate_rhs(rhs, nrow(lhs))
-  }
-  list(l = lhs, r = rhs)
-}
+
+
+
+
+
+
+
+
 
 #' Validate `alpha`
 #'
