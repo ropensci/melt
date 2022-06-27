@@ -43,7 +43,7 @@ setMethod("confint", "EL", function(object,
     colnames(ci) <- c("lower", "upper")
     return(ci)
   } else if (isTRUE(all.equal(level, 1))) {
-    ci <- matrix(NA, nrow = p, ncol = 2L)
+    ci <- matrix(NA_real_, nrow = p, ncol = 2L)
     ci[which(!is.na(idx)), ] <- c(-Inf, Inf)
     colnames(ci) <- c("lower", "upper")
     return(ci)
@@ -59,12 +59,11 @@ setMethod("confint", "EL", function(object,
   nthreads <- control@nthreads
   w <- getWeights(object)
   cv <- if (is.null(cv)) qchisq(level, 1L) else validate_cv(cv, th)
-  # compute the confidence interval matrix
   if (all(is.na(idx))) {
-    ci <- matrix(NA, nrow = p, ncol = 2L)
+    ci <- matrix(NA_real_, nrow = p, ncol = 2L)
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))
-    ci <- matrix(NA, nrow = p, ncol = 2L)
+    ci <- matrix(NA_real_, nrow = p, ncol = 2L)
     ci[-idx_na, ] <- confint_(
       method, est, getDataMatrix(object), cv, idx[-idx_na], maxit, maxit_l,
       tol, tol_l, step, th, nthreads, w

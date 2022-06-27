@@ -20,7 +20,8 @@ test_that("invalid 'level'", {
 
 test_that("invalid 'control'", {
   data("women")
-  expect_error(el_mean(women$height, 67, control = list(maxit = 200)))
+  fit <- el_mean(women$height, 67)
+  expect_error(confint(fit, control = list(maxit = 67)))
 })
 
 test_that("'level' == 1", {
@@ -65,11 +66,13 @@ test_that("unnamed coefficients", {
   data("faithful")
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
   names(fit@coefficients) <- NULL
+  expect_type(confint(fit, parm = c(1, 2)), "double")
   expect_type(confint(fit), "double")
 })
 
 test_that("character specification for 'parm'", {
   data("faithful")
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
+  expect_type(confint(fit, parm = c("eruptions2", "eruptions3")), "double")
   expect_type(confint(fit, parm = c("eruptions", "eruptions2")), "double")
 })
