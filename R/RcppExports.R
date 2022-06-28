@@ -13,10 +13,6 @@ boot_ <- function(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt) {
     .Call(`_melt_boot_`, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt)
 }
 
-computeCommonCutoff <- function(method, est, x, lhs, q, m, B) {
-    .Call(`_melt_computeCommonCutoff`, method, est, x, lhs, q, m, B)
-}
-
 confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
@@ -41,15 +37,15 @@ eval_g_ <- function(g, maxit_l, tol_l, th, wt) {
     .Call(`_melt_eval_g_`, g, maxit_l, tol_l, th, wt)
 }
 
-glm_ <- function(method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
-    .Call(`_melt_glm_`, method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+testGLM <- function(method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
+    .Call(`_melt_testGLM`, method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
 testLM <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_testLM`, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-testMultipleHypotheses <- function(q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, wt) {
-    .Call(`_melt_testMultipleHypotheses`, q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, wt)
+testMultipleHypotheses <- function(q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w) {
+    .Call(`_melt_testMultipleHypotheses`, q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w)
 }
 

@@ -1,5 +1,5 @@
-#ifndef ELMT_UTILS_H_
-#define ELMT_UTILS_H_
+#ifndef TEST_MULTIPLE_HYPOTHESES_UTILS_H_
+#define TEST_MULTIPLE_HYPOTHESES_UTILS_H_
 
 #include <RcppEigen.h>
 #include <string>

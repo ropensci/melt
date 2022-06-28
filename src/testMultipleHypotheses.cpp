@@ -1,4 +1,4 @@
-#include "elmt_utils.h"
+#include "testMultipleHypotheses_utils.h"
 #include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>
@@ -20,7 +20,7 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
                                   const double tol_l,
                                   const Rcpp::Nullable<double> step,
                                   const Rcpp::Nullable<double> th,
-                                  const Eigen::Map<Eigen::ArrayXd>& wt) {
+                                  const Eigen::Map<Eigen::ArrayXd>& w) {
   const double gamma = step_nloglr(x.rows(), step);
   std::vector<double> test_statistic(m);
   for (int j = 0; j < m; ++j) {
@@ -28,7 +28,7 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
     const Eigen::MatrixXd l = lhs.middleRows(q(j), q(j + 1) - q(j));
     const double test_th = th_nloglr(l.rows(), th);
     const MINEL el(method, est, x, l, r, maxit, maxit_l, tol, tol_l, gamma,
-                   test_th, wt);
+                   test_th, w);
     test_statistic[j] = 2.0 * el.nllr;
   }
   // const Rcpp::NumericVector out = Rcpp::wrap(test_statistic);
@@ -44,11 +44,11 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
 
   // ahat matrices
   const int p = est.size();
-  const Eigen::MatrixXd w = dg0_inv(method, x);
+  const Eigen::MatrixXd h = dg0_inv(method, x);
   Eigen::MatrixXd amat(p, p * m);
   for (int j = 0; j < m; ++j) {
     const Eigen::MatrixXd l = lhs.middleRows(q(j), q(j + 1) - q(j));
-    amat.middleCols(j * p, p) = ahat(l, w, s);
+    amat.middleCols(j * p, p) = ahat(l, h, s);
   }
 
   // 4. random monte carlo
@@ -60,8 +60,6 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
     tmp.resize(p, m);
     max_statistic[b] = (u * tmp).maxCoeff();
   }
-
-  // critical value can be computed independent of the statistics
 
   // critical value can be computed independent of the statistics
   Rcpp::List result = Rcpp::List::create(

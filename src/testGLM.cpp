@@ -8,19 +8,18 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::List glm_(const std::string method,
-                const Eigen::Map<Eigen::MatrixXd>& x,
-                const Eigen::Map<Eigen::VectorXd>& par0,
-                const bool intercept,
-                const int maxit,
-                const int maxit_l,
-                const double tol,
-                const double tol_l,
-                const Rcpp::Nullable<double> step,
-                const Rcpp::Nullable<double> th,
-                const int nthreads,
-                const Eigen::Map<Eigen::ArrayXd>& w)
-{
+Rcpp::List testGLM(const std::string method,
+                   const Eigen::Map<Eigen::MatrixXd>& x,
+                   const Eigen::Map<Eigen::VectorXd>& par0,
+                   const bool intercept,
+                   const int maxit,
+                   const int maxit_l,
+                   const double tol,
+                   const double tol_l,
+                   const Rcpp::Nullable<double> step,
+                   const Rcpp::Nullable<double> th,
+                   const int nthreads,
+                   const Eigen::Map<Eigen::ArrayXd>& w) {
   const int p = x.cols() - 1;
   const double gamma = step_nloglr(x.rows(), step);
 

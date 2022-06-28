@@ -12,9 +12,8 @@ test_that("invalid 'control'", {
 test_that("convergence check", {
   x <- women$weight
   grid <- seq(120, 160, length.out = 1000)
-  optcfg <- el_control(maxit_l = 200L, tol_l = 1e-08, th = 1e+10)
   conv <- function(par) {
-    el_eval(x - par, control = optcfg)$optim$convergence
+    el_eval(x - par)$optim$convergence
   }
   expect_true(all(vapply(grid, conv, FUN.VALUE = logical(1))))
 })

@@ -1,9 +1,9 @@
-#include "elmt_utils.h"
+#include "testMultipleHypotheses_utils.h"
 #include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>
-#include <map>
 #include <functional>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -77,38 +77,3 @@ Eigen::MatrixXd ahat(const Eigen::Ref<const Eigen::MatrixXd>& j,
   return (j * w).transpose() * (((j * w) * s * (j * w).transpose()).inverse()) *
     (j * w);
 }
-
-// Rcpp::NumericVector cv_mvchisq(const std::string method,
-//                   const Eigen::Ref<const Eigen::VectorXd>& est,
-//                   const Eigen::Ref<const Eigen::MatrixXd>& x,
-//                   const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-//                   const Eigen::Ref<const Eigen::VectorXi>& q,
-//                   const int m,
-//                   const int B,
-//                   const int nthreads)
-// {
-//   const int p = est.size();
-//   const Eigen::MatrixXd w = dg0_inv(method, x);
-//   // sample covariance
-//   const Eigen::MatrixXd s = cov(method, est, x);
-//   // sqrt of sample covariance
-//   const Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(s);
-//   const Eigen::MatrixXd sqrt_s = es.operatorSqrt();
-//
-//   Eigen::MatrixXd amat(p, p * m);
-//   for (int j = 0; j < m; ++j) {
-//     const Eigen::MatrixXd l = lhs.middleRows(q(j), q(j + 1) - q(j));
-//     amat.middleCols(j * p, p) = ahat(l, w, s);
-//   }
-//
-//   std::vector<double> max_statistic(B);
-//   // #pragma omp parallel for num_threads(nthreads)
-//   for (int b = 0; b < B; ++b) {
-//     const Eigen::RowVectorXd u = rmvn(sqrt_s);
-//     Eigen::MatrixXd tmp = u * amat;
-//     tmp.resize(p, m);
-//     max_statistic[b] = (u * tmp).maxCoeff();
-//   }
-//   const Rcpp::NumericVector out = Rcpp::wrap(max_statistic);
-//   return out;
-// }
