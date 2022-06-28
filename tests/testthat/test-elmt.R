@@ -42,18 +42,18 @@ test_that("incompatible 'rhs' and 'lhs'", {
 
 test_that("'rhs' == NULL", {
   lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
-  expect_s4_class(elmt(fit, lhs = lhs), "MELT")
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
 })
 
 test_that("matrix 'rhs'", {
   rhs <- matrix(c(0, 0), ncol = 1)
   lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
-  expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "MELT")
+  expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
 })
 
 test_that("list 'lhs'", {
   lhs <- list(matrix(c(1, 33, 0), nrow = 1), matrix(c(0, 1, -100), nrow = 1))
-  expect_s4_class(elmt(fit, lhs = lhs), "MELT")
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
 })
 
 

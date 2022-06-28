@@ -110,18 +110,17 @@ el_glm <- function(formula,
   if (is.matrix(Y)) {
     stop("'el_glm' does not support grouped data")
   }
-  X <- if (!is.empty.model(mt)) {
-    model.matrix(mt, mf, NULL)
+  if (!is.empty.model(mt)) {
+    X <- model.matrix(mt, mf, NULL)
   } else {
-    matrix(, NROW(Y), 0L)
+    X <- matrix(, NROW(Y), 0L)
   }
   w <- as.vector(model.weights(mf))
-  if (!is.null(w) && !is.numeric(w)) {
-    stop("'weights' must be a numeric vector")
-  }
-  if (!is.null(w) && any(w < 0)) {
-    stop("negative weights not allowed")
-  }
+  stopifnot(
+    "'weights' must be a numeric vector" =
+      (isTRUE(is.null(w) || is.numeric(w))),
+    "'weights' must be positive" = (isTRUE(is.null(w) || all(w > 0)))
+  )
   mustart <- model.extract(mf, "mustart")
   etastart <- model.extract(mf, "etastart")
   if (is.empty.model(mt)) {

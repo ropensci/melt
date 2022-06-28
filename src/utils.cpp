@@ -204,7 +204,11 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
 }
 
 
-
+double computeQuantile(const Rcpp::NumericVector& x, const double prob) {
+  Rcpp::Environment stats("package:stats");
+  Rcpp::Function quantile = stats["quantile"];
+  return Rcpp::as<double>(quantile(x, Rcpp::Named("probs") = prob));
+}
 
 
 

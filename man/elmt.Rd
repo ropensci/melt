@@ -15,10 +15,9 @@
 the right-hand sides of hypotheses. Defaults to \code{NULL}. See ‘Details’.}
 
 \item{lhs}{A numeric matrix or a list of numeric matrices for the left-hand
-sides of hypothesis. Each row gives a
-linear combination of parameters. The number of columns should be equal to
-the number of parameters in \code{object}. Defaults to \code{NULL}.
-See ‘Details’.}
+sides of hypothesis. Each row of the matrices gives a linear combination of
+the parameters in \code{object}. The number of columns should be equal to the
+number of parameters. Defaults to \code{NULL}. See ‘Details’.}
 
 \item{alpha}{A single numeric for the overall significance level. Defaults to
 \code{0.05}.}
@@ -27,19 +26,46 @@ See ‘Details’.}
 \code{\link[=el_control]{el_control()}}.}
 }
 \value{
-An object of class of \linkS4class{MELT}.
+An object of class of \linkS4class{ELMT}.
 }
 \description{
 Tests multiple linear hypotheses for objects that inherit from class
 \linkS4class{EL}.
 }
+\details{
+\code{\link[=elmt]{elmt()}} performs the constrained minimization of \eqn{l(\theta)}
+described in \linkS4class{CEL}. \code{rhs} and \code{lhs} cannot be both \code{NULL}. For
+non-\code{NULL} \code{lhs}, it is required that \code{lhs} have full row rank
+\eqn{q \leq p} and \eqn{p} be equal to the number of parameters in the
+\code{object}.
+
+Depending on the specification of \code{rhs} and \code{lhs}, we have the following
+three cases:
+\enumerate{
+\item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the constrained minimization
+is performed with the right-hand side \eqn{r} and the left-hand side
+\eqn{L} as
+\deqn{\inf_{\theta: L\theta = r} l(\theta).}
+\item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as
+\eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
+\item If \code{lhs} is \code{NULL}, \eqn{L} is set to the identity matrix and the
+problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
+}
+
+\code{calibrate} specifies the calibration method used. Three methods are
+available: \code{"chisq"} (chi-square calibration), \code{"boot"} (bootstrap
+calibration), and \code{"f"} (\eqn{F} calibration). \code{"boot"} is applicable only
+when \code{lhs} is \code{NULL}. The \code{nthreads}, \code{seed}, and \code{B} slots in \code{control}
+apply to the bootstrap procedure. \code{"f"} is applicable only to the mean
+parameter when \code{lhs} is \code{NULL}.
+}
 \examples{
 n <- 100L
 }
 \references{
-Qin, Jing, and Jerry Lawless. 1995.
-“Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
+Kim E, MacEachern S, Peruggia M (2021).
+“Empirical Likelihood for the Analysis of Experimental Designs.”
+arxiv:2112.09206. URL \url{https://arxiv.org/abs/2112.09206}.
 }
 \seealso{
 \code{\link[=el_control]{el_control()}}, \code{\link[=elt]{elt()}}

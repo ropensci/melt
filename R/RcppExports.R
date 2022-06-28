@@ -37,8 +37,8 @@ testLM <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nth
     .Call(`_melt_testLM`, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-testMultipleHypotheses <- function(q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w) {
-    .Call(`_melt_testMultipleHypotheses`, q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w)
+testMultipleHypotheses <- function(alpha, q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w) {
+    .Call(`_melt_testMultipleHypotheses`, alpha, q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w)
 }
 
 getMaxThreads <- function() {

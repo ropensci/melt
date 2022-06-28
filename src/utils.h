@@ -72,4 +72,5 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>
   g_fn2(const std::string method);
 
+double computeQuantile(const Rcpp::NumericVector& x, const double prob);
 #endif

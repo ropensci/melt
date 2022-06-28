@@ -20,16 +20,14 @@ setMethod("elmt", "EL", function(object,
   tol_l <- control@tol_l
   step <- control@step
   th <- control@th
-
-
   out <- testMultipleHypotheses(
-    h$q, h$m, 10000, method, coef(object), getDataMatrix(object), h$r, h$l,
-    maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
+    alpha, h$q, h$m, 10000, method, coef(object), getDataMatrix(object), h$r,
+    h$l, maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )
-  new("MELT",
-    alpha = alpha, statistic = out$tmp,
+  new("ELMT",
+    alpha = alpha, statistic = out$statistic,
     # cv = quantile(out$tmp2, probs = 1 - alpha, names = FALSE),
-    cv = out$tmp2,
-    pval = out$adj_pval, calibrate = "mvchisq"
+    cv = out$cv,
+    pval = out$pval, calibrate = "mvchisq"
   )
 })

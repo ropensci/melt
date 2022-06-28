@@ -6,7 +6,8 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
+Rcpp::List testMultipleHypotheses(const double alpha,
+                                  const Eigen::Map<Eigen::VectorXi>& q,
                                   const int m,
                                   const int B,
                                   const std::string method,
@@ -31,8 +32,6 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
                    test_th, w);
     test_statistic[j] = 2.0 * el.nllr;
   }
-  // const Rcpp::NumericVector out = Rcpp::wrap(test_statistic);
-  // return out;
 
 
 
@@ -60,6 +59,7 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
     tmp.resize(p, m);
     max_statistic[b] = (u * tmp).maxCoeff();
   }
+  const double cv = computeQuantile(Rcpp::wrap(max_statistic), 1 - alpha);
 
   // adjusted p-values
   std::vector<double> adj_pval(m);
@@ -71,11 +71,10 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
           static_cast<double>(B);
   }
 
-
   // critical value can be computed independent of the statistics
   Rcpp::List result = Rcpp::List::create(
-    Rcpp::Named("tmp") = Rcpp::wrap(test_statistic),
-    Rcpp::Named("tmp2") = Rcpp::wrap(max_statistic),
-    Rcpp::Named("adj_pval") = adj_pval);
+    Rcpp::Named("statistic") = Rcpp::wrap(test_statistic),
+    Rcpp::Named("cv") = cv,
+    Rcpp::Named("pval") = adj_pval);
   return result;
 }

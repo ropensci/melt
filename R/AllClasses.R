@@ -252,15 +252,15 @@ setClass("ELT",
 )
 
 
-#' S4 class \linkS4class{MELT}
+#' S4 class \linkS4class{ELMT}
 #'
 #' S4 class for multiple empirical likelihood test.
 #'
 #' @slot statistic A single numeric for the minus twice the (constrained)
 #'   empirical log-likelihood ratio.
 #' @examples
-#' showClass("MELT")
-setClass("MELT",
+#' showClass("ELMT")
+setClass("ELMT",
   slots = c(
     alpha = "numeric", statistic = "numeric", cv = "numeric",
     pval = "numeric", calibrate = "character"

@@ -195,11 +195,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // testMultipleHypotheses
-Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q, const int m, const int B, const std::string method, const Eigen::Map<Eigen::VectorXd>& est, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& rhs, const Eigen::Map<Eigen::MatrixXd>& lhs, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& w);
-RcppExport SEXP _melt_testMultipleHypotheses(SEXP qSEXP, SEXP mSEXP, SEXP BSEXP, SEXP methodSEXP, SEXP estSEXP, SEXP xSEXP, SEXP rhsSEXP, SEXP lhsSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP wSEXP) {
+Rcpp::List testMultipleHypotheses(const double alpha, const Eigen::Map<Eigen::VectorXi>& q, const int m, const int B, const std::string method, const Eigen::Map<Eigen::VectorXd>& est, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& rhs, const Eigen::Map<Eigen::MatrixXd>& lhs, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& w);
+RcppExport SEXP _melt_testMultipleHypotheses(SEXP alphaSEXP, SEXP qSEXP, SEXP mSEXP, SEXP BSEXP, SEXP methodSEXP, SEXP estSEXP, SEXP xSEXP, SEXP rhsSEXP, SEXP lhsSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP wSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXi>& >::type q(qSEXP);
     Rcpp::traits::input_parameter< const int >::type m(mSEXP);
     Rcpp::traits::input_parameter< const int >::type B(BSEXP);
@@ -215,7 +216,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type step(stepSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
-    rcpp_result_gen = Rcpp::wrap(testMultipleHypotheses(q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w));
+    rcpp_result_gen = Rcpp::wrap(testMultipleHypotheses(alpha, q, m, B, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -251,7 +252,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_testGLM", (DL_FUNC) &_melt_testGLM, 12},
     {"_melt_testHypothesis", (DL_FUNC) &_melt_testHypothesis, 12},
     {"_melt_testLM", (DL_FUNC) &_melt_testLM, 11},
-    {"_melt_testMultipleHypotheses", (DL_FUNC) &_melt_testMultipleHypotheses, 15},
+    {"_melt_testMultipleHypotheses", (DL_FUNC) &_melt_testMultipleHypotheses, 16},
     {"_melt_getMaxThreads", (DL_FUNC) &_melt_getMaxThreads, 0},
     {"_melt_getRank", (DL_FUNC) &_melt_getRank, 1},
     {NULL, NULL, 0}

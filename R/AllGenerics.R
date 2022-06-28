@@ -46,20 +46,44 @@ setGeneric("eld", function(object, ...) {
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param rhs A numeric vector (column matrix) or a list of numeric vectors for
-#'   the right-hand sides of hypotheses. Defaults to \code{NULL}. See ‘Details’.
+#'   the right-hand sides of hypotheses. Defaults to `NULL`. See ‘Details’.
 #' @param lhs A numeric matrix or a list of numeric matrices for the left-hand
-#'   sides of hypothesis. Each row gives a
-#'   linear combination of parameters. The number of columns should be equal to
-#'   the number of parameters in \code{object}. Defaults to \code{NULL}.
-#'   See ‘Details’.
+#'   sides of hypothesis. Each row of the matrices gives a linear combination of
+#'   the parameters in `object`. The number of columns should be equal to the
+#'   number of parameters. Defaults to `NULL`. See ‘Details’.
 #' @param alpha A single numeric for the overall significance level. Defaults to
 #'   `0.05`.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @return An object of class of \linkS4class{MELT}.
-#' @references Qin, Jing, and Jerry Lawless. 1995.
-#'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
+#' @details [elmt()] performs the constrained minimization of \eqn{l(\theta)}
+#'   described in \linkS4class{CEL}. `rhs` and `lhs` cannot be both `NULL`. For
+#'   non-`NULL` `lhs`, it is required that `lhs` have full row rank
+#'   \eqn{q \leq p} and \eqn{p} be equal to the number of parameters in the
+#'   `object`.
+#'
+#'   Depending on the specification of `rhs` and `lhs`, we have the following
+#'   three cases:
+#'   \enumerate{
+#'   \item If both `rhs` and `lhs` are non-`NULL`, the constrained minimization
+#'   is performed with the right-hand side \eqn{r} and the left-hand side
+#'   \eqn{L} as
+#'   \deqn{\inf_{\theta: L\theta = r} l(\theta).}
+#'   \item If `rhs` is `NULL`, \eqn{r} is set to the zero vector as
+#'   \eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
+#'   \item If `lhs` is `NULL`, \eqn{L} is set to the identity matrix and the
+#'   problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
+#'   }
+#'
+#'   `calibrate` specifies the calibration method used. Three methods are
+#'   available: `"chisq"` (chi-square calibration), `"boot"` (bootstrap
+#'   calibration), and `"f"` (\eqn{F} calibration). `"boot"` is applicable only
+#'   when `lhs` is `NULL`. The `nthreads`, `seed`, and `B` slots in `control`
+#'   apply to the bootstrap procedure. `"f"` is applicable only to the mean
+#'   parameter when `lhs` is `NULL`.
+#' @return An object of class of \linkS4class{ELMT}.
+#' @references Kim E, MacEachern S, Peruggia M (2021).
+#'   “Empirical Likelihood for the Analysis of Experimental Designs.”
+#'   arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
 #' @seealso [el_control()], [elt()]
 #' @usage NULL
 #' @examples
