@@ -148,7 +148,7 @@ el_glm <- function(formula,
   method <- validate_family(fit$family)
   mm <- cbind(fit$y, X)
   p <- ncol(X)
-  w <- check_weights_(w, nrow(mm))
+  w <- validate_weights(w, nrow(mm))
   el <- testGLM(
     method, mm, fit$coefficients, intercept,
     control@maxit, control@maxit_l, control@tol, control@tol_l,

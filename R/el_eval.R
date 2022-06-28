@@ -56,7 +56,7 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
     "'g' must have full column rank" = (getRank(mm) == p),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  w <- check_weights_(weights, n)
+  w <- validate_weights(weights, n)
   out <- computeGenericEL(mm, control@maxit_l, control@tol_l, control@th, w)
   out$df <- p
   out$p.value <- pchisq(q = out$statistic, df = out$df, lower.tail = FALSE)

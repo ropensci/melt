@@ -1,11 +1,78 @@
 test_that("invalid 'formula'", {
-  expect_error(el_glm(cbind(group, ID) ~ extra, family = binomial, sleep))
+  expect_error(el_glm(cbind(group, ID) ~ extra,
+    family = binomial,
+    data = sleep
+  ))
 })
 
-test_that("invalid 'family' link", {
-  expect_error(el_glm(ID ~ extra, family = binomial("cauchit"), sleep))
-  expect_error(el_glm(ID ~ extra, family = binomial("cloglog"), sleep))
+test_that("invalid 'family'", {
+  expect_error(el_glm(ID ~ extra, family = binomial("cauchit"), data = sleep))
+  expect_error(el_glm(ID ~ extra, family = binomial("cloglog"), data = sleep))
+  expect_error(el_glm(ID ~ extra, family = "error", data = sleep))
+  expect_error(capture.output(el_glm(y ~ x, family = function() {}, df)))
+  expect_error(el_glm(Wind ~ Temp,
+    family = gaussian(link = make.link("sqrt")),
+    data = airquality
+  ))
+  expect_error(el_glm(Temp ~ Wind,
+    family = poisson(link = make.link("inverse")),
+    data = airquality
+  ))
+  expect_error(el_glm(Wind ~ Temp,
+    family = inverse.gaussian("identity"),
+    data = airquality
+  ))
 })
+
+test_that("non-full rank", {
+  skip_on_os("windows", arch = "i386")
+  n <- 50
+  x <- rnorm(n)
+  x2 <- x
+  l <- -1 + 0.9 * x + 0.3 * x2
+  mu <- 1 / (1 + exp(-l))
+  y <- rbinom(n, 1, mu)
+  df <- data.frame(y, x, x2)
+  expect_error(el_glm(y ~ x + x2, family = binomial, df))
+})
+
+test_that("empty model", {
+  skip_on_os("windows", arch = "i386")
+  n <- 50
+  x <- rnorm(n)
+  x2 <- x
+  l <- -1 + 0.9 * x + 0.3 * x2
+  mu <- 1 / (1 + exp(-l))
+  y <- rbinom(n, 1, mu)
+  df <- data.frame(y, x, x2)
+  optcfg <- el_control(tol = 1e-08, th = 1e+10)
+  fit <- el_glm(y ~ 0, family = binomial, control = optcfg)
+  expect_output(print(summary(fit)))
+})
+
+test_that("invalid 'control'", {
+  skip_on_os("windows", arch = "i386")
+  n <- 50
+  x <- rnorm(n)
+  x2 <- x
+  l <- -1 + 0.9 * x + 0.3 * x2
+  mu <- 1 / (1 + exp(-l))
+  y <- rbinom(n, 1, mu)
+  df <- data.frame(y, x, x2)
+  expect_error(el_glm(y ~ x + x2,
+                      family = binomial, df,
+                      control = list(maxit = 2L)
+  ))
+})
+
+
+
+
+
+
+
+
+
 
 test_that("probabilities add up to 1", {
   skip_on_os("windows", arch = "i386")
@@ -73,57 +140,7 @@ test_that("loglik to loglr (weighted)", {
   expect_equal(fit@logl + sum(w * (log(n) - log(w))), fit@loglr)
 })
 
-test_that("non-full rank", {
-  skip_on_os("windows", arch = "i386")
-  n <- 50
-  x <- rnorm(n)
-  x2 <- x
-  l <- -1 + 0.9 * x + 0.3 * x2
-  mu <- 1 / (1 + exp(-l))
-  y <- rbinom(n, 1, mu)
-  df <- data.frame(y, x, x2)
-  optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  expect_error(el_glm(y ~ x + x2, family = binomial, df, control = optcfg))
-})
 
-test_that("empty model", {
-  skip_on_os("windows", arch = "i386")
-  n <- 50
-  x <- rnorm(n)
-  x2 <- x
-  l <- -1 + 0.9 * x + 0.3 * x2
-  mu <- 1 / (1 + exp(-l))
-  y <- rbinom(n, 1, mu)
-  df <- data.frame(y, x, x2)
-  optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- el_glm(y ~ 0, family = binomial, control = optcfg)
-  expect_output(print(summary(fit)))
-})
-
-test_that("invalid 'family'", {
-  skip_on_os("windows", arch = "i386")
-  n <- 50
-  x <- rnorm(n)
-  y <- -1 + 0.9 * x + rnorm(n)
-  df <- data.frame(y, x)
-  invalid <- function() {}
-  expect_error(capture.output(el_glm(y ~ x, family = invalid, df)))
-})
-
-test_that("invalid 'control'", {
-  skip_on_os("windows", arch = "i386")
-  n <- 50
-  x <- rnorm(n)
-  x2 <- x
-  l <- -1 + 0.9 * x + 0.3 * x2
-  mu <- 1 / (1 + exp(-l))
-  y <- rbinom(n, 1, mu)
-  df <- data.frame(y, x, x2)
-  expect_error(el_glm(y ~ x + x2,
-    family = binomial, df,
-    control = list(maxit = 2L)
-  ))
-})
 
 test_that("same results with parallel computing (binomial)", {
   skip_on_os("windows", arch = "i386")

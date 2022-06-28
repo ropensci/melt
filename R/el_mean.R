@@ -43,7 +43,7 @@ el_mean <- function(x,
                     weights = NULL,
                     control = el_control(),
                     model = TRUE) {
-  mm <- check_x_(x)
+  mm <- validate_x(x)
   stopifnot(
     "'par' must be a finite numeric vector" =
       (isTRUE(is.numeric(par) && all(is.finite(par)))),
@@ -54,7 +54,7 @@ el_mean <- function(x,
   if (length(par) != p) {
     stop(gettextf("length of 'par' must be %d", p, domain = NA))
   }
-  w <- check_weights_(weights, n)
+  w <- validate_weights(weights, n)
   if (!is.null(weights)) {
     est <- colSums(mm * w) / n
   } else {

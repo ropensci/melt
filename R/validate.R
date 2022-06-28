@@ -173,11 +173,6 @@ validate_B <- function(B) {
   B
 }
 
-
-
-
-
-
 #' Validate `model`
 #'
 #' Validate `model` in [el_glm()], [el_lm()], and [el_mean()].
@@ -193,49 +188,158 @@ validate_model <- function(model) {
   model
 }
 
-
-
-
+#' Validate `x`
+#'
+#' Validate `x` in [el_mean()].
+#'
+#' @param x A numeric matrix, or an object that can be coerced to a numeric
+#'   matrix.
+#' @return A numeric matrix.
 #' @noRd
-check_x_ <- function(x) {
+validate_x <- function(x) {
   x <- as.matrix(x)
   stopifnot(
     "'x' must have at least two observations" = (nrow(x) >= 2L),
     "'x' must must have larger number of rows than columns" =
       (nrow(x) > ncol(x)),
-    "'x' must be a numeric matrix" = (is.numeric(x)),
-    "'x' must be a finite numeric matrix" = (all(is.finite(x))),
+    "'x' must be a finite numeric matrix" =
+      (isTRUE(is.numeric(x) && all(is.finite(x)))),
     "'x' must have full column rank" = (getRank(x) == ncol(x))
   )
   x
 }
 
+#' Validate `weights`
+#'
+#' Validate `weights` in [el_eval()], [el_glm()], [el_lm()], and [el_mean()].
+#'
+#' @param weights An optional numeric vector.
+#' @param nw A single integer.
+#' @return A numeric vector.
 #' @noRd
-check_weights_ <- function(weights, nw) {
+validate_weights <- function(weights, n) {
   if (is.null(weights)) {
     return(numeric(length = 0L))
   }
-  if (!is.numeric(weights)) {
-    stop("'weights' is not a numeric vector")
+  stopifnot(
+    "'weights' must be a finite numeric vector" =
+      (isTRUE(is.numeric(weights) && all(is.finite(weights)))),
+    "'weights' must be positive" = (all(weights > 0))
+  )
+  if (length(weights) != n) {
+    stop(gettextf("length of 'weights' must be %d", n, domain = NA))
   }
-  w <- as.vector(weights, mode = "numeric")
-  if (!all(is.finite(w))) {
-    stop("'weights is not a finite numeric vector")
-  }
-  if (any(w <= 0)) {
-    stop("negative 'weights' not allowed")
-  }
-  if (length(w) != nw) {
-    stop("length of 'weights' is incompatible with data")
-  }
-  w <- (nw / sum(w)) * w
-  w
+  weights <- (n / sum(weights)) * weights
+  weights
 }
 
+#' Validate `family`
+#'
+#' Validate `family` in [el_glm()].
+#'
+#' @param family An object of class [`family`].
+#' @return A single character.
+#' @noRd
+validate_family <- function(family) {
+  f <- family$family
+  l <- family$link
+  switch(f,
+    "gaussian" = {
+      if (!any(l == c("identity", "log", "inverse"))) {
+        stop(gettextf(
+          "%s family with %s link not supported by 'el_glm'",
+          sQuote(f), sQuote(l)
+        ), domain = NA)
+      }
+    },
+    "binomial" = {
+      if (!any(l == c("logit", "probit", "log"))) {
+        stop(gettextf(
+          "%s family with %s link not supported by 'el_glm'",
+          sQuote(f), sQuote(l)
+        ), domain = NA)
+      }
+    },
+    # "quasibinomial" = {
+    #   if (!any(l == c("logit"))) {
+    #     stop(gettextf(
+    #       "%s family with %s link not supported by 'el_glm'",
+    #       sQuote(f), sQuote(l)
+    #     ), domain = NA)
+    #   }
+    # },
+    "poisson" = {
+      if (!any(l == c("log", "identity", "sqrt"))) {
+        stop(gettextf(
+          "%s family with %s link not supported by 'el_glm'",
+          sQuote(f), sQuote(l)
+        ), domain = NA)
+      }
+    },
+    stop(gettextf("%s family not supported by 'el_glm'", sQuote(f)),
+      domain = NA
+    )
+  )
+  paste(f, l, sep = "_")
+}
 
+#' Validate `alpha`
+#'
+#' Validate `alpha` in [elt()].
+#'
+#' @param alpha A single numeric.
+#' @return A single numeric.
+#' @noRd
+validate_alpha <- function(alpha) {
+  stopifnot(
+    "'alpha' must be a finite single numeric" =
+      (isTRUE(is.numeric(alpha) && length(alpha) == 1L && is.finite(alpha))),
+    "'alpha' must be between 0 and 1" = (isTRUE(alpha > 0 && alpha < 1))
+  )
+  alpha
+}
 
+#' Validate `level`
+#'
+#' Validate `level` in [confint()] and [confreg()].
+#'
+#' @param level A single numeric.
+#' @return A single numeric.
+#' @noRd
+validate_level <- function(level) {
+  stopifnot(
+    "'level' must be a finite single numeric" =
+      (isTRUE(is.numeric(level) && length(level) == 1L && is.finite(level))),
+    "'level' must be between 0 and 1" = (isTRUE(level >= 0 && level <= 1))
+  )
+  level
+}
 
-
+#' Validate `cv`
+#'
+#' Validate `cv` in [confint()] and [confreg()].
+#'
+#' @param cv A single numeric.
+#' @param th A single numeric.
+#' @return A single numeric.
+#' @noRd
+validate_cv <- function(cv, th) {
+  stopifnot(
+    "'cv' must be a finite single numeric" =
+      (isTRUE(is.numeric(cv) && length(cv) == 1L && is.finite(cv))),
+    "'cv' is too small" = (cv >= .Machine$double.eps)
+  )
+  if (is.null(th)) {
+    if (cv > 400) {
+      stop("'cv' is too large compared to 'th'")
+    }
+  } else {
+    if (cv > 2 * th) {
+      stop("'cv' is too large compared to 'th'")
+    }
+  }
+  cv
+}
 
 #' Validate `rhs` and `lhs`
 #'
@@ -360,143 +464,6 @@ validate_lhs.matrix <- function(lhs, p) {
   }
   lhs
 }
-
-
-
-
-
-
-
-
-
-
-#' Validate `alpha`
-#'
-#' Validate `alpha` in [elt()].
-#'
-#' @param alpha A single numeric.
-#' @return A single numeric.
-#' @noRd
-validate_alpha <- function(alpha) {
-  stopifnot(
-    "'alpha' must be a finite single numeric" =
-      (isTRUE(is.numeric(alpha) && length(alpha) == 1L && is.finite(alpha))),
-    "'alpha' must be between 0 and 1" = (isTRUE(alpha > 0 && alpha < 1))
-  )
-  alpha
-}
-
-
-
-
-
-#' Validate `level`
-#'
-#' Validate `level` in [confint()] and [confreg()].
-#'
-#' @param level A single numeric.
-#' @return A single numeric.
-#' @noRd
-validate_level <- function(level) {
-  stopifnot(
-    "'level' must be a finite single numeric" =
-      (isTRUE(is.numeric(level) && length(level) == 1L && is.finite(level))),
-    "'level' must be between 0 and 1" = (isTRUE(level >= 0 && level <= 1))
-  )
-  level
-}
-
-#' Validate `cv`
-#'
-#' Validate `cv` in [confint()] and [confreg()].
-#'
-#' @param cv A single numeric.
-#' @param th A single numeric.
-#' @return A single numeric.
-#' @noRd
-validate_cv <- function(cv, th) {
-  stopifnot(
-    "'cv' must be a finite single numeric" =
-      (isTRUE(is.numeric(cv) && length(cv) == 1L && is.finite(cv))),
-    "'cv' is too small" = (cv >= .Machine$double.eps)
-  )
-  if (is.null(th)) {
-    if (cv > 400) {
-      stop("'cv' is too large compared to 'th'")
-    }
-  } else {
-    if (cv > 2 * th) {
-      stop("'cv' is too large compared to 'th'")
-    }
-  }
-  cv
-}
-
-
-
-
-#' Validate `family`
-#'
-#' Validate `family` in [el_glm()].
-#'
-#' @param family An object of class [`family`].
-#' @return A single character.
-#' @noRd
-validate_family <- function(family) {
-  f <- family$family
-  l <- family$link
-  switch(f,
-    "gaussian" = {
-      if (!any(l == c("identity", "log", "inverse"))) {
-        stop(gettextf(
-          "%s family with %s link not supported by 'el_glm'",
-          sQuote(f), sQuote(l)
-        ), domain = NA)
-      }
-    },
-    "binomial" = {
-      if (!any(l == c("logit", "probit", "log"))) {
-        stop(gettextf(
-          "%s family with %s link not supported by 'el_glm'",
-          sQuote(f), sQuote(l)
-        ), domain = NA)
-      }
-    },
-    # "quasibinomial" = {
-    #   if (!any(l == c("logit"))) {
-    #     stop(gettextf(
-    #       "%s family with %s link not supported by 'el_glm'",
-    #       sQuote(f), sQuote(l)
-    #     ), domain = NA)
-    #   }
-    # },
-    "poisson" = {
-      if (!any(l == c("log", "identity", "sqrt"))) {
-        stop(gettextf(
-          "%s family with %s link not supported by 'el_glm'",
-          sQuote(f), sQuote(l)
-        ), domain = NA)
-      }
-    },
-    stop(gettextf("%s family not supported by 'el_glm'", sQuote(f)),
-      domain = NA
-    )
-  )
-  paste(f, l, sep = "_")
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #' Validate `rhs` and `lhs`
 #'

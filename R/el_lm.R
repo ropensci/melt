@@ -118,7 +118,7 @@ el_lm <- function(formula,
   intercept <- attr(mt, "intercept")
   mm <- cbind(y, x)
   p <- ncol(x)
-  w <- check_weights_(w, nrow(mm))
+  w <- validate_weights(w, nrow(mm))
   el <- testLM(
     mm, z$coefficients, intercept, control@maxit, control@maxit_l, control@tol,
     control@tol_l, control@step, control@th, control@nthreads, w
