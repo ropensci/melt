@@ -15,8 +15,6 @@ test_that("invalid 'rhs' and 'lhs'", {
   expect_error(elt(fit, rhs = matrix(c(1, 0, 0), ncol = 3), lhs = lhs))
   expect_error(elt(fit, rhs = matrix(c(1, 0, 0), ncol = 1), lhs = lhs))
   expect_error(elt(fit, rhs = matrix(c("error"), ncol = 1), lhs = lhs))
-  # out <- elt(fit2, lhs = lhs)
-  # expect_lt(out@statistic, 20)
   expect_error(elt(fit, lhs = matrix(c(1, 0, 0, 0, NA, 1), nrow = 2)))
   expect_error(elt(fit2, lhs = matrix(c(1, 0, 0, 0, NA, 1), nrow = 2)))
   expect_error(elt(fit, lhs = matrix(rnorm(4), ncol = 2)))

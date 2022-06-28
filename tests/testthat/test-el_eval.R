@@ -21,10 +21,9 @@ test_that("convergence check", {
 test_that("probabilities add up to 1", {
   x <- women$height
   w <- women$weight
-  par <- 60
-  fit <- el_eval(x - par)
+  fit <- el_eval(x - 60)
   expect_equal(sum(exp(fit$logp)), 1, tolerance = 1e-07)
-  fit2 <- el_eval(x - par, weights = w)
+  fit2 <- el_eval(x - 60, weights = w)
   expect_equal(sum(exp(fit2$logp)), 1, tolerance = 1e-07)
 })
 
@@ -32,10 +31,9 @@ test_that("conversion between loglik and loglr", {
   x <- women$height
   n <- length(x)
   w <- women$weight
-  par <- 60
-  fit <- el_eval(x - par)
+  fit <- el_eval(x - 60)
   expect_equal(fit$logl + n * log(n), fit$loglr, tolerance = 1e-07)
-  fit2 <- el_eval(x - par, weights = w)
+  fit2 <- el_eval(x - 60, weights = w)
   w <- weights(fit2)
   expect_equal(fit2$logl + sum(w * (log(n) - log(w))), fit2$loglr,
     tolerance = 1e-07

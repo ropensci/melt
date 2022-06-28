@@ -64,12 +64,12 @@ setMethod("confint", "EL", function(object,
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))
     ci <- matrix(NA_real_, nrow = p, ncol = 2L)
-    ci[-idx_na, ] <- confint_(
+    ci[-idx_na, ] <- computeConfidenceIntervals(
       method, est, getDataMatrix(object), cv, idx[-idx_na], maxit, maxit_l,
       tol, tol_l, step, th, nthreads, w
     )
   } else {
-    ci <- confint_(
+    ci <- computeConfidenceIntervals(
       method, est, getDataMatrix(object), cv, idx, maxit,
       maxit_l, tol, tol_l, step, th, nthreads, w
     )

@@ -51,13 +51,13 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
   stopifnot(
     "not enough observations in 'g' " = (n >= 2L),
     "'g' must have full column rank" = (n > p),
-    "'g' must be a numeric matrix" = (is.numeric(mm)),
-    "'g' must be a finite numeric matrix" = (all(is.finite(mm))),
+    "'g' must be a finite numeric matrix" =
+      (isTRUE(is.numeric(mm) && all(is.finite(mm)))),
     "'g' must have full column rank" = (getRank(mm) == p),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
   w <- check_weights_(weights, n)
-  out <- eval_g_(mm, control@maxit_l, control@tol_l, control@th, w)
+  out <- computeGenericEL(mm, control@maxit_l, control@tol_l, control@th, w)
   out$df <- p
   out$p.value <- pchisq(q = out$statistic, df = out$df, lower.tail = FALSE)
   out$npar <- p

@@ -61,11 +61,13 @@ el_mean <- function(x,
     est <- colMeans(mm)
   }
   model <- validate_model(model)
-  el <- eval_("mean", par, mm, control@maxit_l, control@tol_l, control@th, w)
+  out <- computeEL(
+    "mean", par, mm, control@maxit_l, control@tol_l, control@th, w
+  )
   new("EL",
-    optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-    statistic = el$statistic, df = p,
-    pval = pchisq(el$statistic, df = p, lower.tail = FALSE), npar = p,
+    optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
+    statistic = out$statistic, df = p,
+    pval = pchisq(out$statistic, df = p, lower.tail = FALSE), npar = p,
     weights = w,
     data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = est, method = "mean"

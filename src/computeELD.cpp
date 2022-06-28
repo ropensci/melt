@@ -2,7 +2,7 @@
 #include "utils.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
-#include <omp.h>
+  #include <omp.h>
 #endif
 #include <string>
 #include <vector>

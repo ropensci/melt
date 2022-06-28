@@ -4,6 +4,9 @@
 #include <RcppEigen.h>
 #include <functional>
 
+int getMaxThreads();
+int getRank(const Eigen::Map<Eigen::MatrixXd>& x);
+
 double step_nloglr(const int n, const Rcpp::Nullable<double> step);
 double th_nloglr(const int p, const Rcpp::Nullable<double> th);
 

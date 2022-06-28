@@ -2,25 +2,25 @@
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
-#include <omp.h>
+  #include <omp.h>
 #endif
 #include <string>
 
 // [[Rcpp::export]]
-Eigen::MatrixXd confint_(const std::string method,
-                         const Eigen::Map<Eigen::VectorXd>& par0,
-                         const Eigen::Map<Eigen::MatrixXd>& x,
-                         const double cutoff,
-                         const Rcpp::IntegerVector& idx,
-                         const int maxit,
-                         const int maxit_l,
-                         const double tol,
-                         const double tol_l,
-                         const Rcpp::Nullable<double> step,
-                         const Rcpp::Nullable<double> th,
-                         const int nthreads,
-                         const Eigen::Map<Eigen::ArrayXd>& w)
-{
+Eigen::MatrixXd computeConfidenceIntervals(
+    const std::string method,
+    const Eigen::Map<Eigen::VectorXd>& par0,
+    const Eigen::Map<Eigen::MatrixXd>& x,
+    const double cutoff,
+    const Rcpp::IntegerVector& idx,
+    const int maxit,
+    const int maxit_l,
+    const double tol,
+    const double tol_l,
+    const Rcpp::Nullable<double> step,
+    const Rcpp::Nullable<double> th,
+    const int nthreads,
+    const Eigen::Map<Eigen::ArrayXd>& w) {
   // parameter length
   const int p = par0.size();
   // number of confidence intervals

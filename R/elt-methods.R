@@ -28,12 +28,13 @@ setMethod("elt", "EL", function(object,
       stop("F calibration is applicable only to the mean")
     }
     par <- h$r
-    el <- eval_(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
+    out <- computeEL(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(par)
-    cal <- calibrate(calibrate, alpha, el$statistic, p, par, object, control)
+    cal <- calibrate(calibrate, alpha, out$statistic, p, par, object, control)
     return(new("ELT",
-      optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
-      cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
+      optim = out$optim, alpha = alpha, logl = out$logl,
+      statistic = out$statistic, cv = cal["cv"], pval = cal["pval"],
+      calibrate = calibrate
     ))
   }
   # proceed with chi-square calibration for non-NULL 'lhs'
