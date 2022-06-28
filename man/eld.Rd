@@ -50,5 +50,5 @@ Biometrika 95 (2): 489–507.
 \doi{10.1093/biomet/asm094}.
 }
 \seealso{
-\link{el_control}, \link{el_eval}, \link{plot}
+\code{\link[=el_control]{el_control()}}, \code{\link[=el_eval]{el_eval()}}, \code{\link[=plot]{plot()}}
 }

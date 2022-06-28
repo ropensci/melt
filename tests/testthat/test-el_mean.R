@@ -53,32 +53,11 @@ test_that("conversion between loglik and loglr", {
   expect_equal(fit2@logl + sum(w * (log(n) - log(w))), fit2@loglr)
 })
 
-test_that("identical weights == no weights", {
-  x <- women$height
-  w <- rep(mean(women$weight), length(x))
-  par <- 60
-  fit <- el_mean(x, par)
-  fit2 <- el_mean(x, par, weights = w)
-  expect_equal(fit@optim, fit2@optim)
-})
-
-# test_that("same results from repeated executions", {
+# test_that("identical weights == no weights", {
 #   x <- women$height
-#   w <- women$weight
-#   fit <- el_mean(x, par = 65)
-#   fit2 <- el_mean(x, par = 65)
-#   expect_equal(fit, fit2)
-#
-#   wfit <- el_mean(x, par = 65, weights = w)
-#   wfit2 <- el_mean(x, par = 65, weights = w)
-#   expect_equal(wfit, wfit2)
-#
-#   lhs <- 4
-#   elt <- elt(fit, lhs = lhs)
-#   elt2 <- elt(fit2, lhs = lhs)
-#   expect_equal(elt, elt2)
-#
-#   elt3 <- elt(wfit, lhs = lhs)
-#   elt4 <- elt(wfit2, lhs = lhs)
-#   expect_equal(elt3, elt4)
+#   w <- rep(mean(women$weight), length(x))
+#   par <- 60
+#   fit <- el_mean(x, par)
+#   fit2 <- el_mean(x, par, weights = w)
+#   expect_equal(fit@optim, fit2@optim)
 # })

@@ -18,12 +18,12 @@
 \item{object}{An object that inherit from class \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
-\item{rhs}{A numeric vector or a column matrix for the right-hand-side of
+\item{rhs}{A numeric vector or a column matrix for the right-hand side of
 hypothesis, with as many entries as the rows in \code{lhs}. Defaults to \code{NULL}.
 See ‘Details’.}
 
 \item{lhs}{A numeric matrix or a vector (treated as a row matrix) for the
-left-hand-side of hypothesis. Each row gives a linear combination of the
+left-hand side of hypothesis. Each row gives a linear combination of the
 parameters in \code{object}. The number of columns should be equal to the number
 of parameters. Defaults to \code{NULL}. See ‘Details’.}
 
@@ -55,7 +55,7 @@ Depending on the specification of \code{rhs} and \code{lhs}, we have the followi
 three cases:
 \enumerate{
 \item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the constrained minimization
-is performed with the right-hand-side \eqn{r} and the left-hand-side
+is performed with the right-hand side \eqn{r} and the left-hand side
 \eqn{L} as
 \deqn{\inf_{\theta: L\theta = r} l(\theta).}
 \item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as

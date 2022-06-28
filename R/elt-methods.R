@@ -30,7 +30,7 @@ setMethod("elt", "EL", function(object,
     par <- h$r
     el <- eval_(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(par)
-    cal <- calibrate(alpha, el$statistic, calibrate, p, par, object, control)
+    cal <- calibrate(calibrate, alpha, el$statistic, p, par, object, control)
     return(new("ELT",
       optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
       cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
@@ -42,14 +42,14 @@ setMethod("elt", "EL", function(object,
       (calibrate != "boot"),
     "F calibration is applicable only when 'lhs' is NULL" = (calibrate != "f")
   )
-  el <- elt_(
+  out <- testHypothesis(
     method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )
   new("ELT",
-    optim = el$optim, alpha = alpha, logl = el$logl, statistic = el$statistic,
-    cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
-    pval = pchisq(el$statistic, df = nrow(h$l), lower.tail = FALSE),
+    optim = out$optim, alpha = alpha, logl = out$logl,
+    statistic = out$statistic, cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
+    pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE),
     calibrate = calibrate
   )
 })

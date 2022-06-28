@@ -48,5 +48,5 @@ Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
 The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\link{confreg}, \link{el_control}, \link{elt}
+\code{\link[=confreg]{confreg()}}, \code{\link[=el_control]{el_control()}}, \code{\link[=elt]{elt()}}
 }

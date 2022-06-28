@@ -10,6 +10,6 @@ setMethod("eld", "EL", function(object, control = el_control()) {
   )
   new("ELD", eld = eld_(
     getMethodEL(object), coef(object), getDataMatrix(object), control@maxit_l,
-    control@tol_l, control@th, control@nthreads, object@weights
+    control@tol_l, control@th, control@nthreads, getWeights(object)
   ))
 })

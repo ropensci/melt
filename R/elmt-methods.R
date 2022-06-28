@@ -12,8 +12,6 @@ setMethod("elmt", "EL", function(object,
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
   h <- validate_hypotheses(rhs, lhs, object@npar)
-  # return(h)
-
   alpha <- validate_alpha(alpha)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -29,7 +27,9 @@ setMethod("elmt", "EL", function(object,
     maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("MELT",
-      statistic = out$tmp,
-      cutoff = out$tmp2
+    alpha = alpha, statistic = out$tmp,
+    # cv = quantile(out$tmp2, probs = 1 - alpha, names = FALSE),
+    cv = out$tmp2,
+    pval = out$adj_pval, calibrate = "mvchisq"
   )
 })

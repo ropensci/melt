@@ -59,7 +59,7 @@ el_control <- function(maxit = 200L,
   if (!is.null(th)) {
     th <- validate_th(th)
   }
-  max_threads <- get_max_threads()
+  max_threads <- getMaxThreads()
   if (missing(nthreads)) {
     nthreads <- as.integer(max(1L, max_threads / 2L))
   } else {

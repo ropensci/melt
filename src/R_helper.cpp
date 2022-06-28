@@ -4,7 +4,7 @@
 #endif
 
 // [[Rcpp::export]]
-int get_max_threads() {
+int getMaxThreads() {
   #ifdef _OPENMP
     return omp_get_max_threads();
   #else
@@ -13,7 +13,7 @@ int get_max_threads() {
 };
 
 // [[Rcpp::export]]
-int get_rank(const Eigen::Map<Eigen::MatrixXd>& x) {
+int getRank(const Eigen::Map<Eigen::MatrixXd>& x) {
   const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(x);
   return lu_decomp.rank();
 }

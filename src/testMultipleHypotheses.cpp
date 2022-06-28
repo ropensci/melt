@@ -61,9 +61,21 @@ Rcpp::List testMultipleHypotheses(const Eigen::Map<Eigen::VectorXi>& q,
     max_statistic[b] = (u * tmp).maxCoeff();
   }
 
+  // adjusted p-values
+  std::vector<double> adj_pval(m);
+  for (int j = 0; j < m; ++j) {
+    adj_pval[j] =
+      count_if(
+        max_statistic.begin(), max_statistic.end(),
+        [test_statistic, j](double x) {return (x > test_statistic[j]);}) /
+          static_cast<double>(B);
+  }
+
+
   // critical value can be computed independent of the statistics
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("tmp") = Rcpp::wrap(test_statistic),
-    Rcpp::Named("tmp2") = Rcpp::wrap(max_statistic));
+    Rcpp::Named("tmp2") = Rcpp::wrap(max_statistic),
+    Rcpp::Named("adj_pval") = adj_pval);
   return result;
 }

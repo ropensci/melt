@@ -5,7 +5,7 @@
 #' @param alpha A single numeric.
 #' @param statistic A single numeric.
 #' @param calibrate A single character.
-#' @param p A single integer
+#' @param p A single integer.
 #' @param par A numeric vector.
 #' @param object An object that inherit from class \linkS4class{EL}.
 #' @param control An object of class of \linkS4class{ControlEL}.
@@ -13,7 +13,7 @@
 #'   p-value.
 #' @noRd
 #' @importFrom stats pf qf quantile
-calibrate <- function(alpha, statistic, calibrate, p, par, object, control) {
+calibrate <- function(calibrate, alpha, statistic, p, par, object, control) {
   switch(calibrate,
     "chisq" = {
       c(

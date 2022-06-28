@@ -68,7 +68,7 @@ setMethod("confreg", "EL", function(object,
   w <- getWeights(object)
   ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]
   circ <- rbind(cos(ang), sin(ang))
-  cr <- confreg_(
+  cr <- computeConfidenceRegion(
     getMethodEL(object), coef(object), getDataMatrix(object), object@npar,
     cv, idx, circ, control@maxit, control@maxit_l, control@tol, control@tol_l,
     control@step, control@th, control@nthreads, w
