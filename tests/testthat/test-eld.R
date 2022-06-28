@@ -1,44 +1,29 @@
 test_that("invalid 'object'", {
-  # n <- nrow(mtcars)
-  fit <- el_lm(mpg ~ hp, mtcars)
-  # eld <- eld(fit)
-  # expect_length(eld@eld, n)
-  # lhs <- matrix(c(1, -1), nrow = 1)
-  # fit2 <- elt(fit, lhs = lhs)
-  # expect_error(eld(mtcars))
+  fit <- el_lm(mpg ~ hp, data = mtcars)
   fit@data <- matrix(NA_real_, nrow = 0L, ncol = 0L)
   expect_error(eld(fit))
-  # expect_error(eld(fit2))
 })
 
 test_that("invalid 'control'", {
-  fit <- el_lm(mpg ~ hp, mtcars)
+  fit <- el_lm(mpg ~ hp, data = mtcars)
   expect_error(eld(fit, control = list(maxit = 20L)))
 })
 
 test_that("weights", {
-  fit <- el_lm(extra ~ ID, sleep, weights = as.numeric(group))
+  fit <- el_lm(extra ~ ID, data = sleep, weights = as.numeric(group))
   expect_s4_class(eld(fit), "ELD")
 })
-
-# test_that("invalid 'object'", {
-#   n <- nrow(mtcars)
-#   fit <- el_lm(mpg ~ hp, mtcars)
-#   eld <- eld(fit)
-#   pdf(NULL)
-#   plot(eld)
-#   expect_length(eld@eld, n)
-#   lhs <- matrix(c(1, -1), nrow = 1)
-#   fit2 <- elt(fit, lhs = lhs)
-#   expect_error(eld(mtcars))
-#   fit@data <- matrix(NA_real_, nrow = 0L, ncol = 0L)
-#   expect_error(eld(fit))
-#   expect_error(eld(fit2))
-# })
 
 test_that("mean", {
   fit <- el_mean(women$height, par = 67)
   fit2 <- el_mean(women$height, par = 67, weights = women$weight)
   expect_s4_class(eld(fit), "ELD")
   expect_s4_class(eld(fit2), "ELD")
+})
+
+test_that("plot method", {
+  fit <- el_lm(mpg ~ disp + hp + wt, data = mtcars)
+  eld <- eld(fit)
+  pdf(NULL)
+  expect_invisible(plot(eld))
 })
