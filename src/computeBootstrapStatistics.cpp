@@ -11,16 +11,17 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector boot_(const int B,
-                          const int seed,
-                          const int nthreads,
-                          const std::string method,
-                          const Eigen::Map<Eigen::MatrixXd>& x,
-                          const Eigen::Map<Eigen::VectorXd>& par,
-                          const int maxit_l,
-                          const double tol_l,
-                          const Rcpp::Nullable<double> th,
-                          const Eigen::Map<Eigen::ArrayXd>& wt) {
+Rcpp::NumericVector computeBootstrapStatistics(
+    const int B,
+    const int seed,
+    const int nthreads,
+    const std::string method,
+    const Eigen::Map<Eigen::MatrixXd>& x,
+    const Eigen::Map<Eigen::VectorXd>& par,
+    const int maxit_l,
+    const double tol_l,
+    const Rcpp::Nullable<double> th,
+    const Eigen::Map<Eigen::ArrayXd>& wt) {
   // estimating function
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd>&,

@@ -8,7 +8,7 @@ setMethod("eld", "EL", function(object, control = el_control()) {
       (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  new("ELD", eld = eld_(
+  new("ELD", eld = computeELD(
     getMethodEL(object), coef(object), getDataMatrix(object), control@maxit_l,
     control@tol_l, control@th, control@nthreads, getWeights(object)
   ))

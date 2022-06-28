@@ -32,9 +32,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// boot_
-Rcpp::NumericVector boot_(const int B, const int seed, const int nthreads, const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& wt);
-RcppExport SEXP _melt_boot_(SEXP BSEXP, SEXP seedSEXP, SEXP nthreadsSEXP, SEXP methodSEXP, SEXP xSEXP, SEXP parSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP wtSEXP) {
+// computeBootstrapStatistics
+Rcpp::NumericVector computeBootstrapStatistics(const int B, const int seed, const int nthreads, const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& wt);
+RcppExport SEXP _melt_computeBootstrapStatistics(SEXP BSEXP, SEXP seedSEXP, SEXP nthreadsSEXP, SEXP methodSEXP, SEXP xSEXP, SEXP parSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP wtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -48,7 +48,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type wt(wtSEXP);
-    rcpp_result_gen = Rcpp::wrap(boot_(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt));
+    rcpp_result_gen = Rcpp::wrap(computeBootstrapStatistics(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -77,6 +77,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// computeELD
+Rcpp::NumericVector computeELD(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& wt);
+RcppExport SEXP _melt_computeELD(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wtSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit_l(maxit_lSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type wt(wtSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeELD(method, par0, x, maxit_l, tol_l, th, nthreads, wt));
+    return rcpp_result_gen;
+END_RCPP
+}
 // confint_
 Eigen::MatrixXd confint_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const double cutoff, const Rcpp::IntegerVector& idx, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& w);
 RcppExport SEXP _melt_confint_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP cutoffSEXP, SEXP idxSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wSEXP) {
@@ -97,24 +115,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
     rcpp_result_gen = Rcpp::wrap(confint_(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w));
-    return rcpp_result_gen;
-END_RCPP
-}
-// eld_
-Rcpp::NumericVector eld_(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& wt);
-RcppExport SEXP _melt_eld_(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit_l(maxit_lSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
-    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type wt(wtSEXP);
-    rcpp_result_gen = Rcpp::wrap(eld_(method, par0, x, maxit_l, tol_l, th, nthreads, wt));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -244,10 +244,10 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_melt_getMaxThreads", (DL_FUNC) &_melt_getMaxThreads, 0},
     {"_melt_getRank", (DL_FUNC) &_melt_getRank, 1},
-    {"_melt_boot_", (DL_FUNC) &_melt_boot_, 10},
+    {"_melt_computeBootstrapStatistics", (DL_FUNC) &_melt_computeBootstrapStatistics, 10},
     {"_melt_computeConfidenceRegion", (DL_FUNC) &_melt_computeConfidenceRegion, 15},
+    {"_melt_computeELD", (DL_FUNC) &_melt_computeELD, 8},
     {"_melt_confint_", (DL_FUNC) &_melt_confint_, 13},
-    {"_melt_eld_", (DL_FUNC) &_melt_eld_, 8},
     {"_melt_eval_", (DL_FUNC) &_melt_eval_, 7},
     {"_melt_eval_g_", (DL_FUNC) &_melt_eval_g_, 5},
     {"_melt_testGLM", (DL_FUNC) &_melt_testGLM, 12},

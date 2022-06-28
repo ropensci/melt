@@ -8,15 +8,14 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector eld_(const std::string method,
-                         const Eigen::Map<Eigen::VectorXd>& par0,
-                         const Eigen::Map<Eigen::MatrixXd>& x,
-                         const int maxit_l,
-                         const double tol_l,
-                         const Rcpp::Nullable<double> th,
-                         const int nthreads,
-                         const Eigen::Map<Eigen::ArrayXd>& wt)
-{
+Rcpp::NumericVector computeELD(const std::string method,
+                               const Eigen::Map<Eigen::VectorXd>& par0,
+                               const Eigen::Map<Eigen::MatrixXd>& x,
+                               const int maxit_l,
+                               const double tol_l,
+                               const Rcpp::Nullable<double> th,
+                               const int nthreads,
+                               const Eigen::Map<Eigen::ArrayXd>& wt) {
   const int n = x.rows();
   const int p = par0.size();
   const double test_th = th_nloglr(p, th);

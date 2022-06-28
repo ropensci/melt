@@ -9,20 +9,20 @@ getRank <- function(x) {
     .Call(`_melt_getRank`, x)
 }
 
-boot_ <- function(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt) {
-    .Call(`_melt_boot_`, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt)
+computeBootstrapStatistics <- function(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt) {
+    .Call(`_melt_computeBootstrapStatistics`, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt)
 }
 
 computeConfidenceRegion <- function(method, par0, x, npar, cv, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_computeConfidenceRegion`, method, par0, x, npar, cv, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
-confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
-    .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+computeELD <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
+    .Call(`_melt_computeELD`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
 }
 
-eld_ <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
-    .Call(`_melt_eld_`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
+confint_ <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
+    .Call(`_melt_confint_`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
 eval_ <- function(method, par0, x, maxit_l, tol_l, th, wt) {
