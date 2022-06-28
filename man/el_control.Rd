@@ -13,7 +13,8 @@ el_control(
   th = NULL,
   nthreads,
   seed = sample.int(.Machine$integer.max, 1L),
-  B = 10000L
+  b = 10000L,
+  m = 1000000L
 )
 }
 \arguments{
@@ -55,9 +56,12 @@ given a separate seed to produce a non-overlapping but reproducible
 sequence of random numbers. The Xoshiro256+ pseudo-random number generator
 is used internally to work with OpenMP.}
 
-\item{B}{A single integer for the number of bootstrap replicates. It only
+\item{b}{A single integer for the number of bootstrap replicates. It only
 applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to
 \code{10000}.}
+
+\item{m}{A single integer for the number of Monte Carlo samples. It only
+applies to \code{\link[=elmt]{elmt()}}. Defaults to \code{1e+06}.}
 }
 \value{
 An object of class of \linkS4class{ControlEL}.

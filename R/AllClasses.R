@@ -207,7 +207,8 @@ setClass("ConfregEL",
 #' @slot nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available).
 #' @slot seed A single integer for the seed for random number generation.
-#' @slot B A single integer for the number of bootstrap replicates.
+#' @slot b A single integer for the number of bootstrap replicates.
+#' @slot m A single integer for the number of Monte Carlo samples.
 #' @seealso \link{el_control}
 #' @examples
 #' showClass("ControlEL")
@@ -215,7 +216,7 @@ setClass("ControlEL",
   slots = c(
     maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
     step = "ANY", th = "ANY", nthreads = "integer", seed = "integer",
-    B = "integer"
+    b = "integer", m = "integer"
   )
 )
 
@@ -254,16 +255,20 @@ setClass("ELT",
 
 #' S4 class \linkS4class{ELMT}
 #'
-#' S4 class for multiple empirical likelihood test.
+#' S4 class for empirical likelihood multiple tests.
 #'
-#' @slot statistic A single numeric for the minus twice the (constrained)
-#'   empirical log-likelihood ratio.
+#' @slot alpha A single numeric for the overall significance level.
+#' @slot statistic A numeric vector for the minus twice the (constrained)
+#'   empirical log-likelihood ratios.
+#' @slot cv A single numeric for the multiplicity adjusted critical value.
+#' @slot pval A numeric vector for the multiplicity adjusted \eqn{p}-values.
+#' @slot calibrate A single character for the calibration method used.
 #' @examples
 #' showClass("ELMT")
 setClass("ELMT",
   slots = c(
-    alpha = "numeric", statistic = "numeric", cv = "numeric",
-    pval = "numeric", calibrate = "character"
+    alpha = "numeric", statistic = "numeric", cv = "numeric", pval = "numeric",
+    calibrate = "character"
   )
 )
 

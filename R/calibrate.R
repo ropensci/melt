@@ -23,7 +23,7 @@ calibrate <- function(calibrate, alpha, statistic, p, par, object, control) {
     },
     "boot" = {
       out <- computeBootstrapStatistics(
-        control@B, control@seed, control@nthreads, getMethodEL(object),
+        control@b, control@seed, control@nthreads, getMethodEL(object),
         getDataMatrix(object), par, control@maxit_l, control@tol_l, control@th,
         getWeights(object)
       )

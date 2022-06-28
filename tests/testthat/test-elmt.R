@@ -1,4 +1,4 @@
-fit <- el_lm(mpg ~ cyl + disp, mtcars)
+fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
 
 test_that("invalid 'rhs'", {
   expect_error(elmt(fit))

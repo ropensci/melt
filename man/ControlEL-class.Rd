@@ -36,7 +36,9 @@ computation via OpenMP (if available).}
 
 \item{\code{seed}}{A single integer for the seed for random number generation.}
 
-\item{\code{B}}{A single integer for the number of bootstrap replicates.}
+\item{\code{b}}{A single integer for the number of bootstrap replicates.}
+
+\item{\code{m}}{A single integer for the number of Monte Carlo samples.}
 }}
 
 \examples{

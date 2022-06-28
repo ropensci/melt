@@ -5,13 +5,21 @@
 \alias{ELMT-class}
 \title{S4 class \linkS4class{ELMT}}
 \description{
-S4 class for multiple empirical likelihood test.
+S4 class for empirical likelihood multiple tests.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{statistic}}{A single numeric for the minus twice the (constrained)
-empirical log-likelihood ratio.}
+\item{\code{alpha}}{A single numeric for the overall significance level.}
+
+\item{\code{statistic}}{A numeric vector for the minus twice the (constrained)
+empirical log-likelihood ratios.}
+
+\item{\code{cv}}{A single numeric for the multiplicity adjusted critical value.}
+
+\item{\code{pval}}{A numeric vector for the multiplicity adjusted \eqn{p}-values.}
+
+\item{\code{calibrate}}{A single character for the calibration method used.}
 }}
 
 \examples{

@@ -25,7 +25,8 @@ core computational routines are implemented with the ‘Eigen’ C++ library
 and ‘RcppEigen’ interface, with OpenMP for parallel computation.
 Additional functions are available for multiple testing for the analysis
 of experimental designs. Details of the testing procedures are given in
-[Kim et al. (2021)](https://arxiv.org/abs/2112.09206).
+[Kim, MacEachern, and Peruggia
+(2021)](https://arxiv.org/abs/2112.09206).
 
 ## Installation
 
@@ -49,14 +50,14 @@ devtools::install_github("markean/melt")
 ``` r
 library(melt)
 # one sample test for mean
-fit1 <- el_mean(par = 0, x = rnorm(n = 100))
+fit1 <- el_mean(rnorm(n = 100), par = 0)
 confint(fit1)
-#>        lower      upper
-#> 1 -0.3551038 0.01087163
+#>        lower     upper
+#> 1 -0.2748642 0.0867665
 
 
 # linear regression
-fit2 <- el_lm(formula = mpg ~ wt, data = mtcars)
+fit2 <- el_lm(mpg ~ wt, data = mtcars)
 summary(fit2)
 #> 
 #> Call:
@@ -80,7 +81,7 @@ confint(fit2)
 
 # analysis of variance 
 data("clothianidin")
-fit3 <- el_lm(clo ~ -1 + trt, clothianidin)
+fit3 <- el_lm(clo ~ -1 + trt, data = clothianidin)
 summary(fit3)
 #> 
 #> Call:

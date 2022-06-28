@@ -52,7 +52,7 @@ test_that("empty model", {
 })
 
 test_that("no intercept", {
-  fit <- el_lm(mpg ~ -1 + ., mtcars)
+  fit <- el_lm(mpg ~ -1 + ., data = mtcars)
   expect_s4_class(fit, "LM")
 })
 

@@ -157,20 +157,36 @@ validate_seed <- function(seed) {
   seed
 }
 
-#' Validate `B`
+#' Validate `b`
 #'
-#' Validate `B` in [el_control()].
+#' Validate `b` in [el_control()].
 #'
-#' @param B A single integer.
+#' @param b A single integer.
 #' @return A single integer.
 #' @noRd
-validate_B <- function(B) {
-  B <- tryCatch(as.integer(B), warning = function(w) NA, error = function(e) NA)
+validate_b <- function(b) {
+  b <- tryCatch(as.integer(b), warning = function(w) NA, error = function(e) NA)
   stopifnot(
-    "'B' must be a single integer" = (isTRUE(!is.na(B))),
-    "'B' must be a positive single integer" = (B > 0L)
+    "'b' must be a single integer" = (isTRUE(!is.na(b))),
+    "'b' must be a positive single integer" = (b > 0L)
   )
-  B
+  b
+}
+
+#' Validate `m`
+#'
+#' Validate `m` in [el_control()].
+#'
+#' @param m A single integer.
+#' @return A single integer.
+#' @noRd
+validate_m <- function(m) {
+  m <- tryCatch(as.integer(m), warning = function(w) NA, error = function(e) NA)
+  stopifnot(
+    "'m' must be a single integer" = (isTRUE(!is.na(m))),
+    "'m' must be a positive single integer" = (m > 0L)
+  )
+  m
 }
 
 #' Validate `model`

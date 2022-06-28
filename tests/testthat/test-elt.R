@@ -31,7 +31,7 @@ test_that("invalid 'calibrate'", {
 })
 
 test_that("invalid 'control'", {
-  fit <- el_mean(sleep$extra, 0)
+  fit <- el_mean(sleep$extra, par = 0)
   expect_error(elt(fit, lhs = 1, control = list(maxit = 200L)))
 })
 

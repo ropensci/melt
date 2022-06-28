@@ -110,20 +110,8 @@ el_glm <- function(formula,
   if (is.matrix(Y)) {
     stop("'el_glm' does not support grouped data")
   }
-  if (!is.empty.model(mt)) {
-    X <- model.matrix(mt, mf, NULL)
-  } else {
-    X <- matrix(, NROW(Y), 0L)
-  }
-  w <- as.vector(model.weights(mf))
-  stopifnot(
-    "'weights' must be a numeric vector" =
-      (isTRUE(is.null(w) || is.numeric(w))),
-    "'weights' must be positive" = (isTRUE(is.null(w) || all(w > 0)))
-  )
-  mustart <- model.extract(mf, "mustart")
-  etastart <- model.extract(mf, "etastart")
   if (is.empty.model(mt)) {
+    X <- matrix(, NROW(Y), 0L)
     return(new("GLM",
       misc = list(
         call = cl, formula = formula, terms = mt, offset = NULL,
@@ -136,7 +124,31 @@ el_glm <- function(formula,
         convergence = logical()
       )
     ))
+  } else {
+    X <- model.matrix(mt, mf, NULL)
   }
+  w <- as.vector(model.weights(mf))
+  stopifnot(
+    "'weights' must be a numeric vector" =
+      (isTRUE(is.null(w) || is.numeric(w))),
+    "'weights' must be positive" = (isTRUE(is.null(w) || all(w > 0)))
+  )
+  mustart <- model.extract(mf, "mustart")
+  etastart <- model.extract(mf, "etastart")
+  # if (is.empty.model(mt)) {
+  #   return(new("GLM",
+  #     misc = list(
+  #       call = cl, formula = formula, terms = mt, offset = NULL,
+  #       control = glm_control, method = "glm.fit",
+  #       contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
+  #       na.action = attr(mf, "na.action")
+  #     ),
+  #     optim = list(
+  #       par = numeric(), lambda = numeric(), iterations = integer(),
+  #       convergence = logical()
+  #     )
+  #   ))
+  # }
   intercept <- attr(mt, "intercept") > 0L
   fit <- glm.fit(
     x = X, y = Y, weights = w, start = start, etastart = etastart,

@@ -1,5 +1,5 @@
 test_that("invalid 'parm'", {
-  fit <- el_mean(women$height, 67)
+  fit <- el_mean(women$height, par = 67)
   expect_error(confint(fit, parm = NA))
   expect_error(confint(fit, parm = NULL))
   expect_error(confint(fit, parm = NaN))
@@ -7,7 +7,7 @@ test_that("invalid 'parm'", {
 })
 
 test_that("invalid 'level'", {
-  fit <- el_mean(women$height, 67)
+  fit <- el_mean(women$height, par = 67)
   expect_error(confint(fit, level = -1))
   expect_error(confint(fit, level = 2))
   expect_error(confint(fit, level = Inf))
@@ -15,25 +15,25 @@ test_that("invalid 'level'", {
 })
 
 test_that("invalid 'control'", {
-  fit <- el_mean(women$height, 67)
+  fit <- el_mean(women$height, par = 67)
   expect_error(confint(fit, control = list(maxit = 67)))
 })
 
 test_that("'level' == 1", {
-  fit <- el_mean(women$height, 67)
+  fit <- el_mean(women$height, par = 67)
   ci <- confint(fit, level = 1)
   expect_equal(ci[1], -Inf)
   expect_equal(ci[2], Inf)
 })
 
 test_that("'level' == 0", {
-  fit <- el_mean(women$height, 67)
+  fit <- el_mean(women$height, par = 67)
   ci <- confint(fit, level = 0)
   expect_equal(ci[2] - ci[1], 0)
 })
 
 test_that("empty model", {
-  fit <- el_lm(mpg ~ -1, mtcars)
+  fit <- el_lm(mpg ~ -1, data = mtcars)
   ci <- confint(fit)
   expect_equal(nrow(ci), 0)
 })

@@ -1,5 +1,4 @@
 #' @importFrom methods is
-#' @importFrom stats pchisq
 #' @rdname elmt
 setMethod("elmt", "EL", function(object,
                                  rhs = NULL,
@@ -20,14 +19,13 @@ setMethod("elmt", "EL", function(object,
   tol_l <- control@tol_l
   step <- control@step
   th <- control@th
+  M <- control@m
   out <- testMultipleHypotheses(
-    alpha, h$q, h$m, 10000, method, coef(object), getDataMatrix(object), h$r,
+    alpha, h$q, h$m, M, method, coef(object), getDataMatrix(object), h$r,
     h$l, maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("ELMT",
-    alpha = alpha, statistic = out$statistic,
-    # cv = quantile(out$tmp2, probs = 1 - alpha, names = FALSE),
-    cv = out$cv,
-    pval = out$pval, calibrate = "mvchisq"
+    alpha = alpha, statistic = out$statistic, cv = out$cv, pval = out$pval,
+    calibrate = "mvchisq"
   )
 })

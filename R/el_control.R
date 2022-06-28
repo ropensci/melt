@@ -32,9 +32,11 @@
 #'   given a separate seed to produce a non-overlapping but reproducible
 #'   sequence of random numbers. The Xoshiro256+ pseudo-random number generator
 #'   is used internally to work with OpenMP.
-#' @param B A single integer for the number of bootstrap replicates. It only
+#' @param b A single integer for the number of bootstrap replicates. It only
 #'   applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to
 #'   `10000`.
+#' @param m A single integer for the number of Monte Carlo samples. It only
+#'   applies to [elmt()]. Defaults to `1e+06`.
 #' @return An object of class of \linkS4class{ControlEL}.
 #' @seealso [el_eval()], [elt()]
 #' @examples
@@ -48,7 +50,8 @@ el_control <- function(maxit = 200L,
                        th = NULL,
                        nthreads,
                        seed = sample.int(.Machine$integer.max, 1L),
-                       B = 10000L) {
+                       b = 10000L,
+                       m = 1e+06L) {
   maxit <- validate_maxit(maxit)
   maxit_l <- validate_maxit_l(maxit_l)
   tol <- validate_tol(tol)
@@ -66,9 +69,10 @@ el_control <- function(maxit = 200L,
     nthreads <- validate_nthreads(nthreads, max_threads)
   }
   seed <- validate_seed(seed)
-  B <- validate_B(B)
+  b <- validate_b(b)
+  m <- validate_m(m)
   new("ControlEL",
     maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
-    th = th, nthreads = nthreads, seed = seed, B = B
+    th = th, nthreads = nthreads, seed = seed, b = b, m = m
   )
 }

@@ -52,7 +52,7 @@ test_that("invalid 'control'", {
 
 test_that("empty model", {
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- el_glm(wool ~ .,
+  fit <- el_glm(wool ~ 0,
     family = binomial, data = warpbreaks,
     control = optcfg
   )
@@ -60,7 +60,10 @@ test_that("empty model", {
 })
 
 test_that("probabilities add up to 1", {
-  fit <- el_glm(wool ~ ., family = binomial, data = warpbreaks)
+  breaks <- warpbreaks$breaks
+  wool <- warpbreaks$wool
+  tension <- warpbreaks$tension
+  fit <- el_glm(wool ~ breaks + tension, family = binomial)
   wfit <- el_glm(wool ~ .,
     family = binomial, data = warpbreaks,
     weights = warpbreaks$breaks
@@ -82,77 +85,3 @@ test_that("conversion between loglik and loglr", {
   expect_equal(fit@logl + n * log(n), fit@loglr)
   expect_equal(wfit@logl + sum(w * (log(n) - log(w))), wfit@loglr)
 })
-
-
-
-
-
-
-
-
-# test_that("probabilities add up to 1", {
-#   skip_on_os("windows", arch = "i386")
-#   n <- 50
-#   x <- rnorm(n)
-#   x2 <- rnorm(n)
-#   l <- -2 + 0.2 * x + 1 * x2
-#   mu <- 1 / (1 + exp(-l))
-#   y <- rbinom(n, 1, mu)
-#   df <- data.frame(y, x, x2)
-#   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-#   fit <- el_glm(y ~ x + x2, family = binomial, df, control = optcfg)
-#   expect_output(print(fit))
-#   expect_output(print(summary(fit)))
-#   expect_equal(sum(exp(fit@logp)), 1)
-# })
-#
-# test_that("probabilities add up to 1 (weighted)", {
-#   skip_on_os("windows", arch = "i386")
-#   n <- 50
-#   x <- rnorm(n)
-#   x2 <- rnorm(n)
-#   l <- -2 + 0.2 * x + 1 * x2
-#   mu <- 1 / (1 + exp(-l))
-#   y <- rbinom(n, 1, mu)
-#   df <- data.frame(y, x, x2)
-#   w <- 1 + runif(n, min = -0.5, max = 0.5)
-#   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-#   fit <- el_glm(y ~ x + x2, family = binomial, df, control = optcfg)
-#   expect_output(print(fit))
-#   expect_output(print(summary(fit)))
-#   expect_equal(sum(exp(fit@logp)), 1)
-# })
-
-
-# test_that("loglik to loglr", {
-#   skip_on_os("windows", arch = "i386")
-#   n <- 50
-#   x <- rnorm(n)
-#   x2 <- rnorm(n)
-#   l <- -1 + 0.9 * x + 0.3 * x2
-#   mu <- 1 / (1 + exp(-l))
-#   y <- rbinom(n, 1, mu)
-#   df <- data.frame(y, x, x2)
-#   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-#   fit <- el_glm(y ~ x + x2, family = binomial, df, control = optcfg)
-#   expect_equal(fit@logl + n * log(n), fit@loglr)
-# })
-#
-# test_that("loglik to loglr (weighted)", {
-#   skip_on_os("windows", arch = "i386")
-#   n <- 50
-#   x <- rnorm(n)
-#   x2 <- rnorm(n)
-#   l <- -1 + 0.9 * x + 0.3 * x2
-#   mu <- 1 / (1 + exp(-l))
-#   y <- rbinom(n, 1, mu)
-#   df <- data.frame(y, x, x2)
-#   w <- 1 + runif(n, min = -0.5, max = 0.5)
-#   optcfg <- el_control(tol = 1e-08, th = 1e+10)
-#   fit <- suppressWarnings(el_glm(y ~ x + x2,
-#     family = binomial, df,
-#     weights = w, control = optcfg
-#   ))
-#   w <- fit@weights
-#   expect_equal(fit@logl + sum(w * (log(n) - log(w))), fit@loglr)
-# })

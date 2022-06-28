@@ -9,7 +9,7 @@
 Rcpp::List testMultipleHypotheses(const double alpha,
                                   const Eigen::Map<Eigen::VectorXi>& q,
                                   const int m,
-                                  const int B,
+                                  const int M,
                                   const std::string method,
                                   const Eigen::Map<Eigen::VectorXd>& est,
                                   const Eigen::Map<Eigen::MatrixXd>& x,
@@ -51,9 +51,9 @@ Rcpp::List testMultipleHypotheses(const double alpha,
   }
 
   // 4. random monte carlo
-  std::vector<double> max_statistic(B);
+  std::vector<double> max_statistic(M);
   // #pragma omp parallel for num_threads(nthreads)
-  for (int b = 0; b < B; ++b) {
+  for (int b = 0; b < M; ++b) {
     const Eigen::RowVectorXd u = rmvn(sqrt_s);
     Eigen::MatrixXd tmp = u * amat;
     tmp.resize(p, m);
@@ -68,7 +68,7 @@ Rcpp::List testMultipleHypotheses(const double alpha,
       count_if(
         max_statistic.begin(), max_statistic.end(),
         [test_statistic, j](double x) {return (x > test_statistic[j]);}) /
-          static_cast<double>(B);
+          static_cast<double>(M);
   }
 
   // critical value can be computed independent of the statistics
