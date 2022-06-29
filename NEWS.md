@@ -7,11 +7,11 @@
 ### NEW FEATURES
 * New package dependencies added (`BH`, `dqrng`, and `graphics`).
 
-* New `elmt()` performs multiple testing with empirical likelihood.
+* New `elt()` replaces `lht()`. It accepts additional arguments `alpha` and `calibrate`.
+
+* New `elmt()` tests multiple hypotheses with empirical likelihood.
 
 * New `weights()` extracts rescaled weights.
-
-* New `elt()` replaces `lht()`. It accepts additional arguments `alpha` and `calibrate`.
 
 ### MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to `NULL`. If non-`NULL`, `level` is ignored.

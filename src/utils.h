@@ -7,9 +7,6 @@
 int getMaxThreads();
 int getRank(const Eigen::Map<Eigen::MatrixXd>& x);
 
-double step_nloglr(const int n, const Rcpp::Nullable<double> step);
-double th_nloglr(const int p, const Rcpp::Nullable<double> th);
-
 Eigen::ArrayXd inverse_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);
 Eigen::ArrayXd log_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);
 Eigen::ArrayXd logit_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x);

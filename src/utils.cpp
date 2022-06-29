@@ -23,14 +23,6 @@ int getRank(const Eigen::Map<Eigen::MatrixXd>& x) {
   return lu_decomp.rank();
 }
 
-double step_nloglr(const int n, const Rcpp::Nullable<double> step) {
-  return (step.isNull())? static_cast<double>(1.0 / n) : Rcpp::as<double>(step);
-}
-
-double th_nloglr(const int p, const Rcpp::Nullable<double> th) {
-  return (th.isNull())? 200.0 * p : Rcpp::as<double>(th);
-}
-
 Eigen::ArrayXd inverse_linkinv(const Eigen::Ref<const Eigen::VectorXd>& x) {
   return x.array().inverse();
 }

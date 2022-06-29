@@ -3,7 +3,8 @@
 #' Computes empirical likelihood displacement for model diagnostics and outlier
 #'   detection.
 #'
-#' @param object A fitted \linkS4class{EL} object.
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
 #' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
@@ -95,6 +96,13 @@ setGeneric("eld", function(object, control = el_control())
 #' ), byrow = TRUE, nrow = 3)
 #' set.seed(629)
 #' elmt(fit2, lhs = lhs)
+#'
+#' ## Example 3: arbitrary hypotheses (list `rhs` & list `lhs`)
+#' data("mtcars")
+#' fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
+#' lhs <- list(rbind(c(1, 4, 0)), rbind(c(0, 1, 0), c(0, 0, 1)))
+#' rhs <- list(0, c(-6, 1))
+#' elmt(fit, rhs = rhs, lhs = lhs)
 #' @exportMethod elmt
 setGeneric("elmt", function(object,
                             rhs = NULL,
@@ -168,7 +176,6 @@ setGeneric("elmt", function(object,
 #' y <- 1 + x1 + x2 + rnorm(n)
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
-#' elt(fit, lhs = c(0, 1, -1))
 #' elt(fit, lhs = c(0, 1, 1), rhs = 2)
 #'
 #' # test of no treatment effect

@@ -54,3 +54,25 @@ setMethod("elt", "EL", function(object,
     calibrate = calibrate
   )
 })
+
+
+# setMethod("elt", "missing",function(object,
+#                                     rhs = NULL,
+#                                     lhs = NULL,
+#                                     alpha,
+#                                     calibrate = c("chisq", "boot", "f"),
+#                                     control = el_control()) {
+#   stopifnot(
+#     # "'object' has no 'data'; fit the model with 'model' = TRUE" =
+#     #   (length(getDataMatrix(object)) > 1L),
+#     "invalid 'control' specified" = (is(control, "ControlEL"))
+#   )
+#   # h <- validate_hypothesis(rhs, lhs, object@npar)
+#   alpha <- validate_alpha(alpha)
+#   calibrate <- match.arg(calibrate)
+#
+#   if (length(rhs) != 1L) {
+#     stop("sefse")
+#   }
+#   NULL
+# })

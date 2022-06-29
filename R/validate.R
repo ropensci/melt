@@ -661,7 +661,9 @@ validate_lhses.list <- function(lhs, p) {
   if (any(vapply(lhs, \(x) {
     ncol(x) != p
   }, FALSE))) {
-    stop(gettextf("every matrix in `lhs` must have %d columns.", p, domain = NA))
+    stop(gettextf("every matrix in `lhs` must have %d columns.", p,
+      domain = NA
+    ))
   }
   out <- do.call(rbind, lhs)
   attr(out, "q") <- c(0L, cumsum(vapply(lhs, nrow, 1L)))

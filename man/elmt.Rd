@@ -68,6 +68,13 @@ lhs <- matrix(c(
 ), byrow = TRUE, nrow = 3)
 set.seed(629)
 elmt(fit2, lhs = lhs)
+
+## Example 3: arbitrary hypotheses (list `rhs` & list `lhs`)
+data("mtcars")
+fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
+lhs <- list(rbind(c(1, 4, 0)), rbind(c(0, 1, 0), c(0, 0, 1)))
+rhs <- list(0, c(-6, 1))
+elmt(fit, rhs = rhs, lhs = lhs)
 }
 \references{
 Kim E, MacEachern S, Peruggia M (2021).

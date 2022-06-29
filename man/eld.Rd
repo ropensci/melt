@@ -8,7 +8,8 @@
 \S4method{eld}{EL}(object, control = el_control())
 }
 \arguments{
-\item{object}{A fitted \linkS4class{EL} object.}
+\item{object}{An object that inherit from class \linkS4class{EL}, including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link[=el_control]{el_control()}}.}

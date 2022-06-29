@@ -13,3 +13,5 @@ setMethod("eld", "EL", function(object, control = el_control()) {
     control@tol_l, control@th, control@nthreads, getWeights(object)
   ))
 })
+
+# setMethod("eld", "missing",function(object, control = el_control()) "NULL")

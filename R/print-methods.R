@@ -132,3 +132,22 @@ setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
   invisible(x)
 })
 setMethod("show", "ELT", function(object) print(object))
+
+
+
+
+
+
+
+
+
+#' @param x An object of class \linkS4class{ELMT}.
+#' @rdname ELMT-class
+#' @exportMethod print
+setMethod("print", "ELMT", function(x) {print(x@cv)})
+
+
+
+
+
+
