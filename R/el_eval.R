@@ -49,12 +49,11 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
   n <- nrow(mm)
   p <- ncol(mm)
   stopifnot(
-    "not enough observations in 'g' " = (n >= 2L),
-    "'g' must have full column rank" = (n > p),
-    "'g' must be a finite numeric matrix" =
+    "not enough observations in `g`." = (n >= 2L),
+    "`g` must be a finite numeric matrix." =
       (isTRUE(is.numeric(mm) && all(is.finite(mm)))),
-    "'g' must have full column rank" = (getRank(mm) == p),
-    "invalid 'control' specified" = (is(control, "ControlEL"))
+    "`g` must have full column rank." = (isTRUE(n > p && getRank(mm) == p)),
+    "invalid `control` specified." = (is(control, "ControlEL"))
   )
   w <- validate_weights(weights, n)
   out <- computeGenericEL(mm, control@maxit_l, control@tol_l, control@th, w)

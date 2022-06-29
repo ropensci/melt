@@ -33,34 +33,41 @@ Tests multiple linear hypotheses for objects that inherit from class
 \linkS4class{EL}.
 }
 \details{
-\code{\link[=elmt]{elmt()}} performs the constrained minimization of \eqn{l(\theta)}
-described in \linkS4class{CEL}. \code{rhs} and \code{lhs} cannot be both \code{NULL}. For
-non-\code{NULL} \code{lhs}, it is required that \code{lhs} have full row rank
-\eqn{q \leq p} and \eqn{p} be equal to the number of parameters in the
-\code{object}.
+\code{\link[=elmt]{elmt()}} tests multiple hypotheses simultaneously. Each hypothesis
+corresponds to the constrained empirical likelihood ratio described in
+\linkS4class{CEL}. \code{rhs} and \code{lhs} cannot be both \code{NULL}. The right-hand
+side and left-hand side of each hypothesis must be specified as described
+in \code{\link[=elt]{elt()}}.
 
-Depending on the specification of \code{rhs} and \code{lhs}, we have the following
-three cases:
-\enumerate{
-\item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the constrained minimization
-is performed with the right-hand side \eqn{r} and the left-hand side
-\eqn{L} as
-\deqn{\inf_{\theta: L\theta = r} l(\theta).}
-\item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as
-\eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
-\item If \code{lhs} is \code{NULL}, \eqn{L} is set to the identity matrix and the
-problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
-}
+For specifying linear contrasts more conveniently, \code{rhs} and \code{lhs} also
+take a numeric vector and a numeric matrix, respectively. Each element of
+\code{rhs} and each row of \code{lhs} correspond to a contrast (hypothesis).
 
-\code{calibrate} specifies the calibration method used. Three methods are
-available: \code{"chisq"} (chi-square calibration), \code{"boot"} (bootstrap
-calibration), and \code{"f"} (\eqn{F} calibration). \code{"boot"} is applicable only
-when \code{lhs} is \code{NULL}. The \code{nthreads}, \code{seed}, and \code{B} slots in \code{control}
-apply to the bootstrap procedure. \code{"f"} is applicable only to the mean
-parameter when \code{lhs} is \code{NULL}.
+The vector of empirical likelihood ratio statistics asymptotically follows
+a multivariate chi-square distribution under the complete null hypothesis.
+The multiple testing procedure asymptotically controls the family-wise
+error rate at the level \code{alpha}. Based on the distribution of the maximum
+of the test statistics, the adjusted p-values are estimated by Monte Carlo
+simulation.
 }
 \examples{
-n <- 100L
+## Example 1: bivariate mean (list `rhs` & no `lhs`)
+data("women")
+fit <- el_mean(women, par = c(65, 135))
+rhs <- list(c(64, 133), c(66, 140))
+set.seed(143)
+elmt(fit, rhs = rhs)
+
+## Example 2: pairwise comparison (no `rhs` & matrix `lhs`)
+data("clothianidin")
+fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
+lhs <- matrix(c(
+  1, -1, 0, 0,
+  0, 1, -1, 0,
+  0, 0, 1, -1
+), byrow = TRUE, nrow = 3)
+set.seed(629)
+elmt(fit2, lhs = lhs)
 }
 \references{
 Kim E, MacEachern S, Peruggia M (2021).

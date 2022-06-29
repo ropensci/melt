@@ -71,7 +71,7 @@ el_glm <- function(formula,
                    mustart = NULL,
                    ...) {
   if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
+    stop("invalid `control` specified.")
   }
   model <- validate_model(model)
   cl <- match.call()
@@ -83,7 +83,7 @@ el_glm <- function(formula,
   }
   if (is.null(family$family)) {
     print(family)
-    stop("'family' not recognized")
+    stop("`family` not recognized.")
   }
   if (missing(data)) {
     data <- environment(formula)
@@ -108,7 +108,7 @@ el_glm <- function(formula,
     }
   }
   if (is.matrix(Y)) {
-    stop("'el_glm' does not support grouped data")
+    stop("`el_glm` does not support grouped data.")
   }
   if (is.empty.model(mt)) {
     X <- matrix(, NROW(Y), 0L)
@@ -129,9 +129,9 @@ el_glm <- function(formula,
   }
   w <- as.vector(model.weights(mf))
   stopifnot(
-    "'weights' must be a numeric vector" =
+    "`weights` must be a numeric vector." =
       (isTRUE(is.null(w) || is.numeric(w))),
-    "'weights' must be positive" = (isTRUE(is.null(w) || all(w > 0)))
+    "`weights` must be positive." = (isTRUE(is.null(w) || all(w > 0)))
   )
   mustart <- model.extract(mf, "mustart")
   etastart <- model.extract(mf, "etastart")

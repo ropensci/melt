@@ -6,7 +6,7 @@ setMethod("confint", "EL", function(object,
                                     cv = NULL,
                                     control = el_control()) {
   if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
+    stop("invalid `control` specified.")
   }
   est <- coef(object)
   # no confidence interval for empty model
@@ -32,7 +32,7 @@ setMethod("confint", "EL", function(object,
       idx <- match(parm, pnames)
       pnames <- parm
     } else {
-      stop("invalid 'parm' specified")
+      stop("invalid `parm` specified.")
     }
   }
   # number of rows of the confidence interval matrix

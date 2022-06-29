@@ -62,7 +62,8 @@ setMethod(
     }
     cat("\n")
 
-    if (nzchar(mess <- naprint(x@na.action))) {
+    mess <- naprint(x@na.action)
+    if (isTRUE(nzchar(mess))) {
       cat("  (", mess, ")\n", sep = "", "\n")
     }
 

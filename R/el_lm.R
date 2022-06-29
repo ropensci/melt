@@ -69,7 +69,7 @@ el_lm <- function(formula,
                   model = TRUE,
                   ...) {
   if (!is(control, "ControlEL")) {
-    stop("invalid 'control' specified")
+    stop("invalid `control` specified.")
   }
   model <- validate_model(model)
   cl <- match.call()
@@ -86,13 +86,13 @@ el_lm <- function(formula,
   y <- model.response(mf, "numeric")
   w <- as.vector(model.weights(mf))
   if (!is.null(w) && !is.numeric(w)) {
-    stop("'weights' must be a numeric vector")
+    stop("`weights` must be a numeric vector.")
   }
   if (!is.null(w) && any(w < 0)) {
-    stop("negative weights not allowed")
+    stop("`weights` must be positive.")
   }
   if (is.matrix(y)) {
-    stop("'el_lm' does not support multiple responses")
+    stop("`el_lm` does not support multiple responses.")
   }
   if (is.empty.model(mt)) {
     x <- NULL

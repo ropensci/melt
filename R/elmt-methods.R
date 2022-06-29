@@ -6,9 +6,9 @@ setMethod("elmt", "EL", function(object,
                                  alpha = 0.05,
                                  control = el_control()) {
   stopifnot(
-    "'object' has no 'data'; fit the model with 'model' = TRUE" =
+    "`object` has no `data`; fit the model with `model` = TRUE." =
       (length(getDataMatrix(object)) > 1L),
-    "invalid 'control' specified" = (is(control, "ControlEL"))
+    "invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypotheses(rhs, lhs, object@npar)
   alpha <- validate_alpha(alpha)

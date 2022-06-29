@@ -33,9 +33,9 @@
 #' fit <- el_mean(c(x, y), 0)
 #' eld(fit)
 #' @exportMethod eld
-setGeneric("eld", function(object, ...) {
+setGeneric("eld", function(object, control = el_control())
   standardGeneric("eld")
-})
+)
 
 
 #' Empirical likelihood multiple tests
@@ -55,31 +55,22 @@ setGeneric("eld", function(object, ...) {
 #'   `0.05`.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @details [elmt()] performs the constrained minimization of \eqn{l(\theta)}
-#'   described in \linkS4class{CEL}. `rhs` and `lhs` cannot be both `NULL`. For
-#'   non-`NULL` `lhs`, it is required that `lhs` have full row rank
-#'   \eqn{q \leq p} and \eqn{p} be equal to the number of parameters in the
-#'   `object`.
+#' @details [elmt()] tests multiple hypotheses simultaneously. Each hypothesis
+#'   corresponds to the constrained empirical likelihood ratio described in
+#'   \linkS4class{CEL}. `rhs` and `lhs` cannot be both `NULL`. The right-hand
+#'   side and left-hand side of each hypothesis must be specified as described
+#'   in [elt()].
 #'
-#'   Depending on the specification of `rhs` and `lhs`, we have the following
-#'   three cases:
-#'   \enumerate{
-#'   \item If both `rhs` and `lhs` are non-`NULL`, the constrained minimization
-#'   is performed with the right-hand side \eqn{r} and the left-hand side
-#'   \eqn{L} as
-#'   \deqn{\inf_{\theta: L\theta = r} l(\theta).}
-#'   \item If `rhs` is `NULL`, \eqn{r} is set to the zero vector as
-#'   \eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
-#'   \item If `lhs` is `NULL`, \eqn{L} is set to the identity matrix and the
-#'   problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
-#'   }
+#'   For specifying linear contrasts more conveniently, `rhs` and `lhs` also
+#'   take a numeric vector and a numeric matrix, respectively. Each element of
+#'   `rhs` and each row of `lhs` correspond to a contrast (hypothesis).
 #'
-#'   `calibrate` specifies the calibration method used. Three methods are
-#'   available: `"chisq"` (chi-square calibration), `"boot"` (bootstrap
-#'   calibration), and `"f"` (\eqn{F} calibration). `"boot"` is applicable only
-#'   when `lhs` is `NULL`. The `nthreads`, `seed`, and `B` slots in `control`
-#'   apply to the bootstrap procedure. `"f"` is applicable only to the mean
-#'   parameter when `lhs` is `NULL`.
+#'   The vector of empirical likelihood ratio statistics asymptotically follows
+#'   a multivariate chi-square distribution under the complete null hypothesis.
+#'   The multiple testing procedure asymptotically controls the family-wise
+#'   error rate at the level `alpha`. Based on the distribution of the maximum
+#'   of the test statistics, the adjusted p-values are estimated by Monte Carlo
+#'   simulation.
 #' @return An object of class of \linkS4class{ELMT}.
 #' @references Kim E, MacEachern S, Peruggia M (2021).
 #'   “Empirical Likelihood for the Analysis of Experimental Designs.”
@@ -87,11 +78,31 @@ setGeneric("eld", function(object, ...) {
 #' @seealso [el_control()], [elt()]
 #' @usage NULL
 #' @examples
-#' n <- 100L
+#' ## Example 1: bivariate mean (list `rhs` & no `lhs`)
+#' data("women")
+#' fit <- el_mean(women, par = c(65, 135))
+#' rhs <- list(c(64, 133), c(66, 140))
+#' set.seed(143)
+#' elmt(fit, rhs = rhs)
+#'
+#' ## Example 2: pairwise comparison (no `rhs` & matrix `lhs`)
+#' data("clothianidin")
+#' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
+#' lhs <- matrix(c(
+#'   1, -1, 0, 0,
+#'   0, 1, -1, 0,
+#'   0, 0, 1, -1
+#' ), byrow = TRUE, nrow = 3)
+#' set.seed(629)
+#' elmt(fit2, lhs = lhs)
 #' @exportMethod elmt
-setGeneric("elmt", function(object, ...) {
+setGeneric("elmt", function(object,
+                            rhs = NULL,
+                            lhs = NULL,
+                            alpha = 0.05,
+                            control = el_control())
   standardGeneric("elmt")
-})
+)
 
 
 #' Empirical likelihood test
@@ -170,9 +181,14 @@ setGeneric("elmt", function(object, ...) {
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 #' elt(fit2, lhs = lhs)
 #' @exportMethod elt
-setGeneric("elt", function(object, ...) {
+setGeneric("elt", function(object,
+                           rhs = NULL,
+                           lhs = NULL,
+                           alpha = 0.05,
+                           calibrate = c("chisq", "boot", "f"),
+                           control = el_control())
   standardGeneric("elt")
-})
+)
 
 
 #' Model coefficients
@@ -224,9 +240,8 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confint(fit, parm = c(2, 3))
 #' @exportMethod confint
-setGeneric(
-  "confint",
-  function(object, parm, level = 0.95, ...) standardGeneric("confint")
+setGeneric("confint", function(object, parm, level = 0.95, ...)
+  standardGeneric("confint")
 )
 
 
@@ -261,9 +276,14 @@ setGeneric(
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
 #' @exportMethod confreg
-setGeneric("confreg", function(object, ...) {
+setGeneric("confreg", function(object,
+                               parm,
+                               level = 0.95,
+                               cv = NULL,
+                               npoints = 50L,
+                               control = el_control())
   standardGeneric("confreg")
-})
+)
 
 
 #' Empirical log-likelihood

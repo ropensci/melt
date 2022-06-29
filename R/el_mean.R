@@ -45,14 +45,14 @@ el_mean <- function(x,
                     model = TRUE) {
   mm <- validate_x(x)
   stopifnot(
-    "'par' must be a finite numeric vector" =
+    "`par` must be a finite numeric vector." =
       (isTRUE(is.numeric(par) && all(is.finite(par)))),
-    "invalid 'control' specified" = (is(control, "ControlEL"))
+    "invalid `control` specified." = (is(control, "ControlEL"))
   )
   n <- nrow(mm)
   p <- ncol(mm)
   if (length(par) != p) {
-    stop(gettextf("length of 'par' must be %d", p, domain = NA))
+    stop(gettextf("length of `par` must be %d.", p, domain = NA))
   }
   w <- validate_weights(weights, n)
   if (!is.null(weights)) {

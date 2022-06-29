@@ -11,8 +11,8 @@ validate_maxit <- function(maxit) {
     error = function(e) NA
   )
   stopifnot(
-    "'maxit' must be a single integer" = (isTRUE(!is.na(maxit))),
-    "'maxit' must be a positive single integer" = (maxit > 0L)
+    "`maxit` must be a single integer." = (isTRUE(!is.na(maxit))),
+    "`maxit` must be a positive single integer." = (maxit > 0L)
   )
   maxit
 }
@@ -30,8 +30,8 @@ validate_maxit_l <- function(maxit_l) {
     error = function(e) NA
   )
   stopifnot(
-    "'maxit_l' must be a single integer" = (isTRUE(!is.na(maxit_l))),
-    "'maxit_l' must be a positive single integer" = (maxit_l > 0L)
+    "`maxit_l` must be a single integer." = (isTRUE(!is.na(maxit_l))),
+    "`maxit_l` must be a positive single integer." = (maxit_l > 0L)
   )
   maxit_l
 }
@@ -49,9 +49,9 @@ validate_tol <- function(tol) {
     error = function(e) NA
   )
   stopifnot(
-    "'tol' must be a single numeric" = (isTRUE(!is.na(tol))),
-    "'tol' must be a finite single numeric" = (is.finite(tol)),
-    "'tol' is too small" = (tol >= .Machine$double.eps)
+    "`tol` must be a single numeric." = (isTRUE(!is.na(tol))),
+    "`tol` must be a finite single numeric." = (is.finite(tol)),
+    "`tol` is too small." = (tol >= .Machine$double.eps)
   )
   tol
 }
@@ -69,9 +69,9 @@ validate_tol_l <- function(tol_l) {
     error = function(e) NA
   )
   stopifnot(
-    "'tol_l' must be a single numeric" = (isTRUE(!is.na(tol_l))),
-    "'tol_l' must be a finite single numeric" = (is.finite(tol_l)),
-    "'tol_l' is too small" = (tol_l >= .Machine$double.eps)
+    "`tol_l` must be a single numeric." = (isTRUE(!is.na(tol_l))),
+    "`tol_l` must be a finite single numeric." = (is.finite(tol_l)),
+    "`tol_l` is too small." = (tol_l >= .Machine$double.eps)
   )
   tol_l
 }
@@ -89,9 +89,9 @@ validate_step <- function(step) {
     error = function(e) NA
   )
   stopifnot(
-    "'step' must be a single numeric" = (isTRUE(!is.na(step))),
-    "'step' must be a finite single numeric" = (is.finite(step)),
-    "'step' is too small" = (step >= .Machine$double.eps)
+    "`step` must be a single numeric." = (isTRUE(!is.na(step))),
+    "`step` must be a finite single numeric." = (is.finite(step)),
+    "`step` is too small." = (step >= .Machine$double.eps)
   )
   step
 }
@@ -109,9 +109,9 @@ validate_th <- function(th) {
     error = function(e) NA
   )
   stopifnot(
-    "'th' must be a single numeric" = (isTRUE(!is.na(th))),
-    "'th' must be a finite single numeric" = (is.finite(th)),
-    "'th' is too small" = (th >= .Machine$double.eps)
+    "`th` must be a single numeric." = (isTRUE(!is.na(th))),
+    "`th` must be a finite single numeric." = (is.finite(th)),
+    "`th` is too small." = (th >= .Machine$double.eps)
   )
   th
 }
@@ -129,13 +129,13 @@ validate_nthreads <- function(nthreads, max_threads) {
     warning = function(w) NA,
     error = function(e) NA
   )
-  stopifnot("'nthreads' must be a single integer" = (isTRUE(!is.na(nthreads))))
+  stopifnot("`nthreads` must be a single integer." = (isTRUE(!is.na(nthreads))))
   if (nthreads < 1) {
-    warning("'nthreads' is set to 1")
+    warning("`nthreads` is set to 1.")
     nthreads <- 1L
   }
   if (nthreads > max_threads) {
-    warning("'nthreads' is set to the maximum number of threads available")
+    warning("`nthreads` is set to the maximum number of threads available.")
     nthreads <- max_threads
   }
   nthreads
@@ -153,7 +153,7 @@ validate_seed <- function(seed) {
     warning = function(w) NA,
     error = function(e) NA
   )
-  stopifnot("'seed' must be a single integer" = (isTRUE(!is.na(seed))))
+  stopifnot("`seed` must be a single integer." = (isTRUE(!is.na(seed))))
   seed
 }
 
@@ -167,8 +167,8 @@ validate_seed <- function(seed) {
 validate_b <- function(b) {
   b <- tryCatch(as.integer(b), warning = function(w) NA, error = function(e) NA)
   stopifnot(
-    "'b' must be a single integer" = (isTRUE(!is.na(b))),
-    "'b' must be a positive single integer" = (b > 0L)
+    "`b` must be a single integer." = (isTRUE(!is.na(b))),
+    "`b` must be a positive single integer." = (b > 0L)
   )
   b
 }
@@ -183,8 +183,8 @@ validate_b <- function(b) {
 validate_m <- function(m) {
   m <- tryCatch(as.integer(m), warning = function(w) NA, error = function(e) NA)
   stopifnot(
-    "'m' must be a single integer" = (isTRUE(!is.na(m))),
-    "'m' must be a positive single integer" = (m > 0L)
+    "`m` must be a single integer." = (isTRUE(!is.na(m))),
+    "`m` must be a positive single integer." = (m > 0L)
   )
   m
 }
@@ -198,7 +198,7 @@ validate_m <- function(m) {
 #' @noRd
 validate_model <- function(model) {
   stopifnot(
-    "'model' must be a single logical" =
+    "`model` must be a single logical." =
       (isTRUE(is.logical(model) && length(model) == 1L))
   )
   model
@@ -215,12 +215,12 @@ validate_model <- function(model) {
 validate_x <- function(x) {
   x <- as.matrix(x)
   stopifnot(
-    "'x' must have at least two observations" = (nrow(x) >= 2L),
-    "'x' must must have larger number of rows than columns" =
+    "`x` must have at least two observations." = (nrow(x) >= 2L),
+    "`x` must must have larger number of rows than columns." =
       (nrow(x) > ncol(x)),
-    "'x' must be a finite numeric matrix" =
+    "`x` must be a finite numeric matrix." =
       (isTRUE(is.numeric(x) && all(is.finite(x)))),
-    "'x' must have full column rank" = (getRank(x) == ncol(x))
+    "`x` must have full column rank." = (getRank(x) == ncol(x))
   )
   x
 }
@@ -238,12 +238,12 @@ validate_weights <- function(weights, n) {
     return(numeric(length = 0L))
   }
   stopifnot(
-    "'weights' must be a finite numeric vector" =
+    "`weights` must be a finite numeric vector." =
       (isTRUE(is.numeric(weights) && all(is.finite(weights)))),
-    "'weights' must be positive" = (all(weights > 0))
+    "`weights` must be positive." = (all(weights > 0))
   )
   if (length(weights) != n) {
-    stop(gettextf("length of 'weights' must be %d", n, domain = NA))
+    stop(gettextf("length of `weights` must be %d.", n, domain = NA))
   }
   weights <- (n / sum(weights)) * weights
   weights
@@ -263,7 +263,7 @@ validate_family <- function(family) {
     "gaussian" = {
       if (!any(l == c("identity", "log", "inverse"))) {
         stop(gettextf(
-          "%s family with %s link not supported by 'el_glm'",
+          "%s family with %s link not supported by `el_glm`.",
           sQuote(f), sQuote(l)
         ), domain = NA)
       }
@@ -271,7 +271,7 @@ validate_family <- function(family) {
     "binomial" = {
       if (!any(l == c("logit", "probit", "log"))) {
         stop(gettextf(
-          "%s family with %s link not supported by 'el_glm'",
+          "%s family with %s link not supported by `el_glm`.",
           sQuote(f), sQuote(l)
         ), domain = NA)
       }
@@ -279,7 +279,7 @@ validate_family <- function(family) {
     # "quasibinomial" = {
     #   if (!any(l == c("logit"))) {
     #     stop(gettextf(
-    #       "%s family with %s link not supported by 'el_glm'",
+    #       "%s family with %s link not supported by `el_glm`.",
     #       sQuote(f), sQuote(l)
     #     ), domain = NA)
     #   }
@@ -287,12 +287,12 @@ validate_family <- function(family) {
     "poisson" = {
       if (!any(l == c("log", "identity", "sqrt"))) {
         stop(gettextf(
-          "%s family with %s link not supported by 'el_glm'",
+          "%s family with %s link not supported by `el_glm`.",
           sQuote(f), sQuote(l)
         ), domain = NA)
       }
     },
-    stop(gettextf("%s family not supported by 'el_glm'", sQuote(f)),
+    stop(gettextf("%s family not supported by `el_glm`.", sQuote(f)),
       domain = NA
     )
   )
@@ -308,9 +308,9 @@ validate_family <- function(family) {
 #' @noRd
 validate_alpha <- function(alpha) {
   stopifnot(
-    "'alpha' must be a finite single numeric" =
+    "`alpha` must be a finite single numeric." =
       (isTRUE(is.numeric(alpha) && length(alpha) == 1L && is.finite(alpha))),
-    "'alpha' must be between 0 and 1" = (isTRUE(alpha > 0 && alpha < 1))
+    "`alpha` must be between 0 and 1." = (isTRUE(alpha > 0 && alpha < 1))
   )
   alpha
 }
@@ -324,9 +324,9 @@ validate_alpha <- function(alpha) {
 #' @noRd
 validate_level <- function(level) {
   stopifnot(
-    "'level' must be a finite single numeric" =
+    "`level` must be a finite single numeric." =
       (isTRUE(is.numeric(level) && length(level) == 1L && is.finite(level))),
-    "'level' must be between 0 and 1" = (isTRUE(level >= 0 && level <= 1))
+    "`level` must be between 0 and 1." = (isTRUE(level >= 0 && level <= 1))
   )
   level
 }
@@ -341,17 +341,17 @@ validate_level <- function(level) {
 #' @noRd
 validate_cv <- function(cv, th) {
   stopifnot(
-    "'cv' must be a finite single numeric" =
+    "`cv` must be a finite single numeric." =
       (isTRUE(is.numeric(cv) && length(cv) == 1L && is.finite(cv))),
-    "'cv' is too small" = (cv >= .Machine$double.eps)
+    "`cv` is too small." = (cv >= .Machine$double.eps)
   )
   if (is.null(th)) {
     if (cv > 400) {
-      stop("'cv' is too large compared to 'th'")
+      stop("`cv` is too large compared to `th`.")
     }
   } else {
     if (cv > 2 * th) {
-      stop("'cv' is too large compared to 'th'")
+      stop("`cv` is too large compared to `th`.")
     }
   }
   cv
@@ -368,7 +368,7 @@ validate_cv <- function(cv, th) {
 #' @noRd
 validate_hypothesis <- function(rhs, lhs, p) {
   if (is.null(rhs) && is.null(lhs)) {
-    stop("either 'rhs' or 'lhs' must be provided")
+    stop("either `rhs` or `lhs` must be provided.")
   } else if (is.null(lhs)) {
     rhs <- validate_rhs(rhs, p)
   } else if (is.null(rhs)) {
@@ -402,9 +402,9 @@ validate_rhs <- function(rhs, p) {
 #' @return A numeric vector.
 #' @noRd
 validate_rhs.numeric <- function(rhs, p) {
-  stopifnot("'rhs' must be a finite numeric vector" = (all(is.finite(rhs))))
+  stopifnot("`rhs` must be a finite numeric vector." = (all(is.finite(rhs))))
   if (length(rhs) != p) {
-    stop(gettextf("length of 'rhs' must be %d", p, domain = NA))
+    stop(gettextf("length of `rhs` must be %d.", p, domain = NA))
   }
   rhs
 }
@@ -419,11 +419,11 @@ validate_rhs.numeric <- function(rhs, p) {
 #' @noRd
 validate_rhs.matrix <- function(rhs, p) {
   stopifnot(
-    "'rhs' must be a finite numeric vector" =
+    "`rhs` must be a finite numeric vector." =
       (ncol(rhs) == 1L && all(is.finite(rhs)))
   )
   if (nrow(rhs) != p) {
-    stop(gettextf("length of 'rhs' must be %d", p, domain = NA))
+    stop(gettextf("length of `rhs` must be %d.", p, domain = NA))
   }
   attr(rhs, "dim") <- NULL
   rhs
@@ -451,11 +451,11 @@ validate_lhs <- function(lhs, p) {
 #' @noRd
 validate_lhs.numeric <- function(lhs, p) {
   stopifnot(
-    "'lhs' must be a finite numeric vector" = (all(is.finite(lhs))),
-    "'lhs' must have full row rank" = (getRank(lhs) == 1L)
+    "`lhs` must be a finite numeric vector." = (all(is.finite(lhs))),
+    "`lhs` must have full row rank." = (getRank(lhs) == 1L)
   )
   if (length(lhs) != p) {
-    stop(gettextf("length of 'lhs' must be %d", p, domain = NA))
+    stop(gettextf("length of `lhs` must be %d.", p, domain = NA))
   }
   matrix(lhs, nrow = 1L)
 }
@@ -471,12 +471,12 @@ validate_lhs.numeric <- function(lhs, p) {
 validate_lhs.matrix <- function(lhs, p) {
   q <- nrow(lhs)
   stopifnot(
-    "'lhs' must be a finite numeric matrix" = (all(is.finite(lhs))),
-    "'lhs' must have full row rank" =
+    "`lhs` must be a finite numeric matrix." = (all(is.finite(lhs))),
+    "`lhs` must have full row rank." =
       (isTRUE(q >= 1L && q <= p && getRank(lhs) == q))
   )
   if (ncol(lhs) != p) {
-    stop(gettextf("'lhs' must have %d columns", p, domain = NA))
+    stop(gettextf("`lhs` must have %d columns.", p, domain = NA))
   }
   lhs
 }
@@ -492,7 +492,7 @@ validate_lhs.matrix <- function(lhs, p) {
 #' @noRd
 validate_hypotheses <- function(rhs, lhs, p) {
   if (isTRUE(is.null(rhs) && is.null(lhs))) {
-    stop("either 'rhs' or 'lhs' must be provided")
+    stop("either `rhs` or `lhs` must be provided.")
   } else if (is.null(lhs)) {
     rhs <- validate_rhses(rhs, p)
     lhs <- matrix(rep(diag(1, nrow = p, ncol = p), attr(rhs, "m")),
@@ -512,12 +512,12 @@ validate_hypotheses <- function(rhs, lhs, p) {
     q <- attr(lhs, "q")
     m <- attr(lhs, "m")
     stopifnot(
-      "'rhs' and 'lhs' have incompatible dimensions" =
+      "`rhs` and `lhs` have incompatible dimensions." =
         ((isTRUE(all.equal(attr(rhs, "q"), q)) && attr(rhs, "m") == m))
     )
   }
   stopifnot(
-    "'rhs' and 'lhs' have incompatible dimensions" =
+    "`rhs` and `lhs` have incompatible dimensions." =
       (length(rhs) == nrow(lhs))
   )
   list(r = rhs, l = lhs, q = q, m = m)
@@ -545,7 +545,7 @@ validate_rhses <- function(rhs, p) {
 #' @noRd
 validate_rhses.numeric <- function(rhs, p) {
   stopifnot(
-    "'rhs' must be a finite numeric vector" = (all(is.finite(rhs)))
+    "`rhs` must be a finite numeric vector." = (all(is.finite(rhs)))
   )
   m <- length(rhs)
   attr(rhs, "q") <- c(0L, cumsum(rep(1L, m)))
@@ -563,7 +563,7 @@ validate_rhses.numeric <- function(rhs, p) {
 #' @noRd
 validate_rhses.matrix <- function(rhs, p) {
   stopifnot(
-    "'rhs' must be a finite numeric vector" =
+    "`rhs` must be a finite numeric vector." =
       (isTRUE((ncol(rhs) == 1L) && all(is.finite(rhs))))
   )
   attr(rhs, "dim") <- NULL
@@ -584,10 +584,10 @@ validate_rhses.matrix <- function(rhs, p) {
 validate_rhses.list <- function(rhs, p) {
   m <- length(rhs)
   stopifnot(
-    "'rhs' must specify multiple hypotheses" = (m >= 2L),
-    "'rhs' must be a list of finite numeric vectors" =
+    "`rhs` must specify multiple hypotheses." = (m >= 2L),
+    "`rhs` must be a list of finite numeric vectors." =
       (all(vapply(rhs, is.vector, TRUE))),
-    "'rhs' must be a list of finite numeric vectors" =
+    "`rhs` must be a list of finite numeric vectors." =
       (all(vapply(rhs, \(x) {
         is.numeric(x) && all(is.finite(x))
       }, TRUE)))
@@ -621,14 +621,14 @@ validate_lhses <- function(lhs, p) {
 validate_lhses.matrix <- function(lhs, p) {
   m <- nrow(lhs)
   stopifnot(
-    "'lhs' must specify multiple hypotheses" = (m >= 2L),
-    "'lhs' must be a finite numeric matrix" =
+    "`lhs` must specify multiple hypotheses." = (m >= 2L),
+    "`lhs` must be a finite numeric matrix." =
       (isTRUE(is.numeric(lhs) && all(is.finite(lhs)))),
-    "every row of 'lhs' must be a nonzero vector" =
+    "every row of `lhs` must be a nonzero vector." =
       (all(apply(lhs, 1L, getRank)))
   )
   if (ncol(lhs) != p) {
-    stop(gettextf("'lhs' must have %d columns", p, domain = NA))
+    stop(gettextf("`lhs` must have %d columns.", p, domain = NA))
   }
   attr(lhs, "q") <- c(0L, cumsum(rep(1L, m)))
   attr(lhs, "m") <- m
@@ -646,14 +646,14 @@ validate_lhses.matrix <- function(lhs, p) {
 validate_lhses.list <- function(lhs, p) {
   m <- length(lhs)
   stopifnot(
-    "'lhs' must specify multiple hypotheses" = (m >= 2L),
-    "'lhs' must be a list of finite numeric matrices" =
+    "`lhs` must specify multiple hypotheses." = (m >= 2L),
+    "`lhs` must be a list of finite numeric matrices." =
       (all(vapply(lhs, is.matrix, TRUE))),
-    "'lhs' must be a list of finite numeric matrices" =
+    "`lhs` must be a list of finite numeric matrices." =
       (all(vapply(lhs, \(x) {
         is.numeric(x) && all(is.finite(x))
       }, TRUE))),
-    "every matrix in 'lhs' must have full row rank" =
+    "every matrix in `lhs` must have full row rank." =
       (all(vapply(lhs, \(x) {
         nrow(x) >= 1L && nrow(x) <= p && getRank(x) == nrow(x)
       }, TRUE)))
@@ -661,7 +661,7 @@ validate_lhses.list <- function(lhs, p) {
   if (any(vapply(lhs, \(x) {
     ncol(x) != p
   }, FALSE))) {
-    stop(gettextf("every matrix in 'lhs' must have %d columns", p, domain = NA))
+    stop(gettextf("every matrix in `lhs` must have %d columns.", p, domain = NA))
   }
   out <- do.call(rbind, lhs)
   attr(out, "q") <- c(0L, cumsum(vapply(lhs, nrow, 1L)))
