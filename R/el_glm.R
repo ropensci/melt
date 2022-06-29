@@ -135,20 +135,6 @@ el_glm <- function(formula,
   )
   mustart <- model.extract(mf, "mustart")
   etastart <- model.extract(mf, "etastart")
-  # if (is.empty.model(mt)) {
-  #   return(new("GLM",
-  #     misc = list(
-  #       call = cl, formula = formula, terms = mt, offset = NULL,
-  #       control = glm_control, method = "glm.fit",
-  #       contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
-  #       na.action = attr(mf, "na.action")
-  #     ),
-  #     optim = list(
-  #       par = numeric(), lambda = numeric(), iterations = integer(),
-  #       convergence = logical()
-  #     )
-  #   ))
-  # }
   intercept <- attr(mt, "intercept") > 0L
   fit <- glm.fit(
     x = X, y = Y, weights = w, start = start, etastart = etastart,

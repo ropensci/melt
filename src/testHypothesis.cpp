@@ -18,8 +18,8 @@ Rcpp::List testHypothesis(const std::string method,
                           const Eigen::Map<Eigen::ArrayXd>& w) {
   const double test_th = th_nloglr(lhs.rows(), th);
   const double gamma = step_nloglr(x.rows(), step);
-  const MINEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
-                 test_th, w);
+  const CEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
+               test_th, w);
 
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("optim") = Rcpp::List::create(

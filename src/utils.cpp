@@ -111,86 +111,62 @@ Eigen::VectorXd gr_nloglr_lm(const Eigen::Ref<const Eigen::VectorXd>& l,
   return -(xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
+Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
                             const Eigen::Ref<const Eigen::VectorXd>& par) {
-  const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  return x.array().colwise() *
-    ((y - log_linkinv(x * par)) * log_linkinv(x * par));
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  return xmat.array().colwise() *
+    ((y - log_linkinv(xmat * par)) * log_linkinv(xmat * par));
 }
 Eigen::VectorXd gr_nloglr_gauss_log(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const Eigen::Ref<const Eigen::VectorXd> &l,
+    const Eigen::Ref<const Eigen::MatrixXd> &g,
+    const Eigen::Ref<const Eigen::MatrixXd> &x,
+    const Eigen::Ref<const Eigen::VectorXd> &par,
+    const Eigen::Ref<const Eigen::ArrayXd> &w,
     const bool weighted) {
-  const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd c = (y * log_linkinv(x * par) -
-    2.0 * log_linkinv(2.0 * x * par)) *
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  Eigen::ArrayXd c = (y * log_linkinv(xmat * par) -
+    2.0 * log_linkinv(2.0 * xmat * par)) *
     inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
   if (weighted) {
-    const Eigen::MatrixXd cx = x.array().colwise() * (w * c);
-    return -(x.transpose() * cx) * l;
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
   } else {
-    const Eigen::MatrixXd cx = x.array().colwise() * c;
-    return -(x.transpose() * cx) * l;
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
   }
+  return (xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
 }
 
-Eigen::MatrixXd g_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd>& data,
+Eigen::MatrixXd g_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                 const Eigen::Ref<const Eigen::VectorXd>& par) {
-  const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  return x.array().colwise() *
-    (-(y - inverse_linkinv(x * par)) * inverse_linkinv(x * par).square());
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  return xmat.array().colwise() *
+    (-(y - inverse_linkinv(xmat * par)) * inverse_linkinv(xmat * par).square());
 }
 Eigen::VectorXd gr_nloglr_gauss_inverse(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted) {
-  const int n = g.rows();
-  const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd numerator = inverse_linkinv(x * par).cube() *
-    (2.0 * y - 3.0 * inverse_linkinv(x * par));
-  const Eigen::ArrayXd denominator = Eigen::VectorXd::Ones(n) + g * l;
-  if (w.size() == 0) {
-    return (x.transpose() *
-            (x.array().colwise() * (numerator / denominator)).matrix()) * l / n;
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  Eigen::ArrayXd c = inverse_linkinv(xmat * par).cube() *
+    (2.0 * y - 3.0 * inverse_linkinv(xmat * par));
+  if (weighted) {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
   } else {
-    return (x.transpose() *
-            (x.array().colwise() * (w * numerator / denominator)).matrix()) *
-            l / n;
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
   }
+  return (xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
 }
+
+
+
+
 
 std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                               const Eigen::Ref<const Eigen::VectorXd>&)>

@@ -62,7 +62,7 @@ private:
       const Eigen::Ref<const Eigen::VectorXd>&)> g_fn;
 };
 
-class MINEL {
+class CEL {
 public:
   // members
   Eigen::VectorXd par;  // parameter value (solution of optimization problem)
@@ -73,18 +73,18 @@ public:
 
   // constructors
   // minimization
-  MINEL(const std::string method,
-        const Eigen::Ref<const Eigen::VectorXd>& par0,
-        const Eigen::Ref<const Eigen::MatrixXd>& x,
-        const Eigen::Ref<const Eigen::MatrixXd>& lhs,
-        const Eigen::Ref<const Eigen::VectorXd>& rhs,
-        const int maxit,
-        const int maxit_l,
-        const double tol,
-        const double tol_l,
-        const double step,
-        const double th,
-        const Eigen::Ref<const Eigen::ArrayXd>& wt);
+  CEL(const std::string method,
+      const Eigen::Ref<const Eigen::VectorXd>& par0,
+      const Eigen::Ref<const Eigen::MatrixXd>& x,
+      const Eigen::Ref<const Eigen::MatrixXd>& lhs,
+      const Eigen::Ref<const Eigen::VectorXd>& rhs,
+      const int maxit,
+      const int maxit_l,
+      const double tol,
+      const double tol_l,
+      const double step,
+      const double th,
+      const Eigen::Ref<const Eigen::ArrayXd>& wt);
   // functions for constructors
   std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                                 const Eigen::Ref<const Eigen::VectorXd>&)>
@@ -129,7 +129,7 @@ private:
       const bool)> gr_fn;
 };
 
-class PSEUDO_LOG {
+class PseudoLog {
 public:
   // members
   Eigen::ArrayXd dplog;
@@ -137,7 +137,7 @@ public:
   double plog_sum{0};
 
   // constructor
-  PSEUDO_LOG(const Eigen::Ref<const Eigen::ArrayXd>& x,
+  PseudoLog(const Eigen::Ref<const Eigen::ArrayXd>& x,
              const Eigen::Ref<const Eigen::ArrayXd>& w);
 
   // methods
@@ -157,15 +157,6 @@ public:
 
 
 
-
-// Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd>& x,
-//                      const Eigen::Ref<const Eigen::VectorXd>& par);
-// Eigen::VectorXd gr_nloglr_lm(const Eigen::Ref<const Eigen::VectorXd>& l,
-//                              const Eigen::Ref<const Eigen::MatrixXd>& g,
-//                              const Eigen::Ref<const Eigen::MatrixXd>& x,
-//                              const Eigen::Ref<const Eigen::VectorXd>& par,
-//                              const Eigen::Ref<const Eigen::ArrayXd>& w,
-//                              const bool weighted);
 
 
 // Binomial family

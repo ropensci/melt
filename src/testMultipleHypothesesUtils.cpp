@@ -1,4 +1,4 @@
-#include "testMultipleHypotheses_utils.h"
+#include "testMultipleHypothesesUtils.h"
 #include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>

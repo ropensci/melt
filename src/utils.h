@@ -47,22 +47,22 @@ Eigen::VectorXd gr_nloglr_lm(const Eigen::Ref<const Eigen::VectorXd>& l,
 
 
 // Gaussian family
-Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& data,
-                               const Eigen::Ref<const Eigen::VectorXd>& par);
+Eigen::MatrixXd g_gauss_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                            const Eigen::Ref<const Eigen::VectorXd>& par);
 Eigen::VectorXd gr_nloglr_gauss_log(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted);
 
-Eigen::MatrixXd g_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd>& data,
+Eigen::MatrixXd g_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd>& x,
                                 const Eigen::Ref<const Eigen::VectorXd>& par);
 Eigen::VectorXd gr_nloglr_gauss_inverse(
     const Eigen::Ref<const Eigen::VectorXd>& l,
     const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
     const Eigen::Ref<const Eigen::VectorXd>& par,
     const Eigen::Ref<const Eigen::ArrayXd>& w,
     const bool weighted);

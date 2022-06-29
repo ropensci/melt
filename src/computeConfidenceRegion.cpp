@@ -45,16 +45,16 @@ Rcpp::NumericVector computeConfidenceRegion(
     double lower_lb = -1.0;
     double lower_ub = 0;
     // lower bound for lower endpoint
-    while (2.0 * MINEL(method, par0, x, lhs, est + lower_lb * direction, maxit,
-                       maxit_l, tol, tol_l, gamma, test_th, w).nllr <= cv) {
+    while (2.0 * CEL(method, par0, x, lhs, est + lower_lb * direction, maxit,
+                     maxit_l, tol, tol_l, gamma, test_th, w).nllr <= cv) {
       lower_ub = lower_lb;
       lower_lb -= 1.0;
     }
     // approximate lower bound by numerical search
     while (lower_ub - lower_lb > tol) {
       const double avg = (lower_lb + lower_ub) / 2.0;
-      if (2.0 * MINEL(method, par0, x, lhs, est + avg * direction, maxit,
-                      maxit_l, tol, tol_l, gamma, test_th, w).nllr > cv) {
+      if (2.0 * CEL(method, par0, x, lhs, est + avg * direction, maxit, maxit_l,
+                    tol, tol_l, gamma, test_th, w).nllr > cv) {
         lower_lb = avg;
       } else {
         lower_ub = avg;

@@ -43,17 +43,17 @@ Eigen::MatrixXd computeConfidenceIntervals(
     double lower_ub = par0[idx[i] - 1];
     double lower_lb = par0[idx[i] - 1] - 1.0 / std::log(x.rows());
     // lower bound for lower endpoint
-    while (2.0 * MINEL(method, par0, x, lhs,
-                       Eigen::Matrix<double, 1, 1>(lower_lb), maxit, maxit_l,
-                       tol, tol_l, gamma, test_th, w).nllr <= cutoff) {
+    while (2.0 * CEL(method, par0, x, lhs,
+                     Eigen::Matrix<double, 1, 1>(lower_lb), maxit, maxit_l, tol,
+                     tol_l, gamma, test_th, w).nllr <= cutoff) {
       lower_ub = lower_lb;
       lower_lb -= 1.0 / std::log(x.rows());
     }
     // approximate lower bound by numerical search
     while (lower_ub - lower_lb > tol) {
-      if (2.0 * MINEL(method, par0, x, lhs,
-                      Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2.0),
-                      maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
+      if (2.0 * CEL(method, par0, x, lhs,
+                    Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2.0),
+                    maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
             cutoff) {
         lower_lb = (lower_lb + lower_ub) / 2.0;
       } else {
@@ -66,17 +66,17 @@ Eigen::MatrixXd computeConfidenceIntervals(
     double upper_lb = par0[idx[i] - 1];
     double upper_ub = par0[idx[i] - 1] + 1.0 / std::log(x.rows());
     // upper bound for upper endpoint
-    while (2.0 * MINEL(method, par0, x, lhs,
-                       Eigen::Matrix<double, 1, 1>(upper_ub), maxit, maxit_l,
-                       tol, tol_l, gamma, test_th, w).nllr <= cutoff) {
+    while (2.0 * CEL(method, par0, x, lhs,
+                     Eigen::Matrix<double, 1, 1>(upper_ub), maxit, maxit_l, tol,
+                     tol_l, gamma, test_th, w).nllr <= cutoff) {
       upper_lb = upper_ub;
       upper_ub += 1.0 / std::log(x.rows());
     }
     // approximate upper bound by numerical search
     while (upper_ub - upper_lb > tol) {
-      if (2.0 * MINEL(method, par0, x, lhs,
-                      Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2.0),
-                      maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
+      if (2.0 * CEL(method, par0, x, lhs,
+                    Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2.0),
+                    maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
             cutoff) {
         upper_ub = (upper_lb + upper_ub) / 2.0;
       } else {

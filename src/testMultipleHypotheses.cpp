@@ -1,4 +1,4 @@
-#include "testMultipleHypotheses_utils.h"
+#include "testMultipleHypothesesUtils.h"
 #include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>
@@ -28,8 +28,8 @@ Rcpp::List testMultipleHypotheses(const double alpha,
     const Eigen::VectorXd r = rhs.middleRows(q(j), q(j + 1) - q(j));
     const Eigen::MatrixXd l = lhs.middleRows(q(j), q(j + 1) - q(j));
     const double test_th = th_nloglr(l.rows(), th);
-    const MINEL el(method, est, x, l, r, maxit, maxit_l, tol, tol_l, gamma,
-                   test_th, w);
+    const CEL el(method, est, x, l, r, maxit, maxit_l, tol, tol_l, gamma,
+                 test_th, w);
     test_statistic[j] = 2.0 * el.nllr;
   }
 

@@ -37,8 +37,8 @@ Rcpp::List testGLM(const std::string method,
     lhs.rightCols(p - 1) = Eigen::MatrixXd::Identity(p - 1, p - 1);
     const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
     const double test_th = th_nloglr(p - 1, th);
-    const MINEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
-                   test_th, w);
+    const CEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
+                 test_th, w);
     par = el.par;
     l = el.l;
     nllr = el.nllr;
@@ -69,8 +69,8 @@ Rcpp::List testGLM(const std::string method,
   for (int i = 0; i < p; ++i) {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
-    const MINEL par_test(method, par0, x, lhs, Eigen::VectorXd::Zero(1), maxit,
-                         maxit_l, tol, tol_l, gamma, test_th, w);
+    const CEL par_test(method, par0, x, lhs, Eigen::VectorXd::Zero(1), maxit,
+                       maxit_l, tol, tol_l, gamma, test_th, w);
     chisq_val[i] = 2.0 * par_test.nllr;
     par_conv[i] = par_test.conv;
   }

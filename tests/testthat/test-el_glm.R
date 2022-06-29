@@ -77,11 +77,24 @@ test_that("probabilities add up to 1", {
 test_that("conversion between loglik and loglr", {
   fit <- el_glm(wool ~ ., family = binomial, data = warpbreaks)
   wfit <- el_glm(wool ~ .,
-                 family = binomial, data = warpbreaks,
-                 weights = warpbreaks$breaks
+    family = binomial, data = warpbreaks,
+    weights = warpbreaks$breaks
   )
   n <- nrow(warpbreaks)
   w <- weights(wfit)
   expect_equal(fit@logl + n * log(n), fit@loglr)
   expect_equal(wfit@logl + sum(w * (log(n) - log(w))), wfit@loglr)
+})
+
+test_that("no intercept", {
+  fit <- el_glm(wool ~ -1 + ., family = binomial, data = warpbreaks)
+  expect_s4_class(fit, "GLM")
+})
+
+test_that("dim attribute", {
+  wool <- warpbreaks$wool
+  dim(wool) <- 54
+  breaks <- warpbreaks$breaks
+  fit <- el_glm(wool ~ breaks, family = binomial)
+  expect_s4_class(fit, "GLM")
 })
