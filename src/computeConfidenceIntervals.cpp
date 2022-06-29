@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "helpers.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
@@ -29,9 +29,9 @@ Eigen::MatrixXd computeConfidenceIntervals(
   Eigen::MatrixXd ci(n, 2);
 
   // step size
-  const double gamma = step_nloglr(x.rows(), step);
+  const double gamma = setStep(x.rows(), step);
   // test threshold
-  const double test_th = th_nloglr(1, th);
+  const double test_th = setThreshold(1, th);
   #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
   #endif

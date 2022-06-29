@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "helpers.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
@@ -27,9 +27,9 @@ Rcpp::NumericVector computeConfidenceRegion(
   // confidence region (vector)
   std::vector<double> cr(circ.cols());
   // step size
-  const double gamma = step_nloglr(x.rows(), step);
+  const double gamma = setStep(x.rows(), step);
   // test threshold
-  const double test_th = th_nloglr(1, th);
+  const double test_th = setThreshold(1, th);
   // lhs matrix
   Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(2, npar);
   lhs(0, idx[0] - 1) = 1;

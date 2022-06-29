@@ -175,7 +175,10 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::MatrixXd>&,
       const Eigen::Ref<const Eigen::VectorXd>&)>>
         g_map{{{"mean", g_mean},
-               {"lm", g_lm}}};
+               {"lm", g_lm},
+               {"gaussian_identity", g_lm},
+               {"gaussian_log", g_gauss_log},
+               {"gaussian_inverse", g_gauss_inverse}}};
   return g_map[method];
 }
 

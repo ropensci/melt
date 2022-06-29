@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "helpers.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #include <string>
@@ -11,7 +11,7 @@ Rcpp::List computeEL(const std::string method,
                      const double tol_l,
                      const Rcpp::Nullable<double> th,
                      const Eigen::Map<Eigen::ArrayXd>& w) {
-  const double test_th = th_nloglr(par0.size(), th);
+  const double test_th = setThreshold(par0.size(), th);
   const EL el(method, par0, x, maxit_l, tol_l, test_th, w);
 
   Rcpp::List result = Rcpp::List::create(

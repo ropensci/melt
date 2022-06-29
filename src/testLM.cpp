@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "helpers.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
@@ -20,7 +20,7 @@ Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd>& x,
                   const int nthreads,
                   const Eigen::Map<Eigen::ArrayXd>& w) {
   const int p = x.cols() - 1;
-  const double gamma = step_nloglr(x.rows(), step);
+  const double gamma = setStep(x.rows(), step);
 
   // overall test
   Eigen::VectorXd par(p);
@@ -35,7 +35,7 @@ Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd>& x,
     lhs.col(0) = Eigen::MatrixXd::Zero(p - 1, 1);
     lhs.rightCols(p - 1) = Eigen::MatrixXd::Identity(p - 1, p - 1);
     const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
-    const double test_th = th_nloglr(p - 1, th);
+    const double test_th = setThreshold(p - 1, th);
     const CEL el("lm", par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
                  test_th, w);
     par = el.par;
@@ -47,7 +47,7 @@ Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd>& x,
     logl = el.loglik(w);
   } else {
     par = Eigen::VectorXd::Zero(p);
-    const double test_th = th_nloglr(p, th);
+    const double test_th = setThreshold(p, th);
     const EL el("lm", par, x, maxit_l, tol_l, test_th, w);
     l = el.l;
     nllr = el.nllr;
@@ -60,7 +60,7 @@ Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd>& x,
   // parameter tests
   std::vector<double> chisq_val(p);
   std::vector<bool> par_conv(p);
-  const double test_th = th_nloglr(1, th);
+  const double test_th = setThreshold(1, th);
   #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
   #endif
