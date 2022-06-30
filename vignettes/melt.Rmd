@@ -34,7 +34,7 @@ The melt package provides several functions to construct an `EL` object or an ob
 * `el_lm()` for linear models.
 * `el_glm()` for generalized linear models.
 
-We illustrate the usage of `el_mean()` with the `faithful` dataset. 
+We illustrate the usage of `el_mean()` with the `faithful` data set. 
 ```{r, eval = TRUE}
 data("faithful")
 str(faithful)

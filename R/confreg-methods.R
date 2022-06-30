@@ -5,6 +5,10 @@ setMethod("confreg", "EL", function(object,
                                     cv = NULL,
                                     npoints = 50L,
                                     control = el_control()) {
+  if (npoints > 3000L) {
+    stop("sefsef")
+  }
+
   if (!is(control, "ControlEL")) {
     stop("invalid `control` specified.")
   }

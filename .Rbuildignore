@@ -15,3 +15,6 @@
 ^CONTRIBUTING\.md$
 ^codecov\.yml$
 ^codemeta\.json$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

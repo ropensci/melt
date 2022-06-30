@@ -176,7 +176,7 @@ setGeneric("elmt", function(object,
 #' y <- 1 + x1 + x2 + rnorm(n)
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
-#' elt(fit, lhs = c(0, 1, 1), rhs = 2)
+#' elt(fit, lhs = c(0, 1, 1), rhs = 2.0)
 #'
 #' # test of no treatment effect
 #' data("clothianidin")

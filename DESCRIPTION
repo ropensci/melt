@@ -14,7 +14,8 @@ Description: Performs multiple empirical likelihood tests for linear and
     procedures are given in Kim, MacEachern, and Peruggia (2021)
     <arxiv:2112.09206>.
 License: GPL (>= 2)
-URL: https://github.com/markean/melt
+URL: https://github.com/markean/melt,
+    https://markean.github.io/melt/
 BugReports: https://github.com/markean/melt/issues
 Depends: 
     R (>= 4.0.0)

@@ -13,3 +13,4 @@ src/.vscode
 data-raw
 ignore
 inst/doc
+docs
