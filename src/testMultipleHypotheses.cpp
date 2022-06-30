@@ -24,6 +24,7 @@ Rcpp::List testMultipleHypotheses(const double alpha,
                                   const Rcpp::Nullable<double> th,
                                   const Eigen::Map<Eigen::ArrayXd>& w) {
   const double gamma = setStep(x.rows(), step);
+  // 1. compute test statistics
   std::vector<double> test_statistic(m);
   for (int j = 0; j < m; ++j) {
     const Eigen::VectorXd r = rhs.middleRows(q(j), q(j + 1) - q(j));
@@ -33,15 +34,12 @@ Rcpp::List testMultipleHypotheses(const double alpha,
                  test_th, w);
     test_statistic[j] = 2.0 * el.nllr;
   }
-
-
-
+  // 2. compute cutoff value
   // sample covariance with plug-in estimate
   const Eigen::MatrixXd s = cov(method, est, x);
   // sqrt of sample covariance
   const Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(s);
   const Eigen::MatrixXd sqrt_s = es.operatorSqrt();
-
   // ahat matrices
   const int p = est.size();
   const Eigen::MatrixXd h = dg0_inv(method, x);
@@ -50,8 +48,7 @@ Rcpp::List testMultipleHypotheses(const double alpha,
     const Eigen::MatrixXd l = lhs.middleRows(q(j), q(j + 1) - q(j));
     amat.middleCols(j * p, p) = ahat(l, h, s);
   }
-
-  // 4. random monte carlo
+  // Monte Carlo simulation
   std::vector<double> max_statistic(M);
   // #pragma omp parallel for num_threads(nthreads)
   for (int b = 0; b < M; ++b) {
@@ -61,8 +58,7 @@ Rcpp::List testMultipleHypotheses(const double alpha,
     max_statistic[b] = (u * tmp).maxCoeff();
   }
   const double cv = computeQuantile(Rcpp::wrap(max_statistic), 1 - alpha);
-
-  // adjusted p-values
+  // 3. compute adjusted p-values
   std::vector<double> adj_pval(m);
   for (int j = 0; j < m; ++j) {
     adj_pval[j] =
@@ -71,8 +67,6 @@ Rcpp::List testMultipleHypotheses(const double alpha,
         [test_statistic, j](double x) {return (x > test_statistic[j]);}) /
           static_cast<double>(M);
   }
-
-  // critical value can be computed independent of the statistics
   Rcpp::List result = Rcpp::List::create(
     Rcpp::Named("statistic") = Rcpp::wrap(test_statistic),
     Rcpp::Named("cv") = cv,

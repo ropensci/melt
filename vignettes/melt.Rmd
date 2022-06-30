@@ -1,0 +1,57 @@
+---
+title: "Introduction to melt"
+author: Eunseop Kim
+date: '`r format(Sys.Date(), "%Y-%m-%d")`'
+output: 
+  rmarkdown::html_vignette:
+    fig_width: 7
+    fig_height: 5
+vignette: >
+  %\VignetteIndexEntry{Introduction to melt}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The [melt](https://cran.r-project.org/web/packages/melt/index.html) R package performs multiple empirical likelihood tests for linear and generalized linear models. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen'
+interface, with OpenMP for parallel computation. Details of multiple testing procedures are given in Kim, MacEachern, and Peruggia (2021) <[arxiv:2112.09206](https://arxiv.org/abs/2112.09206)>.
+```{r setup, echo=FALSE}
+library(melt, warn.conflicts = FALSE)
+library(tibble)
+```
+
+## Fitting an `EL` object
+The melt package provides several functions to construct an `EL` object or an object that inherits from `EL`:
+
+* `el_mean()` for the mean.
+* `el_var()` for the variance.
+* `el_lm()` for linear models.
+* `el_glm()` for generalized linear models.
+
+We illustrate the usage of `el_mean()` with the `faithful` dataset. 
+```{r, eval = TRUE}
+data("faithful")
+tibble(faithful)
+summary(faithful)
+```
+Suppose we are interested in evaluating empirical likelihood at $(3.5, 70)$.
+```{r}
+fit <- el_mean(faithful, par = c(3.5, 70))
+class(fit)
+showClass("EL")
+```
+The `faithful` data frame is coerced to a numeric matrix. Simple print method shows essential information on `fit`. 
+```{r}
+fit
+```
+Note that the maximum empirical likelihood estimates are the same as the sample averages. 
+The chi-square value shown corresponds to the minus twice the empirical log-likelihood ratio. 
+It has an asymptotic chi-square distribution of 2 degrees of freedom under the null hypothesis. 
+Hence the $p$-value here is not exact. 
+The convergence status at the bottom can be used to check the convex hull constraint. 

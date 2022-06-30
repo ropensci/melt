@@ -42,7 +42,9 @@ test_that("incompatible 'rhs' and 'lhs'", {
 
 test_that("'rhs' == NULL", {
   lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
-  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  out <- elmt(fit, lhs = lhs)
+  expect_output(show(out))
+  expect_output(print(out))
 })
 
 test_that("matrix 'rhs'", {

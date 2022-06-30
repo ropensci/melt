@@ -145,7 +145,7 @@ setMethod("show", "ELT", function(object) print(object))
 #' @rdname ELMT-class
 #' @exportMethod print
 setMethod("print", "ELMT", function(x) {print(x@cv)})
-
+setMethod("show", "ELMT", function(object) print(object))
 
 
 
