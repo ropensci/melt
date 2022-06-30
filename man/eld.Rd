@@ -3,9 +3,12 @@
 \name{eld}
 \alias{eld}
 \alias{eld,EL-method}
+\alias{eld,missing-method}
 \title{Empirical likelihood displacement}
 \usage{
 \S4method{eld}{EL}(object, control = el_control())
+
+\S4method{eld}{missing}(object, control = el_control())
 }
 \arguments{
 \item{object}{An object that inherit from class \linkS4class{EL}, including

@@ -23,7 +23,6 @@ The [melt](https://cran.r-project.org/web/packages/melt/index.html) R package pe
 interface, with OpenMP for parallel computation. Details of multiple testing procedures are given in Kim, MacEachern, and Peruggia (2021) <[arxiv:2112.09206](https://arxiv.org/abs/2112.09206)>.
 ```{r setup, echo=FALSE}
 library(melt, warn.conflicts = FALSE)
-library(tibble)
 ```
 
 ## Fitting an `EL` object

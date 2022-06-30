@@ -3,9 +3,19 @@
 \name{elt}
 \alias{elt}
 \alias{elt,EL-method}
+\alias{elt,missing-method}
 \title{Empirical likelihood test}
 \usage{
 \S4method{elt}{EL}(
+  object,
+  rhs = NULL,
+  lhs = NULL,
+  alpha = 0.05,
+  calibrate = c("chisq", "boot", "f"),
+  control = el_control()
+)
+
+\S4method{elt}{missing}(
   object,
   rhs = NULL,
   lhs = NULL,

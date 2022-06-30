@@ -59,7 +59,7 @@ setMethod("elt", "EL", function(object,
   )
 })
 
-
+#' @rdname elt
 setMethod("elt", "missing",function(object,
                                     rhs = NULL,
                                     lhs = NULL,
