@@ -37,7 +37,7 @@ The melt package provides several functions to construct an `EL` object or an ob
 We illustrate the usage of `el_mean()` with the `faithful` dataset. 
 ```{r, eval = TRUE}
 data("faithful")
-tibble(faithful)
+str(faithful)
 summary(faithful)
 ```
 Suppose we are interested in evaluating empirical likelihood at $(3.5, 70)$.
