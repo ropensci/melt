@@ -11,12 +11,14 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// computeBootstrapStatistics
-Rcpp::NumericVector computeBootstrapStatistics(const int B, const int seed, const int nthreads, const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& wt);
-RcppExport SEXP _melt_computeBootstrapStatistics(SEXP BSEXP, SEXP seedSEXP, SEXP nthreadsSEXP, SEXP methodSEXP, SEXP xSEXP, SEXP parSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP wtSEXP) {
+// computeBootstrapCalibration
+Rcpp::NumericVector computeBootstrapCalibration(const double alpha, const double statistic, const int B, const int seed, const int nthreads, const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& wt);
+RcppExport SEXP _melt_computeBootstrapCalibration(SEXP alphaSEXP, SEXP statisticSEXP, SEXP BSEXP, SEXP seedSEXP, SEXP nthreadsSEXP, SEXP methodSEXP, SEXP xSEXP, SEXP parSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP wtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< const double >::type statistic(statisticSEXP);
     Rcpp::traits::input_parameter< const int >::type B(BSEXP);
     Rcpp::traits::input_parameter< const int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
@@ -27,7 +29,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type wt(wtSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeBootstrapStatistics(B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt));
+    rcpp_result_gen = Rcpp::wrap(computeBootstrapCalibration(alpha, statistic, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, wt));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -243,7 +245,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_melt_computeBootstrapStatistics", (DL_FUNC) &_melt_computeBootstrapStatistics, 10},
+    {"_melt_computeBootstrapCalibration", (DL_FUNC) &_melt_computeBootstrapCalibration, 12},
     {"_melt_computeConfidenceIntervals", (DL_FUNC) &_melt_computeConfidenceIntervals, 13},
     {"_melt_computeConfidenceRegion", (DL_FUNC) &_melt_computeConfidenceRegion, 15},
     {"_melt_computeEL", (DL_FUNC) &_melt_computeEL, 7},

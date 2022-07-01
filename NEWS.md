@@ -1,11 +1,11 @@
 # melt 1.5.2.9000 (development version)
 ### BREAKING CHANGES
-* The order of arguments of `el_mean()` changed to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par` as `el_mean(x, par)`.
+* `el_mean()` takes arguments in a different order to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par` as `el_mean(x, par)`.
 
-* `lht()` is renamed to `elt()`.
+* `lht()` is renamed to `elt()`. 
 
 ### NEW FEATURES
-* New package dependencies added (`BH`, `dqrng`, and `graphics`).
+* New package dependencies are added (`BH`, `dqrng`, and `graphics`).
 
 * New `elt()` replaces `lht()`. It accepts additional arguments `alpha` and `calibrate`.
 
@@ -19,10 +19,8 @@
 ### BUG FIXES
 * `confint()` and `confreg()` check if the `cv` argument is compatible with the `th` value set by `control_el()`.
 
-* unit test errors fixed.
-
 ### DEPRECATED AND DEFUNCT
-* `el_pairwise()` is removed.
+* `el_pairwise()` and `lht()` are removed.
 
 
 # melt 1.5.2

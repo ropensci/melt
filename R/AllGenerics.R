@@ -176,7 +176,7 @@ setGeneric("elmt", function(object,
 #' y <- 1 + x1 + x2 + rnorm(n)
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
-#' elt(fit, lhs = c(0, 1, 1), rhs = 2.0)
+#' elt(fit, lhs = c(0, 1.5, -1), rhs = 2.5)
 #'
 #' # test of no treatment effect
 #' data("clothianidin")
@@ -332,36 +332,6 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #' plot(out2)
 #' @exportMethod plot
 setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
-
-
-#' Print methods
-#'
-#' Provides print methods for the objects from the package \pkg{melt}.
-#'
-#' @param x An object to be printed.
-#' @param ... Further arguments passed to other methods.
-#' @param digits The number of significant digits to be passed to [format()].
-#' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
-#'   are printed for each coefficient.
-#' @usage NULL
-#' @examples
-#' # model
-#' fit <- el_lm(mpg ~ wt, data = mtcars)
-#'
-#' # output
-#' fit
-#'
-#' # empirical log-likelihood
-#' logLik(fit)
-#'
-#' # output summary
-#' summary(fit)
-#'
-#' # equivalent results by testing each parameter separately
-#' elt(fit, lhs = c(1, 0))
-#' elt(fit, lhs = c(0, 1))
-#' @exportMethod print
-setGeneric("print", function(x, ...) standardGeneric("print"))
 
 
 #' Summary methods

@@ -3,6 +3,7 @@
 \docType{class}
 \name{CEL-class}
 \alias{CEL-class}
+\alias{CEL}
 \title{S4 class \linkS4class{CEL}}
 \description{
 S4 class for constrained empirical likelihood. It inherits from

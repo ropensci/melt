@@ -3,6 +3,7 @@
 \docType{class}
 \name{ConfregEL-class}
 \alias{ConfregEL-class}
+\alias{ConfregEL}
 \title{S4 class \linkS4class{ConfregEL}}
 \description{
 S4 class for confidence region.

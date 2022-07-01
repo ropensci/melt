@@ -3,6 +3,7 @@
 \docType{class}
 \name{ControlEL-class}
 \alias{ControlEL-class}
+\alias{ControlEL}
 \title{S4 class \linkS4class{ControlEL}}
 \description{
 S4 class for computational details of empirical likelihood.
@@ -45,5 +46,5 @@ computation via OpenMP (if available).}
 showClass("ControlEL")
 }
 \seealso{
-\link{el_control}
+\code{\link[=el_control]{el_control()}}
 }

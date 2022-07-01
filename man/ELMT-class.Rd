@@ -3,13 +3,27 @@
 \docType{class}
 \name{ELMT-class}
 \alias{ELMT-class}
+\alias{ELMT}
 \alias{print,ELMT-method}
 \title{S4 class \linkS4class{ELMT}}
 \usage{
-\S4method{print}{ELMT}(x)
+\S4method{print}{ELMT}(
+  x,
+  digits = getOption("digits"),
+  signif.stars = getOption("show.signif.stars"),
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \linkS4class{ELMT}.}
+
+\item{digits}{A single integer for the number of significant digits to be
+passed to \code{\link[=format]{format()}}.}
+
+\item{signif.stars}{A single logical. If \code{TRUE}, ‘significance stars’
+are printed for each coefficient.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 S4 class for empirical likelihood multiple tests.

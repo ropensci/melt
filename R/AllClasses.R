@@ -56,6 +56,7 @@
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
+#' @aliases EL
 #' @references Glenn, N.L., and Yichuan Zhao. 2007.
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis 51 (10): 5130–41.
@@ -118,6 +119,7 @@ setClass("EL",
 #'   performed.}
 #'   \item{`convergence ` }{A single logical for the convergence status.}
 #'   }
+#' @aliases CEL
 #' @references Adimari, Gianfranco, and Annamaria Guolo. 2010.
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
 #'   Statistical Methods & Applications 19 (4): 463–76.
@@ -147,6 +149,7 @@ setClass("CEL", contains = "EL")
 #'   }
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
 #' They are used in other generics and methods.
+#' @aliases LM
 #' @examples
 #' showClass("LM")
 setClass("LM", contains = "CEL", slots = c(parTests = "list", misc = "list"))
@@ -156,6 +159,7 @@ setClass("LM", contains = "CEL", slots = c(parTests = "list", misc = "list"))
 #' S4 class for generalized linear models with empirical likelihood. It inherits
 #' from \linkS4class{LM} class.
 #'
+#' @aliases GLM
 #' @examples
 #' showClass("GLM")
 setClass("GLM", contains = "LM")
@@ -172,6 +176,7 @@ setClass("GLM", contains = "LM")
 #' @slot cv A single numeric for the critical value for calibration of empirical
 #'   likelihood ratio statistic.
 #' @slot pnames A character vector of length two for the name of parameters.
+#' @aliases ConfregEL
 #' @examples
 #' showClass("ConfregEL")
 setClass("ConfregEL",
@@ -209,7 +214,8 @@ setClass("ConfregEL",
 #' @slot seed A single integer for the seed for random number generation.
 #' @slot b A single integer for the number of bootstrap replicates.
 #' @slot m A single integer for the number of Monte Carlo samples.
-#' @seealso \link{el_control}
+#' @aliases ControlEL
+#' @seealso [el_control()]
 #' @examples
 #' showClass("ControlEL")
 setClass("ControlEL",
@@ -226,6 +232,7 @@ setClass("ControlEL",
 #' S4 class for empirical likelihood displacement.
 #'
 #' @slot eld A numeric vector of empirical likelihood displacement values.
+#' @aliases ELD
 #' @examples
 #' showClass("ELD")
 setClass("ELD", slots = c(eld = "numeric"))
@@ -243,6 +250,7 @@ setClass("ELD", slots = c(eld = "numeric"))
 #' @slot cv A single numeric for the critical value.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot calibrate A single character for the calibration method used.
+#' @aliases ELT
 #' @examples
 #' showClass("ELT")
 setClass("ELT",
@@ -263,6 +271,7 @@ setClass("ELT",
 #' @slot cv A single numeric for the multiplicity adjusted critical value.
 #' @slot pval A numeric vector for the multiplicity adjusted \eqn{p}-values.
 #' @slot calibrate A single character for the calibration method used.
+#' @aliases ELMT
 #' @examples
 #' showClass("ELMT")
 setClass("ELMT",
@@ -280,6 +289,7 @@ setClass("ELMT",
 #' @slot logLik A single numeric for the empirical log-likelihood.
 #' @slot df A single integer for the degrees of freedom or the number of
 #'   (estimated) parameters in the model.
+#' @aliases logLikEL
 #' @examples
 #' showClass("logLikEL")
 setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))
@@ -298,11 +308,12 @@ setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))
 #' @slot weighted A single logical for whether the given model is weighted or
 #'   not.
 #' @slot na.action Information returned by [`model.frame`] on the special
-#'   handling of NAs.
+#'   handling of `NA`s.
 #' @slot call Matched call.
 #' @slot terms [`terms`] object used.
 #' @slot aliased A named logical vector showing if the original coefficients are
 #'   aliased.
+#' @aliases SummaryLM
 #' @examples
 #' showClass("SummaryLM")
 setClass("SummaryLM", slots = c(

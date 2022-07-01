@@ -1,8 +1,13 @@
-#' @rdname print
+#' @param x An object of class \linkS4class{EL}.
+#' @param digits A single integer for the number of significant digits to be
+#'   passed to [format()].
+#' @param ... Further arguments passed to or from other methods.
+#' @rdname EL-class
 setMethod("print", "EL", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {
-  cat("\nEmpirical Likelihood:", getMethodEL(x), "\n\n")
+  cat("\n\t")
+  cat("Empirical Likelihood:", getMethodEL(x), "\n\n")
   if (length(coef(x)) != 0L) {
     cat("Maximum EL estimates:\n")
     print.default(coef(x), digits = digits, ...)
@@ -33,7 +38,13 @@ setMethod("print", "EL", function(x,
 setMethod("show", "EL", function(object) print(object))
 
 
-#' @rdname print
+#' @param x An object of class \linkS4class{SummaryLM}.
+#' @param digits A single integer for the number of significant digits to be
+#'   passed to [format()].
+#' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
+#'   are printed for each coefficient.
+#' @param ... Further arguments passed to or from other methods.
+#' @rdname SummaryLM-class
 #' @importFrom stats naprint pchisq printCoefmat
 setMethod(
   "print", "SummaryLM", function(x,
@@ -95,7 +106,11 @@ setMethod(
 setMethod("show", "SummaryLM", function(object) print(object))
 
 
-#' @rdname print
+#' @param x An object of class \linkS4class{logLikEL}.
+#' @param digits A single integer for the number of significant digits to be
+#'   passed to [format()].
+#' @param ... Further arguments passed to or from other methods.
+#' @rdname logLikEL-class
 setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
   cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
     collapse = ", "
@@ -108,9 +123,52 @@ setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
 setMethod("show", "logLikEL", function(object) print(object))
 
 
-#' @rdname print
+#' @param x An object of class \linkS4class{ELMT}.
+#' @param digits A single integer for the number of significant digits to be
+#'   passed to [format()].
+#' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
+#'   are printed for each coefficient.
+#' @param ... Further arguments passed to or from other methods.
+#' @rdname ELMT-class
+setMethod("print", "ELMT", function(x,
+                                    digits = getOption("digits"),
+                                    signif.stars =
+                                      getOption("show.signif.stars"),
+                                    ...) {
+  method <- switch(x@calibrate,
+    "mvchisq" = "Multivariate chi-square"
+  )
+  cat("\n\t")
+  cat("Empirical Likelihood Multiple Tests\n\n")
+  cat("Overall significance level:", x@alpha, "\n\n")
+  cat("Calibration:", method, "\n\n")
+  cat("Hypotheses:\n")
+  out <- data.frame(
+    # set row names!
+    row.names = seq_along(x@pval),
+    Chisq = x@statistic,
+    p.adj = x@pval
+  )
+  printCoefmat(out,
+    signif.stars = signif.stars,
+    digits = digits, P.values = TRUE, has.Pvalue = TRUE,
+    eps.Pvalue = 1e-03
+  )
+  cat("\n")
+  cat(paste("Common critical value:", round(x@cv, digits = 4L)), "\n\n")
+  invisible(x)
+})
+setMethod("show", "ELMT", function(object) print(object))
+
+
+#' @param x An object of class \linkS4class{ELT}.
+#' @param digits A single integer for the number of significant digits to be
+#'   passed to [format()].
+#' @param ... Further arguments passed to or from other methods.
+#' @rdname ELT-class
 setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
-  cat("\nEmpirical Likelihood Test\n\n")
+  cat("\n\t")
+  cat("Empirical Likelihood Test\n\n")
   method <- switch(x@calibrate,
     "chisq" = "Chi-square",
     "boot" = "Bootstrap",
@@ -132,22 +190,3 @@ setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
   invisible(x)
 })
 setMethod("show", "ELT", function(object) print(object))
-
-
-
-
-
-
-
-
-
-#' @param x An object of class \linkS4class{ELMT}.
-#' @rdname ELMT-class
-#' @exportMethod print
-setMethod("print", "ELMT", function(x) {print(x@cv)})
-setMethod("show", "ELMT", function(object) print(object))
-
-
-
-
-

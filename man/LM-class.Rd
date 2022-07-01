@@ -3,6 +3,7 @@
 \docType{class}
 \name{LM-class}
 \alias{LM-class}
+\alias{LM}
 \title{S4 class \linkS4class{LM}}
 \description{
 S4 class for linear models with empirical likelihood. It inherits from
