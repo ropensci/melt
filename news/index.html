@@ -51,12 +51,12 @@
 <h2 class="pkg-version" data-toc-text="1.5.2.9000" id="melt-1529000-development-version">melt 1.5.2.9000 (development version)<a class="anchor" aria-label="anchor" href="#melt-1529000-development-version"></a></h2>
 <div class="section level4">
 <h4 id="breaking-changes-1-5-2-9000">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-1-5-2-9000"></a></h4>
-<ul><li><p>The order of arguments of <code><a href="../reference/el_mean.html">el_mean()</a></code> changed to comply with the ‘tidyverse’ style. It takes the data argument <code>x</code> first, followed by the parameter specification <code>par</code> as <code>el_mean(x, par)</code>.</p></li>
+<ul><li><p><code><a href="../reference/el_mean.html">el_mean()</a></code> takes arguments in a different order to comply with the ‘tidyverse’ style. It takes the data argument <code>x</code> first, followed by the parameter specification <code>par</code> as <code>el_mean(x, par)</code>.</p></li>
 <li><p><code>lht()</code> is renamed to <code><a href="../reference/elt.html">elt()</a></code>.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-1-5-2-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-2-9000"></a></h4>
-<ul><li><p>New package dependencies added (<code>BH</code>, <code>dqrng</code>, and <code>graphics</code>).</p></li>
+<ul><li><p>New package dependencies are added (<code>BH</code>, <code>dqrng</code>, and <code>graphics</code>).</p></li>
 <li><p>New <code><a href="../reference/elt.html">elt()</a></code> replaces <code>lht()</code>. It accepts additional arguments <code>alpha</code> and <code>calibrate</code>.</p></li>
 <li><p>New <code><a href="../reference/elmt.html">elmt()</a></code> tests multiple hypotheses with empirical likelihood.</p></li>
 <li><p>New <code><a href="../reference/weights.html">weights()</a></code> extracts rescaled weights.</p></li>
@@ -67,13 +67,12 @@
 <code>cv</code> argument in <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> defaults to <code>NULL</code>. If non-<code>NULL</code>, <code>level</code> is ignored.</li></ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-1-5-2-9000">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-2-9000"></a></h4>
-<ul><li><p><code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> check if the <code>cv</code> argument is compatible with the <code>th</code> value set by <code>control_el()</code>.</p></li>
-<li><p>unit test errors fixed.</p></li>
-</ul></div>
+<ul><li>
+<code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> check if the <code>cv</code> argument is compatible with the <code>th</code> value set by <code>control_el()</code>.</li></ul></div>
 <div class="section level4">
 <h4 id="deprecated-and-defunct-1-5-2-9000">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-2-9000"></a></h4>
 <ul><li>
-<code>el_pairwise()</code> is removed.</li></ul></div>
+<code>el_pairwise()</code> and <code>lht()</code> are removed.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.2" id="melt-152">melt 1.5.2<a class="anchor" aria-label="anchor" href="#melt-152"></a></h2><p class="text-muted">CRAN release: 2022-06-15</p>
