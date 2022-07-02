@@ -56,15 +56,16 @@
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-1-5-2-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-2-9000"></a></h4>
-<ul><li><p>New package dependencies are added (<code>BH</code>, <code>dqrng</code>, and <code>graphics</code>).</p></li>
+<ul><li><p>New package dependencies are added (BH, dqrng, and graphics).</p></li>
 <li><p>New <code><a href="../reference/elt.html">elt()</a></code> replaces <code>lht()</code>. It accepts additional arguments <code>alpha</code> and <code>calibrate</code>.</p></li>
 <li><p>New <code><a href="../reference/elmt.html">elmt()</a></code> tests multiple hypotheses with empirical likelihood.</p></li>
 <li><p>New <code><a href="../reference/weights.html">weights()</a></code> extracts rescaled weights.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="minor-improvements-1-5-2-9000">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-5-2-9000"></a></h4>
-<ul><li>
-<code>cv</code> argument in <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> defaults to <code>NULL</code>. If non-<code>NULL</code>, <code>level</code> is ignored.</li></ul></div>
+<ul><li><p><code>cv</code> argument in <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> defaults to <code>NULL</code>. If non-<code>NULL</code>, <code>level</code> is ignored.</p></li>
+<li><p><code>probit</code> link produces more accurate result in <code><a href="../reference/el_glm.html">el_glm()</a></code></p></li>
+</ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-1-5-2-9000">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-2-9000"></a></h4>
 <ul><li>
@@ -72,7 +73,7 @@
 <div class="section level4">
 <h4 id="deprecated-and-defunct-1-5-2-9000">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-2-9000"></a></h4>
 <ul><li>
-<code>el_pairwise()</code> and <code>lht()</code> are removed.</li></ul></div>
+<code>el_pairwise()</code> and <code>lht()</code> are removed along with the dependency on the RcppProgress package.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.2" id="melt-152">melt 1.5.2<a class="anchor" aria-label="anchor" href="#melt-152"></a></h2><p class="text-muted">CRAN release: 2022-06-15</p>
@@ -91,7 +92,7 @@
 <h2 class="pkg-version" data-toc-text="1.5.1" id="melt-151">melt 1.5.1<a class="anchor" aria-label="anchor" href="#melt-151"></a></h2><p class="text-muted">CRAN release: 2022-05-06</p>
 <div class="section level4">
 <h4 id="bug-fixes-1-5-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-1"></a></h4>
-<ul><li>unit test error fixed.</li></ul></div>
+<ul><li>Unit test errors are fixed.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.0" id="melt-150">melt 1.5.0<a class="anchor" aria-label="anchor" href="#melt-150"></a></h2><p class="text-muted">CRAN release: 2022-05-03</p>
@@ -117,7 +118,6 @@
 <ul><li><p>New <code>lht()</code> performs linear hypothesis testing.</p></li>
 <li><p>New <code><a href="../reference/confint.html">confint()</a></code> constructs confidence intervals.</p></li>
 <li><p>New <code><a href="../reference/logLik.html">logLik()</a></code> extracts empirical log-likelihood.</p></li>
-<li><p><code>el_test</code> objects additionally return <code>npar</code>, <code>log.prob</code>, and <code>loglik</code>.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="deprecated-and-defunct-1-4-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-4-0"></a></h4>
@@ -129,7 +129,6 @@
 <div class="section level4">
 <h4 id="new-features-1-3-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-3-0"></a></h4>
 <ul><li><p><code><a href="../reference/el_eval.html">el_eval()</a></code> is added for direct computation with custom estimating functions.</p></li>
-<li><p><code>melt</code> class replaced by <code>el_test</code> class.</p></li>
 <li><p><code><a href="../reference/el_mean.html">el_mean()</a></code> and <code><a href="../reference/el_lm.html">el_lm()</a></code> accepts an optional <code>weights</code> argument for weighted EL. Arguments on optimization are now handled by a new <code>control</code> argument. It will be used in other functions in future releases.</p></li>
 </ul></div>
 </div>
@@ -149,16 +148,11 @@
 <h2 class="pkg-version" data-toc-text="1.0.1" id="melt-101">melt 1.0.1<a class="anchor" aria-label="anchor" href="#melt-101"></a></h2><p class="text-muted">CRAN release: 2021-10-08</p>
 <div class="section level4">
 <h4 id="bug-fixes-1-0-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-1"></a></h4>
-<ul><li>Fixed header file issues related to OpenMP and C++ array class.</li></ul></div>
+<ul><li>Header file issues related to OpenMP and C++ array class are fixed.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="melt-100">melt 1.0.0<a class="anchor" aria-label="anchor" href="#melt-100"></a></h2><p class="text-muted">CRAN release: 2021-09-29</p>
-<div class="section level4">
-<h4 id="new-features-1-0-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h4>
-<ul><li><p>Currently, 4 functions are available: <code><a href="../reference/el_mean.html">el_mean()</a></code>, <code>el_test()</code>, <code>el_pairwise()</code>, and <code>el_mht()</code>.</p></li>
-<li><p><code>clothianidin</code> data set is added.</p></li>
-</ul></div>
-</div>
+<ul><li>Released on CRAN.</li></ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
