@@ -2,14 +2,14 @@
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
-  #include <omp.h>
+#include <omp.h>
 #endif
 #include <string>
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd>& x,
-                  const Eigen::Map<Eigen::VectorXd>& par0,
+Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd> &x,
+                  const Eigen::Map<Eigen::VectorXd> &par0,
                   const bool intercept,
                   const int maxit,
                   const int maxit_l,
@@ -18,7 +18,7 @@ Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd>& x,
                   const Rcpp::Nullable<double> step,
                   const Rcpp::Nullable<double> th,
                   const int nthreads,
-                  const Eigen::Map<Eigen::ArrayXd>& w) {
+                  const Eigen::Map<Eigen::ArrayXd> &w) {
   const int p = x.cols() - 1;
   const double gamma = setStep(x.rows(), step);
 
@@ -74,17 +74,17 @@ Rcpp::List testLM(const Eigen::Map<Eigen::MatrixXd>& x,
   }
 
   Rcpp::List result = Rcpp::List::create(
-    Rcpp::Named("parTests") = Rcpp::List::create(
-      Rcpp::Named("statistic") = chisq_val,
-      Rcpp::Named("convergence") = par_conv),
-    Rcpp::Named("optim") = Rcpp::List::create(
-      Rcpp::Named("par") = par,
-      Rcpp::Named("lambda") = l,
-      Rcpp::Named("iterations") = iter,
-      Rcpp::Named("convergence") = conv),
-    Rcpp::Named("logp") = logp,
-    Rcpp::Named("logl") = logl,
-    Rcpp::Named("loglr") = -nllr,
-    Rcpp::Named("statistic") = 2.0 * nllr);
+      Rcpp::Named("parTests") = Rcpp::List::create(
+          Rcpp::Named("statistic") = chisq_val,
+          Rcpp::Named("convergence") = par_conv),
+      Rcpp::Named("optim") = Rcpp::List::create(
+          Rcpp::Named("par") = par,
+          Rcpp::Named("lambda") = l,
+          Rcpp::Named("iterations") = iter,
+          Rcpp::Named("convergence") = conv),
+      Rcpp::Named("logp") = logp,
+      Rcpp::Named("logl") = logl,
+      Rcpp::Named("loglr") = -nllr,
+      Rcpp::Named("statistic") = 2.0 * nllr);
   return result;
 }

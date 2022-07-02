@@ -11,7 +11,7 @@ validate_maxit <- function(maxit) {
     error = function(e) NA
   )
   stopifnot(
-    "`maxit` must be a single integer." = (isTRUE(!is.na(maxit))),
+    "`maxit` must be a finite single integer." = (isTRUE(!is.na(maxit))),
     "`maxit` must be a positive single integer." = (maxit > 0L)
   )
   maxit
@@ -30,7 +30,7 @@ validate_maxit_l <- function(maxit_l) {
     error = function(e) NA
   )
   stopifnot(
-    "`maxit_l` must be a single integer." = (isTRUE(!is.na(maxit_l))),
+    "`maxit_l` must be a finite single integer." = (isTRUE(!is.na(maxit_l))),
     "`maxit_l` must be a positive single integer." = (maxit_l > 0L)
   )
   maxit_l
@@ -153,7 +153,7 @@ validate_seed <- function(seed) {
     warning = function(w) NA,
     error = function(e) NA
   )
-  stopifnot("`seed` must be a single integer." = (isTRUE(!is.na(seed))))
+  stopifnot("`seed` must be a finite single integer." = (isTRUE(!is.na(seed))))
   seed
 }
 
@@ -167,7 +167,7 @@ validate_seed <- function(seed) {
 validate_b <- function(b) {
   b <- tryCatch(as.integer(b), warning = function(w) NA, error = function(e) NA)
   stopifnot(
-    "`b` must be a single integer." = (isTRUE(!is.na(b))),
+    "`b` must be a finite single integer." = (isTRUE(!is.na(b))),
     "`b` must be a positive single integer." = (b > 0L)
   )
   b
@@ -183,7 +183,7 @@ validate_b <- function(b) {
 validate_m <- function(m) {
   m <- tryCatch(as.integer(m), warning = function(w) NA, error = function(e) NA)
   stopifnot(
-    "`m` must be a single integer." = (isTRUE(!is.na(m))),
+    "`m` must be a finite single integer." = (isTRUE(!is.na(m))),
     "`m` must be a positive single integer." = (m > 0L)
   )
   m
@@ -355,6 +355,25 @@ validate_cv <- function(cv, th) {
     }
   }
   cv
+}
+
+#' Validate `npoints`
+#'
+#' Validate `npoints` in [confreg()].
+#'
+#' @param npoints A single integer.
+#' @return A single integer.
+#' @noRd
+validate_npoints <- function(npoints) {
+  npoints <- tryCatch(as.integer(npoints),
+    warning = function(w) NA,
+    error = function(e) NA
+  )
+  stopifnot(
+    "`npoints` must be a finite single integer." = (isTRUE(!is.na(npoints))),
+    "`npoints` must be a positive single integer." = (npoints > 0L)
+  )
+  npoints
 }
 
 #' Validate `rhs` and `lhs`

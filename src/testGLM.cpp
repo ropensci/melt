@@ -2,15 +2,15 @@
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
-  #include <omp.h>
+#include <omp.h>
 #endif
 #include <string>
 #include <vector>
 
 // [[Rcpp::export]]
 Rcpp::List testGLM(const std::string method,
-                   const Eigen::Map<Eigen::MatrixXd>& x,
-                   const Eigen::Map<Eigen::VectorXd>& par0,
+                   const Eigen::Map<Eigen::MatrixXd> &x,
+                   const Eigen::Map<Eigen::VectorXd> &par0,
                    const bool intercept,
                    const int maxit,
                    const int maxit_l,
@@ -19,7 +19,7 @@ Rcpp::List testGLM(const std::string method,
                    const Rcpp::Nullable<double> step,
                    const Rcpp::Nullable<double> th,
                    const int nthreads,
-                   const Eigen::Map<Eigen::ArrayXd>& w) {
+                   const Eigen::Map<Eigen::ArrayXd> &w) {
   const int p = x.cols() - 1;
   const double gamma = setStep(x.rows(), step);
 
@@ -62,11 +62,10 @@ Rcpp::List testGLM(const std::string method,
   std::vector<double> chisq_val(p);
   std::vector<bool> par_conv(p);
   const double test_th = setThreshold(1, th);
-  // default(none) shared(p, maxit) schedule(auto)
   #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
   #endif
-  for (int i = 0; i < p; ++i) {
+  for (int i = 0; i < p; ++i){
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
     const CEL par_test(method, par0, x, lhs, Eigen::VectorXd::Zero(1), maxit,
@@ -76,29 +75,20 @@ Rcpp::List testGLM(const std::string method,
   }
 
   Rcpp::List result = Rcpp::List::create(
-    Rcpp::Named("parTests") = Rcpp::List::create(
-      Rcpp::Named("statistic") = chisq_val,
-      Rcpp::Named("convergence") = par_conv),
-    Rcpp::Named("optim") = Rcpp::List::create(
-      Rcpp::Named("par") = par,
-      Rcpp::Named("lambda") = l,
-      Rcpp::Named("iterations") = iter,
-      Rcpp::Named("convergence") = conv),
-    Rcpp::Named("logp") = logp,
-    Rcpp::Named("logl") = logl,
-    Rcpp::Named("loglr") = -nllr,
-    Rcpp::Named("statistic") = 2.0 * nllr);
+      Rcpp::Named("parTests") = Rcpp::List::create(
+          Rcpp::Named("statistic") = chisq_val,
+          Rcpp::Named("convergence") = par_conv),
+      Rcpp::Named("optim") = Rcpp::List::create(
+          Rcpp::Named("par") = par,
+          Rcpp::Named("lambda") = l,
+          Rcpp::Named("iterations") = iter,
+          Rcpp::Named("convergence") = conv),
+      Rcpp::Named("logp") = logp,
+      Rcpp::Named("logl") = logl,
+      Rcpp::Named("loglr") = -nllr,
+      Rcpp::Named("statistic") = 2.0 * nllr);
   return result;
 }
-
-
-
-
-
-
-
-
-
 
 // // [[Rcpp::export]]
 // Rcpp::List glm2_(

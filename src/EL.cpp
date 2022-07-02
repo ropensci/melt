@@ -54,33 +54,10 @@ Eigen::VectorXd gr_nloglr_bin_probit(
   }
 }
 
-Eigen::MatrixXd g_bin_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                          const Eigen::Ref<const Eigen::VectorXd>& par) {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  return xmat.array().colwise() * ((inverse(1.0 - log_linkinv(xmat * par))) *
-                    (y - log_linkinv(xmat * par)));
-}
-Eigen::VectorXd gr_nloglr_bin_log(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& x,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted) {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  const Eigen::ArrayXd c = square((1.0 - log_linkinv(xmat * par)).inverse()) *
-    log_linkinv(xmat * par) * (y - 1.0) *
-    inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
-  if (weighted) {
-    const Eigen::MatrixXd cx = xmat.array().colwise() * (w * c);
-    return (xmat.transpose() * cx) * l;
-  } else {
-    const Eigen::MatrixXd cx = xmat.array().colwise() * c;
-    return (xmat.transpose() * cx) * l;
-  }
-}
+
+
+
+
 
 
 // poisson family

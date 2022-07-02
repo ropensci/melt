@@ -34,9 +34,9 @@
 #' fit <- el_mean(c(x, y), 0)
 #' eld(fit)
 #' @exportMethod eld
-setGeneric("eld", function(object, control = el_control())
+setGeneric("eld", function(object, control = el_control()) {
   standardGeneric("eld")
-)
+})
 
 
 #' Empirical likelihood multiple tests
@@ -108,9 +108,9 @@ setGeneric("elmt", function(object,
                             rhs = NULL,
                             lhs = NULL,
                             alpha = 0.05,
-                            control = el_control())
+                            control = el_control()) {
   standardGeneric("elmt")
-)
+})
 
 
 #' Empirical likelihood test
@@ -193,9 +193,9 @@ setGeneric("elt", function(object,
                            lhs = NULL,
                            alpha = 0.05,
                            calibrate = c("chisq", "boot", "f"),
-                           control = el_control())
+                           control = el_control()) {
   standardGeneric("elt")
-)
+})
 
 
 #' Model coefficients
@@ -281,16 +281,17 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @usage NULL
 #' @examples
 #' fit <- el_lm(mpg ~ ., data = mtcars)
-#' confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
+#' cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
+#' plot(cr)
 #' @exportMethod confreg
 setGeneric("confreg", function(object,
                                parm,
                                level = 0.95,
                                cv = NULL,
                                npoints = 50L,
-                               control = el_control())
+                               control = el_control()) {
   standardGeneric("confreg")
-)
+})
 
 
 #' Empirical log-likelihood

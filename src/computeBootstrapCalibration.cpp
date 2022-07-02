@@ -13,13 +13,16 @@
 
 // [[Rcpp::export]]
 Rcpp::NumericVector computeBootstrapCalibration(
-    const double alpha, const double statistic, const int B, const int seed,
-    const int nthreads, const std::string method,
+    const double alpha,
+    const double statistic,
+    const int B,
+    const int seed,
+    const int nthreads,
+    const std::string method,
     const Eigen::Map<Eigen::MatrixXd> &x,
     const Eigen::Map<Eigen::VectorXd> &par, const int maxit_l,
     const double tol_l, const Rcpp::Nullable<double> th,
-    const Eigen::Map<Eigen::ArrayXd> &wt)
-{
+    const Eigen::Map<Eigen::ArrayXd> &w) {
   // estimating function
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
@@ -37,30 +40,28 @@ Rcpp::NumericVector computeBootstrapCalibration(
   // bootstrap statistics
   std::vector<double> boot_statistic(B);
   const double test_th = setThreshold(par.size(), th);
-#ifdef _OPENMP
-#pragma omp parallel num_threads(nthreads)
+  #ifdef _OPENMP
+  #pragma omp parallel num_threads(nthreads)
   {
-#endif
+  #endif
     // make thread local copy of gen
     dqrng::xoshiro256plus lgen(gen);
-#ifdef _OPENMP
+  #ifdef _OPENMP
     // advance gen by 1 ... nthreads jumps
     lgen.jump(omp_get_thread_num() + 1);
-#pragma omp for
-#endif
-    for (int i = 0; i < B; ++i)
-    {
+  #pragma omp for
+  #endif
+    for (int i = 0; i < B; ++i) {
       Eigen::MatrixXd boot_g(n, p);
-      for (int j = 0; j < n; ++j)
-      {
+      for (int j = 0; j < n; ++j) {
         boot_g.row(j) = g0.row(u(lgen));
       }
-      const EL el(boot_g, maxit_l, tol_l, test_th, wt);
+      const EL el(boot_g, maxit_l, tol_l, test_th, w);
       boot_statistic[i] = 2.0 * el.nllr;
     }
-#ifdef _OPENMP
+  #ifdef _OPENMP
   }
-#endif
+  #endif
   // p-value
   const double pval = count_if(boot_statistic.begin(), boot_statistic.end(),
                                [statistic](double x)

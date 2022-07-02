@@ -19,9 +19,9 @@ setMethod("elmt", "EL", function(object,
   tol_l <- control@tol_l
   step <- control@step
   th <- control@th
-  M <- control@m
+  m <- control@m
   out <- testMultipleHypotheses(
-    alpha, h$q, h$m, M, method, coef(object), getDataMatrix(object), h$r,
+    alpha, h$q, h$m, m, method, coef(object), getDataMatrix(object), h$r,
     h$l, maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("ELMT",

@@ -2,7 +2,7 @@
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
-  #include <omp.h>
+#include <omp.h>
 #endif
 #include <string>
 #include <vector>
@@ -10,12 +10,12 @@
 // [[Rcpp::export]]
 Rcpp::NumericVector computeConfidenceRegion(
     const std::string method,
-    const Eigen::Map<Eigen::VectorXd>& par0,
-    const Eigen::Map<Eigen::MatrixXd>& x,
+    const Eigen::Map<Eigen::VectorXd> &par0,
+    const Eigen::Map<Eigen::MatrixXd> &x,
     const int npar,
     const double cv,
-    const Rcpp::IntegerVector& idx,
-    const Eigen::Map<Eigen::MatrixXd>& circ,
+    const Rcpp::IntegerVector &idx,
+    const Eigen::Map<Eigen::MatrixXd> &circ,
     const int maxit,
     const int maxit_l,
     const double tol,
@@ -23,7 +23,7 @@ Rcpp::NumericVector computeConfidenceRegion(
     const Rcpp::Nullable<double> step,
     const Rcpp::Nullable<double> th,
     const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd>& w) {
+    const Eigen::Map<Eigen::ArrayXd> &w) {
   // confidence region (vector)
   std::vector<double> cr(circ.cols());
   // step size

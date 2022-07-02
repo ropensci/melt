@@ -60,12 +60,12 @@ setMethod("elt", "EL", function(object,
 })
 
 #' @rdname elt
-setMethod("elt", "missing",function(object,
-                                    rhs = NULL,
-                                    lhs = NULL,
-                                    alpha,
-                                    calibrate = c("chisq", "boot", "f"),
-                                    control = el_control()) {
+setMethod("elt", "missing", function(object,
+                                     rhs = NULL,
+                                     lhs = NULL,
+                                     alpha,
+                                     calibrate = c("chisq", "boot", "f"),
+                                     control = el_control()) {
   stopifnot(
     # "'object' has no 'data'; fit the model with 'model' = TRUE" =
     #   (length(getDataMatrix(object)) > 1L),

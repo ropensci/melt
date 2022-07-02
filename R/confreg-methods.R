@@ -5,10 +5,8 @@ setMethod("confreg", "EL", function(object,
                                     cv = NULL,
                                     npoints = 50L,
                                     control = el_control()) {
-  if (npoints > 3000L) {
-    stop("sefsef")
-  }
-
+  level <- validate_level(level)
+  npoints <- validate_npoints(npoints)
   if (!is(control, "ControlEL")) {
     stop("invalid `control` specified.")
   }
@@ -50,7 +48,6 @@ setMethod("confreg", "EL", function(object,
     est <- est[idx]
     pnames <- pnames[idx]
   }
-  level <- validate_level(level)
   if (isTRUE(all.equal(level, 0))) {
     return(new("ConfregEL",
       points = matrix(est, nrow = 1L), estimates = est, level = level, cv = Inf,
@@ -64,10 +61,6 @@ setMethod("confreg", "EL", function(object,
   } else {
     cv <- validate_cv(cv, control@th)
     level <- NA_real_
-  }
-  npoints <- as.integer(npoints)
-  if (npoints <= 0) {
-    stop("`npoints` must be a positive integer.")
   }
   w <- getWeights(object)
   ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]

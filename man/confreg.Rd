@@ -46,7 +46,8 @@ parameters.
 }
 \examples{
 fit <- el_lm(mpg ~ ., data = mtcars)
-confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
+cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
+plot(cr)
 }
 \references{
 Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”

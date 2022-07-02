@@ -15,6 +15,6 @@ setMethod("eld", "EL", function(object, control = el_control()) {
 })
 
 #' @rdname eld
-setMethod("eld", "missing",function(object, control = el_control()) {
+setMethod("eld", "missing", function(object, control = el_control()) {
   NULL
 })
