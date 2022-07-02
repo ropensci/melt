@@ -61,6 +61,11 @@
 #' @importFrom stats .getXlevels is.empty.model lm.fit lm.wfit model.matrix
 #'   model.response model.weights pchisq
 #' @export
+#' @srrstats {G5.8, G5.8d} Data with more fields than observations produces an
+#'   error.
+#' @srrstats {RE1.0} Formula interface is used to the `formula` argument.
+#' @srrstats {RE4.0} `el_lm()` returns an object of class \linkS4class{LM}.
+#' @srrstats {RE4.4} Model specification is done through `formula()`.
 el_lm <- function(formula,
                   data,
                   weights = NULL,

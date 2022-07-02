@@ -1,4 +1,5 @@
 #' @rdname confint
+#' @srrstats {RE4.3} `confint()` method is exported.
 setMethod("confint", "EL", function(object,
                                     parm,
                                     level = 0.95,

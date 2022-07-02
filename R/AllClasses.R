@@ -66,6 +66,11 @@
 #'   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
 #' @examples
 #' showClass("EL")
+#' @srrstats {G1.0} References are included throughout the package
+#'   documentation.
+#' @srrstats {G1.4} `roxygen2` is used to document all functions.
+#' @srrstats {G1.3} Statistical terminology is unambiguously defined throughout
+#'   the package documentation.
 setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
@@ -129,6 +134,11 @@ setClass("EL",
 #'   Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
 #' @examples
 #' showClass("CEL")
+#' @srrstats {G1.1} The package attempts the first implementation of the nested
+#'   bilevel optimization approach within R to compute constrained empirical
+#'   likelihood. The inner layer Newton-Raphson method for empirical likelihood
+#'   is written in C++, enabling faster computation than other packages written
+#'   in R.
 setClass("CEL", contains = "EL")
 
 

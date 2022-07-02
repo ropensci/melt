@@ -1,7 +1,6 @@
 ---
 title: "Introduction to melt"
 author: Eunseop Kim
-date: '`r format(Sys.Date(), "%Y-%m-%d")`'
 output: 
   rmarkdown::html_vignette:
     fig_width: 7

@@ -1,6 +1,7 @@
 #' @importFrom methods is
 #' @importFrom stats pchisq
 #' @rdname elt
+#' @srrstats {G2.3a} `match.arg()` is used to the `calibrate` argument.
 setMethod("elt", "EL", function(object,
                                 rhs = NULL,
                                 lhs = NULL,
