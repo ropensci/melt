@@ -159,6 +159,61 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
 
 
 
+Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                            const Eigen::Ref<const Eigen::VectorXd>& par) {
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  return xmat.array().colwise() * (y - logit_linkinv(xmat * par));
+}
+Eigen::VectorXd gr_nloglr_bin_logit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted) {
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  Eigen::ArrayXd c = -logit_linkinv(xmat * par) *
+    (1.0 - logit_linkinv(xmat * par));
+  if (weighted) {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
+  } else {
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
+  }
+  return (xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
+}
+
+Eigen::MatrixXd g_bin_probit(const Eigen::Ref<const Eigen::MatrixXd>& x,
+                             const Eigen::Ref<const Eigen::VectorXd>& par) {
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::ArrayXd phi = 0.5 * M_SQRT1_2 * M_2_SQRTPI *
+    exp(-0.5 * (xmat * par).array().square());
+  return xmat.array().colwise() *
+    ((y * inverse(probit_linkinv(xmat * par)) - 1.0) * phi);
+}
+Eigen::VectorXd gr_nloglr_bin_probit(
+    const Eigen::Ref<const Eigen::VectorXd>& l,
+    const Eigen::Ref<const Eigen::MatrixXd>& g,
+    const Eigen::Ref<const Eigen::MatrixXd>& x,
+    const Eigen::Ref<const Eigen::VectorXd>& par,
+    const Eigen::Ref<const Eigen::ArrayXd>& w,
+    const bool weighted) {
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::ArrayXd phi = 0.5 * M_SQRT1_2 * M_2_SQRTPI *
+    exp(-0.5 * (xmat * par).array().square());
+  const Eigen::ArrayXd dphi = -0.5 * M_SQRT1_2 * M_2_SQRTPI *
+    exp(-0.5 * (xmat * par).array().square()) * (xmat * par).array();
+  Eigen::ArrayXd c = y * (dphi * inverse(probit_linkinv(xmat * par)) -
+    square(inverse(probit_linkinv(xmat * par)) * phi)) - dphi;
+  if (weighted) {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
+  } else {
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
+  }
+  return (xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
+}
 
 Eigen::MatrixXd g_bin_log(const Eigen::Ref<const Eigen::MatrixXd>& x,
                           const Eigen::Ref<const Eigen::VectorXd>& par) {
@@ -176,16 +231,6 @@ Eigen::VectorXd gr_nloglr_bin_log(
     const bool weighted) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  // const Eigen::ArrayXd c = square((1.0 - log_linkinv(xmat * par)).inverse()) *
-  //   log_linkinv(xmat * par) * (y - 1.0) *
-  //   inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
-  // if (weighted) {
-  //   const Eigen::MatrixXd cx = xmat.array().colwise() * (w * c);
-  //   return (xmat.transpose() * cx) * l;
-  // } else {
-  //   const Eigen::MatrixXd cx = xmat.array().colwise() * c;
-  //   return (xmat.transpose() * cx) * l;
-  // }
   Eigen::ArrayXd c = square((1.0 - log_linkinv(xmat * par)).inverse()) *
     log_linkinv(xmat * par) * (y - 1.0);
   if (weighted) {
@@ -224,8 +269,8 @@ g_fn2(const std::string method) {
              {"gaussian_identity", g_lm},
              {"gaussian_log", g_gauss_log},
              {"gaussian_inverse", g_gauss_inverse},
-             // {"binomial_logit", g_bin_logit},
-             // {"binomial_probit", g_bin_probit},
+             {"binomial_logit", g_bin_logit},
+             {"binomial_probit", g_bin_probit},
              {"binomial_log", g_bin_log}}};
   return g_map[method];
 }

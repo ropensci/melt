@@ -2,57 +2,8 @@
 #include "utils.h"
 
 // binomial family
-Eigen::MatrixXd g_bin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                            const Eigen::Ref<const Eigen::VectorXd>& par) {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  return xmat.array().colwise() * (y - logit_linkinv(xmat * par));
-}
-Eigen::VectorXd gr_nloglr_bin_logit(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted) {
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd num =
-    logit_linkinv(x * par) * (1.0 - logit_linkinv(x * par));
-  const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + g * l;
-  if (weighted) {
-    const Eigen::MatrixXd cx = x.array().colwise() * (w * num / denom);
-    return -(x.transpose() * cx) * l;
-  } else {
-    const Eigen::MatrixXd cx = x.array().colwise() * (num / denom);
-    return -(x.transpose() * cx) * l;
-  }
-}
 
-Eigen::MatrixXd g_bin_probit(const Eigen::Ref<const Eigen::MatrixXd>& data,
-                             const Eigen::Ref<const Eigen::VectorXd>& par) {
-  const Eigen::ArrayXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  return x.array().colwise() * (y - probit_linkinv(x * par));
-}
-Eigen::VectorXd gr_nloglr_bin_probit(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& data,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted) {
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
-  const Eigen::ArrayXd num =
-    -exp(-(x * par).array().square() * 0.5) * M_SQRT1_2 * M_2_SQRTPI * 0.5;
-  const Eigen::ArrayXd denom = Eigen::VectorXd::Ones(g.rows()) + g * l;
-  if (weighted) {
-    const Eigen::MatrixXd cx = x.array().colwise() * (w * num / denom);
-    return -(x.transpose() * cx) * l;
-  } else {
-    const Eigen::MatrixXd cx = x.array().colwise() * (num / denom);
-    return -(x.transpose() * cx) * l;
-  }
-}
+
 
 
 

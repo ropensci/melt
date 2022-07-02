@@ -1,5 +1,6 @@
 Adimari
 Annamaria
+BH
 Behaviour
 Biometrika
 CMD
@@ -26,6 +27,7 @@ Qin
 Raphson
 RcppEigen
 RcppEigen’
+RcppProgress
 Rescaled
 Sinica
 Statistica
@@ -34,16 +36,10 @@ Yichuan
 Zhang
 Zhao
 Zhu
-al
 arxiv
 clothianidin
 coercible
-confint
-confreg
-el
-elt
-et
-eval
+dqrng
 minimizations
 nonconvex
 optimality
