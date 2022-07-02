@@ -124,74 +124,9 @@ The Annals of Statistics 18 (1): 90–120. <a href="https://doi.org/10.1214/aos/
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">confreg</span><span class="op">(</span><span class="va">fit</span>, parm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, level <span class="op">=</span> <span class="fl">0.95</span>, cv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">qchisq</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "ConfregEL"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "points":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              [,1]        [,2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] -0.42678529 0.013335240</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,] -0.16784831 0.006209274</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] -0.14138448 0.005646927</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,] -0.13127516 0.005482134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,] -0.12588240 0.005395725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,] -0.12244339 0.005341155</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,] -0.11999490 0.005302105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,] -0.11811030 0.005272809</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,] -0.11657249 0.005248477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,] -0.11525536 0.005228197</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11,] -0.11408071 0.005209443</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12,] -0.11299374 0.005192730</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13,] -0.11195372 0.005177427</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14,] -0.11092621 0.005161246</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15,] -0.10987810 0.005144954</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16,] -0.10877372 0.005127813</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17,] -0.10756996 0.005109979</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18,] -0.10620728 0.005089045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19,] -0.10459801 0.005064121</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20,] -0.10260103 0.005034443</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21,] -0.09993529 0.004976233</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22,] -0.09607175 0.004886210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23,] -0.08972953 0.004739268</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [24,] -0.07679663 0.004440211</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25,] -0.03701314 0.003932881</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [26,]  0.41320342 0.013335240</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27,] -0.04541215 0.021676557</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [28,] -0.07680309 0.022228609</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29,] -0.08840125 0.022457116</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [30,] -0.09463265 0.022575419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31,] -0.09862985 0.022642707</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [32,] -0.10146855 0.022699505</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33,] -0.10366489 0.022734306</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [34,] -0.10544742 0.022778788</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [35,] -0.10698362 0.022806544</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36,] -0.10835731 0.022824255</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37,] -0.10962452 0.022854820</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [38,] -0.11084064 0.022869345</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [39,] -0.11204217 0.022898851</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [40,] -0.11326769 0.022913837</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [41,] -0.11456048 0.022937630</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [42,] -0.11596839 0.022957553</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43,] -0.11756895 0.022992170</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [44,] -0.11945314 0.023020885</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [45,] -0.12180102 0.023064440</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [46,] -0.12491540 0.023125345</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [47,] -0.12935645 0.023184631</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [48,] -0.13670888 0.023339708</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [49,] -0.15142986 0.023602767</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50,] -0.19954542 0.024465483</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "estimates":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         cyl        disp </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -0.11144048  0.01333524 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "level":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "cv":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.991465</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "pnames":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cyl"  "disp"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">cr</span> <span class="op">&lt;-</span> <span class="fu">confreg</span><span class="op">(</span><span class="va">fit</span>, parm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, level <span class="op">=</span> <span class="fl">0.95</span>, cv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">qchisq</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">cr</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="confreg-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
