@@ -5,7 +5,7 @@
 \alias{logLikEL-class}
 \alias{logLikEL}
 \alias{print,logLikEL-method}
-\title{S4 class \linkS4class{logLikEL}}
+\title{\linkS4class{logLikEL} class}
 \usage{
 \S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
 }

@@ -7,6 +7,8 @@
 #' @srrstats {G1.4a} All internal functions are documented in `roxygen2` format
 #'   with `@noRd` tags.
 #' @srrstats {G2.4, G2.4a} `as.integer()` is used to the `maxit` argument.
+#' @srrstats {G2.2} Multivariate input for the `maxit` argument produces an
+#'   error.
 #' @noRd
 validate_maxit <- function(maxit) {
   maxit <- tryCatch(as.integer(maxit),

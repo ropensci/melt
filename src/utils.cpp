@@ -125,9 +125,8 @@ Eigen::VectorXd gr_nloglr_gauss_log(
     const bool weighted) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  Eigen::ArrayXd c = (y * log_linkinv(xmat * par) -
-                      2.0 * log_linkinv(2.0 * xmat * par)) *
-                     inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  Eigen::ArrayXd c = y * log_linkinv(xmat * par) -
+    2.0 * log_linkinv(2.0 * xmat * par);
   if (weighted){
     c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
   } else {

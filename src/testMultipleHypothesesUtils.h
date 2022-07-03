@@ -6,11 +6,24 @@
 
 Eigen::RowVectorXd rmvn(const Eigen::Ref<const Eigen::MatrixXd> &sqrt);
 
-Eigen::MatrixXd w_mean(const Eigen::Ref<const Eigen::MatrixXd> &x);
-Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x);
+Eigen::MatrixXd w_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                       const Eigen::Ref<const Eigen::VectorXd> &est);
+Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                     const Eigen::Ref<const Eigen::VectorXd> &est);
+Eigen::MatrixXd w_gaussian_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                               const Eigen::Ref<const Eigen::VectorXd> &est);
+
+
+
+
+
+
+
+
 
 Eigen::MatrixXd dg0_inv(const std::string method,
-                        const Eigen::Ref<const Eigen::MatrixXd> &x);
+                        const Eigen::Ref<const Eigen::MatrixXd> &x,
+                        const Eigen::Ref<const Eigen::VectorXd> &est);
 
 Eigen::MatrixXd smat(const std::string method,
                      const Eigen::Ref<const Eigen::VectorXd> &est,

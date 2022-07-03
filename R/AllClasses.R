@@ -1,4 +1,4 @@
-#' S4 class \linkS4class{EL}
+#' \linkS4class{EL} class
 #'
 #' S4 class for empirical likelihood.
 #'
@@ -87,7 +87,7 @@ setClass("EL",
 )
 
 
-#' S4 class \linkS4class{CEL}
+#' \linkS4class{CEL} class
 #'
 #' S4 class for constrained empirical likelihood. It inherits from
 #' \linkS4class{EL} class. Note that `optim` slot has constrained optimization
@@ -142,14 +142,14 @@ setClass("EL",
 setClass("CEL", contains = "EL")
 
 
-#' S4 class \linkS4class{LM}
+#' \linkS4class{LM} class
 #'
 #' S4 class for linear models with empirical likelihood. It inherits from
 #' \linkS4class{CEL} class.
 #'
 #' @details If there is no intercept in a model, `optim` slot need to be
-#' understood in terms of \linkS4class{EL} class since constrained optimization
-#' is not involved in the overall test.
+#'   understood in terms of \linkS4class{EL} class since constrained
+#'   optimization is not involved in the overall test.
 #' @slot parTests A list with the test results for each parameter:
 #'   \itemize{
 #'   \item{`statistic ` }{A numeric vector of the empirical likelihood
@@ -158,13 +158,13 @@ setClass("CEL", contains = "EL")
 #'   tests for each parameter.}
 #'   }
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
-#' They are used in other generics and methods.
+#'   They are used in other generics and methods.
 #' @aliases LM
 #' @examples
 #' showClass("LM")
 setClass("LM", contains = "CEL", slots = c(parTests = "list", misc = "list"))
 
-#' S4 class \linkS4class{GLM}
+#' \linkS4class{GLM} class
 #'
 #' S4 class for generalized linear models with empirical likelihood. It inherits
 #' from \linkS4class{LM} class.
@@ -175,7 +175,7 @@ setClass("LM", contains = "CEL", slots = c(parTests = "list", misc = "list"))
 setClass("GLM", contains = "LM")
 
 
-#' S4 class \linkS4class{ConfregEL}
+#' \linkS4class{ConfregEL} class
 #'
 #' S4 class for confidence region.
 #'
@@ -200,7 +200,7 @@ setClass("ConfregEL",
 )
 
 
-#' S4 class \linkS4class{ControlEL}
+#' \linkS4class{ControlEL} class
 #'
 #' S4 class for computational details of empirical likelihood.
 #'
@@ -237,7 +237,7 @@ setClass("ControlEL",
 )
 
 
-#' S4 class \linkS4class{ELD}
+#' \linkS4class{ELD} class
 #'
 #' S4 class for empirical likelihood displacement.
 #'
@@ -248,7 +248,7 @@ setClass("ControlEL",
 setClass("ELD", slots = c(eld = "numeric"))
 
 
-#' S4 class \linkS4class{ELT}
+#' \linkS4class{ELT} class
 #'
 #' S4 class for empirical likelihood test.
 #'
@@ -271,7 +271,7 @@ setClass("ELT",
 )
 
 
-#' S4 class \linkS4class{ELMT}
+#' \linkS4class{ELMT} class
 #'
 #' S4 class for empirical likelihood multiple tests.
 #'
@@ -292,7 +292,7 @@ setClass("ELMT",
 )
 
 
-#' S4 class \linkS4class{logLikEL}
+#' \linkS4class{logLikEL} class
 #'
 #' S4 class for empirical log-likelihood.
 #'
@@ -305,7 +305,7 @@ setClass("ELMT",
 setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))
 
 
-#' S4 class \linkS4class{SummaryLM}
+#' \linkS4class{SummaryLM} class
 #'
 #' S4 class for a summary of \linkS4class{LM} objects.
 #'

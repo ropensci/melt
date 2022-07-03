@@ -5,7 +5,7 @@
 \alias{ELT-class}
 \alias{ELT}
 \alias{print,ELT-method}
-\title{S4 class \linkS4class{ELT}}
+\title{\linkS4class{ELT} class}
 \usage{
 \S4method{print}{ELT}(x, digits = getOption("digits"), ...)
 }

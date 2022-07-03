@@ -40,7 +40,7 @@ Rcpp::List testMultipleHypotheses(const double alpha,
   const Eigen::MatrixXd sqrt_s = es.operatorSqrt();
   // ahat matrices
   const int p = est.size();
-  const Eigen::MatrixXd h = dg0_inv(method, x);
+  const Eigen::MatrixXd h = dg0_inv(method, x, est);
   Eigen::MatrixXd amat(p, p * m);
   for (int j = 0; j < m; ++j) {
     const Eigen::MatrixXd l = lhs.middleRows(q(j), q(j + 1) - q(j));

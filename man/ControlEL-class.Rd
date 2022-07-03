@@ -4,7 +4,7 @@
 \name{ControlEL-class}
 \alias{ControlEL-class}
 \alias{ControlEL}
-\title{S4 class \linkS4class{ControlEL}}
+\title{\linkS4class{ControlEL} class}
 \description{
 S4 class for computational details of empirical likelihood.
 }

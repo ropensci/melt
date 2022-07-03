@@ -115,7 +115,7 @@ el_glm <- function(formula,
     return(new("GLM",
       misc = list(
         call = cl, formula = formula, terms = mt, offset = NULL,
-        control = glm_control, method = "glm.fit",
+        control = glm_control, intercept = FALSE, method = "glm.fit",
         contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
         na.action = attr(mf, "na.action")
       ),
@@ -158,9 +158,9 @@ el_glm <- function(formula,
     misc = list(
       family = fit$family, iter = fit$iter, converged = fit$converged,
       boundary = fit$boundary, call = cl, formula = formula, terms = mt,
-      offset = NULL, control = glm_control, method = "glm.fit",
-      contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
-      na.action = attr(mf, "na.action")
+      offset = NULL, control = glm_control, intercept = intercept,
+      method = "glm.fit", contrasts = attr(X, "contrasts"),
+      xlevels = .getXlevels(mt, mf), na.action = attr(mf, "na.action")
     ),
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
     statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,

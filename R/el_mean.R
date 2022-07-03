@@ -38,6 +38,10 @@
 #' @importFrom methods is new
 #' @importFrom stats pchisq
 #' @export
+#' @srrstats {G2.0, G2.0a} Assertions on lengths of inputs are clarified
+#'   throughout the package documentation.
+#' @srrstats {G2.16} All functions in the package strictly prohibit undefined
+#'   values. They will trigger error messages in all cases.
 el_mean <- function(x,
                     par,
                     weights = NULL,

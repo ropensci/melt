@@ -5,7 +5,7 @@
 \alias{SummaryLM-class}
 \alias{SummaryLM}
 \alias{print,SummaryLM-method}
-\title{S4 class \linkS4class{SummaryLM}}
+\title{\linkS4class{SummaryLM} class}
 \usage{
 \S4method{print}{SummaryLM}(
   x,

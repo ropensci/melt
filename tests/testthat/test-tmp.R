@@ -1,3 +1,38 @@
+test_that("parallel computation yields the same results (gaussian - log)", {
+  skip_on_cran()
+  set.seed(23)
+  n <- 100
+  p <- 3
+  b <- rnorm(p, mean = 0, sd = 0.1)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 2), times = 50)
+  l <- 3 + x %*% as.vector(b)
+  mu <- exp(l)
+  y <- vapply(mu, FUN = function(x) rnorm(1, x), FUN.VALUE = numeric(1))
+  df <- data.frame(cbind(y, x))
+  fit <- el_glm(y ~ .,
+                family = gaussian("log"), data = df,
+                control = el_control(nthreads = 1)
+  )
+  fit2 <- el_glm(y ~ ., family = gaussian("log"), data = df)
+  expect_equal(fit@optim, fit2@optim)
+  expect_equal(fit@parTests, fit2@parTests)
+  wfit <- el_glm(y ~ .,
+                 family = gaussian("log"), data = df, weights = w,
+                 control = el_control(nthreads = 1)
+  )
+  wfit2 <- el_glm(y ~ ., family = gaussian("log"), data = df, weights = w)
+  expect_equal(wfit@optim, wfit2@optim)
+  expect_equal(wfit@parTests, wfit2@parTests)
+})
+
+
+
+
+
+
+
+
 test_that("parallel computation yields the same results (binomial - logit)", {
   skip_on_cran()
   set.seed(54324)

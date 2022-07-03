@@ -5,7 +5,7 @@
 \alias{EL-class}
 \alias{EL}
 \alias{print,EL-method}
-\title{S4 class \linkS4class{EL}}
+\title{\linkS4class{EL} class}
 \usage{
 \S4method{print}{EL}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }

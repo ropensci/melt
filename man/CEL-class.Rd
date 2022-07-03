@@ -4,7 +4,7 @@
 \name{CEL-class}
 \alias{CEL-class}
 \alias{CEL}
-\title{S4 class \linkS4class{CEL}}
+\title{\linkS4class{CEL} class}
 \description{
 S4 class for constrained empirical likelihood. It inherits from
 \linkS4class{EL} class. Note that \code{optim} slot has constrained optimization

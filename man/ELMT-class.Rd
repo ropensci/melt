@@ -5,7 +5,7 @@
 \alias{ELMT-class}
 \alias{ELMT}
 \alias{print,ELMT-method}
-\title{S4 class \linkS4class{ELMT}}
+\title{\linkS4class{ELMT} class}
 \usage{
 \S4method{print}{ELMT}(
   x,

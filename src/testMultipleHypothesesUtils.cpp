@@ -14,22 +14,36 @@ Eigen::RowVectorXd rmvn(const Eigen::Ref<const Eigen::MatrixXd> &sqrt) {
   return u * sqrt;
 }
 
-Eigen::MatrixXd w_mean(const Eigen::Ref<const Eigen::MatrixXd> &x) {
+Eigen::MatrixXd w_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                       const Eigen::Ref<const Eigen::VectorXd> &est) {
   return Eigen::MatrixXd::Identity(x.cols(), x.cols());
 }
-Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x) {
+Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                     const Eigen::Ref<const Eigen::VectorXd> &est) {
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return static_cast<double>(x.rows()) * (xmat.transpose() * xmat).inverse();
 }
+Eigen::MatrixXd w_gaussian_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                               const Eigen::Ref<const Eigen::VectorXd> &est) {
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  Eigen::ArrayXd c = y * log_linkinv(xmat * est) -
+    2.0 * log_linkinv(2.0 * xmat * est);
+  return static_cast<double>(x.rows()) *
+    (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
+}
+
 
 Eigen::MatrixXd dg0_inv(const std::string method,
-                        const Eigen::Ref<const Eigen::MatrixXd> &x) {
+                        const Eigen::Ref<const Eigen::MatrixXd> &x,
+                        const Eigen::Ref<const Eigen::VectorXd> &est) {
   std::map<std::string, std::function<Eigen::MatrixXd(
-                            const Eigen::Ref<const Eigen::MatrixXd> &)>>
+                            const Eigen::Ref<const Eigen::MatrixXd> &,
+                            const Eigen::Ref<const Eigen::VectorXd> &)>>
       w_map{{{"mean", w_mean},
              {"lm", w_lm},
              {"gaussian_identity", w_lm},
-             {"gaussian_log", w_mean},
+             {"gaussian_log", w_gaussian_log},
              {"gaussian_inverse", w_mean},
              {"binomial_logit", w_mean},
              {"binomial_probit", w_mean},
@@ -38,7 +52,7 @@ Eigen::MatrixXd dg0_inv(const std::string method,
              {"poisson_identity", w_mean},
              {"poisson_sqrt", w_mean},
              {"quasibinomial_logit", w_mean}}};
-  return w_map[method](x);
+  return w_map[method](x, est);
 }
 
 Eigen::MatrixXd smat(const std::string method,
