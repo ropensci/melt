@@ -141,7 +141,7 @@ Eigen::MatrixXd g_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd> &x,
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return xmat.array().colwise() *
          (-(y - inverse_linkinv(xmat * par)) *
-         inverse_linkinv(xmat * par).square());
+         square(inverse_linkinv(xmat * par)));
 }
 Eigen::VectorXd gr_nloglr_gauss_inverse(
     const Eigen::Ref<const Eigen::VectorXd> &l,
@@ -152,7 +152,7 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
     const bool weighted) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  Eigen::ArrayXd c = inverse_linkinv(xmat * par).cube() *
+  Eigen::ArrayXd c = cube(inverse_linkinv(xmat * par)) *
                      (2.0 * y - 3.0 * inverse_linkinv(xmat * par));
   if (weighted) {
     c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;

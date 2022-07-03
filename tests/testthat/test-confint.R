@@ -1,4 +1,4 @@
-test_that("invalid 'parm'", {
+test_that("Invalid `parm`.", {
   fit <- el_mean(women$height, par = 67)
   expect_error(confint(fit, parm = NA))
   expect_error(confint(fit, parm = NULL))
@@ -6,7 +6,7 @@ test_that("invalid 'parm'", {
   expect_error(confint(fit, parm = Inf))
 })
 
-test_that("invalid 'level'", {
+test_that("Invalid `level`.", {
   fit <- el_mean(women$height, par = 67)
   expect_error(confint(fit, level = -1))
   expect_error(confint(fit, level = 2))
@@ -14,31 +14,31 @@ test_that("invalid 'level'", {
   expect_error(confint(fit, level = c(0, 0)))
 })
 
-test_that("invalid 'control'", {
+test_that("Invalid `control`.", {
   fit <- el_mean(women$height, par = 67)
   expect_error(confint(fit, control = list(maxit = 67)))
 })
 
-test_that("'level' == 1", {
+test_that("`level` == 1.", {
   fit <- el_mean(women$height, par = 67)
   ci <- confint(fit, level = 1)
   expect_equal(ci[1], -Inf)
   expect_equal(ci[2], Inf)
 })
 
-test_that("'level' == 0", {
+test_that("`level` == 0.", {
   fit <- el_mean(women$height, par = 67)
   ci <- confint(fit, level = 0)
   expect_equal(ci[2] - ci[1], 0)
 })
 
-test_that("empty model", {
+test_that("Empty model.", {
   fit <- el_lm(mpg ~ -1, data = mtcars)
   ci <- confint(fit)
   expect_equal(nrow(ci), 0)
 })
 
-test_that("'nthreads' == 1", {
+test_that("`nthreads` == 1.", {
   mpg <- mtcars$mpg
   disp <- mtcars$disp
   hp <- mtcars$hp
@@ -51,14 +51,14 @@ test_that("'nthreads' == 1", {
   expect_equal(ci1, ci2)
 })
 
-test_that("unnamed coefficients", {
+test_that("Unnamed coefficients.", {
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
   names(fit@coefficients) <- NULL
   expect_type(confint(fit, parm = c(1, 2)), "double")
   expect_type(confint(fit), "double")
 })
 
-test_that("character specification for 'parm'", {
+test_that("Character specification for `parm`.", {
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
   expect_type(confint(fit, parm = c("eruptions2", "eruptions3")), "double")
   expect_type(confint(fit, parm = c("eruptions", "eruptions2")), "double")

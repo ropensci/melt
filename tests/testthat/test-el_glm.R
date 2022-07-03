@@ -1,11 +1,11 @@
-test_that("invalid 'formula'", {
+test_that("Invalid `formula`.", {
   expect_error(el_glm(cbind(group, ID) ~ extra,
     family = binomial,
     data = sleep
   ))
 })
 
-test_that("invalid 'family'", {
+test_that("Invalid `family`.", {
   expect_error(el_glm(ID ~ extra, family = binomial("cauchit"), data = sleep))
   expect_error(el_glm(ID ~ extra, family = binomial("cloglog"), data = sleep))
   expect_error(el_glm(ID ~ extra, family = "error", data = sleep))
@@ -24,7 +24,7 @@ test_that("invalid 'family'", {
   ))
 })
 
-test_that("invalid 'data'", {
+test_that("Invalid `data`.", {
   x <- warpbreaks$breaks
   x2 <- x
   y <- warpbreaks$wool
@@ -32,7 +32,7 @@ test_that("invalid 'data'", {
   expect_error(el_glm(y ~ ., family = binomial, data = df))
 })
 
-test_that("invalid 'weights'", {
+test_that("Invalid `weights`.", {
   expect_error(el_glm(wool ~ .,
     family = binomial, data = warpbreaks,
     weights = rep("error", 54)
@@ -43,14 +43,14 @@ test_that("invalid 'weights'", {
   ))
 })
 
-test_that("invalid 'control'", {
+test_that("Invalid `control`.", {
   expect_error(el_glm(wool ~ .,
     family = binomial, data = warpbreaks,
     control = list(maxit = 2L)
   ))
 })
 
-test_that("empty model", {
+test_that("Empty model.", {
   optcfg <- el_control(tol = 1e-08, th = 1e+10)
   fit <- el_glm(wool ~ 0,
     family = binomial, data = warpbreaks,
@@ -59,7 +59,7 @@ test_that("empty model", {
   expect_output(print(summary(fit)))
 })
 
-test_that("probabilities add up to 1", {
+test_that("Probabilities add up to 1.", {
   breaks <- warpbreaks$breaks
   wool <- warpbreaks$wool
   tension <- warpbreaks$tension
@@ -74,7 +74,7 @@ test_that("probabilities add up to 1", {
   expect_equal(sum(exp(wfit@logp)), 1)
 })
 
-test_that("conversion between loglik and loglr", {
+test_that("conversion between `loglik` and `loglr`.", {
   fit <- el_glm(wool ~ ., family = binomial, data = warpbreaks)
   wfit <- el_glm(wool ~ .,
     family = binomial, data = warpbreaks,
@@ -86,15 +86,41 @@ test_that("conversion between loglik and loglr", {
   expect_equal(wfit@logl + sum(w * (log(n) - log(w))), wfit@loglr)
 })
 
-test_that("no intercept", {
+test_that("No intercept.", {
   fit <- el_glm(wool ~ -1 + ., family = binomial, data = warpbreaks)
   expect_s4_class(fit, "GLM")
 })
 
-test_that("dim attribute", {
+test_that("`dim` attribute.", {
   wool <- warpbreaks$wool
   dim(wool) <- 54
   breaks <- warpbreaks$breaks
   fit <- el_glm(wool ~ breaks, family = binomial)
   expect_s4_class(fit, "GLM")
 })
+
+test_that(
+  "Parallel computation yields the same results (gaussian - inverse).",
+  {
+    fit <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"),
+      data = mtcars, control = el_control(nthreads = 1)
+    )
+    fit2 <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"),
+      data = mtcars
+    )
+    expect_equal(fit@optim, fit2@optim)
+    expect_equal(fit@parTests, fit2@parTests)
+    wfit <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"), data = mtcars, weights = gear,
+      control = el_control(nthreads = 1)
+    )
+    wfit2 <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"),
+      data = mtcars, weights = gear
+    )
+    expect_equal(wfit@optim, wfit2@optim)
+    expect_equal(wfit@parTests, wfit2@parTests)
+  }
+)

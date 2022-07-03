@@ -15,7 +15,8 @@ TO DO:
 
 NOT TO DO:
 
-- Other parallelization schemes such as [boot](https://cran.r-project.org/web/packages/boot/index.html), [RcppParallel](https://cran.r-project.org/web/packages/RcppParallel/index.html)
+- Other parallelization schemes such as [boot](https://cran.r-project.org/web/packages/boot/index.html), [RcppParallel](https://cran.r-project.org/web/packages/RcppParallel/index.html), etc. 
+OpenMP is employed for parallel computing. Some unit tests are also written with the assumption that OpenMP is available, although the availability should not affect the test results. 
 
 - Other models such as linear mixed models, generalized additive model, etc.
 

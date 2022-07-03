@@ -1,4 +1,4 @@
-test_that("invalid 'control'", {
+test_that("Invalid `control`.", {
   expect_error(el_control(maxit = NA))
   expect_error(el_control(maxit = 0.1))
   expect_error(el_control(maxit_l = NA))

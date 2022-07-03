@@ -6,8 +6,8 @@
 #' @return A single integer.
 #' @srrstats {G1.4a} All internal functions are documented in `roxygen2` format
 #'   with `@noRd` tags.
-#' @srrstats {G2.4, G2.4a} `as.integer()` is used to the `maxit` argument.
-#' @srrstats {G2.2} Multivariate input for the `maxit` argument produces an
+#' @srrstats {G2.4, G2.4a} `as.integer()` is used to the argument `maxit`.
+#' @srrstats {G2.2} Multivariate input for the argument `maxit` produces an
 #'   error.
 #' @noRd
 validate_maxit <- function(maxit) {
@@ -47,7 +47,7 @@ validate_maxit_l <- function(maxit_l) {
 #'
 #' @param tol A single numeric.
 #' @return A single numeric.
-#' @srrstats {G2.4b} `as.numeric()` is used to the `tol` argument.
+#' @srrstats {G2.4b} `as.numeric()` is used to the argument `tol`.
 #' @noRd
 validate_tol <- function(tol) {
   tol <- tryCatch(as.numeric(tol),
@@ -221,7 +221,9 @@ validate_model <- function(model) {
 #' @return A numeric matrix.
 #' @srrstats {G5.8, G5.8a} Zero-length data produces an error.
 #' @srrstats {G5.8, G5.8c} Data with all-`NA` produces an error.
-#' @srrstats {G5.8, G5.8b} Only numeric data is allowed for the `x` argument.
+#' @srrstats {G5.8, G5.8b} Only numeric data is allowed for the argument `x`.
+#' @srrstats {G2.13} `validate_x()` produces an error if there are any missing
+#'   data in the argument `x` prior to passing `x` to `el_mean()`.
 #' @noRd
 validate_x <- function(x) {
   x <- as.matrix(x)

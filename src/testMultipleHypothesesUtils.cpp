@@ -15,23 +15,35 @@ Eigen::RowVectorXd rmvn(const Eigen::Ref<const Eigen::MatrixXd> &sqrt) {
 }
 
 Eigen::MatrixXd w_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                       const Eigen::Ref<const Eigen::VectorXd> &est) {
+                       const Eigen::Ref<const Eigen::VectorXd> &par) {
   return Eigen::MatrixXd::Identity(x.cols(), x.cols());
 }
 Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                     const Eigen::Ref<const Eigen::VectorXd> &est) {
+                     const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   return static_cast<double>(x.rows()) * (xmat.transpose() * xmat).inverse();
 }
-Eigen::MatrixXd w_gaussian_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                               const Eigen::Ref<const Eigen::VectorXd> &est) {
+Eigen::MatrixXd w_gauss_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                            const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  Eigen::ArrayXd c = y * log_linkinv(xmat * est) -
-    2.0 * log_linkinv(2.0 * xmat * est);
+  Eigen::ArrayXd c = y * log_linkinv(xmat * par) -
+    2.0 * log_linkinv(2.0 * xmat * par);
   return static_cast<double>(x.rows()) *
     (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
+Eigen::MatrixXd w_gauss_inverse(
+    const Eigen::Ref<const Eigen::MatrixXd> &x,
+    const Eigen::Ref<const Eigen::VectorXd> &par) {
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  Eigen::ArrayXd c = cube(inverse_linkinv(xmat * par)) *
+    (2.0 * y - 3.0 * inverse_linkinv(xmat * par));
+  return static_cast<double>(x.rows()) *
+    (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
+}
+
+
 
 
 Eigen::MatrixXd dg0_inv(const std::string method,
@@ -43,8 +55,8 @@ Eigen::MatrixXd dg0_inv(const std::string method,
       w_map{{{"mean", w_mean},
              {"lm", w_lm},
              {"gaussian_identity", w_lm},
-             {"gaussian_log", w_gaussian_log},
-             {"gaussian_inverse", w_mean},
+             {"gaussian_log", w_gauss_log},
+             {"gaussian_inverse", w_gauss_inverse},
              {"binomial_logit", w_mean},
              {"binomial_probit", w_mean},
              {"binomial_log", w_mean},

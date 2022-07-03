@@ -1,8 +1,8 @@
-test_that("invalid 'formula'", {
+test_that("Invalid `formula`.", {
   expect_error(el_lm(cbind(mtcars$mpg, mtcars$cyl) ~ 1, data = mtcars))
 })
 
-test_that("invalid 'data'", {
+test_that("Invalid `data`.", {
   x <- mtcars$disp
   x2 <- x
   y <- mtcars$mpg
@@ -12,7 +12,7 @@ test_that("invalid 'data'", {
   expect_error(el_lm(y ~ x + x2, data = df, weights = w))
 })
 
-test_that("invalid 'weights'", {
+test_that("Invalid `weights`.", {
   w <- women$weight
   w[1] <- -1
   expect_error(el_lm(height ~ weight, data = women, weights = w))
@@ -20,11 +20,11 @@ test_that("invalid 'weights'", {
   expect_error(el_lm(height ~ weight, data = women, weights = w))
 })
 
-test_that("invalid 'control'", {
+test_that("Invalid `control`.", {
   expect_error(el_lm(mpg ~ ., data = mtcars, control = list()))
 })
 
-test_that("probabilities add up to 1", {
+test_that("Probabilities add up to 1.", {
   x <- women$weight
   y <- 10 + 0.001 * x + rep(c(1, 0.2, 0.5, 2, -1.2), times = 3)
   df <- data.frame(x, y)
@@ -34,7 +34,7 @@ test_that("probabilities add up to 1", {
   expect_equal(sum(exp(fit2@logp)), 1)
 })
 
-test_that("conversion between loglik and loglr", {
+test_that("Conversion between `loglik` and `loglr`.", {
   fit <- el_lm(eruptions ~ waiting, data = faithful)
   n <- nrow(faithful)
   expect_equal(fit@logl + n * log(n), fit@loglr)
@@ -46,17 +46,17 @@ test_that("conversion between loglik and loglr", {
   expect_equal(fit2@logl + sum(w * (log(n) - log(w))), fit2@loglr)
 })
 
-test_that("empty model", {
+test_that("Empty model.", {
   fit <- el_lm(eruptions ~ 0, faithful)
   expect_output(print(summary(fit)))
 })
 
-test_that("no intercept", {
+test_that("No intercept.", {
   fit <- el_lm(mpg ~ -1 + ., data = mtcars)
   expect_s4_class(fit, "LM")
 })
 
-test_that("print method", {
+test_that("Print method.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
   expect_output(show(fit))
   expect_output(print(fit))

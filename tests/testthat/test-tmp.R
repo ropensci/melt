@@ -1,4 +1,5 @@
-test_that("parallel computation yields the same results (gaussian - log)", {
+#' @srrstats {G5.5} `set.seed()` is used for a fixed random seed.
+test_that("Parallel computation yields the same results (gaussian - log).", {
   skip_on_cran()
   set.seed(23)
   n <- 100
@@ -33,7 +34,7 @@ test_that("parallel computation yields the same results (gaussian - log)", {
 
 
 
-test_that("parallel computation yields the same results (binomial - logit)", {
+test_that("Parallel computation yields the same results (binomial - logit).", {
   skip_on_cran()
   set.seed(54324)
   n <- 100
@@ -61,7 +62,7 @@ test_that("parallel computation yields the same results (binomial - logit)", {
   expect_equal(wfit@parTests, wfit2@parTests)
 })
 
-test_that("parallel computation yields the same results (binomial - probit)", {
+test_that("Parallel computation yields the same results (binomial - probit).", {
   skip_on_cran()
   set.seed(224543)
   n <- 100
@@ -89,7 +90,7 @@ test_that("parallel computation yields the same results (binomial - probit)", {
   expect_equal(wfit@parTests, wfit2@parTests)
 })
 
-test_that("parallel computation yields the same results (binomial - log)", {
+test_that("Parallel computation yields the same results (binomial - log).", {
   skip_on_cran()
   set.seed(54324)
   n <- 100
@@ -117,7 +118,7 @@ test_that("parallel computation yields the same results (binomial - log)", {
   expect_equal(wfit@parTests, wfit2@parTests)
 })
 
-test_that("parallel computation yields the same results (poisson - log)", {
+test_that("Parallel computation yields the same results (poisson - log).", {
   skip_on_cran()
   set.seed(525)
   n <- 100
@@ -145,7 +146,7 @@ test_that("parallel computation yields the same results (poisson - log)", {
   expect_equal(wfit@parTests, wfit2@parTests)
 })
 
-test_that("parallel computation yields the same results (poisson - identity)", {
+test_that("Parallel computation yields the same results (poisson - identity).", {
   skip_on_cran()
   set.seed(534)
   n <- 100
@@ -173,7 +174,7 @@ test_that("parallel computation yields the same results (poisson - identity)", {
   expect_equal(wfit@parTests, wfit2@parTests)
 })
 
-test_that("parallel computation yields the same results (poisson - sqrt)", {
+test_that("Parallel computation yields the same results (poisson - sqrt).", {
   skip_on_cran()
   set.seed(15234)
   n <- 100

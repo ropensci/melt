@@ -1,4 +1,4 @@
-test_that("invalid 'weights'", {
+test_that("Invalid `weights`.", {
   x <- airquality$Wind
   w <- airquality$Day
   expect_error(el_mean(x, par = 10, weights = w[-1]))
@@ -9,7 +9,7 @@ test_that("invalid 'weights'", {
   expect_error(el_mean(x, par = 10, weights = rep("w", length(x))))
 })
 
-test_that("rescaled weights", {
+test_that("Rescaled weights.", {
   x <- airquality$Wind
   w <- airquality$Day
   fit <- el_mean(x, par = 10, control = el_control(step = 1, maxit_l = 100))

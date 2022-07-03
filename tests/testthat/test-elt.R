@@ -1,11 +1,11 @@
-test_that("invalid 'object", {
+test_that("Invalid `object`.", {
   fit <- el_eval(mtcars$mpg)
   expect_error(elt(fit, lhs = 1))
   fit2 <- el_lm(mpg ~ 0, data = mtcars)
   expect_error(elt(fit2, lhs = 1))
 })
 
-test_that("invalid 'rhs' and 'lhs'", {
+test_that("Invalid `rhs` and `lhs`.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
   fit2 <- el_lm(mpg ~ disp + hp, data = mtcars, weights = mtcars$wt)
   lhs <- matrix(c(0, 1, -1), nrow = 1)
@@ -25,17 +25,17 @@ test_that("invalid 'rhs' and 'lhs'", {
   expect_error(elt(fit2, lhs = matrix(c(1, 1, 0, 0, 0, 0), nrow = 2)))
 })
 
-test_that("invalid 'calibrate'", {
+test_that("Invalid `calibrate`.", {
   fit <- el_lm(mpg ~ wt, data = mtcars)
   expect_error(elt(fit, rhs = c(1, 1), calibrate = "f"))
 })
 
-test_that("invalid 'control'", {
+test_that("Invalid `control`.", {
   fit <- el_mean(sleep$extra, par = 0)
   expect_error(elt(fit, lhs = 1, control = list(maxit = 200L)))
 })
 
-test_that("when elt == eval", {
+test_that("When elt == evaluation.", {
   x <- sleep$extra
   fit <- el_mean(x, par = 1.2)
   fit2 <- elt(fit, rhs = 1.2)
@@ -56,22 +56,27 @@ test_that("when elt == eval", {
   expect_equal(wfit3@optim$lambda, wfit4@optim$lambda)
 })
 
-test_that("calibration", {
+test_that("Calibration.", {
   fit <- el_mean(women$height, par = 65)
   expect_s4_class(elt(fit, rhs = 67, calibrate = "f"), "ELT")
   expect_s4_class(elt(fit, rhs = 67, calibrate = "boot"), "ELT")
 })
 
-test_that("vector 'lhs'", {
+test_that("Vector `lhs`.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
   expect_error(elt(fit, lhs = c(1, -1, 0, 0)))
   out <- elt(fit, lhs = c(1, -1, 0))
   expect_s4_class(out, "ELT")
   expect_output(show(out))
   expect_output(print(out))
+  fit2 <- el_mean(faithful, par = c(4, 70))
+  out2 <- elt(fit2, lhs = c(17, -1), rhs = -3)
+  expect_s4_class(out, "ELT")
+  expect_output(show(out))
+  expect_output(print(out))
 })
 
-test_that("matrix 'rhs'", {
+test_that("Matrix `rhs`.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
   rhs <- matrix(c(0, 1, 2), ncol = 1)
   expect_s4_class(elt(fit, rhs = rhs), "ELT")
