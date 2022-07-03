@@ -35,9 +35,7 @@ Rcpp::List testMultipleHypotheses(const double alpha,
     test_statistic[j] = 2.0 * el.nllr;
   }
   // 2. compute critical value
-  // sample covariance with plug-in estimate
-  const Eigen::MatrixXd s = cov(method, est, x);
-  // sqrt of sample covariance
+  const Eigen::MatrixXd s = smat(method, est, x);
   const Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(s);
   const Eigen::MatrixXd sqrt_s = es.operatorSqrt();
   // ahat matrices

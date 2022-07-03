@@ -12,9 +12,9 @@ Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x);
 Eigen::MatrixXd dg0_inv(const std::string method,
                         const Eigen::Ref<const Eigen::MatrixXd> &x);
 
-Eigen::MatrixXd cov(const std::string method,
-                    const Eigen::Ref<const Eigen::VectorXd> &est,
-                    const Eigen::Ref<const Eigen::MatrixXd> &x);
+Eigen::MatrixXd smat(const std::string method,
+                     const Eigen::Ref<const Eigen::VectorXd> &est,
+                     const Eigen::Ref<const Eigen::MatrixXd> &x);
 
 Eigen::MatrixXd ahat(const Eigen::Ref<const Eigen::MatrixXd> &j,
                      const Eigen::Ref<const Eigen::MatrixXd> &w,

@@ -9,7 +9,7 @@
 #'
 #' @srrstatsVerbose TRUE
 #'
-#' @srrstatsTODO {G1.2} *Statistical Software should include a* Life Cycle Statement *describing current and anticipated future states of development.*
+#' @srrstats {G1.2} Life cycle statement is included in .github/CONTRIBUTING.md.
 #' @srrstatsTODO {G2.0} *Implement assertions on lengths of inputs, particularly through asserting that inputs expected to be single- or multi-valued are indeed so.*
 #' @srrstatsTODO {G2.0a} Provide explicit secondary documentation of any expectations on lengths of inputs
 #' @srrstatsTODO {G2.1} *Implement assertions on types of inputs (see the initial point on nomenclature above).*

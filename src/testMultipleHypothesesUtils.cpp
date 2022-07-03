@@ -41,9 +41,9 @@ Eigen::MatrixXd dg0_inv(const std::string method,
   return w_map[method](x);
 }
 
-Eigen::MatrixXd cov(const std::string method,
-                    const Eigen::Ref<const Eigen::VectorXd> &est,
-                    const Eigen::Ref<const Eigen::MatrixXd> &x) {
+Eigen::MatrixXd smat(const std::string method,
+                     const Eigen::Ref<const Eigen::VectorXd> &est,
+                     const Eigen::Ref<const Eigen::MatrixXd> &x) {
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &)>
