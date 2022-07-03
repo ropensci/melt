@@ -20,5 +20,4 @@
 #'   Neonicotinoid Seed Treatment Clothianidin in Maize.”
 #'   Edited by Michael J. Stout. PLOS ONE 12 (3): e0173836.
 #'   \doi{10.1371/journal.pone.0173836}.
-#' @srrstats {G5.1} `clothianidin` data set is exported.
 "clothianidin"

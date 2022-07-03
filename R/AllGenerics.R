@@ -188,6 +188,7 @@ setGeneric("elmt", function(object,
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 #' elt(fit2, lhs = lhs)
 #' @exportMethod elt
+#' @srrstats {G5.1} `clothianidin` data set is exported.
 setGeneric("elt", function(object,
                            rhs = NULL,
                            lhs = NULL,

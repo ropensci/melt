@@ -1,6 +1,5 @@
 #include "testMultipleHypothesesUtils.h"
 #include "utils.h"
-#include "EL.h"
 #include <RcppEigen.h>
 #include <functional>
 #include <map>
@@ -45,30 +44,28 @@ Eigen::MatrixXd dg0_inv(const std::string method,
 Eigen::MatrixXd cov(const std::string method,
                     const Eigen::Ref<const Eigen::VectorXd> &est,
                     const Eigen::Ref<const Eigen::MatrixXd> &x) {
-  //       {"binomial_logit", g_bin_logit},
-  //       {"binomial_probit", g_bin_probit},
-  //       {"binomial_log", g_bin_log},
-  //       {"poisson_log", g_poi_log},
-  //       {"poisson_identity", g_poi_identity},
-  //       {"poisson_sqrt", g_poi_sqrt},
-  //       {"quasibinomial_logit", g_qbin_logit}}};
-  std::map<std::string, std::function<Eigen::MatrixXd(
-                            const Eigen::Ref<const Eigen::MatrixXd> &,
-                            const Eigen::Ref<const Eigen::VectorXd> &)>>
-      g_map{{{"mean", g_mean},
-             {"lm", g_lm},
-             {"gaussian_identity", g_lm},
-             {"gaussian_log", g_gauss_log},
-             {"gaussian_inverse", g_gauss_inverse},
-             {"binomial_logit", g_lm},
-             {"binomial_probit", g_lm},
-             {"binomial_log", g_lm},
-             {"poisson_log", g_lm},
-             {"poisson_identity", g_lm},
-             {"poisson_sqrt", g_lm},
-             {"quasibinomial_logit", g_lm}}};
-  return (1.0 / x.rows()) *
-         ((g_map[method](x, est)).transpose() * g_map[method](x, est));
+  const std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd> &,
+      const Eigen::Ref<const Eigen::VectorXd> &)>
+  g_fn = g_fn2(method);
+  return (1.0 / x.rows()) * ((g_fn(x, est)).transpose() * g_fn(x, est));
+  // std::map<std::string, std::function<Eigen::MatrixXd(
+  //                           const Eigen::Ref<const Eigen::MatrixXd> &,
+  //                           const Eigen::Ref<const Eigen::VectorXd> &)>>
+  //     g_map{{{"mean", g_mean},
+  //            {"lm", g_lm},
+  //            {"gaussian_identity", g_lm},
+  //            {"gaussian_log", g_gauss_log},
+  //            {"gaussian_inverse", g_gauss_inverse},
+  //            {"binomial_logit", g_bin_logit},
+  //            {"binomial_probit", g_bin_probit},
+  //            {"binomial_log", g_bin_log},
+  //            {"poisson_log", g_poi_log},
+  //            {"poisson_identity", g_poi_identity},
+  //            {"poisson_sqrt", g_poi_sqrt},
+  //            {"quasibinomial_logit", g_bin_logit}}};
+  // return (1.0 / x.rows()) *
+  //        ((g_map[method](x, est)).transpose() * g_map[method](x, est));
 }
 
 Eigen::MatrixXd ahat(const Eigen::Ref<const Eigen::MatrixXd> &j,
