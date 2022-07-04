@@ -61,3 +61,12 @@ test_that("Larger `tol_l` decreases iterations for convergence.", {
   fit2 <- el_mean(x, par = 60, control = el_control(tol_l = 1e-02))
   expect_gte(fit@optim$iterations, fit2@optim$iterations)
 })
+
+#' @srrstats {G5.9, G5.9a} Adding trivial noise does not change the overall
+#'   optimization results.
+test_that("Noise susceptibility tests.", {
+  x <- women$height
+  fit <- el_mean(x, par = 60)
+  fit2 <- el_mean(x, par = 60 + .Machine$double.eps)
+  expect_equal(fit@optim, fit2@optim)
+})

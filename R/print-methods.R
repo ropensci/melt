@@ -51,6 +51,8 @@ setMethod("show", "EL", function(object) print(object))
 #' @param ... Further arguments passed to or from other methods.
 #' @rdname SummaryLM-class
 #' @importFrom stats naprint pchisq printCoefmat
+#' @srrstats {G2.14b} `naprint()` is used to print messages if there are missing
+#'   values.
 setMethod(
   "print", "SummaryLM", function(x,
                                  digits = max(3L, getOption("digits") - 3L),

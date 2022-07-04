@@ -59,7 +59,7 @@ test_that("Unnamed coefficients.", {
 })
 
 test_that("Character specification for `parm`.", {
-  fit <- el_mean(as.matrix(faithful), par = c(4, 60))
+  fit <- el_mean(faithful, par = c(4, 60))
   expect_type(confint(fit, parm = c("eruptions2", "eruptions3")), "double")
   expect_type(confint(fit, parm = c("eruptions", "eruptions2")), "double")
 })

@@ -63,6 +63,16 @@
 #' @importFrom stats .getXlevels is.empty.model lm.fit lm.wfit model.matrix
 #'   model.response model.weights pchisq
 #' @export
+#' @srrstats {G2.14, G2.14a, RE2.1, RE2.2} Missing values are handled by the
+#'   `na.action` argument via `na.cation()`. `Inf` values are not allowed and
+#'   produce an error.Partially missing values (missing response or missing
+#'   predictors) are allowed unless a singular fit is encountered. Although
+#'   singular fits can produce estimates and fitted values, there is no
+#'   practical advantage of using the package for singular fits since further
+#'   inference based on empirical likelihood is unavailable. Note that at least
+#'   for the linear models the maximum empirical likelihood estimates (and thus
+#'   the fitted values as well) are identical to the estimates returned by
+#'   `lm.fit()` and `glm.fit()`.
 #' @srrstats {G5.8, G5.8d} Data with more fields than observations produces an
 #'   error.
 #' @srrstats {RE1.0} Formula interface is used to the `formula` argument.

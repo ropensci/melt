@@ -55,8 +55,8 @@ validate_tol <- function(tol) {
     error = function(e) NA
   )
   stopifnot(
-    "`tol` must be a single numeric." = (isTRUE(!is.na(tol))),
-    "`tol` must be a finite single numeric." = (is.finite(tol)),
+    "`tol` must be a finite single numeric." =
+      (isTRUE(!is.na(tol) && is.finite(tol))),
     "`tol` is too small." = (tol >= .Machine$double.eps)
   )
   tol
@@ -75,8 +75,8 @@ validate_tol_l <- function(tol_l) {
     error = function(e) NA
   )
   stopifnot(
-    "`tol_l` must be a single numeric." = (isTRUE(!is.na(tol_l))),
-    "`tol_l` must be a finite single numeric." = (is.finite(tol_l)),
+    "`tol_l` must be a finite single numeric." =
+      (isTRUE(!is.na(tol_l) && is.finite(tol_l))),
     "`tol_l` is too small." = (tol_l >= .Machine$double.eps)
   )
   tol_l
@@ -95,8 +95,8 @@ validate_step <- function(step) {
     error = function(e) NA
   )
   stopifnot(
-    "`step` must be a single numeric." = (isTRUE(!is.na(step))),
-    "`step` must be a finite single numeric." = (is.finite(step)),
+    "`step` must be a finite single numeric." =
+      (isTRUE(!is.na(step) && is.finite(step))),
     "`step` is too small." = (step >= .Machine$double.eps)
   )
   step
@@ -115,8 +115,8 @@ validate_th <- function(th) {
     error = function(e) NA
   )
   stopifnot(
-    "`th` must be a single numeric." = (isTRUE(!is.na(th))),
-    "`th` must be a finite single numeric." = (is.finite(th)),
+    "`th` must be a finite single numeric." =
+      (isTRUE(!is.na(th) && is.finite(th))),
     "`th` is too small." = (th >= .Machine$double.eps)
   )
   th
@@ -129,6 +129,9 @@ validate_th <- function(th) {
 #' @param nthreads A single integer.
 #' @param max_threads A single integer.
 #' @return A single integer.
+#' @srrstats {G2.6} `nthreads` is coerced to a single integer. Then, it is set
+#'   to an appropriate value `max_threads` set by `get_max_threads()` in
+#'   `el_control()`.
 #' @noRd
 validate_nthreads <- function(nthreads, max_threads) {
   nthreads <- tryCatch(as.integer(nthreads),
@@ -219,11 +222,11 @@ validate_model <- function(model) {
 #' @param x A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix.
 #' @return A numeric matrix.
+#' @srrstats {G2.13} `validate_x()` produces an error if there are any missing
+#'   data in the argument `x` prior to passing `x` to `el_mean()`.
 #' @srrstats {G5.8, G5.8a} Zero-length data produces an error.
 #' @srrstats {G5.8, G5.8c} Data with all-`NA` produces an error.
 #' @srrstats {G5.8, G5.8b} Only numeric data is allowed for the argument `x`.
-#' @srrstats {G2.13} `validate_x()` produces an error if there are any missing
-#'   data in the argument `x` prior to passing `x` to `el_mean()`.
 #' @noRd
 validate_x <- function(x) {
   x <- as.matrix(x)
@@ -253,7 +256,7 @@ validate_weights <- function(weights, n) {
   stopifnot(
     "`weights` must be a finite numeric vector." =
       (isTRUE(is.numeric(weights) && all(is.finite(weights)))),
-    "`weights` must be positive." = (all(weights > 0))
+    "`weights` must be all positive." = (all(weights > 0))
   )
   if (length(weights) != n) {
     stop(gettextf("length of `weights` must be %d.", n, domain = NA))
@@ -334,10 +337,10 @@ validate_alpha <- function(alpha) {
 #'
 #' @param calibrate A single character.
 #' @return A single character.
-#' @srrstats {G2.3a} `pmatch()` is used to the argument `calibrate` instead of
+#' @srrstats {G2.3, G2.3a} `pmatch()` is used to the argument `calibrate` instead of
 #'   `match.arg()` in order to generate a custom error message that is
 #'   consistent in style with other messages.
-#' @srrstats {G2.3b} `tolower()` is used to the argument `calibrate`.
+#' @srrstats {G2.3, G2.3b} `tolower()` is used to the argument `calibrate`.
 #' @noRd
 validate_calibrate <- function(calibrate) {
   stopifnot(
@@ -475,6 +478,7 @@ validate_rhs.numeric <- function(rhs, p) {
 #' @param rhs A numeric matrix.
 #' @param p A single integer.
 #' @return A numeric vector.
+#' @srrstats {G2.9} Matrix `rhs` is converted a vector with a message.
 #' @noRd
 validate_rhs.matrix <- function(rhs, p) {
   stopifnot(
@@ -485,6 +489,7 @@ validate_rhs.matrix <- function(rhs, p) {
     stop(gettextf("length of `rhs` must be %d.", p, domain = NA))
   }
   attr(rhs, "dim") <- NULL
+  message("`rhs` is converted to a vector.")
   rhs
 }
 
@@ -495,6 +500,8 @@ validate_rhs.matrix <- function(rhs, p) {
 #' @param lhs A numeric matrix or a vector (treated as a row matrix).
 #' @param p A single integer.
 #' @return A numeric matrix.
+#' @srrstats {G2.8} A method dispatch is used to the argument `lhs`.
+#'   `validate_lhs()` returns a numeric matrix.
 #' @noRd
 validate_lhs <- function(lhs, p) {
   UseMethod("validate_lhs", lhs)

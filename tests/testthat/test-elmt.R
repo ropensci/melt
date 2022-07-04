@@ -58,6 +58,17 @@ test_that("List `lhs`.", {
   expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
 })
 
+#' @srrstats {G5.9, G5.9b} Different random seeds do not produce significantly
+#'   different critical values.
+test_that("Noise susceptibility tests.", {
+  lhs <- list(matrix(c(1, 33, 0), nrow = 1), matrix(c(0, 1, -100), nrow = 1))
+  set.seed(5424513)
+  cv <- elmt(fit, lhs = lhs)@cv
+  set.seed(21524552)
+  cv2 <- elmt(fit, lhs = lhs)@cv
+  expect_equal(cv, cv2, tolerance = 1e-03)
+})
+
 test_that("`el_glm()` (gaussian - inverse).", {
   fit <- el_glm(mpg ~ disp + hp + wt,
     family = gaussian("inverse"),

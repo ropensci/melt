@@ -81,5 +81,6 @@ test_that("Vector `lhs`.", {
 test_that("Matrix `rhs`.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
   rhs <- matrix(c(0, 1, 2), ncol = 1)
-  expect_s4_class(elt(fit, rhs = rhs), "ELT")
+  out <- suppressMessages(elt(fit, rhs = rhs))
+  expect_s4_class(out, "ELT")
 })
