@@ -16,11 +16,9 @@
 #'   availability of OpenMP without affect the test results. See
 #'   `.github/CONTRIBUTING.md`.
 
-#' @srrstatsTODO {G2.3} *For univariate character input:*
-#' @srrstatsTODO {G2.3b} *Either: use `tolower()` or equivalent to ensure input of character parameters is not case dependent; or explicitly document that parameters are strictly case-sensitive.*
-#' @srrstatsTODO {G2.4c} *explicit conversion to character via `as.character()` (and not `paste` or `paste0`)*
-#' @srrstatsTODO {G2.4d} *explicit conversion to factor via `as.factor()`*
-#' @srrstatsTODO {G2.4e} *explicit conversion from factor via `as...()` functions*
+
+
+
 #' @srrstatsTODO {G2.6} *Software which accepts one-dimensional input should ensure values are appropriately pre-processed regardless of class structures.*
 #' @srrstatsTODO {G2.7} *Software should accept as input as many of the above standard tabular forms as possible, including extension to domain-specific forms.*
 #' @srrstatsTODO {G2.8} *Software should provide appropriate conversion or dispatch routines as part of initial pre-processing to ensure that all other sub-functions of a package receive inputs of a single defined class or type.*
@@ -115,6 +113,9 @@ NULL
 #' @srrstatsNA {G1.5} The package does not have any associated publication.
 #' @srrstatsNA {G1.6} The package does not make any performance claim,
 #'   especially compared to other R packages.
+#' @srrstatsNA {G2.4d, G2.4e} No function in the package expects a factor
+#'   variable as an input and hence conversion to or from a factor is not
+#'   required.
 #' @srrstatsNA {G2.5} The package does not use any `factor` type input.
 #' @srrstatsNA {G3.1, G3.1a, RE4.6} Empirical likelihood methods (and thus
 #'   the package) in general do not require covariance calculations. The

@@ -4,9 +4,9 @@
 #'
 #' @param maxit A single integer.
 #' @return A single integer.
-#' @srrstats {G1.4a} All internal functions are documented in `roxygen2` format
-#'   with `@noRd` tags.
-#' @srrstats {G2.4, G2.4a} `as.integer()` is used to the argument `maxit`.
+#' @srrstats {G1.4a} All internal functions are documented in `roxygen2`
+#'   format with `@noRd` tags.
+#' @srrstats {G2.4a} `as.integer()` is used to the argument `maxit`.
 #' @srrstats {G2.2} Multivariate input for the argument `maxit` produces an
 #'   error.
 #' @noRd
@@ -219,9 +219,9 @@ validate_model <- function(model) {
 #' @param x A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix.
 #' @return A numeric matrix.
-#' @srrstats {G5.8, G5.8a} Zero-length data produces an error.
-#' @srrstats {G5.8, G5.8c} Data with all-`NA` produces an error.
-#' @srrstats {G5.8, G5.8b} Only numeric data is allowed for the argument `x`.
+#' @srrstats {G5.8a} Zero-length data produces an error.
+#' @srrstats {G5.8c} Data with all-`NA` produces an error.
+#' @srrstats {G5.8b} Only numeric data is allowed for the argument `x`.
 #' @srrstats {G2.13} `validate_x()` produces an error if there are any missing
 #'   data in the argument `x` prior to passing `x` to `el_mean()`.
 #' @noRd
@@ -326,6 +326,33 @@ validate_alpha <- function(alpha) {
     "`alpha` must be between 0 and 1." = (isTRUE(alpha > 0 && alpha < 1))
   )
   alpha
+}
+
+#' Validate `calibrate`
+#'
+#' Validate `calibrate` in [elt()].
+#'
+#' @param calibrate A single character.
+#' @return A single character.
+#' @srrstats {G2.3a} `pmatch()` is used to the argument `calibrate` instead of
+#'   `match.arg()` in order to generate a custom error message that is
+#'   consistent in style with other messages.
+#' @srrstats {G2.3b} `tolower()` is used to the argument `calibrate`.
+#' @noRd
+validate_calibrate <- function(calibrate) {
+  stopifnot(
+    "`calibrate` must be a single character." =
+      (isTRUE(is.character(calibrate) && length(calibrate) == 1L))
+  )
+  table <- c("chisq", "boot", "f")
+  calibrate <- table[pmatch(tolower(calibrate), table = table)]
+  if (isTRUE(is.na(calibrate))) {
+    stop(gettextf(
+      "`calibrate` must be one of %s, %s, or %s.",
+      dQuote("chisq"), dQuote("boot"), dQuote("f")
+    ), domain = NA)
+  }
+  calibrate
 }
 
 #' Validate `level`

@@ -74,3 +74,20 @@ test_that("`el_glm()` (gaussian - inverse).", {
   expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
   expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
 })
+
+test_that("`el_glm()` (poisson - log).", {
+  fit <- el_glm(event ~ mag + dist + accel,
+    family = poisson("log"),
+    data = attenu
+  )
+  wfit <- el_glm(event ~ mag + dist + accel,
+    family = poisson("log"),
+    data = attenu, weights = mag
+  )
+  lhs <- list(
+    matrix(c(1, 21, 0, 0), nrow = 1),
+    matrix(c(0, 1, 0, -1), nrow = 1)
+  )
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+})

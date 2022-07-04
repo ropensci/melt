@@ -11,16 +11,7 @@
   rhs = NULL,
   lhs = NULL,
   alpha = 0.05,
-  calibrate = c("chisq", "boot", "f"),
-  control = el_control()
-)
-
-\S4method{elt}{missing}(
-  object,
-  rhs = NULL,
-  lhs = NULL,
-  alpha = 0.05,
-  calibrate = c("chisq", "boot", "f"),
+  calibrate = "chisq",
   control = el_control()
 )
 }
@@ -39,8 +30,9 @@ of parameters. Defaults to \code{NULL}. See ‘Details’.}
 
 \item{alpha}{A single numeric for the significance level. Defaults to \code{0.05}.}
 
-\item{calibrate}{A single character for the calibration method. Defaults to
-\code{"chisq"}. See ‘Details’.}
+\item{calibrate}{A single character for the calibration method. It is
+case-insensitive and must be one of \code{"chisq"}, \code{"boot"}, or \code{"f"}.
+Defaults to \code{"chisq"}. See ‘Details’.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link[=el_control]{el_control()}}.}
@@ -88,9 +80,9 @@ x2 <- rnorm(n)
 y <- 1 + x1 + x2 + rnorm(n)
 df <- data.frame(y, x1, x2)
 fit <- el_lm(y ~ x1 + x2, df)
-elt(fit, lhs = c(0, 1.5, -1), rhs = 2.5)
+elt(fit, lhs = c(0, 1.5, -1), rhs = 2.5, calibrate = "chisq")
 
-# test of no treatment effect
+## test of no treatment effect
 data("clothianidin")
 lhs <- matrix(c(
   1, -1, 0, 0,

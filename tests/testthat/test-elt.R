@@ -27,6 +27,8 @@ test_that("Invalid `rhs` and `lhs`.", {
 
 test_that("Invalid `calibrate`.", {
   fit <- el_lm(mpg ~ wt, data = mtcars)
+  expect_error(elt(fit, rhs = c(1, 1), calibrate = c(1, 2)))
+  expect_error(elt(fit, rhs = c(1, 1), calibrate = "error"))
   expect_error(elt(fit, rhs = c(1, 1), calibrate = "f"))
 })
 

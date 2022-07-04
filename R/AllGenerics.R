@@ -128,8 +128,9 @@ setGeneric("elmt", function(object,
 #'   parameters in `object`. The number of columns should be equal to the number
 #'   of parameters. Defaults to `NULL`. See ‘Details’.
 #' @param alpha A single numeric for the significance level. Defaults to `0.05`.
-#' @param calibrate A single character for the calibration method. Defaults to
-#'   `"chisq"`. See ‘Details’.
+#' @param calibrate A single character for the calibration method. It is
+#'   case-insensitive and must be one of `"chisq"`, `"boot"`, or `"f"`.
+#'   Defaults to `"chisq"`. See ‘Details’.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
 #' @details [elt()] performs the constrained minimization of \eqn{l(\theta)}
@@ -176,9 +177,9 @@ setGeneric("elmt", function(object,
 #' y <- 1 + x1 + x2 + rnorm(n)
 #' df <- data.frame(y, x1, x2)
 #' fit <- el_lm(y ~ x1 + x2, df)
-#' elt(fit, lhs = c(0, 1.5, -1), rhs = 2.5)
+#' elt(fit, lhs = c(0, 1.5, -1), rhs = 2.5, calibrate = "chisq")
 #'
-#' # test of no treatment effect
+#' ## test of no treatment effect
 #' data("clothianidin")
 #' lhs <- matrix(c(
 #'   1, -1, 0, 0,
@@ -193,7 +194,7 @@ setGeneric("elt", function(object,
                            rhs = NULL,
                            lhs = NULL,
                            alpha = 0.05,
-                           calibrate = c("chisq", "boot", "f"),
+                           calibrate = "chisq",
                            control = el_control()) {
   standardGeneric("elt")
 })

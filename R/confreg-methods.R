@@ -1,4 +1,6 @@
 #' @rdname confreg
+#' @srrstats {G2.4, G2.4c} `as.character()` is used to `pnames`, a character
+#'   vector of length two for the name of parameters.
 setMethod("confreg", "EL", function(object,
                                     parm,
                                     level = 0.95,

@@ -1,17 +1,12 @@
 #' @importFrom methods is
 #' @importFrom stats pchisq
 #' @rdname elt
-#' @srrstats {G2.3a} `match.arg()` is used to the `calibrate` argument.
 setMethod("elt", "EL", function(object,
                                 rhs = NULL,
                                 lhs = NULL,
                                 alpha = 0.05,
-                                calibrate = c("chisq", "boot", "f"),
+                                calibrate = "chisq",
                                 control = el_control()) {
-  if (is.character(calibrate)) {
-    calibrate <- tolower(calibrate)
-  }
-
   stopifnot(
     "'object' has no 'data'; fit the model with 'model' = TRUE" =
       (length(getDataMatrix(object)) > 1L),
@@ -19,7 +14,11 @@ setMethod("elt", "EL", function(object,
   )
   h <- validate_hypothesis(rhs, lhs, object@npar)
   alpha <- validate_alpha(alpha)
-  calibrate <- match.arg(calibrate)
+  # if (is.character(calibrate)) {
+  #   calibrate <- tolower(calibrate)
+  # }
+  # calibrate <- match.arg(calibrate)
+  calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
@@ -61,11 +60,12 @@ setMethod("elt", "EL", function(object,
 })
 
 #' @rdname elt
+#' @usage NULL
 setMethod("elt", "missing", function(object,
                                      rhs = NULL,
                                      lhs = NULL,
                                      alpha,
-                                     calibrate = c("chisq", "boot", "f"),
+                                     calibrate = "chisq",
                                      control = el_control()) {
   stopifnot(
     # "'object' has no 'data'; fit the model with 'model' = TRUE" =

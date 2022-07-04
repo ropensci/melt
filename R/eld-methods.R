@@ -15,6 +15,10 @@ setMethod("eld", "EL", function(object, control = el_control()) {
 })
 
 #' @rdname eld
+#' @usage NULL
 setMethod("eld", "missing", function(object, control = el_control()) {
+  stopifnot(
+    "invalid `control` specified." = (is(control, "ControlEL"))
+  )
   NULL
 })
