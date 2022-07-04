@@ -55,9 +55,9 @@ g <- x - par
 el_eval(g, weights = rep(c(1, 2), each = 25))
 }
 \references{
-Qin, Jin, and Jerry Lawless. 1994.
+Qin J, Lawless J (1994).
 “Empirical Likelihood and General Estimating Equations.”
-The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
+The Annals of Statistics, 22(1), 300–325. \doi{10.1214/aos/1176325370}.
 }
 \seealso{
 \code{\link[=el_control]{el_control()}}

@@ -44,8 +44,10 @@
 #'   \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as `optim` and `parTests`, respectively.
 #' @return An object of class of \linkS4class{LM}.
-#' @references Owen, Art. 1991. “Empirical Likelihood for Linear Models.”
-#'   The Annals of Statistics 19 (4): 1725–47. \doi{10.1214/aos/1176348368}.
+#' @references Owen A (1991).
+#'   “Empirical Likelihood for Linear Models.”
+#'   The Annals of Statistics, 19(4), 1725–1747.
+#'   \doi{10.1214/aos/1176348368}.
 #' @seealso [el_control()], [el_glm()], [elt()]
 #' @examples
 #' df <- data.frame(y = rnorm(50), x = rnorm(50))
@@ -64,8 +66,16 @@
 #' @srrstats {G5.8, G5.8d} Data with more fields than observations produces an
 #'   error.
 #' @srrstats {RE1.0} Formula interface is used to the `formula` argument.
-#' @srrstats {RE4.0} `el_lm()` returns an object of class \linkS4class{LM}.
+#' @srrstats {RE4.0} `el_lm()` returns an object of class `LM`.
 #' @srrstats {RE4.4} Model specification is done through `formula()`.
+#' @srrstats {RE2.1} Missing values are handled by the `na.action` argument.
+#'   `Inf` values are not allowed and produce an error.
+#' @srrstats {RE2.4a, RE2.4b} Perfect collinearity is handled by
+#'   `model.frame()`. Especially, perfect collinearity among predictor variables
+#'   produces an error in `lm.fit()` since `singular.ok` is set to `FALSE`. This
+#'   is because the underlying asymptotic empirical likelihood theory requires
+#'   a full-rank covariance structure in order for a limiting argument to work.
+#'   See `EL-class` documentation.
 el_lm <- function(formula,
                   data,
                   weights = NULL,

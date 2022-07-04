@@ -16,8 +16,10 @@
 #' @param model A single logical. If `TRUE` the data matrix used for model
 #'   fitting is returned.
 #' @return An object of class \linkS4class{EL}.
-#' @references Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-#'   The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
+#' @references Owen A (1990).
+#'   “Empirical Likelihood Ratio Confidence Regions.”
+#'   The Annals of Statistics, 18(1), 90–120.
+#'   \doi{10.1214/aos/1176347494}.
 #' @seealso [el_control()], [el_eval()], [elt()]
 #' @examples
 #' # scalar mean

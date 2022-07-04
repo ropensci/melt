@@ -3,6 +3,11 @@
 #'   passed to [format()].
 #' @param ... Further arguments passed to or from other methods.
 #' @rdname EL-class
+#' @srrstats {RE3.0} Convergence status is printed at the bottom with other
+#'   information. It is well known that empirical likelihood methods can often
+#'   fail to converge due to the convex hull constraint. We expect that the
+#'   users of the package are also aware of this issue. Therefore, an explicit
+#'   warning message via `warning()` is issued.
 setMethod("print", "EL", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {

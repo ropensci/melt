@@ -33,9 +33,9 @@
 #'   \item{pval}{\eqn{p}-value of the statistic.}
 #'   \item{npar}{Number of parameters.}
 #'   \item{weights}{Rescaled weights used for model fitting.}
-#' @references Qin, Jin, and Jerry Lawless. 1994.
+#' @references Qin J, Lawless J (1994).
 #'   “Empirical Likelihood and General Estimating Equations.”
-#'   The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
+#'   The Annals of Statistics, 22(1), 300–325. \doi{10.1214/aos/1176325370}.
 #' @seealso [el_control()]
 #' @examples
 #' x <- rnorm(50)

@@ -93,14 +93,14 @@ fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 elt(fit2, lhs = lhs)
 }
 \references{
-Adimari, Gianfranco, and Annamaria Guolo. 2010.
+Adimari G, Guolo A (2010).
 “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-Statistical Methods & Applications 19 (4): 463–76.
+Statistical Methods & Applications, 19(4), 463–476.
 \doi{10.1007/s10260-010-0137-9}.
 
-Qin, Jing, and Jerry Lawless. 1995.
+Qin J, Lawless J (1995).
 “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-Canadian Journal of Statistics 23 (2): 145–59. \doi{10.2307/3315441}.
+Canadian Journal of Statistics, 23(2), 145–159. \doi{10.2307/3315441}.
 }
 \seealso{
 \code{\link[=el_control]{el_control()}}

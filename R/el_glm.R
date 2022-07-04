@@ -40,9 +40,12 @@
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as `optim` and `parTests`, respectively.
 #' @return An object of class of \linkS4class{GLM}.
-#' @references Chen, Song Xi, and Hengjian Cui. 2003.
+#' @references Chen SX, Cui H (2003).
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
-#'   Statistica Sinica 13: 69–81.
+#'   Statistica Sinica, 13(1), 69–81.
+#' @references Kolaczyk ED (1994).
+#'   “Empirical Likelihood for Generalized Linear Models.”
+#'   Statistica Sinica, 4(1), 199–218.
 #' @seealso [el_control()], [el_lm()], [elt()]
 #' @examples
 #' n <- 50

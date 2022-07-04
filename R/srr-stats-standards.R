@@ -55,26 +55,29 @@
 #' @srrstatsTODO {G5.9a} *Adding trivial noise (for example, at the scale of `.Machine$double.eps`) to data does not meaningfully change results*
 #' @srrstatsTODO {G5.9b} *Running under different random seeds or initial conditions does not meaningfully change results*
 
-#' @srrstatsTODO {G5.10} *Extended tests should included and run under a common framework with other tests but be switched on by flags such as as a `<MYPKG>_EXTENDED_TESTS=1` environment variable.*
+
 
 
 
 #' @srrstatsTODO {RE1.1} *Regression Software should document how formula interfaces are converted to matrix representations of input data.*
+
 #' @srrstatsTODO {RE1.2} *Regression Software should document expected format (types or classes) for inputting predictor variables, including descriptions of types or classes which are not accepted.*
 #' @srrstatsTODO {RE1.3} *Regression Software which passes or otherwise transforms aspects of input data onto output structures should ensure that those output structures retain all relevant aspects of input data, notably including row and column names, and potentially information from other `attributes()`.*
 #' @srrstatsTODO {RE1.3a} *Where otherwise relevant information is not transferred, this should be explicitly documented.*
 #' @srrstatsTODO {RE1.4} *Regression Software should document any assumptions made with regard to input data; for example distributional assumptions, or assumptions that predictor data have mean values of zero. Implications of violations of these assumptions should be both documented and tested.*
 #' @srrstatsTODO {RE2.0} *Regression Software should document any transformations applied to input data, for example conversion of label-values to `factor`, and should provide ways to explicitly avoid any default transformations (with error or warning conditions where appropriate).*
-#' @srrstatsTODO {RE2.1} *Regression Software should implement explicit parameters controlling the processing of missing values, ideally distinguishing `NA` or `NaN` values from `Inf` values (for example, through use of `na.omit()` and related functions from the `stats` package).*
+
+
 #' @srrstatsTODO {RE2.2} *Regression Software should provide different options for processing missing values in predictor and response data. For example, it should be possible to fit a model with no missing predictor data in order to generate values for all associated response points, even where submitted response values may be missing.*
+
 #' @srrstatsTODO {RE2.3} *Where applicable, Regression Software should enable data to be centred (for example, through converting to zero-mean equivalent values; or to z-scores) or offset (for example, to zero-intercept equivalent values) via additional parameters, with the effects of any such parameters clearly documented and tested.*
-#' @srrstatsTODO {RE2.4} *Regression Software should implement pre-processing routines to identify whether aspects of input data are perfectly collinear, notably including:*
-#' @srrstatsTODO {RE2.4a} *Perfect collinearity among predictor variables*
-#' @srrstatsTODO {RE2.4b} *Perfect collinearity between independent and dependent variables*
-#' @srrstatsTODO {RE3.0} *Issue appropriate warnings or other diagnostic messages for models which fail to converge.*
+
+
+
 #' @srrstatsTODO {RE3.1} *Enable such messages to be optionally suppressed, yet should ensure that the resultant model object nevertheless includes sufficient data to identify lack of convergence.*
-#' @srrstatsTODO {RE3.2} *Ensure that convergence thresholds have sensible default values, demonstrated through explicit documentation.*
-#' @srrstatsTODO {RE3.3} *Allow explicit setting of convergence thresholds, unless reasons against doing so are explicitly documented.*
+
+
+
 #' @srrstatsTODO {RE4.1} *Regression Software may enable an ability to generate a model object without actually fitting values. This may be useful for controlling batch processing of computationally intensive fitting algorithms.*
 #' @srrstatsTODO {RE4.5} *Numbers of observations submitted to model (via `nobs()`)*
 #' @srrstatsTODO {RE4.7} *Where appropriate, convergence statistics*
@@ -122,6 +125,9 @@ NULL
 #'   "implicit studentization" is one of the merits of empirical likelihood.
 #' @srrstatsNA {G4.0} The package does not allow outputs to be written to local
 #'   files.
+#' @srrstatsNA {G5.10} Unit tests take less then 30 seconds in all platforms we
+#'   tested. We avoid long running tests in compliance with the CRAN guidelines.
+#'   We believe that the separate flags are not necessary for the package.
 #' @srrstatsNA {G5.11} Unit tests do not require large data sets.
 #' @srrstatsNA {G5.11a} Unit tests do not download additional data sets.
 #' @srrstatsNA {RE4.14, RE4.15} Empirical likelihood methods (and thus the

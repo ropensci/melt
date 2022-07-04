@@ -23,9 +23,10 @@ S4 class for empirical likelihood.
 \details{
 Let \eqn{X_i} be independent and identically distributed
 \eqn{p}-dimensional random variable from an unknown distribution \eqn{F}
-for \eqn{i = 1, \dots, n}. For a parameter of interest \eqn{\theta(F) \in
-  {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth estimating function
-\eqn{g(X_i, \theta)} with a moment condition
+for \eqn{i = 1, \dots, n}. We assume that \eqn{F} has a positive definite
+covariance matrix. For a parameter of interest
+\eqn{\theta(F) \in {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth
+estimating function \eqn{g(X_i, \theta)} with a moment condition
 \deqn{\textnormal{E}[g(X_i, \theta)] = 0.}
 We assume that there exists an unique \eqn{\theta_0} that solves the above
 equation. Given a value of \eqn{\theta}, the (profile) empirical likelihood
@@ -96,12 +97,10 @@ functions.}
 showClass("EL")
 }
 \references{
-Glenn, N.L., and Yichuan Zhao. 2007.
-“Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-Computational Statistics & Data Analysis 51 (10): 5130–41.
-\doi{10.1016/j.csda.2006.07.032}.
+Owen A (2001). Empirical Likelihood. Chapman & Hall/CRC.
+\doi{10.1201/9781420036152}.
 
-Qin, Jin, and Jerry Lawless. 1994.
+Qin J, Lawless J (1994).
 “Empirical Likelihood and General Estimating Equations.”
-The Annals of Statistics 22 (1): 300–325. \doi{10.1214/aos/1176325370}.
+The Annals of Statistics, 22(1), 300–325. \doi{10.1214/aos/1176325370}.
 }

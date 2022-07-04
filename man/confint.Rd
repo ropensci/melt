@@ -44,8 +44,10 @@ fit <- el_lm(mpg ~ ., data = mtcars)
 confint(fit, parm = c(2, 3))
 }
 \references{
-Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
+Owen A (1990).
+“Empirical Likelihood Ratio Confidence Regions.”
+The Annals of Statistics, 18(1), 90–120.
+\doi{10.1214/aos/1176347494}.
 }
 \seealso{
 \code{\link[=confreg]{confreg()}}, \code{\link[=el_control]{el_control()}}, \code{\link[=elt]{elt()}}

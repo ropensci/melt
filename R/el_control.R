@@ -42,8 +42,10 @@
 #' @examples
 #' optcfg <- el_control(maxit = 300, step = 0.01, th = 200, nthreads = 1)
 #' @export
-#' @srrstats {G2.1, G2.1a} Assertions on types of inputs are clarified
+#' @srrstats {G2.1a} Assertions on types of inputs are clarified
 #'   throughout the package documentation.
+#' @srrstats {RE3.2, RE3.3} Convergence thresholds can be set by the `tol` and
+#'   `tol_l` arguments with the default values documented.
 el_control <- function(maxit = 200L,
                        maxit_l = 25L,
                        tol = 1e-06,

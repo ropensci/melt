@@ -49,8 +49,10 @@ w <- rep(c(1, 2), each = 25)
 el_mean(x, par, w)
 }
 \references{
-Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
+Owen A (1990).
+“Empirical Likelihood Ratio Confidence Regions.”
+The Annals of Statistics, 18(1), 90–120.
+\doi{10.1214/aos/1176347494}.
 }
 \seealso{
 \code{\link[=el_control]{el_control()}}, \code{\link[=el_eval]{el_eval()}}, \code{\link[=elt]{elt()}}

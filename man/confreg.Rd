@@ -50,8 +50,10 @@ cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
 plot(cr)
 }
 \references{
-Owen, Art. 1990. “Empirical Likelihood Ratio Confidence Regions.”
-The Annals of Statistics 18 (1): 90–120. \doi{10.1214/aos/1176347494}.
+Owen A (1990).
+“Empirical Likelihood Ratio Confidence Regions.”
+The Annals of Statistics, 18(1), 90–120.
+\doi{10.1214/aos/1176347494}.
 }
 \seealso{
 \code{\link[=confint]{confint()}}, \code{\link[=el_control]{el_control()}}, \code{\link[=elt]{elt()}}, \code{\link[=plot]{plot()}}
