@@ -70,7 +70,7 @@
 #' @srrstats {RE4.4} Model specification is done through `formula()`.
 #' @srrstats {RE2.1} Missing values are handled by the `na.action` argument.
 #'   `Inf` values are not allowed and produce an error.
-#' @srrstats {RE2.4a, RE2.4b} Perfect collinearity is handled by
+#' @srrstats {RE2.4, RE2.4a, RE2.4b} Perfect collinearity is handled by
 #'   `model.frame()`. Especially, perfect collinearity among predictor variables
 #'   produces an error in `lm.fit()` since `singular.ok` is set to `FALSE`. This
 #'   is because the underlying asymptotic empirical likelihood theory requires
@@ -83,9 +83,7 @@ el_lm <- function(formula,
                   control = el_control(),
                   model = TRUE,
                   ...) {
-  if (!is(control, "ControlEL")) {
-    stop("invalid `control` specified.")
-  }
+  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
   model <- validate_model(model)
   cl <- match.call()
   if (missing(data)) {
@@ -100,15 +98,12 @@ el_lm <- function(formula,
   mt <- attr(mf, "terms")
   y <- model.response(mf, "numeric")
   w <- as.vector(model.weights(mf))
-  if (!is.null(w) && !is.numeric(w)) {
-    stop("`weights` must be a numeric vector.")
-  }
-  if (!is.null(w) && any(w < 0)) {
-    stop("`weights` must be positive.")
-  }
-  if (is.matrix(y)) {
-    stop("`el_lm` does not support multiple responses.")
-  }
+  stopifnot(
+    "`weights` must be a numeric vector." =
+      (isTRUE(is.null(w) || is.numeric(w))),
+    "`weights` must be positive." = (isTRUE(is.null(w) || all(w > 0))),
+    "`el_lm()` does not support multiple responses." = (isFALSE(is.matrix(y)))
+  )
   if (is.empty.model(mt)) {
     x <- NULL
     mm <- cbind(y, x)

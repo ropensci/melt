@@ -11,5 +11,3 @@ test_that("`logLik()` at the maximum empirical likelihood estimate.", {
   expect_output(print(loglik))
   expect_equal(loglik@logLik, -n * log(n))
 })
-
-

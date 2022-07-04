@@ -61,4 +61,3 @@ test_that("Larger `tol_l` decreases iterations for convergence.", {
   fit2 <- el_mean(x, par = 60, control = el_control(tol_l = 1e-02))
   expect_gte(fit@optim$iterations, fit2@optim$iterations)
 })
-

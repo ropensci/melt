@@ -14,10 +14,6 @@ setMethod("elt", "EL", function(object,
   )
   h <- validate_hypothesis(rhs, lhs, object@npar)
   alpha <- validate_alpha(alpha)
-  # if (is.character(calibrate)) {
-  #   calibrate <- tolower(calibrate)
-  # }
-  # calibrate <- match.arg(calibrate)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -68,14 +64,10 @@ setMethod("elt", "missing", function(object,
                                      calibrate = "chisq",
                                      control = el_control()) {
   stopifnot(
-    # "'object' has no 'data'; fit the model with 'model' = TRUE" =
-    #   (length(getDataMatrix(object)) > 1L),
     "invalid 'control' specified" = (is(control, "ControlEL"))
   )
-  # h <- validate_hypothesis(rhs, lhs, object@npar)
   alpha <- validate_alpha(alpha)
   calibrate <- match.arg(calibrate)
-
   if (length(rhs) != 1L) {
     stop("sefse")
   }

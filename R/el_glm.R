@@ -73,9 +73,7 @@ el_glm <- function(formula,
                    etastart = NULL,
                    mustart = NULL,
                    ...) {
-  if (!is(control, "ControlEL")) {
-    stop("invalid `control` specified.")
-  }
+  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
   model <- validate_model(model)
   cl <- match.call()
   if (is.character(family)) {
@@ -110,9 +108,9 @@ el_glm <- function(formula,
       names(Y) <- nm
     }
   }
-  if (is.matrix(Y)) {
-    stop("`el_glm` does not support grouped data.")
-  }
+  stopifnot(
+    "`el_glm()` does not support grouped data." = (isFALSE(is.matrix(Y)))
+  )
   if (is.empty.model(mt)) {
     X <- matrix(, NROW(Y), 0L)
     return(new("GLM",

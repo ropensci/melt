@@ -2,11 +2,10 @@
 #' @importFrom methods is
 setMethod("eld", "EL", function(object, control = el_control()) {
   stopifnot(
-    "`eld` method is not applicable to a `GLM` object." =
-      (!is(object, "GLM")),
+    "`eld` method is not applicable to a `GLM` object." = (!is(object, "GLM")),
     "`object` has no `data`; fit the model with `model` = TRUE." =
       (length(getDataMatrix(object)) > 1L),
-    "invalid `control` specified." = (is(control, "ControlEL"))
+    "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   new("ELD", eld = computeELD(
     getMethodEL(object), coef(object), getDataMatrix(object), control@maxit_l,
@@ -18,7 +17,7 @@ setMethod("eld", "EL", function(object, control = el_control()) {
 #' @usage NULL
 setMethod("eld", "missing", function(object, control = el_control()) {
   stopifnot(
-    "invalid `control` specified." = (is(control, "ControlEL"))
+    "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   NULL
 })
