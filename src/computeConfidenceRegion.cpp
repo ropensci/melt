@@ -27,9 +27,9 @@ Rcpp::NumericVector computeConfidenceRegion(
   // confidence region (vector)
   std::vector<double> cr(circ.cols());
   // step size
-  const double gamma = setStep(x.rows(), step);
+  const double gamma = set_step(x.rows(), step);
   // test threshold
-  const double test_th = setThreshold(1, th);
+  const double test_th = set_threshold(1, th);
   // lhs matrix
   Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(2, npar);
   lhs(0, idx[0] - 1) = 1;

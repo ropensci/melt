@@ -1,7 +1,6 @@
 #ifndef EL_H_
 #define EL_H_
 
-#include "eigen_config.h"
 #include <RcppEigen.h>
 #include <functional>
 #include <string>

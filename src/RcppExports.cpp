@@ -131,6 +131,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_max_threads
+int get_max_threads();
+RcppExport SEXP _melt_get_max_threads() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(get_max_threads());
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_rank
+int get_rank(const Eigen::Map<Eigen::MatrixXd>& x);
+RcppExport SEXP _melt_get_rank(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_rank(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // testGLM
 Rcpp::List testGLM(const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par0, const bool intercept, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& w);
 RcppExport SEXP _melt_testGLM(SEXP methodSEXP, SEXP xSEXP, SEXP par0SEXP, SEXP interceptSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wSEXP) {
@@ -222,27 +243,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// getMaxThreads
-int getMaxThreads();
-RcppExport SEXP _melt_getMaxThreads() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(getMaxThreads());
-    return rcpp_result_gen;
-END_RCPP
-}
-// getRank
-int getRank(const Eigen::Map<Eigen::MatrixXd>& x);
-RcppExport SEXP _melt_getRank(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(getRank(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_melt_computeBootstrapCalibration", (DL_FUNC) &_melt_computeBootstrapCalibration, 12},
@@ -251,12 +251,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_computeEL", (DL_FUNC) &_melt_computeEL, 7},
     {"_melt_computeELD", (DL_FUNC) &_melt_computeELD, 8},
     {"_melt_computeGenericEL", (DL_FUNC) &_melt_computeGenericEL, 5},
+    {"_melt_get_max_threads", (DL_FUNC) &_melt_get_max_threads, 0},
+    {"_melt_get_rank", (DL_FUNC) &_melt_get_rank, 1},
     {"_melt_testGLM", (DL_FUNC) &_melt_testGLM, 12},
     {"_melt_testHypothesis", (DL_FUNC) &_melt_testHypothesis, 12},
     {"_melt_testLM", (DL_FUNC) &_melt_testLM, 11},
     {"_melt_testMultipleHypotheses", (DL_FUNC) &_melt_testMultipleHypotheses, 16},
-    {"_melt_getMaxThreads", (DL_FUNC) &_melt_getMaxThreads, 0},
-    {"_melt_getRank", (DL_FUNC) &_melt_getRank, 1},
     {NULL, NULL, 0}
 };
 

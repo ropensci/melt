@@ -69,7 +69,7 @@ test_that("Vector `lhs`.", {
   expect_s4_class(out, "ELT")
   expect_output(show(out))
   expect_output(print(out))
-  fit2 <- el_mean(faithful, par = c(4, 70))
+  fit2 <- el_mean(faithful, par = c(4, 70), weights = faithful$waiting)
   out2 <- elt(fit2, lhs = c(17, -1), rhs = -3)
   expect_s4_class(out, "ELT")
   expect_output(show(out))

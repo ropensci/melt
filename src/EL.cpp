@@ -68,8 +68,7 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"binomial_log", g_bin_log},
                {"poisson_log", g_poi_log},
                {"poisson_identity", g_poi_identity},
-               {"poisson_sqrt", g_poi_sqrt},
-               {"quasibinomial_logit", g_qbin_logit}}};
+               {"poisson_sqrt", g_poi_sqrt}}};
   return g_map[method];
 }
 
@@ -257,8 +256,7 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd>&,
                {"binomial_log", g_bin_log},
                {"poisson_log", g_poi_log},
                {"poisson_identity", g_poi_identity},
-               {"poisson_sqrt", g_poi_sqrt},
-               {"quasibinomial_logit", g_qbin_logit}}};
+               {"poisson_sqrt", g_poi_sqrt}}};
   return g_map[method];
 }
 
@@ -287,13 +285,12 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::VectorXd>&,
          {"binomial_log", gr_nloglr_bin_log},
          {"poisson_log", gr_nloglr_poi_log},
          {"poisson_identity", gr_nloglr_poi_identity},
-         {"poisson_sqrt", gr_nloglr_poi_sqrt},
-         {"quasibinomial_logit", gr_nloglr_qbin_logit}}};
+         {"poisson_sqrt", gr_nloglr_poi_sqrt}}};
   return gr_map[method];
 }
 
 Eigen::ArrayXd CEL::logp(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                           const Eigen::Ref<const Eigen::ArrayXd>& wt) const
+                         const Eigen::Ref<const Eigen::ArrayXd>& wt) const
 {
   if (weighted) {
     return log(wt) - log(n) -

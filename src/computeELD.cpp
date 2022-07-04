@@ -18,7 +18,7 @@ Rcpp::NumericVector computeELD(const std::string method,
                                const Eigen::Map<Eigen::ArrayXd> &wt) {
   const int n = x.rows();
   const int p = par0.size();
-  const double test_th = setThreshold(p, th);
+  const double test_th = set_threshold(p, th);
   const EL el(method, par0, x, maxit_l, tol_l, test_th, wt);
   // maximum empirical likelihood value
   const double mel = el.loglik();

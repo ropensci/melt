@@ -1,6 +1,5 @@
 #include "testMultipleHypothesesUtils.h"
 #include "helpers.h"
-#include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #include <string>
@@ -23,13 +22,13 @@ Rcpp::List testMultipleHypotheses(const double alpha,
                                   const Rcpp::Nullable<double> step,
                                   const Rcpp::Nullable<double> th,
                                   const Eigen::Map<Eigen::ArrayXd> &w) {
-  const double gamma = setStep(x.rows(), step);
+  const double gamma = set_step(x.rows(), step);
   // 1. compute test statistics
   std::vector<double> test_statistic(m);
   for (int j = 0; j < m; ++j) {
     const Eigen::VectorXd r = rhs.middleRows(q(j), q(j + 1) - q(j));
     const Eigen::MatrixXd l = lhs.middleRows(q(j), q(j + 1) - q(j));
-    const double test_th = setThreshold(l.rows(), th);
+    const double test_th = set_threshold(l.rows(), th);
     const CEL el(method, est, x, l, r, maxit, maxit_l, tol, tol_l, gamma,
                  test_th, w);
     test_statistic[j] = 2.0 * el.nllr;
@@ -55,7 +54,7 @@ Rcpp::List testMultipleHypotheses(const double alpha,
     tmp.resize(p, m);
     max_statistic[b] = (u * tmp).maxCoeff();
   }
-  const double cv = computeQuantile(Rcpp::wrap(max_statistic), 1 - alpha);
+  const double cv = compute_quantile(Rcpp::wrap(max_statistic), 1 - alpha);
   // 3. compute adjusted p-values
   std::vector<double> adj_pval(m);
   for (int j = 0; j < m; ++j) {

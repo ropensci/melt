@@ -52,7 +52,7 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
     "not enough observations in `g`." = (n >= 2L),
     "`g` must be a finite numeric matrix." =
       (isTRUE(is.numeric(mm) && all(is.finite(mm)))),
-    "`g` must have full column rank." = (isTRUE(n > p && getRank(mm) == p)),
+    "`g` must have full column rank." = (isTRUE(n > p && get_rank(mm) == p)),
     "invalid `control` specified." = (is(control, "ControlEL"))
   )
   w <- validate_weights(weights, n)

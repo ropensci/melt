@@ -16,8 +16,8 @@ Rcpp::List testHypothesis(const std::string method,
                           const Rcpp::Nullable<double> step,
                           const Rcpp::Nullable<double> th,
                           const Eigen::Map<Eigen::ArrayXd> &w) {
-  const double test_th = setThreshold(lhs.rows(), th);
-  const double gamma = setStep(x.rows(), step);
+  const double test_th = set_threshold(lhs.rows(), th);
+  const double gamma = set_step(x.rows(), step);
   const CEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
                test_th, w);
 

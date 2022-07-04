@@ -29,9 +29,9 @@ Eigen::MatrixXd computeConfidenceIntervals(
   Eigen::MatrixXd ci(n, 2);
 
   // step size
-  const double gamma = setStep(x.rows(), step);
+  const double gamma = set_step(x.rows(), step);
   // test threshold
-  const double test_th = setThreshold(1, th);
+  const double test_th = set_threshold(1, th);
   #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
   #endif

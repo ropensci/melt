@@ -1,6 +1,6 @@
-#include "EL.h"
 #include "helpers.h"
 #include "utils.h"
+#include "EL.h"
 #include <RcppEigen.h>
 #include <boost/random/uniform_int_distribution.hpp>
 #include <dqrng.h>
@@ -39,7 +39,7 @@ Rcpp::NumericVector computeBootstrapCalibration(
   boost::random::uniform_int_distribution<> u(0, n - 1);
   // bootstrap statistics
   std::vector<double> boot_statistic(B);
-  const double test_th = setThreshold(par.size(), th);
+  const double test_th = set_threshold(par.size(), th);
   #ifdef _OPENMP
   #pragma omp parallel num_threads(nthreads)
   {
@@ -70,7 +70,7 @@ Rcpp::NumericVector computeBootstrapCalibration(
                                }) /
                       static_cast<double>(B);
   const Rcpp::NumericVector out =
-      Rcpp::NumericVector::create(Rcpp::Named("cv") = computeQuantile(
+      Rcpp::NumericVector::create(Rcpp::Named("cv") = compute_quantile(
                                       Rcpp::wrap(boot_statistic), 1 - alpha),
                                   Rcpp::Named("pval") = pval);
   return out;

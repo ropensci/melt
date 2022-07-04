@@ -1,26 +1,28 @@
 #include "utils.h"
 #include <RcppEigen.h>
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 #include <cmath>
 #include <functional>
 #include <map>
 #include <string>
 
-// [[Rcpp::export]]
-int getMaxThreads() {
-  #ifdef _OPENMP
-  return omp_get_max_threads();
-  #else
-  return 1;
-  #endif
-}
-
-// [[Rcpp::export]]
-int getRank(const Eigen::Map<Eigen::MatrixXd> &x) {
-  const Eigen::FullPivLU<Eigen::MatrixXd> lu_decomp(x);
-  return lu_decomp.rank();
+std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd> &,
+                              const Eigen::Ref<const Eigen::VectorXd> &)>
+  g_fn2(const std::string method) {
+    std::map<std::string, std::function<Eigen::MatrixXd(
+        const Eigen::Ref<const Eigen::MatrixXd> &,
+        const Eigen::Ref<const Eigen::VectorXd> &)>>
+          g_map{{{"mean", g_mean},
+          {"lm", g_lm},
+          {"gaussian_identity", g_lm},
+          {"gaussian_log", g_gauss_log},
+          {"gaussian_inverse", g_gauss_inverse},
+          {"binomial_logit", g_bin_logit},
+          {"binomial_probit", g_bin_probit},
+          {"binomial_log", g_bin_log},
+          {"poisson_log", g_poi_log},
+          {"poisson_identity", g_poi_identity},
+          {"poisson_sqrt", g_poi_sqrt}}};
+    return g_map[method];
 }
 
 Eigen::ArrayXd inverse_linkinv(const Eigen::Ref<const Eigen::VectorXd> &x) {
@@ -48,22 +50,18 @@ Eigen::VectorXd mele_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
     return (w.matrix().transpose() * x) / x.rows();
   }
 };
-Eigen::VectorXd mele_lm(const Eigen::Ref<const Eigen::MatrixXd> &data,
+Eigen::VectorXd mele_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
                         const Eigen::Ref<const Eigen::ArrayXd> &w) {
-  const Eigen::VectorXd y = data.col(0);
-  const Eigen::MatrixXd x = data.rightCols(data.cols() - 1);
+  const Eigen::VectorXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   if (w.size() == 0) {
-    return x.colPivHouseholderQr().solve(y);
+    return xmat.colPivHouseholderQr().solve(y);
   } else {
     const Eigen::MatrixXd wsqrt =
         Eigen::MatrixXd(w.sqrt().matrix().asDiagonal());
-    return (wsqrt * x).colPivHouseholderQr().solve(wsqrt * y);
+    return (wsqrt * xmat).colPivHouseholderQr().solve(wsqrt * y);
   }
 };
-
-
-
-
 
 
 
@@ -153,7 +151,7 @@ Eigen::VectorXd gr_nloglr_gauss_inverse(
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   Eigen::ArrayXd c = cube(inverse_linkinv(xmat * par)) *
-                     (2.0 * y - 3.0 * inverse_linkinv(xmat * par));
+    (2.0 * y - 3.0 * inverse_linkinv(xmat * par));
   if (weighted) {
     c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
   } else {
@@ -308,7 +306,7 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
   Eigen::ArrayXd c =
-    -2.0 * (y * square(((xmat * par).array().inverse()))) - 1.0;
+    -2.0 * (y * square(((xmat * par).array().inverse()))) - 2.0;
   if (weighted) {
     c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
   } else {
@@ -319,100 +317,69 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd>& l,
 
 
 
-// quasibinomial family
-Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
-                             const Eigen::Ref<const Eigen::VectorXd>& par) {
-  const double n = static_cast<double>(x.rows());
-  const int p = x.cols() - 1;
-  const Eigen::VectorXd beta = par.head(p);
-  const double phi = par(p);
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(p);
-
-  Eigen::MatrixXd out(x.rows(), p + 1);
-  out.leftCols(p) = xmat.array().colwise() *
-    (y - logit_linkinv(xmat * beta));
-  // out.leftCols(p) =std::pow(n, -8) *(xmat.array().colwise() *
-  //   (y - logit_linkinv(xmat * beta)));
-  // out.leftCols(p) = xmat.array().colwise() *
-  //   (1.0 / phi * (y - logit_linkinv(xmat * beta)));
-  // out.rightCols(1) = square(y - logit_linkinv(xmat * beta)) *
-  //   inverse(phi * phi * logit_linkinv(xmat * beta) *
-  //   (1.0 - logit_linkinv(xmat * beta))) - 1.0 / phi;
-
-  out.col(p) = inverse(phi * phi * logit_linkinv(xmat * beta) *
-    (1.0 - logit_linkinv(xmat * beta))) *
-    square(y - logit_linkinv(xmat * beta)) - 1.0 / phi;
-  // out.col(p) = out.col(p) / 20.0;
-  // out.col(p) = inverse(logit_linkinv(xmat * beta) *
-  //   (1.0 - logit_linkinv(xmat * beta))) *
-  //   square(y - logit_linkinv(xmat * beta)) - phi;
-  return out;
-}
-Eigen::VectorXd gr_nloglr_qbin_logit(
-    const Eigen::Ref<const Eigen::VectorXd>& l,
-    const Eigen::Ref<const Eigen::MatrixXd>& g,
-    const Eigen::Ref<const Eigen::MatrixXd>& x,
-    const Eigen::Ref<const Eigen::VectorXd>& par,
-    const Eigen::Ref<const Eigen::ArrayXd>& w,
-    const bool weighted) {
-  const int p = x.cols() - 1;
-  const Eigen::VectorXd beta = par.head(p);
-  const double phi = par(p);
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  Eigen::ArrayXd c(x.rows());
-  if (weighted) {
-    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
-  } else {
-    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
-  }
-
-  Eigen::ArrayXd c2 = inverse(phi * phi * logit_linkinv(xmat * beta) *
-    (1.0 - logit_linkinv(xmat * beta))) *
-    (square(logit_linkinv(xmat * beta)) * (1.0 - 2.0 * y) +
-    square(y) * (2.0 * logit_linkinv(xmat * beta) - 1.0));
-
-  Eigen::MatrixXd out = Eigen::MatrixXd::Zero(p + 1, p + 1);
-  out.topLeftCorner(p, p) = xmat.transpose() *
-    (xmat.array().colwise() * c).matrix();
-  out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c2).colwise().sum();
-  out.topRightCorner(p, 1) =
-    (xmat.array().colwise() * c2).colwise().sum().transpose();
-  out(p, p) = (c * (-2.0 * logit_linkinv(xmat * beta) *
-    (1.0 - logit_linkinv(xmat * beta)) *
-    square(y - logit_linkinv(xmat * beta)) * std::pow(phi, -3) +
-    std::pow(phi, -2))).sum();
-  return out * l;
-}
-
-
-
-
-
-
-std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd> &,
-                              const Eigen::Ref<const Eigen::VectorXd> &)>
-g_fn2(const std::string method) {
-  std::map<std::string, std::function<Eigen::MatrixXd(
-                            const Eigen::Ref<const Eigen::MatrixXd> &,
-                            const Eigen::Ref<const Eigen::VectorXd> &)>>
-      g_map{{{"mean", g_mean},
-             {"lm", g_lm},
-             {"gaussian_identity", g_lm},
-             {"gaussian_log", g_gauss_log},
-             {"gaussian_inverse", g_gauss_inverse},
-             {"binomial_logit", g_bin_logit},
-             {"binomial_probit", g_bin_probit},
-             {"binomial_log", g_bin_log},
-             {"poisson_log", g_poi_log},
-             {"poisson_identity", g_poi_identity},
-             {"poisson_sqrt", g_poi_sqrt}}};
-  return g_map[method];
-}
-
-double computeQuantile(const Rcpp::NumericVector &x, const double prob) {
-  Rcpp::Environment stats("package:stats");
-  Rcpp::Function quantile = stats["quantile"];
-  return Rcpp::as<double>(quantile(x, Rcpp::Named("probs") = prob));
-}
+// // quasibinomial family
+// Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,
+//                              const Eigen::Ref<const Eigen::VectorXd>& par) {
+//   const double n = static_cast<double>(x.rows());
+//   const int p = x.cols() - 1;
+//   const Eigen::VectorXd beta = par.head(p);
+//   const double phi = par(p);
+//   const Eigen::ArrayXd y = x.col(0);
+//   const Eigen::MatrixXd xmat = x.rightCols(p);
+//
+//   Eigen::MatrixXd out(x.rows(), p + 1);
+//   out.leftCols(p) = xmat.array().colwise() *
+//     (y - logit_linkinv(xmat * beta));
+//   // out.leftCols(p) =std::pow(n, -8) *(xmat.array().colwise() *
+//   //   (y - logit_linkinv(xmat * beta)));
+//   // out.leftCols(p) = xmat.array().colwise() *
+//   //   (1.0 / phi * (y - logit_linkinv(xmat * beta)));
+//   // out.rightCols(1) = square(y - logit_linkinv(xmat * beta)) *
+//   //   inverse(phi * phi * logit_linkinv(xmat * beta) *
+//   //   (1.0 - logit_linkinv(xmat * beta))) - 1.0 / phi;
+//
+//   out.col(p) = inverse(phi * phi * logit_linkinv(xmat * beta) *
+//     (1.0 - logit_linkinv(xmat * beta))) *
+//     square(y - logit_linkinv(xmat * beta)) - 1.0 / phi;
+//   // out.col(p) = out.col(p) / 20.0;
+//   // out.col(p) = inverse(logit_linkinv(xmat * beta) *
+//   //   (1.0 - logit_linkinv(xmat * beta))) *
+//   //   square(y - logit_linkinv(xmat * beta)) - phi;
+//   return out;
+// }
+// Eigen::VectorXd gr_nloglr_qbin_logit(
+//     const Eigen::Ref<const Eigen::VectorXd>& l,
+//     const Eigen::Ref<const Eigen::MatrixXd>& g,
+//     const Eigen::Ref<const Eigen::MatrixXd>& x,
+//     const Eigen::Ref<const Eigen::VectorXd>& par,
+//     const Eigen::Ref<const Eigen::ArrayXd>& w,
+//     const bool weighted) {
+//   const int p = x.cols() - 1;
+//   const Eigen::VectorXd beta = par.head(p);
+//   const double phi = par(p);
+//   const Eigen::ArrayXd y = x.col(0);
+//   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+//   Eigen::ArrayXd c(x.rows());
+//   if (weighted) {
+//     c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+//   } else {
+//     c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+//   }
+//
+//   Eigen::ArrayXd c2 = inverse(phi * phi * logit_linkinv(xmat * beta) *
+//     (1.0 - logit_linkinv(xmat * beta))) *
+//     (square(logit_linkinv(xmat * beta)) * (1.0 - 2.0 * y) +
+//     square(y) * (2.0 * logit_linkinv(xmat * beta) - 1.0));
+//
+//   Eigen::MatrixXd out = Eigen::MatrixXd::Zero(p + 1, p + 1);
+//   out.topLeftCorner(p, p) = xmat.transpose() *
+//     (xmat.array().colwise() * c).matrix();
+//   out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c2).colwise().sum();
+//   out.topRightCorner(p, 1) =
+//     (xmat.array().colwise() * c2).colwise().sum().transpose();
+//   out(p, p) = (c * (-2.0 * logit_linkinv(xmat * beta) *
+//     (1.0 - logit_linkinv(xmat * beta)) *
+//     square(y - logit_linkinv(xmat * beta)) * std::pow(phi, -3) +
+//     std::pow(phi, -2))).sum();
+//   return out * l;
+// }

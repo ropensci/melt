@@ -11,7 +11,7 @@ Rcpp::List computeEL(const std::string method,
                      const double tol_l,
                      const Rcpp::Nullable<double> th,
                      const Eigen::Map<Eigen::ArrayXd> &w) {
-  const double test_th = setThreshold(par0.size(), th);
+  const double test_th = set_threshold(par0.size(), th);
   const EL el(method, par0, x, maxit_l, tol_l, test_th, w);
 
   Rcpp::List result = Rcpp::List::create(

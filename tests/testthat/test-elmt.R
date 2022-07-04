@@ -57,3 +57,20 @@ test_that("List `lhs`.", {
   lhs <- list(matrix(c(1, 33, 0), nrow = 1), matrix(c(0, 1, -100), nrow = 1))
   expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
 })
+
+test_that("`el_glm()` (gaussian - inverse).", {
+  fit <- el_glm(mpg ~ disp + hp + wt,
+    family = gaussian("inverse"),
+    data = mtcars, control = el_control(nthreads = 1)
+  )
+  wfit <- el_glm(mpg ~ disp + hp + wt,
+    family = gaussian("inverse"), data = mtcars, weights = gear,
+    control = el_control(nthreads = 1)
+  )
+  lhs <- list(
+    matrix(c(0.001, -1, 0, 0), nrow = 1),
+    matrix(c(0, 1, -1, 0), nrow = 1)
+  )
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+})

@@ -9,7 +9,7 @@ Rcpp::List computeGenericEL(const Eigen::Map<Eigen::MatrixXd> &g,
                             const double tol_l,
                             const Rcpp::Nullable<double> th,
                             const Eigen::Map<Eigen::ArrayXd> &w) {
-  const double test_th = setThreshold(g.cols(), th);
+  const double test_th = set_threshold(g.cols(), th);
   const EL el(g, maxit_l, tol_l, test_th, w);
 
   Rcpp::List result = Rcpp::List::create(

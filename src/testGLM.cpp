@@ -21,7 +21,7 @@ Rcpp::List testGLM(const std::string method,
                    const int nthreads,
                    const Eigen::Map<Eigen::ArrayXd> &w) {
   const int p = x.cols() - 1;
-  const double gamma = setStep(x.rows(), step);
+  const double gamma = set_step(x.rows(), step);
 
   // overall test
   Eigen::VectorXd par(p);
@@ -36,7 +36,7 @@ Rcpp::List testGLM(const std::string method,
     lhs.col(0) = Eigen::MatrixXd::Zero(p - 1, 1);
     lhs.rightCols(p - 1) = Eigen::MatrixXd::Identity(p - 1, p - 1);
     const Eigen::VectorXd rhs = Eigen::VectorXd::Zero(p - 1);
-    const double test_th = setThreshold(p - 1, th);
+    const double test_th = set_threshold(p - 1, th);
     const CEL el(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, gamma,
                  test_th, w);
     par = el.par;
@@ -48,7 +48,7 @@ Rcpp::List testGLM(const std::string method,
     logl = el.loglik(w);
   } else {
     par = Eigen::VectorXd::Zero(p);
-    const double test_th = setThreshold(p, th);
+    const double test_th = set_threshold(p, th);
     const EL el(method, par, x, maxit_l, tol_l, test_th, w);
     l = el.l;
     nllr = el.nllr;
@@ -61,7 +61,7 @@ Rcpp::List testGLM(const std::string method,
   // parameter tests
   std::vector<double> chisq_val(p);
   std::vector<bool> par_conv(p);
-  const double test_th = setThreshold(1, th);
+  const double test_th = set_threshold(1, th);
   #ifdef _OPENMP
   #pragma omp parallel for num_threads(nthreads)
   #endif
