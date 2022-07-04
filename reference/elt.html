@@ -63,17 +63,7 @@ EL."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax
 <span>  rhs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lhs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  calibrate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"boot"</span>, <span class="st">"f"</span><span class="op">)</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S4 method for missing</span></span>
-<span><span class="fu">elt</span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  rhs <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  lhs <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  calibrate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"boot"</span>, <span class="st">"f"</span><span class="op">)</span>,</span>
+<span>  calibrate <span class="op">=</span> <span class="st">"chisq"</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -103,8 +93,9 @@ of parameters. Defaults to <code>NULL</code>. See ‘Details’.</p></dd>
 
 
 <dt>calibrate</dt>
-<dd><p>A single character for the calibration method. Defaults to
-<code>"chisq"</code>. See ‘Details’.</p></dd>
+<dd><p>A single character for the calibration method. It is
+case-insensitive and must be one of <code>"chisq"</code>, <code>"boot"</code>, or <code>"f"</code>.
+Defaults to <code>"chisq"</code>. See ‘Details’.</p></dd>
 
 
 <dt>control</dt>
@@ -168,7 +159,7 @@ Canadian Journal of Statistics 23 (2): 145–59. <a href="https://doi.org/10.230
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">x1</span>, <span class="va">x2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span>, <span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">elt</span><span class="op">(</span><span class="va">fit</span>, lhs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1.5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, rhs <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">elt</span><span class="op">(</span><span class="va">fit</span>, lhs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1.5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, rhs <span class="op">=</span> <span class="fl">2.5</span>, calibrate <span class="op">=</span> <span class="st">"chisq"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -179,7 +170,7 @@ Canadian Journal of Statistics 23 (2): 145–59. <a href="https://doi.org/10.230
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value: &lt; 2.2204e-16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># test of no treatment effect</span></span></span>
+<span class="r-in"><span><span class="co">## test of no treatment effect</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span></span>
