@@ -77,9 +77,10 @@ passed to <code><a href="https://rdrr.io/r/base/format.html" class="external-lin
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Let \(X_i\) be independent and identically distributed
 \(p\)-dimensional random variable from an unknown distribution \(F\)
-for \(i = 1, \dots, n\). For a parameter of interest \(\theta(F) \in
-  {\rm{I\!R}}^p\), consider a \(p\)-dimensional smooth estimating function
-\(g(X_i, \theta)\) with a moment condition
+for \(i = 1, \dots, n\). We assume that \(F\) has a positive definite
+covariance matrix. For a parameter of interest
+\(\theta(F) \in {\rm{I\!R}}^p\), consider a \(p\)-dimensional smooth
+estimating function \(g(X_i, \theta)\) with a moment condition
 $$\textnormal{E}[g(X_i, \theta)] = 0.$$
 We assume that there exists an unique \(\theta_0\) that solves the above
 equation. Given a value of \(\theta\), the (profile) empirical likelihood
@@ -170,14 +171,12 @@ functions.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Glenn, N.L., and Yichuan Zhao. 2007.
-“Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-Computational Statistics &amp; Data Analysis 51 (10): 5130–41.
-<a href="https://doi.org/10.1016/j.csda.2006.07.032" class="external-link">doi:10.1016/j.csda.2006.07.032</a>
+    <p>Owen A (2001). Empirical Likelihood. Chapman &amp; Hall/CRC.
+<a href="https://doi.org/10.1201/9781420036152" class="external-link">doi:10.1201/9781420036152</a>
 .</p>
-<p>Qin, Jin, and Jerry Lawless. 1994.
+<p>Qin J, Lawless J (1994).
 “Empirical Likelihood and General Estimating Equations.”
-The Annals of Statistics 22 (1): 300–325. <a href="https://doi.org/10.1214/aos/1176325370" class="external-link">doi:10.1214/aos/1176325370</a>
+The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos/1176325370" class="external-link">doi:10.1214/aos/1176325370</a>
 .</p>
     </div>
 
