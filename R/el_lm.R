@@ -51,6 +51,7 @@
 #'   \doi{10.1214/aos/1176348368}.
 #' @seealso [el_control()], [el_glm()], [elt()]
 #' @examples
+#' set.seed(5649)
 #' df <- data.frame(y = rnorm(50), x = rnorm(50))
 #' fit <- el_lm(y ~ x, df)
 #' summary(fit)

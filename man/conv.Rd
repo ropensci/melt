@@ -4,7 +4,7 @@
 \alias{conv}
 \alias{conv,EL-method}
 \alias{conv,CEL-method}
-\title{Convergence statistics}
+\title{Convergence check}
 \usage{
 \S4method{conv}{EL}(object, ...)
 
@@ -16,8 +16,11 @@
 
 \item{...}{Further arguments passed to other methods.}
 }
+\value{
+A single logical.
+}
 \description{
-Extracts convergence statistics from a model.
+Extracts convergence status from a model.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -28,3 +31,8 @@ the Lagrange multiplier.
 the parameter.
 }}
 
+\examples{
+## Convergence check for the overall model test
+fit <- el_lm(mpg ~ ., data = mtcars)
+conv(fit)
+}

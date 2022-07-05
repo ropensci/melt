@@ -299,14 +299,19 @@ setGeneric("confreg", function(object,
 })
 
 
-#' Convergence statistics
+#' Convergence check
 #'
-#' Extracts convergence statistics from a model.
+#' Extracts convergence status from a model.
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Further arguments passed to other methods.
+#' @return A single logical.
 #' @usage NULL
+#' @examples
+#' ## Convergence check for the overall model test
+#' fit <- el_lm(mpg ~ ., data = mtcars)
+#' conv(fit)
 #' @exportMethod conv
 #' @srrstats {RE4.7} `conv()` method extracts information on convergence status.
 setGeneric("conv", function(object, ...) standardGeneric("conv"))
@@ -341,14 +346,14 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #' @seealso [confreg()], [eld()]
 #' @usage NULL
 #' @examples
-#' # model
+#' ## Model
 #' fit <- el_lm(hp ~ wt, data = mtcars)
 #'
-#' # confidence region
+#' ## Confidence region
 #' out1 <- confreg(fit, npoints = 500)
 #' plot(out1)
 #'
-#' # empirical likelihood displacement
+#' ## Empirical likelihood displacement
 #' out2 <- eld(fit)
 #' plot(out2)
 #' @exportMethod plot

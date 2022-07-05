@@ -73,6 +73,7 @@ and significance tests for each parameter with
 The test results are returned as \code{optim} and \code{parTests}, respectively.
 }
 \examples{
+set.seed(5649)
 df <- data.frame(y = rnorm(50), x = rnorm(50))
 fit <- el_lm(y ~ x, df)
 summary(fit)

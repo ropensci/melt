@@ -23,9 +23,7 @@
 #'   with single threaded computation. Those tests are run regardless of the
 #'   availability of OpenMP without affect the test results. See
 #'   `.github/CONTRIBUTING.md`.
-
-
-
+#' @srrstats {RE5.0} Documented in the package [website](https://markean.github.io/melt/articles/performance.html).
 
 
 
@@ -70,7 +68,7 @@
 
 
 
-#' @srrstatsTODO {RE5.0} *Scaling relationships between sizes of input data (numbers of observations, with potential extension to numbers of variables/columns) and speed of algorithm.*
+
 
 
 #' @srrstatsTODO {RE7.1} *Tests with noiseless, exact relationships between predictor (independent) and response (dependent) data.*

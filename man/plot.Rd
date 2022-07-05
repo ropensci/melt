@@ -30,14 +30,14 @@ observation index.
 }}
 
 \examples{
-# model
+## Model
 fit <- el_lm(hp ~ wt, data = mtcars)
 
-# confidence region
+## Confidence region
 out1 <- confreg(fit, npoints = 500)
 plot(out1)
 
-# empirical likelihood displacement
+## Empirical likelihood displacement
 out2 <- eld(fit)
 plot(out2)
 }
