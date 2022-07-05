@@ -160,7 +160,8 @@ The Annals of Statistics, 19(4), 1725–1747.
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">5649</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, <span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -169,10 +170,10 @@ The Annals of Statistics, 19(4), 1725–1747.
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.05103 0.137      0.712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            0.05119 0.137      0.711</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.1132 1.081      0.299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1090 1.768      0.184</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 0.1374, df: 1, Pr(&gt;Chisq): 0.7109 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.768, df: 1, Pr(&gt;Chisq): 0.1837 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -185,10 +186,10 @@ The Annals of Statistics, 19(4), 1725–1747.
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.01777 0.016      0.899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            0.08959 0.390      0.532</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.1457 1.900      0.168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1056 1.568      0.211</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 0.39, df: 1, Pr(&gt;Chisq): 0.5323 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.568, df: 1, Pr(&gt;Chisq): 0.2105 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -202,12 +203,12 @@ The Annals of Statistics, 19(4), 1725–1747.
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.02552 0.034      0.854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            0.09248 0.415      0.519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.1086 0.965      0.326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1099 1.792      0.181</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (1 observation deleted due to missingness)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 0.415, df: 1, Pr(&gt;Chisq): 0.5195 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.792, df: 1, Pr(&gt;Chisq): 0.1806 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
