@@ -9,11 +9,13 @@ If you want to make a bigger change, it's a good idea to first file an issue and
 ## Roadmap
 TO DO:
 
-- More options of families and link functions for `el_glm()`. Specifically, `quasi` family is our current priority.
+- Additional options of families and link functions for `el_glm()`. Specifically, `quasi` family is our current priority.
 
-- More model diagnostic tools.
+- Additional model diagnostic tools.
 
-- More multiple testing options.
+- Additional multiple testing options.
+
+- Additional optimization routines.
 
 NOT TO DO:
 

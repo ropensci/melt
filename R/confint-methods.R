@@ -65,12 +65,12 @@ setMethod("confint", "EL", function(object,
   } else if (any(is.na(idx))) {
     idx_na <- which(is.na(idx))
     ci <- matrix(NA_real_, nrow = p, ncol = 2L)
-    ci[-idx_na, ] <- computeConfidenceIntervals(
+    ci[-idx_na, ] <- compute_confidence_intervals(
       method, est, getDataMatrix(object), cv, idx[-idx_na], maxit, maxit_l,
       tol, tol_l, step, th, nthreads, w
     )
   } else {
-    ci <- computeConfidenceIntervals(
+    ci <- compute_confidence_intervals(
       method, est, getDataMatrix(object), cv, idx, maxit,
       maxit_l, tol, tol_l, step, th, nthreads, w
     )

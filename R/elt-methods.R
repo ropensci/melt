@@ -28,7 +28,7 @@ setMethod("elt", "EL", function(object,
       stop("F calibration is applicable only to the mean")
     }
     par <- h$r
-    out <- computeEL(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
+    out <- compute_EL(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
     p <- length(par)
     cal <- calibrate(calibrate, alpha, out$statistic, p, par, object, control)
     return(new("ELT",
@@ -43,7 +43,7 @@ setMethod("elt", "EL", function(object,
       (calibrate != "boot"),
     "F calibration is applicable only when 'lhs' is NULL" = (calibrate != "f")
   )
-  out <- testHypothesis(
+  out <- test_hypothesis(
     method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )

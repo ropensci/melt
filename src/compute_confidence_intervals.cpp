@@ -7,7 +7,7 @@
 #include <string>
 
 // [[Rcpp::export]]
-Eigen::MatrixXd computeConfidenceIntervals(
+Eigen::MatrixXd compute_confidence_intervals(
     const std::string method,
     const Eigen::Map<Eigen::VectorXd> &par0,
     const Eigen::Map<Eigen::MatrixXd> &x,
@@ -20,7 +20,8 @@ Eigen::MatrixXd computeConfidenceIntervals(
     const Rcpp::Nullable<double> step,
     const Rcpp::Nullable<double> th,
     const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd> &w) {
+    const Eigen::Map<Eigen::ArrayXd> &w)
+{
   // parameter length
   const int p = par0.size();
   // number of confidence intervals
@@ -32,10 +33,11 @@ Eigen::MatrixXd computeConfidenceIntervals(
   const double gamma = set_step(x.rows(), step);
   // test threshold
   const double test_th = set_threshold(1, th);
-  #ifdef _OPENMP
-  #pragma omp parallel for num_threads(nthreads)
-  #endif
-  for (int i = 0; i < n; ++i) {
+#ifdef _OPENMP
+#pragma omp parallel for num_threads(nthreads)
+#endif
+  for (int i = 0; i < n; ++i)
+  {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(idx[i] - 1) = 1.0;
     // lower endpoint
@@ -44,18 +46,26 @@ Eigen::MatrixXd computeConfidenceIntervals(
     // lower bound for lower endpoint
     while (2.0 * CEL(method, par0, x, lhs,
                      Eigen::Matrix<double, 1, 1>(lower_lb), maxit, maxit_l, tol,
-                     tol_l, gamma, test_th, w).nllr <= cutoff) {
+                     tol_l, gamma, test_th, w)
+                     .nllr <=
+           cutoff)
+    {
       lower_ub = lower_lb;
       lower_lb -= 1.0 / std::log(x.rows());
     }
     // approximate lower bound by numerical search
-    while (lower_ub - lower_lb > tol) {
+    while (lower_ub - lower_lb > tol)
+    {
       if (2.0 * CEL(method, par0, x, lhs,
                     Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2.0),
-                    maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
-            cutoff) {
+                    maxit, maxit_l, tol, tol_l, gamma, test_th, w)
+                    .nllr >
+          cutoff)
+      {
         lower_lb = (lower_lb + lower_ub) / 2.0;
-      } else {
+      }
+      else
+      {
         lower_ub = (lower_lb + lower_ub) / 2.0;
       }
     }
@@ -67,18 +77,26 @@ Eigen::MatrixXd computeConfidenceIntervals(
     // upper bound for upper endpoint
     while (2.0 * CEL(method, par0, x, lhs,
                      Eigen::Matrix<double, 1, 1>(upper_ub), maxit, maxit_l, tol,
-                     tol_l, gamma, test_th, w).nllr <= cutoff) {
+                     tol_l, gamma, test_th, w)
+                     .nllr <=
+           cutoff)
+    {
       upper_lb = upper_ub;
       upper_ub += 1.0 / std::log(x.rows());
     }
     // approximate upper bound by numerical search
-    while (upper_ub - upper_lb > tol) {
+    while (upper_ub - upper_lb > tol)
+    {
       if (2.0 * CEL(method, par0, x, lhs,
                     Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2.0),
-                    maxit, maxit_l, tol, tol_l, gamma, test_th, w).nllr >
-            cutoff) {
+                    maxit, maxit_l, tol, tol_l, gamma, test_th, w)
+                    .nllr >
+          cutoff)
+      {
         upper_ub = (upper_lb + upper_ub) / 2.0;
-      } else {
+      }
+      else
+      {
         upper_lb = (upper_lb + upper_ub) / 2.0;
       }
     }

@@ -70,3 +70,13 @@ test_that("Noise susceptibility tests.", {
   fit2 <- el_mean(x, par = 60 + .Machine$double.eps)
   expect_equal(fit@optim, fit2@optim)
 })
+
+#' @srrstats {RE1.4} Violation of the convex hull constraint is tested.
+test_that("Convex hull constraint violated.", {
+  x <- women$weight
+  grid <- seq(10, 50, length.out = 1000)
+  conv <- function(par) {
+    el_mean(x, par)@optim$convergence
+  }
+  expect_false(any(vapply(grid, conv, FUN.VALUE = logical(1))))
+})

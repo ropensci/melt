@@ -20,7 +20,7 @@ setMethod("elmt", "EL", function(object,
   step <- control@step
   th <- control@th
   m <- control@m
-  out <- testMultipleHypotheses(
+  out <- test_multiple_hypotheses(
     alpha, h$q, h$m, m, method, coef(object), getDataMatrix(object), h$r,
     h$l, maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )

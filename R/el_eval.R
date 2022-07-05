@@ -56,7 +56,7 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
     "invalid `control` specified." = (is(control, "ControlEL"))
   )
   w <- validate_weights(weights, n)
-  out <- computeGenericEL(mm, control@maxit_l, control@tol_l, control@th, w)
+  out <- compute_generic_EL(mm, control@maxit_l, control@tol_l, control@th, w)
   out$df <- p
   out$p.value <- pchisq(q = out$statistic, df = out$df, lower.tail = FALSE)
   out$npar <- p

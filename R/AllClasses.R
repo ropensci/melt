@@ -70,6 +70,11 @@
 #' @srrstats {G1.4} `roxygen2` is used to document all functions.
 #' @srrstats {G1.3} Statistical terminology is unambiguously defined throughout
 #'   the package documentation.
+#' @srrstats {RE1.4} Some of the core distributional assumptions are documented.
+#'   We note that these are not exhaustive and added the phrase "Under some
+#'   regularity conditions" instead. For more details, interested users are
+#'   expected to resort to published references. Additionally, violation of the
+#'   convex hull constraint is tested in `test/testthat/test-el_mean.R`.
 setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",

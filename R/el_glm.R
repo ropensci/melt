@@ -147,7 +147,7 @@ el_glm <- function(formula,
   mm <- cbind(fit$y, X)
   p <- ncol(X)
   w <- validate_weights(w, nrow(mm))
-  el <- testGLM(
+  el <- test_GLM(
     method, mm, fit$coefficients, intercept,
     control@maxit, control@maxit_l, control@tol, control@tol_l,
     control@step, control@th, control@nthreads, w

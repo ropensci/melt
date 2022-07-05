@@ -71,7 +71,7 @@ el_mean <- function(x,
     est <- colMeans(mm)
   }
   model <- validate_model(model)
-  out <- computeEL(
+  out <- compute_EL(
     "mean", par, mm, control@maxit_l, control@tol_l, control@th, w
   )
   new("EL",

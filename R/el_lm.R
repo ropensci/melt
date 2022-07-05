@@ -3,7 +3,7 @@
 #' Fits a linear model with empirical likelihood.
 #'
 #' @param formula An object of class [`formula`] (or one that can be coerced to
-#'   that class): a symbolic description of the model to be fitted.
+#'   that class) for a symbolic description of the model to be fitted.
 #' @param data An optional data frame, list or environment (or object coercible
 #'   by [as.data.frame()] to a data frame) containing the variables in
 #'   `formula`. If not found in data, the variables are taken from
@@ -34,13 +34,14 @@
 #'   \eqn{\theta} solves the following estimating equation:
 #'   \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
 #'   [el_lm()] first computes the parameter estimates by calling [lm.fit()]
-#'   (with `...` if any) since the maximum empirical
-#'   likelihood estimator is the same as the least square estimator in our
-#'   model. Next, it performs hypothesis tests based on asymptotic chi-squared
-#'   distribution of empirical likelihood ratio statistics. Included in the
-#'   tests are the overall test with
+#'   (with `...` if any) with the `model.frame` and `model.matrix` obtained from
+#'   the `formula`. Note that the maximum empirical likelihood estimator is the
+#'   same as the least square estimator in our model. Next, it performs
+#'   hypothesis tests based on an asymptotic chi-squared distribution of
+#'   empirical likelihood ratio statistics. Included in the tests are overall
+#'   test with
 #'   \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
-#'   and the tests for each parameter with
+#'   and significance tests for each parameter with
 #'   \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as `optim` and `parTests`, respectively.
 #' @return An object of class of \linkS4class{LM}.
@@ -75,9 +76,10 @@
 #'   `lm.fit()` and `glm.fit()`.
 #' @srrstats {G5.8, G5.8d} Data with more fields than observations produces an
 #'   error.
-#' @srrstats {RE1.0} Formula interface is used to the `formula` argument.
+#' @srrstats {RE1.0, RE1.1} Formula interface is used to the `formula` argument,
+#'   and how it is converted to a matrix input is documented as well.
+#' @srrstats {RE1.1} how formula interfaces are converted to matrix representations of input data.*
 #' @srrstats {RE4.0} `el_lm()` returns an object of class `LM`.
-#' @srrstats {RE4.4} Model specification is done through `formula()`.
 #' @srrstats {RE2.1} Missing values are handled by the `na.action` argument.
 #'   `Inf` values are not allowed and produce an error.
 #' @srrstats {RE2.4, RE2.4a, RE2.4b} Perfect collinearity is handled by
@@ -139,7 +141,7 @@ el_lm <- function(formula,
   mm <- cbind(y, x)
   p <- ncol(x)
   w <- validate_weights(w, nrow(mm))
-  el <- testLM(
+  el <- test_LM(
     mm, z$coefficients, intercept, control@maxit, control@maxit_l, control@tol,
     control@tol_l, control@step, control@th, control@nthreads, w
   )

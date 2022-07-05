@@ -8,14 +8,15 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector computeELD(const std::string method,
-                               const Eigen::Map<Eigen::VectorXd> &par0,
-                               const Eigen::Map<Eigen::MatrixXd> &x,
-                               const int maxit_l,
-                               const double tol_l,
-                               const Rcpp::Nullable<double> th,
-                               const int nthreads,
-                               const Eigen::Map<Eigen::ArrayXd> &wt) {
+Rcpp::NumericVector compute_ELD(const std::string method,
+                                const Eigen::Map<Eigen::VectorXd> &par0,
+                                const Eigen::Map<Eigen::MatrixXd> &x,
+                                const int maxit_l,
+                                const double tol_l,
+                                const Rcpp::Nullable<double> th,
+                                const int nthreads,
+                                const Eigen::Map<Eigen::ArrayXd> &wt)
+{
   const int n = x.rows();
   const int p = par0.size();
   const double test_th = set_threshold(p, th);
@@ -27,13 +28,15 @@ Rcpp::NumericVector computeELD(const std::string method,
 
   std::vector<double> eld(n);
   // #pragma omp parallel for
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i)
+  {
     // leave-one-out matrix
     Eigen::MatrixXd loo_x(n - 1, x.cols());
     loo_x << x.topRows(i), x.bottomRows(n - 1 - i);
     // leave-one-out weight array
     Eigen::ArrayXd loo_w{};
-    if (weighted) {
+    if (weighted)
+    {
       loo_w.resize(n - 1);
       loo_w << w.topRows(i), w.bottomRows(n - 1 - i);
       loo_w = ((n - 1) / loo_w.sum()) * loo_w;

@@ -10,7 +10,7 @@ test_that("Parallel computation yields the same results (gaussian - log).", {
   l <- 3 + x %*% as.vector(b)
   mu <- exp(l)
   y <- vapply(mu, FUN = function(x) rnorm(1, x), FUN.VALUE = numeric(1))
-  df <- data.frame(cbind(y, x))
+  df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = gaussian("log"), data = df,
     control = el_control(nthreads = 1)
@@ -38,7 +38,7 @@ test_that("Parallel computation yields the same results (binomial - logit).", {
   l <- -1 + x %*% as.vector(b)
   mu <- 1 / (1 + exp(-l))
   y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
-  df <- data.frame(cbind(y, x))
+  df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = binomial("logit"), data = df,
     control = el_control(nthreads = 1)
@@ -66,7 +66,7 @@ test_that("Parallel computation yields the same results (binomial - probit).", {
   l <- 1.5 + x %*% as.vector(b)
   mu <- pnorm(l)
   y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
-  df <- data.frame(cbind(y, x))
+  df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = binomial("probit"), data = df,
     control = el_control(nthreads = 1)
@@ -94,7 +94,7 @@ test_that("Parallel computation yields the same results (binomial - log).", {
   l <- -3 + x %*% as.vector(b)
   mu <- exp(l)
   y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
-  df <- data.frame(cbind(y, x))
+  df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = binomial("log"), data = df,
     control = el_control(nthreads = 1)
@@ -122,7 +122,7 @@ test_that("Parallel computation yields the same results (poisson - log).", {
   l <- -2 + x %*% as.vector(b)
   mu <- exp(l)
   y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
-  df <- data.frame(cbind(y, x))
+  df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = poisson("log"), data = df,
     control = el_control(nthreads = 1)
@@ -152,7 +152,7 @@ test_that(
     l <- 3 + x %*% as.vector(b)
     mu <- l
     y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
-    df <- data.frame(cbind(y, x))
+    df <- data.frame(y, x)
     fit <- el_glm(y ~ .,
       family = poisson("identity"), data = df,
       control = el_control(nthreads = 1)
@@ -181,7 +181,7 @@ test_that("Parallel computation yields the same results (poisson - sqrt).", {
   l <- 0.5 + x %*% as.vector(b)
   mu <- l^2
   y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
-  df <- data.frame(cbind(y, x))
+  df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = poisson("sqrt"), data = df,
     control = el_control(nthreads = 1)

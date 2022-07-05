@@ -8,7 +8,7 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector computeConfidenceRegion(
+Rcpp::NumericVector compute_confidence_region(
     const std::string method,
     const Eigen::Map<Eigen::VectorXd> &par0,
     const Eigen::Map<Eigen::MatrixXd> &x,
@@ -23,7 +23,8 @@ Rcpp::NumericVector computeConfidenceRegion(
     const Rcpp::Nullable<double> step,
     const Rcpp::Nullable<double> th,
     const int nthreads,
-    const Eigen::Map<Eigen::ArrayXd> &w) {
+    const Eigen::Map<Eigen::ArrayXd> &w)
+{
   // confidence region (vector)
   std::vector<double> cr(circ.cols());
   // step size
@@ -36,27 +37,37 @@ Rcpp::NumericVector computeConfidenceRegion(
   lhs(1, idx[1] - 1) = 1;
   // estimates
   const Eigen::Vector2d est{par0(idx[0] - 1), par0(idx[1] - 1)};
-  #ifdef _OPENMP
-  #pragma omp parallel for num_threads(nthreads)
-  #endif
-  for (int i = 0; i < circ.cols(); ++i) {
+#ifdef _OPENMP
+#pragma omp parallel for num_threads(nthreads)
+#endif
+  for (int i = 0; i < circ.cols(); ++i)
+  {
     const Eigen::Vector2d direction = circ.col(i);
     // lower endpoint
     double lower_lb = -1.0;
     double lower_ub = 0;
     // lower bound for lower endpoint
     while (2.0 * CEL(method, par0, x, lhs, est + lower_lb * direction, maxit,
-                     maxit_l, tol, tol_l, gamma, test_th, w).nllr <= cv) {
+                     maxit_l, tol, tol_l, gamma, test_th, w)
+                     .nllr <=
+           cv)
+    {
       lower_ub = lower_lb;
       lower_lb -= 1.0;
     }
     // approximate lower bound by numerical search
-    while (lower_ub - lower_lb > tol) {
+    while (lower_ub - lower_lb > tol)
+    {
       const double avg = (lower_lb + lower_ub) / 2.0;
       if (2.0 * CEL(method, par0, x, lhs, est + avg * direction, maxit, maxit_l,
-                    tol, tol_l, gamma, test_th, w).nllr > cv) {
+                    tol, tol_l, gamma, test_th, w)
+                    .nllr >
+          cv)
+      {
         lower_lb = avg;
-      } else {
+      }
+      else
+      {
         lower_ub = avg;
       }
     }

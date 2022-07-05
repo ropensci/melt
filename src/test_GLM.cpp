@@ -8,18 +8,19 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::List testGLM(const std::string method,
-                   const Eigen::Map<Eigen::MatrixXd> &x,
-                   const Eigen::Map<Eigen::VectorXd> &par0,
-                   const bool intercept,
-                   const int maxit,
-                   const int maxit_l,
-                   const double tol,
-                   const double tol_l,
-                   const Rcpp::Nullable<double> step,
-                   const Rcpp::Nullable<double> th,
-                   const int nthreads,
-                   const Eigen::Map<Eigen::ArrayXd> &w) {
+Rcpp::List test_GLM(const std::string method,
+                    const Eigen::Map<Eigen::MatrixXd> &x,
+                    const Eigen::Map<Eigen::VectorXd> &par0,
+                    const bool intercept,
+                    const int maxit,
+                    const int maxit_l,
+                    const double tol,
+                    const double tol_l,
+                    const Rcpp::Nullable<double> step,
+                    const Rcpp::Nullable<double> th,
+                    const int nthreads,
+                    const Eigen::Map<Eigen::ArrayXd> &w)
+{
   const int p = x.cols() - 1;
   const double gamma = set_step(x.rows(), step);
 
@@ -31,7 +32,8 @@ Rcpp::List testGLM(const std::string method,
   bool conv{};
   Eigen::ArrayXd logp(x.rows());
   double logl{};
-  if (intercept && p > 1) {
+  if (intercept && p > 1)
+  {
     Eigen::MatrixXd lhs(p - 1, p);
     lhs.col(0) = Eigen::MatrixXd::Zero(p - 1, 1);
     lhs.rightCols(p - 1) = Eigen::MatrixXd::Identity(p - 1, p - 1);
@@ -46,7 +48,9 @@ Rcpp::List testGLM(const std::string method,
     conv = el.conv;
     logp = el.logp(x, w);
     logl = el.loglik(w);
-  } else {
+  }
+  else
+  {
     par = Eigen::VectorXd::Zero(p);
     const double test_th = set_threshold(p, th);
     const EL el(method, par, x, maxit_l, tol_l, test_th, w);
@@ -62,10 +66,11 @@ Rcpp::List testGLM(const std::string method,
   std::vector<double> chisq_val(p);
   std::vector<bool> par_conv(p);
   const double test_th = set_threshold(1, th);
-  #ifdef _OPENMP
-  #pragma omp parallel for num_threads(nthreads)
-  #endif
-  for (int i = 0; i < p; ++i){
+#ifdef _OPENMP
+#pragma omp parallel for num_threads(nthreads)
+#endif
+  for (int i = 0; i < p; ++i)
+  {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
     lhs(i) = 1.0;
     const CEL par_test(method, par0, x, lhs, Eigen::VectorXd::Zero(1), maxit,

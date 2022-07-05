@@ -8,6 +8,9 @@
 #'   fail to converge due to the convex hull constraint. We expect that the
 #'   users of the package are also aware of this issue. Therefore, an explicit
 #'   warning message via `warning()` is issued.
+#' @srrstats {RE4.17} `print` method is applicable to an `EL` object. The test
+#'   results are displayed, including the type of test, test statistic,
+#'   coefficients, p-value, and convergence status.
 setMethod("print", "EL", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {
@@ -53,6 +56,9 @@ setMethod("show", "EL", function(object) print(object))
 #' @importFrom stats naprint pchisq printCoefmat
 #' @srrstats {G2.14b} `naprint()` is used to print messages if there are missing
 #'   values.
+#' @srrstats {RE4.17} `print` method is applicable to a `SummaryLM` object
+#'   returned by `summary` method. The function call and test results are
+#'   displayed, including the coefficients and p-values.
 setMethod(
   "print", "SummaryLM", function(x,
                                  digits = max(3L, getOption("digits") - 3L),

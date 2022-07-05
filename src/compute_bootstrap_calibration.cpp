@@ -12,7 +12,7 @@
 #include <vector>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector computeBootstrapCalibration(
+Rcpp::NumericVector compute_bootstrap_calibration(
     const double alpha,
     const double statistic,
     const int B,
@@ -22,7 +22,8 @@ Rcpp::NumericVector computeBootstrapCalibration(
     const Eigen::Map<Eigen::MatrixXd> &x,
     const Eigen::Map<Eigen::VectorXd> &par, const int maxit_l,
     const double tol_l, const Rcpp::Nullable<double> th,
-    const Eigen::Map<Eigen::ArrayXd> &w) {
+    const Eigen::Map<Eigen::ArrayXd> &w)
+{
   // estimating function
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
@@ -49,17 +50,19 @@ Rcpp::NumericVector computeBootstrapCalibration(
   #ifdef _OPENMP
     // advance gen by 1 ... nthreads jumps
     lgen.jump(omp_get_thread_num() + 1);
-  #pragma omp for
-  #endif
-    for (int i = 0; i < B; ++i) {
+    #pragma omp for
+    #endif
+    for (int i = 0; i < B; ++i)
+    {
       Eigen::MatrixXd boot_g(n, p);
-      for (int j = 0; j < n; ++j) {
+      for (int j = 0; j < n; ++j)
+      {
         boot_g.row(j) = g0.row(u(lgen));
       }
       const EL el(boot_g, maxit_l, tol_l, test_th, w);
       boot_statistic[i] = 2.0 * el.nllr;
     }
-  #ifdef _OPENMP
+    #ifdef _OPENMP
   }
   #endif
   // p-value

@@ -16,7 +16,7 @@ el_lm(
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that can be coerced to
-that class): a symbolic description of the model to be fitted.}
+that class) for a symbolic description of the model to be fitted.}
 
 \item{data}{An optional data frame, list or environment (or object coercible
 by \code{\link[=as.data.frame]{as.data.frame()}} to a data frame) containing the variables in
@@ -61,13 +61,14 @@ finite conditional variance. Then the least square estimator of
 \eqn{\theta} solves the following estimating equation:
 \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
 \code{\link[=el_lm]{el_lm()}} first computes the parameter estimates by calling \code{\link[=lm.fit]{lm.fit()}}
-(with \code{...} if any) since the maximum empirical
-likelihood estimator is the same as the least square estimator in our
-model. Next, it performs hypothesis tests based on asymptotic chi-squared
-distribution of empirical likelihood ratio statistics. Included in the
-tests are the overall test with
+(with \code{...} if any) with the \code{model.frame} and \code{model.matrix} obtained from
+the \code{formula}. Note that the maximum empirical likelihood estimator is the
+same as the least square estimator in our model. Next, it performs
+hypothesis tests based on an asymptotic chi-squared distribution of
+empirical likelihood ratio statistics. Included in the tests are overall
+test with
 \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
-and the tests for each parameter with
+and significance tests for each parameter with
 \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
 The test results are returned as \code{optim} and \code{parTests}, respectively.
 }

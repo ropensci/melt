@@ -1,6 +1,8 @@
 #' @describeIn summary Summarizes the results of the overall test and the
 #'   tests for each parameter.
 #' @importFrom stats pchisq
+#' @srrstats {RE4.18} `summary` method is applicable to a `LM` object returned
+#'   by `el_lm()` or `el_glm()`.
 setMethod("summary", "LM", function(object, ...) {
   z <- object
   p <- z@npar

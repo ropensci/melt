@@ -37,7 +37,7 @@ Eigen::MatrixXd dg0_inv(const std::string method,
                         const Eigen::Ref<const Eigen::MatrixXd> &x,
                         const Eigen::Ref<const Eigen::VectorXd> &par);
 
-Eigen::MatrixXd smat(const std::string method,
+Eigen::MatrixXd shat(const std::string method,
                      const Eigen::Ref<const Eigen::VectorXd> &par,
                      const Eigen::Ref<const Eigen::MatrixXd> &x);
 
