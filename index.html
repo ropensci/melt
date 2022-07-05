@@ -54,7 +54,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/speed.html">speed</a>
+    <a class="dropdown-item" href="articles/performance.html">Performance</a>
   </div>
 </li>
 <li class="nav-item">
@@ -107,8 +107,8 @@
 <span><span class="co"># one sample test for mean</span></span>
 <span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>, par <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/confint.html">confint</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        lower     upper</span></span>
-<span><span class="co">#&gt; 1 -0.2748642 0.0867665</span></span>
+<span><span class="co">#&gt;        lower      upper</span></span>
+<span><span class="co">#&gt; 1 -0.3467114 0.06769768</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># linear regression</span></span>
@@ -135,7 +135,7 @@
 <span></span>
 <span></span>
 <span><span class="co"># analysis of variance </span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span> </span>
 <span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">clothianidin</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -168,7 +168,7 @@
 <span>                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/elt.html">elt</a></span><span class="op">(</span><span class="va">fit3</span>, lhs <span class="op">=</span> <span class="va">lhs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Empirical Likelihood Test</span></span>
+<span><span class="co">#&gt;  Empirical Likelihood Test</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Significance level: 0.05, Calibration: Chi-square </span></span>
 <span><span class="co">#&gt; </span></span>

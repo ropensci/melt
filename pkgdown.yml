@@ -3,8 +3,8 @@ pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   melt: melt.html
-  speed: speed.html
-last_built: 2022-07-05T05:48Z
+  performance: performance.html
+last_built: 2022-07-05T20:27Z
 urls:
   reference: https://markean.github.io/melt/reference
   article: https://markean.github.io/melt/articles
