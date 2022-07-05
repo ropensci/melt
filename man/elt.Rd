@@ -74,15 +74,13 @@ apply to the bootstrap procedure. \code{"f"} is applicable only to the mean
 parameter when \code{lhs} is \code{NULL}.
 }
 \examples{
-n <- 100
-x1 <- rnorm(n)
-x2 <- rnorm(n)
-y <- 1 + x1 + x2 + rnorm(n)
-df <- data.frame(y, x1, x2)
-fit <- el_lm(y ~ x1 + x2, df)
-elt(fit, lhs = c(0, 1.5, -1), rhs = 2.5, calibrate = "chisq")
+## F calibration for the mean
+set.seed(533414)
+x <- rnorm(100)
+fit <- el_mean(x, 0)
+elt(fit, rhs = 0.3, calibrate = "f")
 
-## test of no treatment effect
+## Test of no treatment effect
 data("clothianidin")
 lhs <- matrix(c(
   1, -1, 0, 0,

@@ -51,7 +51,7 @@
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot npar A single integer for the number of parameters.
-#' @slot weights A numeric vector of rescaled weights used for model fitting.
+#' @slot weights A numeric vector of re-scaled weights used for model fitting.
 #' @slot data A numeric matrix for the data used for model fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
@@ -78,9 +78,9 @@
 setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
-    statistic = "numeric", df = "integer", pval = "numeric", npar = "integer",
-    weights = "numeric", data = "matrix", coefficients = "numeric",
-    method = "character"
+    statistic = "numeric", df = "integer", pval = "numeric", nobs = "integer",
+    npar = "integer", weights = "numeric", data = "matrix",
+    coefficients = "numeric", method = "character"
   ),
   prototype = list(
     optim = list(), logp = numeric(), logl = numeric(), loglr = numeric(),
@@ -166,7 +166,10 @@ setClass("CEL", contains = "EL")
 #' @aliases LM
 #' @examples
 #' showClass("LM")
-setClass("LM", contains = "CEL", slots = c(parTests = "list", misc = "list"))
+setClass("LM",
+  contains = "CEL",
+  slots = c(parTests = "list", call = "call", terms = "ANY", misc = "list")
+)
 
 #' \linkS4class{GLM} class
 #'

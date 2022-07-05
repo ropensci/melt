@@ -172,15 +172,13 @@ setGeneric("elmt", function(object,
 #' @seealso [el_control()]
 #' @usage NULL
 #' @examples
-#' n <- 100
-#' x1 <- rnorm(n)
-#' x2 <- rnorm(n)
-#' y <- 1 + x1 + x2 + rnorm(n)
-#' df <- data.frame(y, x1, x2)
-#' fit <- el_lm(y ~ x1 + x2, df)
-#' elt(fit, lhs = c(0, 1.5, -1), rhs = 2.5, calibrate = "chisq")
+#' ## F calibration for the mean
+#' set.seed(533414)
+#' x <- rnorm(100)
+#' fit <- el_mean(x, 0)
+#' elt(fit, rhs = 0.3, calibrate = "f")
 #'
-#' ## test of no treatment effect
+#' ## Test of no treatment effect
 #' data("clothianidin")
 #' lhs <- matrix(c(
 #'   1, -1, 0, 0,
@@ -301,6 +299,21 @@ setGeneric("confreg", function(object,
 })
 
 
+#' Convergence statistics
+#'
+#' Extracts convergence statistics from a model.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param ... Further arguments passed to other methods.
+#' @usage NULL
+#' @exportMethod conv
+#' @srrstats {RE4.7} `conv()` method extracts information on convergence status.
+setGeneric("conv", function(object, ...) standardGeneric("conv"))
+
+
+
+
 #' Empirical log-likelihood
 #'
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
@@ -360,14 +373,14 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 #' Model weights
 #'
 #' Extracts model weights from objects that inherit from class
-#'   \linkS4class{EL}. The weights are rescaled to up to the total number of
+#'   \linkS4class{EL}. The weights are re-scaled to up to the total number of
 #'   observations in the fitting procedure.
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Not used.
 #' @usage NULL
-#' @return A numeric vector the rescaled weights.
+#' @return A numeric vector of the re-scaled weights.
 #' @references Glenn N, Zhao Y (2007).
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis, 51(10), 5130–5141.

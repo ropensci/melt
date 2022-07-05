@@ -25,6 +25,7 @@ Imports:
     stats
 Suggests: 
     covr,
+    ggplot2,
     knitr,
     rmarkdown,
     spelling,

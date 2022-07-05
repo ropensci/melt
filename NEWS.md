@@ -11,12 +11,20 @@
 
 * New `elmt()` tests multiple hypotheses with empirical likelihood.
 
-* New `weights()` extracts rescaled weights.
+* New `weights()` extracts the re-scaled weights.
+
+* New `formula()` extracts the model formula used.
+
+* New `nobs()` extracts the number of observations in the model.
+
+* New `conv()` extracts the convergence status.
 
 ### MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to `NULL`. If non-`NULL`, `level` is ignored.
 
 * `probit` link produces more accurate result in `el_glm()`
+
+* `print` method for an `EL` object shows whether the data are weighted or not.
 
 ### BUG FIXES
 * `confint()` and `confreg()` check if the `cv` argument is compatible with the `th` value set by `control_el()`.

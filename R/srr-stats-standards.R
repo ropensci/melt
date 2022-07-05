@@ -11,6 +11,11 @@
 #'
 #' @srrstats {G1.2} Life cycle statement is included in
 #'   `.github/CONTRIBUTING.md`.
+#' @srrstats {G2.15} All user-facing functions in the package inspect missing
+#'   values in inputs. Some functions produce an error and some functions allow
+#'   users to apply appropriate treatments to the missing values. These inputs
+#'   are not passed to base routines like `mean()`, `sd()`, `cor()`, etc. See
+#'   `R/validate.R` as well.
 #' @srrstats {G5.2, G5.2a, G5.2b} Every message produced within the package is
 #'   unique. Unit tests in `test/testthat` cover all the conditions that trigger
 #'   any message. See `R/validate.R` as well.
@@ -29,11 +34,6 @@
 #' @srrstatsTODO {G2.11} *Software should ensure that `data.frame`-like tabular objects which have columns which do not themselves have standard class attributes (typically, `vector`) are appropriately processed, and do not error without reason. This behaviour should be tested. Again, columns created by the [`units` package](https://github.com/r-quantities/units/) provide a good test case.*
 
 #' @srrstatsTODO {G2.12} *Software should ensure that `data.frame`-like tabular objects which have list columns should ensure that those columns are appropriately pre-processed either through being removed, converted to equivalent vector columns where appropriate, or some other appropriate treatment such as an informative error. This behaviour should be tested.*
-
-
-
-#' @srrstatsTODO {G2.15} *Functions should never assume non-missingness, and should never pass data with potential missing values to any base routines with default `na.rm = FALSE`-type parameters (such as [`mean()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/mean.html), [`sd()`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/sd.html) or [`cor()`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.html)).*
-
 
 
 
@@ -58,17 +58,10 @@
 #' @srrstatsTODO {RE2.3} *Where applicable, Regression Software should enable data to be centred (for example, through converting to zero-mean equivalent values; or to z-scores) or offset (for example, to zero-intercept equivalent values) via additional parameters, with the effects of any such parameters clearly documented and tested.*
 
 
-
 #' @srrstatsTODO {RE3.1} *Enable such messages to be optionally suppressed, yet should ensure that the resultant model object nevertheless includes sufficient data to identify lack of convergence.*
 
 
-
 #' @srrstatsTODO {RE4.1} *Regression Software may enable an ability to generate a model object without actually fitting values. This may be useful for controlling batch processing of computationally intensive fitting algorithms.*
-
-
-#' @srrstats {RE4.4} Model specification is done through `formula()`.
-#' @srrstatsTODO {RE4.5} *Numbers of observations submitted to model (via `nobs()`)*
-#' @srrstatsTODO {RE4.7} *Where appropriate, convergence statistics*
 
 
 #' @srrstatsTODO {RE4.8} *Response variables, and associated "metadata" where applicable.*
@@ -82,17 +75,7 @@
 #' @srrstatsTODO {RE4.16} *Regression Software which models distinct responses for different categorical groups should include the ability to submit new groups to `predict()` methods.*
 
 
-
-
 #' @srrstatsTODO {RE5.0} *Scaling relationships between sizes of input data (numbers of observations, with potential extension to numbers of variables/columns) and speed of algorithm.*
-
-
-
-
-
-#' @srrstatsTODO {RE6.2} *The default `plot` method should produce a plot of the `fitted` values of the model, with optional visualisation of confidence intervals or equivalent.*
-
-
 
 
 #' @srrstatsTODO {RE7.1} *Tests with noiseless, exact relationships between predictor (independent) and response (dependent) data.*
@@ -139,6 +122,7 @@ NULL
 #'   forecasting. Especially, extrapolation can often violate the convex hull
 #'   constraint, leading to an invalid empirical likelihood value.
 #' @srrstatsNA {RE6.1} All `plot` methods in the package are S4 generics.
+#' @srrstatsNA {RE6.2} No function in the package produces `fitted` values.
 #' @srrstatsNA {RE6.3} Empirical likelihood methods are almost never used in a
 #'   prediction or a forecast context, in part due to the convex hull
 #'   constraint. The package does not include any forecast method (e.g.,

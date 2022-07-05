@@ -56,7 +56,7 @@ test_that("No intercept.", {
   expect_s4_class(fit, "LM")
 })
 
-test_that("Print method.", {
+test_that("`print()` method.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
   expect_output(show(fit))
   expect_output(print(fit))
@@ -71,6 +71,12 @@ test_that("Print method.", {
   df2[1, 1] <- NA
   fit2 <- el_lm(mpg ~ disp + hp, data = df2)
   expect_output(print(summary(fit2)))
+})
+
+test_that("`formula()` and `nobs()` methods.", {
+  fit <- el_lm(mpg ~ disp + hp, data = mtcars)
+  expect_type(formula(fit), "language")
+  expect_identical(nobs(fit), nrow(mtcars))
 })
 
 #' @srrstats {G5.6, G5.6a, G5.6b} `el_lm()` returns the expected coefficients

@@ -36,7 +36,7 @@ that has an asymptotic chi-square distribution.}
 \item{df}{Degrees of freedom of the statistic.}
 \item{pval}{\eqn{p}-value of the statistic.}
 \item{npar}{Number of parameters.}
-\item{weights}{Rescaled weights used for model fitting.}
+\item{weights}{Re-scaled weights used for model fitting.}
 }
 \description{
 Computes empirical likelihood with general estimating functions.

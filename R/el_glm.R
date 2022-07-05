@@ -114,11 +114,11 @@ el_glm <- function(formula,
   if (is.empty.model(mt)) {
     X <- matrix(, NROW(Y), 0L)
     return(new("GLM",
+      call = cl, terms = mt,
       misc = list(
-        call = cl, formula = formula, terms = mt, offset = NULL,
-        control = glm_control, intercept = FALSE, method = "glm.fit",
-        contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
-        na.action = attr(mf, "na.action")
+        formula = formula, offset = NULL, control = glm_control,
+        intercept = FALSE, method = "glm.fit", contrasts = attr(X, "contrasts"),
+        xlevels = .getXlevels(mt, mf), na.action = attr(mf, "na.action")
       ),
       optim = list(
         par = numeric(), lambda = numeric(), iterations = integer(),
@@ -145,8 +145,9 @@ el_glm <- function(formula,
   )
   method <- validate_family(fit$family)
   mm <- cbind(fit$y, X)
+  n <- nrow(mm)
   p <- ncol(X)
-  w <- validate_weights(w, nrow(mm))
+  w <- validate_weights(w, n)
   el <- test_GLM(
     method, mm, fit$coefficients, intercept,
     control@maxit, control@maxit_l, control@tol, control@tol_l,
@@ -156,15 +157,17 @@ el_glm <- function(formula,
   pval <- pchisq(el$statistic, df = df, lower.tail = FALSE)
   new("GLM",
     parTests = el$parTests,
+    call = cl, terms = mt,
     misc = list(
       family = fit$family, iter = fit$iter, converged = fit$converged,
-      boundary = fit$boundary, call = cl, formula = formula, terms = mt,
-      offset = NULL, control = glm_control, intercept = intercept,
-      method = "glm.fit", contrasts = attr(X, "contrasts"),
-      xlevels = .getXlevels(mt, mf), na.action = attr(mf, "na.action")
+      boundary = fit$boundary, formula = formula, offset = NULL,
+      control = glm_control, intercept = intercept, method = "glm.fit",
+      contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
+      na.action = attr(mf, "na.action")
     ),
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-    statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,
+    statistic = el$statistic, df = df, pval = pval, nobs = n, npar = p,
+    weights = w,
     data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = fit$coefficients, method = method
   )

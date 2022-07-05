@@ -120,8 +120,9 @@ el_lm <- function(formula,
     x <- NULL
     mm <- cbind(y, x)
     return(new("LM",
+      call = cl, terms = mt,
       misc = list(
-        call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
+        xlevels = .getXlevels(mt, mf),
         na.action = attr(mf, "na.action")
       ),
       optim = list(
@@ -139,8 +140,9 @@ el_lm <- function(formula,
   }
   intercept <- attr(mt, "intercept")
   mm <- cbind(y, x)
+  n <- nrow(mm)
   p <- ncol(x)
-  w <- validate_weights(w, nrow(mm))
+  w <- validate_weights(w, n)
   el <- test_LM(
     mm, z$coefficients, intercept, control@maxit, control@maxit_l, control@tol,
     control@tol_l, control@step, control@th, control@nthreads, w
@@ -148,13 +150,14 @@ el_lm <- function(formula,
   df <- if (intercept && p > 1L) p - 1L else p
   pval <- pchisq(el$statistic, df = df, lower.tail = FALSE)
   new("LM",
-    parTests = el$parTests,
+    parTests = el$parTests, call = cl, terms = mt,
     misc = list(
-      call = cl, terms = mt, xlevels = .getXlevels(mt, mf),
+      xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),
     optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-    statistic = el$statistic, df = df, pval = pval, npar = p, weights = w,
+    statistic = el$statistic, df = df, pval = pval, nobs = n, npar = p,
+    weights = w,
     data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = z$coefficients, method = "lm"
   )

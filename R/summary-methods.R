@@ -13,7 +13,7 @@ setMethod("summary", "LM", function(object, ...) {
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chis)"))
       ),
       weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
-      call = z@misc$call, terms = z@misc$terms,
+      call = z@call, terms = z@terms,
       aliased = is.na(coef(z))
     ))
   }
@@ -25,6 +25,6 @@ setMethod("summary", "LM", function(object, ...) {
       `Pr(>Chisq)` = pchisq(z@parTests$statistic, df = 1L, lower.tail = FALSE)
     ),
     weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
-    call = z@misc$call, terms = z@misc$terms, aliased = is.na(coef(z))
+    call = z@call, terms = z@terms, aliased = is.na(coef(z))
   )
 })

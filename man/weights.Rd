@@ -14,11 +14,11 @@
 \item{...}{Not used.}
 }
 \value{
-A numeric vector the rescaled weights.
+A numeric vector of the re-scaled weights.
 }
 \description{
 Extracts model weights from objects that inherit from class
-\linkS4class{EL}. The weights are rescaled to up to the total number of
+\linkS4class{EL}. The weights are re-scaled to up to the total number of
 observations in the fitting procedure.
 }
 \examples{

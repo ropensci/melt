@@ -32,7 +32,7 @@
 #'   \item{df}{Degrees of freedom of the statistic.}
 #'   \item{pval}{\eqn{p}-value of the statistic.}
 #'   \item{npar}{Number of parameters.}
-#'   \item{weights}{Rescaled weights used for model fitting.}
+#'   \item{weights}{Re-scaled weights used for model fitting.}
 #' @references Qin J, Lawless J (1994).
 #'   “Empirical Likelihood and General Estimating Equations.”
 #'   The Annals of Statistics, 22(1), 300–325. \doi{10.1214/aos/1176325370}.
@@ -59,6 +59,7 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
   out <- compute_generic_EL(mm, control@maxit_l, control@tol_l, control@th, w)
   out$df <- p
   out$p.value <- pchisq(q = out$statistic, df = out$df, lower.tail = FALSE)
+  out$nobs <- n
   out$npar <- p
   out$weights <- w
   out

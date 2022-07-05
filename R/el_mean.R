@@ -77,8 +77,8 @@ el_mean <- function(x,
   new("EL",
     optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, df = p,
-    pval = pchisq(out$statistic, df = p, lower.tail = FALSE), npar = p,
-    weights = w,
+    pval = pchisq(out$statistic, df = p, lower.tail = FALSE), nobs = n,
+    npar = p, weights = w,
     data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = est, method = "mean"
   )

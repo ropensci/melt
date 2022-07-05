@@ -2,7 +2,8 @@ test_that("Invalid `x`.", {
   expect_error(el_mean(c(1, Inf), par = 0))
   expect_error(el_mean(10, 0))
   expect_error(el_mean(matrix(c(1, 1, 2, 2), ncol = 2), par = c(0, 0)))
-  expect_error(el_mean(matrix(c(1, 1, 2, 2), ncol = 2), par = c(0, 0),
+  expect_error(el_mean(matrix(c(1, 1, 2, 2), ncol = 2),
+    par = c(0, 0),
     weights = c(1, 2)
   ))
 })
@@ -19,10 +20,11 @@ test_that("Invalid `par`.", {
 test_that("Convergence check.", {
   x <- women$weight
   grid <- seq(120, 160, length.out = 1000)
-  conv <- function(par) {
-    el_mean(x, par)@optim$convergence
-  }
-  expect_true(all(vapply(grid, conv, FUN.VALUE = logical(1))))
+  expect_true(all(vapply(grid, function(par) {
+    conv(el_mean(x, par))
+  },
+  FUN.VALUE = logical(1)
+  )))
 })
 
 test_that("Probabilities add up to 1.", {
@@ -51,6 +53,12 @@ test_that("Conversion between `loglik` and `loglr`.", {
   fit2 <- el_mean(x, par = 60, weights = women$weight)
   w <- weights(fit2)
   expect_equal(fit2@logl + sum(w * (log(n) - log(w))), fit2@loglr)
+})
+
+test_that("`conv()` methods.", {
+  x <- women$height
+  fit <- el_mean(x, par = 60)
+  expect_true(conv(fit))
 })
 
 #' @srrstats {G5.7} Larger `tol_l` decreases the number of iterations for

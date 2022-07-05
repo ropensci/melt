@@ -1,0 +1,20 @@
+---
+title: "speed"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{speed}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(melt)
+library(ggplot2)
+```

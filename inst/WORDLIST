@@ -25,7 +25,6 @@ Raphson
 RcppEigen
 RcppEigen’
 RcppProgress
-Rescaled
 SX
 Sinica
 Statistica
@@ -41,7 +40,6 @@ minimizations
 nonconvex
 optimality
 parallelization
-rescaled
 stars’
 studentization
 th

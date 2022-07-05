@@ -15,7 +15,11 @@ setMethod("print", "EL", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {
   cat("\n\t")
-  cat("Empirical Likelihood:", getMethodEL(x), "\n\n")
+  if (is.null(weights(x))) {
+    cat("Empirical Likelihood:", getMethodEL(x), "\n\n")
+  } else {
+    cat("Weighted Empirical Likelihood:", getMethodEL(x), "\n\n")
+  }
   if (length(coef(x)) != 0L) {
     cat("Maximum EL estimates:\n")
     print.default(coef(x), digits = digits, ...)
