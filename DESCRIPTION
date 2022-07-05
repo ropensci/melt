@@ -27,6 +27,7 @@ Suggests:
     covr,
     ggplot2,
     knitr,
+    microbenchmark,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0),

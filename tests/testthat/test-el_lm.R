@@ -73,8 +73,9 @@ test_that("`print()` method.", {
   expect_output(print(summary(fit2)))
 })
 
-test_that("`formula()` and `nobs()` methods.", {
+test_that("`conv()`, `formula()`, and `nobs()` methods.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
+  expect_false(conv(fit))
   expect_type(formula(fit), "language")
   expect_identical(nobs(fit), nrow(mtcars))
 })

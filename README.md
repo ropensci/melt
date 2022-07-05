@@ -52,8 +52,8 @@ library(melt)
 # one sample test for mean
 fit1 <- el_mean(rnorm(n = 100), par = 0)
 confint(fit1)
-#>        lower     upper
-#> 1 -0.2748642 0.0867665
+#>        lower      upper
+#> 1 -0.3467114 0.06769768
 
 
 # linear regression
@@ -80,7 +80,7 @@ confint(fit2)
 
 
 # analysis of variance 
-data("clothianidin")
+data("clothianidin") 
 fit3 <- el_lm(clo ~ -1 + trt, data = clothianidin)
 summary(fit3)
 #> 
@@ -113,7 +113,7 @@ lhs <- matrix(c(1, -1, 0, 0,
                 0, 0, 1, -1), byrow = TRUE, nrow = 3)
 elt(fit3, lhs = lhs)
 #> 
-#> Empirical Likelihood Test
+#>  Empirical Likelihood Test
 #> 
 #> Significance level: 0.05, Calibration: Chi-square 
 #> 

@@ -53,7 +53,7 @@ confint(fit2)
 
 
 # analysis of variance 
-data("clothianidin")
+data("clothianidin") 
 fit3 <- el_lm(clo ~ -1 + trt, data = clothianidin)
 summary(fit3)
 confint(fit3)

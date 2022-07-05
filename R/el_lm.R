@@ -78,8 +78,8 @@
 #'   error.
 #' @srrstats {RE1.0, RE1.1} Formula interface is used to the `formula` argument,
 #'   and how it is converted to a matrix input is documented as well.
-#' @srrstats {RE1.1} how formula interfaces are converted to matrix representations of input data.*
-#' @srrstats {RE4.0} `el_lm()` returns an object of class `LM`.
+#' @srrstatsTODO {RE1.2} The expected format for the argument `data` is
+#'   documented.
 #' @srrstats {RE2.1} Missing values are handled by the `na.action` argument.
 #'   `Inf` values are not allowed and produce an error.
 #' @srrstats {RE2.4, RE2.4a, RE2.4b} Perfect collinearity is handled by
@@ -88,6 +88,7 @@
 #'   is because the underlying asymptotic empirical likelihood theory requires
 #'   a full-rank covariance structure in order for a limiting argument to work.
 #'   See `EL-class` documentation.
+#' @srrstats {RE4.0} `el_lm()` returns an object of class `LM`.
 el_lm <- function(formula,
                   data,
                   weights = NULL,

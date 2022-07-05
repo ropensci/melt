@@ -44,24 +44,20 @@
 
 
 
-
-
-
-#' @srrstatsTODO {RE1.2} *Regression Software should document expected format (types or classes) for inputting predictor variables, including descriptions of types or classes which are not accepted.*
 #' @srrstatsTODO {RE1.3} *Regression Software which passes or otherwise transforms aspects of input data onto output structures should ensure that those output structures retain all relevant aspects of input data, notably including row and column names, and potentially information from other `attributes()`.*
 #' @srrstatsTODO {RE1.3a} *Where otherwise relevant information is not transferred, this should be explicitly documented.*
+
 
 #' @srrstatsTODO {RE2.0} *Regression Software should document any transformations applied to input data, for example conversion of label-values to `factor`, and should provide ways to explicitly avoid any default transformations (with error or warning conditions where appropriate).*
 
 
-
+#' offset!!
 #' @srrstatsTODO {RE2.3} *Where applicable, Regression Software should enable data to be centred (for example, through converting to zero-mean equivalent values; or to z-scores) or offset (for example, to zero-intercept equivalent values) via additional parameters, with the effects of any such parameters clearly documented and tested.*
 
 
 #' @srrstatsTODO {RE3.1} *Enable such messages to be optionally suppressed, yet should ensure that the resultant model object nevertheless includes sufficient data to identify lack of convergence.*
 
 
-#' @srrstatsTODO {RE4.1} *Regression Software may enable an ability to generate a model object without actually fitting values. This may be useful for controlling batch processing of computationally intensive fitting algorithms.*
 
 
 #' @srrstatsTODO {RE4.8} *Response variables, and associated "metadata" where applicable.*
@@ -72,7 +68,6 @@
 #' @srrstatsTODO {RE4.13} *Predictor variables, and associated "metadata" where applicable.*
 
 
-#' @srrstatsTODO {RE4.16} *Regression Software which models distinct responses for different categorical groups should include the ability to submit new groups to `predict()` methods.*
 
 
 #' @srrstatsTODO {RE5.0} *Scaling relationships between sizes of input data (numbers of observations, with potential extension to numbers of variables/columns) and speed of algorithm.*
@@ -117,15 +112,25 @@ NULL
 #'   We believe that the separate flags are not necessary for the package.
 #' @srrstatsNA {G5.11} Unit tests do not require large data sets.
 #' @srrstatsNA {G5.11a} Unit tests do not download additional data sets.
-#' @srrstatsNA {RE4.14, RE4.15} Empirical likelihood methods (and thus the
-#'   package) are inherently not suitable for prediction, extrapolation, or
+#' @srrstatsNA {RE4.1} The focus of the package is not on fitting but on
+#'   inference through hypothesis testing. Internal routines rely on the
+#'   coefficient estimates from functions such as `lm.fit()` and `glm.fit()` as
+#'   a starting point to produce values need to construct various S4 class
+#'   objects. It is certainly possible to generate a model object without
+#'   fitting values, but those objects cannot be applied to any of the methods
+#'   that the package provides. Also, `lm.fit()` and `glm.fit()` are fast enough
+#'   for most use cases. We believe that the feature to generate a model without
+#'   coefficients are not useful for the package.
+#' @srrstatsNA {RE4.14, RE4.15, RE4.16} Empirical likelihood methods (and thus
+#'   the package) are inherently not suitable for prediction, extrapolation, or
 #'   forecasting. Especially, extrapolation can often violate the convex hull
-#'   constraint, leading to an invalid empirical likelihood value.
-#' @srrstatsNA {RE6.1} All `plot` methods in the package are S4 generics.
+#'   constraint, leading to an invalid empirical likelihood value. For this
+#'   reason, the package does provide `predict()` methods.
+#' @srrstatsNA {RE6.1} All `plot()` methods in the package are S4 generics.
 #' @srrstatsNA {RE6.2} No function in the package produces `fitted` values.
 #' @srrstatsNA {RE6.3} Empirical likelihood methods are almost never used in a
 #'   prediction or a forecast context, in part due to the convex hull
-#'   constraint. The package does not include any forecast method (e.g.,
+#'   constraint. The package does not provide any forecast method (e.g.,
 #'   `predict()`), as well as associated `plot()` methods.
 #' @noRd
 NULL

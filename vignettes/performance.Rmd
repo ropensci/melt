@@ -1,0 +1,99 @@
+---
+title: "Performance"
+author: Eunseop Kim
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Performance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7, 
+  fig.height = 5, 
+  fig.align = "center"
+)
+```
+We provide a description of performance of computing empirical likelihood with `el_mean()`.
+We test the computation speed with simulated data sets in two different settings: 1) the number of observations increases with the number of parameters fixed and 2) the number of parameters increases with the number of observations fixed. 
+The tests were done using an Intel(R) Core(TM) i7 CPU (1.90GHz) on a Arch Linux x86_64 machine.
+We first load necessary packages.
+```{r setup}
+library(melt)
+library(microbenchmark)
+library(ggplot2)
+```
+## 1. Increasing the numbers of observations
+We fix the number of parameters at $p = 10$, and simulate the parameter value and $n \times p$ matrices using `rnorm()`. In order to ensure convergence with a large $n$, we set a large threshold value using `el_control()`.
+```{r echo=TRUE}
+set.seed(31775)
+p <- 10
+par <- rnorm(p, sd = 0.1)
+n1e2 <- matrix(rnorm(100 * p), ncol = p)
+n1e3 <- matrix(rnorm(1000 * p), ncol = p)
+n1e4 <- matrix(rnorm(10000 * p), ncol = p)
+n1e5 <- matrix(rnorm(100000 * p), ncol = p)
+
+ctrl <- el_control(th = 1e+10)
+result <- microbenchmark(
+  n1e2 = el_mean(n1e2, par = par, control = ctrl),
+  n1e3 = el_mean(n1e3, par = par, control = ctrl),
+  n1e4 = el_mean(n1e4, par = par, control = ctrl),
+  n1e5 = el_mean(n1e5, par = par, control = ctrl)
+)
+
+result
+suppressMessages(autoplot(result))
+```
+On average, it takes less than a second to evaluate empirical likelihood with a $100000 \times 10$ matrix at a parameter value satisfying the convex hull constraint.
+
+## 2. Increasing the numbers of parameters
+This time we fix the number of observations at $n = 1000$.
+```{r}
+n <- 1000
+p5 <- matrix(rnorm(n * 5), ncol = 5)
+p20 <- matrix(rnorm(n * 20), ncol = 20)
+p100 <- matrix(rnorm(n * 100), ncol = 100)
+p500 <- matrix(rnorm(n * 500), ncol = 500)
+
+result2 <- microbenchmark(
+  p5 = el_mean(p5, par = rep(0, 5), control = ctrl),
+  p20 = el_mean(p20, par = rep(0, 20), control = ctrl),
+  p100 = el_mean(p100, par = rep(0, 100), control = ctrl),
+  p500 = el_mean(p500, par = rep(0, 500), control = ctrl)
+)
+
+result2
+suppressMessages(autoplot(result2))
+```
+
+
+```{r}
+# result2 <- microbenchmark(times = 10, unit = "seconds",
+#   n1e2 = el_mean(n1e2, par = par, control = ctrl),
+#   n1e3 = el_mean(n1e3, par = par, control = ctrl),
+#   n1e4 = el_mean(n1e4, par = par, control = ctrl),
+#   n1e5 = el_mean(n1e5, par = par, control = ctrl)
+# )
+#
+# result3 <- microbenchmark(times = 100,
+#   n1e2 = el_mean(n1e2, par = par, control = ctrl),
+#   n1e3 = el_mean(n1e3, par = par, control = ctrl),
+#   n1e4 = el_mean(n1e4, par = par, control = ctrl),
+#   n1e5 = el_mean(n1e5, par = par, control = ctrl)
+# )
+# result4 <- result3
+# result4$time <- result4$time * 1e-09
+# ggplot(result4, aes(x = time, y = expr)) +
+#   geom_violin()
+
+
+
+
+# microbenchmark(el_mean(x1000, 0))
+# microbenchmark(el_mean(x10000, 0))
+# microbenchmark(el_mean(x100000, 0))
+```
