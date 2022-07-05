@@ -74,6 +74,12 @@ el_mean <- function(x,
   out <- compute_EL(
     "mean", par, mm, control@maxit_l, control@tol_l, control@th, w
   )
+  if (control@verbose) {
+    message(
+      "Convergence ",
+      if (out$optim$convergence) "achieved." else "failed."
+    )
+  }
   new("EL",
     optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, df = p,

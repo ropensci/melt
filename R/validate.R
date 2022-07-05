@@ -122,6 +122,21 @@ validate_th <- function(th) {
   th
 }
 
+#' Validate `verbose`
+#'
+#' Validate `verbose` in [el_control()].
+#'
+#' @param verbose A single logical.
+#' @return A single logical.
+#' @noRd
+validate_verbose <- function(verbose) {
+  stopifnot(
+    "`verbose` must be a single logical." =
+      (isTRUE(is.logical(verbose) && length(verbose) == 1L))
+  )
+  verbose
+}
+
 #' Validate `nthreads`
 #'
 #' Validate `nthreads` in [el_control()].

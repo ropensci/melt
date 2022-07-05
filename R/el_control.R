@@ -17,6 +17,10 @@
 #'   threshold. Defaults to `NULL` and sets the threshold to `200 * d`, where
 #'   `d` corresponds to the degrees of freedom of the limiting chi-squared
 #'   distribution of the statistic.
+#' @param verbose A single logical. If `TRUE`, a message on the convergence
+#'   status is printed when fitting objects that inherit from class
+#'   \linkS4class{EL}.
+#'   Defaults to `FALSE`.
 #' @param nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available). Defaults to the half of the
 #'   available threads. For better performance, it is generally recommended to
@@ -52,6 +56,7 @@ el_control <- function(maxit = 200L,
                        tol_l = 1e-06,
                        step = NULL,
                        th = NULL,
+                       verbose = FALSE,
                        nthreads,
                        seed = sample.int(.Machine$integer.max, 1L),
                        b = 10000L,
@@ -66,6 +71,7 @@ el_control <- function(maxit = 200L,
   if (!is.null(th)) {
     th <- validate_th(th)
   }
+  verbose <- validate_verbose(verbose)
   max_threads <- get_max_threads()
   if (missing(nthreads)) {
     nthreads <- as.integer(max(1L, max_threads / 2L))
@@ -77,6 +83,6 @@ el_control <- function(maxit = 200L,
   m <- validate_m(m)
   new("ControlEL",
     maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
-    th = th, nthreads = nthreads, seed = seed, b = b, m = m
+    th = th, verbose = verbose, nthreads = nthreads, seed = seed, b = b, m = m
   )
 }

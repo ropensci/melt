@@ -55,6 +55,11 @@ test_that("Conversion between `loglik` and `loglr`.", {
   expect_equal(fit2@logl + sum(w * (log(n) - log(w))), fit2@loglr)
 })
 
+test_that("`verbose` == TRUE in `el_control()`.", {
+  x <- women$height
+  expect_message(el_mean(x, par = 60, control = el_control(verbose = TRUE)))
+})
+
 test_that("`conv()` methods.", {
   x <- women$height
   fit <- el_mean(x, par = 60)

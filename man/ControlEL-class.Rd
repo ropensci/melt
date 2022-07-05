@@ -32,6 +32,9 @@ gradient descent method.}
 \item{\code{th}}{A single numeric for the threshold for the negative empirical
 log-likelihood ratio.}
 
+\item{\code{verbose}}{A single logical for whether to print a message on the
+convergence status.}
+
 \item{\code{nthreads}}{A single integer for the number of threads for parallel
 computation via OpenMP (if available).}
 

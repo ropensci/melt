@@ -11,6 +11,7 @@ el_control(
   tol_l = 1e-06,
   step = NULL,
   th = NULL,
+  verbose = FALSE,
   nthreads,
   seed = sample.int(.Machine$integer.max, 1L),
   b = 10000L,
@@ -38,6 +39,11 @@ log-likelihood ratio. The iteration stops if the value exceeds the
 threshold. Defaults to \code{NULL} and sets the threshold to \code{200 * d}, where
 \code{d} corresponds to the degrees of freedom of the limiting chi-squared
 distribution of the statistic.}
+
+\item{verbose}{A single logical. If \code{TRUE}, a message on the convergence
+status is printed when fitting objects that inherit from class
+\linkS4class{EL}.
+Defaults to \code{FALSE}.}
 
 \item{nthreads}{A single integer for the number of threads for parallel
 computation via OpenMP (if available). Defaults to the half of the

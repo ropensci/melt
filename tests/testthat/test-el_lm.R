@@ -73,6 +73,12 @@ test_that("`print()` method.", {
   expect_output(print(summary(fit2)))
 })
 
+test_that("`verbose` == TRUE in `el_control()`.", {
+  expect_message(el_lm(mpg ~ disp + hp,
+    data = mtcars, control = el_control(verbose = TRUE)
+  ))
+})
+
 test_that("`conv()`, `formula()`, and `nobs()` methods.", {
   fit <- el_lm(mpg ~ disp + hp, data = mtcars)
   expect_false(conv(fit))

@@ -99,6 +99,12 @@ test_that("`dim` attribute.", {
   expect_s4_class(fit, "GLM")
 })
 
+test_that("`verbose` == TRUE in `el_control()`.", {
+  expect_message(el_glm(wool ~ breaks,
+    family = binomial, data = warpbreaks, control = el_control(verbose = TRUE)
+  ))
+})
+
 test_that(
   "Parallel computation yields the same results (gaussian - inverse).",
   {

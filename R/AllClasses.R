@@ -226,6 +226,8 @@ setClass("ConfregEL",
 #'   gradient descent method.
 #' @slot th A single numeric for the threshold for the negative empirical
 #'   log-likelihood ratio.
+#' @slot verbose A single logical for whether to print a message on the
+#'   convergence status.
 #' @slot nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available).
 #' @slot seed A single integer for the seed for random number generation.
@@ -238,8 +240,8 @@ setClass("ConfregEL",
 setClass("ControlEL",
   slots = c(
     maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
-    step = "ANY", th = "ANY", nthreads = "integer", seed = "integer",
-    b = "integer", m = "integer"
+    step = "ANY", th = "ANY", verbose = "logical", nthreads = "integer",
+    seed = "integer", b = "integer", m = "integer"
   )
 )
 

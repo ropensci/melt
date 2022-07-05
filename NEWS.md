@@ -11,13 +11,13 @@
 
 * New `elmt()` tests multiple hypotheses with empirical likelihood.
 
-* New `weights()` extracts the re-scaled weights.
+* New `weights()` extracts the re-scaled weights in a model.
 
-* New `formula()` extracts the model formula used.
+* New `formula()` extracts the model formula used in a model.
 
-* New `nobs()` extracts the number of observations in the model.
+* New `nobs()` extracts the number of observations in a model.
 
-* New `conv()` extracts the convergence status.
+* New `conv()` extracts the convergence status in a model.
 
 ### MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to `NULL`. If non-`NULL`, `level` is ignored.

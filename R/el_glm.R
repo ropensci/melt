@@ -148,15 +148,21 @@ el_glm <- function(formula,
   n <- nrow(mm)
   p <- ncol(X)
   w <- validate_weights(w, n)
-  el <- test_GLM(
+  out <- test_GLM(
     method, mm, fit$coefficients, intercept,
     control@maxit, control@maxit_l, control@tol, control@tol_l,
     control@step, control@th, control@nthreads, w
   )
   df <- if (intercept && p > 1L) p - 1L else p
-  pval <- pchisq(el$statistic, df = df, lower.tail = FALSE)
+  pval <- pchisq(out$statistic, df = df, lower.tail = FALSE)
+  if (control@verbose) {
+    message(
+      "Convergence ",
+      if (out$optim$convergence) "achieved." else "failed."
+    )
+  }
   new("GLM",
-    parTests = el$parTests,
+    parTests = out$parTests,
     call = cl, terms = mt,
     misc = list(
       family = fit$family, iter = fit$iter, converged = fit$converged,
@@ -165,8 +171,8 @@ el_glm <- function(formula,
       contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),
-    optim = el$optim, logp = el$logp, logl = el$logl, loglr = el$loglr,
-    statistic = el$statistic, df = df, pval = pval, nobs = n, npar = p,
+    optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
+    statistic = out$statistic, df = df, pval = pval, nobs = n, npar = p,
     weights = w,
     data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
     coefficients = fit$coefficients, method = method
