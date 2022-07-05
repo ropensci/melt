@@ -67,6 +67,7 @@
 <span>  tol_l <span class="op">=</span> <span class="fl">1e-06</span>,</span>
 <span>  step <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  th <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">nthreads</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span><span class="va">.Machine</span><span class="op">$</span><span class="va">integer.max</span>, <span class="fl">1L</span><span class="op">)</span>,</span>
 <span>  b <span class="op">=</span> <span class="fl">10000L</span>,</span>
@@ -107,6 +108,13 @@ log-likelihood ratio. The iteration stops if the value exceeds the
 threshold. Defaults to <code>NULL</code> and sets the threshold to <code>200 * d</code>, where
 <code>d</code> corresponds to the degrees of freedom of the limiting chi-squared
 distribution of the statistic.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>A single logical. If <code>TRUE</code>, a message on the convergence
+status is printed when fitting objects that inherit from class
+<a href="EL-class.html">EL</a>.
+Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt>nthreads</dt>
