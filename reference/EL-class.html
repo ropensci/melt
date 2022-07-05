@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/speed.html">speed</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -44,7 +50,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>EL class</h1>
-      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/AllClasses.R" class="external-link"><code>R/AllClasses.R</code></a>, <a href="https://github.com/markean/melt/blob/HEAD/R/print-methods.R" class="external-link"><code>R/print-methods.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/AllClasses.R" class="external-link"><code>R/AllClasses.R</code></a>, <a href="https://github.com/markean/melt/blob/HEAD/R/nobs-methods.R" class="external-link"><code>R/nobs-methods.R</code></a>, <a href="https://github.com/markean/melt/blob/HEAD/R/print-methods.R" class="external-link"><code>R/print-methods.R</code></a></small>
       <div class="d-none name"><code>EL-class.Rd</code></div>
     </div>
 
@@ -60,17 +66,17 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>x</dt>
+    <dl><dt>...</dt>
+<dd><p>Further arguments passed to or from other methods.</p></dd>
+
+
+<dt>x</dt>
 <dd><p>An object of class EL.</p></dd>
 
 
 <dt>digits</dt>
 <dd><p>A single integer for the number of significant digits to be
 passed to <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code>.</p></dd>
-
-
-<dt>...</dt>
-<dd><p>Further arguments passed to or from other methods.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -106,6 +112,11 @@ the zero vector is contained in the interior of the convex hull of
 \(\chi^2_p\), where \(\chi^2_p\) has a chi-square distribution with
 \(p\) degrees of freedom.</p>
     </div>
+    <div class="section level2">
+    <h2 id="methods-by-generic-">Methods (by generic)<a class="anchor" aria-label="anchor" href="#methods-by-generic-"></a></h2>
+    
+<ul><li><p><code>nobs</code>: Extracts the number of observations in the model.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
@@ -151,7 +162,7 @@ distribution.</p></dd>
 
 
 <dt><code>weights</code></dt>
-<dd><p>A numeric vector of rescaled weights used for model fitting.</p></dd>
+<dd><p>A numeric vector of re-scaled weights used for model fitting.</p></dd>
 
 
 <dt><code>data</code></dt>
@@ -190,11 +201,11 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 <span class="r-out co"><span class="r-pr">#&gt;</span> Name:         optim         logp         logl        loglr    statistic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class:         list      numeric      numeric      numeric      numeric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:            df         pval         npar      weights         data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      numeric      integer      numeric       matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:  coefficients       method</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric    character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:            df         pval         nobs         npar      weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      numeric      integer      integer      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          data coefficients       method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:       matrix      numeric    character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Known Subclasses: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "CEL", directly</span>

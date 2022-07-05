@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/speed.html">speed</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -111,7 +117,7 @@ that has an asymptotic chi-square distribution.</p></dd>
 <dd><p>Number of parameters.</p></dd>
 
 <dt>weights</dt>
-<dd><p>Rescaled weights used for model fitting.</p></dd>
+<dd><p>Re-scaled weights used for model fitting.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -142,7 +148,7 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 <span class="r-in"><span><span class="fu">el_eval</span><span class="op">(</span><span class="va">g</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim$lambda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.2088765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1339494</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim$iterations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
@@ -152,29 +158,32 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -3.897472 -4.532183 -3.753438 -3.972844 -4.577637 -4.527224 -4.360194</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] -4.329682 -4.469946 -4.583444 -4.437881 -4.266680 -4.214485 -4.286557</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] -4.147960 -4.165276 -4.187071 -4.114061 -4.399503 -4.290717 -4.257706</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] -4.481442 -4.208827 -4.316119 -4.356295 -3.754630 -3.879406 -3.910338</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] -3.469569 -3.494272 -3.549276 -3.441677 -3.863345 -3.858472 -3.833191</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] -3.578927 -3.566314 -3.684008 -3.806229 -3.361245 -3.962723 -3.666391</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] -4.067205 -3.237908 -3.578616 -3.655749 -3.670128 -3.737632 -3.494527</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] -3.665422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -4.439310 -4.360053 -4.276009 -4.461835 -4.368251 -4.097241 -4.040347</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] -4.338848 -4.212369 -4.409854 -4.382834 -4.362719 -4.289280 -4.407634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] -4.144798 -4.306101 -4.211575 -4.319280 -4.258315 -4.413725 -4.452845</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] -4.293341 -4.375662 -4.228703 -4.200400 -3.560353 -3.614579 -3.832797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] -3.519064 -3.573492 -3.763322 -3.252413 -3.941940 -3.856629 -3.774210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36] -3.851929 -3.728537 -3.598363 -3.646484 -3.785369 -3.657092 -3.738840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43] -3.651022 -3.586127 -3.596349 -3.266464 -3.666685 -3.288409 -3.695854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [50] -3.783126</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -193.806</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -193.4068</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loglr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.036532</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.637317</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.073064</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.274634</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1499201</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2588991</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $nobs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $npar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>

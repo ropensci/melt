@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/speed.html">speed</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -162,13 +168,11 @@ The Annals of Statistics, 19(4), 1725–1747.
 <span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = y ~ x, data = df)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.2942 4.692     0.0303 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.2252 2.494     0.1143  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.03107 0.052      0.819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x            0.10920 0.986      0.321</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 2.494, df: 1, Pr(&gt;Chisq): 0.1143 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 0.9857, df: 1, Pr(&gt;Chisq): 0.3208 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -180,13 +184,11 @@ The Annals of Statistics, 19(4), 1725–1747.
 <span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = y ~ x, data = df, weights = rep(c(1, 2), each = 25))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.2780 4.377     0.0364 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1845 1.814     0.1780  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.02792 0.040      0.841</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x            0.15145 1.838      0.175</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.814, df: 1, Pr(&gt;Chisq): 0.178 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.838, df: 1, Pr(&gt;Chisq): 0.1751 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -199,15 +201,13 @@ The Annals of Statistics, 19(4), 1725–1747.
 <span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = y ~ x, data = df, na.action = na.omit)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.2767 4.117     0.0424 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.2344 2.690     0.1010  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.0165 0.014      0.905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.1078 0.948      0.330</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (1 observation deleted due to missingness)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 2.69, df: 1, Pr(&gt;Chisq): 0.101 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 0.9479, df: 1, Pr(&gt;Chisq): 0.3302 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

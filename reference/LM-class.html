@@ -26,6 +26,12 @@ CEL class."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/speed.html">speed</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -46,7 +52,7 @@ CEL class."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>LM class</h1>
-      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/AllClasses.R" class="external-link"><code>R/AllClasses.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/AllClasses.R" class="external-link"><code>R/AllClasses.R</code></a>, <a href="https://github.com/markean/melt/blob/HEAD/R/formula-methods.R" class="external-link"><code>R/formula-methods.R</code></a></small>
       <div class="d-none name"><code>LM-class.Rd</code></div>
     </div>
 
@@ -62,6 +68,12 @@ CEL class."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 understood in terms of <a href="EL-class.html">EL</a> class since constrained
 optimization is not involved in the overall test.</p>
     </div>
+    <div class="section level2">
+    <h2 id="methods-by-generic-">Methods (by generic)<a class="anchor" aria-label="anchor" href="#methods-by-generic-"></a></h2>
+    
+<ul><li><p><code>formula</code>: Extracts the symbolic model formula used in <code><a href="el_lm.html">el_lm()</a></code> or
+<code><a href="el_glm.html">el_glm()</a></code>.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
@@ -88,14 +100,17 @@ They are used in other generics and methods.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      parTests         misc        optim         logp         logl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:         list         list         list      numeric      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      parTests         call        terms         misc        optim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:         list         call          ANY         list         list</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:         loglr    statistic           df         pval         npar</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      integer      numeric      integer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:       weights         data coefficients       method</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric       matrix      numeric    character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          logp         logl        loglr    statistic           df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      numeric      numeric      integer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          pval         nobs         npar      weights         data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      integer      integer      numeric       matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:  coefficients       method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric    character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Extends: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "CEL", directly</span>

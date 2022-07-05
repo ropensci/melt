@@ -19,6 +19,9 @@
     <loc>https://markean.github.io/melt/articles/melt.html</loc>
   </url>
   <url>
+    <loc>https://markean.github.io/melt/articles/speed.html</loc>
+  </url>
+  <url>
     <loc>https://markean.github.io/melt/authors.html</loc>
   </url>
   <url>
@@ -68,6 +71,9 @@
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/confreg.html</loc>
+  </url>
+  <url>
+    <loc>https://markean.github.io/melt/reference/conv.html</loc>
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/el_control.html</loc>
