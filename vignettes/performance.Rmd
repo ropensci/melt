@@ -30,7 +30,7 @@ We test the computation speed with simulated data sets in two different settings
 
 ### Increasing the number of observations
 We fix the number of parameters at $p = 10$, and simulate the parameter value and $n \times p$ matrices using `rnorm()`. In order to ensure convergence with a large $n$, we set a large threshold value using `el_control()`.
-```{r echo=TRUE}
+```{r}
 set.seed(3175775)
 p <- 10
 par <- rnorm(p, sd = 0.1)
@@ -51,7 +51,7 @@ autoplot(result)
 
 ### Increasing the number of parameters
 This time we fix the number of observations at $n = 1000$, and evaluate empirical likelihood at zero vectors of different sizes.
-```{r eval=FALSE}
+```{r}
 n <- 1000
 result2 <- microbenchmark(
   p5 = el_mean(matrix(rnorm(n * 5), ncol = 5),
