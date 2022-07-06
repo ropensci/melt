@@ -4,5 +4,6 @@ data("attenu")
 data("faithful")
 data("mtcars")
 data("sleep")
+data("trees")
 data("women")
-
+set.seed(10358)

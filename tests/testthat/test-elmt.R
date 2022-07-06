@@ -1,6 +1,5 @@
-fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
-
 test_that("Invalid `rhs`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   expect_error(elmt(fit))
   expect_error(elmt(fit, rhs = list(c(30, -1, -1))))
   expect_error(elmt(fit, rhs = matrix(c(30, -1, -1), ncol = 3)))
@@ -9,6 +8,7 @@ test_that("Invalid `rhs`.", {
 })
 
 test_that("Invalid `lhs`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   expect_error(elmt(fit, lhs = matrix(c(1, 1, 1), nrow = 1)))
   expect_error(elmt(fit, lhs = list(c(1))))
   expect_error(elmt(fit, lhs = matrix(c(1, 1, 1, 1, 1, NA), nrow = 2)))
@@ -30,17 +30,20 @@ test_that("Invalid `lhs`.", {
 })
 
 test_that("Invalid `alpha`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   rhs <- list(c(0, 0, 0), c(1, 1, 1))
   expect_error(elmt(fit, rhs = rhs, alpha = 1))
 })
 
 test_that("Incompatible `rhs` and `lhs`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   rhs <- c(0, 0, 0)
   lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
   expect_error(elmt(fit, rhs = rhs, lhs = lhs))
 })
 
 test_that("`rhs` == `NULL`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
   out <- elmt(fit, lhs = lhs)
   expect_output(show(out))
@@ -48,12 +51,14 @@ test_that("`rhs` == `NULL`.", {
 })
 
 test_that("Matrix `rhs`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   rhs <- matrix(c(0, 0), ncol = 1)
   lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
   expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
 })
 
 test_that("List `lhs`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   lhs <- list(matrix(c(1, 33, 0), nrow = 1), matrix(c(0, 1, -100), nrow = 1))
   expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
 })
@@ -61,12 +66,21 @@ test_that("List `lhs`.", {
 #' @srrstats {G5.9, G5.9b} Different random seeds do not produce significantly
 #'   different critical values.
 test_that("Noise susceptibility tests.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   lhs <- list(matrix(c(1, 33, 0), nrow = 1), matrix(c(0, 1, -100), nrow = 1))
-  set.seed(5424513)
+  set.seed(5246356)
   cv <- elmt(fit, lhs = lhs)@cv
-  set.seed(21524552)
+  set.seed(195646)
   cv2 <- elmt(fit, lhs = lhs)@cv
-  expect_equal(cv, cv2, tolerance = 1e-03)
+  expect_equal(cv, cv2, tolerance = 1e-02)
+})
+
+test_that("`el_mean()`.", {
+  fit <- el_mean(trees, par = c(13, 76, 30))
+  wfit <- el_mean(trees, par = c(13, 76, 30), weights = trees$Girth)
+  lhs <- rbind(c(1, -1, 0), c(0, 1, -1))
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
 })
 
 test_that("`el_glm()` (gaussian - inverse).", {

@@ -55,9 +55,8 @@
 
 #' @srrstatsTODO {RE4.8} *Response variables, and associated "metadata" where applicable.*
 #' @srrstatsTODO {RE4.9} *Modelled values of response variables.*
-#' @srrstatsTODO {RE4.10} *Model Residuals, including sufficient documentation to enable interpretation of residuals, and to enable users to submit residuals to their own tests.*
-#' @srrstatsTODO {RE4.11} *Goodness-of-fit and other statistics associated such as effect sizes with model coefficients.*
-#' @srrstatsTODO {RE4.12} *Where appropriate, functions used to transform input data, and associated inverse transform functions.*
+
+
 #' @srrstatsTODO {RE4.13} *Predictor variables, and associated "metadata" where applicable.*
 
 
@@ -114,6 +113,12 @@ NULL
 #'   that the package provides. Also, `lm.fit()` and `glm.fit()` are fast enough
 #'   for most use cases. We believe that the feature to generate a model without
 #'   coefficients are not useful for the package.
+#' @srrstatsNA {RE4.10} The package does not compute the fitted values. Hence,
+#'   the residuals are unavailable.
+#' @srrstatsNA {RE4.12} No function in the package transforms input data, except
+#'   for the use of `model.response()` or `model.matrix()` in `el_lm()` and
+#'   `el_glm()`. The same operations are performed by `lm()` and `glm()`, so
+#'   including such methods in the package seems redundant.
 #' @srrstatsNA {RE4.14, RE4.15, RE4.16} Empirical likelihood methods (and thus
 #'   the package) are inherently not suitable for prediction, extrapolation, or
 #'   forecasting. Especially, extrapolation can often violate the convex hull
