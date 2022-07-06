@@ -51,8 +51,7 @@ autoplot(result)
 
 ### Increasing the number of parameters
 This time we fix the number of observations at $n = 1000$, and evaluate empirical likelihood at zero vectors of different sizes.
-```{r}
-set.seed(52361357)
+```{r eval=FALSE}
 n <- 1000
 result2 <- microbenchmark(
   p5 = el_mean(matrix(rnorm(n * 5), ncol = 5),
@@ -80,4 +79,3 @@ autoplot(result2)
 ```
 On average, evaluating empirical likelihood with a 100000×10 or 1000×400 matrix at a parameter value satisfying the convex hull constraint takes less than a second.
 
-## 2.

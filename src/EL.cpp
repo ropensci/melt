@@ -243,10 +243,6 @@ CEL::CEL(const std::string method,
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    // if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() <
-    //   tol * norm0 + tol * tol || step < tol * par.norm() + tol * tol) {
-    //   conv = true;
-    // }
     if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol ||
         step < tol * par.norm() + tol * tol)
     {
