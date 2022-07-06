@@ -101,6 +101,10 @@ log-likelihood ratio.</p></dd>
 convergence status.</p></dd>
 
 
+<dt><code>keep_data</code></dt>
+<dd><p>A single logical for whether to</p></dd>
+
+
 <dt><code>nthreads</code></dt>
 <dd><p>A single integer for the number of threads for parallel
 computation via OpenMP (if available).</p></dd>
@@ -130,12 +134,12 @@ computation via OpenMP (if available).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "ControlEL" [package "melt"]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:     maxit  maxit_l      tol    tol_l     step       th  verbose nthreads</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:  integer  integer  numeric  numeric      ANY      ANY  logical  integer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      seed        b        m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:  integer  integer  integer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      maxit   maxit_l       tol     tol_l      step        th   verbose</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   integer   integer   numeric   numeric       ANY       ANY   logical</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:  keep_data  nthreads      seed         b         m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   logical   integer   integer   integer   integer</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

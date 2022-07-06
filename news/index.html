@@ -59,6 +59,7 @@
 <h4 id="breaking-changes-1-5-2-9000">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-1-5-2-9000"></a></h4>
 <ul><li><p><code><a href="../reference/el_mean.html">el_mean()</a></code> takes arguments in a different order to comply with the ‘tidyverse’ style. It takes the data argument <code>x</code> first, followed by the parameter specification <code>par</code> as <code>el_mean(x, par)</code>.</p></li>
 <li><p><code>lht()</code> is renamed to <code><a href="../reference/elt.html">elt()</a></code>.</p></li>
+<li><p><code>model</code> argument in <code><a href="../reference/el_mean.html">el_mean()</a></code>, <code><a href="../reference/el_lm.html">el_lm()</a></code>, and <code><a href="../reference/el_glm.html">el_glm()</a></code> are removed. Use <code>keep_data</code> in <code><a href="../reference/el_control.html">el_control()</a></code>.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-1-5-2-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-2-9000"></a></h4>
@@ -69,6 +70,7 @@
 <li><p>New <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula()</a></code> extracts the model formula used in a model.</p></li>
 <li><p>New <code><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs()</a></code> extracts the number of observations in a model.</p></li>
 <li><p>New <code><a href="../reference/conv.html">conv()</a></code> extracts the convergence status in a model.</p></li>
+<li><p><code><a href="../reference/el_control.html">el_control()</a></code> gains additional arguments <code>verbose</code>, <code>keep_data</code>, <code>seed</code>, <code>b</code>, and <code>m</code>.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="minor-improvements-1-5-2-9000">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-5-2-9000"></a></h4>

@@ -67,7 +67,6 @@
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">na.action</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  model <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  etastart <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mustart <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -110,11 +109,6 @@ contain <code>NA</code>s. The default is set by the <code>na.action</code> setti
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
 <code><a href="el_control.html">el_control()</a></code>.</p></dd>
-
-
-<dt>model</dt>
-<dd><p>A single logical. If <code>TRUE</code> the data matrix used for fitting is
-returned.</p></dd>
 
 
 <dt>start</dt>
@@ -188,13 +182,13 @@ Statistica Sinica, 4(1), 199–218.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate  Chisq Pr(&gt;Chisq)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -2.8489 51.457   7.32e-13 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.6875  1.937      0.164    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x2            4.1448 83.216    &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -3.0449 41.196   1.38e-10 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.7096  1.096      0.295    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x2            4.9841 78.905    &lt; 2e-16 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 84.39, df: 2, Pr(&gt;Chisq): &lt; 2.2e-16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 86, df: 2, Pr(&gt;Chisq): &lt; 2.2e-16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
