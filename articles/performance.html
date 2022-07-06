@@ -113,10 +113,10 @@
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;  n1e2    572.2    640.10    731.687    711.25    799.95   1247.1   100</span></span>
-<span><span class="co">#&gt;  n1e3   1519.4   1828.85   2088.891   2078.35   2320.35   2948.9   100</span></span>
-<span><span class="co">#&gt;  n1e4  15261.6  18479.05  21791.271  22209.65  24728.10  30566.5   100</span></span>
-<span><span class="co">#&gt;  n1e5 260154.3 320800.40 371471.549 360312.50 419775.45 535838.1   100</span></span>
+<span><span class="co">#&gt;  n1e2    584.9    619.15    690.332    684.45    753.00    845.8   100</span></span>
+<span><span class="co">#&gt;  n1e3   1768.7   1943.85   2108.671   2051.95   2234.00   2652.9   100</span></span>
+<span><span class="co">#&gt;  n1e4  15942.5  17247.40  20548.701  20818.05  22819.55  29691.3   100</span></span>
+<span><span class="co">#&gt;  n1e5 324643.8 376501.00 441157.024 422713.20 498428.90 608545.2   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
@@ -125,8 +125,7 @@
 </h3>
 <p>This time we fix the number of observations at <span class="math inline">\(n = 1000\)</span>, and evaluate empirical likelihood at zero vectors of different sizes.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">52361357</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
 <span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>  p5 <span class="op">=</span> <span class="fu"><a href="../reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">5</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
 <span>    par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>,</span>
@@ -147,19 +146,15 @@
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
-<span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr      min        lq       mean    median       uq      max neval</span></span>
-<span><span class="co">#&gt;    p5    912.5    983.75   1239.278   1117.55   1260.6   6576.9   100</span></span>
-<span><span class="co">#&gt;   p25   3269.8   3700.90   4173.392   3983.10   4405.4   9025.1   100</span></span>
-<span><span class="co">#&gt;  p100  27817.9  32857.20  37346.506  36245.50  40450.9  65767.8   100</span></span>
-<span><span class="co">#&gt;  p400 321894.9 391534.70 441284.003 426735.15 461923.0 657552.0   100</span></span>
+<span><span class="co">#&gt; Unit: milliseconds</span></span>
+<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
+<span><span class="co">#&gt;    p5   1.0093   1.10055   1.195180   1.22155   1.28080   1.3952   100</span></span>
+<span><span class="co">#&gt;   p25   3.9369   4.04655   4.186977   4.12995   4.23275   8.7718   100</span></span>
+<span><span class="co">#&gt;  p100  31.9415  35.28170  37.255543  35.54210  38.86265  58.4025   100</span></span>
+<span><span class="co">#&gt;  p400 376.2800 409.83225 460.293776 441.51310 477.90550 672.2106   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"> On average, evaluating empirical likelihood with a 100000×10 or 1000×400 matrix at a parameter value satisfying the convex hull constraint takes less than a second.</p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="section">2.<a class="anchor" aria-label="anchor" href="#section"></a>
-</h2>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
