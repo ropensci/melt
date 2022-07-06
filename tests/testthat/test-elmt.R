@@ -77,10 +77,8 @@ test_that("Noise susceptibility tests.", {
 
 test_that("`el_mean()`.", {
   fit <- el_mean(trees, par = c(13, 76, 30))
-  wfit <- el_mean(trees, par = c(13, 76, 30), weights = trees$Girth)
   lhs <- rbind(c(1, -1, 0), c(0, 1, -1))
   expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
-  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
 })
 
 test_that("`el_glm()` (gaussian - inverse).", {

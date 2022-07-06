@@ -1,3 +1,30 @@
 url: https://markean.github.io/melt/
 template:
   bootstrap: 5
+
+reference:
+  - title: Functions (Constructors)
+    contents:
+    - starts_with("el_")
+
+  - title: Classes
+    contents:
+    - ends_with("-class")
+
+  - title: Data
+    contents:
+    - clothianidin
+
+  - title: Methods
+    contents:
+    - coef
+    - confint
+    - confreg
+    - conv
+    - eld
+    - elmt
+    - elt
+    - logLik
+    - plot
+    - summary
+    - weights

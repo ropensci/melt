@@ -1,4 +1,3 @@
-#' @srrstats {G5.5} `set.seed()` is used for a fixed random seed.
 test_that("Parallel computation yields the same results (gaussian - log).", {
   skip_on_cran()
   set.seed(23)
@@ -25,6 +24,9 @@ test_that("Parallel computation yields the same results (gaussian - log).", {
   wfit2 <- el_glm(y ~ ., family = gaussian("log"), data = df, weights = w)
   expect_equal(wfit@optim, wfit2@optim)
   expect_equal(wfit@parTests, wfit2@parTests)
+  lhs <- list(matrix(c(0, 0, 2, 1.2), nrow = 1),
+              matrix(c(0, 1, 0, -.5), nrow = 1))
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
 })
 
 test_that("Parallel computation yields the same results (binomial - logit).", {
