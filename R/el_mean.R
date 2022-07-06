@@ -36,7 +36,7 @@
 #' w <- rep(c(1, 2), each = 25)
 #' el_mean(x, par, w)
 #' @importFrom methods is new
-#' @importFrom stats pchisq
+#' @importFrom stats pchisq setNames
 #' @export
 #' @srrstats {G2.0, G2.0a} Assertions on lengths of inputs are clarified
 #'   throughout the package documentation.
@@ -54,22 +54,25 @@ el_mean <- function(x,
   stopifnot(
     "`par` must be a finite numeric vector." =
       (isTRUE(is.numeric(par) && all(is.finite(par)))),
-    "invalid `control` specified." = (is(control, "ControlEL"))
+    "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   n <- nrow(mm)
   p <- ncol(mm)
   if (length(par) != p) {
-    stop(gettextf("length of `par` must be %d.", p, domain = NA))
+    stop(gettextf("Length of `par` must be %d.", p, domain = NA))
   }
   w <- validate_weights(weights, n)
-  if (!is.null(weights)) {
-    est <- colSums(mm * w) / n
-  } else {
+  if (length(w) == 0L) {
     est <- colMeans(mm)
+  } else {
+    est <- colSums(mm * w) / n
+    names(w) <- rownames(mm)
   }
   out <- compute_EL(
     "mean", par, mm, control@maxit_l, control@tol_l, control@th, w
   )
+  optim <- out$optim
+  names(optim$par) <- names(est)
   if (control@verbose) {
     message(
       "Convergence ",
@@ -77,8 +80,8 @@ el_mean <- function(x,
     )
   }
   new("EL",
-    optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
-    statistic = out$statistic, df = p,
+    optim = optim, logp = setNames(out$logp, rownames(mm)), logl = out$logl,
+    loglr = out$loglr, statistic = out$statistic, df = p,
     pval = pchisq(out$statistic, df = p, lower.tail = FALSE), nobs = n,
     npar = p, weights = w, data = if (control@keep_data) mm else NULL,
     coefficients = est, method = "mean"

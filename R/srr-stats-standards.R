@@ -55,22 +55,16 @@
 
 #' @srrstatsTODO {RE4.8} *Response variables, and associated "metadata" where applicable.*
 #' @srrstatsTODO {RE4.9} *Modelled values of response variables.*
-
-
 #' @srrstatsTODO {RE4.13} *Predictor variables, and associated "metadata" where applicable.*
-
-
-
-
-
 
 
 #' @srrstatsTODO {RE7.1} *Tests with noiseless, exact relationships between predictor (independent) and response (dependent) data.*
 #' @srrstatsTODO {RE7.1a} *In particular, these tests should confirm that model fitting is at least as fast or (preferably) faster than testing with equivalent noisy data (see RE2.4b).*
 
-#' @srrstatsTODO {RE7.2} Demonstrate that output objects retain aspects of input data such as row or case names (see **RE1.3**).
-#' @srrstatsTODO {RE7.3} Demonstrate and test expected behaviour when objects returned from regression software are submitted to the accessor methods of **RE4.2**--**RE4.7**.
-#' @srrstatsTODO {RE7.4} Extending directly from **RE4.15**, where appropriate, tests should demonstrate and confirm that forecast errors, confidence intervals, or equivalent values increase with forecast horizons.
+
+
+
+
 #' @noRd
 NULL
 
@@ -119,11 +113,11 @@ NULL
 #'   for the use of `model.response()` or `model.matrix()` in `el_lm()` and
 #'   `el_glm()`. The same operations are performed by `lm()` and `glm()`, so
 #'   including such methods in the package seems redundant.
-#' @srrstatsNA {RE4.14, RE4.15, RE4.16} Empirical likelihood methods (and thus
-#'   the package) are inherently not suitable for prediction, extrapolation, or
-#'   forecasting. Especially, extrapolation can often violate the convex hull
-#'   constraint, leading to an invalid empirical likelihood value. For this
-#'   reason, the package does provide `predict()` methods.
+#' @srrstatsNA {RE4.14, RE4.15, RE4.16, RE7.4} Empirical likelihood methods (and
+#'   thus the package) are inherently not suitable for prediction,
+#'   extrapolation, or forecasting. Especially, extrapolation can often violate
+#'   the convex hull constraint, leading to an invalid empirical likelihood
+#'   value. For this reason, the package does provide any `predict()` method.
 #' @srrstatsNA {RE6.1} All `plot()` methods in the package are S4 generics.
 #' @srrstatsNA {RE6.2} No function in the package produces `fitted` values.
 #' @srrstatsNA {RE6.3} Empirical likelihood methods are almost never used in a

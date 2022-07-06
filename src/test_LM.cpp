@@ -79,7 +79,7 @@ Rcpp::List test_LM(const Eigen::Map<Eigen::MatrixXd> &x,
   }
 
   Rcpp::List result = Rcpp::List::create(
-      Rcpp::Named("parTests") = Rcpp::List::create(
+      Rcpp::Named("par_tests") = Rcpp::List::create(
           Rcpp::Named("statistic") = chisq_val,
           Rcpp::Named("convergence") = par_conv),
       Rcpp::Named("optim") = Rcpp::List::create(

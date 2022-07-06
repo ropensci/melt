@@ -244,7 +244,7 @@ validate_m <- function(m) {
 #' @srrstats {G5.8, G5.8b} Only numeric data is allowed for the argument `x`.
 #' @noRd
 validate_x <- function(x) {
-  x <- as.matrix(x)
+  x <- as.matrix(x, rownames.force = TRUE)
   stopifnot(
     "`x` must have at least two observations." = (nrow(x) >= 2L),
     "`x` must must have larger number of rows than columns." =

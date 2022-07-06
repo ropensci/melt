@@ -124,3 +124,22 @@ test_that("Exact relationship between predictor and response.", {
   fit <- el_lm(y ~ x, data = data.frame(y, x))
   summary(fit)
 })
+
+#' @srrstats {RE7.2, RE7.3} All row or column names (if any) are preserved in
+#'   the fitted objects and can be retrieved by accessor methods.
+test_that("All row and column names are preserved.", {
+  wfit <- el_lm(mpg ~ -1 + disp + hp, data = mtcars, weights = qsec)
+  row_names <- rownames(mtcars)
+  column_names <- colnames(mtcars)
+  expect_identical(names(wfit@logp), row_names)
+  expect_identical(rownames(wfit@data), row_names)
+  expect_identical(names(weights(wfit)), row_names)
+  expect_identical(formula(wfit), formula(wfit@terms))
+  expect_identical(nobs(wfit), nrow(mtcars))
+  expect_true(all(names(wfit@parTests$statistic) %in% column_names))
+  expect_true(all(names(wfit@parTests$convergence) %in% column_names))
+  expect_true(all(names(wfit@optim$par) %in% column_names))
+  expect_true(all(colnames(wfit@data[, -1L]) %in% column_names))
+  expect_true(all(names(coef(wfit)) %in% column_names))
+  expect_true(all(rownames(confint(wfit)) %in% column_names))
+})

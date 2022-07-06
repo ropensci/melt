@@ -59,6 +59,7 @@
 #' )
 #' summary(fit)
 #' @importFrom stats gaussian glm.fit model.extract model.weights pchisq
+#'   setNames
 #' @export
 el_glm <- function(formula,
                    family = gaussian,
@@ -144,6 +145,7 @@ el_glm <- function(formula,
   n <- nrow(mm)
   p <- ncol(X)
   w <- validate_weights(w, n)
+  names(w) <- if (length(w) != 0L) names(Y) else NULL
   out <- test_GLM(
     method, mm, fit$coefficients, intercept,
     control@maxit, control@maxit_l, control@tol, control@tol_l,
@@ -158,7 +160,7 @@ el_glm <- function(formula,
     )
   }
   new("GLM",
-    parTests = out$parTests,
+    parTests = lapply(out$par_tests, setNames, names(fit$coefficients)),
     call = cl, terms = mt,
     misc = list(
       family = fit$family, iter = fit$iter, converged = fit$converged,
@@ -167,9 +169,9 @@ el_glm <- function(formula,
       contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),
-    optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
-    statistic = out$statistic, df = df, pval = pval, nobs = n, npar = p,
-    weights = w, data = if (control@keep_data) mm else NULL,
+    optim = out$optim, logp = setNames(out$logp, names(Y)), logl = out$logl,
+    loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,
+    nobs = n, npar = p, weights = w, data = if (control@keep_data) mm else NULL,
     coefficients = fit$coefficients, method = method
   )
 }

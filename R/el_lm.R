@@ -61,7 +61,7 @@
 #' fit3 <- el_lm(y ~ x, df, na.action = na.omit)
 #' summary(fit3)
 #' @importFrom stats .getXlevels is.empty.model lm.fit lm.wfit model.matrix
-#'   model.response model.weights pchisq
+#'   model.response model.weights pchisq setNames
 #' @export
 #' @srrstats {G2.14, G2.14a, RE2.1, RE2.2} Missing values are handled by the
 #'   `na.action` argument via `na.cation()`. `Inf` values are not allowed and
@@ -130,7 +130,7 @@ el_lm <- function(formula,
     ))
   } else {
     x <- model.matrix(mt, mf, NULL)
-    z <- if (is.null(w)) {
+    fit <- if (is.null(w)) {
       lm.fit(x, y, offset = NULL, singular.ok = FALSE, ...)
     } else {
       lm.wfit(x, y, w, offset = NULL, singular.ok = FALSE, ...)
@@ -141,9 +141,10 @@ el_lm <- function(formula,
   n <- nrow(mm)
   p <- ncol(x)
   w <- validate_weights(w, n)
+  names(w) <- if (length(w) != 0L) names(y) else NULL
   out <- test_LM(
-    mm, z$coefficients, intercept, control@maxit, control@maxit_l, control@tol,
-    control@tol_l, control@step, control@th, control@nthreads, w
+    mm, fit$coefficients, intercept, control@maxit, control@maxit_l,
+    control@tol, control@tol_l, control@step, control@th, control@nthreads, w
   )
   df <- if (intercept && p > 1L) p - 1L else p
   pval <- pchisq(out$statistic, df = df, lower.tail = FALSE)
@@ -154,14 +155,15 @@ el_lm <- function(formula,
     )
   }
   new("LM",
-    parTests = out$parTests, call = cl, terms = mt,
+    parTests = lapply(out$par_tests, setNames, names(fit$coefficients)),
+    call = cl, terms = mt,
     misc = list(
       xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),
-    optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
-    statistic = out$statistic, df = df, pval = pval, nobs = n, npar = p,
-    weights = w, data = if (control@keep_data) mm else NULL,
-    coefficients = z$coefficients, method = "lm"
+    optim = out$optim, logp = setNames(out$logp, names(y)), logl = out$logl,
+    loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,
+    nobs = n, npar = p, weights = w, data = if (control@keep_data) mm else NULL,
+    coefficients = fit$coefficients, method = "lm"
   )
 }

@@ -45,18 +45,21 @@
 #' @importFrom stats pchisq
 #' @export
 el_eval <- function(g, weights = NULL, control = el_control()) {
-  mm <- as.matrix(g)
+  mm <- as.matrix(g, rownames.force = TRUE)
+  nm <- rownames(mm)
   n <- nrow(mm)
   p <- ncol(mm)
   stopifnot(
-    "not enough observations in `g`." = (n >= 2L),
+    "`g` must have at least two observations." = (n >= 2L),
     "`g` must be a finite numeric matrix." =
       (isTRUE(is.numeric(mm) && all(is.finite(mm)))),
     "`g` must have full column rank." = (isTRUE(n > p && get_rank(mm) == p)),
-    "invalid `control` specified." = (is(control, "ControlEL"))
+    "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   w <- validate_weights(weights, n)
+  names(w) <- if (length(w) != 0L) nm else NULL
   out <- compute_generic_EL(mm, control@maxit_l, control@tol_l, control@th, w)
+  names(out$logp) <- nm
   out$df <- p
   out$p.value <- pchisq(q = out$statistic, df = out$df, lower.tail = FALSE)
   out$nobs <- n
