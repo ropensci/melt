@@ -3,8 +3,8 @@
 setMethod("eld", "EL", function(object, control = el_control()) {
   stopifnot(
     "`eld` method is not applicable to a `GLM` object." = (!is(object, "GLM")),
-    "`object` has no `data`; fit the model with `model` = TRUE." =
-      (length(getDataMatrix(object)) > 1L),
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (!is.null(getDataMatrix(object))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   new("ELD", eld = compute_ELD(

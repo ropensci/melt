@@ -19,8 +19,6 @@
 #'   [`options`], and is `na.fail` if that is unset.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @param model A single logical. If `TRUE` the data matrix used for fitting is
-#'   returned.
 #' @param start Starting values for the parameters in the linear predictor.
 #'   Defaults to `NULL` and is passed to [glm.fit()].
 #' @param etastart Starting values for the linear predictor. Defaults to `NULL`
@@ -68,13 +66,11 @@ el_glm <- function(formula,
                    weights = NULL,
                    na.action,
                    control = el_control(),
-                   model = TRUE,
                    start = NULL,
                    etastart = NULL,
                    mustart = NULL,
                    ...) {
   stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
-  model <- validate_model(model)
   cl <- match.call()
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
@@ -173,8 +169,7 @@ el_glm <- function(formula,
     ),
     optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, df = df, pval = pval, nobs = n, npar = p,
-    weights = w,
-    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
+    weights = w, data = if (control@keep_data) mm else NULL,
     coefficients = fit$coefficients, method = method
   )
 }

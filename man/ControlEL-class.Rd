@@ -35,6 +35,8 @@ log-likelihood ratio.}
 \item{\code{verbose}}{A single logical for whether to print a message on the
 convergence status.}
 
+\item{\code{keep_data}}{A single logical for whether to}
+
 \item{\code{nthreads}}{A single integer for the number of threads for parallel
 computation via OpenMP (if available).}
 

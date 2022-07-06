@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 7, 
+  fig.width = 7.5, 
   fig.height = 5, 
   fig.align = "center"
 )
@@ -23,6 +23,7 @@ library(melt)
 library(microbenchmark)
 library(ggplot2)
 ```
+
 ## Empirical likelihood computation
 We show the performance of computing empirical likelihood with `el_mean()`.
 We test the computation speed with simulated data sets in two different settings: 1) the number of observations increases with the number of parameters fixed, and 2) the number of parameters increases with the number of observations fixed. 

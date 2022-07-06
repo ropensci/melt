@@ -16,8 +16,6 @@
 #'   [`options`], and is `na.fail` if that is unset.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @param model A single logical. If `TRUE` the data matrix used for fitting is
-#'   returned.
 #' @param ... Additional arguments to be passed to the low level regression
 #'   fitting functions. See ‘Details’.
 #' @details Suppose that we observe \eqn{n} independent random variables
@@ -95,10 +93,8 @@ el_lm <- function(formula,
                   weights = NULL,
                   na.action,
                   control = el_control(),
-                  model = TRUE,
                   ...) {
   stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
-  model <- validate_model(model)
   cl <- match.call()
   if (missing(data)) {
     data <- environment(formula)
@@ -165,8 +161,7 @@ el_lm <- function(formula,
     ),
     optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, df = df, pval = pval, nobs = n, npar = p,
-    weights = w,
-    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
+    weights = w, data = if (control@keep_data) mm else NULL,
     coefficients = z$coefficients, method = "lm"
   )
 }

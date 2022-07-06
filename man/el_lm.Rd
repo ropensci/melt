@@ -4,15 +4,7 @@
 \alias{el_lm}
 \title{Empirical likelihood for linear models}
 \usage{
-el_lm(
-  formula,
-  data,
-  weights = NULL,
-  na.action,
-  control = el_control(),
-  model = TRUE,
-  ...
-)
+el_lm(formula, data, weights = NULL, na.action, control = el_control(), ...)
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that can be coerced to
@@ -33,9 +25,6 @@ contain \code{NA}s. The default is set by the \code{na.action} setting of
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link[=el_control]{el_control()}}.}
-
-\item{model}{A single logical. If \code{TRUE} the data matrix used for fitting is
-returned.}
 
 \item{...}{Additional arguments to be passed to the low level regression
 fitting functions. See ‘Details’.}

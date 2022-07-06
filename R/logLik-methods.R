@@ -1,11 +1,12 @@
 #' @rdname logLik
 setMethod("logLik", "EL", function(object, ...) {
   if (!missing(...)) {
-    warning("extra arguments are not supported")
+    warning("Extra arguments are not supported.")
   }
-  if (length(getDataMatrix(object)) == 0L) {
-    stop("method is not applicable to an empty model")
-  }
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (!is.null(getDataMatrix(object)))
+  )
   p <- object@npar
   out <- elt(object, rhs = coef(object))
   val <- out@logl

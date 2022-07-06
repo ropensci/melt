@@ -4,6 +4,8 @@
 
 * `lht()` is renamed to `elt()`. 
 
+* `model` argument in `el_mean()`, `el_lm()`, and `el_glm()` are removed. Use `keep_data` in `el_control()`.
+
 ### NEW FEATURES
 * New package dependencies are added (BH, dqrng, and graphics).
 
@@ -18,6 +20,8 @@
 * New `nobs()` extracts the number of observations in a model.
 
 * New `conv()` extracts the convergence status in a model.
+
+* `el_control()` gains additional arguments `verbose`, `keep_data`, `seed`, `b`, and `m`.
 
 ### MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to `NULL`. If non-`NULL`, `level` is ignored.

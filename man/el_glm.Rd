@@ -11,7 +11,6 @@ el_glm(
   weights = NULL,
   na.action,
   control = el_control(),
-  model = TRUE,
   start = NULL,
   etastart = NULL,
   mustart = NULL,
@@ -41,9 +40,6 @@ contain \code{NA}s. The default is set by the \code{na.action} setting of
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link[=el_control]{el_control()}}.}
-
-\item{model}{A single logical. If \code{TRUE} the data matrix used for fitting is
-returned.}
 
 \item{start}{Starting values for the parameters in the linear predictor.
 Defaults to \code{NULL} and is passed to \code{\link[=glm.fit]{glm.fit()}}.}

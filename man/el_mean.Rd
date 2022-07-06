@@ -4,7 +4,7 @@
 \alias{el_mean}
 \title{Empirical likelihood for the mean}
 \usage{
-el_mean(x, par, weights = NULL, control = el_control(), model = TRUE)
+el_mean(x, par, weights = NULL, control = el_control())
 }
 \arguments{
 \item{x}{A numeric matrix, or an object that can be coerced to a numeric
@@ -21,9 +21,6 @@ If non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link[=el_control]{el_control()}}.}
-
-\item{model}{A single logical. If \code{TRUE} the data matrix used for model
-fitting is returned.}
 }
 \value{
 An object of class \linkS4class{EL}.

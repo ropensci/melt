@@ -13,8 +13,6 @@
 #'   If non-`NULL`, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @param model A single logical. If `TRUE` the data matrix used for model
-#'   fitting is returned.
 #' @return An object of class \linkS4class{EL}.
 #' @references Owen A (1990).
 #'   “Empirical Likelihood Ratio Confidence Regions.”
@@ -51,8 +49,7 @@
 el_mean <- function(x,
                     par,
                     weights = NULL,
-                    control = el_control(),
-                    model = TRUE) {
+                    control = el_control()) {
   mm <- validate_x(x)
   stopifnot(
     "`par` must be a finite numeric vector." =
@@ -70,7 +67,6 @@ el_mean <- function(x,
   } else {
     est <- colMeans(mm)
   }
-  model <- validate_model(model)
   out <- compute_EL(
     "mean", par, mm, control@maxit_l, control@tol_l, control@th, w
   )
@@ -84,8 +80,7 @@ el_mean <- function(x,
     optim = out$optim, logp = out$logp, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, df = p,
     pval = pchisq(out$statistic, df = p, lower.tail = FALSE), nobs = n,
-    npar = p, weights = w,
-    data = if (model) mm else matrix(NA_real_, nrow = 0L, ncol = 0L),
+    npar = p, weights = w, data = if (control@keep_data) mm else NULL,
     coefficients = est, method = "mean"
   )
 }

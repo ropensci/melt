@@ -21,6 +21,9 @@
 #'   status is printed when fitting objects that inherit from class
 #'   \linkS4class{EL}.
 #'   Defaults to `FALSE`.
+#' @param keep_data A single logical. If `TRUE`, the data used for fitting
+#'   objects that inherit from class \linkS4class{EL} are kept in the `data`
+#'   slot for later use with other methods. Defaults to `TRUE`.
 #' @param nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available). Defaults to the half of the
 #'   available threads. For better performance, it is generally recommended to
@@ -50,6 +53,10 @@
 #'   throughout the package documentation.
 #' @srrstats {RE3.2, RE3.3} Convergence thresholds can be set by the `tol` and
 #'   `tol_l` arguments with the default values documented.
+#' @srrstats {RE3.0, RE3.1} The `verbose` argument controls whether to print a
+#'   message on the convergence status when fitting objects. The status is
+#'   printed regardless of the `verbose` when `print()` method is used to the
+#'   fitted objects. Alternatively, `conv()` method also extracts the status.
 el_control <- function(maxit = 200L,
                        maxit_l = 25L,
                        tol = 1e-06,
@@ -57,6 +64,7 @@ el_control <- function(maxit = 200L,
                        step = NULL,
                        th = NULL,
                        verbose = FALSE,
+                       keep_data = TRUE,
                        nthreads,
                        seed = sample.int(.Machine$integer.max, 1L),
                        b = 10000L,
@@ -72,6 +80,7 @@ el_control <- function(maxit = 200L,
     th <- validate_th(th)
   }
   verbose <- validate_verbose(verbose)
+  keep_data <- validate_keep_data(keep_data)
   max_threads <- get_max_threads()
   if (missing(nthreads)) {
     nthreads <- as.integer(max(1L, max_threads / 2L))
@@ -83,6 +92,7 @@ el_control <- function(maxit = 200L,
   m <- validate_m(m)
   new("ControlEL",
     maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
-    th = th, verbose = verbose, nthreads = nthreads, seed = seed, b = b, m = m
+    th = th, verbose = verbose, keep_data = keep_data, nthreads = nthreads,
+    seed = seed, b = b, m = m
   )
 }

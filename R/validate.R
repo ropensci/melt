@@ -128,6 +128,8 @@ validate_th <- function(th) {
 #'
 #' @param verbose A single logical.
 #' @return A single logical.
+#' @srrstats {G3.0} The package does not compare floating point numbers for
+#'   equality. All numeric equality comparisons are made between integers.
 #' @noRd
 validate_verbose <- function(verbose) {
   stopifnot(
@@ -135,6 +137,21 @@ validate_verbose <- function(verbose) {
       (isTRUE(is.logical(verbose) && length(verbose) == 1L))
   )
   verbose
+}
+
+#' Validate `keep_data`
+#'
+#' Validate `keep_data` in [el_control()].
+#'
+#' @param keep_data A single logical.
+#' @return A single logical.
+#' @noRd
+validate_keep_data <- function(keep_data) {
+  stopifnot(
+    "`keep_data` must be a single logical." =
+      (isTRUE(is.logical(keep_data) && length(keep_data) == 1L))
+  )
+  keep_data
 }
 
 #' Validate `nthreads`
@@ -211,23 +228,6 @@ validate_m <- function(m) {
     "`m` must be a positive single integer." = (m > 0L)
   )
   m
-}
-
-#' Validate `model`
-#'
-#' Validate `model` in [el_glm()], [el_lm()], and [el_mean()].
-#'
-#' @param model A single logical.
-#' @return A single logical.
-#' @srrstats {G3.0} The package does not compare floating point numbers for
-#'   equality. All numeric equality comparisons are made between integers.
-#' @noRd
-validate_model <- function(model) {
-  stopifnot(
-    "`model` must be a single logical." =
-      (isTRUE(is.logical(model) && length(model) == 1L))
-  )
-  model
 }
 
 #' Validate `x`

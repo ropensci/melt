@@ -79,13 +79,13 @@ setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
     statistic = "numeric", df = "integer", pval = "numeric", nobs = "integer",
-    npar = "integer", weights = "numeric", data = "matrix",
+    npar = "integer", weights = "numeric", data = "ANY",
     coefficients = "numeric", method = "character"
   ),
   prototype = list(
     optim = list(), logp = numeric(), logl = numeric(), loglr = numeric(),
     statistic = numeric(), df = 0L, pval = numeric(), npar = 0L,
-    weights = numeric(), data = matrix(NA_real_, nrow = 0L, ncol = 0L),
+    weights = numeric(), data = NULL,
     coefficients = numeric(), method = NA_character_
   )
 )
@@ -228,6 +228,7 @@ setClass("ConfregEL",
 #'   log-likelihood ratio.
 #' @slot verbose A single logical for whether to print a message on the
 #'   convergence status.
+#' @slot keep_data A single logical for whether to
 #' @slot nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available).
 #' @slot seed A single integer for the seed for random number generation.
@@ -240,8 +241,8 @@ setClass("ConfregEL",
 setClass("ControlEL",
   slots = c(
     maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
-    step = "ANY", th = "ANY", verbose = "logical", nthreads = "integer",
-    seed = "integer", b = "integer", m = "integer"
+    step = "ANY", th = "ANY", verbose = "logical", keep_data = "logical",
+    nthreads = "integer", seed = "integer", b = "integer", m = "integer"
   )
 )
 

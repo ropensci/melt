@@ -8,9 +8,9 @@ setMethod("elt", "EL", function(object,
                                 calibrate = "chisq",
                                 control = el_control()) {
   stopifnot(
-    "'object' has no 'data'; fit the model with 'model' = TRUE" =
-      (length(getDataMatrix(object)) > 1L),
-    "invalid 'control' specified" = (is(control, "ControlEL"))
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (!is.null(getDataMatrix(object))),
+    "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypothesis(rhs, lhs, object@npar)
   alpha <- validate_alpha(alpha)

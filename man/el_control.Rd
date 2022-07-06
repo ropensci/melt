@@ -12,6 +12,7 @@ el_control(
   step = NULL,
   th = NULL,
   verbose = FALSE,
+  keep_data = TRUE,
   nthreads,
   seed = sample.int(.Machine$integer.max, 1L),
   b = 10000L,
@@ -44,6 +45,10 @@ distribution of the statistic.}
 status is printed when fitting objects that inherit from class
 \linkS4class{EL}.
 Defaults to \code{FALSE}.}
+
+\item{keep_data}{A single logical. If \code{TRUE}, the data used for fitting
+objects that inherit from class \linkS4class{EL} are kept in the \code{data}
+slot for later use with other methods. Defaults to \code{TRUE}.}
 
 \item{nthreads}{A single integer for the number of threads for parallel
 computation via OpenMP (if available). Defaults to the half of the
