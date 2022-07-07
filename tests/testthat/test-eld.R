@@ -27,3 +27,7 @@ test_that("Plot method.", {
   pdf(NULL)
   expect_invisible(plot(eld))
 })
+
+test_that("Missing `object`.", {
+  expect_null(eld())
+})

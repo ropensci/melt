@@ -232,10 +232,9 @@ test_that("Correctness tests.", {
     -el_mean(women, par = c(x, 150))@loglr
   }
   out2 <- optim(60, one_dim_function, method = "Brent", lower = 58, upper = 72)
-  out2
   expect_true(out@optim$convergence)
   expect_identical(out2$convergence, 0L)
-  expect_equal(out@optim$par[1], out2$par, tolerance = 1e-07)
+  expect_equal(unname(out@optim$par[1]), out2$par, tolerance = 1e-07)
   set.seed(65456)
   n <- 100
   x <- matrix(rnorm(n * 2), ncol = 2)
@@ -248,4 +247,24 @@ test_that("Correctness tests.", {
   expect_true(out3@optim$convergence)
   expect_identical(out4$convergence, 0L)
   expect_equal(out3@optim$par[1], out4$par, tolerance = 1e-07)
+})
+
+#' @srrstats {RE7.1, RE7.1a} We first simulate a design matrix with fixed
+#'   coefficients. Then two response vectors `y1` and `y2` are generated, where
+#'   `y1` has no noise while some noise is added to `y2`. Fitting a model using
+#'   `el_lm()` is faster with `y1` than with `y2`.
+test_that("Exact relationships between predictor and response.", {
+  skip_on_cran()
+  set.seed(311116)
+  n <- 1000
+  p <- 20
+  b <- rep(1, p)
+  x <- matrix(rnorm(n * p), ncol = p)
+  y1 <- 1 + x %*% b
+  y2 <- 1 + x %*% b + rnorm(n)
+  df1 <- data.frame(y1, x)
+  df2 <- data.frame(y2, x)
+  out1 <- system.time(el_lm(y1 ~ ., df1))["elapsed"]
+  out2 <- system.time(el_lm(y2 ~ ., df2))["elapsed"]
+  expect_lte(out1, out2)
 })

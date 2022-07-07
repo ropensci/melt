@@ -84,3 +84,7 @@ test_that("Matrix `rhs`.", {
   out <- suppressMessages(elt(fit, rhs = rhs))
   expect_s4_class(out, "ELT")
 })
+
+test_that("Missing `object`.", {
+  expect_null(elt(rhs = 1))
+})

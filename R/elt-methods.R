@@ -29,27 +29,30 @@ setMethod("elt", "EL", function(object,
     }
     par <- h$r
     out <- compute_EL(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
+    optim <- out$optim
+    names(optim$par) <- names(coef(object))
     p <- length(par)
     cal <- calibrate(calibrate, alpha, out$statistic, p, par, object, control)
     return(new("ELT",
-      optim = out$optim, alpha = alpha, logl = out$logl,
-      statistic = out$statistic, cv = cal["cv"], pval = cal["pval"],
-      calibrate = calibrate
+      optim = optim, alpha = alpha, logl = out$logl, statistic = out$statistic,
+      cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
     ))
   }
-  # proceed with chi-square calibration for non-NULL 'lhs'
+  # proceed with chi-square calibration for non-NULL `lhs``
   stopifnot(
-    "bootstrap calibration is applicable only when 'lhs' is NULL" =
+    "Bootstrap calibration is applicable only when `lhs` is `NULL`." =
       (calibrate != "boot"),
-    "F calibration is applicable only when 'lhs' is NULL" = (calibrate != "f")
+    "F calibration is applicable only when `lhs` is `NULL`." = (calibrate != "f")
   )
   out <- test_hypothesis(
     method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )
+  optim <- out$optim
+  names(optim$par) <- names(coef(object))
   new("ELT",
-    optim = out$optim, alpha = alpha, logl = out$logl,
-    statistic = out$statistic, cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
+    optim = optim, alpha = alpha, logl = out$logl, statistic = out$statistic,
+    cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
     pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE),
     calibrate = calibrate
   )
@@ -60,16 +63,14 @@ setMethod("elt", "EL", function(object,
 setMethod("elt", "missing", function(object,
                                      rhs = NULL,
                                      lhs = NULL,
-                                     alpha,
+                                     alpha = 0.05,
                                      calibrate = "chisq",
                                      control = el_control()) {
+  alpha <- validate_alpha(alpha)
+  calibrate <- validate_calibrate(calibrate)
   stopifnot(
-    "invalid 'control' specified" = (is(control, "ControlEL"))
+    "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   alpha <- validate_alpha(alpha)
-  calibrate <- match.arg(calibrate)
-  if (length(rhs) != 1L) {
-    stop("sefse")
-  }
   NULL
 })

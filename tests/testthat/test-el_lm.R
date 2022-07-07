@@ -4,12 +4,16 @@ test_that("Invalid `formula`.", {
 
 test_that("Invalid `data`.", {
   x <- mtcars$disp
-  x2 <- x
+  x2 <- mtcars$cyl
   y <- mtcars$mpg
   df <- data.frame(y, x, x2)
-  w <- mtcars$carb
+  error <- function(x) {}
+  df <- list(y, x, x2, error)
+  df2 <- list(y, x, x2, matrix(rnorm(100)))
+  df3 <- list(y, x, x2, list())
   expect_error(el_lm(y ~ x + x2, data = df))
-  expect_error(el_lm(y ~ x + x2, data = df, weights = w))
+  expect_error(el_lm(y ~ x + x2, data = df2))
+  expect_error(el_lm(y ~ x + x2, data = df3))
 })
 
 test_that("Invalid `weights`.", {
@@ -115,14 +119,15 @@ test_that("Parameter recovery tests.", {
   expect_equal(max(abs(coef(fit3))), 1, tolerance = 1e-02)
 })
 
-#' @srrstatsTODO {RE7.0} *Tests with noiseless, exact relationships between predictor (independent) data.*
-#' @srrstatsTODO {RE7.0a} In particular, these tests should confirm ability to reject perfectly noiseless input data.
-test_that("Exact relationship between predictor and response.", {
-  skip("working")
-  x <- women$height
-  y <- x
-  fit <- el_lm(y ~ x, data = data.frame(y, x))
-  summary(fit)
+#' @srrstats {RE7.0, RE7.0a} Exact relationship between predictors causes erros.
+test_that("Exact relationship between predictors.", {
+  x <- mtcars$disp
+  x2 <- x
+  y <- mtcars$mpg
+  df <- data.frame(y, x, x2)
+  w <- mtcars$carb
+  expect_error(el_lm(y ~ x + x2, data = df))
+  expect_error(el_lm(y ~ x + x2, data = df, weights = w))
 })
 
 #' @srrstats {RE7.2, RE7.3} All row or column names (if any) are preserved in

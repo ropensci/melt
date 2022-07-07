@@ -26,29 +26,9 @@
 #' @srrstats {RE5.0} Documented in the package [website](https://markean.github.io/melt/articles/performance.html).
 
 
-#' @srrstatsTODO {G2.11} *Software should ensure that `data.frame`-like tabular objects which have columns which do not themselves have standard class attributes (typically, `vector`) are appropriately processed, and do not error without reason. This behaviour should be tested. Again, columns created by the [`units` package](https://github.com/r-quantities/units/) provide a good test case.*
-
-#' @srrstatsTODO {G2.12} *Software should ensure that `data.frame`-like tabular objects which have list columns should ensure that those columns are appropriately pre-processed either through being removed, converted to equivalent vector columns where appropriate, or some other appropriate treatment such as an informative error. This behaviour should be tested.*
-
-
-#' @srrstatsTODO {RE1.3} *Regression Software which passes or otherwise transforms aspects of input data onto output structures should ensure that those output structures retain all relevant aspects of input data, notably including row and column names, and potentially information from other `attributes()`.*
-#' @srrstatsTODO {RE1.3a} *Where otherwise relevant information is not transferred, this should be explicitly documented.*
-
-
-#' @srrstatsTODO {RE2.0} *Regression Software should document any transformations applied to input data, for example conversion of label-values to `factor`, and should provide ways to explicitly avoid any default transformations (with error or warning conditions where appropriate).*
-
-
 #' offset!!
 #' @srrstatsTODO {RE2.3} *Where applicable, Regression Software should enable data to be centred (for example, through converting to zero-mean equivalent values; or to z-scores) or offset (for example, to zero-intercept equivalent values) via additional parameters, with the effects of any such parameters clearly documented and tested.*
 
-
-#' @srrstatsTODO {RE4.8} *Response variables, and associated "metadata" where applicable.*
-#' @srrstatsTODO {RE4.9} *Modelled values of response variables.*
-#' @srrstatsTODO {RE4.13} *Predictor variables, and associated "metadata" where applicable.*
-
-
-#' @srrstatsTODO {RE7.1} *Tests with noiseless, exact relationships between predictor (independent) and response (dependent) data.*
-#' @srrstatsTODO {RE7.1a} *In particular, these tests should confirm that model fitting is at least as fast or (preferably) faster than testing with equivalent noisy data (see RE2.4b).*
 #' @noRd
 NULL
 
@@ -114,6 +94,17 @@ NULL
 #'   value. For this reason, the package does provide any `predict()` method.
 #' @srrstatsNA {RE6.1} All `plot()` methods in the package are S4 generics.
 #' @srrstatsNA {RE6.2} No function in the package produces `fitted` values.
+#' @srrstatsNA {RE4.8, RE4.9, RE4.13} The formula interface used by `el_lm()`
+#'   and `el_glm()` are just a `lm()` like wrapper to transform the input `data`
+#'   to an appropriate estimating equations and pass them to the internal
+#'   routines. The distinction between the response and the predictors is not
+#'   important in terms of estimating functions and empirical likelihood. In
+#'   addition, the package has no `fitted()` or `resid()` methods where the
+#'   extraction can be useful. This is intentional since the empirical
+#'   likelihood methods for linear models yield the exact same fitted values and
+#'   residuals as those produced by `lm()`. Users may resort to other functions
+#'   such as `model.frame()` with `lm()` and `glm()` to extract the variables
+#'   and metadata.
 #' @srrstatsNA {RE6.3} Empirical likelihood methods are almost never used in a
 #'   prediction or a forecast context, in part due to the convex hull
 #'   constraint. The package does not provide any forecast method (e.g.,

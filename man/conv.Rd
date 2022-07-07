@@ -4,11 +4,14 @@
 \alias{conv}
 \alias{conv,EL-method}
 \alias{conv,CEL-method}
+\alias{conv,ELT-method}
 \title{Convergence check}
 \usage{
 \S4method{conv}{EL}(object, ...)
 
 \S4method{conv}{CEL}(object, ...)
+
+\S4method{conv}{ELT}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherit from class \linkS4class{EL}, including
@@ -29,6 +32,9 @@ the Lagrange multiplier.
 
 \item \code{CEL}: Extracts the convergence status of the model with respect to
 the parameter.
+
+\item \code{ELT}: Extracts the convergence status of the model with respect to
+the parameter (or the Lagrange multiplier if \code{lhs} is \code{NULL}).
 }}
 
 \examples{

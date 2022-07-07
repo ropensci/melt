@@ -75,10 +75,19 @@
 #'   `lm.fit()` and `glm.fit()`.
 #' @srrstats {G5.8, G5.8d} Data with more fields than observations produces an
 #'   error.
+#' @srrstats {G2.11, G2.12} Given the `formula` and `data` input,
+#'   `stats::model.frame()` (which calls `as.data.frame()`) checks whether the
+#'   `data` input is valid or not. If not, an error is triggered. The
+#'   requirement is documented and tested. See `test/testthat/el_lm.R` as well.
 #' @srrstats {RE1.0, RE1.1} Formula interface is used to the `formula` argument,
 #'   and how it is converted to a matrix input is documented as well.
-#' @srrstatsTODO {RE1.2} The expected format for the argument `data` is
-#'   documented.
+#' @srrstats {RE1.2} The expected format for the argument `data` is documented.
+#' @srrstats {RE1.3, RE1.3a} The transformation only applies to the `data`
+#'   argument. The only attributes that are passed to the output are the row and
+#'   column names, and these are preserved. See `test/testthat/test-el_lm.R` as
+#'   well.
+#' @srrstats {RE2.0} Documented the use of `model.frame` and `model.matrix`.
+#'   Users should be well aware of the basic transformations done by `lm()`.
 #' @srrstats {RE2.1} Missing values are handled by the `na.action` argument.
 #'   `Inf` values are not allowed and produce an error.
 #' @srrstats {RE2.4, RE2.4a, RE2.4b} Perfect collinearity is handled by
