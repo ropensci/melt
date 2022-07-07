@@ -29,17 +29,18 @@ An object of class \linkS4class{EL}.
 Computes empirical likelihood for the mean.
 }
 \examples{
-# scalar mean
+## Scalar mean
+set.seed(414)
 x <- rnorm(100)
 par <- 0
 el_mean(x, par)
 
-# vector mean
+## Vector mean
 x <- matrix(rnorm(100), ncol = 2)
 par <- c(0, 0)
 el_mean(x, par)
 
-# weighted data
+## Weighted data
 x <- matrix(rnorm(100), ncol = 2)
 par <- c(0, 0)
 w <- rep(c(1, 2), each = 25)

@@ -72,7 +72,7 @@
 #'   inference based on empirical likelihood is unavailable. Note that at least
 #'   for the linear models the maximum empirical likelihood estimates (and thus
 #'   the fitted values as well) are identical to the estimates returned by
-#'   `lm.fit()` and `glm.fit()`.
+#'   `lm.fit()`.
 #' @srrstats {G5.8, G5.8d} Data with more fields than observations produces an
 #'   error.
 #' @srrstats {G2.11, G2.12} Given the `formula` and `data` input,
