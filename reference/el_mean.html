@@ -109,7 +109,8 @@ The Annals of Statistics, 18(1), 90–120.
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># scalar mean</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Scalar mean</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">414</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">par</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span><span class="fu">el_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">par</span><span class="op">)</span></span></span>
@@ -117,14 +118,14 @@ The Annals of Statistics, 18(1), 90–120.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood: mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Maximum EL estimates:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0988</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.0006666</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.389, df: 1, Pr(&gt;Chisq): 0.2386</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 3.654e-05, df: 1, Pr(&gt;Chisq): 0.9952</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EL evaluation: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># vector mean</span></span></span>
+<span class="r-in"><span><span class="co">## Vector mean</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">el_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">par</span><span class="op">)</span></span></span>
@@ -132,14 +133,14 @@ The Annals of Statistics, 18(1), 90–120.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood: mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Maximum EL estimates:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1499 -0.1614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.08394 0.04032</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 4.045, df: 2, Pr(&gt;Chisq): 0.1323</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 0.4832, df: 2, Pr(&gt;Chisq): 0.7854</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EL evaluation: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># weighted data</span></span></span>
+<span class="r-in"><span><span class="co">## Weighted data</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></span>
@@ -148,9 +149,9 @@ The Annals of Statistics, 18(1), 90–120.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Weighted Empirical Likelihood: mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Maximum EL estimates:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.13433  0.08252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.06031  0.17921</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.168, df: 2, Pr(&gt;Chisq): 0.5576</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.48, df: 2, Pr(&gt;Chisq): 0.477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EL evaluation: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
