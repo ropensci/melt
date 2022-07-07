@@ -103,7 +103,7 @@ Eigen::VectorXd gr_nloglr_mean(const Eigen::Ref<const Eigen::VectorXd> &l,
   {
     c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
   }
-  return c.sum() * l;
+  return -c.sum() * l;
 }
 
 Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,

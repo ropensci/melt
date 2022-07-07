@@ -141,7 +141,7 @@ setClass("EL",
 #' @srrstats {G1.1} The package attempts the first implementation of the nested
 #'   bilevel optimization approach within R to compute constrained empirical
 #'   likelihood. The inner layer Newton-Raphson method for empirical likelihood
-#'   is written in C++, enabling faster computation than other packages written
+#'   is written in C++, enabling faster computation than other routines written
 #'   in R.
 setClass("CEL", contains = "EL")
 

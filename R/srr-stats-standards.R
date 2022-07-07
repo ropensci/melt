@@ -26,20 +26,9 @@
 #' @srrstats {RE5.0} Documented in the package [website](https://markean.github.io/melt/articles/performance.html).
 
 
-
-
-
 #' @srrstatsTODO {G2.11} *Software should ensure that `data.frame`-like tabular objects which have columns which do not themselves have standard class attributes (typically, `vector`) are appropriately processed, and do not error without reason. This behaviour should be tested. Again, columns created by the [`units` package](https://github.com/r-quantities/units/) provide a good test case.*
 
 #' @srrstatsTODO {G2.12} *Software should ensure that `data.frame`-like tabular objects which have list columns should ensure that those columns are appropriately pre-processed either through being removed, converted to equivalent vector columns where appropriate, or some other appropriate treatment such as an informative error. This behaviour should be tested.*
-
-
-
-#' @srrstatsTODO {G5.4} **Correctness tests** *to test that statistical algorithms produce expected results to some fixed test data sets (potentially through comparisons using binding frameworks such as [RStata](https://github.com/lbraglia/RStata)).*
-#' @srrstatsTODO {G5.4a} *For new methods, it can be difficult to separate out correctness of the method from the correctness of the implementation, as there may not be reference for comparison. In this case, testing may be implemented against simple, trivial cases or against multiple implementations such as an initial R implementation compared with results from a C/C++ implementation.*
-#' @srrstatsTODO {G5.4b} *For new implementations of existing methods, correctness tests should include tests against previous implementations. Such testing may explicitly call those implementations in testing, preferably from fixed-versions of other software, or use stored outputs from those where that is not possible.*
-#' @srrstatsTODO {G5.4c} *Where applicable, stored values may be drawn from published paper outputs when applicable and where code from original implementations is not available*
-#' @srrstatsTODO {G5.5} `set.seed()` is used for a fixed random seed. Correctness tests should be run with a fixed random seed
 
 
 #' @srrstatsTODO {RE1.3} *Regression Software which passes or otherwise transforms aspects of input data onto output structures should ensure that those output structures retain all relevant aspects of input data, notably including row and column names, and potentially information from other `attributes()`.*
@@ -60,13 +49,17 @@
 
 #' @srrstatsTODO {RE7.1} *Tests with noiseless, exact relationships between predictor (independent) and response (dependent) data.*
 #' @srrstatsTODO {RE7.1a} *In particular, these tests should confirm that model fitting is at least as fast or (preferably) faster than testing with equivalent noisy data (see RE2.4b).*
-
-
-
-
-
 #' @noRd
 NULL
+
+
+
+
+
+
+
+
+
 
 #' NA_standards
 #'
@@ -93,6 +86,7 @@ NULL
 #'   "implicit studentization" is one of the merits of empirical likelihood.
 #' @srrstatsNA {G4.0} The package does not allow outputs to be written to local
 #'   files.
+#' @srrstatsNA {G5.4b, G5.4c} The package concerns G5.4 and G5.4a.
 #' @srrstatsNA {G5.10} Unit tests take less then 30 seconds in all platforms we
 #'   tested. We avoid long running tests in compliance with the CRAN guidelines.
 #'   We believe that the separate flags are not necessary for the package.
