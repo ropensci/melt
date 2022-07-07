@@ -24,21 +24,8 @@
 #'   availability of OpenMP without affect the test results. See
 #'   `.github/CONTRIBUTING.md`.
 #' @srrstats {RE5.0} Documented in the package [website](https://markean.github.io/melt/articles/performance.html).
-
-
-#' offset!!
-#' @srrstatsTODO {RE2.3} *Where applicable, Regression Software should enable data to be centred (for example, through converting to zero-mean equivalent values; or to z-scores) or offset (for example, to zero-intercept equivalent values) via additional parameters, with the effects of any such parameters clearly documented and tested.*
-
 #' @noRd
 NULL
-
-
-
-
-
-
-
-
 
 
 #' NA_standards
@@ -72,6 +59,11 @@ NULL
 #'   We believe that the separate flags are not necessary for the package.
 #' @srrstatsNA {G5.11} Unit tests do not require large data sets.
 #' @srrstatsNA {G5.11a} Unit tests do not download additional data sets.
+#' @srrstatsNA {RE2.3} It is beyond the scope of estimating functions that the
+#'   package considers. There seems to be no simple way to pass this information
+#'   to the internal routines. Users can use `el_eval()` to manually construct
+#'   estimating functions with the offset included, but any further method not
+#'   applicable to the output of `el_eval()`.
 #' @srrstatsNA {RE4.1} The focus of the package is not on fitting but on
 #'   inference through hypothesis testing. Internal routines rely on the
 #'   coefficient estimates from functions such as `lm.fit()` and `glm.fit()` as

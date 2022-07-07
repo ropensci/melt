@@ -58,9 +58,9 @@ test_that("When elt == evaluation.", {
   expect_equal(wfit3@optim$lambda, wfit4@optim$lambda)
 })
 
-test_that("Calibration.", {
+test_that("`conv()` method and calibration.", {
   fit <- el_mean(women$height, par = 65)
-  expect_s4_class(elt(fit, rhs = 67, calibrate = "f"), "ELT")
+  expect_true(conv(elt(fit, rhs = 67, calibrate = "f")))
   expect_s4_class(elt(fit, rhs = 67, calibrate = "boot"), "ELT")
 })
 

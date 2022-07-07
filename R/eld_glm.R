@@ -19,5 +19,9 @@
 #'     intercept = object@misc$intercept,
 #'     singular.ok = FALSE
 #'   )
-#'   return(fit$coefficients)
+#'   n <- 10000
+#'   x <- vapply(seq_len(n), function(i) {
+#'     ## ...
+#'     }, integer(1))
+#'     #'   return(fit$coefficients)
 #' }
