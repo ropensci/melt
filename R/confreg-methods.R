@@ -9,41 +9,40 @@ setMethod("confreg", "EL", function(object,
                                     control = el_control()) {
   level <- validate_level(level)
   npoints <- validate_npoints(npoints)
-  if (!is(control, "ControlEL")) {
-    stop("invalid `control` specified.")
-  }
-  est <- coef(object)
-  if (length(est) == 0L) {
+  stopifnot(
+    "Invalid `control` specified." = (is(control, "ControlEL"))
+  )
+  if (object@npar == 0L) {
     stop("`confreg` method is not applicable to an empty model.")
-  } else if (length(est) == 1L) {
+  } else if (object@npar == 1L) {
     stop("`confreg` method is not applicable to a model with one parameter.")
   }
+  est <- coef(object)
   pnames <- if (is.null(names(est))) seq(length(est)) else names(est)
   if (!missing(parm)) {
-    if (length(parm) != 2L) {
-      stop("length of `parm` must be two.")
-    }
+    stopifnot("Length of `parm` must be two." = (length(parm) == 2L))
     if (is.numeric(parm) && all(is.finite(parm))) {
       idx <- as.integer(parm)
       est <- est[idx]
       pnames <- pnames[idx]
-      if (length(unique(est)) != 2L) {
-        stop("only one parameter specified by `parm`.")
-      }
+      stopifnot(
+        "Specify two parameters for `parm`." =
+          (length(unique(est)) == 2L)
+      )
     } else if (is.character(parm)) {
-      if (is.null(names(est))) {
-        stop(
-          "`parm` is not recognized since 'object' has no named parameters."
-        )
-      }
+      stopifnot(
+        "`parm` is not recognized since 'object' has no named parameters." =
+          (isFALSE(is.null(names(est))))
+      )
       idx <- match(parm, pnames)
       est <- est[idx]
       pnames <- pnames[idx]
-      if (length(unique(est)) != 2L) {
-        stop("only one parameter specified by `parm`.")
-      }
+      stopifnot(
+        "Only one parameter specified by `parm`." =
+          (length(unique(est)) == 2L)
+      )
     } else {
-      stop("invalid `parm` specified.")
+      stop("Invalid `parm` specified.")
     }
   } else {
     idx <- c(1L, 2L)

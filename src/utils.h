@@ -10,6 +10,8 @@ g_fn2(const std::string method);
 
 Eigen::VectorXd mele_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
                           const Eigen::Ref<const Eigen::ArrayXd> &w);
+Eigen::VectorXd mele_sd(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                        const Eigen::Ref<const Eigen::ArrayXd> &w);
 Eigen::VectorXd mele_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
                         const Eigen::Ref<const Eigen::ArrayXd> &w);
 
@@ -30,6 +32,16 @@ Eigen::VectorXd gr_nloglr_mean(const Eigen::Ref<const Eigen::VectorXd> &l,
                                const Eigen::Ref<const Eigen::VectorXd> &par,
                                const Eigen::Ref<const Eigen::ArrayXd> &w,
                                const bool weighted);
+
+Eigen::MatrixXd g_sd(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                     const Eigen::Ref<const Eigen::VectorXd> &par);
+
+Eigen::VectorXd gr_nloglr_sd(const Eigen::Ref<const Eigen::VectorXd> &l,
+                             const Eigen::Ref<const Eigen::MatrixXd> &g,
+                             const Eigen::Ref<const Eigen::MatrixXd> &x,
+                             const Eigen::Ref<const Eigen::VectorXd> &par,
+                             const Eigen::Ref<const Eigen::ArrayXd> &w,
+                             const bool weighted);
 
 Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
                      const Eigen::Ref<const Eigen::VectorXd> &par);

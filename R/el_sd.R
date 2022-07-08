@@ -5,7 +5,7 @@
 #' @param x A numeric vector, or an object that can be coerced to a numeric
 #'   vector.
 #' @param mean A single numeric for the (known) mean value.
-#' @param sd A single numeric for the parameter value to be tested.
+#' @param sd A positive single numeric for the parameter value to be tested.
 #' @param weights An optional numeric vector of weights to be used in the
 #'   fitting process. The length of the vector must be the same as the length of
 #'   `x`. Defaults to `NULL`, corresponding to identical weights. If non-`NULL`,
@@ -27,17 +27,17 @@ el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
   stopifnot(
     "`x` must have at least two observations." = (length(x) >= 2L),
     "`x` must be a finite numeric vector" = (isTRUE(all(is.finite(x)))),
+    "`mean` must be a finite single numeric." =
+      (isTRUE(is.numeric(mean) && length(mean) == 1L && is.finite(mean))),
     "`sd` must be a finite single numeric." =
       (isTRUE(is.numeric(sd) && length(sd) == 1L && is.finite(sd))),
     "`sd` must be a positive single numeric." = (sd >= .Machine$double.eps),
-    "`mean` must be a finite single numeric." =
-      (isTRUE(is.numeric(mean) && length(mean) == 1L && is.finite(mean))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   n <- length(x)
-  g <- (x - mean)^2L - sd^2
+  mm <- (x - mean)^2L
   if (length(nm) == n) {
-    names(g) <- nm
+    names(mm) <- nm
   }
   w <- validate_weights(weights, n)
   if (length(w) == 0L) {
@@ -46,7 +46,7 @@ el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
     est <- sqrt(sum((x - mean)^2L * w) / n)
     names(w) <- nm
   }
-  out <- compute_generic_EL(g, control@maxit_l, control@tol_l, control@th, w)
+  out <- compute_EL("sd", sd, mm, control@maxit_l, control@tol_l, control@th, w)
   optim <- out$optim
   names(optim$sd) <- names(sd)
   if (control@verbose) {
@@ -55,11 +55,11 @@ el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
       if (out$optim$convergence) "achieved." else "failed."
     )
   }
-  new("EL",
-    optim = optim, logp = setNames(out$logp, names(g)), logl = out$logl,
+  new("SD",
+    optim = optim, logp = setNames(out$logp, names(mm)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = 1L,
     pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE), nobs = n,
-    npar = 1L, weights = w, data = if (control@keep_data) g else NULL,
-    coefficients = est, method = "variance"
+    npar = 1L, weights = w, data = if (control@keep_data) mm else NULL,
+    coefficients = est, method = "sd"
   )
 }

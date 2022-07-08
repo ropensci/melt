@@ -98,6 +98,23 @@ test_that("`el_glm()` (gaussian - inverse).", {
   expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
 })
 
+test_that("`el_glm()` (binomial - logit).", {
+  fit <- el_glm(wool ~ ., family = binomial, data = warpbreaks)
+  wfit <- el_glm(wool ~ .,
+    family = binomial, data = warpbreaks,
+    weights = breaks
+  )
+  lhs <- list(
+    matrix(c(1, 100, 0, 0), nrow = 1),
+    matrix(c(0, 1, -1, 0), nrow = 1)
+  )
+  elmt(fit, lhs = lhs)
+  expect_output(print(fit))
+  expect_output(print(summary(fit)))
+  expect_equal(sum(exp(fit@logp)), 1)
+  expect_equal(sum(exp(wfit@logp)), 1)
+})
+
 test_that("`el_glm()` (poisson - log).", {
   fit <- el_glm(event ~ mag + dist + accel,
     family = poisson("log"),
@@ -111,6 +128,7 @@ test_that("`el_glm()` (poisson - log).", {
     matrix(c(1, 21, 0, 0), nrow = 1),
     matrix(c(0, 1, 0, -1), nrow = 1)
   )
-  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
-  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+  rhs <- c(2, 0)
+  expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
 })

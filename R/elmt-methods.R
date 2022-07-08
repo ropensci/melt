@@ -6,6 +6,10 @@ setMethod("elmt", "EL", function(object,
                                  alpha = 0.05,
                                  control = el_control()) {
   stopifnot(
+    "`elmt()` method is not applicable to to an empty model." =
+      (object@npar != 0L),
+    "`elmt()` method is not applicable to a model with one parameter." =
+      (object@npar != 1L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
       (!is.null(getDataMatrix(object))),
     "Invalid `control` specified." = (is(control, "ControlEL"))

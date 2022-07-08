@@ -8,7 +8,7 @@
 #include <utility>
 
 /* EL class (evaluation)
- * Last updated: 07/04/22
+ * Last updated: 07/07/22
  */
 EL::EL(const std::string method,
        const Eigen::Ref<const Eigen::VectorXd> &par0,
@@ -56,6 +56,7 @@ EL::set_mele_fn(const std::string method)
                             const Eigen::Ref<const Eigen::MatrixXd> &,
                             const Eigen::Ref<const Eigen::ArrayXd> &)>>
       mele_map{{{"mean", mele_mean},
+                {"sd", mele_sd},
                 {"lm", mele_lm}}};
   return mele_map[method];
 }
@@ -68,6 +69,7 @@ EL::set_g_fn(const std::string method)
                             const Eigen::Ref<const Eigen::MatrixXd> &,
                             const Eigen::Ref<const Eigen::VectorXd> &)>>
       g_map{{{"mean", g_mean},
+             {"sd", g_sd},
              {"lm", g_lm},
              {"gaussian_identity", g_lm},
              {"gaussian_log", g_gauss_log},
@@ -260,6 +262,7 @@ CEL::set_g_fn(const std::string method)
                             const Eigen::Ref<const Eigen::MatrixXd> &,
                             const Eigen::Ref<const Eigen::VectorXd> &)>>
       g_map{{{"mean", g_mean},
+             {"sd", g_sd},
              {"lm", g_lm},
              {"gaussian_identity", g_lm},
              {"gaussian_log", g_gauss_log},
@@ -290,6 +293,7 @@ CEL::set_gr_fn(const std::string method)
                             const bool)>>
       gr_map{
           {{"mean", gr_nloglr_mean},
+           {"sd", gr_nloglr_sd},
            {"lm", gr_nloglr_lm},
            {"gaussian_identity", gr_nloglr_lm},
            {"gaussian_log", gr_nloglr_gauss_log},

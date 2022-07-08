@@ -28,7 +28,7 @@ library(melt, warn.conflicts = FALSE)
 The melt package provides several functions to construct an `EL` object or an object that inherits from `EL`:
 
 * `el_mean()` for the mean.
-* `el_var()` for the variance.
+* `el_sd()` for the standard deviation.
 * `el_lm()` for linear models.
 * `el_glm()` for generalized linear models.
 

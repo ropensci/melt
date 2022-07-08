@@ -64,6 +64,19 @@ Eigen::VectorXd mele_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
   }
 }
 
+Eigen::VectorXd mele_sd(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                        const Eigen::Ref<const Eigen::ArrayXd> &w)
+{
+  if (w.size() == 0)
+  {
+    return (x.colwise().mean()).array().sqrt();
+  }
+  else
+  {
+    return ((w.matrix().transpose() * x) / x.rows()).array().sqrt();
+  }
+}
+
 Eigen::VectorXd mele_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
                         const Eigen::Ref<const Eigen::ArrayXd> &w)
 {
@@ -104,6 +117,31 @@ Eigen::VectorXd gr_nloglr_mean(const Eigen::Ref<const Eigen::VectorXd> &l,
     c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
   }
   return -c.sum() * l;
+}
+
+Eigen::MatrixXd g_sd(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                     const Eigen::Ref<const Eigen::VectorXd> &par)
+{
+  return x.rowwise() - par.array().square().matrix().transpose();
+}
+
+Eigen::VectorXd gr_nloglr_sd(const Eigen::Ref<const Eigen::VectorXd> &l,
+                             const Eigen::Ref<const Eigen::MatrixXd> &g,
+                             const Eigen::Ref<const Eigen::MatrixXd> &x,
+                             const Eigen::Ref<const Eigen::VectorXd> &par,
+                             const Eigen::Ref<const Eigen::ArrayXd> &w,
+                             const bool weighted)
+{
+  Eigen::ArrayXd c(x.rows());
+  if (weighted)
+  {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+  else
+  {
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+  return -2 * c.sum() * (par.array() * l.array());
 }
 
 Eigen::MatrixXd g_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
@@ -388,6 +426,19 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd> &l,
   }
   return (xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // // quasibinomial family
 // Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,

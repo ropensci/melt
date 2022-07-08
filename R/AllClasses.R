@@ -182,6 +182,16 @@ setClass("LM",
 setClass("GLM", contains = "LM")
 
 
+#' \linkS4class{SD} class
+#'
+#' S4 class for standard deviation. It inherits from \linkS4class{EL} class.
+#'
+#' @aliases SD
+#' @examples
+#' showClass("SD")
+setClass("SD", contains = "EL")
+
+
 #' \linkS4class{ConfregEL} class
 #'
 #' S4 class for confidence region.

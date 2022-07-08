@@ -88,3 +88,26 @@ test_that("Matrix `rhs`.", {
 test_that("Missing `object`.", {
   expect_null(elt(rhs = 1))
 })
+
+test_that("`SD` class.", {
+  x <- women$height
+  fit <- el_sd(x, mean = 65, sd = 4)
+  fit@npar <- 0L
+  expect_error(elt(fit, rhs = 1))
+  fit@npar <- 1L
+  fit@data <- NULL
+  expect_error(elt(fit, rhs = 1))
+  fit <- el_sd(x, mean = 65, sd = 4)
+  expect_error(elt(fit, rhs = 1, control = list()))
+  expect_error(elt(fit, rhs = 1, calibrate = "f"))
+  expect_error(elt(fit, rhs = "error"))
+  expect_error(elt(fit, rhs = c(1, 2)))
+  expect_error(elt(fit, rhs = -1))
+  expect_error(elt(fit, rhs = rhs, lhs = lhs, calibrate = "boot"))
+  expect_error(elt(fit, rhs = rhs, lhs = lhs, calibrate = "f"))
+  expect_error(elt(fit, rhs = -1, lhs = 1, calibrate = "f"))
+  out <- elt(fit, rhs = 1)
+  out2 <- elt(fit, rhs = 1, lhs = 2)
+  expect_s4_class(out, "ELT")
+  expect_s4_class(out2, "ELT")
+})

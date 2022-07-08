@@ -21,6 +21,15 @@ test_that("Mean parameter.", {
   expect_s4_class(eld(fit2), "ELD")
 })
 
+test_that("`SD` class.", {
+  x <- women$height
+  w <- women$weight
+  fit <- el_sd(x, mean = 65, sd = 4)
+  fit2 <- el_sd(x, mean = 65, sd = 4, weights = w)
+  expect_s4_class(eld(fit), "ELD")
+  expect_s4_class(eld(fit2), "ELD")
+})
+
 test_that("Plot method.", {
   fit <- el_lm(mpg ~ disp + hp + wt, data = mtcars)
   eld <- eld(fit)

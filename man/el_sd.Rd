@@ -12,7 +12,7 @@ vector.}
 
 \item{mean}{A single numeric for the (known) mean value.}
 
-\item{sd}{A single numeric for the parameter value to be tested.}
+\item{sd}{A positive single numeric for the parameter value to be tested.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
 fitting process. The length of the vector must be the same as the length of

@@ -34,7 +34,7 @@ test_that("Probabilities add up to 1.", {
   expect_output(print(fit))
   expect_equal(sum(exp(fit@logp)), 1, tolerance = 1e-07)
   fit2 <- el_mean(x, par = 60, weights = w)
-  expect_equal(sum(exp(fit2@logp)), 1, tolerance = 1e-7)
+  expect_equal(sum(exp(fit2@logp)), 1, tolerance = 1e-07)
 })
 
 test_that("Identical weights means no weights.", {

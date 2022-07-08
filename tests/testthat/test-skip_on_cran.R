@@ -269,8 +269,8 @@ test_that("Exact relationships between predictor and response.", {
   expect_lte(out1, out2)
 })
 
-test_that("nan.", {
-  skip_on_cran()
-  fit <- el_mean(c(2, 2), 2)
-  expect_true(is.nan(fit@logl))
-})
+# test_that("nan.", {
+#   skip_on_cran()
+#   fit <- el_mean(c(2, 2), 2)
+#   expect_true(is.nan(fit@logl))
+# })

@@ -16,7 +16,7 @@ test_that("invalid 'parm'", {
 })
 
 test_that("invalid 'level'", {
-  fit <- el_lm(mpg ~ hp, data = mtcars)
+  fit <- el_lm(mpg ~ hp + disp, data = mtcars)
   expect_s4_class(confreg(fit, parm = c(1, 2), level = 0), "ConfregEL")
   expect_error(confreg(fit, parm = c(1, 2), level = 1))
 })
