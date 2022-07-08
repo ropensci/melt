@@ -25,6 +25,7 @@ reference:
     - elmt
     - elt
     - logLik
+    - logLR
     - plot
     - summary
     - weights

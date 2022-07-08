@@ -268,3 +268,69 @@ test_that("Exact relationships between predictor and response.", {
   out2 <- system.time(el_lm(y2 ~ ., df2))["elapsed"]
   expect_lte(out1, out2)
 })
+
+test_that("`el_glm()` (binomial - log).", {
+  skip_on_cran()
+  set.seed(54324)
+  n <- 100
+  p <- 2
+  b <- rnorm(p, sd = 0.5)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 1.0005), times = 50)
+  l <- -3 + x %*% as.vector(b)
+  mu <- exp(l)
+  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
+  df <- data.frame(y, x)
+  fit <- el_glm(y ~ ., family = binomial("log"), data = df)
+  wfit <- el_glm(y ~ ., family = binomial("log"), data = df, weights = w)
+  lhs <- list(
+    matrix(c(1, 5, 0), nrow = 1),
+    matrix(c(0, 1, -1), nrow = 1)
+  )
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+})
+
+test_that("`el_glm()` (poisson - identity).", {
+  skip_on_cran()
+  set.seed(534)
+  n <- 100
+  p <- 3
+  b <- rnorm(p, sd = 0.5)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 2), times = 50)
+  l <- 3 + x %*% as.vector(b)
+  mu <- l
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
+  df <- data.frame(y, x)
+  fit <- el_glm(y ~ ., family = poisson("identity"), data = df)
+  wfit <- el_glm(y ~ ., family = poisson("identity"), data = df, weights = w)
+  lhs <- list(
+    matrix(c(1, 100, 0, 0), nrow = 1),
+    matrix(c(0, 0, 1, -100), nrow = 1)
+  )
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+})
+
+test_that("`el_glm()` (poisson - sqrt).", {
+  skip_on_cran()
+  set.seed(15234)
+  n <- 100
+  p <- 3
+  b <- rnorm(p, mean = 0, sd = .2)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 2), times = 50)
+  l <- 0.5 + x %*% as.vector(b)
+  mu <- l^2
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
+  df <- data.frame(y, x)
+  fit <- el_glm(y ~ ., family = poisson("sqrt"), data = df)
+  wfit <- el_glm(y ~ ., family = poisson("sqrt"), data = df, weights = w)
+  lhs <- list(
+    matrix(c(1, -5, 0, 0), nrow = 1),
+    matrix(c(0, 0, 1, -100), nrow = 1)
+  )
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+})

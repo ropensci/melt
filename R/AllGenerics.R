@@ -217,9 +217,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 
 #' Confidence interval for model parameters
 #'
-#' Computes confidence intervals for one or more parameters in a fitted model.
-#' The package \pkg{melt} adds a method for objects inheriting from class
-#' \linkS4class{EL}.
+#' Computes confidence intervals for one or more parameters in a model.
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
@@ -233,8 +231,6 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'   `qchisq(level, 1L)`. If non-`NULL`, `level` is ignored.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @param ... Not used.
-#' @importFrom stats qchisq
 #' @return A matrix with columns giving lower and upper confidence limits for
 #'  each parameter. In contrast to other methods that rely on studentization,
 #'  the lower and upper limits obtained from empirical likelihood do not
@@ -250,6 +246,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confint(fit, parm = c(2, 3))
 #' @exportMethod confint
+#' @srrstats {RE4.3} `confint()` method is exported.
 setGeneric("confint", function(object, parm, level = 0.95, ...)
   standardGeneric("confint")
 )
@@ -276,7 +273,6 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #'   Defaults to `50`.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @importFrom stats qchisq
 #' @return An object of class \linkS4class{ConfregEL}.
 #' @references Owen A (1990).
 #'   “Empirical Likelihood Ratio Confidence Regions.”

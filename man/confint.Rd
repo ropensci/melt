@@ -3,9 +3,12 @@
 \name{confint}
 \alias{confint}
 \alias{confint,EL-method}
+\alias{confint,SD-method}
 \title{Confidence interval for model parameters}
 \usage{
-\S4method{confint}{EL}(object, parm, level = 0.95, ..., cv = NULL, control = el_control())
+\S4method{confint}{EL}(object, parm, level = 0.95, cv = NULL, control = el_control())
+
+\S4method{confint}{SD}(object, parm, level = 0.95, cv = NULL, control = el_control())
 }
 \arguments{
 \item{object}{An object that inherit from class \linkS4class{EL}, including
@@ -17,8 +20,6 @@ parameters are considered.}
 
 \item{level}{A single numeric for the confidence level required. Defaults to
 \code{0.95}.}
-
-\item{...}{Not used.}
 
 \item{cv}{A single numeric for the critical value for calibration of
 empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
@@ -35,9 +36,7 @@ correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in \%,
 respectively.
 }
 \description{
-Computes confidence intervals for one or more parameters in a fitted model.
-The package \pkg{melt} adds a method for objects inheriting from class
-\linkS4class{EL}.
+Computes confidence intervals for one or more parameters in a model.
 }
 \examples{
 fit <- el_lm(mpg ~ ., data = mtcars)

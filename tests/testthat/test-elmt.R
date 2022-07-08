@@ -118,14 +118,13 @@ test_that("`el_glm()` (binomial - logit).", {
 test_that("`el_glm()` (binomial - probit).", {
   fit <- el_glm(wool ~ ., family = binomial("probit"), data = warpbreaks)
   wfit <- el_glm(wool ~ .,
-                 family = binomial("probit"), data = warpbreaks,
-                 weights = breaks
+    family = binomial("probit"), data = warpbreaks,
+    weights = breaks
   )
   lhs <- list(
     matrix(c(1, 100, 0, 0), nrow = 1),
     matrix(c(0, 1, -1, 0), nrow = 1)
   )
-  elmt(fit, lhs = lhs)
   expect_output(print(fit))
   expect_output(print(summary(fit)))
   expect_equal(sum(exp(fit@logp)), 1)

@@ -1,3 +1,4 @@
+#' @importFrom stats qchisq
 #' @rdname confreg
 #' @srrstats {G2.4, G2.4c} `as.character()` is used to `pnames`, a character
 #'   vector of length two for the name of parameters.
@@ -9,9 +10,7 @@ setMethod("confreg", "EL", function(object,
                                     control = el_control()) {
   level <- validate_level(level)
   npoints <- validate_npoints(npoints)
-  stopifnot(
-    "Invalid `control` specified." = (is(control, "ControlEL"))
-  )
+  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
   if (object@npar == 0L) {
     stop("`confreg` method is not applicable to an empty model.")
   } else if (object@npar == 1L) {
