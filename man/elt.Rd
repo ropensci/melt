@@ -15,15 +15,6 @@
   calibrate = "chisq",
   control = el_control()
 )
-
-\S4method{elt}{SD}(
-  object,
-  rhs = NULL,
-  lhs = NULL,
-  alpha = 0.05,
-  calibrate = "chisq",
-  control = el_control()
-)
 }
 \arguments{
 \item{object}{An object that inherit from class \linkS4class{EL}, including

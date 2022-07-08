@@ -49,10 +49,10 @@ test_that("Conversion between `loglik` and `loglr`.", {
   x <- women$height
   n <- length(x)
   fit <- el_mean(x, par = 60)
-  expect_equal(fit@logl + n * log(n), fit@loglr)
+  expect_equal(fit@logl + n * log(n), logLR(fit))
   fit2 <- el_mean(x, par = 60, weights = women$weight)
   w <- weights(fit2)
-  expect_equal(fit2@logl + sum(w * (log(n) - log(w))), fit2@loglr)
+  expect_equal(fit2@logl + sum(w * (log(n) - log(w))), logLR(fit2))
 })
 
 test_that("`verbose` == TRUE in `el_control()`.", {

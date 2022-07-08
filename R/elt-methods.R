@@ -63,6 +63,7 @@ setMethod("elt", "EL", function(object,
 #' @importFrom methods is
 #' @importFrom stats pchisq
 #' @rdname elt
+#' @usage NULL
 setMethod("elt", "SD", function(object,
                                 rhs = NULL,
                                 lhs = NULL,

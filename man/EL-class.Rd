@@ -57,7 +57,7 @@ Under some regularity conditions, it is known that
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{nobs}: Extracts the number of observations in the model.
+\item \code{nobs}: Extracts the number of observations from a model.
 }}
 
 \section{Slots}{

@@ -33,9 +33,9 @@ test_that("Conversion between `loglik` and `loglr`.", {
   w <- women$weight
   fit <- el_eval(x - 60)
   expect_equal(fit$logl + n * log(n), fit$loglr, tolerance = 1e-07)
-  fit2 <- el_eval(x - 60, weights = w)
-  w <- weights(fit2)
-  expect_equal(fit2$logl + sum(w * (log(n) - log(w))), fit2$loglr,
+  wfit <- el_eval(x - 60, weights = w)
+  w <- weights(wfit)
+  expect_equal(wfit$logl + sum(w * (log(n) - log(w))), wfit$loglr,
     tolerance = 1e-07
   )
 })

@@ -317,8 +317,6 @@ setGeneric("confreg", function(object,
 setGeneric("conv", function(object, ...) standardGeneric("conv"))
 
 
-
-
 #' Empirical log-likelihood
 #'
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
@@ -334,6 +332,22 @@ setGeneric("conv", function(object, ...) standardGeneric("conv"))
 #' @usage NULL
 #' @exportMethod logLik
 setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
+
+
+#' Empirical log-likelihood ratio
+#'
+#' Extracts empirical log-likelihood ratio from a model.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param ... Further arguments passed to other methods.
+#' @return A single numeric.
+#' @examples
+#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' logLR(fit)
+#' @usage NULL
+#' @exportMethod logLR
+setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 
 
 #' Plot methods

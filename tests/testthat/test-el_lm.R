@@ -41,13 +41,13 @@ test_that("Probabilities add up to 1.", {
 test_that("Conversion between `loglik` and `loglr`.", {
   fit <- el_lm(eruptions ~ waiting, data = faithful)
   n <- nrow(faithful)
-  expect_equal(fit@logl + n * log(n), fit@loglr)
-  fit2 <- el_lm(eruptions ~ waiting,
+  expect_equal(fit@logl + n * log(n), logLR(fit))
+  wfit <- el_lm(eruptions ~ waiting,
     data = faithful,
     weights = faithful$waiting
   )
-  w <- weights(fit2)
-  expect_equal(fit2@logl + sum(w * (log(n) - log(w))), fit2@loglr)
+  w <- weights(wfit)
+  expect_equal(wfit@logl + sum(w * (log(n) - log(w))), logLR(wfit))
 })
 
 test_that("Empty model.", {

@@ -229,7 +229,7 @@ test_that("Correctness tests.", {
   fit <- el_mean(women, par = colMeans(women))
   out <- elt(fit, lhs = c(0, 1), rhs = 150, control = el_control(th = 1e+10))
   one_dim_function <- function(x) {
-    -el_mean(women, par = c(x, 150))@loglr
+    -logLR(el_mean(women, par = c(x, 150)))
   }
   out2 <- optim(60, one_dim_function, method = "Brent", lower = 58, upper = 72)
   expect_true(out@optim$convergence)
@@ -241,7 +241,7 @@ test_that("Correctness tests.", {
   fit2 <- el_mean(x, par = c(0, 0))
   out3 <- elt(fit2, lhs = c(0, 1), rhs = 0, control = el_control(th = 1e+10))
   one_dim_function2 <- function(y) {
-    -el_mean(x, par = c(y, 0))@loglr
+    -logLR(el_mean(x, par = c(y, 0)))
   }
   out4 <- optim(-2, one_dim_function2, method = "Brent", lower = -4, upper = 4)
   expect_true(out3@optim$convergence)

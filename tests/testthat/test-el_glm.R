@@ -82,8 +82,8 @@ test_that("conversion between `loglik` and `loglr`.", {
   )
   n <- nrow(warpbreaks)
   w <- weights(wfit)
-  expect_equal(fit@logl + n * log(n), fit@loglr)
-  expect_equal(wfit@logl + sum(w * (log(n) - log(w))), wfit@loglr)
+  expect_equal(fit@logl + n * log(n), logLR(fit))
+  expect_equal(wfit@logl + sum(w * (log(n) - log(w))), logLR(wfit))
 })
 
 test_that("No intercept.", {
