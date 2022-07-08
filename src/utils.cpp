@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <RcppEigen.h>
+#include <cfloat>
 #include <cmath>
 #include <functional>
 #include <map>
@@ -311,8 +312,9 @@ Eigen::MatrixXd g_bin_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  return xmat.array().colwise() * ((inverse(1.0 - log_linkinv(xmat * par))) *
-                                   (y - log_linkinv(xmat * par)));
+  return xmat.array().colwise() *
+         ((inverse(DBL_EPSILON + 1.0 - log_linkinv(xmat * par))) *
+          (y - log_linkinv(xmat * par)));
 }
 
 Eigen::VectorXd gr_nloglr_bin_log(
@@ -325,8 +327,9 @@ Eigen::VectorXd gr_nloglr_bin_log(
 {
   const Eigen::ArrayXd y = x.col(0);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  Eigen::ArrayXd c = square((1.0 - log_linkinv(xmat * par)).inverse()) *
-                     log_linkinv(xmat * par) * (y - 1.0);
+  Eigen::ArrayXd c =
+      square((DBL_EPSILON + 1.0 - log_linkinv(xmat * par)).inverse()) *
+      log_linkinv(xmat * par) * (y - 1.0);
   if (weighted)
   {
     c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array()) * c;
@@ -426,19 +429,6 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd> &l,
   }
   return (xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // // quasibinomial family
 // Eigen::MatrixXd g_qbin_logit(const Eigen::Ref<const Eigen::MatrixXd>& x,

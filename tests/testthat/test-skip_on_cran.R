@@ -268,9 +268,3 @@ test_that("Exact relationships between predictor and response.", {
   out2 <- system.time(el_lm(y2 ~ ., df2))["elapsed"]
   expect_lte(out1, out2)
 })
-
-# test_that("nan.", {
-#   skip_on_cran()
-#   fit <- el_mean(c(2, 2), 2)
-#   expect_true(is.nan(fit@logl))
-# })

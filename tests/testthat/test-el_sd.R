@@ -37,7 +37,11 @@ test_that("Probabilities add up to 1.", {
 
 test_that("Identical weights means no weights.", {
   x <- women$height
-  fit <- el_sd(x, mean = 65, sd = 4)
+  names(x) <- rownames(women)
+  fit <- suppressMessages(el_sd(x,
+    mean = 65, sd = 4,
+    control = el_control(verbose = TRUE)
+  ))
   fit2 <- el_sd(x, mean = 65, sd = 4, weights = rep(0.5, length(x)))
   fit2@weights <- numeric()
   expect_equal(fit, fit2)
