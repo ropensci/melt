@@ -1,5 +1,5 @@
 #include "EL.h"
-#include "utils.h"
+#include "helpers.h"
 #include <RcppEigen.h>
 #include <cfloat>
 #include <cmath>
@@ -190,7 +190,7 @@ CEL::CEL(const std::string method,
   // function value (-logLR)
   nllr = PseudoLog::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
   // function norm
-  const double norm0 = (proj * gr_fn(l, g, x, par, wt, weighted)).norm();
+  // const double norm0 = (proj * gr_fn(l, g, x, par, wt, weighted)).norm();
 
   /// minimization (projected gradient descent) ///
   while (!conv && iter != maxit && nllr <= th)

@@ -356,3 +356,16 @@ test_that("`el_glm()` (poisson - sqrt).", {
   expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
   expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
 })
+
+#' @srrstats {G5.9, G5.9b} Different random seeds do not produce significantly
+#'   different critical values.
+test_that("Noise susceptibility tests.", {
+  skip_on_cran()
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
+  lhs <- list(matrix(c(1, 33, 0), nrow = 1), matrix(c(0, 1, -100), nrow = 1))
+  set.seed(5246356)
+  cv <- elmt(fit, lhs = lhs)@cv
+  set.seed(195646)
+  cv2 <- elmt(fit, lhs = lhs)@cv
+  expect_equal(cv, cv2, tolerance = 1e-02)
+})

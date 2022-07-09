@@ -751,3 +751,18 @@ validate_lhses.list <- function(lhs, p) {
   attr(out, "m") <- m
   out
 }
+
+#' Validate `optim`
+#'
+#' Validate `optim` in model objects.
+#'
+#' @param optim A list of optimization results.
+#' @return A list.
+#' @noRd
+validate_optim <- function(optim) {
+  stopifnot(
+    "NaN/Inf occured the computation." =
+      (isTRUE(is.numeric(optim$lambda) && all(is.finite(optim$lambda))))
+  )
+  optim
+}

@@ -25,14 +25,6 @@ compute_generic_EL <- function(g, maxit_l, tol_l, th, w) {
     .Call(`_melt_compute_generic_EL`, g, maxit_l, tol_l, th, w)
 }
 
-get_max_threads <- function() {
-    .Call(`_melt_get_max_threads`)
-}
-
-get_rank <- function(x) {
-    .Call(`_melt_get_rank`, x)
-}
-
 test_GLM <- function(method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_test_GLM`, method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
@@ -47,5 +39,13 @@ test_hypothesis <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_
 
 test_multiple_hypotheses <- function(alpha, q, m, M, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w) {
     .Call(`_melt_test_multiple_hypotheses`, alpha, q, m, M, method, est, x, rhs, lhs, maxit, maxit_l, tol, tol_l, step, th, w)
+}
+
+get_max_threads <- function() {
+    .Call(`_melt_get_max_threads`)
+}
+
+get_rank <- function(x) {
+    .Call(`_melt_get_rank`, x)
 }
 

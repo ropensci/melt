@@ -395,6 +395,10 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #'   are printed for each parameter.
 #' @param ... Further arguments passed to methods.
 #' @usage NULL
+#' @examples
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
+#' print(fit)
 #' @exportMethod print
 setGeneric("print", function(x, ...) standardGeneric("print"))
 

@@ -72,7 +72,7 @@ el_mean <- function(x,
   out <- compute_EL(
     "mean", par, mm, control@maxit_l, control@tol_l, control@th, w
   )
-  optim <- out$optim
+  optim <- validate_optim(out$optim)
   names(optim$par) <- names(est)
   if (control@verbose) {
     message(

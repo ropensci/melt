@@ -47,7 +47,7 @@ el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
     names(w) <- nm
   }
   out <- compute_EL("sd", sd, mm, control@maxit_l, control@tol_l, control@th, w)
-  optim <- out$optim
+  optim <- validate_optim(out$optim)
   names(optim$sd) <- names(sd)
   if (control@verbose) {
     message(

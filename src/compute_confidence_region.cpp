@@ -1,4 +1,4 @@
-#include "helpers.h"
+#include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP

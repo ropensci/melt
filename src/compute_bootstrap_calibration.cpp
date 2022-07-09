@@ -1,5 +1,5 @@
-#include "helpers.h"
 #include "utils.h"
+#include "helpers.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #include <boost/random/uniform_int_distribution.hpp>
@@ -28,7 +28,7 @@ Rcpp::NumericVector compute_bootstrap_calibration(
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &)>
-      g_fn = g_fn2(method);
+      g_fn = set_g_fn(method);
   // null transformation
   const Eigen::MatrixXd g0 =
       g_fn(x, par).rowwise() - g_fn(x, par).colwise().mean();

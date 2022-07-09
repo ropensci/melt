@@ -1,5 +1,5 @@
 #include "test_multiple_hypotheses_utils.h"
-#include "utils.h"
+#include "helpers.h"
 #include <RcppEigen.h>
 #include <functional>
 #include <map>
@@ -149,7 +149,7 @@ Eigen::MatrixXd shat(const std::string method,
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &)>
-      g_fn = g_fn2(method);
+      g_fn = set_g_fn(method);
   return (1.0 / x.rows()) * ((g_fn(x, par)).transpose() * g_fn(x, par));
 }
 

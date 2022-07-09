@@ -1,5 +1,5 @@
 #include "test_multiple_hypotheses_utils.h"
-#include "helpers.h"
+#include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #include <string>

@@ -43,3 +43,8 @@ are printed for each parameter.}
 \description{
 Provides print methods for objects.
 }
+\examples{
+data("precip")
+fit <- el_mean(precip, par = 40)
+print(fit)
+}

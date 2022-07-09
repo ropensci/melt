@@ -145,6 +145,7 @@ el_lm <- function(formula,
       lm.wfit(x, y, w, offset = NULL, singular.ok = FALSE, ...)
     }
   }
+  pnames <- names(fit$coefficients)
   intercept <- attr(mt, "intercept")
   mm <- cbind(y, x)
   n <- nrow(mm)
@@ -155,6 +156,8 @@ el_lm <- function(formula,
     mm, fit$coefficients, intercept, control@maxit, control@maxit_l,
     control@tol, control@tol_l, control@step, control@th, control@nthreads, w
   )
+  optim <- validate_optim(out$optim)
+  names(optim$par) <- pnames
   df <- if (intercept && p > 1L) p - 1L else p
   pval <- pchisq(out$statistic, df = df, lower.tail = FALSE)
   if (control@verbose) {
@@ -164,13 +167,12 @@ el_lm <- function(formula,
     )
   }
   new("LM",
-    parTests = lapply(out$par_tests, setNames, names(fit$coefficients)),
-    call = cl, terms = mt,
+    parTests = lapply(out$par_tests, setNames, pnames), call = cl, terms = mt,
     misc = list(
       xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),
-    optim = out$optim, logp = setNames(out$logp, names(y)), logl = out$logl,
+    optim = optim, logp = setNames(out$logp, names(y)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,
     nobs = n, npar = p, weights = w, data = if (control@keep_data) mm else NULL,
     coefficients = fit$coefficients, method = "lm"

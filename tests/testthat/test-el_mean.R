@@ -1,6 +1,7 @@
 test_that("Invalid `x`.", {
   expect_error(el_mean(c(1, Inf), par = 0))
   expect_error(el_mean(10, 0))
+  expect_error(el_mean(c(1, 1), par = 1))
   expect_error(el_mean(matrix(c(1, 1, 2, 2), ncol = 2), par = c(0, 0)))
   expect_error(el_mean(matrix(c(1, 1, 2, 2), ncol = 2),
     par = c(0, 0),

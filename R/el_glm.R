@@ -173,6 +173,7 @@ el_glm <- function(formula,
     control = glm_control, intercept = intercept,
     singular.ok = FALSE
   )
+  pnames <- names(fit$coefficients)
   method <- validate_family(fit$family)
   mm <- cbind(fit$y, X)
   n <- nrow(mm)
@@ -180,10 +181,11 @@ el_glm <- function(formula,
   w <- validate_weights(w, n)
   names(w) <- if (length(w) != 0L) names(Y) else NULL
   out <- test_GLM(
-    method, mm, fit$coefficients, intercept,
-    control@maxit, control@maxit_l, control@tol, control@tol_l,
-    control@step, control@th, control@nthreads, w
+    method, mm, fit$coefficients, intercept, control@maxit, control@maxit_l,
+    control@tol, control@tol_l,control@step, control@th, control@nthreads, w
   )
+  optim <- validate_optim(out$optim)
+  names(optim$par) <- pnames
   df <- if (intercept && p > 1L) p - 1L else p
   pval <- pchisq(out$statistic, df = df, lower.tail = FALSE)
   if (control@verbose) {
@@ -193,8 +195,7 @@ el_glm <- function(formula,
     )
   }
   new("GLM",
-    parTests = lapply(out$par_tests, setNames, names(fit$coefficients)),
-    call = cl, terms = mt,
+    parTests = lapply(out$par_tests, setNames, pnames), call = cl, terms = mt,
     misc = list(
       family = fit$family, iter = fit$iter, converged = fit$converged,
       boundary = fit$boundary, formula = formula, offset = NULL,
@@ -202,7 +203,7 @@ el_glm <- function(formula,
       contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),
-    optim = out$optim, logp = setNames(out$logp, names(Y)), logl = out$logl,
+    optim = optim, logp = setNames(out$logp, names(Y)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,
     nobs = n, npar = p, weights = w, data = if (control@keep_data) mm else NULL,
     coefficients = fit$coefficients, method = method
