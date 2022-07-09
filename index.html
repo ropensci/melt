@@ -92,7 +92,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The R package <strong>melt</strong> provides a unified framework for data analysis with empirical likelihood methods. A collection of functions are available for regression analysis and hypothesis testing. Much of its functionality and syntax mimics the corresponding base R functions. The core computational routines are implemented with the ‘Eigen’ C++ library and ‘RcppEigen’ interface, with OpenMP for parallel computation. Additional functions are available for multiple testing for the analysis of experimental designs. Details of the testing procedures are given in <a href="https://arxiv.org/abs/2112.09206" class="external-link">Kim, MacEachern, and Peruggia (2021)</a>.</p>
+<p>The R package <strong>melt</strong> provides a unified framework for data analysis with empirical likelihood methods. A collection of functions are available for regression analysis and hypothesis testing. The core computational routines are implemented with the ‘Eigen’ C++ library and ‘RcppEigen’ interface, with OpenMP for parallel computation. Details of the testing procedures are given in <a href="https://arxiv.org/abs/2112.09206" class="external-link">Kim, MacEachern, and Peruggia (2021)</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -110,37 +110,50 @@
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/markean/melt" class="external-link">melt</a></span><span class="op">)</span></span>
-<span><span class="co"># one sample test for mean</span></span>
-<span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>, par <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/confint.html">confint</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        lower      upper</span></span>
-<span><span class="co">#&gt; 1 -0.3467114 0.06769768</span></span>
+<span></span>
+<span><span class="co"># Test for the mean</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"precip"</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">precip</span>, par <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="va">fit</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Empirical Likelihood: mean </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum EL estimates:</span></span>
+<span><span class="co">#&gt; [1] 34.89</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Chisq: 8.285, df: 1, Pr(&gt;Chisq): 0.003998</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; EL evaluation: converged</span></span>
 <span></span>
 <span></span>
-<span><span class="co"># linear regression</span></span>
-<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">wt</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co"># Linear regression</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"mtcars"</span><span class="op">)</span></span>
+<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">qsec</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; el_lm(formula = mpg ~ wt, data = mtcars)</span></span>
+<span><span class="co">#&gt; el_lm(formula = mpg ~ disp + hp + wt + qsec, data = mtcars)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;             Estimate Chisq Pr(&gt;Chisq)    </span></span>
-<span><span class="co">#&gt; (Intercept)   37.285 443.3     &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; wt            -5.344 439.1     &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt;              Estimate   Chisq Pr(&gt;Chisq)    </span></span>
+<span><span class="co">#&gt; (Intercept) 27.329638 443.208    &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; disp         0.002666   0.365    0.54575    </span></span>
+<span><span class="co">#&gt; hp          -0.018666  10.730    0.00105 ** </span></span>
+<span><span class="co">#&gt; wt          -4.609123 439.232    &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; qsec         0.544160 440.583    &lt; 2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chisq: 439.1, df: 1, Pr(&gt;Chisq): &lt; 2.2e-16 </span></span>
+<span><span class="co">#&gt; Chisq: 433.4, df: 4, Pr(&gt;Chisq): &lt; 2.2e-16 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Constrained EL: not converged</span></span>
-<span><span class="fu"><a href="reference/confint.html">confint</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 lower     upper</span></span>
-<span><span class="co">#&gt; (Intercept) 33.175865 41.865426</span></span>
-<span><span class="co">#&gt; wt          -6.746902 -4.149511</span></span>
+<span><span class="co">#&gt; Constrained EL: converged</span></span>
+<span><span class="va">cr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/confreg.html">confreg</a></span><span class="op">(</span><span class="va">fit2</span>, parm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"disp"</span>, <span class="st">"hp"</span><span class="op">)</span>, npoints <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="va">cr</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-usage-1.png" width="100%"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span></span>
-<span></span>
-<span><span class="co"># analysis of variance </span></span>
+<span><span class="co"># Analysis of variance </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span> </span>
 <span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">clothianidin</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit3</span><span class="op">)</span></span>
@@ -168,7 +181,7 @@
 <span><span class="co">#&gt; trtHigh      -2.499165 -0.1157222</span></span>
 <span></span>
 <span></span>
-<span><span class="co"># test of no treatment effect</span></span>
+<span><span class="co"># Test of no treatment effect</span></span>
 <span><span class="va">lhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
 <span>                <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>,</span>
 <span>                <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
@@ -180,26 +193,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Statistic: 26.59804, Critical value: 7.814728 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; p-value: 7.147731e-06</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># logistic regression</span></span>
-<span><span class="va">fit4</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_glm.html">el_glm</a></span><span class="op">(</span><span class="va">vs</span> <span class="op">~</span> <span class="va">mpg</span>, data <span class="op">=</span> <span class="va">mtcars</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; el_glm(formula = vs ~ mpg, family = binomial, data = mtcars)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;             Estimate Chisq Pr(&gt;Chisq)    </span></span>
-<span><span class="co">#&gt; (Intercept)  -8.8331 24.79   6.39e-07 ***</span></span>
-<span><span class="co">#&gt; mpg           0.4304 24.42   7.75e-07 ***</span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chisq: 24.42, df: 1, Pr(&gt;Chisq): 7.751e-07 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Constrained EL: converged</span></span></code></pre></div>
+<span><span class="co">#&gt; p-value: 7.147731e-06</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
