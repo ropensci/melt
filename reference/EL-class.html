@@ -19,6 +19,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="../articles/melt.html">Get started</a>
 </li>
 <li class="active nav-item">
@@ -27,11 +33,11 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/performance.html">Performance</a>
+    <a class="dropdown-item" href="../articles/performance.html">Peformance</a>
   </div>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
+  <a class="nav-link" href="../news/index.html">News</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -50,7 +56,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>EL class</h1>
-      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/AllClasses.R" class="external-link"><code>R/AllClasses.R</code></a>, <a href="https://github.com/markean/melt/blob/HEAD/R/nobs-methods.R" class="external-link"><code>R/nobs-methods.R</code></a>, <a href="https://github.com/markean/melt/blob/HEAD/R/print-methods.R" class="external-link"><code>R/print-methods.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/AllClasses.R" class="external-link"><code>R/AllClasses.R</code></a>, <a href="https://github.com/markean/melt/blob/HEAD/R/print-methods.R" class="external-link"><code>R/print-methods.R</code></a></small>
       <div class="d-none name"><code>EL-class.Rd</code></div>
     </div>
 
@@ -66,17 +72,17 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>...</dt>
-<dd><p>Further arguments passed to or from other methods.</p></dd>
-
-
-<dt>x</dt>
+    <dl><dt>x</dt>
 <dd><p>An object of class EL.</p></dd>
 
 
 <dt>digits</dt>
 <dd><p>A single integer for the number of significant digits to be
 passed to <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Further arguments passed to or from other methods.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -87,7 +93,7 @@ for \(i = 1, \dots, n\). We assume that \(F\) has a positive definite
 covariance matrix. For a parameter of interest
 \(\theta(F) \in {\rm{I\!R}}^p\), consider a \(p\)-dimensional smooth
 estimating function \(g(X_i, \theta)\) with a moment condition
-$$\textnormal{E}[g(X_i, \theta)] = 0.$$
+$$\textrm{E}[g(X_i, \theta)] = 0.$$
 We assume that there exists an unique \(\theta_0\) that solves the above
 equation. Given a value of \(\theta\), the (profile) empirical likelihood
 ratio is defined by
@@ -112,11 +118,6 @@ the zero vector is contained in the interior of the convex hull of
 \(\chi^2_p\), where \(\chi^2_p\) has a chi-square distribution with
 \(p\) degrees of freedom.</p>
     </div>
-    <div class="section level2">
-    <h2 id="methods-by-generic-">Methods (by generic)<a class="anchor" aria-label="anchor" href="#methods-by-generic-"></a></h2>
-    
-<ul><li><p><code>nobs</code>: Extracts the number of observations from a model.</p></li>
-</ul></div>
     <div class="section level2">
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
@@ -219,7 +220,7 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Eunseop Kim, Steven MacEachern, Mario Peruggia.</p>
+  <p></p><p>Developed by Eunseop Kim.</p>
 </div>
 
 <div class="pkgdown-footer-right">
