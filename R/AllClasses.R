@@ -8,7 +8,7 @@
 #'   covariance matrix. For a parameter of interest
 #'   \eqn{\theta(F) \in {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth
 #'   estimating function \eqn{g(X_i, \theta)} with a moment condition
-#'   \deqn{\textnormal{E}[g(X_i, \theta)] = 0.}
+#'   \deqn{\textrm{E}[g(X_i, \theta)] = 0.}
 #'   We assume that there exists an unique \eqn{\theta_0} that solves the above
 #'   equation. Given a value of \eqn{\theta}, the (profile) empirical likelihood
 #'   ratio is defined by

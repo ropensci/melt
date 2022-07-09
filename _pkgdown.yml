@@ -2,6 +2,22 @@ url: https://markean.github.io/melt/
 template:
   bootstrap: 5
 
+navbar:
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Get started"
+      href: articles/melt.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Articles"
+      href: articles/index.html
+      menu:
+      - text: Peformance
+        href: articles/performance.html
+    - text: "News"
+      href: news/index.html
+
 reference:
   - title: Functions (Constructors)
     contents:
@@ -26,6 +42,7 @@ reference:
     - elt
     - logLik
     - logLR
+    - nobs
     - plot
     - summary
     - weights

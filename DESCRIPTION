@@ -4,8 +4,8 @@ Title: Multiple Empirical Likelihood Tests
 Version: 1.5.2.9000
 Authors@R: c(
     person("Eunseop", "Kim", , "kim.7302@osu.edu", role = c("aut", "cre")),
-    person("Steven", "MacEachern", role = c("aut", "ths")),
-    person("Mario", "Peruggia", role = c("aut", "ths"))
+    person("Steven", "MacEachern", role = c("ctb", "ths")),
+    person("Mario", "Peruggia", role = c("ctb", "ths"))
   )
 Description: Performs multiple empirical likelihood tests for linear and
     generalized linear models. The core computational routines are
