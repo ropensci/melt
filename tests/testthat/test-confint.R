@@ -72,9 +72,12 @@ test_that("`nthreads` == 1.", {
 
 test_that("Unnamed coefficients.", {
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
+  fit2 <- el_sd(women$height, mean = 65, sd = 5)
   names(fit@coefficients) <- NULL
   expect_type(confint(fit, parm = c(1, 2)), "double")
   expect_type(confint(fit), "double")
+  expect_type(confint(fit2, parm = c(1, 2)), "double")
+  expect_type(confint(fit2), "double")
 })
 
 test_that("Character specification for `parm`.", {
@@ -84,5 +87,9 @@ test_that("Character specification for `parm`.", {
   expect_type(confint(fit, parm = c("eruptions2", "eruptions3")), "double")
   expect_type(confint(fit, parm = c("eruptions", "eruptions2")), "double")
   expect_type(confint(fit2, parm = "1"), "double")
+  expect_type(confint(fit2, parm = c("e", "f")), "double")
+  expect_type(confint(fit2, parm = c("1", "f")), "double")
   expect_type(confint(fit3, parm = "1"), "double")
+  names(fit2@coefficients) <- "it"
+  expect_type(confint(fit2, parm = 1), "double")
 })

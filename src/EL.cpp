@@ -1,6 +1,7 @@
 #include "EL.h"
 #include "utils.h"
 #include <RcppEigen.h>
+#include <cfloat>
 #include <cmath>
 #include <functional>
 #include <map>
@@ -210,7 +211,7 @@ CEL::CEL(const std::string method,
     {
       // reduce step size
       gamma /= 2;
-      if (gamma < 1e-30)
+      if (gamma < DBL_EPSILON)
       {
         break;
       }

@@ -269,6 +269,28 @@ test_that("Exact relationships between predictor and response.", {
   expect_lte(out1, out2)
 })
 
+test_that("`el_glm()` (binomial - probit).", {
+  skip_on_cran()
+  set.seed(224543)
+  n <- 100
+  p <- 2
+  b <- rnorm(p, sd = 0.5)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 2), times = 50)
+  l <- 1.5 + x %*% as.vector(b)
+  mu <- pnorm(l)
+  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
+  df <- data.frame(y, x)
+  fit <- el_glm(y ~ ., family = binomial("probit"), data = df)
+  wfit <- el_glm(y ~ ., family = binomial("probit"), data = df, weights = w)
+  lhs <- list(
+    matrix(c(1, -100, 0), nrow = 1),
+    matrix(c(0, 1, -1), nrow = 1)
+  )
+  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+})
+
 test_that("`el_glm()` (binomial - log).", {
   skip_on_cran()
   set.seed(54324)
