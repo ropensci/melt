@@ -44,5 +44,6 @@ reference:
     - logLR
     - nobs
     - plot
+    - print
     - summary
     - weights
