@@ -17,7 +17,7 @@
 \item{object}{An object that inherit from class \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
-\item{...}{Further arguments passed to other methods.}
+\item{...}{Further arguments passed to methods.}
 }
 \value{
 A single logical.

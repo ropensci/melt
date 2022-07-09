@@ -18,7 +18,7 @@
 \item{...}{Further graphical parameters (see \code{\link{par}}).}
 }
 \description{
-Provides plot methods for objects that inherit from class \linkS4class{EL}.
+Provides plot methods for objects.
 }
 \section{Methods (by class)}{
 \itemize{

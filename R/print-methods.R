@@ -1,17 +1,12 @@
-#' @param x An object of class \linkS4class{EL}.
-#' @param digits A single integer for the number of significant digits to be
-#'   passed to [format()].
-#' @param ... Further arguments passed to or from other methods.
-#' @rdname EL-class
+#' @rdname print
 #' @srrstats {RE4.17} `print` method is applicable to an `EL` object. The test
 #'   results are displayed, including the type of test, test statistic,
 #'   coefficients, p-value, and convergence status.
 setMethod("print", "EL", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {
-  cat("\n\t")
   if (is.null(weights(x))) {
-    cat("Empirical Likelihood:", getMethodEL(x), "\n\n")
+    cat("\n\tEmpirical Likelihood:", getMethodEL(x), "\n\n")
   } else {
     cat("Weighted Empirical Likelihood:", getMethodEL(x), "\n\n")
   }
@@ -36,7 +31,7 @@ setMethod("print", "EL", function(x,
   if (length(x@statistic) != 0L) {
     cat(
       "\nEL evaluation:",
-      if (x@optim$convergence) "converged" else "not converged", "\n"
+      if (conv(x)) "converged" else "not converged", "\n"
     )
   }
   cat("\n")
@@ -44,14 +39,7 @@ setMethod("print", "EL", function(x,
 })
 setMethod("show", "EL", function(object) print(object))
 
-
-#' @param x An object of class \linkS4class{SummaryLM}.
-#' @param digits A single integer for the number of significant digits to be
-#'   passed to [format()].
-#' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
-#'   are printed for each coefficient.
-#' @param ... Further arguments passed to or from other methods.
-#' @rdname SummaryLM-class
+#' @rdname print
 #' @importFrom stats naprint pchisq printCoefmat
 #' @srrstats {G2.14b} `naprint()` is used to print messages if there are missing
 #'   values.
@@ -118,11 +106,7 @@ setMethod(
 setMethod("show", "SummaryLM", function(object) print(object))
 
 
-#' @param x An object of class \linkS4class{logLikEL}.
-#' @param digits A single integer for the number of significant digits to be
-#'   passed to [format()].
-#' @param ... Further arguments passed to or from other methods.
-#' @rdname logLikEL-class
+#' @rdname print
 setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
   cat("'Empirical log Lik.' ", paste(format(c(x@logLik), digits = digits),
     collapse = ", "
@@ -135,13 +119,8 @@ setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
 setMethod("show", "logLikEL", function(object) print(object))
 
 
-#' @param x An object of class \linkS4class{ELMT}.
-#' @param digits A single integer for the number of significant digits to be
-#'   passed to [format()].
-#' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
-#'   are printed for each coefficient.
-#' @param ... Further arguments passed to or from other methods.
-#' @rdname ELMT-class
+
+#' @rdname print
 setMethod("print", "ELMT", function(x,
                                     digits = getOption("digits"),
                                     signif.stars =
@@ -150,13 +129,11 @@ setMethod("print", "ELMT", function(x,
   method <- switch(x@calibrate,
     "mvchisq" = "Multivariate chi-square"
   )
-  cat("\n\t")
-  cat("Empirical Likelihood Multiple Tests\n\n")
+  cat("\n\tEmpirical Likelihood Multiple Tests\n\n")
   cat("Overall significance level:", x@alpha, "\n\n")
   cat("Calibration:", method, "\n\n")
   cat("Hypotheses:\n")
   out <- data.frame(
-    # set row names!
     row.names = seq_along(x@pval),
     Chisq = x@statistic,
     p.adj = x@pval
@@ -173,14 +150,9 @@ setMethod("print", "ELMT", function(x,
 setMethod("show", "ELMT", function(object) print(object))
 
 
-#' @param x An object of class \linkS4class{ELT}.
-#' @param digits A single integer for the number of significant digits to be
-#'   passed to [format()].
-#' @param ... Further arguments passed to or from other methods.
-#' @rdname ELT-class
+#' @rdname print
 setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
-  cat("\n\t")
-  cat("Empirical Likelihood Test\n\n")
+  cat("\n\tEmpirical Likelihood Test\n\n")
   method <- switch(x@calibrate,
     "chisq" = "Chi-square",
     "boot" = "Bootstrap",

@@ -11,7 +11,7 @@
 \item{object}{An object that inherit from class \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
-\item{...}{Not used.}
+\item{...}{Further arguments passed to methods.}
 }
 \value{
 An object of class \linkS4class{logLikEL}.

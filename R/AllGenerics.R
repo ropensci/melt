@@ -4,8 +4,9 @@
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Further arguments passed to other methods.
+#' @param ... Further arguments passed to methods.
 #' @return A numeric vector of the maximum empirical likelihood estimates.
+#' @usage NULL
 #' @examples
 #' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' coef(fit)
@@ -44,7 +45,6 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confint(fit, parm = c(2, 3))
 #' @exportMethod confint
-#' @srrstats {RE4.3} `confint()` method is exported.
 setGeneric("confint", function(object, parm, level = 0.95, ...)
   standardGeneric("confint")
 )
@@ -99,7 +99,7 @@ setGeneric("confreg", function(object,
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Further arguments passed to other methods.
+#' @param ... Further arguments passed to methods.
 #' @return A single logical.
 #' @usage NULL
 #' @examples
@@ -107,7 +107,6 @@ setGeneric("confreg", function(object,
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' conv(fit)
 #' @exportMethod conv
-#' @srrstats {RE4.7} `conv()` method extracts information on convergence status.
 setGeneric("conv", function(object, ...) standardGeneric("conv"))
 
 
@@ -282,7 +281,7 @@ setGeneric("elmt", function(object,
 #' @references Qin J, Lawless J (1995).
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
 #'   Canadian Journal of Statistics, 23(2), 145–159. \doi{10.2307/3315441}.
-#' @seealso [el_control()]
+#' @seealso [el_control()], [elmt()]
 #' @usage NULL
 #' @examples
 #' ## F calibration for the mean
@@ -319,12 +318,12 @@ setGeneric("elt", function(object,
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Not used.
+#' @param ... Further arguments passed to methods.
 #' @return An object of class \linkS4class{logLikEL}.
+#' @usage NULL
 #' @examples
 #' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' logLik(fit)
-#' @usage NULL
 #' @exportMethod logLik
 setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 
@@ -335,12 +334,12 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Further arguments passed to other methods.
+#' @param ... Further arguments passed to methods.
 #' @return A single numeric.
+#' @usage NULL
 #' @examples
 #' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' logLR(fit)
-#' @usage NULL
 #' @exportMethod logLR
 setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 
@@ -351,8 +350,9 @@ setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Further arguments passed to other methods.
+#' @param ... Further arguments passed to methods.
 #' @return A single integer.
+#' @usage NULL
 #' @examples
 #' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' nobs(fit)
@@ -362,7 +362,7 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 
 #' Plot methods
 #'
-#' Provides plot methods for objects that inherit from class \linkS4class{EL}.
+#' Provides plot methods for objects.
 #'
 #' @param x An object to be plotted.
 #' @param y Not used.
@@ -384,13 +384,27 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
 
+#' Print methods
+#'
+#' Provides print methods for objects.
+#'
+#' @param x An object to be printed.
+#' @param digits A single integer for the number of significant digits to be
+#'   passed to [format()].
+#' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
+#'   are printed for each parameter.
+#' @param ... Further arguments passed to methods.
+#' @usage NULL
+#' @exportMethod print
+setGeneric("print", function(x, ...) standardGeneric("print"))
+
+
 #' Summary methods
 #'
-#' Provides summary methods for objects that inherit from class
-#'   \linkS4class{EL}.
+#' Provides summary methods for objects.
 #'
-#' @param object An object for which a summary is desired.
-#' @param ... Additional arguments affecting the summary produced.
+#' @param object An object to be summarized.
+#' @param ... Further arguments passed to methods.
 #' @usage NULL
 #' @examples
 #' fit <- el_lm(mpg ~ wt, data = mtcars)
@@ -407,13 +421,13 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 #'
 #' @param object An object that inherit from class \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Not used.
-#' @usage NULL
+#' @param ... Further arguments passed to methods.
 #' @return A numeric vector of the re-scaled weights.
 #' @references Glenn N, Zhao Y (2007).
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   Computational Statistics & Data Analysis, 51(10), 5130–5141.
 #'   \doi{10.1016/j.csda.2006.07.032}.
+#' @usage NULL
 #' @examples
 #' data("airquality")
 #' x <- airquality$Wind
@@ -424,22 +438,25 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 setGeneric("weights", function(object, ...) standardGeneric("weights"))
 
 
-setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
-setMethod("getMethodEL", "EL", function(x) {
-  x@method
-})
-
 setGeneric("getDataMatrix", function(x) standardGeneric("getDataMatrix"))
 setMethod("getDataMatrix", "EL", function(x) {
   x@data
 })
 
-setGeneric("getWeights", function(x) standardGeneric("getWeights"))
-setMethod("getWeights", "EL", function(x) {
-  x@weights
+
+setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
+setMethod("getMethodEL", "EL", function(x) {
+  x@method
 })
+
 
 setGeneric("getNumPar", function(x) standardGeneric("getNumPar"))
 setMethod("getNumPar", "EL", function(x) {
   x@npar
+})
+
+
+setGeneric("getWeights", function(x) standardGeneric("getWeights"))
+setMethod("getWeights", "EL", function(x) {
+  x@weights
 })

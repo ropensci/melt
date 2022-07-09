@@ -8,13 +8,12 @@
 \S4method{summary}{LM}(object, ...)
 }
 \arguments{
-\item{object}{An object for which a summary is desired.}
+\item{object}{An object to be summarized.}
 
-\item{...}{Additional arguments affecting the summary produced.}
+\item{...}{Further arguments passed to methods.}
 }
 \description{
-Provides summary methods for objects that inherit from class
-\linkS4class{EL}.
+Provides summary methods for objects.
 }
 \section{Methods (by class)}{
 \itemize{

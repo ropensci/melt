@@ -102,5 +102,5 @@ Qin J, Lawless J (1995).
 Canadian Journal of Statistics, 23(2), 145–159. \doi{10.2307/3315441}.
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}
+\code{\link[=el_control]{el_control()}}, \code{\link[=elmt]{elmt()}}
 }
