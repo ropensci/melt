@@ -5,7 +5,7 @@
 #'   by `el_lm()` or `el_glm()`.
 setMethod("summary", "LM", function(object, ...) {
   z <- object
-  p <- z@npar
+  p <- getNumPar(z)
   if (p == 0L) {
     return(new("SummaryLM",
       statistic = z@statistic, df = z@df, convergence = z@optim$convergence,

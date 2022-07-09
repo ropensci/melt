@@ -1,3 +1,116 @@
+#' Model coefficients
+#'
+#' Extracts maximum empirical likelihood estimates from a model.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param ... Further arguments passed to other methods.
+#' @return A numeric vector of the maximum empirical likelihood estimates.
+#' @examples
+#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' coef(fit)
+#' @exportMethod coef
+setGeneric("coef", function(object, ...) standardGeneric("coef"))
+
+
+#' Confidence interval for model parameters
+#'
+#' Computes confidence intervals for one or more parameters in a model.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param parm A specification of which parameters are to be given confidence
+#'   intervals, either a vector of numbers or a vector of names. If missing, all
+#'   parameters are considered.
+#' @param level A single numeric for the confidence level required. Defaults to
+#'   `0.95`.
+#' @param cv A single numeric for the critical value for calibration of
+#'   empirical likelihood ratio statistic. Defaults to `NULL` and set to
+#'   `qchisq(level, 1L)`. If non-`NULL`, `level` is ignored.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
+#' @return A matrix with columns giving lower and upper confidence limits for
+#'  each parameter. In contrast to other methods that rely on studentization,
+#'  the lower and upper limits obtained from empirical likelihood do not
+#'  correspond to the `(1 - level) / 2` and `1 - (1 - level) / 2` in %,
+#'  respectively.
+#' @references Owen A (1990).
+#'   “Empirical Likelihood Ratio Confidence Regions.”
+#'   The Annals of Statistics, 18(1), 90–120.
+#'   \doi{10.1214/aos/1176347494}.
+#' @seealso [confreg()], [el_control()], [elt()]
+#' @usage NULL
+#' @examples
+#' fit <- el_lm(mpg ~ ., data = mtcars)
+#' confint(fit, parm = c(2, 3))
+#' @exportMethod confint
+#' @srrstats {RE4.3} `confint()` method is exported.
+setGeneric("confint", function(object, parm, level = 0.95, ...)
+  standardGeneric("confint")
+)
+
+
+#' Confidence region for model parameters
+#'
+#' Computes boundary points of a two-dimensional confidence region for model
+#'   parameters.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param parm A specification of which parameters are to be given a confidence
+#'   region, either a vector of numbers or a vector of names. It should be a
+#'   vector of length two of the form `c(x, y)`. If missing, the first two
+#'   parameter in `object` are considered.
+#' @param level A single numeric for the confidence level required. Defaults to
+#'   `0.95`. It is ignored if `cv` is non-`NULL`.
+#' @param cv A single numeric for the critical value for calibration of
+#'   empirical likelihood ratio statistic. Defaults to NULL and set to
+#'   `qchisq(level, 2L)`. It must be compatible with the `th` value in
+#'   `control`.
+#' @param npoints A single integer for the number of boundary points to compute.
+#'   Defaults to `50`.
+#' @param control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
+#' @return An object of class \linkS4class{ConfregEL}.
+#' @references Owen A (1990).
+#'   “Empirical Likelihood Ratio Confidence Regions.”
+#'   The Annals of Statistics, 18(1), 90–120.
+#'   \doi{10.1214/aos/1176347494}.
+#' @seealso [confint()], [el_control()], [elt()], [plot()]
+#' @usage NULL
+#' @examples
+#' fit <- el_lm(mpg ~ ., data = mtcars)
+#' cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
+#' plot(cr)
+#' @exportMethod confreg
+setGeneric("confreg", function(object,
+                               parm,
+                               level = 0.95,
+                               cv = NULL,
+                               npoints = 50L,
+                               control = el_control()) {
+  standardGeneric("confreg")
+})
+
+
+#' Convergence check
+#'
+#' Extracts convergence status from a model.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param ... Further arguments passed to other methods.
+#' @return A single logical.
+#' @usage NULL
+#' @examples
+#' ## Convergence check for the overall model test
+#' fit <- el_lm(mpg ~ ., data = mtcars)
+#' conv(fit)
+#' @exportMethod conv
+#' @srrstats {RE4.7} `conv()` method extracts information on convergence status.
+setGeneric("conv", function(object, ...) standardGeneric("conv"))
+
+
 #' Empirical likelihood displacement
 #'
 #' Computes empirical likelihood displacement for model diagnostics and outlier
@@ -199,120 +312,6 @@ setGeneric("elt", function(object,
 })
 
 
-#' Model coefficients
-#'
-#' Extracts maximum empirical likelihood estimates from a model.
-#'
-#' @param object An object that inherit from class \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Not used.
-#' @return A numeric vector of the maximum empirical likelihood estimates.
-#' @examples
-#' fit <- el_lm(mpg ~ wt, data = mtcars)
-#' coef(fit)
-#' @usage NULL
-#' @exportMethod coef
-setGeneric("coef", function(object, ...) standardGeneric("coef"))
-
-
-#' Confidence interval for model parameters
-#'
-#' Computes confidence intervals for one or more parameters in a model.
-#'
-#' @param object An object that inherit from class \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param parm A specification of which parameters are to be given confidence
-#'   intervals, either a vector of numbers or a vector of names. If missing, all
-#'   parameters are considered.
-#' @param level A single numeric for the confidence level required. Defaults to
-#'   `0.95`.
-#' @param cv A single numeric for the critical value for calibration of
-#'   empirical likelihood ratio statistic. Defaults to `NULL` and set to
-#'   `qchisq(level, 1L)`. If non-`NULL`, `level` is ignored.
-#' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   [el_control()].
-#' @return A matrix with columns giving lower and upper confidence limits for
-#'  each parameter. In contrast to other methods that rely on studentization,
-#'  the lower and upper limits obtained from empirical likelihood do not
-#'  correspond to the `(1 - level) / 2` and `1 - (1 - level) / 2` in %,
-#'  respectively.
-#' @references Owen A (1990).
-#'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   The Annals of Statistics, 18(1), 90–120.
-#'   \doi{10.1214/aos/1176347494}.
-#' @seealso [confreg()], [el_control()], [elt()]
-#' @usage NULL
-#' @examples
-#' fit <- el_lm(mpg ~ ., data = mtcars)
-#' confint(fit, parm = c(2, 3))
-#' @exportMethod confint
-#' @srrstats {RE4.3} `confint()` method is exported.
-setGeneric("confint", function(object, parm, level = 0.95, ...)
-  standardGeneric("confint")
-)
-
-
-#' Confidence region for model parameters
-#'
-#' Computes boundary points of a two-dimensional confidence region for model
-#'   parameters.
-#'
-#' @param object An object that inherit from class \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param parm A specification of which parameters are to be given a confidence
-#'   region, either a vector of numbers or a vector of names. It should be a
-#'   vector of length two of the form `c(x, y)`. If missing, the first two
-#'   parameter in `object` are considered.
-#' @param level A single numeric for the confidence level required. Defaults to
-#'   `0.95`. It is ignored if `cv` is non-`NULL`.
-#' @param cv A single numeric for the critical value for calibration of
-#'   empirical likelihood ratio statistic. Defaults to NULL and set to
-#'   `qchisq(level, 2L)`. It must be compatible with the `th` value in
-#'   `control`.
-#' @param npoints A single integer for the number of boundary points to compute.
-#'   Defaults to `50`.
-#' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   [el_control()].
-#' @return An object of class \linkS4class{ConfregEL}.
-#' @references Owen A (1990).
-#'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   The Annals of Statistics, 18(1), 90–120.
-#'   \doi{10.1214/aos/1176347494}.
-#' @seealso [confint()], [el_control()], [elt()], [plot()]
-#' @usage NULL
-#' @examples
-#' fit <- el_lm(mpg ~ ., data = mtcars)
-#' cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
-#' plot(cr)
-#' @exportMethod confreg
-setGeneric("confreg", function(object,
-                               parm,
-                               level = 0.95,
-                               cv = NULL,
-                               npoints = 50L,
-                               control = el_control()) {
-  standardGeneric("confreg")
-})
-
-
-#' Convergence check
-#'
-#' Extracts convergence status from a model.
-#'
-#' @param object An object that inherit from class \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
-#' @param ... Further arguments passed to other methods.
-#' @return A single logical.
-#' @usage NULL
-#' @examples
-#' ## Convergence check for the overall model test
-#' fit <- el_lm(mpg ~ ., data = mtcars)
-#' conv(fit)
-#' @exportMethod conv
-#' @srrstats {RE4.7} `conv()` method extracts information on convergence status.
-setGeneric("conv", function(object, ...) standardGeneric("conv"))
-
-
 #' Empirical log-likelihood
 #'
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
@@ -344,6 +343,21 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #' @usage NULL
 #' @exportMethod logLR
 setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
+
+
+#' Number of observations in a model
+#'
+#' Extracts the number of observations from a model.
+#'
+#' @param object An object that inherit from class \linkS4class{EL}, including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param ... Further arguments passed to other methods.
+#' @return A single integer.
+#' @examples
+#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' nobs(fit)
+#' @exportMethod nobs
+setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 
 
 #' Plot methods
@@ -423,4 +437,9 @@ setMethod("getDataMatrix", "EL", function(x) {
 setGeneric("getWeights", function(x) standardGeneric("getWeights"))
 setMethod("getWeights", "EL", function(x) {
   x@weights
+})
+
+setGeneric("getNumPar", function(x) standardGeneric("getNumPar"))
+setMethod("getNumPar", "EL", function(x) {
+  x@npar
 })

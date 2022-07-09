@@ -5,16 +5,16 @@ setMethod("elmt", "EL", function(object,
                                  lhs = NULL,
                                  alpha = 0.05,
                                  control = el_control()) {
+  npar <- getNumPar(object)
   stopifnot(
-    "`elmt()` method is not applicable to to an empty model." =
-      (object@npar != 0L),
+    "`elmt()` method is not applicable to to an empty model." = (npar != 0L),
     "`elmt()` method is not applicable to a model with one parameter." =
-      (object@npar != 1L),
+      (npar != 1L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
       (!is.null(getDataMatrix(object))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  h <- validate_hypotheses(rhs, lhs, object@npar)
+  h <- validate_hypotheses(rhs, lhs, npar)
   alpha <- validate_alpha(alpha)
   method <- getMethodEL(object)
   maxit <- control@maxit

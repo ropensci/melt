@@ -7,14 +7,14 @@ setMethod("elt", "EL", function(object,
                                 alpha = 0.05,
                                 calibrate = "chisq",
                                 control = el_control()) {
+  npar <- getNumPar(object)
   stopifnot(
-    "`elt()` method is not applicable to to an empty model." =
-      (object@npar != 0L),
+    "`elt()` method is not applicable to to an empty model." = (npar != 0L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
       (!is.null(getDataMatrix(object))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  h <- validate_hypothesis(rhs, lhs, object@npar)
+  h <- validate_hypothesis(rhs, lhs, npar)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
@@ -70,14 +70,14 @@ setMethod("elt", "SD", function(object,
                                 alpha = 0.05,
                                 calibrate = "chisq",
                                 control = el_control()) {
+  npar <- getNumPar(object)
   stopifnot(
-    "`elt()` method is not applicable to to an empty model." =
-      (object@npar != 0L),
+    "`elt()` method is not applicable to to an empty model." = (npar != 0L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
       (!is.null(getDataMatrix(object))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  h <- validate_hypothesis(rhs, lhs, object@npar)
+  h <- validate_hypothesis(rhs, lhs, npar)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   nm <- names(coef(object))

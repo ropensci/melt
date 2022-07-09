@@ -6,8 +6,8 @@ setMethod("confint", "EL", function(object,
                                     cv = NULL,
                                     control = el_control()) {
   stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
-  # No confidence interval for empty model
-  if (object@npar == 0L) {
+  # No confidence interval for an empty model
+  if (getNumPar(object) == 0L) {
     ci <- matrix(, nrow = 0L, ncol = 2L)
     colnames(ci) <- c("lower", "upper")
     return(ci)
@@ -17,7 +17,7 @@ setMethod("confint", "EL", function(object,
   idx <- seq(length(est))
   # Row names of the confidence interval matrix
   pnames <- if (is.null(names(est))) idx else names(est)
-  # If parm is supplied, modify idx and pnames accordingly
+  # If `parm` is supplied, modify idx and pnames accordingly
   if (!missing(parm)) {
     if (is.numeric(parm) && all(is.finite(parm))) {
       pnames <- pnames[parm]

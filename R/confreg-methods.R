@@ -11,9 +11,10 @@ setMethod("confreg", "EL", function(object,
   level <- validate_level(level)
   npoints <- validate_npoints(npoints)
   stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
-  if (object@npar == 0L) {
+  npar <- getNumPar(object)
+  if (npar == 0L) {
     stop("`confreg` method is not applicable to an empty model.")
-  } else if (object@npar == 1L) {
+  } else if (npar == 1L) {
     stop("`confreg` method is not applicable to a model with one parameter.")
   }
   est <- coef(object)
@@ -66,8 +67,8 @@ setMethod("confreg", "EL", function(object,
   ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]
   circ <- rbind(cos(ang), sin(ang))
   cr <- compute_confidence_region(
-    getMethodEL(object), coef(object), getDataMatrix(object), object@npar,
-    cv, idx, circ, control@maxit, control@maxit_l, control@tol, control@tol_l,
+    getMethodEL(object), coef(object), getDataMatrix(object), npar, cv, idx,
+    circ, control@maxit, control@maxit_l, control@tol, control@tol_l,
     control@step, control@th, control@nthreads, w
   )
   new("ConfregEL",
