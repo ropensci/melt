@@ -38,6 +38,7 @@
 #'   The Annals of Statistics, 22(1), 300–325. \doi{10.1214/aos/1176325370}.
 #' @seealso [el_control()]
 #' @examples
+#' set.seed(3271)
 #' x <- rnorm(50)
 #' par <- 0
 #' g <- x - par

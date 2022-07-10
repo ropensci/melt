@@ -17,7 +17,7 @@
 )
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}, including
+\item{object}{An object that inherit from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{rhs}{A numeric vector or a column matrix for the right-hand side of
@@ -44,8 +44,7 @@ An object of class of \linkS4class{ELT}. If \code{lhs} is non-\code{NULL}, the
 corresponds to that of \linkS4class{EL}.
 }
 \description{
-Tests a linear hypothesis for objects that inherit from class
-\linkS4class{EL}.
+Tests a linear hypothesis.
 }
 \details{
 \code{\link[=elt]{elt()}} performs the constrained minimization of \eqn{l(\theta)}

@@ -8,7 +8,7 @@
 \S4method{elmt}{EL}(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = el_control())
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}, including
+\item{object}{An object that inherit from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{rhs}{A numeric vector (column matrix) or a list of numeric vectors for
@@ -29,8 +29,7 @@ number of parameters. Defaults to \code{NULL}. See ‘Details’.}
 An object of class of \linkS4class{ELMT}.
 }
 \description{
-Tests multiple linear hypotheses for objects that inherit from class
-\linkS4class{EL}.
+Tests multiple linear hypotheses simultaneously.
 }
 \details{
 \code{\link[=elmt]{elmt()}} tests multiple hypotheses simultaneously. Each hypothesis

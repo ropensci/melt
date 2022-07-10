@@ -46,6 +46,7 @@
 #'   Statistica Sinica, 4(1), 199–218.
 #' @seealso [el_control()], [el_lm()], [elt()]
 #' @examples
+#' set.seed(20010)
 #' n <- 50
 #' x <- rnorm(n)
 #' x2 <- rnorm(n)

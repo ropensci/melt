@@ -8,7 +8,7 @@
 \S4method{weights}{EL}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}, including
+\item{object}{An object that inherit from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{...}{Further arguments passed to methods.}
@@ -17,9 +17,8 @@
 A numeric vector of the re-scaled weights.
 }
 \description{
-Extracts model weights from objects that inherit from class
-\linkS4class{EL}. The weights are re-scaled to up to the total number of
-observations in the fitting procedure.
+Extracts weights from model objects. The weights are re-scaled to up to the
+total number of observations in the fitting procedure.
 }
 \examples{
 data("airquality")

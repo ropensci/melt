@@ -369,3 +369,30 @@ test_that("Noise susceptibility tests.", {
   cv2 <- elmt(fit, lhs = lhs)@cv
   expect_equal(cv, cv2, tolerance = 1e-02)
 })
+
+test_that(
+  "Parallel computation yields the same results (gaussian - inverse).",
+  {
+    skip_on_cran()
+    fit <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"),
+      data = mtcars, control = el_control(nthreads = 1)
+    )
+    fit2 <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"),
+      data = mtcars
+    )
+    expect_equal(fit@optim, fit2@optim)
+    expect_equal(fit@parTests, fit2@parTests)
+    wfit <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"), data = mtcars, weights = gear,
+      control = el_control(nthreads = 1)
+    )
+    wfit2 <- el_glm(mpg ~ disp + hp + wt,
+      family = gaussian("inverse"),
+      data = mtcars, weights = gear
+    )
+    expect_equal(wfit@optim, wfit2@optim)
+    expect_equal(wfit@parTests, wfit2@parTests)
+  }
+)

@@ -31,16 +31,17 @@ setMethod("elt", "EL", function(object,
     }
     par <- h$r
     out <- compute_EL(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
-    optim <- out$optim
+    optim <- validate_optim(out$optim)
     names(optim$par) <- names(coef(object))
     p <- length(par)
     cal <- calibrate(calibrate, alpha, out$statistic, p, par, object, control)
     return(new("ELT",
-      optim = optim, alpha = alpha, logl = out$logl, statistic = out$statistic,
-      cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
+      optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
+      statistic = out$statistic, cv = cal["cv"], pval = cal["pval"],
+      calibrate = calibrate
     ))
   }
-  # proceed with chi-square calibration for non-NULL `lhs``
+  # Proceed with chi-square calibration for non-NULL `lhs`
   stopifnot(
     "Bootstrap calibration is applicable only when `lhs` is `NULL`." =
       (calibrate != "boot"),
@@ -50,11 +51,11 @@ setMethod("elt", "EL", function(object,
     method, coef(object), getDataMatrix(object), h$l, h$r,
     maxit, maxit_l, tol, tol_l, step, th, w
   )
-  optim <- out$optim
+  optim <- validate_optim(out$optim)
   names(optim$par) <- names(coef(object))
   new("ELT",
-    optim = optim, alpha = alpha, logl = out$logl, statistic = out$statistic,
-    cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
+    optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
+    statistic = out$statistic, cv = qchisq(p = 1 - alpha, df = nrow(h$l)),
     pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE),
     calibrate = calibrate
   )
@@ -97,15 +98,15 @@ setMethod("elt", "SD", function(object,
         (par >= .Machine$double.eps)
     )
     out <- compute_EL("sd", par, getDataMatrix(object), maxit_l, tol_l, th, w)
-    optim <- out$optim
+    optim <- validate_optim(out$optim)
     names(optim$par) <- nm
     cal <- calibrate(calibrate, alpha, out$statistic, 1L, par, object, control)
     return(new("ELT",
-      optim = optim, alpha = alpha, logl = out$logl, statistic = out$statistic,
-      cv = cal["cv"], pval = cal["pval"], calibrate = calibrate
+      optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
+      statistic = out$statistic, cv = cal["cv"], pval = cal["pval"],
+      calibrate = calibrate
     ))
   }
-  # proceed with chi-square calibration for non-NULL `lhs``
   stopifnot(
     "Bootstrap calibration is applicable only when `lhs` is `NULL`." =
       (calibrate != "boot"),
@@ -120,11 +121,11 @@ setMethod("elt", "SD", function(object,
       (par >= .Machine$double.eps)
   )
   out <- compute_EL("sd", par, getDataMatrix(object), maxit_l, tol_l, th, w)
-  optim <- out$optim
+  optim <- validate_optim(out$optim)
   names(optim$par) <- nm
   new("ELT",
-    optim = optim, alpha = alpha, logl = out$logl, statistic = out$statistic,
-    cv = qchisq(p = 1 - alpha, df = 1L),
+    optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
+    statistic = out$statistic, cv = qchisq(p = 1 - alpha, df = 1L),
     pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE),
     calibrate = calibrate
   )

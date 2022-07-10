@@ -17,6 +17,9 @@ S4 class for empirical likelihood test.
 
 \item{\code{logl}}{A single numeric for the (constrained) empirical log-likelihood.}
 
+\item{\code{loglr}}{A single numeric for the (constrained) empirical log-likelihood
+ratio.}
+
 \item{\code{statistic}}{A single numeric for the minus twice the (constrained)
 empirical log-likelihood ratio.}
 

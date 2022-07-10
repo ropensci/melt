@@ -275,6 +275,8 @@ setClass("ELD", slots = c(eld = "numeric"))
 #' @slot optim A list with the optimization results.
 #' @slot alpha A single numeric for the significance level.
 #' @slot logl A single numeric for the (constrained) empirical log-likelihood.
+#' @slot loglr A single numeric for the (constrained) empirical log-likelihood
+#'   ratio.
 #' @slot statistic A single numeric for the minus twice the (constrained)
 #'   empirical log-likelihood ratio.
 #' @slot cv A single numeric for the critical value.
@@ -285,8 +287,9 @@ setClass("ELD", slots = c(eld = "numeric"))
 #' showClass("ELT")
 setClass("ELT",
   slots = c(
-    optim = "list", alpha = "numeric", logl = "numeric", statistic = "numeric",
-    cv = "numeric", pval = "numeric", calibrate = "character"
+    optim = "list", alpha = "numeric", logl = "numeric", loglr = "numeric",
+    statistic = "numeric", cv = "numeric", pval = "numeric",
+    calibrate = "character"
   )
 )
 

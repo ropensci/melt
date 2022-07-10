@@ -8,8 +8,7 @@
 \S4method{nobs}{EL}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherit from \linkS4class{EL}.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -20,6 +19,7 @@ A single integer.
 Extracts the number of observations from a model.
 }
 \examples{
-fit <- el_lm(mpg ~ wt, data = mtcars)
+data("precip")
+fit <- el_mean(precip, par = 40)
 nobs(fit)
 }

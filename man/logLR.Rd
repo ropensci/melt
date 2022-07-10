@@ -3,13 +3,16 @@
 \name{logLR}
 \alias{logLR}
 \alias{logLR,EL-method}
+\alias{logLR,ELT-method}
 \title{Empirical log-likelihood ratio}
 \usage{
 \S4method{logLR}{EL}(object, ...)
+
+\S4method{logLR}{ELT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherit from \linkS4class{EL} or
+\linkS4class{ELT}.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -20,6 +23,7 @@ A single numeric.
 Extracts empirical log-likelihood ratio from a model.
 }
 \examples{
-fit <- el_lm(mpg ~ wt, data = mtcars)
+data("precip")
+fit <- el_mean(precip, par = 40)
 logLR(fit)
 }

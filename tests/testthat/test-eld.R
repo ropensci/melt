@@ -25,9 +25,17 @@ test_that("`SD` class.", {
   x <- women$height
   w <- women$weight
   fit <- el_sd(x, mean = 65, sd = 4)
-  fit2 <- el_sd(x, mean = 65, sd = 4, weights = w)
+  wfit <- el_sd(x, mean = 65, sd = 4, weights = w)
   expect_s4_class(eld(fit), "ELD")
-  expect_s4_class(eld(fit2), "ELD")
+  expect_s4_class(eld(wfit), "ELD")
+})
+
+test_that("`GLM` class.", {
+  fit <- el_glm(wool ~ ., family = binomial, data = warpbreaks)
+  wfit <- el_glm(wool ~ ., family = binomial, data = warpbreaks,
+                 weights = breaks)
+  expect_s4_class(eld(fit), "ELD")
+  expect_s4_class(eld(wfit), "ELD")
 })
 
 test_that("Plot method.", {

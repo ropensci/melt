@@ -3,13 +3,16 @@
 \name{eld}
 \alias{eld}
 \alias{eld,EL-method}
+\alias{eld,GLM-method}
 \alias{eld,missing-method}
 \title{Empirical likelihood displacement}
 \usage{
 \S4method{eld}{EL}(object, control = el_control())
+
+\S4method{eld}{GLM}(object, control = el_control())
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}, including
+\item{object}{An object that inherit from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
@@ -35,10 +38,9 @@ influential point and can be inspected as a possible outlier. \code{eld}
 computes \eqn{\textnormal{ELD}_i } for \eqn{i = 1, \dots, n }.
 }
 \examples{
-x <- rnorm(10L)
-y <- 10
-fit <- el_mean(c(x, y), 0)
-eld(fit)
+fit <- el_mean(precip, par = 30)
+eld <- eld(fit)
+plot(eld)
 }
 \references{
 Lazar NA (2005).

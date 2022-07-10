@@ -11,7 +11,7 @@
 \S4method{confint}{SD}(object, parm, level = 0.95, cv = NULL, control = el_control())
 }
 \arguments{
-\item{object}{An object that inherit from class \linkS4class{EL}, including
+\item{object}{An object that inherit from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{parm}{A specification of which parameters are to be given confidence

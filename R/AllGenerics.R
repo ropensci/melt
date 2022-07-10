@@ -2,12 +2,13 @@
 #'
 #' Extracts maximum empirical likelihood estimates from a model.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Further arguments passed to methods.
 #' @return A numeric vector of the maximum empirical likelihood estimates.
 #' @usage NULL
 #' @examples
+#' data("mtcars")
 #' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' coef(fit)
 #' @exportMethod coef
@@ -18,7 +19,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'
 #' Computes confidence intervals for one or more parameters in a model.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
@@ -42,6 +43,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #' @seealso [confreg()], [el_control()], [elt()]
 #' @usage NULL
 #' @examples
+#' data("mtcars")
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' confint(fit, parm = c(2, 3))
 #' @exportMethod confint
@@ -55,7 +57,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' Computes boundary points of a two-dimensional confidence region for model
 #'   parameters.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param parm A specification of which parameters are to be given a confidence
 #'   region, either a vector of numbers or a vector of names. It should be a
@@ -79,6 +81,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @seealso [confint()], [el_control()], [elt()], [plot()]
 #' @usage NULL
 #' @examples
+#' data("mtcars")
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
 #' plot(cr)
@@ -97,13 +100,14 @@ setGeneric("confreg", function(object,
 #'
 #' Extracts convergence status from a model.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Further arguments passed to methods.
 #' @return A single logical.
 #' @usage NULL
 #' @examples
 #' ## Convergence check for the overall model test
+#' data("mtcars")
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' conv(fit)
 #' @exportMethod conv
@@ -115,7 +119,7 @@ setGeneric("conv", function(object, ...) standardGeneric("conv"))
 #' Computes empirical likelihood displacement for model diagnostics and outlier
 #'   detection.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
@@ -142,10 +146,10 @@ setGeneric("conv", function(object, ...) standardGeneric("conv"))
 #' @seealso [el_control()], [el_eval()], [plot()]
 #' @usage NULL
 #' @examples
-#' x <- rnorm(10L)
-#' y <- 10
-#' fit <- el_mean(c(x, y), 0)
-#' eld(fit)
+#' data("precip")
+#' fit <- el_mean(precip, par = 30)
+#' eld <- eld(fit)
+#' plot(eld)
 #' @exportMethod eld
 setGeneric("eld", function(object, control = el_control()) {
   standardGeneric("eld")
@@ -154,10 +158,9 @@ setGeneric("eld", function(object, control = el_control()) {
 
 #' Empirical likelihood multiple tests
 #'
-#' Tests multiple linear hypotheses for objects that inherit from class
-#'   \linkS4class{EL}.
+#' Tests multiple linear hypotheses simultaneously.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param rhs A numeric vector (column matrix) or a list of numeric vectors for
 #'   the right-hand sides of hypotheses. Defaults to `NULL`. See ‘Details’.
@@ -228,10 +231,9 @@ setGeneric("elmt", function(object,
 
 #' Empirical likelihood test
 #'
-#' Tests a linear hypothesis for objects that inherit from class
-#'   \linkS4class{EL}.
+#' Tests a linear hypothesis.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param rhs A numeric vector or a column matrix for the right-hand side of
 #'   hypothesis, with as many entries as the rows in `lhs`. Defaults to `NULL`.
@@ -316,13 +318,13 @@ setGeneric("elt", function(object,
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
 #'   coefficients.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherit from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
 #' @return An object of class \linkS4class{logLikEL}.
 #' @usage NULL
 #' @examples
-#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
 #' logLik(fit)
 #' @exportMethod logLik
 setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
@@ -332,13 +334,14 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #'
 #' Extracts empirical log-likelihood ratio from a model.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherit from \linkS4class{EL} or
+#'   \linkS4class{ELT}.
 #' @param ... Further arguments passed to methods.
 #' @return A single numeric.
 #' @usage NULL
 #' @examples
-#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
 #' logLR(fit)
 #' @exportMethod logLR
 setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
@@ -348,13 +351,13 @@ setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 #'
 #' Extracts the number of observations from a model.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherit from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
 #' @return A single integer.
 #' @usage NULL
 #' @examples
-#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
 #' nobs(fit)
 #' @exportMethod nobs
 setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
@@ -371,6 +374,7 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 #' @usage NULL
 #' @examples
 #' ## Model
+#' data("mtcars")
 #' fit <- el_lm(hp ~ wt, data = mtcars)
 #'
 #' ## Confidence region
@@ -411,6 +415,7 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' @param ... Further arguments passed to methods.
 #' @usage NULL
 #' @examples
+#' data("mtcars")
 #' fit <- el_lm(mpg ~ wt, data = mtcars)
 #' summary(fit)
 #' @exportMethod summary
@@ -419,11 +424,10 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 
 #' Model weights
 #'
-#' Extracts model weights from objects that inherit from class
-#'   \linkS4class{EL}. The weights are re-scaled to up to the total number of
-#'   observations in the fitting procedure.
+#' Extracts weights from model objects. The weights are re-scaled to up to the
+#'   total number of observations in the fitting procedure.
 #'
-#' @param object An object that inherit from class \linkS4class{EL}, including
+#' @param object An object that inherit from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param ... Further arguments passed to methods.
 #' @return A numeric vector of the re-scaled weights.

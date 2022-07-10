@@ -10,16 +10,20 @@
 * New package dependencies are added (BH, dqrng, and graphics).
 
 * New `elt()` replaces `lht()`. It accepts additional arguments `alpha` and `calibrate`.
+ 
+* New `el_sd()` performs empirical likelihood test for the standard deviation.
 
 * New `elmt()` tests multiple hypotheses with empirical likelihood.
 
-* New `weights()` extracts the re-scaled weights in a model.
+* New `weights()` extracts the re-scaled weights from a model.
 
-* New `formula()` extracts the model formula used in a model.
+* New `formula()` extracts the model formula used from a model.
 
-* New `nobs()` extracts the number of observations in a model.
+* New `nobs()` extracts the number of observations from a model.
 
-* New `conv()` extracts the convergence status in a model.
+* New `conv()` extracts the convergence status from a model.
+
+* New `logLR()` extracts the log empirical likelihood ratio from a model.
 
 * `el_control()` gains additional arguments `verbose`, `keep_data`, `seed`, `b`, and `m`.
 
