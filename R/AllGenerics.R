@@ -82,8 +82,8 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @usage NULL
 #' @examples
 #' data("mtcars")
-#' fit <- el_lm(mpg ~ ., data = mtcars)
-#' cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
+#' fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
+#' cr <- confreg(fit, parm = c(2, 3), cv = qchisq(0.90, 2))
 #' plot(cr)
 #' @exportMethod confreg
 setGeneric("confreg", function(object,

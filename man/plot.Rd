@@ -31,6 +31,7 @@ observation index.
 
 \examples{
 ## Model
+data("mtcars")
 fit <- el_lm(hp ~ wt, data = mtcars)
 
 ## Confidence region

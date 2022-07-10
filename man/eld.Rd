@@ -38,6 +38,7 @@ influential point and can be inspected as a possible outlier. \code{eld}
 computes \eqn{\textnormal{ELD}_i } for \eqn{i = 1, \dots, n }.
 }
 \examples{
+data("precip")
 fit <- el_mean(precip, par = 30)
 eld <- eld(fit)
 plot(eld)

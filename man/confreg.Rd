@@ -45,8 +45,9 @@ Computes boundary points of a two-dimensional confidence region for model
 parameters.
 }
 \examples{
-fit <- el_lm(mpg ~ ., data = mtcars)
-cr <- confreg(fit, parm = c(2, 3), level = 0.95, cv = qchisq(0.95, 2))
+data("mtcars")
+fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
+cr <- confreg(fit, parm = c(2, 3), cv = qchisq(0.90, 2))
 plot(cr)
 }
 \references{

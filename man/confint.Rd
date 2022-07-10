@@ -39,6 +39,7 @@ respectively.
 Computes confidence intervals for one or more parameters in a model.
 }
 \examples{
+data("mtcars")
 fit <- el_lm(mpg ~ ., data = mtcars)
 confint(fit, parm = c(2, 3))
 }

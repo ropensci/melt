@@ -39,6 +39,7 @@ the parameter (or the Lagrange multiplier if \code{lhs} is \code{NULL}).
 
 \examples{
 ## Convergence check for the overall model test
+data("mtcars")
 fit <- el_lm(mpg ~ ., data = mtcars)
 conv(fit)
 }

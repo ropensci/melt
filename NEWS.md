@@ -1,4 +1,4 @@
-# melt 1.5.2.9000 (development version)
+# melt 1.6.0
 ### BREAKING CHANGES
 * `el_mean()` takes arguments in a different order to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par` as `el_mean(x, par)`.
 

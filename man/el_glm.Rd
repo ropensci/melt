@@ -72,6 +72,7 @@ and the tests for each parameter with
 The test results are returned as \code{optim} and \code{parTests}, respectively.
 }
 \examples{
+set.seed(20010)
 n <- 50
 x <- rnorm(n)
 x2 <- rnorm(n)

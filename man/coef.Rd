@@ -20,6 +20,7 @@ A numeric vector of the maximum empirical likelihood estimates.
 Extracts maximum empirical likelihood estimates from a model.
 }
 \examples{
+data("mtcars")
 fit <- el_lm(mpg ~ wt, data = mtcars)
 coef(fit)
 }

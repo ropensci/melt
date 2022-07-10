@@ -49,6 +49,7 @@ Computes empirical likelihood with general estimating functions.
 associated generics and methods are not applicable.
 }
 \examples{
+set.seed(3271)
 x <- rnorm(50)
 par <- 0
 g <- x - par

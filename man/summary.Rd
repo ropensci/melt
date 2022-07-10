@@ -22,6 +22,7 @@ tests for each parameter.
 }}
 
 \examples{
+data("mtcars")
 fit <- el_lm(mpg ~ wt, data = mtcars)
 summary(fit)
 }
