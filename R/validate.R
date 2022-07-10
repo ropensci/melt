@@ -352,9 +352,9 @@ validate_alpha <- function(alpha) {
 #'
 #' @param calibrate A single character.
 #' @return A single character.
-#' @srrstats {G2.3, G2.3a} `pmatch()` is used to the argument `calibrate` instead of
-#'   `match.arg()` in order to generate a custom error message that is
-#'   consistent in style with other messages.
+#' @srrstats {G2.3, G2.3a} `pmatch()` is used to the argument `calibrate`
+#'   instead of `match.arg()` in order to generate a custom error message that
+#'   is consistent in style with other messages.
 #' @srrstats {G2.3, G2.3b} `tolower()` is used to the argument `calibrate`.
 #' @noRd
 validate_calibrate <- function(calibrate) {

@@ -183,7 +183,7 @@ el_glm <- function(formula,
   names(w) <- if (length(w) != 0L) names(Y) else NULL
   out <- test_GLM(
     method, mm, fit$coefficients, intercept, control@maxit, control@maxit_l,
-    control@tol, control@tol_l,control@step, control@th, control@nthreads, w
+    control@tol, control@tol_l, control@step, control@th, control@nthreads, w
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- pnames

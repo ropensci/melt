@@ -43,9 +43,10 @@ setMethod("elt", "EL", function(object,
   }
   # Proceed with chi-square calibration for non-NULL `lhs`
   stopifnot(
-    "Bootstrap calibration is applicable only when `lhs` is `NULL`." =
+    "Bootstrap calibration is applicable only when `lhs` is NULL." =
       (calibrate != "boot"),
-    "F calibration is applicable only when `lhs` is `NULL`." = (calibrate != "f")
+    "F calibration is applicable only when `lhs` is NULL." =
+      (calibrate != "f")
   )
   out <- test_hypothesis(
     method, coef(object), getDataMatrix(object), h$l, h$r,

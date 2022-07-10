@@ -47,5 +47,3 @@ test_that("plot method", {
   pdf(NULL)
   expect_invisible(plot(cr2))
 })
-
-
