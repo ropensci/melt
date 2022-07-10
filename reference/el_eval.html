@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,13 +148,14 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3271</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">par</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">-</span> <span class="va">par</span></span></span>
 <span class="r-in"><span><span class="fu">el_eval</span><span class="op">(</span><span class="va">g</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim$lambda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1430071</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.08646373</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim$iterations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
@@ -164,29 +165,29 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -4.640001 -4.440307 -4.148681 -4.209366 -4.385673 -4.311132 -4.380471</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] -4.369493 -4.282607 -4.254066 -4.546868 -4.272201 -4.228367 -4.175707</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] -4.344165 -4.298745 -4.290671 -4.369528 -4.132025 -4.581600 -4.460228</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] -4.356287 -4.164451 -4.246054 -4.477082 -3.620464 -3.754192 -3.780105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] -3.436600 -3.833389 -3.405294 -3.369668 -3.567158 -3.791483 -3.760859</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] -3.550888 -3.649811 -3.752196 -3.428365 -3.654348 -3.924657 -3.668184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] -3.658717 -3.577444 -3.327047 -3.527680 -3.688578 -3.544337 -3.704549</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] -3.825344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -4.342863 -4.325907 -4.221076 -4.387312 -4.297498 -4.256046 -4.079606</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] -4.320227 -4.396600 -4.398920 -4.375582 -4.328005 -4.281748 -4.418293</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] -4.390601 -4.218404 -4.348142 -4.246736 -4.328291 -4.349014 -4.273737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] -4.415013 -4.378695 -4.383530 -4.296866 -3.576553 -3.605803 -3.692286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] -3.509727 -3.683822 -3.591740 -3.625796 -3.702618 -3.641754 -3.679605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36] -3.701016 -3.524850 -3.707200 -3.527362 -3.691791 -3.642639 -3.712097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43] -3.491151 -3.574178 -3.687045 -3.543326 -3.639110 -3.621348 -3.658742</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [50] -3.609961</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -193.3123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -192.8945</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loglr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.5428266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1250004</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.085653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2500007</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2974363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6170746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>

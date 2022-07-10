@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -169,7 +169,8 @@ Statistica Sinica, 4(1), 199–218.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20010</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x2</span></span></span>
@@ -188,13 +189,13 @@ Statistica Sinica, 4(1), 199–218.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate  Chisq Pr(&gt;Chisq)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   -3.767 65.847   4.87e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x              1.543  2.412       0.12    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x2             5.204 62.453   2.73e-15 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -2.6113 48.612   3.12e-12 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.2929  0.729      0.393    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x2            2.9006 41.051   1.48e-10 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 98.77, df: 2, Pr(&gt;Chisq): &lt; 2.2e-16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 45.02, df: 2, Pr(&gt;Chisq): 1.676e-10 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,15 +60,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.5.2.9000" id="melt-1529000-development-version">melt 1.5.2.9000 (development version)<a class="anchor" aria-label="anchor" href="#melt-1529000-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.6.0" id="melt-160">melt 1.6.0<a class="anchor" aria-label="anchor" href="#melt-160"></a></h2>
 <div class="section level4">
-<h4 id="breaking-changes-1-5-2-9000">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-1-5-2-9000"></a></h4>
+<h4 id="breaking-changes-1-6-0">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-1-6-0"></a></h4>
 <ul><li><p><code><a href="../reference/el_mean.html">el_mean()</a></code> takes arguments in a different order to comply with the ‘tidyverse’ style. It takes the data argument <code>x</code> first, followed by the parameter specification <code>par</code> as <code>el_mean(x, par)</code>.</p></li>
 <li><p><code>lht()</code> is renamed to <code><a href="../reference/elt.html">elt()</a></code>.</p></li>
 <li><p><code>model</code> argument in <code><a href="../reference/el_mean.html">el_mean()</a></code>, <code><a href="../reference/el_lm.html">el_lm()</a></code>, and <code><a href="../reference/el_glm.html">el_glm()</a></code> are removed. Use <code>keep_data</code> in <code><a href="../reference/el_control.html">el_control()</a></code>.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="new-features-1-5-2-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-2-9000"></a></h4>
+<h4 id="new-features-1-6-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-6-0"></a></h4>
 <ul><li><p>New package dependencies are added (BH, dqrng, and graphics).</p></li>
 <li><p>New <code><a href="../reference/elt.html">elt()</a></code> replaces <code>lht()</code>. It accepts additional arguments <code>alpha</code> and <code>calibrate</code>.</p></li>
 <li><p>New <code><a href="../reference/el_sd.html">el_sd()</a></code> performs empirical likelihood test for the standard deviation.</p></li>
@@ -81,18 +81,18 @@
 <li><p><code><a href="../reference/el_control.html">el_control()</a></code> gains additional arguments <code>verbose</code>, <code>keep_data</code>, <code>seed</code>, <code>b</code>, and <code>m</code>.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="minor-improvements-1-5-2-9000">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-5-2-9000"></a></h4>
+<h4 id="minor-improvements-1-6-0">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0"></a></h4>
 <ul><li><p><code>cv</code> argument in <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> defaults to <code>NULL</code>. If non-<code>NULL</code>, <code>level</code> is ignored.</p></li>
 <li><p><code>probit</code> link produces more accurate result in <code><a href="../reference/el_glm.html">el_glm()</a></code></p></li>
 <li><p><code><a href="../reference/print.html">print()</a></code> method for an <code>EL</code> object shows whether the data are weighted or not.</p></li>
 <li><p>All row or column names (if any) of input data are preserved in a fitted <code>EL</code> object.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-1-5-2-9000">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-2-9000"></a></h4>
+<h4 id="bug-fixes-1-6-0">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-0"></a></h4>
 <ul><li>
 <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> check if the <code>cv</code> argument is compatible with the <code>th</code> value set by <code>control_el()</code>.</li></ul></div>
 <div class="section level4">
-<h4 id="deprecated-and-defunct-1-5-2-9000">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-2-9000"></a></h4>
+<h4 id="deprecated-and-defunct-1-6-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-6-0"></a></h4>
 <ul><li>
 <code>el_pairwise()</code> and <code>lht()</code> are removed along with the dependency on the RcppProgress package.</li></ul></div>
 </div>
