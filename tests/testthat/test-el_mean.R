@@ -64,7 +64,9 @@ test_that("`verbose` == TRUE in `el_control()`.", {
 test_that("`conv()` methods.", {
   x <- women$height
   fit <- el_mean(x, par = 60)
+  fit2 <- el_mean(x, par = 0)
   expect_true(conv(fit))
+  expect_false(conv(fit2))
 })
 
 #' @srrstats {G5.7} Larger `tol_l` decreases the number of iterations for
