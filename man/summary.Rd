@@ -17,8 +17,8 @@ Provides summary methods for objects.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{LM}: Summarizes the results of the overall test and the
-tests for each parameter.
+\item \code{LM}: Summarizes the results of the overall model test and the
+significance tests for coefficients.
 }}
 
 \examples{
