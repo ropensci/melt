@@ -31,7 +31,8 @@ Computes empirical likelihood for the standard deviation.
 \examples{
 set.seed(4097)
 x <- rnorm(100, mean = -2, sd = 3)
-el_sd(x, mean = -2, sd = 3.5)
+w <- rep(c(1, 2), each = 50)
+el_sd(x, mean = -2, sd = 3.5, weights = w)
 }
 \seealso{
 \code{\link[=el_control]{el_control()}}, \code{\link[=el_mean]{el_mean()}}, \code{\link[=elt]{elt()}}
