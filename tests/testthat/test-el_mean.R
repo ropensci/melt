@@ -50,10 +50,10 @@ test_that("Conversion between `loglik` and `loglr`.", {
   x <- women$height
   n <- length(x)
   fit <- el_mean(x, par = 60)
-  expect_equal(fit@logl + n * log(n), logLR(fit))
+  expect_equal(logL(fit) + n * log(n), logLR(fit))
   fit2 <- el_mean(x, par = 60, weights = women$weight)
   w <- weights(fit2)
-  expect_equal(fit2@logl + sum(w * (log(n) - log(w))), logLR(fit2))
+  expect_equal(logL(fit2) + sum(w * (log(n) - log(w))), logLR(fit2))
 })
 
 test_that("`verbose` == TRUE in `el_control()`.", {
@@ -75,7 +75,7 @@ test_that("Larger `tol_l` decreases iterations for convergence.", {
   x <- women$height
   fit <- el_mean(x, par = 60, control = el_control(tol_l = 1e-08))
   fit2 <- el_mean(x, par = 60, control = el_control(tol_l = 1e-02))
-  expect_gte(fit@optim$iterations, fit2@optim$iterations)
+  expect_gte(getOptim(fit)$iterations, getOptim(fit2)$iterations)
 })
 
 #' @srrstats {G5.9, G5.9a} Adding trivial noise does not change the overall
@@ -84,7 +84,7 @@ test_that("Noise susceptibility tests.", {
   x <- women$height
   fit <- el_mean(x, par = 60)
   fit2 <- el_mean(x, par = 60 + .Machine$double.eps)
-  expect_equal(fit@optim, fit2@optim)
+  expect_equal(getOptim(fit), getOptim(fit2))
 })
 
 #' @srrstats {RE1.4} Violation of the convex hull constraint is tested.
@@ -92,7 +92,7 @@ test_that("Convex hull constraint violated.", {
   x <- women$weight
   grid <- seq(10, 50, length.out = 1000)
   conv <- function(par) {
-    el_mean(x, par)@optim$convergence
+    getOptim(el_mean(x, par))$convergence
   }
   expect_false(any(vapply(grid, conv, FUN.VALUE = logical(1))))
 })

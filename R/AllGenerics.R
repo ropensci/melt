@@ -313,6 +313,40 @@ setGeneric("elt", function(object,
 })
 
 
+#' Optimization results
+#'
+#' Extracts optimization results from a model.
+#'
+#' @param object An object that inherit from \linkS4class{EL} or
+#'   \linkS4class{ELT}.
+#' @param ... Further arguments passed to methods.
+#' @return A list.
+#' @usage NULL
+#' @examples
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
+#' getOptim(fit)
+#' @exportMethod getOptim
+setGeneric("getOptim", function(object, ...) standardGeneric("getOptim"))
+
+
+#' Empirical log-likelihood
+#'
+#' Extracts empirical log-likelihood from a model.
+#'
+#' @param object An object that inherit from \linkS4class{EL} or
+#'   \linkS4class{ELT}.
+#' @param ... Further arguments passed to methods.
+#' @return A single numeric.
+#' @usage NULL
+#' @examples
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
+#' logL(fit)
+#' @exportMethod logL
+setGeneric("logL", function(object, ...) standardGeneric("logL"))
+
+
 #' Empirical log-likelihood
 #'
 #' Extracts empirical log-likelihood from a model evaluated at the estimated

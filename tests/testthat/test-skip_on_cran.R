@@ -104,14 +104,14 @@ test_that("Parallel computation yields the same results (binomial - log).", {
     control = el_control(nthreads = 1)
   )
   fit2 <- el_glm(y ~ ., family = binomial("log"), data = df)
-  expect_equal(fit@optim, fit2@optim)
+  expect_equal(getOptim(fit), getOptim(fit2))
   expect_equal(fit@parTests, fit2@parTests)
   wfit <- el_glm(y ~ .,
     family = binomial("log"), data = df, weights = w,
     control = el_control(nthreads = 1)
   )
   wfit2 <- el_glm(y ~ ., family = binomial("log"), data = df, weights = w)
-  expect_equal(wfit@optim, wfit2@optim)
+  expect_equal(getOptim(wfit), getOptim(wfit2))
   expect_equal(wfit@parTests, wfit2@parTests)
 })
 

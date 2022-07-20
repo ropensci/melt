@@ -51,8 +51,8 @@ test_that("Conversion between `loglik` and `loglr`.", {
   x <- women$height
   n <- length(x)
   fit <- el_sd(x, mean = 65, sd = 4)
-  expect_equal(fit@logl + n * log(n), logLR(fit))
+  expect_equal(logL(fit) + n * log(n), logLR(fit))
   fit2 <- el_sd(x, mean = 65, sd = 4, weights = women$weight)
   w <- weights(fit2)
-  expect_equal(fit2@logl + sum(w * (log(n) - log(w))), logLR(fit2))
+  expect_equal(logL(fit2) + sum(w * (log(n) - log(w))), logLR(fit2))
 })

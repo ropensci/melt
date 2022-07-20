@@ -41,13 +41,13 @@ test_that("Probabilities add up to 1.", {
 test_that("Conversion between `loglik` and `loglr`.", {
   fit <- el_lm(eruptions ~ waiting, data = faithful)
   n <- nrow(faithful)
-  expect_equal(fit@logl + n * log(n), logLR(fit))
+  expect_equal(logL(fit) + n * log(n), logLR(fit))
   wfit <- el_lm(eruptions ~ waiting,
     data = faithful,
     weights = faithful$waiting
   )
   w <- weights(wfit)
-  expect_equal(wfit@logl + sum(w * (log(n) - log(w))), logLR(wfit))
+  expect_equal(logL(wfit) + sum(w * (log(n) - log(w))), logLR(wfit))
 })
 
 test_that("Empty model.", {
@@ -122,7 +122,7 @@ test_that("All row and column names are preserved.", {
   expect_identical(nobs(wfit), nrow(mtcars))
   expect_true(all(names(wfit@parTests$statistic) %in% column_names))
   expect_true(all(names(wfit@parTests$convergence) %in% column_names))
-  expect_true(all(names(wfit@optim$par) %in% column_names))
+  expect_true(all(names(getOptim(wfit)$par) %in% column_names))
   expect_true(all(colnames(wfit@data[, -1L]) %in% column_names))
   expect_true(all(names(coef(wfit)) %in% column_names))
   expect_true(all(rownames(confint(wfit)) %in% column_names))

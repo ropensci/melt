@@ -1,4 +1,8 @@
 # melt 1.6.0.9000 (development version)
+### NEW FEATURES
+* New `getOptim()` extracts optimization results from a model.
+
+* New `logL()` extracts empirical log-likelihood from a model.
 
 # melt 1.6.0
 ### BREAKING CHANGES

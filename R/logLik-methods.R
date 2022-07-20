@@ -10,6 +10,6 @@ setMethod("logLik", "EL", function(object, ...) {
       (!is.null(getDataMatrix(object)))
   )
   out <- elt(object, rhs = coef(object))
-  val <- out@logl
+  val <- logL(out)
   new("logLikEL", logLik = val, df = getNumPar(object))
 })
