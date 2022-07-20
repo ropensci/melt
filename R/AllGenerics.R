@@ -320,7 +320,12 @@ setGeneric("elt", function(object,
 #' @param object An object that inherit from \linkS4class{EL} or
 #'   \linkS4class{ELT}.
 #' @param ... Further arguments passed to methods.
-#' @return A list.
+#' @return A list with the following optimization results:
+#' * `par` A numeric vector of the parameter value. See the documentation of
+#'   \linkS4class{EL} and \linkS4class{CEL}.
+#' * `lambda` A numeric vector of the Lagrange multipliers.
+#' * `iterations` A single integer for the number of iterations performed.
+#' * `convergence` A single logical for the convergence status.
 #' @usage NULL
 #' @examples
 #' data("precip")
