@@ -40,6 +40,8 @@ reference:
     - eld
     - elmt
     - elt
+    - getOptim
+    - logL
     - logLik
     - logLR
     - nobs
