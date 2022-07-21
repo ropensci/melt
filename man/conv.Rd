@@ -27,16 +27,16 @@ Extracts convergence status from a model.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{EL}: Extracts the convergence status of the model with respect to
+\item \code{conv(EL)}: Extracts the convergence status of the model with respect to
 the Lagrange multiplier.
 
-\item \code{CEL}: Extracts the convergence status of the model with respect to
+\item \code{conv(CEL)}: Extracts the convergence status of the model with respect to
 the parameter.
 
-\item \code{ELT}: Extracts the convergence status of the model with respect to
+\item \code{conv(ELT)}: Extracts the convergence status of the model with respect to
 the parameter (or the Lagrange multiplier if \code{lhs} is \code{NULL}).
-}}
 
+}}
 \examples{
 ## Convergence check for the overall model test
 data("mtcars")

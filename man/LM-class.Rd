@@ -17,10 +17,10 @@ optimization is not involved in the overall test.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{formula}: Extracts the symbolic model formula used in \code{\link[=el_lm]{el_lm()}} or
+\item \code{formula(LM)}: Extracts the symbolic model formula used in \code{\link[=el_lm]{el_lm()}} or
 \code{\link[=el_glm]{el_glm()}}.
-}}
 
+}}
 \section{Slots}{
 
 \describe{

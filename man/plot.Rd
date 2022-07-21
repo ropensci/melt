@@ -22,13 +22,13 @@ Provides plot methods for objects.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{ConfregEL}: Plots a two-dimensional confidence region for model
+\item \code{plot(ConfregEL)}: Plots a two-dimensional confidence region for model
 parameters.
 
-\item \code{ELD}: Plots empirical likelihood displacement values versus
+\item \code{plot(ELD)}: Plots empirical likelihood displacement values versus
 observation index.
-}}
 
+}}
 \examples{
 ## Model
 data("mtcars")

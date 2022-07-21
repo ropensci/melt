@@ -21,22 +21,23 @@ non-\code{NULL}, weighted empirical likelihood is computed.}
 }
 \value{
 A list with the following components:
-\item{optim}{A list with the following optimization results:
 \itemize{
-\item{\code{lambda } }{Lagrange multiplier of the dual problem.}
-\item{\code{iterations } }{Number of iterations performed.}
-\item{\code{convergence } }{Convergence status.}
+\item \code{optim} A list with the following optimization results:
+\itemize{
+\item \code{lambda} Lagrange multiplier of the dual problem.
+\item \code{iterations} Number of iterations performed.
+\item \code{convergence} Convergence status.
 }
+\item \code{logp} Log probabilities obtained from empirical likelihood.
+\item \code{logl} Empirical log-likelihood.
+\item \code{loglr} Empirical log-likelihood ratio.
+\item \code{statistic} Minus twice the empirical log-likelihood ratio statistic
+that has an asymptotic chi-square distribution.
+\item \code{df} Degrees of freedom of the statistic.
+\item \code{pval} \eqn{p}-value of the statistic.
+\item \code{npar} Number of parameters.
+\item \code{weights} Re-scaled weights used for model fitting.
 }
-\item{logp}{Log probabilities obtained from empirical likelihood.}
-\item{logl}{Empirical log-likelihood.}
-\item{loglr}{Empirical log-likelihood ratio.}
-\item{statistic}{Minus twice the empirical log-likelihood ratio statistic
-that has an asymptotic chi-square distribution.}
-\item{df}{Degrees of freedom of the statistic.}
-\item{pval}{\eqn{p}-value of the statistic.}
-\item{npar}{Number of parameters.}
-\item{weights}{Re-scaled weights used for model fitting.}
 }
 \description{
 Computes empirical likelihood with general estimating functions.
