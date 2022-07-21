@@ -93,39 +93,20 @@ non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list with the following components:</p>
-<dl><dt>optim</dt>
-<dd><p>A list with the following optimization results:</p><ul><li><p><code>lambda </code> Lagrange multiplier of the dual problem.</p></li>
-<li><p><code>iterations </code> Number of iterations performed.</p></li>
-<li><p><code>convergence </code> Convergence status.</p></li>
-</ul></dd>
-
-<dt>logp</dt>
-<dd><p>Log probabilities obtained from empirical likelihood.</p></dd>
-
-<dt>logl</dt>
-<dd><p>Empirical log-likelihood.</p></dd>
-
-<dt>loglr</dt>
-<dd><p>Empirical log-likelihood ratio.</p></dd>
-
-<dt>statistic</dt>
-<dd><p>Minus twice the empirical log-likelihood ratio statistic
-that has an asymptotic chi-square distribution.</p></dd>
-
-<dt>df</dt>
-<dd><p>Degrees of freedom of the statistic.</p></dd>
-
-<dt>pval</dt>
-<dd><p>\(p\)-value of the statistic.</p></dd>
-
-<dt>npar</dt>
-<dd><p>Number of parameters.</p></dd>
-
-<dt>weights</dt>
-<dd><p>Re-scaled weights used for model fitting.</p></dd>
-
-</dl></div>
+<p>A list with the following components:</p><ul><li><p><code>optim</code> A list with the following optimization results:</p><ul><li><p><code>lambda</code> Lagrange multiplier of the dual problem.</p></li>
+<li><p><code>iterations</code> Number of iterations performed.</p></li>
+<li><p><code>convergence</code> Convergence status.</p></li>
+</ul></li>
+<li><p><code>logp</code> Log probabilities obtained from empirical likelihood.</p></li>
+<li><p><code>logl</code> Empirical log-likelihood.</p></li>
+<li><p><code>loglr</code> Empirical log-likelihood ratio.</p></li>
+<li><p><code>statistic</code> Minus twice the empirical log-likelihood ratio statistic
+that has an asymptotic chi-square distribution.</p></li>
+<li><p><code>df</code> Degrees of freedom of the statistic.</p></li>
+<li><p><code>pval</code> \(p\)-value of the statistic.</p></li>
+<li><p><code>npar</code> Number of parameters.</p></li>
+<li><p><code>weights</code> Re-scaled weights used for model fitting.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>el_eval</code> evaluates empirical likelihood with a \(n\) by
@@ -186,7 +167,7 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 <span class="r-out co"><span class="r-pr">#&gt;</span> $df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6170746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nobs</span>
