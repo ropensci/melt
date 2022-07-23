@@ -61,10 +61,11 @@ Fits a generalized linear model with empirical likelihood.
 \details{
 The available families and link functions are as follows:
 \itemize{
-\item{\code{gaussian}}{: \code{identity}, \code{log}, and \code{inverse}.}
-\item{\code{bimomial}}{: \code{logit}, \code{probit}, and \code{log}.}
-\item{\code{poisson}}{: \code{log}, \code{identity}, and \code{sqrt}.}
+\item \code{gaussian}: \code{identity}, \code{log}, and \code{inverse}.
+\item \code{bimomial}: \code{logit}, \code{probit}, and \code{log}.
+\item \code{poisson}: \code{log}, \code{identity}, and \code{sqrt}.
 }
+
 Included in the tests are the overall test with
 \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
 and the tests for each parameter with

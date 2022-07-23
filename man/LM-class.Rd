@@ -11,7 +11,7 @@ S4 class for linear models with empirical likelihood. It inherits from
 \linkS4class{CEL} class.
 }
 \details{
-If there is no intercept in a model, \code{optim} slot need to be
+If there is no intercept in a model, the \code{optim} slot need to be
 understood in terms of \linkS4class{EL} class since constrained
 optimization is not involved in the overall test.
 }
@@ -26,10 +26,10 @@ optimization is not involved in the overall test.
 \describe{
 \item{\code{parTests}}{A list with the test results for each parameter:
 \itemize{
-\item{\code{statistic } }{A numeric vector of the empirical likelihood
-ratio statistics.}
-\item{\code{convergence } }{A logical vector of the convergence status of
-tests for each parameter.}
+\item \code{statistic} A numeric vector of the empirical likelihood ratio
+statistics.
+\item \code{convergence} A logical vector of the convergence status of tests the
+significance tests for coefficients.
 }}
 
 \item{\code{misc}}{A list with miscellaneous outputs from a model fitting function.

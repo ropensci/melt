@@ -46,11 +46,10 @@ Under some regularity conditions, it is known that
 \describe{
 \item{\code{optim}}{A list with the following optimization results:
 \itemize{
-\item{\code{par } }{A numeric vector of the specified parameters.}
-\item{\code{lambda } }{A numeric vector of the Lagrange multipliers.}
-\item{\code{iterations } }{A single integer for the number of iterations
-performed.}
-\item{\code{convergence } }{A single logical for the convergence status.}
+\item \code{par} A numeric vector of the specified parameters.
+\item \code{lambda} A numeric vector of the Lagrange multipliers.
+\item \code{iterations} A single integer for the number of iterations performed.
+\item \code{convergence} A single logical for the convergence status.
 }}
 
 \item{\code{logp}}{A numeric vector of the log probabilities obtained from empirical

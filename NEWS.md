@@ -4,6 +4,10 @@
 
 * New `logL()` extracts empirical log-likelihood from a model.
 
+### MINOR IMPROVEMENTS
+* `p.value` returned by `el_eval()` is renamed to `pval` for consistency with other functions.
+
+
 # melt 1.6.0
 ### BREAKING CHANGES
 * `el_mean()` takes arguments in a different order to comply with the 'tidyverse' style. It takes the data argument `x` first, followed by the parameter specification `par` as `el_mean(x, par)`.

@@ -5,10 +5,10 @@
 #'
 #' @format A data frame with 102 rows and 3 variables:
 #' \describe{
-#'   \item{blk}{New blocks constructed from original data. The format is 'days
-#'     post planting_original block_year'.}
-#'   \item{trt}{Seed treatment.}
-#'   \item{clo}{Log transformed clothianidin concentration (µg).}
+#'   * blk New blocks constructed from original data. The format is 'days post
+#'   planting_original block_year'.
+#'   * trt Seed treatment.
+#'   * clo Log transformed clothianidin concentration (µg).
 #' }
 #' @usage data("clothianidin")
 #'

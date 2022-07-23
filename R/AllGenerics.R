@@ -129,10 +129,10 @@ setGeneric("conv", function(object, ...) standardGeneric("conv"))
 #'   sample with the \eqn{i}th observation deleted and the corresponding
 #'   estimate \eqn{\hat{\theta}_{(i)}}. The empirical likelihood displacement is
 #'   defined by
-#'   \deqn{\textnormal{ELD}_i = 2\{L(\hat{\theta}) - L(\hat{\theta}_{(i)})\}.}
-#'   If \eqn{\textnormal{ELD}_i } is large, then the \eqn{i}th observation is an
+#'   \deqn{\textrm{ELD}_i = 2\{L(\hat{\theta}) - L(\hat{\theta}_{(i)})\}.}
+#'   If \eqn{\textrm{ELD}_i } is large, then the \eqn{i}th observation is an
 #'   influential point and can be inspected as a possible outlier. `eld`
-#'   computes \eqn{\textnormal{ELD}_i } for \eqn{i = 1, \dots, n }.
+#'   computes \eqn{\textrm{ELD}_i } for \eqn{i = 1, \dots, n }.
 #' @return An object of class \linkS4class{ELD}.
 #' @references Lazar NA (2005).
 #'   “Assessing the Effect of Individual Data Points on Inference From Empirical
@@ -256,16 +256,14 @@ setGeneric("elmt", function(object,
 #'
 #'   Depending on the specification of `rhs` and `lhs`, we have the following
 #'   three cases:
-#'   \enumerate{
-#'   \item If both `rhs` and `lhs` are non-`NULL`, the constrained minimization
+#'   1. If both `rhs` and `lhs` are non-`NULL`, the constrained minimization
 #'   is performed with the right-hand side \eqn{r} and the left-hand side
 #'   \eqn{L} as
 #'   \deqn{\inf_{\theta: L\theta = r} l(\theta).}
-#'   \item If `rhs` is `NULL`, \eqn{r} is set to the zero vector as
+#'   1. If `rhs` is `NULL`, \eqn{r} is set to the zero vector as
 #'   \eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
-#'   \item If `lhs` is `NULL`, \eqn{L} is set to the identity matrix and the
+#'   1. If `lhs` is `NULL`, \eqn{L} is set to the identity matrix and the
 #'   problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
-#'   }
 #'
 #'   `calibrate` specifies the calibration method used. Three methods are
 #'   available: `"chisq"` (chi-square calibration), `"boot"` (bootstrap
@@ -321,11 +319,11 @@ setGeneric("elt", function(object,
 #'   \linkS4class{ELT}.
 #' @param ... Further arguments passed to methods.
 #' @return A list with the following optimization results:
-#' * `par` A numeric vector of the parameter value. See the documentation of
+#'   * `par` A numeric vector of the parameter value. See the documentation of
 #'   \linkS4class{EL} and \linkS4class{CEL}.
-#' * `lambda` A numeric vector of the Lagrange multipliers.
-#' * `iterations` A single integer for the number of iterations performed.
-#' * `convergence` A single logical for the convergence status.
+#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#'   * `iterations` A single integer for the number of iterations performed.
+#'   * `convergence` A single logical for the convergence status.
 #' @usage NULL
 #' @examples
 #' data("precip")

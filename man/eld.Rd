@@ -32,10 +32,10 @@ likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
 sample with the \eqn{i}th observation deleted and the corresponding
 estimate \eqn{\hat{\theta}_{(i)}}. The empirical likelihood displacement is
 defined by
-\deqn{\textnormal{ELD}_i = 2\{L(\hat{\theta}) - L(\hat{\theta}_{(i)})\}.}
-If \eqn{\textnormal{ELD}_i } is large, then the \eqn{i}th observation is an
+\deqn{\textrm{ELD}_i = 2\{L(\hat{\theta}) - L(\hat{\theta}_{(i)})\}.}
+If \eqn{\textrm{ELD}_i } is large, then the \eqn{i}th observation is an
 influential point and can be inspected as a possible outlier. \code{eld}
-computes \eqn{\textnormal{ELD}_i } for \eqn{i = 1, \dots, n }.
+computes \eqn{\textrm{ELD}_i } for \eqn{i = 1, \dots, n }.
 }
 \examples{
 data("precip")

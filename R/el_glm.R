@@ -27,11 +27,10 @@
 #'   and is passed to [glm.fit()].
 #' @param ... Additional arguments to be passed to [glm.control()].
 #' @details The available families and link functions are as follows:
-#'   \itemize{
-#'   \item{`gaussian`}{: `identity`, `log`, and `inverse`.}
-#'   \item{`bimomial`}{: `logit`, `probit`, and `log`.}
-#'   \item{`poisson`}{: `log`, `identity`, and `sqrt`.}
-#'   }
+#'   * `gaussian`: `identity`, `log`, and `inverse`.
+#'   * `bimomial`: `logit`, `probit`, and `log`.
+#'   * `poisson`: `log`, `identity`, and `sqrt`.
+#'
 #'   Included in the tests are the overall test with
 #'   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
 #'   and the tests for each parameter with

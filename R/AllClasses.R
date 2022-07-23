@@ -34,13 +34,10 @@
 #'   \eqn{\chi^2_p}, where \eqn{\chi^2_p} has a chi-square distribution with
 #'   \eqn{p} degrees of freedom.
 #' @slot optim A list with the following optimization results:
-#'   \itemize{
-#'   \item{`par ` }{A numeric vector of the specified parameters.}
-#'   \item{`lambda ` }{A numeric vector of the Lagrange multipliers.}
-#'   \item{`iterations ` }{A single integer for the number of iterations
-#'   performed.}
-#'   \item{`convergence ` }{A single logical for the convergence status.}
-#'   }
+#'   * `par` A numeric vector of the specified parameters.
+#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#'   * `iterations` A single integer for the number of iterations performed.
+#'   * `convergence` A single logical for the convergence status.
 #' @slot logp A numeric vector of the log probabilities obtained from empirical
 #'   likelihood.
 #' @slot logl A single numeric for the empirical log-likelihood.
@@ -94,8 +91,9 @@ setClass("EL",
 #' \linkS4class{CEL} class
 #'
 #' S4 class for constrained empirical likelihood. It inherits from
-#' \linkS4class{EL} class. Note that `optim` slot has constrained optimization
-#' results with respect to parameters, not the Lagrange multiplier.
+#' \linkS4class{EL} class. Note that the `optim` slot has constrained
+#' optimization results with respect to the parameters, not the Lagrange
+#' multiplier.
 #'
 #' @details Let \eqn{l(\theta)} denote the minus twice the empirical
 #'   log-likelihood ratio function. We consider a linear hypothesis of the form
@@ -120,14 +118,12 @@ setClass("EL",
 #'   \eqn{\theta^{(k)}}. The first order optimality condition is
 #'   \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
 #' @slot optim A list with the following optimization results:
-#'   \itemize{
-#'   \item{`par ` }{A numeric vector of the parameter value that minimizes the
-#'   empirical likelihood subject to the constraints.}
-#'   \item{`lambda ` }{A numeric vector of the Lagrange multipliers.}
-#'   \item{`iterations ` }{A single integer for the number of iterations
-#'   performed.}
-#'   \item{`convergence ` }{A single logical for the convergence status.}
-#'   }
+#'   * `par` A numeric vector of the parameter value that minimizes the
+#'   empirical likelihood subject to the constraints.
+#'   * lambda` A numeric vector of the Lagrange multipliers.
+#'   * `iterations` A single integer for the number of iterations
+#'   performed.
+#'   * `convergence` A single logical for the convergence status.
 #' @aliases CEL
 #' @references Adimari G, Guolo A (2010).
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
@@ -151,16 +147,14 @@ setClass("CEL", contains = "EL")
 #' S4 class for linear models with empirical likelihood. It inherits from
 #' \linkS4class{CEL} class.
 #'
-#' @details If there is no intercept in a model, `optim` slot need to be
+#' @details If there is no intercept in a model, the `optim` slot need to be
 #'   understood in terms of \linkS4class{EL} class since constrained
 #'   optimization is not involved in the overall test.
 #' @slot parTests A list with the test results for each parameter:
-#'   \itemize{
-#'   \item{`statistic ` }{A numeric vector of the empirical likelihood
-#'   ratio statistics.}
-#'   \item{`convergence ` }{A logical vector of the convergence status of
-#'   tests for each parameter.}
-#'   }
+#'   * `statistic` A numeric vector of the empirical likelihood ratio
+#'   statistics.
+#'   * `convergence` A logical vector of the convergence status of tests the
+#'   significance tests for coefficients.
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
 #'   They are used in other generics and methods.
 #' @aliases LM
