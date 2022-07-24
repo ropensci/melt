@@ -47,6 +47,6 @@ setMethod("plot", "ELD", function(x, ...) {
   if (!exists("pch", args)) {
     args$pch <- 21
   }
-  args$x <- x@eld
+  args$x <- x@.Data
   do.call(plot.default, args)
 })

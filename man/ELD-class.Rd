@@ -6,14 +6,10 @@
 \alias{ELD}
 \title{\linkS4class{ELD} class}
 \description{
-S4 class for empirical likelihood displacement.
+S4 class for empirical likelihood displacement. It inherits from the base
+type "numeric" and has a virtual slot \code{.Data} that contains the vector of
+empirical likelihood displacement values.
 }
-\section{Slots}{
-
-\describe{
-\item{\code{eld}}{A numeric vector of empirical likelihood displacement values.}
-}}
-
 \examples{
 showClass("ELD")
 }

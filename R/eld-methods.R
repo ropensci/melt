@@ -6,7 +6,7 @@ setMethod("eld", "EL", function(object, control = el_control()) {
       (!is.null(getDataMatrix(object))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  new("ELD", eld = compute_ELD(
+  new("ELD", compute_ELD(
     getMethodEL(object), coef(object), getDataMatrix(object), control@maxit_l,
     control@tol_l, control@th, control@nthreads, getWeights(object)
   ))
@@ -31,7 +31,7 @@ setMethod("eld", "GLM", function(object, control = el_control()) {
   glm_family <- object@misc$family
   glm_control <- object@misc$control
   intercept <- object@misc$intercept
-  new("ELD", eld = vapply(seq_len(n), function(i) {
+  new("ELD", vapply(seq_len(n), function(i) {
     fit <- suppressWarnings(glm.fit(
       x = x[-i, ], y = y[-i], weights = w[-i], offset = NULL,
       family = glm_family, control = glm_control, intercept = intercept,

@@ -11,6 +11,8 @@
 
 * `print()` for `LM` and `SummaryLM` objects shows which type of EL optimization is performed.
 
+* `ELD` inherits from the base type `numeric`.
+
 
 # melt 1.6.0
 ### BREAKING CHANGES
