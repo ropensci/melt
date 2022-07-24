@@ -4,8 +4,12 @@
 
 * New `logL()` extracts empirical log-likelihood from a model.
 
+* `conv()` is applicable to a `SummaryLM` object.
+
 ### MINOR IMPROVEMENTS
 * `p.value` returned by `el_eval()` is renamed to `pval` for consistency with other functions.
+
+* `print()` for `LM` and `SummaryLM` objects shows which type of EL optimization is performed.
 
 
 # melt 1.6.0

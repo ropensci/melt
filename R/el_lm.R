@@ -129,6 +129,7 @@ el_lm <- function(formula,
     return(new("LM",
       call = cl, terms = mt,
       misc = list(
+        intercept = FALSE,
         xlevels = .getXlevels(mt, mf),
         na.action = attr(mf, "na.action")
       ),
@@ -146,7 +147,7 @@ el_lm <- function(formula,
     }
   }
   pnames <- names(fit$coefficients)
-  intercept <- attr(mt, "intercept")
+  intercept <- as.logical(attr(mt, "intercept"))
   mm <- cbind(y, x)
   n <- nrow(mm)
   p <- ncol(x)
@@ -169,6 +170,7 @@ el_lm <- function(formula,
   new("LM",
     parTests = lapply(out$par_tests, setNames, pnames), call = cl, terms = mt,
     misc = list(
+      intercept = intercept,
       xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),

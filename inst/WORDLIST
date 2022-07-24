@@ -10,7 +10,6 @@ Cui
 Details’
 EL
 Eigen
-Eigen’
 Github
 Guolo
 Ibrahim
@@ -23,7 +22,6 @@ PLOS
 Qin
 Raphson
 RcppEigen
-RcppEigen’
 RcppProgress
 SX
 Sinica
@@ -33,6 +31,8 @@ Zhang
 Zhao
 Zhu
 arxiv
+blk
+clo
 clothianidin
 coercible
 dqrng
@@ -44,4 +44,5 @@ stars’
 studentization
 th
 tidyverse
+trt
 µg

@@ -166,7 +166,7 @@ el_glm <- function(formula,
   )
   mustart <- model.extract(mf, "mustart")
   etastart <- model.extract(mf, "etastart")
-  intercept <- attr(mt, "intercept") > 0L
+  intercept <- as.logical(attr(mt, "intercept"))
   fit <- glm.fit(
     x = X, y = Y, weights = w, start = start, etastart = etastart,
     mustart = mustart, offset = NULL, family = family,

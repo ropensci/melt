@@ -39,6 +39,53 @@ setMethod("print", "EL", function(x,
 })
 setMethod("show", "EL", function(object) print(object))
 
+
+#' @rdname print
+setMethod("print", "LM", function(x,
+                                  digits = max(3L, getOption("digits") - 3L),
+                                  ...) {
+  if (is.null(weights(x))) {
+    cat("\n\tEmpirical Likelihood:", getMethodEL(x), "\n\n")
+  } else {
+    cat("Weighted Empirical Likelihood:", getMethodEL(x), "\n\n")
+  }
+  if (length(coef(x)) != 0L) {
+    cat("Maximum EL estimates:\n")
+    print.default(coef(x), digits = digits, ...)
+  }
+  cat("\n")
+
+  out <- character()
+  if (length(x@statistic) != 0L) {
+    out <- c(
+      out, paste("Chisq:", format.default(x@statistic, digits = digits)),
+      paste("df:", x@df),
+      paste("Pr(>Chisq):", format.pval(x@pval, digits = digits))
+    )
+  } else {
+    out <- c("Empty model")
+  }
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
+
+  if (length(x@statistic) != 0L) {
+    if (x@misc$intercept) {
+      cat(
+        "\nConstrained EL:",
+        if (conv(x)) "converged" else "not converged", "\n"
+      )
+    } else {
+      cat(
+        "\nEL evaluation:",
+        if (conv(x)) "converged" else "not converged", "\n"
+      )
+    }
+  }
+  cat("\n")
+  invisible(x)
+})
+setMethod("show", "LM", function(object) print(object))
+
+
 #' @rdname print
 #' @importFrom stats naprint pchisq printCoefmat
 #' @srrstats {G2.14b} `naprint()` is used to print messages if there are missing
@@ -92,14 +139,22 @@ setMethod(
     } else {
       out <- c("Empty model")
     }
-    cat(strwrap(paste(out, collapse = ", ")), "\n\n")
+    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
 
     if (length(x@statistic) != 0L) {
-      cat(
-        "Constrained EL:",
-        if (x@convergence) "converged" else "not converged", "\n\n"
-      )
+      if (x@intercept) {
+        cat(
+          "\nConstrained EL:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      } else {
+        cat(
+          "\nEL evaluation:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      }
     }
+    cat("\n")
     invisible(x)
   }
 )
@@ -117,7 +172,6 @@ setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
   invisible(x)
 })
 setMethod("show", "logLikEL", function(object) print(object))
-
 
 
 #' @rdname print

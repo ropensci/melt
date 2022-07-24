@@ -345,6 +345,6 @@ setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))
 #' showClass("SummaryLM")
 setClass("SummaryLM", slots = c(
   statistic = "numeric", df = "integer", convergence = "logical",
-  parMatrix = "matrix", weighted = "logical", na.action = "ANY", call = "ANY",
-  terms = "ANY", aliased = "logical"
+  parMatrix = "matrix", weighted = "logical", intercept = "logical",
+  na.action = "ANY", call = "ANY", terms = "ANY", aliased = "logical"
 ))

@@ -12,8 +12,8 @@ setMethod("summary", "LM", function(object, ...) {
       parMatrix = matrix(NA_real_, 0L, 3L,
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chis)"))
       ),
-      weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
-      call = z@call, terms = z@terms,
+      weighted = length(z@weights) != 0L, intercept = z@misc$intercept,
+      na.action = z@misc$na.action, call = z@call, terms = z@terms,
       aliased = is.na(coef(z))
     ))
   }
@@ -24,7 +24,8 @@ setMethod("summary", "LM", function(object, ...) {
       Chisq = z@parTests$statistic,
       `Pr(>Chisq)` = pchisq(z@parTests$statistic, df = 1L, lower.tail = FALSE)
     ),
-    weighted = length(z@weights) != 0L, na.action = z@misc$na.action,
-    call = z@call, terms = z@terms, aliased = is.na(coef(z))
+    weighted = length(z@weights) != 0L, intercept = z@misc$intercept,
+    na.action = z@misc$na.action, call = z@call, terms = z@terms,
+    aliased = is.na(coef(z))
   )
 })

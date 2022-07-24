@@ -3,6 +3,7 @@
 \name{print}
 \alias{print}
 \alias{print,EL-method}
+\alias{print,LM-method}
 \alias{print,SummaryLM-method}
 \alias{print,logLikEL-method}
 \alias{print,ELMT-method}
@@ -10,6 +11,8 @@
 \title{Print methods}
 \usage{
 \S4method{print}{EL}(x, digits = max(3L, getOption("digits") - 3L), ...)
+
+\S4method{print}{LM}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
 \S4method{print}{SummaryLM}(
   x,
