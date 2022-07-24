@@ -75,6 +75,11 @@ test_that("`print()` method.", {
   df2[1, 1] <- NA
   fit2 <- el_lm(mpg ~ disp + hp, data = df2)
   expect_output(print(summary(fit2)))
+  fit3 <- el_lm(mpg ~ -1 + disp + hp, data = mtcars)
+  expect_output(print(fit3))
+  expect_output(print(summary(fit3)))
+  wfit <- el_lm(mpg ~ disp + hp, data = mtcars, weights = gear)
+  expect_output(print(wfit))
 })
 
 test_that("`verbose` == TRUE in `el_control()`.", {

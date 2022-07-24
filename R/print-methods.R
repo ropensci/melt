@@ -8,7 +8,7 @@ setMethod("print", "EL", function(x,
   if (is.null(weights(x))) {
     cat("\n\tEmpirical Likelihood:", getMethodEL(x), "\n\n")
   } else {
-    cat("Weighted Empirical Likelihood:", getMethodEL(x), "\n\n")
+    cat("\n\tWeighted Empirical Likelihood:", getMethodEL(x), "\n\n")
   }
   if (length(coef(x)) != 0L) {
     cat("Maximum EL estimates:\n")
@@ -47,7 +47,7 @@ setMethod("print", "LM", function(x,
   if (is.null(weights(x))) {
     cat("\n\tEmpirical Likelihood:", getMethodEL(x), "\n\n")
   } else {
-    cat("Weighted Empirical Likelihood:", getMethodEL(x), "\n\n")
+    cat("\n\tWeighted Empirical Likelihood:", getMethodEL(x), "\n\n")
   }
   if (length(coef(x)) != 0L) {
     cat("Maximum EL estimates:\n")

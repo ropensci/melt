@@ -32,7 +32,6 @@ test_that("Probabilities add up to 1.", {
   x <- women$height
   w <- women$weight
   fit <- el_mean(x, par = 60)
-  expect_output(print(fit))
   expect_equal(sum(exp(fit@logp)), 1, tolerance = 1e-07)
   fit2 <- el_mean(x, par = 60, weights = w)
   expect_equal(sum(exp(fit2@logp)), 1, tolerance = 1e-07)
@@ -95,4 +94,13 @@ test_that("Convex hull constraint violated.", {
     getOptim(el_mean(x, par))$convergence
   }
   expect_false(any(vapply(grid, conv, FUN.VALUE = logical(1))))
+})
+
+test_that("`print()` method.", {
+  x <- women$height
+  fit <- el_mean(x, par = 60)
+  expect_output(show(fit))
+  expect_output(print(fit))
+  fit@statistic <- numeric()
+  expect_output(print(fit))
 })
