@@ -162,6 +162,7 @@ setMethod("show", "SummaryLM", function(object) print(object))
 
 
 #' @rdname print
+#' @importFrom methods getDataPart
 setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
   cat("'Empirical log Lik.' ", paste(format(getDataPart(x), digits = digits),
     collapse = ", "
