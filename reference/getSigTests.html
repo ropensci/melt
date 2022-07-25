@@ -67,24 +67,38 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for LM</span></span>
+<span><span class="fu">getSigTests</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SummaryLM</span></span>
 <span><span class="fu">getSigTests</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>An object that inherit from <a href="LM-class.html">LM</a>.</p></dd>
+<dd><p>An object that inherit from <a href="LM-class.html">LM</a> or
+<a href="SummaryLM-class.html">SummaryLM</a>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list with the following optimization results:</p><ul><li><p><code>statistic</code> A numeric vector of the minus twice the empirical
-log-likelihood ratio statistics.</p></li>
-<li><p><code>iterations</code> An integer vector of the number of iterations performed.</p></li>
-<li><p><code>convergence</code> A logical vector of the convergence statuses.</p></li>
+<p>The form of the value returned by <code>getSigTests()</code> depends on the
+class of its argument.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="methods-by-class-">Methods (by class)<a class="anchor" aria-label="anchor" href="#methods-by-class-"></a></h2>
+    
+<ul><li><p><code>getSigTests(LM)</code>: Extracts a list with the optimization results of
+significance tests.</p></li>
+<li><p><code>getSigTests(SummaryLM)</code>: Extracts a matrix with the results of significance
+tests.</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="getOptim.html">getOptim()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -109,6 +123,19 @@ log-likelihood ratio statistics.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        qsec          vs          am        gear        carb </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       FALSE        TRUE       FALSE       FALSE        TRUE </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">getSigTests</span><span class="op">(</span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                Estimate       Chisq   Pr(&gt;Chisq)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) 12.30337416 442.0394887 3.895625e-98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl         -0.11144048   0.2334334 6.289896e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp         0.01333524 409.8798759 3.892910e-91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp          -0.02148212 420.7490737 1.676493e-93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat         0.78711097 405.1301030 4.209139e-90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt          -3.71530393 439.0974196 1.701700e-97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec         0.82104075 442.4803698 3.123385e-98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs           0.31776281   0.4249416 5.144815e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am           2.52022689  26.6281283 2.466269e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear         0.65541302 401.7291427 2.314856e-89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> carb        -0.19941925   0.5095781 4.753215e-01</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

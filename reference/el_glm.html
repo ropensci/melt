@@ -182,7 +182,23 @@ Statistica Sinica, 4(1), 199–218.</p>
 <span class="r-in"><span>  na.action <span class="op">=</span> <span class="va">na.omit</span>, start <span class="op">=</span> <span class="cn">NULL</span>, etastart <span class="op">=</span> <span class="cn">NULL</span>, mustart <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in initialize(value, ...):</span> invalid name for slot of class “SummaryLM”: sigTests</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> el_glm(formula = y ~ x + x2, family = binomial, data = df, weights = NULL, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     na.action = na.omit, start = NULL, etastart = NULL, mustart = NULL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate  Chisq Pr(&gt;Chisq)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -2.6113 48.612   3.12e-12 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.2929  0.729      0.393    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x2            2.9006 41.051   1.48e-10 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 45.02, df: 2, Pr(&gt;Chisq): 1.676e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
