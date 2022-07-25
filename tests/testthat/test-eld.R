@@ -32,8 +32,10 @@ test_that("`SD` class.", {
 
 test_that("`GLM` class.", {
   fit <- el_glm(wool ~ -1 + breaks, family = binomial, data = warpbreaks)
-  wfit <- el_glm(wool ~ ., family = binomial, data = warpbreaks,
-                 weights = breaks)
+  wfit <- el_glm(wool ~ .,
+    family = binomial, data = warpbreaks,
+    weights = breaks
+  )
   expect_s4_class(eld(fit), "ELD")
   expect_s4_class(eld(wfit), "ELD")
 })

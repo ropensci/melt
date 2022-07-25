@@ -15,6 +15,8 @@
 
 * `ELD` inherits from the base type `numeric`.
 
+* `logLikEL` inherits from the base type `numeric`.
+
 
 # melt 1.6.0
 ### BREAKING CHANGES

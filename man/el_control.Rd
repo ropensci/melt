@@ -47,8 +47,8 @@ status is printed when fitting objects that inherit from class
 Defaults to \code{FALSE}.}
 
 \item{keep_data}{A single logical. If \code{TRUE}, the data used for fitting
-objects that inherit from class \linkS4class{EL} are kept in the \code{data}
-slot for later use with other methods. Defaults to \code{TRUE}.}
+objects that inherit from class \linkS4class{EL} are stored for later use
+with other methods. Defaults to \code{TRUE}.}
 
 \item{nthreads}{A single integer for the number of threads for parallel
 computation via OpenMP (if available). Defaults to the half of the

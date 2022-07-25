@@ -22,8 +22,8 @@
 #'   \linkS4class{EL}.
 #'   Defaults to `FALSE`.
 #' @param keep_data A single logical. If `TRUE`, the data used for fitting
-#'   objects that inherit from class \linkS4class{EL} are kept in the `data`
-#'   slot for later use with other methods. Defaults to `TRUE`.
+#'   objects that inherit from class \linkS4class{EL} are stored for later use
+#'   with other methods. Defaults to `TRUE`.
 #' @param nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available). Defaults to the half of the
 #'   available threads. For better performance, it is generally recommended to

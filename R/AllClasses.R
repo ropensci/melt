@@ -249,9 +249,7 @@ setClass("ControlEL",
 
 #' \linkS4class{ELD} class
 #'
-#' S4 class for empirical likelihood displacement. It inherits from the base
-#' type "numeric" and has a virtual slot `.Data` that contains the vector of
-#' empirical likelihood displacement values.
+#' S4 class for empirical likelihood displacement.
 #'
 #' @aliases ELD
 #' @examples
@@ -310,13 +308,12 @@ setClass("ELMT",
 #'
 #' S4 class for empirical log-likelihood.
 #'
-#' @slot logLik A single numeric for the empirical log-likelihood.
 #' @slot df A single integer for the degrees of freedom or the number of
 #'   (estimated) parameters in the model.
 #' @aliases logLikEL
 #' @examples
 #' showClass("logLikEL")
-setClass("logLikEL", slots = c(logLik = "numeric", df = "integer"))
+setClass("logLikEL", contains = "numeric", slots = c(df = "integer"))
 
 
 #' \linkS4class{SummaryLM} class

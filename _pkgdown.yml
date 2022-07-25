@@ -41,6 +41,7 @@ reference:
     - elmt
     - elt
     - getOptim
+    - getSigTests
     - logL
     - logLik
     - logLR

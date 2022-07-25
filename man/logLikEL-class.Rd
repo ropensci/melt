@@ -11,8 +11,6 @@ S4 class for empirical log-likelihood.
 \section{Slots}{
 
 \describe{
-\item{\code{logLik}}{A single numeric for the empirical log-likelihood.}
-
 \item{\code{df}}{A single integer for the degrees of freedom or the number of
 (estimated) parameters in the model.}
 }}

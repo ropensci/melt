@@ -11,5 +11,5 @@ setMethod("logLik", "EL", function(object, ...) {
   )
   out <- elt(object, rhs = coef(object))
   val <- logL(out)
-  new("logLikEL", logLik = val, df = getNumPar(object))
+  new("logLikEL", .Data = val, df = getNumPar(object))
 })
