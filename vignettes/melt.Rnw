@@ -1,7 +1,0 @@
-\documentclass{article}
-\usepackage{pdfpages}
-%\VignetteIndexEntry{article2}
-
-\begin{document}
-\includepdf[pages=-, fitpaper=true]{article.pdf}
-\end{document}
