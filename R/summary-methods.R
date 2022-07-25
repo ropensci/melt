@@ -19,7 +19,7 @@ setMethod("summary", "LM", function(object, ...) {
   }
   new("SummaryLM",
     statistic = z@statistic, df = z@df, convergence = conv(z),
-    parMatrix = cbind(
+    sigTests = cbind(
       Estimate = coef(z),
       Chisq = getSigTests(z)$statistic,
       `Pr(>Chisq)` = pchisq(getSigTests(z)$statistic,

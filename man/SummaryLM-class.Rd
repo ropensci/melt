@@ -19,7 +19,7 @@ log-likelihood ratio for the overall test of the model.}
 \item{\code{convergence}}{A single logical for the convergence status of the
 constrained minimization.}
 
-\item{\code{parMatrix}}{A numeric matrix of the test results of the parameters.}
+\item{\code{sigTests}}{A numeric matrix of the results of significance tests.}
 
 \item{\code{weighted}}{A single logical for whether the given model is weighted or
 not.}
@@ -27,7 +27,7 @@ not.}
 \item{\code{na.action}}{Information returned by \code{\link{model.frame}} on the special
 handling of \code{NA}s.}
 
-\item{\code{call}}{Matched call.}
+\item{\code{call}}{A matched call.}
 
 \item{\code{terms}}{\code{\link{terms}} object used.}
 

@@ -325,12 +325,12 @@ setClass("logLikEL", contains = "numeric", slots = c(df = "integer"))
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
-#' @slot parMatrix A numeric matrix of the test results of the parameters.
+#' @slot sigTests A numeric matrix of the results of significance tests.
 #' @slot weighted A single logical for whether the given model is weighted or
 #'   not.
 #' @slot na.action Information returned by [`model.frame`] on the special
 #'   handling of `NA`s.
-#' @slot call Matched call.
+#' @slot call A matched call.
 #' @slot terms [`terms`] object used.
 #' @slot aliased A named logical vector showing if the original coefficients are
 #'   aliased.
