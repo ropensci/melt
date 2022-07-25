@@ -7,7 +7,7 @@ navbar:
     - icon: fa-home
       href: index.html
     - text: "Get started"
-      href: articles/melt.html
+      href: articles/model.html
     - text: "Reference"
       href: reference/index.html
     - text: "Articles"
