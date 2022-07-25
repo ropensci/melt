@@ -26,7 +26,10 @@ library and
 [RcppEigen](https://cran.r-project.org/web/packages/RcppEigen/index.html)
 interface, with OpenMP for parallel computation. Details of the testing
 procedures are given in [Kim, MacEachern, and Peruggia
-(2021)](https://arxiv.org/abs/2112.09206).
+(2021)](https://arxiv.org/abs/2112.09206). This work was supported by
+the U.S. National Science Foundation under Grants
+No. [SES-1921523](https://nsf.gov/awardsearch/showAward?AWD_ID=1921523)
+and [DMS-2015552](https://nsf.gov/awardsearch/showAward?AWD_ID=2015552).
 
 ## Installation
 
@@ -83,7 +86,7 @@ summary(fit2)
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Chisq: 433.4, df: 4, Pr(>Chisq): < 2.2e-16 
+#> Chisq: 433.4, df: 4, Pr(>Chisq): < 2.2e-16
 #> 
 #> Constrained EL: converged
 cr <- confreg(fit2, parm = c("disp", "hp"), npoints = 200)
@@ -112,9 +115,9 @@ summary(fit3)
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Chisq: 894.4, df: 4, Pr(>Chisq): < 2.2e-16 
+#> Chisq: 894.4, df: 4, Pr(>Chisq): < 2.2e-16
 #> 
-#> Constrained EL: not converged
+#> EL evaluation: not converged
 confint(fit3)
 #>                  lower      upper
 #> trtNaked     -5.002118 -3.9198229
