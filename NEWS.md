@@ -1,8 +1,10 @@
 # melt 1.6.0.9000 (development version)
 ### NEW FEATURES
-* New `getOptim()` extracts optimization results from a model.
+* New `getOptim()` extracts optimization results.
 
-* New `logL()` extracts empirical log-likelihood from a model.
+* New `getSigTests()` extracts the results of significance tests.
+
+* New `logL()` extracts empirical log-likelihood.
 
 * `conv()` is applicable to a `SummaryLM` object.
 

@@ -12,7 +12,7 @@ setMethod("summary", "LM", function(object, ...) {
       parMatrix = matrix(NA_real_, 0L, 3L,
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chis)"))
       ),
-      weighted = length(z@weights) != 0L, intercept = z@misc$intercept,
+      weighted = !is.null(weights(z)), intercept = z@misc$intercept,
       na.action = z@misc$na.action, call = z@call, terms = z@terms,
       aliased = is.na(coef(z))
     ))
@@ -21,10 +21,13 @@ setMethod("summary", "LM", function(object, ...) {
     statistic = z@statistic, df = z@df, convergence = conv(z),
     parMatrix = cbind(
       Estimate = coef(z),
-      Chisq = z@parTests$statistic,
-      `Pr(>Chisq)` = pchisq(z@parTests$statistic, df = 1L, lower.tail = FALSE)
+      Chisq = getSigTests(z)$statistic,
+      `Pr(>Chisq)` = pchisq(getSigTests(z)$statistic,
+        df = 1L,
+        lower.tail = FALSE
+      )
     ),
-    weighted = length(z@weights) != 0L, intercept = z@misc$intercept,
+    weighted = !is.null(weights(z)), intercept = z@misc$intercept,
     na.action = z@misc$na.action, call = z@call, terms = z@terms,
     aliased = is.na(coef(z))
   )

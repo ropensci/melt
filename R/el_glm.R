@@ -35,7 +35,7 @@
 #'   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
 #'   and the tests for each parameter with
 #'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
-#'   The test results are returned as `optim` and `parTests`, respectively.
+#'   The test results are returned as `optim` and `sigTests`, respectively.
 #' @return An object of class of \linkS4class{GLM}.
 #' @references Chen SX, Cui H (2003).
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
@@ -195,7 +195,7 @@ el_glm <- function(formula,
     )
   }
   new("GLM",
-    parTests = lapply(out$par_tests, setNames, pnames), call = cl, terms = mt,
+    sigTests = lapply(out$sig_tests, setNames, pnames), call = cl, terms = mt,
     misc = list(
       family = fit$family, iter = fit$iter, converged = fit$converged,
       boundary = fit$boundary, formula = formula, offset = NULL,

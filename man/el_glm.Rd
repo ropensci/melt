@@ -70,7 +70,7 @@ Included in the tests are the overall test with
 \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
 and the tests for each parameter with
 \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
-The test results are returned as \code{optim} and \code{parTests}, respectively.
+The test results are returned as \code{optim} and \code{sigTests}, respectively.
 }
 \examples{
 set.seed(20010)

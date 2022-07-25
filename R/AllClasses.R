@@ -150,11 +150,7 @@ setClass("CEL", contains = "EL")
 #' @details If there is no intercept in a model, the `optim` slot need to be
 #'   understood in terms of \linkS4class{EL} class since constrained
 #'   optimization is not involved in the overall test.
-#' @slot parTests A list with the test results for each parameter:
-#'   * `statistic` A numeric vector of the empirical likelihood ratio
-#'   statistics.
-#'   * `convergence` A logical vector of the convergence status of tests the
-#'   significance tests for coefficients.
+#' @slot sigTests A list with the results of significance tests.
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
 #'   They are used in other generics and methods.
 #' @aliases LM
@@ -162,7 +158,7 @@ setClass("CEL", contains = "EL")
 #' showClass("LM")
 setClass("LM",
   contains = "CEL",
-  slots = c(parTests = "list", call = "call", terms = "ANY", misc = "list")
+  slots = c(sigTests = "list", call = "call", terms = "ANY", misc = "list")
 )
 
 #' \linkS4class{GLM} class

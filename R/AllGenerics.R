@@ -333,6 +333,25 @@ setGeneric("elt", function(object,
 setGeneric("getOptim", function(object, ...) standardGeneric("getOptim"))
 
 
+#' Significance tests
+#'
+#' Extracts the results of significance tests from a model.
+#'
+#' @param object An object that inherit from \linkS4class{LM}.
+#' @return A list with the following optimization results:
+#'   * `statistic` A numeric vector of the minus twice the empirical
+#'   log-likelihood ratio statistics.
+#'   * `iterations` An integer vector of the number of iterations performed.
+#'   * `convergence` A logical vector of the convergence statuses.
+#' @usage NULL
+#' @examples
+#' data("mtcars")
+#' fit <- el_lm(mpg ~ ., data = mtcars)
+#' getSigTests(fit)
+#' @exportMethod getSigTests
+setGeneric("getSigTests", function(object) standardGeneric("getSigTests"))
+
+
 #' Empirical log-likelihood
 #'
 #' Extracts empirical log-likelihood from a model.
