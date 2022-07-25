@@ -1,2 +1,5 @@
+*.aux
 *.html
+*.log
 *.R
+*.tex
