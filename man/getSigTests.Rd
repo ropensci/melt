@@ -3,27 +3,39 @@
 \name{getSigTests}
 \alias{getSigTests}
 \alias{getSigTests,LM-method}
+\alias{getSigTests,SummaryLM-method}
 \title{Significance tests}
 \usage{
 \S4method{getSigTests}{LM}(object)
+
+\S4method{getSigTests}{SummaryLM}(object)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{LM}.}
+\item{object}{An object that inherit from \linkS4class{LM} or
+\linkS4class{SummaryLM}.}
 }
 \value{
-A list with the following optimization results:
-\itemize{
-\item \code{statistic} A numeric vector of the minus twice the empirical
-log-likelihood ratio statistics.
-\item \code{iterations} An integer vector of the number of iterations performed.
-\item \code{convergence} A logical vector of the convergence statuses.
-}
+The form of the value returned by \code{\link[=getSigTests]{getSigTests()}} depends on the
+class of its argument.
 }
 \description{
 Extracts the results of significance tests from a model.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{getSigTests(LM)}: Extracts a list with the optimization results of
+significance tests.
+
+\item \code{getSigTests(SummaryLM)}: Extracts a matrix with the results of significance
+tests.
+
+}}
 \examples{
 data("mtcars")
 fit <- el_lm(mpg ~ ., data = mtcars)
 getSigTests(fit)
+getSigTests(summary(fit))
+}
+\seealso{
+\code{\link[=getOptim]{getOptim()}}
 }

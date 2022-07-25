@@ -106,12 +106,12 @@ setMethod(
       cat("\nNo Coefficients\n")
     } else {
       cat("\nCoefficients:\n")
-      coefs <- x@parMatrix
+      coefs <- getSigTests(x)
       if (any(aliased <- x@aliased)) {
         cn <- names(aliased)
         coefs <-
           matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
-        coefs[!aliased, ] <- x@parMatrix
+        coefs[!aliased, ] <- getSigTests(x)
       }
       printCoefmat(coefs,
         digits = digits, signif.stars = signif.stars,

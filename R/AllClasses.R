@@ -339,6 +339,6 @@ setClass("logLikEL", contains = "numeric", slots = c(df = "integer"))
 #' showClass("SummaryLM")
 setClass("SummaryLM", slots = c(
   statistic = "numeric", df = "integer", convergence = "logical",
-  parMatrix = "matrix", weighted = "logical", intercept = "logical",
+  sigTests = "matrix", weighted = "logical", intercept = "logical",
   na.action = "ANY", call = "ANY", terms = "ANY", aliased = "logical"
 ))

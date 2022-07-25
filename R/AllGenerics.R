@@ -324,6 +324,7 @@ setGeneric("elt", function(object,
 #'   * `lambda` A numeric vector of the Lagrange multipliers.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#' @seealso [getSigTests()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -337,17 +338,17 @@ setGeneric("getOptim", function(object, ...) standardGeneric("getOptim"))
 #'
 #' Extracts the results of significance tests from a model.
 #'
-#' @param object An object that inherit from \linkS4class{LM}.
-#' @return A list with the following optimization results:
-#'   * `statistic` A numeric vector of the minus twice the empirical
-#'   log-likelihood ratio statistics.
-#'   * `iterations` An integer vector of the number of iterations performed.
-#'   * `convergence` A logical vector of the convergence statuses.
+#' @param object An object that inherit from \linkS4class{LM} or
+#'   \linkS4class{SummaryLM}.
+#' @return The form of the value returned by [getSigTests()] depends on the
+#'   class of its argument.
+#' @seealso [getOptim()]
 #' @usage NULL
 #' @examples
 #' data("mtcars")
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' getSigTests(fit)
+#' getSigTests(summary(fit))
 #' @exportMethod getSigTests
 setGeneric("getSigTests", function(object) standardGeneric("getSigTests"))
 

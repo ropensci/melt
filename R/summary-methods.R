@@ -9,7 +9,7 @@ setMethod("summary", "LM", function(object, ...) {
   if (p == 0L) {
     return(new("SummaryLM",
       statistic = z@statistic, df = z@df, convergence = conv(z),
-      parMatrix = matrix(NA_real_, 0L, 3L,
+      sigTests = matrix(NA_real_, 0L, 3L,
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chis)"))
       ),
       weighted = !is.null(weights(z)), intercept = z@misc$intercept,
