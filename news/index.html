@@ -63,18 +63,14 @@
 <h2 class="pkg-version" data-toc-text="1.6.0.9000" id="melt-1609000-development-version">melt 1.6.0.9000 (development version)<a class="anchor" aria-label="anchor" href="#melt-1609000-development-version"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-6-0-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-6-0-9000"></a></h4>
-<ul><li><p>New <code><a href="../reference/getOptim.html">getOptim()</a></code> extracts optimization results.</p></li>
-<li><p>New <code><a href="../reference/getSigTests.html">getSigTests()</a></code> extracts the results of significance tests.</p></li>
-<li><p>New <code><a href="../reference/logL.html">logL()</a></code> extracts empirical log-likelihood.</p></li>
+<ul><li><p>New accessor methods added (<code><a href="../reference/getOptim.html">getOptim()</a></code>, <code><a href="../reference/getSigTests.html">getSigTests()</a></code>, <code><a href="../reference/logL.html">logL()</a></code>, <code><a href="../reference/logLR.html">logLR()</a></code>, and <code><a href="../reference/pval.html">pval()</a></code>).</p></li>
 <li><p><code><a href="../reference/conv.html">conv()</a></code> is applicable to a <code>SummaryLM</code> object.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="minor-improvements-1-6-0-9000">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0-9000"></a></h4>
 <ul><li><p><code>p.value</code> returned by <code><a href="../reference/el_eval.html">el_eval()</a></code> is renamed to <code>pval</code> for consistency with other functions.</p></li>
-<li><p><code><a href="../reference/print.html">print()</a></code> for <code>LM</code> and <code>SummaryLM</code> objects shows which type of EL optimization is performed.</p></li>
-<li><p><code>ConfregEL</code> inherits from <code>matrix</code>.</p></li>
-<li><p><code>ELD</code> inherits from <code>numeric</code>.</p></li>
-<li><p><code>logLikEL</code> inherits from <code>numeric</code>.</p></li>
+<li><p><code><a href="../reference/print.html">print()</a></code> for <code>LM</code> and <code>SummaryLM</code> shows which type of EL optimization is performed.</p></li>
+<li><p><code>ConfregEL</code> inherits from <code>matrix</code>. <code>ELD</code> and <code>logLikEL</code> inherit from <code>numeric</code>.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
