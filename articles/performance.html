@@ -118,11 +118,11 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;  n1e2    605.5    630.70    671.961    655.60    716.85    774.7   100</span></span>
-<span><span class="co">#&gt;  n1e3   1741.5   1914.00   2074.123   2041.55   2202.40   2614.3   100</span></span>
-<span><span class="co">#&gt;  n1e4  15707.7  17096.95  20312.679  20654.55  22635.70  30065.3   100</span></span>
-<span><span class="co">#&gt;  n1e5 307715.3 361629.90 418043.293 401777.65 470132.85 565346.6   100</span></span>
+<span><span class="co">#&gt;  expr      min        lq       mean   median        uq      max neval</span></span>
+<span><span class="co">#&gt;  n1e2    606.8    644.30   1567.315    670.7    759.35  87783.5   100</span></span>
+<span><span class="co">#&gt;  n1e3   1752.6   1950.65   2099.999   2066.2   2224.45   2644.6   100</span></span>
+<span><span class="co">#&gt;  n1e4  15619.3  17253.10  20468.490  20994.5  22804.75  26382.0   100</span></span>
+<span><span class="co">#&gt;  n1e5 321806.3 372929.55 437201.157 423217.2 493282.10 594103.7   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
@@ -154,10 +154,10 @@
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; Unit: milliseconds</span></span>
 <span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;    p5   1.0111   1.07690   1.167620   1.16325   1.25055   1.3607   100</span></span>
-<span><span class="co">#&gt;   p25   3.9419   4.02005   4.140278   4.07850   4.18510   7.8358   100</span></span>
-<span><span class="co">#&gt;  p100  31.4297  34.75910  37.852207  35.14925  38.70745 130.5450   100</span></span>
-<span><span class="co">#&gt;  p400 367.7545 402.88115 450.707976 432.80375 470.62685 660.4556   100</span></span>
+<span><span class="co">#&gt;    p5   1.0361   1.10735   1.231245   1.22385   1.26930   4.8917   100</span></span>
+<span><span class="co">#&gt;   p25   3.9528   4.05585   4.192347   4.14600   4.23720   8.0178   100</span></span>
+<span><span class="co">#&gt;  p100  31.6570  34.99470  37.323624  35.40665  38.85035  58.3662   100</span></span>
+<span><span class="co">#&gt;  p400 369.0217 405.43385 454.975989 437.11550 470.71270 667.2598   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"> On average, evaluating empirical likelihood with a 100000×10 or 1000×400 matrix at a parameter value satisfying the convex hull constraint takes less than a second.</p>
 </div>
