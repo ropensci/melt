@@ -11,10 +11,7 @@ S4 class for confidence region.
 \section{Slots}{
 
 \describe{
-\item{\code{points}}{A numeric matrix with two columns for boundary points of a
-confidence region.}
-
-\item{\code{estimates}}{A numeric vector of length two for parameter estimates.}
+\item{\code{estimates}}{A numeric vector of length two for the parameter estimates.}
 
 \item{\code{level}}{A single numeric for the confidence level required.}
 

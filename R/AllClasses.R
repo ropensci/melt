@@ -186,9 +186,7 @@ setClass("SD", contains = "EL")
 #'
 #' S4 class for confidence region.
 #'
-#' @slot points A numeric matrix with two columns for boundary points of a
-#'   confidence region.
-#' @slot estimates A numeric vector of length two for parameter estimates.
+#' @slot estimates A numeric vector of length two for the parameter estimates.
 #' @slot level A single numeric for the confidence level required.
 #' @slot cv A single numeric for the critical value for calibration of empirical
 #'   likelihood ratio statistic.
@@ -197,12 +195,10 @@ setClass("SD", contains = "EL")
 #' @examples
 #' showClass("ConfregEL")
 setClass("ConfregEL",
+  contains = "matrix",
   slots = c(
-    points = "matrix", estimates = "numeric", level = "numeric", cv = "numeric",
+    estimates = "numeric", level = "numeric", cv = "numeric",
     pnames = "character"
-  ),
-  prototype = list(
-    points = NULL, estimates = NA_real_, cv = NA_real_, pnames = NA_character_
   )
 )
 

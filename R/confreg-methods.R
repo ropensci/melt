@@ -51,7 +51,7 @@ setMethod("confreg", "EL", function(object,
   }
   if (isTRUE(all.equal(level, 0))) {
     return(new("ConfregEL",
-      points = matrix(est, nrow = 1L), estimates = est, level = level, cv = Inf,
+      .Data = matrix(est, nrow = 1L), estimates = est, level = level, cv = Inf,
       pnames = as.character(pnames)
     ))
   } else if (isTRUE(all.equal(level, 1))) {
@@ -72,7 +72,7 @@ setMethod("confreg", "EL", function(object,
     control@step, control@th, control@nthreads, w
   )
   new("ConfregEL",
-    points = t(circ) * cr + rep(est, each = ncol(circ)),
+    .Data = t(circ) * cr + rep(est, each = ncol(circ)),
     estimates = est, level = level, cv = cv, pnames = as.character(pnames)
   )
 })

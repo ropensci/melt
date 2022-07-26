@@ -1,6 +1,7 @@
 #' @describeIn plot Plots a two-dimensional confidence region for model
 #'   parameters.
 #' @importFrom graphics points polygon plot.default text
+#' @importFrom methods getDataPart
 #' @srrstats {RE6.0} `plot` method is available for an `ConfregEL` object that
 #'   is returned by the `confreg()` method.
 setMethod("plot", "ConfregEL", function(x, ...) {
@@ -23,8 +24,8 @@ setMethod("plot", "ConfregEL", function(x, ...) {
   if (!exists("cex", args)) {
     args$cex <- 0.5
   }
-  args$x <- x@points[, 1L]
-  args$y <- x@points[, 2L]
+  args$x <- getDataPart(x)[, 1L]
+  args$y <- getDataPart(x)[, 2L]
   do.call(plot.default, args)
   do.call(polygon, args)
   points(x@estimates[1L], x@estimates[2L], pch = args$pch, cex = args$cex)
@@ -34,6 +35,7 @@ setMethod("plot", "ConfregEL", function(x, ...) {
 #' @describeIn plot Plots empirical likelihood displacement values versus
 #'   observation index.
 #' @importFrom graphics polygon plot.default
+#' @importFrom methods getDataPart
 #' @srrstats {RE6.0} `plot` method is available for an `ELD` object that is
 #'   returned by the `eld()` method.
 setMethod("plot", "ELD", function(x, ...) {
@@ -47,6 +49,6 @@ setMethod("plot", "ELD", function(x, ...) {
   if (!exists("pch", args)) {
     args$pch <- 21
   }
-  args$x <- x@.Data
+  args$x <- getDataPart(x)
   do.call(plot.default, args)
 })
