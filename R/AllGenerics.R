@@ -464,6 +464,24 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 setGeneric("print", function(x, ...) standardGeneric("print"))
 
 
+#' \eqn{p}-value methods
+#'
+#' Extracts the \eqn{p}-value from a model.
+#'
+#' @param object An object that inherit from \linkS4class{EL},
+#'   \linkS4class{ELT}, or \linkS4class{ELMT}.
+#' @param ... Further arguments passed to methods.
+#' @return The form of the value returned by [pval()] depends on the class of
+#'   its argument.
+#' @usage NULL
+#' @examples
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
+#' pval(fit)
+#' @exportMethod pval
+setGeneric("pval", function(object, ...) standardGeneric("pval"))
+
+
 #' Summary methods
 #'
 #' Provides summary methods for objects.

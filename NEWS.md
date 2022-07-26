@@ -1,17 +1,13 @@
 # melt 1.6.0.9000 (development version)
 ### NEW FEATURES
-* New `getOptim()` extracts optimization results.
-
-* New `getSigTests()` extracts the results of significance tests.
-
-* New `logL()` extracts empirical log-likelihood.
+* New accessor methods added (`getOptim()`, `getSigTests()`, `logL()`, `logLR()`, and `pval()`).
 
 * `conv()` is applicable to a `SummaryLM` object.
 
 ### MINOR IMPROVEMENTS
 * `p.value` returned by `el_eval()` is renamed to `pval` for consistency with other functions.
 
-* `print()` for `LM` and `SummaryLM` objects shows which type of EL optimization is performed.
+* `print()` for `LM` and `SummaryLM` shows which type of EL optimization is performed.
 
 * `ConfregEL` inherits from `matrix`.
 

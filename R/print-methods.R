@@ -21,7 +21,7 @@ setMethod("print", "EL", function(x,
     out <- c(
       out, paste("Chisq:", format.default(x@statistic, digits = digits)),
       paste("df:", x@df),
-      paste("Pr(>Chisq):", format.pval(x@pval, digits = digits))
+      paste("Pr(>Chisq):", format.pval(pval(x), digits = digits))
     )
   } else {
     out <- c("Empty model")
@@ -60,7 +60,7 @@ setMethod("print", "LM", function(x,
     out <- c(
       out, paste("Chisq:", format.default(x@statistic, digits = digits)),
       paste("df:", x@df),
-      paste("Pr(>Chisq):", format.pval(x@pval, digits = digits))
+      paste("Pr(>Chisq):", format.pval(pval(x), digits = digits))
     )
   } else {
     out <- c("Empty model")
@@ -189,9 +189,9 @@ setMethod("print", "ELMT", function(x,
   cat("Calibration:", method, "\n\n")
   cat("Hypotheses:\n")
   out <- data.frame(
-    row.names = seq_along(x@pval),
+    row.names = seq_along(pval(x)),
     Chisq = x@statistic,
-    p.adj = x@pval
+    p.adj = pval(x)
   )
   printCoefmat(out,
     signif.stars = signif.stars,
@@ -225,7 +225,7 @@ setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
     paste("Critical value:", format.default(x@cv, digits = digits))
   )
   cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
-  cat("p-value:", format.pval(x@pval, digits = digits), "\n\n")
+  cat("p-value:", format.pval(pval(x), digits = digits), "\n\n")
   invisible(x)
 })
 setMethod("show", "ELT", function(object) print(object))
