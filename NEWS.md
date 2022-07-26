@@ -9,11 +9,7 @@
 
 * `print()` for `LM` and `SummaryLM` shows which type of EL optimization is performed.
 
-* `ConfregEL` inherits from `matrix`.
-
-* `ELD` inherits from `numeric`.
-
-* `logLikEL` inherits from `numeric`.
+* `ConfregEL` inherits from `matrix`. `ELD` and `logLikEL` inherit from `numeric`.
 
 
 # melt 1.6.0

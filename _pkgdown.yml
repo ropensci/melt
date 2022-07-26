@@ -48,5 +48,6 @@ reference:
     - nobs
     - plot
     - print
+    - pval
     - summary
     - weights
