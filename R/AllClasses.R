@@ -120,7 +120,7 @@ setClass("EL",
 #' @slot optim A list with the following optimization results:
 #'   * `par` A numeric vector of the parameter value that minimizes the
 #'   empirical likelihood subject to the constraints.
-#'   * lambda` A numeric vector of the Lagrange multipliers.
+#'   * `lambda` A numeric vector of the Lagrange multipliers.
 #'   * `iterations` A single integer for the number of iterations
 #'   performed.
 #'   * `convergence` A single logical for the convergence status.

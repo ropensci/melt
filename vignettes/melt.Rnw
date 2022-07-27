@@ -1,0 +1,6 @@
+\documentclass{article}
+\usepackage{pdfpages}
+%\VignetteIndexEntry{melt: Multiple Empirical Likelihood Tests}
+\begin{document}
+\includepdf[pages=-, fitpaper=true]{article.pdf}
+\end{document}

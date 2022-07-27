@@ -3,13 +3,11 @@
 #' A dataset summarizing field experiments result of seed treatments on
 #'   clothianidin concentration.
 #'
-#' @format A data frame with 102 rows and 3 variables:
-#' \describe{
+#' @format A data frame with 102 observations and 3 variables:
 #'   * blk New blocks constructed from original data. The format is 'days post
 #'   planting_original block_year'.
 #'   * trt Seed treatment.
 #'   * clo Log transformed clothianidin concentration (µg).
-#' }
 #' @usage data("clothianidin")
 #'
 #' @details The original data is provided by Alford and Krupke (2017). Only some

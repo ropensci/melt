@@ -29,7 +29,6 @@ Suggests:
     ggplot2,
     knitr,
     microbenchmark,
-    R.rsp,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0),
@@ -40,8 +39,7 @@ LinkingTo:
     Rcpp,
     RcppEigen
 VignetteBuilder: 
-    knitr,
-    R.rsp
+    knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US

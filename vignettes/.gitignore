@@ -1,2 +1,6 @@
+/article.pdf
+*.aux
+*.log
+*.tex
 *.html
 *.R

@@ -42,7 +42,7 @@ where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
 \itemize{
 \item \code{par} A numeric vector of the parameter value that minimizes the
 empirical likelihood subject to the constraints.
-\item lambda` A numeric vector of the Lagrange multipliers.
+\item \code{lambda} A numeric vector of the Lagrange multipliers.
 \item \code{iterations} A single integer for the number of iterations
 performed.
 \item \code{convergence} A single logical for the convergence status.

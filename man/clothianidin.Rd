@@ -5,14 +5,12 @@
 \alias{clothianidin}
 \title{Clothianidin concentration in maize plants}
 \format{
-A data frame with 102 rows and 3 variables:
-\describe{
+A data frame with 102 observations and 3 variables:
 \itemize{
 \item blk New blocks constructed from original data. The format is 'days post
 planting_original block_year'.
 \item trt Seed treatment.
 \item clo Log transformed clothianidin concentration (µg).
-}
 }
 }
 \source{
