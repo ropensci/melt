@@ -25,12 +25,12 @@
 #'   objects that inherit from class \linkS4class{EL} are stored for later use
 #'   with other methods. Defaults to `TRUE`.
 #' @param nthreads A single integer for the number of threads for parallel
-#'   computation via OpenMP (if available). Defaults to the half of the
-#'   available threads. For better performance, it is generally recommended to
-#'   limit the number of threads to the number of physical cores. Note that it
-#'   only applies to the following functions that involve multiple evaluations
-#'   or minimizations: [confint()], [confreg()], [el_lm()], [el_glm()], [eld()],
-#'   and [elt()].
+#'   computation via OpenMP (if available). Defaults to half the available
+#'   threads. For better performance, it is generally recommended in most
+#'   platforms to limit the number of threads to the number of physical cores.
+#'   Note that it applies to the following functions that involve multiple
+#'   evaluations or optimizations: [confint()], [confreg()], [el_lm()],
+#'   [el_glm()], [eld()], and [elt()].
 #' @param seed A single integer for the seed for random number generation. It
 #'   only applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to a
 #'   random integer generated from 1 to the maximum integer supported by \R on

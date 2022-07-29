@@ -51,12 +51,12 @@ objects that inherit from class \linkS4class{EL} are stored for later use
 with other methods. Defaults to \code{TRUE}.}
 
 \item{nthreads}{A single integer for the number of threads for parallel
-computation via OpenMP (if available). Defaults to the half of the
-available threads. For better performance, it is generally recommended to
-limit the number of threads to the number of physical cores. Note that it
-only applies to the following functions that involve multiple evaluations
-or minimizations: \code{\link[=confint]{confint()}}, \code{\link[=confreg]{confreg()}}, \code{\link[=el_lm]{el_lm()}}, \code{\link[=el_glm]{el_glm()}}, \code{\link[=eld]{eld()}},
-and \code{\link[=elt]{elt()}}.}
+computation via OpenMP (if available). Defaults to half the available
+threads. For better performance, it is generally recommended in most
+platforms to limit the number of threads to the number of physical cores.
+Note that it applies to the following functions that involve multiple
+evaluations or optimizations: \code{\link[=confint]{confint()}}, \code{\link[=confreg]{confreg()}}, \code{\link[=el_lm]{el_lm()}},
+\code{\link[=el_glm]{el_glm()}}, \code{\link[=eld]{eld()}}, and \code{\link[=elt]{elt()}}.}
 
 \item{seed}{A single integer for the seed for random number generation. It
 only applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to a

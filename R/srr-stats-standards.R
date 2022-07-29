@@ -7,7 +7,7 @@
 #' standards remain somewhere within your code.
 #' (These comments may be deleted at any time.)
 #'
-#' @srrstatsVerbose TRUE
+#' @srrstatsVerbose FALSE
 #'
 #' @srrstats {G1.2} Life cycle statement is included in
 #'   `.github/CONTRIBUTING.md`.

@@ -37,8 +37,8 @@ setMethod("elt", "EL", function(object,
     cal <- calibrate(calibrate, alpha, out$statistic, p, par, object, control)
     return(new("ELT",
       optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
-      statistic = out$statistic, cv = cal["cv"], pval = cal["pval"],
-      calibrate = calibrate
+      statistic = out$statistic, cv = unname(cal["cv"]),
+      pval = unname(cal["pval"]), calibrate = calibrate
     ))
   }
   # Proceed with chi-square calibration for non-NULL `lhs`
