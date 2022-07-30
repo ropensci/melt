@@ -37,9 +37,11 @@ reference:
     - confint
     - confreg
     - conv
+    - critVal
     - eld
     - elmt
     - elt
+    - getDF
     - getOptim
     - getSigTests
     - logL
@@ -48,6 +50,6 @@ reference:
     - nobs
     - plot
     - print
-    - pval
+    - pVal
     - summary
     - weights

@@ -3,7 +3,7 @@
 \name{logLik}
 \alias{logLik}
 \alias{logLik,EL-method}
-\title{Empirical log-likelihood}
+\title{Maximum empirical log-likelihood}
 \usage{
 \S4method{logLik}{EL}(object, ...)
 }

@@ -36,15 +36,12 @@ par <- 0
 el_mean(x, par)
 
 ## Vector mean
-x <- matrix(rnorm(100), ncol = 2)
-par <- c(0, 0)
-el_mean(x, par)
+data("faithful")
+el_mean(faithful, par = c(3.5, 70))
 
 ## Weighted data
-x <- matrix(rnorm(100), ncol = 2)
-par <- c(0, 0)
-w <- rep(c(1, 2), each = 25)
-el_mean(x, par, w)
+w <- rep(c(1, 2), each = nrow(faithful) / 2)
+el_mean(faithful, par = c(3.5, 70), weights = w)
 }
 \references{
 Owen A (1990).

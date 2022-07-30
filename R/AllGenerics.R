@@ -331,6 +331,22 @@ setGeneric("elt", function(object,
 })
 
 
+#' Degrees of freedom
+#'
+#' Extracts degrees of freedom from a model.
+#'
+#' @param object An object that inherit from \linkS4class{EL} or
+#'   \linkS4class{ELT}.
+#' @return A single integer.
+#' @usage NULL
+#' @examples
+#' data("faithful")
+#' fit <- el_mean(faithful, par = c(3.5, 70))
+#' getDF(fit)
+#' @exportMethod getDF
+setGeneric("getDF", function(object) standardGeneric("getDF"))
+
+
 #' Optimization results
 #'
 #' Extracts optimization results from a model.
@@ -390,7 +406,7 @@ setGeneric("getSigTests", function(object) standardGeneric("getSigTests"))
 setGeneric("logL", function(object, ...) standardGeneric("logL"))
 
 
-#' Empirical log-likelihood
+#' Maximum empirical log-likelihood
 #'
 #' Extracts empirical log-likelihood from a model evaluated at the estimated
 #'   coefficients.
