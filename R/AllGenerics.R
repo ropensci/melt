@@ -114,6 +114,26 @@ setGeneric("confreg", function(object,
 setGeneric("conv", function(object, ...) standardGeneric("conv"))
 
 
+#' Critical value
+#'
+#' Extracts critical value from a model.
+#'
+#' @param object An object that inherit from \linkS4class{ELT} or
+#'   \linkS4class{ELMT}.
+#' @param ... Further arguments passed to methods.
+#' @return A single numeric.
+#' @usage NULL
+#' @examples
+#' ## F-calibrated critical value
+#' set.seed(533414)
+#' x <- rnorm(100)
+#' fit <- el_mean(x, 0)
+#' elt <- elt(fit, rhs = 0.3, calibrate = "f")
+#' critVal(elt)
+#' @exportMethod critVal
+setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
+
+
 #' Empirical likelihood displacement
 #'
 #' Computes empirical likelihood displacement for model diagnostics and outlier
@@ -406,7 +426,7 @@ setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 
 #' Number of observations in a model
 #'
-#' Extracts the number of observations from a model.
+#' Extracts number of observations from a model.
 #'
 #' @param object An object that inherit from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
@@ -464,22 +484,22 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 setGeneric("print", function(x, ...) standardGeneric("print"))
 
 
-#' \eqn{p}-value methods
+#' \eqn{p}-value
 #'
-#' Extracts the \eqn{p}-value from a model.
+#' Extracts \eqn{p}-value from a model.
 #'
 #' @param object An object that inherit from \linkS4class{EL},
 #'   \linkS4class{ELT}, or \linkS4class{ELMT}.
 #' @param ... Further arguments passed to methods.
-#' @return The form of the value returned by [pval()] depends on the class of
+#' @return The form of the value returned by [pVal()] depends on the class of
 #'   its argument.
 #' @usage NULL
 #' @examples
 #' data("precip")
 #' fit <- el_mean(precip, par = 40)
-#' pval(fit)
-#' @exportMethod pval
-setGeneric("pval", function(object, ...) standardGeneric("pval"))
+#' pVal(fit)
+#' @exportMethod pVal
+setGeneric("pVal", function(object, ...) standardGeneric("pVal"))
 
 
 #' Summary methods

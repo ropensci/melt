@@ -364,9 +364,9 @@ test_that("Noise susceptibility tests.", {
   fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   lhs <- list(matrix(c(1, 33, 0), nrow = 1), matrix(c(0, 1, -100), nrow = 1))
   set.seed(5246356)
-  cv <- elmt(fit, lhs = lhs)@cv
+  cv <- critVal(elmt(fit, lhs = lhs))
   set.seed(195646)
-  cv2 <- elmt(fit, lhs = lhs)@cv
+  cv2 <- critVal(elmt(fit, lhs = lhs))
   expect_equal(cv, cv2, tolerance = 1e-02)
 })
 

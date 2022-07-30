@@ -1,6 +1,6 @@
 # melt 1.6.0.9000 (development version)
 ### NEW FEATURES
-* New accessor methods added (`getOptim()`, `getSigTests()`, `logL()`, `logLR()`, and `pval()`).
+* New accessor methods added (`critVal()`, `getOptim()`, `getSigTests()`, `logL()`, `logLR()`, and `pVal()`).
 
 * `conv()` is applicable to a `SummaryLM` object.
 

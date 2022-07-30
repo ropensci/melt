@@ -241,13 +241,14 @@ CEL::CEL(const std::string method,
     }
 
     // update
-    const double step = (par - par_tmp).norm();
+    const double s = (par - par_tmp).norm();
+    const double d = par.norm();
     par = std::move(par_tmp);
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
     if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol ||
-        step < tol * par.norm() + tol * tol)
+        s < tol * d + tol * tol)
     {
       conv = true;
     }

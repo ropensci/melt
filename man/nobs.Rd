@@ -16,7 +16,7 @@
 A single integer.
 }
 \description{
-Extracts the number of observations from a model.
+Extracts number of observations from a model.
 }
 \examples{
 data("precip")
