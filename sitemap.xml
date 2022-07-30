@@ -79,6 +79,9 @@
     <loc>https://markean.github.io/melt/reference/conv.html</loc>
   </url>
   <url>
+    <loc>https://markean.github.io/melt/reference/critVal.html</loc>
+  </url>
+  <url>
     <loc>https://markean.github.io/melt/reference/el_control.html</loc>
   </url>
   <url>
@@ -106,6 +109,9 @@
     <loc>https://markean.github.io/melt/reference/elt.html</loc>
   </url>
   <url>
+    <loc>https://markean.github.io/melt/reference/getDF.html</loc>
+  </url>
+  <url>
     <loc>https://markean.github.io/melt/reference/getOptim.html</loc>
   </url>
   <url>
@@ -130,13 +136,13 @@
     <loc>https://markean.github.io/melt/reference/nobs.html</loc>
   </url>
   <url>
+    <loc>https://markean.github.io/melt/reference/pVal.html</loc>
+  </url>
+  <url>
     <loc>https://markean.github.io/melt/reference/plot.html</loc>
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/print.html</loc>
-  </url>
-  <url>
-    <loc>https://markean.github.io/melt/reference/pval.html</loc>
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/summary.html</loc>
