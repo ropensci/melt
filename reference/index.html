@@ -24,15 +24,13 @@
      
   </a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../articles/model.html">Get started</a>
-</li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/model.html">Model fitting</a>
     <a class="dropdown-item" href="../articles/performance.html">Peformance</a>
   </div>
 </li>
@@ -171,22 +169,6 @@
         </dt>
         <dd>logLikEL class</dd>
       </dl></div><div class="section level2">
-      <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="clothianidin.html">clothianidin</a></code> 
-        </dt>
-        <dd>Clothianidin concentration in maize plants</dd>
-      </dl></div><div class="section level2">
       <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
       
       
@@ -198,11 +180,6 @@
       
 
       <dl><dt>
-          
-          <code><a href="coef.html">coef(<i>&lt;EL&gt;</i>)</a></code> 
-        </dt>
-        <dd>Model coefficients</dd>
-      </dl><dl><dt>
           
           <code><a href="confint.html">confint(<i>&lt;EL&gt;</i>)</a></code> <code><a href="confint.html">confint(<i>&lt;SD&gt;</i>)</a></code> 
         </dt>
@@ -217,11 +194,6 @@
           <code><a href="conv.html">conv(<i>&lt;EL&gt;</i>)</a></code> <code><a href="conv.html">conv(<i>&lt;CEL&gt;</i>)</a></code> <code><a href="conv.html">conv(<i>&lt;SummaryLM&gt;</i>)</a></code> <code><a href="conv.html">conv(<i>&lt;ELT&gt;</i>)</a></code> 
         </dt>
         <dd>Convergence check</dd>
-      </dl><dl><dt>
-          
-          <code><a href="critVal.html">critVal(<i>&lt;ELT&gt;</i>)</a></code> <code><a href="critVal.html">critVal(<i>&lt;ELMT&gt;</i>)</a></code> 
-        </dt>
-        <dd>Critical value</dd>
       </dl><dl><dt>
           
           <code><a href="eld.html">eld(<i>&lt;EL&gt;</i>)</a></code> <code><a href="eld.html">eld(<i>&lt;GLM&gt;</i>)</a></code> 
@@ -239,39 +211,9 @@
         <dd>Empirical likelihood test</dd>
       </dl><dl><dt>
           
-          <code><a href="getDF.html">getDF(<i>&lt;EL&gt;</i>)</a></code> 
-        </dt>
-        <dd>Degrees of freedom</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getOptim.html">getOptim(<i>&lt;EL&gt;</i>)</a></code> <code><a href="getOptim.html">getOptim(<i>&lt;ELT&gt;</i>)</a></code> 
-        </dt>
-        <dd>Optimization results</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getSigTests.html">getSigTests(<i>&lt;LM&gt;</i>)</a></code> <code><a href="getSigTests.html">getSigTests(<i>&lt;SummaryLM&gt;</i>)</a></code> 
-        </dt>
-        <dd>Significance tests</dd>
-      </dl><dl><dt>
-          
-          <code><a href="logL.html">logL(<i>&lt;EL&gt;</i>)</a></code> <code><a href="logL.html">logL(<i>&lt;ELT&gt;</i>)</a></code> 
-        </dt>
-        <dd>Empirical log-likelihood</dd>
-      </dl><dl><dt>
-          
           <code><a href="logLik.html">logLik(<i>&lt;EL&gt;</i>)</a></code> 
         </dt>
         <dd>Maximum empirical log-likelihood</dd>
-      </dl><dl><dt>
-          
-          <code><a href="logLR.html">logLR(<i>&lt;EL&gt;</i>)</a></code> <code><a href="logLR.html">logLR(<i>&lt;ELT&gt;</i>)</a></code> 
-        </dt>
-        <dd>Empirical log-likelihood ratio</dd>
-      </dl><dl><dt>
-          
-          <code><a href="nobs.html">nobs(<i>&lt;EL&gt;</i>)</a></code> 
-        </dt>
-        <dd>Number of observations in a model</dd>
       </dl><dl><dt>
           
           <code><a href="plot.html">plot(<i>&lt;ConfregEL&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;ELD&gt;</i>)</a></code> 
@@ -284,19 +226,91 @@
         <dd>Print methods</dd>
       </dl><dl><dt>
           
+          <code><a href="summary.html">summary(<i>&lt;LM&gt;</i>)</a></code> 
+        </dt>
+        <dd>Summary methods</dd>
+      </dl></div><div class="section level2">
+      <h2 id="accessors">Accessors<a class="anchor" aria-label="anchor" href="#accessors"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="chisq.html">chisq(<i>&lt;EL&gt;</i>)</a></code> <code><a href="chisq.html">chisq(<i>&lt;ELT&gt;</i>)</a></code> <code><a href="chisq.html">chisq(<i>&lt;ELMT&gt;</i>)</a></code> <code><a href="chisq.html">chisq(<i>&lt;SummaryLM&gt;</i>)</a></code> 
+        </dt>
+        <dd>Chi-square statistic</dd>
+      </dl><dl><dt>
+          
+          <code><a href="coef.html">coef(<i>&lt;EL&gt;</i>)</a></code> 
+        </dt>
+        <dd>Model coefficients</dd>
+      </dl><dl><dt>
+          
+          <code><a href="critVal.html">critVal(<i>&lt;ELT&gt;</i>)</a></code> <code><a href="critVal.html">critVal(<i>&lt;ELMT&gt;</i>)</a></code> 
+        </dt>
+        <dd>Critical value</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getDF.html">getDF(<i>&lt;EL&gt;</i>)</a></code> <code><a href="getDF.html">getDF(<i>&lt;logLikEL&gt;</i>)</a></code> <code><a href="getDF.html">getDF(<i>&lt;SummaryLM&gt;</i>)</a></code> 
+        </dt>
+        <dd>Degrees of freedom</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getOptim.html">getOptim(<i>&lt;EL&gt;</i>)</a></code> <code><a href="getOptim.html">getOptim(<i>&lt;ELT&gt;</i>)</a></code> 
+        </dt>
+        <dd>Optimization results</dd>
+      </dl><dl><dt>
+          
+          <code><a href="logL.html">logL(<i>&lt;EL&gt;</i>)</a></code> <code><a href="logL.html">logL(<i>&lt;ELT&gt;</i>)</a></code> 
+        </dt>
+        <dd>Empirical log-likelihood</dd>
+      </dl><dl><dt>
+          
+          <code><a href="logLR.html">logLR(<i>&lt;EL&gt;</i>)</a></code> <code><a href="logLR.html">logLR(<i>&lt;ELT&gt;</i>)</a></code> 
+        </dt>
+        <dd>Empirical log-likelihood ratio</dd>
+      </dl><dl><dt>
+          
+          <code><a href="nobs.html">nobs(<i>&lt;EL&gt;</i>)</a></code> 
+        </dt>
+        <dd>Number of observations in a model</dd>
+      </dl><dl><dt>
+          
           <code><a href="pVal.html">pVal(<i>&lt;EL&gt;</i>)</a></code> <code><a href="pVal.html">pVal(<i>&lt;ELT&gt;</i>)</a></code> <code><a href="pVal.html">pVal(<i>&lt;ELMT&gt;</i>)</a></code> 
         </dt>
         <dd>\(p\)-value</dd>
       </dl><dl><dt>
           
-          <code><a href="summary.html">summary(<i>&lt;LM&gt;</i>)</a></code> 
+          <code><a href="sigTests.html">sigTests(<i>&lt;LM&gt;</i>)</a></code> <code><a href="sigTests.html">sigTests(<i>&lt;SummaryLM&gt;</i>)</a></code> 
         </dt>
-        <dd>Summary methods</dd>
+        <dd>Significance tests</dd>
       </dl><dl><dt>
           
           <code><a href="weights.html">weights(<i>&lt;EL&gt;</i>)</a></code> 
         </dt>
         <dd>Model weights</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="clothianidin.html">clothianidin</a></code> 
+        </dt>
+        <dd>Clothianidin concentration in maize plants</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

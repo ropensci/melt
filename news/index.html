@@ -25,14 +25,12 @@
   </a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="../articles/model.html">Get started</a>
-</li>
-<li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/model.html">Model fitting</a>
     <a class="dropdown-item" href="../articles/performance.html">Peformance</a>
   </div>
 </li>
@@ -61,13 +59,13 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.0.9000" id="melt-1609000-development-version">melt 1.6.0.9000 (development version)<a class="anchor" aria-label="anchor" href="#melt-1609000-development-version"></a></h2>
-<div class="section level4">
-<h4 id="new-features-1-6-0-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-6-0-9000"></a></h4>
-<ul><li><p>New accessor methods added (<code><a href="../reference/critVal.html">critVal()</a></code>, <code><a href="../reference/getDF.html">getDF()</a></code>, <code><a href="../reference/getOptim.html">getOptim()</a></code>, <code><a href="../reference/getSigTests.html">getSigTests()</a></code>, <code><a href="../reference/logL.html">logL()</a></code>, <code><a href="../reference/logLR.html">logLR()</a></code>, and <code><a href="../reference/pVal.html">pVal()</a></code>).</p></li>
+<div class="section level3">
+<h3 id="new-features-1-6-0-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-6-0-9000"></a></h3>
+<ul><li><p>New accessor methods added (<code><a href="../reference/chisq.html">chisq()</a></code>, <code><a href="../reference/critVal.html">critVal()</a></code>, <code><a href="../reference/getDF.html">getDF()</a></code>, <code><a href="../reference/getOptim.html">getOptim()</a></code>, <code><a href="../reference/sigTests.html">sigTests()</a></code>, <code><a href="../reference/logL.html">logL()</a></code>, and <code><a href="../reference/pVal.html">pVal()</a></code>).</p></li>
 <li><p><code><a href="../reference/conv.html">conv()</a></code> is applicable to a <code>SummaryLM</code> object.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="minor-improvements-1-6-0-9000">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0-9000"></a></h4>
+<div class="section level3">
+<h3 id="minor-improvements-1-6-0-9000">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0-9000"></a></h3>
 <ul><li><p><code>p.value</code> returned by <code><a href="../reference/el_eval.html">el_eval()</a></code> is renamed to <code>pval</code> for consistency with other functions.</p></li>
 <li><p><code><a href="../reference/print.html">print()</a></code> for <code>LM</code> and <code>SummaryLM</code> shows which type of EL optimization is performed.</p></li>
 <li><p><code>ConfregEL</code> inherits from <code>matrix</code>. <code>ELD</code> and <code>logLikEL</code> inherit from <code>numeric</code>.</p></li>
@@ -75,14 +73,14 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.0" id="melt-160">melt 1.6.0<a class="anchor" aria-label="anchor" href="#melt-160"></a></h2><p class="text-muted">CRAN release: 2022-07-10</p>
-<div class="section level4">
-<h4 id="breaking-changes-1-6-0">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-1-6-0"></a></h4>
+<div class="section level3">
+<h3 id="breaking-changes-1-6-0">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-1-6-0"></a></h3>
 <ul><li><p><code><a href="../reference/el_mean.html">el_mean()</a></code> takes arguments in a different order to comply with the ‘tidyverse’ style. It takes the data argument <code>x</code> first, followed by the parameter specification <code>par</code> as <code>el_mean(x, par)</code>.</p></li>
 <li><p><code>lht()</code> is renamed to <code><a href="../reference/elt.html">elt()</a></code>.</p></li>
 <li><p><code>model</code> argument in <code><a href="../reference/el_mean.html">el_mean()</a></code>, <code><a href="../reference/el_lm.html">el_lm()</a></code>, and <code><a href="../reference/el_glm.html">el_glm()</a></code> are removed. Use <code>keep_data</code> in <code><a href="../reference/el_control.html">el_control()</a></code>.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="new-features-1-6-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-6-0"></a></h4>
+<div class="section level3">
+<h3 id="new-features-1-6-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-6-0"></a></h3>
 <ul><li><p>New package dependencies are added (BH, dqrng, and graphics).</p></li>
 <li><p>New <code><a href="../reference/elt.html">elt()</a></code> replaces <code>lht()</code>. It accepts additional arguments <code>alpha</code> and <code>calibrate</code>.</p></li>
 <li><p>New <code><a href="../reference/el_sd.html">el_sd()</a></code> performs empirical likelihood test for the standard deviation.</p></li>
@@ -94,45 +92,45 @@
 <li><p>New <code><a href="../reference/logLR.html">logLR()</a></code> extracts the log empirical likelihood ratio from a model.</p></li>
 <li><p><code><a href="../reference/el_control.html">el_control()</a></code> gains additional arguments <code>verbose</code>, <code>keep_data</code>, <code>seed</code>, <code>b</code>, and <code>m</code>.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="minor-improvements-1-6-0">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0"></a></h4>
+<div class="section level3">
+<h3 id="minor-improvements-1-6-0">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0"></a></h3>
 <ul><li><p><code>cv</code> argument in <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> defaults to <code>NULL</code>. If non-<code>NULL</code>, <code>level</code> is ignored.</p></li>
 <li><p><code>probit</code> link produces more accurate result in <code><a href="../reference/el_glm.html">el_glm()</a></code></p></li>
 <li><p><code><a href="../reference/print.html">print()</a></code> method for an <code>EL</code> object shows whether the data are weighted or not.</p></li>
 <li><p>All row or column names (if any) of input data are preserved in a fitted <code>EL</code> object.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="bug-fixes-1-6-0">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-0"></a></h4>
+<div class="section level3">
+<h3 id="bug-fixes-1-6-0">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-0"></a></h3>
 <ul><li>
 <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> check if the <code>cv</code> argument is compatible with the <code>th</code> value set by <code>control_el()</code>.</li></ul></div>
-<div class="section level4">
-<h4 id="deprecated-and-defunct-1-6-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-6-0"></a></h4>
+<div class="section level3">
+<h3 id="deprecated-and-defunct-1-6-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-6-0"></a></h3>
 <ul><li>
 <code>el_pairwise()</code> and <code>lht()</code> are removed along with the dependency on the RcppProgress package.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.2" id="melt-152">melt 1.5.2<a class="anchor" aria-label="anchor" href="#melt-152"></a></h2><p class="text-muted">CRAN release: 2022-06-15</p>
-<div class="section level4">
-<h4 id="new-features-1-5-2">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-2"></a></h4>
+<div class="section level3">
+<h3 id="new-features-1-5-2">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-2"></a></h3>
 <ul><li><p><code>lht()</code> accepts both numeric vector and matrix for <code>lhs</code> and <code>rhs</code> arguments.</p></li>
 <li><p>OpenMP parallelization is available for <code><a href="../reference/confint.html">confint()</a></code> by specifying <code>nthreads</code> through <code>control</code> argument.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="deprecated-and-defunct-1-5-2">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-2"></a></h4>
+<div class="section level3">
+<h3 id="deprecated-and-defunct-1-5-2">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-2"></a></h3>
 <ul><li><p><code>el_test()</code> is removed.</p></li>
 <li><p><code>el_pairwise()</code> is deprecated and will be removed in a future release.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.1" id="melt-151">melt 1.5.1<a class="anchor" aria-label="anchor" href="#melt-151"></a></h2><p class="text-muted">CRAN release: 2022-05-06</p>
-<div class="section level4">
-<h4 id="bug-fixes-1-5-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-1"></a></h4>
+<div class="section level3">
+<h3 id="bug-fixes-1-5-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-1"></a></h3>
 <ul><li>Unit test errors are fixed.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.0" id="melt-150">melt 1.5.0<a class="anchor" aria-label="anchor" href="#melt-150"></a></h2><p class="text-muted">CRAN release: 2022-05-03</p>
-<div class="section level4">
-<h4 id="new-features-1-5-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-0"></a></h4>
+<div class="section level3">
+<h3 id="new-features-1-5-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-5-0"></a></h3>
 <ul><li><p>S4 classes, generics, and methods are adopted throughout the package.</p></li>
 <li><p>New <code><a href="../reference/confreg.html">confreg()</a></code> constructs confidence regions.</p></li>
 <li><p>New <code><a href="../reference/eld.html">eld()</a></code> computes empirical likelihood displacement values.</p></li>
@@ -140,49 +138,49 @@
 <li><p>New <code><a href="../reference/el_glm.html">el_glm()</a></code> performs empirical likelihood tests to generalized linear models. More families and link functions will be supported in a future release.</p></li>
 <li><p><code><a href="../reference/confint.html">confint()</a></code> gains <code>cv</code> argument for a user-supplied critical value.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="deprecated-and-defunct-1-5-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-0"></a></h4>
+<div class="section level3">
+<h3 id="deprecated-and-defunct-1-5-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-0"></a></h3>
 <ul><li><p><code>el_aov()</code> is removed.</p></li>
 <li><p><code>el_test()</code> is deprecated and will be removed in a future release.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.0" id="melt-140">melt 1.4.0<a class="anchor" aria-label="anchor" href="#melt-140"></a></h2><p class="text-muted">CRAN release: 2022-04-03</p>
-<div class="section level4">
-<h4 id="new-features-1-4-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-4-0"></a></h4>
+<div class="section level3">
+<h3 id="new-features-1-4-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-4-0"></a></h3>
 <ul><li><p>New <code>lht()</code> performs linear hypothesis testing.</p></li>
 <li><p>New <code><a href="../reference/confint.html">confint()</a></code> constructs confidence intervals.</p></li>
 <li><p>New <code><a href="../reference/logLik.html">logLik()</a></code> extracts empirical log-likelihood.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="deprecated-and-defunct-1-4-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-4-0"></a></h4>
+<div class="section level3">
+<h3 id="deprecated-and-defunct-1-4-0">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-4-0"></a></h3>
 <ul><li>
 <code>el_aov()</code> is deprecated in favor of <code><a href="../reference/el_lm.html">el_lm()</a></code>. It will be removed in a future release.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.3.0" id="melt-130">melt 1.3.0<a class="anchor" aria-label="anchor" href="#melt-130"></a></h2><p class="text-muted">CRAN release: 2022-03-07</p>
-<div class="section level4">
-<h4 id="new-features-1-3-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-3-0"></a></h4>
+<div class="section level3">
+<h3 id="new-features-1-3-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-3-0"></a></h3>
 <ul><li><p><code><a href="../reference/el_eval.html">el_eval()</a></code> is added for direct computation with custom estimating functions.</p></li>
 <li><p><code><a href="../reference/el_mean.html">el_mean()</a></code> and <code><a href="../reference/el_lm.html">el_lm()</a></code> accepts an optional <code>weights</code> argument for weighted EL. Arguments on optimization are now handled by a new <code>control</code> argument. It will be used in other functions in future releases.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.0" id="melt-120">melt 1.2.0<a class="anchor" aria-label="anchor" href="#melt-120"></a></h2><p class="text-muted">CRAN release: 2022-01-30</p>
-<div class="section level4">
-<h4 id="new-features-1-2-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-2-0"></a></h4>
+<div class="section level3">
+<h3 id="new-features-1-2-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-2-0"></a></h3>
 <ul><li>New <code><a href="../reference/el_lm.html">el_lm()</a></code> performs empirical likelihood tests for linear models.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="melt-110">melt 1.1.0<a class="anchor" aria-label="anchor" href="#melt-110"></a></h2><p class="text-muted">CRAN release: 2021-12-22</p>
-<div class="section level4">
-<h4 id="new-features-1-1-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h4>
+<div class="section level3">
+<h3 id="new-features-1-1-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
 <ul><li>New <code>el_aov()</code> performs one-way analysis of variance.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.1" id="melt-101">melt 1.0.1<a class="anchor" aria-label="anchor" href="#melt-101"></a></h2><p class="text-muted">CRAN release: 2021-10-08</p>
-<div class="section level4">
-<h4 id="bug-fixes-1-0-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-1"></a></h4>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-1"></a></h3>
 <ul><li>Header file issues related to OpenMP and C++ array class are fixed.</li></ul></div>
 </div>
     <div class="section level2">

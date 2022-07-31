@@ -64,6 +64,9 @@
     <loc>https://markean.github.io/melt/reference/SummaryLM-class.html</loc>
   </url>
   <url>
+    <loc>https://markean.github.io/melt/reference/chisq.html</loc>
+  </url>
+  <url>
     <loc>https://markean.github.io/melt/reference/clothianidin.html</loc>
   </url>
   <url>
@@ -115,9 +118,6 @@
     <loc>https://markean.github.io/melt/reference/getOptim.html</loc>
   </url>
   <url>
-    <loc>https://markean.github.io/melt/reference/getSigTests.html</loc>
-  </url>
-  <url>
     <loc>https://markean.github.io/melt/reference/index.html</loc>
   </url>
   <url>
@@ -143,6 +143,9 @@
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/print.html</loc>
+  </url>
+  <url>
+    <loc>https://markean.github.io/melt/reference/sigTests.html</loc>
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/summary.html</loc>

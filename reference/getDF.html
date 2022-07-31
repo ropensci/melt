@@ -24,15 +24,13 @@
      
   </a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../articles/model.html">Get started</a>
-</li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/model.html">Model fitting</a>
     <a class="dropdown-item" href="../articles/performance.html">Peformance</a>
   </div>
 </li>
@@ -67,14 +65,20 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for EL</span></span>
+<span><span class="fu">getDF</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for logLikEL</span></span>
+<span><span class="fu">getDF</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SummaryLM</span></span>
 <span><span class="fu">getDF</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>An object that inherit from <a href="EL-class.html">EL</a> or
-<a href="ELT-class.html">ELT</a>.</p></dd>
+<dd><p>An object that inherit from <a href="EL-class.html">EL</a>,
+<a href="ELT-class.html">ELT</a>, <a href="logLikEL-class.html">logLikEL</a>, or <a href="SummaryLM-class.html">SummaryLM</a>.</p></dd>
 
 </dl></div>
     <div class="section level2">
