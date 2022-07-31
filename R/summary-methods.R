@@ -8,7 +8,7 @@ setMethod("summary", "LM", function(object, ...) {
   p <- getNumPar(z)
   if (p == 0L) {
     return(new("SummaryLM",
-      statistic = z@statistic, df = z@df, convergence = conv(z),
+      statistic = chisq(z), df = getDF(z), convergence = conv(z),
       sigTests = matrix(NA_real_, 0L, 3L,
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chis)"))
       ),
@@ -18,11 +18,11 @@ setMethod("summary", "LM", function(object, ...) {
     ))
   }
   new("SummaryLM",
-    statistic = z@statistic, df = z@df, convergence = conv(z),
+    statistic = chisq(z), df = getDF(z), convergence = conv(z),
     sigTests = cbind(
       Estimate = coef(z),
-      Chisq = getSigTests(z)$statistic,
-      `Pr(>Chisq)` = pchisq(getSigTests(z)$statistic,
+      Chisq = sigTests(z)$statistic,
+      `Pr(>Chisq)` = pchisq(sigTests(z)$statistic,
         df = 1L,
         lower.tail = FALSE
       )

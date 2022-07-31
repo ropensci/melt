@@ -3,13 +3,19 @@
 \name{getDF}
 \alias{getDF}
 \alias{getDF,EL-method}
+\alias{getDF,logLikEL-method}
+\alias{getDF,SummaryLM-method}
 \title{Degrees of freedom}
 \usage{
 \S4method{getDF}{EL}(object)
+
+\S4method{getDF}{logLikEL}(object)
+
+\S4method{getDF}{SummaryLM}(object)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL} or
-\linkS4class{ELT}.}
+\item{object}{An object that inherit from \linkS4class{EL},
+\linkS4class{ELT}, \linkS4class{logLikEL}, or \linkS4class{SummaryLM}.}
 }
 \value{
 A single integer.

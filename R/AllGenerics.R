@@ -1,3 +1,22 @@
+#' Chi-square statistic
+#'
+#' Extracts chi-square statistic from a model.
+#'
+#' @param object An object that inherit from \linkS4class{EL},
+#'   \linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.
+#' @param ... Further arguments passed to methods.
+#' @return The form of the value returned by [chisq()] depends on the class of
+#'   its argument.
+#' @seealso [pVal()]
+#' @usage NULL
+#' @examples
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
+#' chisq(fit)
+#' @exportMethod chisq
+setGeneric("chisq", function(object, ...) standardGeneric("chisq"))
+
+
 #' Model coefficients
 #'
 #' Extracts maximum empirical likelihood estimates from a model.
@@ -335,8 +354,8 @@ setGeneric("elt", function(object,
 #'
 #' Extracts degrees of freedom from a model.
 #'
-#' @param object An object that inherit from \linkS4class{EL} or
-#'   \linkS4class{ELT}.
+#' @param object An object that inherit from \linkS4class{EL},
+#'   \linkS4class{ELT}, \linkS4class{logLikEL}, or \linkS4class{SummaryLM}.
 #' @return A single integer.
 #' @usage NULL
 #' @examples
@@ -360,7 +379,7 @@ setGeneric("getDF", function(object) standardGeneric("getDF"))
 #'   * `lambda` A numeric vector of the Lagrange multipliers.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @seealso [getSigTests()]
+#' @seealso [sigTests()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -368,25 +387,6 @@ setGeneric("getDF", function(object) standardGeneric("getDF"))
 #' getOptim(fit)
 #' @exportMethod getOptim
 setGeneric("getOptim", function(object, ...) standardGeneric("getOptim"))
-
-
-#' Significance tests
-#'
-#' Extracts the results of significance tests from a model.
-#'
-#' @param object An object that inherit from \linkS4class{LM} or
-#'   \linkS4class{SummaryLM}.
-#' @return The form of the value returned by [getSigTests()] depends on the
-#'   class of its argument.
-#' @seealso [getOptim()]
-#' @usage NULL
-#' @examples
-#' data("mtcars")
-#' fit <- el_lm(mpg ~ ., data = mtcars)
-#' getSigTests(fit)
-#' getSigTests(summary(fit))
-#' @exportMethod getSigTests
-setGeneric("getSigTests", function(object) standardGeneric("getSigTests"))
 
 
 #' Empirical log-likelihood
@@ -509,6 +509,7 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [pVal()] depends on the class of
 #'   its argument.
+#' @seealso [chisq()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -516,6 +517,26 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' pVal(fit)
 #' @exportMethod pVal
 setGeneric("pVal", function(object, ...) standardGeneric("pVal"))
+
+
+#' Significance tests
+#'
+#' Extracts the results of significance tests from a model.
+#'
+#' @param object An object that inherit from \linkS4class{LM} or
+#'   \linkS4class{SummaryLM}.
+#' @param ... Further arguments passed to methods.
+#' @return The form of the value returned by [sigTests()] depends on the
+#'   class of its argument.
+#' @seealso [getOptim()]
+#' @usage NULL
+#' @examples
+#' data("mtcars")
+#' fit <- el_lm(mpg ~ ., data = mtcars)
+#' sigTests(fit)
+#' sigTests(summary(fit))
+#' @exportMethod sigTests
+setGeneric("sigTests", function(object, ...) standardGeneric("sigTests"))
 
 
 #' Summary methods

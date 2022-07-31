@@ -35,5 +35,5 @@ fit <- el_mean(precip, par = 40)
 getOptim(fit)
 }
 \seealso{
-\code{\link[=getSigTests]{getSigTests()}}
+\code{\link[=sigTests]{sigTests()}}
 }

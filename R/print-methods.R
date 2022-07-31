@@ -17,10 +17,10 @@ setMethod("print", "EL", function(x,
   cat("\n")
 
   out <- character()
-  if (length(x@statistic) != 0L) {
+  if (length(chisq(x)) != 0L) {
     out <- c(
-      out, paste("Chisq:", format.default(x@statistic, digits = digits)),
-      paste("df:", x@df),
+      out, paste("Chisq:", format.default(chisq(x), digits = digits)),
+      paste("df:", getDF(x)),
       paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
     )
   } else {
@@ -28,7 +28,7 @@ setMethod("print", "EL", function(x,
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
 
-  if (length(x@statistic) != 0L) {
+  if (length(chisq(x)) != 0L) {
     cat(
       "\nEL evaluation:",
       if (conv(x)) "converged" else "not converged", "\n"
@@ -56,10 +56,10 @@ setMethod("print", "LM", function(x,
   cat("\n")
 
   out <- character()
-  if (length(x@statistic) != 0L) {
+  if (length(chisq(x)) != 0L) {
     out <- c(
-      out, paste("Chisq:", format.default(x@statistic, digits = digits)),
-      paste("df:", x@df),
+      out, paste("Chisq:", format.default(chisq(x), digits = digits)),
+      paste("df:", getDF(x)),
       paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
     )
   } else {
@@ -67,7 +67,7 @@ setMethod("print", "LM", function(x,
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
 
-  if (length(x@statistic) != 0L) {
+  if (length(chisq(x)) != 0L) {
     if (x@misc$intercept) {
       cat(
         "\nConstrained EL:",
@@ -106,12 +106,12 @@ setMethod(
       cat("\nNo Coefficients\n")
     } else {
       cat("\nCoefficients:\n")
-      coefs <- getSigTests(x)
+      coefs <- sigTests(x)
       if (any(aliased <- x@aliased)) {
         cn <- names(aliased)
         coefs <-
           matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
-        coefs[!aliased, ] <- getSigTests(x)
+        coefs[!aliased, ] <- sigTests(x)
       }
       printCoefmat(coefs,
         digits = digits, signif.stars = signif.stars,
@@ -126,13 +126,13 @@ setMethod(
     }
 
     out <- character()
-    if (length(x@statistic) != 0L) {
+    if (length(chisq(x)) != 0L) {
       out <- c(
         out,
-        paste("Chisq:", format(x@statistic, digits = digits)),
-        paste("df:", x@df),
+        paste("Chisq:", format(chisq(x), digits = digits)),
+        paste("df:", getDF(x)),
         paste("Pr(>Chisq):", format.pval(
-          pchisq(x@statistic, x@df, lower.tail = FALSE),
+          pchisq(chisq(x), getDF(x), lower.tail = FALSE),
           digits = digits
         ))
       )
@@ -141,7 +141,7 @@ setMethod(
     }
     cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
 
-    if (length(x@statistic) != 0L) {
+    if (length(chisq(x)) != 0L) {
       if (x@intercept) {
         cat(
           "\nConstrained EL:",
@@ -167,7 +167,7 @@ setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
   cat("'Empirical log Lik.' ", paste(format(getDataPart(x), digits = digits),
     collapse = ", "
   ),
-  " (df=", format(x@df), ")\n",
+  " (df=", format(getDF(x)), ")\n",
   sep = ""
   )
   invisible(x)
@@ -190,7 +190,7 @@ setMethod("print", "ELMT", function(x,
   cat("Hypotheses:\n")
   out <- data.frame(
     row.names = seq_along(pVal(x)),
-    Chisq = x@statistic,
+    Chisq = chisq(x),
     p.adj = pVal(x)
   )
   printCoefmat(out,
@@ -221,7 +221,7 @@ setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
   cat(strwrap(paste(out, collapse = ", ")), "\n\n")
   out2 <- character()
   out2 <- c(
-    out2, paste("Statistic:", format.default(x@statistic, digits = digits)),
+    out2, paste("Statistic:", format.default(chisq(x), digits = digits)),
     paste("Critical value:", format.default(critVal(x), digits = digits))
   )
   cat(strwrap(paste(out2, collapse = ", ")), "\n\n")

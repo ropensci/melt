@@ -16,14 +16,14 @@ test_that("Parallel computation yields the same results (gaussian - log).", {
   )
   fit2 <- el_glm(y ~ ., family = gaussian("log"), data = df)
   expect_equal(getOptim(fit), getOptim(fit2))
-  expect_equal(getSigTests(fit), getSigTests(fit2))
+  expect_equal(sigTests(fit), sigTests(fit2))
   wfit <- el_glm(y ~ .,
     family = gaussian("log"), data = df, weights = w,
     control = el_control(nthreads = 1)
   )
   wfit2 <- el_glm(y ~ ., family = gaussian("log"), data = df, weights = w)
   expect_equal(getOptim(wfit), getOptim(wfit2))
-  expect_equal(getSigTests(wfit), getSigTests(wfit2))
+  expect_equal(sigTests(wfit), sigTests(wfit2))
   lhs <- list(
     matrix(c(0, 0, 2, 1.2), nrow = 1),
     matrix(c(0, 1, 0, -.5), nrow = 1)
@@ -49,14 +49,14 @@ test_that("Parallel computation yields the same results (binomial - logit).", {
   )
   fit2 <- el_glm(y ~ ., family = binomial("logit"), data = df)
   expect_equal(getOptim(fit), getOptim(fit2))
-  expect_equal(getSigTests(fit), getSigTests(fit2))
+  expect_equal(sigTests(fit), sigTests(fit2))
   wfit <- el_glm(y ~ .,
     family = binomial("logit"), data = df, weights = w,
     control = el_control(nthreads = 1)
   )
   wfit2 <- el_glm(y ~ ., family = binomial("logit"), data = df, weights = w)
   expect_equal(getOptim(wfit), getOptim(wfit2))
-  expect_equal(getSigTests(wfit), getSigTests(wfit2))
+  expect_equal(sigTests(wfit), sigTests(wfit2))
 })
 
 test_that("Parallel computation yields the same results (binomial - probit).", {
@@ -77,14 +77,14 @@ test_that("Parallel computation yields the same results (binomial - probit).", {
   )
   fit2 <- el_glm(y ~ ., family = binomial("probit"), data = df)
   expect_equal(getOptim(fit), getOptim(fit2))
-  expect_equal(getSigTests(fit), getSigTests(fit2))
+  expect_equal(sigTests(fit), sigTests(fit2))
   wfit <- el_glm(y ~ .,
     family = binomial("probit"), data = df, weights = w,
     control = el_control(nthreads = 1)
   )
   wfit2 <- el_glm(y ~ ., family = binomial("probit"), data = df, weights = w)
   expect_equal(getOptim(wfit), getOptim(wfit2))
-  expect_equal(getSigTests(wfit), getSigTests(wfit2))
+  expect_equal(sigTests(wfit), sigTests(wfit2))
 })
 
 test_that("Parallel computation yields the same results (binomial - log).", {
@@ -105,14 +105,14 @@ test_that("Parallel computation yields the same results (binomial - log).", {
   )
   fit2 <- el_glm(y ~ ., family = binomial("log"), data = df)
   expect_equal(getOptim(fit), getOptim(fit2))
-  expect_equal(getSigTests(fit), getSigTests(fit2))
+  expect_equal(sigTests(fit), sigTests(fit2))
   wfit <- el_glm(y ~ .,
     family = binomial("log"), data = df, weights = w,
     control = el_control(nthreads = 1)
   )
   wfit2 <- el_glm(y ~ ., family = binomial("log"), data = df, weights = w)
   expect_equal(getOptim(wfit), getOptim(wfit2))
-  expect_equal(getSigTests(wfit), getSigTests(wfit2))
+  expect_equal(sigTests(wfit), sigTests(wfit2))
 })
 
 test_that("Parallel computation yields the same results (poisson - log).", {
@@ -133,14 +133,14 @@ test_that("Parallel computation yields the same results (poisson - log).", {
   )
   fit2 <- el_glm(y ~ ., family = poisson("log"), data = df)
   expect_equal(getOptim(fit), getOptim(fit2))
-  expect_equal(getSigTests(fit), getSigTests(fit2))
+  expect_equal(sigTests(fit), sigTests(fit2))
   wfit <- el_glm(y ~ .,
     family = poisson("log"), data = df, weights = w,
     control = el_control(nthreads = 1)
   )
   wfit2 <- el_glm(y ~ ., family = poisson("log"), data = df, weights = w)
   expect_equal(getOptim(wfit), getOptim(wfit2))
-  expect_equal(getSigTests(wfit), getSigTests(wfit2))
+  expect_equal(sigTests(wfit), sigTests(wfit2))
 })
 
 test_that(
@@ -163,14 +163,14 @@ test_that(
     )
     fit2 <- el_glm(y ~ ., family = poisson("identity"), data = df)
     expect_equal(getOptim(fit), getOptim(fit2))
-    expect_equal(getSigTests(fit), getSigTests(fit2))
+    expect_equal(sigTests(fit), sigTests(fit2))
     wfit <- el_glm(y ~ .,
       family = poisson("identity"), data = df, weights = w,
       control = el_control(nthreads = 1)
     )
     wfit2 <- el_glm(y ~ ., family = poisson("identity"), data = df, weights = w)
     expect_equal(getOptim(wfit), getOptim(wfit2))
-    expect_equal(getSigTests(wfit), getSigTests(wfit2))
+    expect_equal(sigTests(wfit), sigTests(wfit2))
   }
 )
 
@@ -192,14 +192,14 @@ test_that("Parallel computation yields the same results (poisson - sqrt).", {
   )
   fit2 <- el_glm(y ~ ., family = poisson("sqrt"), data = df)
   expect_equal(getOptim(fit), getOptim(fit2))
-  expect_equal(getSigTests(fit), getSigTests(fit2))
+  expect_equal(sigTests(fit), sigTests(fit2))
   wfit <- el_glm(y ~ .,
     family = poisson("sqrt"), data = df, weights = w,
     control = el_control(nthreads = 1)
   )
   wfit2 <- el_glm(y ~ ., family = poisson("sqrt"), data = df, weights = w)
   expect_equal(getOptim(wfit), getOptim(wfit2))
-  expect_equal(getSigTests(wfit), getSigTests(wfit2))
+  expect_equal(sigTests(wfit), sigTests(wfit2))
 })
 
 #' @srrstats {G5.4, G5.4a, G5.5} We perform correctness tests with two different
@@ -232,9 +232,9 @@ test_that("Correctness tests.", {
     -logLR(el_mean(women, par = c(x, 150)))
   }
   out2 <- optim(60, one_dim_function, method = "Brent", lower = 58, upper = 72)
-  expect_true(out@optim$convergence)
+  expect_true(conv(out))
   expect_identical(out2$convergence, 0L)
-  expect_equal(unname(out@optim$par[1]), out2$par, tolerance = 1e-07)
+  expect_equal(unname(getOptim(out)$par[1]), out2$par, tolerance = 1e-07)
   set.seed(65456)
   n <- 100
   x <- matrix(rnorm(n * 2), ncol = 2)
@@ -244,9 +244,9 @@ test_that("Correctness tests.", {
     -logLR(el_mean(x, par = c(y, 0)))
   }
   out4 <- optim(-2, one_dim_function2, method = "Brent", lower = -4, upper = 4)
-  expect_true(out3@optim$convergence)
+  expect_true(conv(out3))
   expect_identical(out4$convergence, 0L)
-  expect_equal(out3@optim$par[1], out4$par, tolerance = 1e-07)
+  expect_equal(getOptim(out3)$par[1], out4$par, tolerance = 1e-07)
 })
 
 #' @srrstats {RE7.1, RE7.1a} We first simulate a design matrix with fixed
@@ -383,7 +383,7 @@ test_that(
       data = mtcars
     )
     expect_equal(getOptim(fit), getOptim(fit2))
-    expect_equal(getSigTests(fit), getSigTests(fit2))
+    expect_equal(sigTests(fit), sigTests(fit2))
     wfit <- el_glm(mpg ~ disp + hp + wt,
       family = gaussian("inverse"), data = mtcars, weights = gear,
       control = el_control(nthreads = 1)
@@ -393,7 +393,7 @@ test_that(
       data = mtcars, weights = gear
     )
     expect_equal(getOptim(wfit), getOptim(wfit2))
-    expect_equal(getSigTests(wfit), getSigTests(wfit2))
+    expect_equal(sigTests(wfit), sigTests(wfit2))
   }
 )
 

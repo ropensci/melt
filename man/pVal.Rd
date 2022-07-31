@@ -40,3 +40,6 @@ data("precip")
 fit <- el_mean(precip, par = 40)
 pVal(fit)
 }
+\seealso{
+\code{\link[=chisq]{chisq()}}
+}

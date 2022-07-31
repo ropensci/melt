@@ -6,13 +6,13 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
-    - text: "Get started"
-      href: articles/model.html
     - text: "Reference"
       href: reference/index.html
     - text: "Articles"
       href: articles/index.html
       menu:
+      - text: Model fitting
+        href: articles/model.html
       - text: Peformance
         href: articles/performance.html
     - text: "News"
@@ -27,29 +27,33 @@ reference:
     contents:
     - ends_with("-class")
 
-  - title: Data
-    contents:
-    - clothianidin
-
   - title: Methods
     contents:
-    - coef
     - confint
     - confreg
     - conv
-    - critVal
     - eld
     - elmt
     - elt
-    - getDF
-    - getOptim
-    - getSigTests
-    - logL
     - logLik
-    - logLR
-    - nobs
     - plot
     - print
-    - pVal
     - summary
+
+  - title: Accessors
+    contents:
+    - chisq
+    - coef
+    - critVal
+    - getDF
+    - getOptim
+    - logL
+    - logLR
+    - nobs
+    - pVal
+    - sigTests
     - weights
+
+  - title: Data
+    contents:
+    - clothianidin

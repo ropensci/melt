@@ -1,12 +1,12 @@
 ---
-title: "Introduction to melt"
+title: "Model fitting"
 author: Eunseop Kim
 output: 
   rmarkdown::html_vignette:
     fig_width: 7
     fig_height: 5
 vignette: >
-  %\VignetteIndexEntry{Introduction to melt}
+  %\VignetteIndexEntry{Model fitting}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
