@@ -19,6 +19,6 @@ BuildType: Package
 PackageUseDevtools: Yes
 PackageCleanBeforeInstall: No
 PackageInstallArgs: --no-multiarch --with-keep.source
-PackageBuildArgs: --no-build-vignettes --compact-vignettes=both
-PackageCheckArgs: --as-cran --no-tests --ignore-vignettes
+PackageBuildArgs: --compact-vignettes=both
+PackageCheckArgs: --as-cran
 PackageRoxygenize: rd,collate,namespace,vignette
