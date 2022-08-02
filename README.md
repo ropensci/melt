@@ -22,8 +22,7 @@ with empirical likelihood methods. A collection of functions are
 available for regression analysis and hypothesis testing. The core
 computational routines are implemented with the
 [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) C++
-library and
-[RcppEigen](https://cran.r-project.org/web/packages/RcppEigen/index.html)
+library and [RcppEigen](https://cran.r-project.org/package=RcppEigen)
 interface, with OpenMP for parallel computation. Details of the testing
 procedures are given in [Kim, MacEachern, and Peruggia
 (2021)](https://arxiv.org/abs/2112.09206). This work was supported by
