@@ -27,9 +27,10 @@
 #'   and is passed to [glm.fit()].
 #' @param ... Additional arguments to be passed to [glm.control()].
 #' @details The available families and link functions are as follows:
-#'   * `gaussian`: `identity`, `log`, and `inverse`.
-#'   * `bimomial`: `logit`, `probit`, and `log`.
-#'   * `poisson`: `log`, `identity`, and `sqrt`.
+#'   * `gaussian`: `"identity"`, `"log"`, and `"inverse"`.
+#'   * `bimomial`: `"logit"`, `"probit"`, and `"log"`.
+#'   * `poisson`: `"log"`, `"identity"`, and `"sqrt"`.
+#'   * `quasipoisson`: `"log"`.
 #'
 #'   Included in the tests are the overall test with
 #'   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
@@ -142,9 +143,9 @@ el_glm <- function(formula,
     "`el_glm()` does not support grouped data." = (isFALSE(is.matrix(Y)))
   )
   if (is.empty.model(mt)) {
-    X <- matrix(, NROW(Y), 0L)
+    X <- matrix(logical(0), NROW(Y), 0L)
     return(new("GLM",
-      call = cl, terms = mt,
+      family = family, sigTests = NULL, call = cl, terms = mt,
       misc = list(
         formula = formula, offset = NULL, control = glm_control,
         intercept = FALSE, method = "glm.fit", contrasts = attr(X, "contrasts"),
@@ -180,12 +181,25 @@ el_glm <- function(formula,
   p <- ncol(X)
   w <- validate_weights(w, n)
   names(w) <- if (length(w) != 0L) names(Y) else NULL
-  out <- test_GLM(
-    method, mm, fit$coefficients, intercept, control@maxit, control@maxit_l,
-    control@tol, control@tol_l, control@step, control@th, control@nthreads, w
-  )
-  optim <- validate_optim(out$optim)
-  names(optim$par) <- pnames
+  if (grepl("quasi", method)) {
+    class <- "QGLM"
+    dispersion <- sum((fit$weights * fit$residuals^2L)) / fit$df.residual
+    out <- test_QGLM(
+      method, mm, c(fit$coefficients, dispersion), intercept, control@maxit,
+      control@maxit_l, control@tol, control@tol_l, control@step, control@th,
+      control@nthreads, w
+    )
+    optim <- validate_optim(out$optim)
+    names(optim$par) <- c(pnames, "phi")
+  } else {
+    class <- "GLM"
+    out <- test_GLM(
+      method, mm, fit$coefficients, intercept, control@maxit, control@maxit_l,
+      control@tol, control@tol_l, control@step, control@th, control@nthreads, w
+    )
+    optim <- validate_optim(out$optim)
+    names(optim$par) <- pnames
+  }
   df <- if (intercept && p > 1L) p - 1L else p
   pval <- pchisq(out$statistic, df = df, lower.tail = FALSE)
   if (control@verbose) {
@@ -194,12 +208,13 @@ el_glm <- function(formula,
       if (out$optim$convergence) "achieved." else "failed."
     )
   }
-  new("GLM",
-    sigTests = lapply(out$sig_tests, setNames, pnames), call = cl, terms = mt,
+  new(class,
+    family = fit$family, sigTests = lapply(out$sig_tests, setNames, pnames),
+    call = cl, terms = mt,
     misc = list(
-      family = fit$family, iter = fit$iter, converged = fit$converged,
-      boundary = fit$boundary, formula = formula, offset = NULL,
-      control = glm_control, intercept = intercept, method = "glm.fit",
+      iter = fit$iter, converged = fit$converged, boundary = fit$boundary,
+      formula = formula, offset = NULL, control = glm_control,
+      intercept = intercept, method = "glm.fit",
       contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),

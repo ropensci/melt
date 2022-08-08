@@ -28,16 +28,15 @@ setMethod("eld", "GLM", function(object, control = el_control()) {
   }
   y <- mm[, 1L]
   w <- weights(object)
-  glm_family <- object@misc$family
   glm_control <- object@misc$control
   intercept <- object@misc$intercept
   new("ELD", .Data = vapply(seq_len(n), function(i) {
     fit <- suppressWarnings(glm.fit(
       x = x[-i, ], y = y[-i], weights = w[-i], offset = NULL,
-      family = glm_family, control = glm_control, intercept = intercept,
+      family = object@family, control = glm_control, intercept = intercept,
       singular.ok = FALSE
     ))
-    -2 * n * logLR(elt(object, rhs = fit$coefficients, control = control))
+    - 2 * n * logLR(elt(object, rhs = fit$coefficients, control = control))
   }, numeric(1L)))
 })
 

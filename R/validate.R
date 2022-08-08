@@ -274,7 +274,7 @@ validate_weights <- function(weights, n) {
     "`weights` must be all positive." = (all(weights > 0))
   )
   if (length(weights) != n) {
-    stop(gettextf("length of `weights` must be %d.", n, domain = NA))
+    stop(gettextf("Length of `weights` must be %d.", n, domain = NA))
   }
   weights <- (n / sum(weights)) * weights
   weights
@@ -294,7 +294,7 @@ validate_family <- function(family) {
     "gaussian" = {
       if (!any(l == c("identity", "log", "inverse"))) {
         stop(gettextf(
-          "%s family with %s link not supported by `el_glm`.",
+          "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)
         ), domain = NA)
       }
@@ -302,28 +302,28 @@ validate_family <- function(family) {
     "binomial" = {
       if (!any(l == c("logit", "probit", "log"))) {
         stop(gettextf(
-          "%s family with %s link not supported by `el_glm`.",
+          "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)
         ), domain = NA)
       }
     },
-    # "quasibinomial" = {
-    #   if (!any(l == c("logit"))) {
-    #     stop(gettextf(
-    #       "%s family with %s link not supported by `el_glm`.",
-    #       sQuote(f), sQuote(l)
-    #     ), domain = NA)
-    #   }
-    # },
     "poisson" = {
       if (!any(l == c("log", "identity", "sqrt"))) {
         stop(gettextf(
-          "%s family with %s link not supported by `el_glm`.",
+          "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)
         ), domain = NA)
       }
     },
-    stop(gettextf("%s family not supported by `el_glm`.", sQuote(f)),
+    "quasipoisson" = {
+      if (!any(l == c("log"))) {
+        stop(gettextf(
+          "`el_glm()` does not support %s family with %s link.",
+          sQuote(f), sQuote(l)
+        ), domain = NA)
+      }
+    },
+    stop(gettextf("`el_glm()` does not support %s family.", sQuote(f)),
       domain = NA
     )
   )
@@ -481,7 +481,7 @@ validate_rhs <- function(rhs, p) {
 validate_rhs.numeric <- function(rhs, p) {
   stopifnot("`rhs` must be a finite numeric vector." = (all(is.finite(rhs))))
   if (length(rhs) != p) {
-    stop(gettextf("length of `rhs` must be %d.", p, domain = NA))
+    stop(gettextf("Length of `rhs` must be %d.", p, domain = NA))
   }
   rhs
 }
@@ -501,7 +501,7 @@ validate_rhs.matrix <- function(rhs, p) {
       (ncol(rhs) == 1L && all(is.finite(rhs)))
   )
   if (nrow(rhs) != p) {
-    stop(gettextf("length of `rhs` must be %d.", p, domain = NA))
+    stop(gettextf("Length of `rhs` must be %d.", p, domain = NA))
   }
   attr(rhs, "dim") <- NULL
   message("`rhs` is converted to a vector.")
@@ -536,7 +536,7 @@ validate_lhs.numeric <- function(lhs, p) {
     "`lhs` must have full row rank." = (get_rank(lhs) == 1L)
   )
   if (length(lhs) != p) {
-    stop(gettextf("length of `lhs` must be %d.", p, domain = NA))
+    stop(gettextf("Length of `lhs` must be %d.", p, domain = NA))
   }
   matrix(lhs, nrow = 1L)
 }
@@ -761,7 +761,7 @@ validate_lhses.list <- function(lhs, p) {
 #' @noRd
 validate_optim <- function(optim) {
   stopifnot(
-    "NaN/Inf occured the computation." =
+    "NaN/Inf occured during the computation." =
       (isTRUE(is.numeric(optim$lambda) && all(is.finite(optim$lambda))))
   )
   optim

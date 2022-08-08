@@ -142,6 +142,7 @@ setClass("EL",
 setClass("CEL", contains = "EL")
 
 
+setOldClass("terms")
 #' \linkS4class{LM} class
 #'
 #' S4 class for linear models with empirical likelihood. It inherits from
@@ -151,6 +152,8 @@ setClass("CEL", contains = "EL")
 #'   understood in terms of \linkS4class{EL} class since constrained
 #'   optimization is not involved in the overall test.
 #' @slot sigTests A list with the results of significance tests.
+#' @slot call The matched call.
+#' @slot terms The [`terms`] object used.
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
 #'   They are used in other generics and methods.
 #' @aliases LM
@@ -158,18 +161,32 @@ setClass("CEL", contains = "EL")
 #' showClass("LM")
 setClass("LM",
   contains = "CEL",
-  slots = c(sigTests = "list", call = "call", terms = "ANY", misc = "list")
+  slots = c(sigTests = "ANY", call = "call", terms = "terms", misc = "list")
 )
 
+
+setOldClass("family")
 #' \linkS4class{GLM} class
 #'
 #' S4 class for generalized linear models with empirical likelihood. It inherits
 #' from \linkS4class{LM} class.
 #'
+#' @slot family The [`family`] object used.
 #' @aliases GLM
 #' @examples
 #' showClass("GLM")
-setClass("GLM", contains = "LM")
+setClass("GLM", contains = "LM", slots = c(family = "family"))
+
+
+#' \linkS4class{QGLM} class
+#'
+#' S4 class for generalized linear models with empirical likelihood. It inherits
+#' from \linkS4class{GLM} class.
+#'
+#' @aliases QGLM
+#' @examples
+#' showClass("QGLM")
+setClass("QGLM", contains = "GLM")
 
 
 #' \linkS4class{SD} class
@@ -336,5 +353,5 @@ setClass("logLikEL", contains = "numeric", slots = c(df = "integer"))
 setClass("SummaryLM", slots = c(
   statistic = "numeric", df = "integer", convergence = "logical",
   sigTests = "matrix", weighted = "logical", intercept = "logical",
-  na.action = "ANY", call = "ANY", terms = "ANY", aliased = "logical"
+  na.action = "ANY", call = "call", terms = "terms", aliased = "logical"
 ))

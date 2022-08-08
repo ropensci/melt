@@ -80,7 +80,8 @@ EL::set_g_fn(const std::string method)
              {"binomial_log", g_bin_log},
              {"poisson_log", g_poi_log},
              {"poisson_identity", g_poi_identity},
-             {"poisson_sqrt", g_poi_sqrt}}};
+             {"poisson_sqrt", g_poi_sqrt},
+             {"quasipoisson_log", g_qpoi_log}}};
   return g_map[method];
 }
 
@@ -213,6 +214,7 @@ CEL::CEL(const std::string method,
       gamma /= 2;
       if (gamma < DBL_EPSILON)
       {
+        // Rcpp::Rcout << "seffff" << "\n";
         break;
       }
       // propose new parameter
@@ -274,7 +276,8 @@ CEL::set_g_fn(const std::string method)
              {"binomial_log", g_bin_log},
              {"poisson_log", g_poi_log},
              {"poisson_identity", g_poi_identity},
-             {"poisson_sqrt", g_poi_sqrt}}};
+             {"poisson_sqrt", g_poi_sqrt},
+             {"quasipoisson_log", g_qpoi_log}}};
   return g_map[method];
 }
 
@@ -305,7 +308,8 @@ CEL::set_gr_fn(const std::string method)
            {"binomial_log", gr_nloglr_bin_log},
            {"poisson_log", gr_nloglr_poi_log},
            {"poisson_identity", gr_nloglr_poi_identity},
-           {"poisson_sqrt", gr_nloglr_poi_sqrt}}};
+           {"poisson_sqrt", gr_nloglr_poi_sqrt},
+           {"quasipoisson_log", gr_nloglr_qpoi_log}}};
   return gr_map[method];
 }
 

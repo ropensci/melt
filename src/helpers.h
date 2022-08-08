@@ -138,4 +138,14 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd> &l,
                                    const Eigen::Ref<const Eigen::VectorXd> &par,
                                    const Eigen::Ref<const Eigen::ArrayXd> &w,
                                    const bool weighted);
+
+Eigen::MatrixXd g_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                           const Eigen::Ref<const Eigen::VectorXd> &par);
+
+Eigen::VectorXd gr_nloglr_qpoi_log(const Eigen::Ref<const Eigen::VectorXd> &l,
+                                   const Eigen::Ref<const Eigen::MatrixXd> &g,
+                                   const Eigen::Ref<const Eigen::MatrixXd> &x,
+                                   const Eigen::Ref<const Eigen::VectorXd> &par,
+                                   const Eigen::Ref<const Eigen::ArrayXd> &w,
+                                   const bool weighted);
 #endif

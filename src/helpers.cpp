@@ -429,3 +429,62 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd> &l,
   }
   return (xmat.transpose() * (xmat.array().colwise() * c).matrix()) * l;
 }
+
+Eigen::MatrixXd g_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                           const Eigen::Ref<const Eigen::VectorXd> &par)
+{
+  const double n = static_cast<double>(x.rows());
+  const int p = x.cols() - 1;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(p);
+  Eigen::MatrixXd out(x.rows(), p + 1);
+  out.leftCols(p) = (1.0 / phi) * (xmat.array().colwise() *
+                                   (y - log_linkinv(xmat * beta)));
+  out.col(p) = inverse(phi * phi * log_linkinv(xmat * beta)) *
+                   square(y - log_linkinv(xmat * beta)) -
+               1.0 / phi;
+  return out;
+}
+
+Eigen::VectorXd gr_nloglr_qpoi_log(const Eigen::Ref<const Eigen::VectorXd> &l,
+                                   const Eigen::Ref<const Eigen::MatrixXd> &g,
+                                   const Eigen::Ref<const Eigen::MatrixXd> &x,
+                                   const Eigen::Ref<const Eigen::VectorXd> &par,
+                                   const Eigen::Ref<const Eigen::ArrayXd> &w,
+                                   const bool weighted)
+{
+  const int p = x.cols() - 1;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(p);
+
+  Eigen::ArrayXd c(x.rows());
+  if (weighted)
+  {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+  else
+  {
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+  Eigen::ArrayXd c2 =
+      -std::pow(phi, -2) * (c * (2.0 * (y - log_linkinv(xmat * beta)) +
+                                 (inverse(log_linkinv(xmat * beta)) *
+                                  square(y - log_linkinv(xmat * beta)))));
+  Eigen::MatrixXd out(p + 1, p + 1);
+  out.topLeftCorner(p, p) =
+      -(xmat.transpose() *
+        (xmat.array().colwise() * (c * log_linkinv(xmat * par))).matrix());
+  out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c2).colwise().sum();
+  out.topRightCorner(p, 1) =
+      (xmat.array().colwise() * c2).colwise().sum().transpose();
+  out(p, p) =
+      (c * (-2.0 * std::pow(phi, -3) * inverse(log_linkinv(xmat * beta)) *
+            square(y - log_linkinv(xmat * beta))) +
+       std::pow(phi, -2))
+          .sum();
+  return out * l;
+}

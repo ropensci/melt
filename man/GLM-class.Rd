@@ -9,6 +9,12 @@
 S4 class for generalized linear models with empirical likelihood. It inherits
 from \linkS4class{LM} class.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{family}}{The \code{\link{family}} object used.}
+}}
+
 \examples{
 showClass("GLM")
 }

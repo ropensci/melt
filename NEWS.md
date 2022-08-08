@@ -1,5 +1,7 @@
 # melt 1.6.0.9000 (development version)
 ## NEW FEATURES
+* `el_glm()` accepts `quasipoisson` family.
+
 * New accessor methods added (`chisq()`, `critVal()`, `getDF()`, `getOptim()`, `sigTests()`, `logL()`, and `pVal()`).
 
 * `conv()` is applicable to a `SummaryLM` object.

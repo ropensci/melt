@@ -33,6 +33,10 @@ test_LM <- function(x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nt
     .Call(`_melt_test_LM`, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
+test_QGLM <- function(method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
+    .Call(`_melt_test_QGLM`, method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+}
+
 test_hypothesis <- function(method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w) {
     .Call(`_melt_test_hypothesis`, method, par0, x, lhs, rhs, maxit, maxit_l, tol, tol_l, step, th, w)
 }

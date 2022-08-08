@@ -51,11 +51,7 @@ test_that("Invalid `control`.", {
 })
 
 test_that("Empty model.", {
-  optcfg <- el_control(tol = 1e-08, th = 1e+10)
-  fit <- el_glm(wool ~ 0,
-    family = binomial, data = warpbreaks,
-    control = optcfg
-  )
+  fit <- el_glm(wool ~ 0, family = binomial, data = warpbreaks)
   expect_output(print(summary(fit)))
 })
 
