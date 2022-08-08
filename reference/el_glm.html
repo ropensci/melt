@@ -142,9 +142,10 @@ and is passed to <code><a href="https://rdrr.io/r/stats/glm.html" class="externa
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The available families and link functions are as follows:</p><ul><li><p><code>gaussian</code>: <code>identity</code>, <code>log</code>, and <code>inverse</code>.</p></li>
-<li><p><code>bimomial</code>: <code>logit</code>, <code>probit</code>, and <code>log</code>.</p></li>
-<li><p><code>poisson</code>: <code>log</code>, <code>identity</code>, and <code>sqrt</code>.</p></li>
+    <p>The available families and link functions are as follows:</p><ul><li><p><code>gaussian</code>: <code>"identity"</code>, <code>"log"</code>, and <code>"inverse"</code>.</p></li>
+<li><p><code>bimomial</code>: <code>"logit"</code>, <code>"probit"</code>, and <code>"log"</code>.</p></li>
+<li><p><code>poisson</code>: <code>"log"</code>, <code>"identity"</code>, and <code>"sqrt"</code>.</p></li>
+<li><p><code>quasipoisson</code>: <code>"log"</code>.</p></li>
 </ul><p>Included in the tests are the overall test with
 $$H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,$$
 and the tests for each parameter with
