@@ -22,6 +22,10 @@ test_that("Invalid `family`.", {
     family = inverse.gaussian("identity"),
     data = airquality
   ))
+  expect_error(el_glm(carb ~ .,
+    family = quasipoisson("identity"),
+    data = mtcars
+  ))
 })
 
 test_that("Invalid `data`.", {
@@ -99,4 +103,12 @@ test_that("`verbose` == TRUE in `el_control()`.", {
   expect_message(el_glm(wool ~ breaks,
     family = binomial, data = warpbreaks, control = el_control(verbose = TRUE)
   ))
+})
+
+test_that("`family` == `quasipoisson`.", {
+  fit <- el_glm(carb ~ .,
+    family = quasipoisson("log"), data = mtcars,
+    control = el_control(tol = 1e-04, th = 1000)
+  )
+  expect_s4_class(fit, "QGLM")
 })

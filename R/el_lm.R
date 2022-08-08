@@ -170,8 +170,7 @@ el_lm <- function(formula,
   new("LM",
     sigTests = lapply(out$sig_tests, setNames, pnames), call = cl, terms = mt,
     misc = list(
-      intercept = intercept,
-      xlevels = .getXlevels(mt, mf),
+      intercept = intercept, xlevels = .getXlevels(mt, mf),
       na.action = attr(mf, "na.action")
     ),
     optim = optim, logp = setNames(out$logp, names(y)), logl = out$logl,
