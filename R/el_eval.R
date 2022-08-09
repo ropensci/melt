@@ -40,7 +40,6 @@
 #' par <- 0
 #' g <- x - par
 #' el_eval(g, weights = rep(c(1, 2), each = 25))
-#' @importFrom stats pchisq
 #' @export
 el_eval <- function(g, weights = NULL, control = el_control()) {
   mm <- as.matrix(g, rownames.force = TRUE)

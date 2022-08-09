@@ -3,6 +3,7 @@
 \name{elt}
 \alias{elt}
 \alias{elt,EL-method}
+\alias{elt,QGLM-method}
 \alias{elt,SD-method}
 \alias{elt,missing-method}
 \title{Empirical likelihood test}

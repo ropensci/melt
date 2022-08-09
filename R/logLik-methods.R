@@ -10,6 +10,18 @@ setMethod("logLik", "EL", function(object, ...) {
       (!is.null(getDataMatrix(object)))
   )
   out <- elt(object, rhs = coef(object))
-  val <- logL(out)
-  new("logLikEL", .Data = val, df = getNumPar(object))
+  new("logLikEL", .Data = logL(out), df = getNumPar(object))
+})
+
+#' @rdname logLik
+setMethod("logLik", "QGLM", function(object, ...) {
+  if (!missing(...)) {
+    warning("Extra arguments are not supported.")
+  }
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (!is.null(getDataMatrix(object)))
+  )
+  out <- elt(object, rhs = coef(object))
+  new("logLikEL", .Data = logL(out), df = getNumPar(object))
 })

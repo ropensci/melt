@@ -23,7 +23,8 @@ set_g_fn(const std::string method)
              {"binomial_log", g_bin_log},
              {"poisson_log", g_poi_log},
              {"poisson_identity", g_poi_identity},
-             {"poisson_sqrt", g_poi_sqrt}}};
+             {"poisson_sqrt", g_poi_sqrt},
+             {"quasipoisson_log", g_qpoi_log}}};
   return g_map[method];
 }
 

@@ -13,6 +13,8 @@ from \linkS4class{LM} class.
 
 \describe{
 \item{\code{family}}{The \code{\link{family}} object used.}
+
+\item{\code{dispersion}}{A single numeric for the estimated dispersion parameter.}
 }}
 
 \examples{

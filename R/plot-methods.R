@@ -1,7 +1,5 @@
 #' @describeIn plot Plots a two-dimensional confidence region for model
 #'   parameters.
-#' @importFrom graphics points polygon plot.default text
-#' @importFrom methods getDataPart
 #' @srrstats {RE6.0} `plot` method is available for an `ConfregEL` object that
 #'   is returned by the `confreg()` method.
 setMethod("plot", "ConfregEL", function(x, ...) {
@@ -34,8 +32,6 @@ setMethod("plot", "ConfregEL", function(x, ...) {
 
 #' @describeIn plot Plots empirical likelihood displacement values versus
 #'   observation index.
-#' @importFrom graphics polygon plot.default
-#' @importFrom methods getDataPart
 #' @srrstats {RE6.0} `plot` method is available for an `ELD` object that is
 #'   returned by the `eld()` method.
 setMethod("plot", "ELD", function(x, ...) {

@@ -37,9 +37,9 @@ Rcpp::NumericVector compute_confidence_region(
   lhs(1, idx[1] - 1) = 1;
   // estimates
   const Eigen::Vector2d est{par0(idx[0] - 1), par0(idx[1] - 1)};
-#ifdef _OPENMP
-#pragma omp parallel for num_threads(nthreads)
-#endif
+  #ifdef _OPENMP
+  #pragma omp parallel for num_threads(nthreads)
+  #endif
   for (int i = 0; i < circ.cols(); ++i)
   {
     const Eigen::Vector2d direction = circ.col(i);
@@ -48,9 +48,7 @@ Rcpp::NumericVector compute_confidence_region(
     double lower_ub = 0;
     // lower bound for lower endpoint
     while (2.0 * CEL(method, par0, x, lhs, est + lower_lb * direction, maxit,
-                     maxit_l, tol, tol_l, gamma, test_th, w)
-                     .nllr <=
-           cv)
+                     maxit_l, tol, tol_l, gamma, test_th, w).nllr <= cv)
     {
       lower_ub = lower_lb;
       lower_lb -= 1.0;
@@ -60,9 +58,7 @@ Rcpp::NumericVector compute_confidence_region(
     {
       const double avg = (lower_lb + lower_ub) / 2.0;
       if (2.0 * CEL(method, par0, x, lhs, est + avg * direction, maxit, maxit_l,
-                    tol, tol_l, gamma, test_th, w)
-                    .nllr >
-          cv)
+                    tol, tol_l, gamma, test_th, w).nllr > cv)
       {
         lower_lb = avg;
       }

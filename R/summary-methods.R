@@ -1,6 +1,5 @@
 #' @describeIn summary Summarizes the results of the overall model test and the
 #'   significance tests for coefficients.
-#' @importFrom stats pchisq
 #' @srrstats {RE4.18} `summary` method is applicable to a `LM` object returned
 #'   by `el_lm()` or `el_glm()`.
 setMethod("summary", "LM", function(object, ...) {

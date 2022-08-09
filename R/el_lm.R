@@ -60,8 +60,6 @@
 #' df[1, 2] <- NA
 #' fit3 <- el_lm(y ~ x, df, na.action = na.omit)
 #' summary(fit3)
-#' @importFrom stats .getXlevels is.empty.model lm.fit lm.wfit model.matrix
-#'   model.response model.weights pchisq setNames
 #' @export
 #' @srrstats {G2.14, G2.14a, RE2.1, RE2.2} Missing values are handled by the
 #'   `na.action` argument via `na.cation()`. `Inf` values are not allowed and

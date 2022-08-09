@@ -87,7 +87,6 @@ setMethod("show", "LM", function(object) print(object))
 
 
 #' @rdname print
-#' @importFrom stats naprint pchisq printCoefmat
 #' @srrstats {G2.14b} `naprint()` is used to print messages if there are missing
 #'   values.
 #' @srrstats {RE4.17} `print` method is applicable to a `SummaryLM` object
@@ -162,7 +161,6 @@ setMethod("show", "SummaryLM", function(object) print(object))
 
 
 #' @rdname print
-#' @importFrom methods getDataPart
 setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
   cat("'Empirical log Lik.' ", paste(format(getDataPart(x), digits = digits),
     collapse = ", "

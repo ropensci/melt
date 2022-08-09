@@ -1,5 +1,4 @@
 #' @rdname eld
-#' @importFrom methods is
 setMethod("eld", "EL", function(object, control = el_control()) {
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
@@ -13,7 +12,6 @@ setMethod("eld", "EL", function(object, control = el_control()) {
 })
 
 #' @rdname eld
-#' @importFrom methods is
 setMethod("eld", "GLM", function(object, control = el_control()) {
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =

@@ -1,4 +1,3 @@
-#' @importFrom methods is
 #' @rdname elmt
 setMethod("elmt", "EL", function(object,
                                  rhs = NULL,

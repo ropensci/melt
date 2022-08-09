@@ -19,8 +19,6 @@
 #' x <- rnorm(100, mean = -2, sd = 3)
 #' w <- rep(c(1, 2), each = 50)
 #' el_sd(x, mean = -2, sd = 3.5, weights = w)
-#' @importFrom methods is new
-#' @importFrom stats pchisq setNames
 #' @export
 el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
   nm <- names(x)

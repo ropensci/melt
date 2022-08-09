@@ -172,21 +172,14 @@ setOldClass("family")
 #' from \linkS4class{LM} class.
 #'
 #' @slot family The [`family`] object used.
+#' @slot dispersion A single numeric for the estimated dispersion parameter.
 #' @aliases GLM
 #' @examples
 #' showClass("GLM")
-setClass("GLM", contains = "LM", slots = c(family = "family"))
-
-
-#' \linkS4class{QGLM} class
-#'
-#' S4 class for generalized linear models with empirical likelihood. It inherits
-#' from \linkS4class{GLM} class.
-#'
-#' @aliases QGLM
-#' @examples
-#' showClass("QGLM")
-setClass("QGLM", contains = "GLM")
+setClass("GLM",
+  contains = "LM",
+  slots = c(family = "family", dispersion = "numeric")
+)
 
 
 #' \linkS4class{SD} class
@@ -327,6 +320,17 @@ setClass("ELMT",
 #' @examples
 #' showClass("logLikEL")
 setClass("logLikEL", contains = "numeric", slots = c(df = "integer"))
+
+
+#' \linkS4class{QGLM} class
+#'
+#' S4 class for generalized linear models with empirical likelihood. It inherits
+#' from \linkS4class{GLM} class.
+#'
+#' @aliases QGLM
+#' @examples
+#' showClass("QGLM")
+setClass("QGLM", contains = "GLM")
 
 
 #' \linkS4class{SummaryLM} class

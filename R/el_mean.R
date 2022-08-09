@@ -33,8 +33,6 @@
 #' ## Weighted data
 #' w <- rep(c(1, 2), each = nrow(faithful) / 2)
 #' el_mean(faithful, par = c(3.5, 70), weights = w)
-#' @importFrom methods is new
-#' @importFrom stats pchisq setNames
 #' @export
 #' @srrstats {G2.0, G2.0a} Assertions on lengths of inputs are clarified
 #'   throughout the package documentation.

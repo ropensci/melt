@@ -59,8 +59,6 @@
 #'   na.action = na.omit, start = NULL, etastart = NULL, mustart = NULL
 #' )
 #' summary(fit)
-#' @importFrom stats gaussian glm.fit model.extract model.weights pchisq
-#'   setNames
 #' @export
 #' @srrstats {G2.14, G2.14a, RE2.1, RE2.2} Missing values are handled by the
 #'   `na.action` argument via `na.cation()`. `Inf` values are not allowed and
@@ -143,7 +141,7 @@ el_glm <- function(formula,
     "`el_glm()` does not support grouped data." = (isFALSE(is.matrix(Y)))
   )
   if (is.empty.model(mt)) {
-    X <- matrix(logical(0), NROW(Y), 0L)
+    X <- matrix(numeric(0), NROW(Y), 0L)
     return(new("GLM",
       family = family, sigTests = NULL, call = cl, terms = mt,
       misc = list(
@@ -181,9 +179,19 @@ el_glm <- function(formula,
   p <- ncol(X)
   w <- validate_weights(w, n)
   names(w) <- if (length(w) != 0L) names(Y) else NULL
+  if (fit$family$family %in% c("poisson", "binomial")) {
+    dispersion <- 1L
+  } else {
+    yhat <- fitted(fit)
+    if (length(w) == 0L) {
+      dispersion <- sum((fit$y - yhat)^2L / fit$family$variance(yhat)) / n
+    } else {
+      dispersion <- sum(w * ((fit$y - yhat)^2L / fit$family$variance(yhat))) / n
+    }
+  }
   if (grepl("quasi", method)) {
     class <- "QGLM"
-    dispersion <- sum((fit$weights * fit$residuals^2L)) / fit$df.residual
+    npar <- p + 1L
     out <- test_QGLM(
       method, mm, c(fit$coefficients, dispersion), intercept, control@maxit,
       control@maxit_l, control@tol, control@tol_l, control@step, control@th,
@@ -193,6 +201,7 @@ el_glm <- function(formula,
     names(optim$par) <- c(pnames, "phi")
   } else {
     class <- "GLM"
+    npar <- p
     out <- test_GLM(
       method, mm, fit$coefficients, intercept, control@maxit, control@maxit_l,
       control@tol, control@tol_l, control@step, control@th, control@nthreads, w
@@ -209,8 +218,8 @@ el_glm <- function(formula,
     )
   }
   new(class,
-    family = fit$family, sigTests = lapply(out$sig_tests, setNames, pnames),
-    call = cl, terms = mt,
+    family = fit$family, dispersion = dispersion,
+    sigTests = lapply(out$sig_tests, setNames, pnames), call = cl, terms = mt,
     misc = list(
       iter = fit$iter, converged = fit$converged, boundary = fit$boundary,
       formula = formula, offset = NULL, control = glm_control,
@@ -220,7 +229,8 @@ el_glm <- function(formula,
     ),
     optim = optim, logp = setNames(out$logp, names(Y)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,
-    nobs = n, npar = p, weights = w, data = if (control@keep_data) mm else NULL,
-    coefficients = fit$coefficients, method = method
+    nobs = n, npar = npar, weights = w,
+    data = if (control@keep_data) mm else NULL, coefficients = fit$coefficients,
+    method = method
   )
 }

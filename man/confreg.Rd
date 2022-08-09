@@ -3,9 +3,19 @@
 \name{confreg}
 \alias{confreg}
 \alias{confreg,EL-method}
+\alias{confreg,QGLM-method}
 \title{Confidence region for model parameters}
 \usage{
 \S4method{confreg}{EL}(
+  object,
+  parm,
+  level = 0.95,
+  cv = NULL,
+  npoints = 50L,
+  control = el_control()
+)
+
+\S4method{confreg}{QGLM}(
   object,
   parm,
   level = 0.95,
