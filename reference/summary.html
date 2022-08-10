@@ -65,6 +65,12 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for LM</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GLM</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for QGLM</span></span>
 <span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -83,6 +89,12 @@
     
 <ul><li><p><code>summary(LM)</code>: Summarizes the results of the overall model test and the
 significance tests for coefficients.</p></li>
+<li><p><code>summary(GLM)</code>: Summarizes the results of the overall model test and the
+significance tests for coefficients. The dispersion parameter is extracted
+for display.</p></li>
+<li><p><code>summary(QGLM)</code>: Summarizes the results of the overall model test and the
+significance tests for coefficients. The estimated dispersion parameter is
+extracted for display.</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -100,7 +112,6 @@ significance tests for coefficients.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt            -5.344 439.1     &lt;2e-16 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 439.1, df: 1, Pr(&gt;Chisq): &lt; 2.2e-16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: not converged </span>
