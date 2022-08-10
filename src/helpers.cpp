@@ -471,21 +471,18 @@ Eigen::VectorXd gr_nloglr_qpoi_log(const Eigen::Ref<const Eigen::VectorXd> &l,
   {
     c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
   }
-  Eigen::ArrayXd c2 =
+  const Eigen::ArrayXd c2 =
       -std::pow(phi, -2) * (c * (2.0 * (y - log_linkinv(xmat * beta)) +
-                                 (inverse(log_linkinv(xmat * beta)) *
-                                  square(y - log_linkinv(xmat * beta)))));
+                                 (log_linkinv(-xmat * beta)) *
+                                     square(y - log_linkinv(xmat * beta))));
   Eigen::MatrixXd out(p + 1, p + 1);
   out.topLeftCorner(p, p) =
       -(xmat.transpose() *
-        (xmat.array().colwise() * (c * log_linkinv(xmat * par))).matrix());
+        (xmat.array().colwise() * (c * log_linkinv(xmat * beta))).matrix());
+  out.topRightCorner(p, 1) = Eigen::VectorXd::Zero(p);
   out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c2).colwise().sum();
-  out.topRightCorner(p, 1) =
-      (xmat.array().colwise() * c2).colwise().sum().transpose();
-  out(p, p) =
-      (c * (-2.0 * std::pow(phi, -3) * inverse(log_linkinv(xmat * beta)) *
-            square(y - log_linkinv(xmat * beta))) +
-       std::pow(phi, -2))
-          .sum();
+  out(p, p) = (c * ((-2.0 * std::pow(phi, -3) * log_linkinv(-xmat * beta) *
+                     square(y - log_linkinv(xmat * beta))) +
+                    std::pow(phi, -2))).sum();
   return out * l;
 }

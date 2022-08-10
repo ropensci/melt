@@ -121,6 +121,30 @@ Eigen::MatrixXd w_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd> &x,
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
 
+Eigen::MatrixXd w_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                           const Eigen::Ref<const Eigen::VectorXd> &par)
+{
+  const int p = x.cols() - 1;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::ArrayXd y = x.col(0);
+  const Eigen::MatrixXd xmat = x.rightCols(p);
+  const Eigen::ArrayXd c =
+      -std::pow(phi, -2) *
+      (2.0 * (y - log_linkinv(xmat * beta)) +
+       (log_linkinv(-xmat * beta)) * square(y - log_linkinv(xmat * beta)));
+  Eigen::MatrixXd out(p + 1, p + 1);
+  out.topLeftCorner(p, p) =
+      -(xmat.transpose() *
+        (xmat.array().colwise() * log_linkinv(xmat * beta)).matrix());
+  out.topRightCorner(p, 1) = Eigen::VectorXd::Zero(p);
+  out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c).colwise().sum();
+  out(p, p) = ((-2.0 * std::pow(phi, -3) * log_linkinv(-xmat * beta) *
+                square(y - log_linkinv(xmat * beta))) +
+               std::pow(phi, -2)).sum();
+  return static_cast<double>(x.rows()) * out;
+}
+
 Eigen::MatrixXd dg0_inv(const std::string method,
                         const Eigen::Ref<const Eigen::MatrixXd> &x,
                         const Eigen::Ref<const Eigen::VectorXd> &par)
@@ -138,7 +162,8 @@ Eigen::MatrixXd dg0_inv(const std::string method,
              {"binomial_log", w_bin_log},
              {"poisson_log", w_poi_log},
              {"poisson_identity", w_poi_identity},
-             {"poisson_sqrt", w_poi_sqrt}}};
+             {"poisson_sqrt", w_poi_sqrt},
+             {"quasipoisson_log", w_qpoi_log}}};
   return w_map[method](x, par);
 }
 

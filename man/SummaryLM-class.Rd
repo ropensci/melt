@@ -29,7 +29,7 @@ handling of \code{NA}s.}
 
 \item{\code{call}}{A matched call.}
 
-\item{\code{terms}}{\code{\link{terms}} object used.}
+\item{\code{terms}}{A \code{\link{terms}} object used.}
 
 \item{\code{aliased}}{A named logical vector showing if the original coefficients are
 aliased.}

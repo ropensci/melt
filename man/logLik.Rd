@@ -3,12 +3,9 @@
 \name{logLik}
 \alias{logLik}
 \alias{logLik,EL-method}
-\alias{logLik,QGLM-method}
 \title{Maximum empirical log-likelihood}
 \usage{
 \S4method{logLik}{EL}(object, ...)
-
-\S4method{logLik}{QGLM}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherit from \linkS4class{EL}.}

@@ -5,6 +5,8 @@
 \alias{print,EL-method}
 \alias{print,LM-method}
 \alias{print,SummaryLM-method}
+\alias{print,SummaryGLM-method}
+\alias{print,SummaryQGLM-method}
 \alias{print,logLikEL-method}
 \alias{print,ELMT-method}
 \alias{print,ELT-method}
@@ -21,11 +23,25 @@
   ...
 )
 
+\S4method{print}{SummaryGLM}(
+  x,
+  digits = max(3L, getOption("digits") - 3L),
+  signif.stars = getOption("show.signif.stars"),
+  ...
+)
+
+\S4method{print}{SummaryQGLM}(
+  x,
+  digits = max(3L, getOption("digits") - 3L),
+  signif.stars = getOption("show.signif.stars"),
+  ...
+)
+
 \S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
 
 \S4method{print}{ELMT}(
   x,
-  digits = getOption("digits"),
+  digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"),
   ...
 )

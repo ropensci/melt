@@ -3,6 +3,11 @@ test_that("Invalid `object`.", {
   expect_error(elt(fit, lhs = 1))
   fit2 <- el_lm(mpg ~ 0, data = mtcars)
   expect_error(elt(fit2, lhs = 1))
+  fit3 <- el_glm(gear ~ 0, family = quasipoisson("log"), data = mtcars)
+  expect_error(elt(fit3, rhs = coef(fit3)))
+  fit4 <- el_glm(gear ~ ., family = quasipoisson("log"), data = mtcars)
+  fit4@data <- NULL
+  expect_error(elt(fit4, rhs = coef(fit4)))
 })
 
 test_that("Invalid `rhs` and `lhs`.", {
@@ -30,11 +35,17 @@ test_that("Invalid `calibrate`.", {
   expect_error(elt(fit, rhs = c(1, 1), calibrate = c(1, 2)))
   expect_error(elt(fit, rhs = c(1, 1), calibrate = "error"))
   expect_error(elt(fit, rhs = c(1, 1), calibrate = "f"))
+  fit2 <- el_glm(gear ~ mpg + cyl, family = quasipoisson("log"), data = mtcars)
+  expect_error(elt(fit2, rhs = coef(fit2), calibrate = "f"))
+  expect_error(elt(fit, lhs = c(0, 1, 1), calibrate = "boot"))
+  expect_error(elt(fit, lhs = c(0, 1, 1), calibrate = "f"))
 })
 
 test_that("Invalid `control`.", {
   fit <- el_mean(sleep$extra, par = 0)
   expect_error(elt(fit, lhs = 1, control = list(maxit = 200L)))
+  fit2 <- el_glm(gear ~ ., family = quasipoisson("log"), data = mtcars)
+  expect_error(elt(fit2, rhs = coef(fit2), control = list()))
 })
 
 test_that("When elt == evaluation.", {
@@ -109,5 +120,15 @@ test_that("`SD` class.", {
   out <- elt(fit, rhs = 1)
   out2 <- elt(fit, rhs = 1, lhs = 2)
   expect_s4_class(out, "ELT")
+  expect_s4_class(out2, "ELT")
+})
+
+test_that("`QGLM` class.", {
+  fit <- el_glm(gear ~ mpg + cyl,
+    family = quasipoisson("log"), data = mtcars
+  )
+  out <- elt(fit, rhs = coef(fit))
+  expect_s4_class(out, "ELT")
+  out2 <- elt(fit, lhs = c(0, 1, 1))
   expect_s4_class(out2, "ELT")
 })

@@ -26,9 +26,9 @@ optimization is not involved in the overall test.
 \describe{
 \item{\code{sigTests}}{A list with the results of significance tests.}
 
-\item{\code{call}}{The matched call.}
+\item{\code{call}}{A matched call.}
 
-\item{\code{terms}}{The \code{\link{terms}} object used.}
+\item{\code{terms}}{A \code{\link{terms}} object used.}
 
 \item{\code{misc}}{A list with miscellaneous outputs from a model fitting function.
 They are used in other generics and methods.}

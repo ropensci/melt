@@ -91,9 +91,9 @@ setClass("EL",
 #' \linkS4class{CEL} class
 #'
 #' S4 class for constrained empirical likelihood. It inherits from
-#' \linkS4class{EL} class. Note that the `optim` slot has constrained
-#' optimization results with respect to the parameters, not the Lagrange
-#' multiplier.
+#'   \linkS4class{EL} class. Note that the `optim` slot has constrained
+#'   optimization results with respect to the parameters, not the Lagrange
+#'   multiplier.
 #'
 #' @details Let \eqn{l(\theta)} denote the minus twice the empirical
 #'   log-likelihood ratio function. We consider a linear hypothesis of the form
@@ -146,14 +146,14 @@ setOldClass("terms")
 #' \linkS4class{LM} class
 #'
 #' S4 class for linear models with empirical likelihood. It inherits from
-#' \linkS4class{CEL} class.
+#'   \linkS4class{CEL} class.
 #'
 #' @details If there is no intercept in a model, the `optim` slot need to be
 #'   understood in terms of \linkS4class{EL} class since constrained
 #'   optimization is not involved in the overall test.
 #' @slot sigTests A list with the results of significance tests.
-#' @slot call The matched call.
-#' @slot terms The [`terms`] object used.
+#' @slot call A matched call.
+#' @slot terms A [`terms`] object used.
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
 #'   They are used in other generics and methods.
 #' @aliases LM
@@ -168,10 +168,10 @@ setClass("LM",
 setOldClass("family")
 #' \linkS4class{GLM} class
 #'
-#' S4 class for generalized linear models with empirical likelihood. It inherits
-#' from \linkS4class{LM} class.
+#' S4 class for generalized linear models. It inherits from \linkS4class{LM}
+#'   class.
 #'
-#' @slot family The [`family`] object used.
+#' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
 #' @aliases GLM
 #' @examples
@@ -324,8 +324,8 @@ setClass("logLikEL", contains = "numeric", slots = c(df = "integer"))
 
 #' \linkS4class{QGLM} class
 #'
-#' S4 class for generalized linear models with empirical likelihood. It inherits
-#' from \linkS4class{GLM} class.
+#' S4 class for generalized linear models with quasi-likelihood methods. It
+#'   inherits from \linkS4class{GLM} class.
 #'
 #' @aliases QGLM
 #' @examples
@@ -348,7 +348,7 @@ setClass("QGLM", contains = "GLM")
 #' @slot na.action Information returned by [`model.frame`] on the special
 #'   handling of `NA`s.
 #' @slot call A matched call.
-#' @slot terms [`terms`] object used.
+#' @slot terms A [`terms`] object used.
 #' @slot aliased A named logical vector showing if the original coefficients are
 #'   aliased.
 #' @aliases SummaryLM
@@ -359,3 +359,30 @@ setClass("SummaryLM", slots = c(
   sigTests = "matrix", weighted = "logical", intercept = "logical",
   na.action = "ANY", call = "call", terms = "terms", aliased = "logical"
 ))
+
+
+#' \linkS4class{SummaryGLM} class
+#'
+#' S4 class for a summary of \linkS4class{GLM} objects. It inherits from
+#'   \linkS4class{SummaryLM} class.
+#'
+#' @slot family A [`family`] object used.
+#' @slot dispersion A single numeric for the estimated dispersion parameter.
+#' @aliases SummaryGLM
+#' @examples
+#' showClass("SummaryGLM")
+setClass("SummaryGLM",
+  contains = "SummaryLM",
+  slots = c(family = "family", dispersion = "numeric")
+)
+
+
+#' \linkS4class{SummaryQGLM} class
+#'
+#' S4 class for a summary of \linkS4class{QGLM} objects. It inherits from
+#'   \linkS4class{SummaryGLM} class.
+#'
+#' @aliases SummaryQGLM
+#' @examples
+#' showClass("SummaryQGLM")
+setClass("SummaryQGLM", contains = "SummaryGLM")

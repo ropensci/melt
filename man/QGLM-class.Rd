@@ -6,8 +6,8 @@
 \alias{QGLM}
 \title{\linkS4class{QGLM} class}
 \description{
-S4 class for generalized linear models with empirical likelihood. It inherits
-from \linkS4class{GLM} class.
+S4 class for generalized linear models with quasi-likelihood methods. It
+inherits from \linkS4class{GLM} class.
 }
 \examples{
 showClass("QGLM")

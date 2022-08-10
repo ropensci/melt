@@ -3,9 +3,15 @@
 \name{summary}
 \alias{summary}
 \alias{summary,LM-method}
+\alias{summary,GLM-method}
+\alias{summary,QGLM-method}
 \title{Summary methods}
 \usage{
 \S4method{summary}{LM}(object, ...)
+
+\S4method{summary}{GLM}(object, ...)
+
+\S4method{summary}{QGLM}(object, ...)
 }
 \arguments{
 \item{object}{An object to be summarized.}
@@ -19,6 +25,14 @@ Provides summary methods for objects.
 \itemize{
 \item \code{summary(LM)}: Summarizes the results of the overall model test and the
 significance tests for coefficients.
+
+\item \code{summary(GLM)}: Summarizes the results of the overall model test and the
+significance tests for coefficients. The dispersion parameter is extracted
+for display.
+
+\item \code{summary(QGLM)}: Summarizes the results of the overall model test and the
+significance tests for coefficients. The estimated dispersion parameter is
+extracted for display.
 
 }}
 \examples{

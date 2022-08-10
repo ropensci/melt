@@ -57,6 +57,8 @@ test_that("Invalid `control`.", {
 test_that("Empty model.", {
   fit <- el_glm(wool ~ 0, family = binomial, data = warpbreaks)
   expect_output(print(summary(fit)))
+  fit2 <- el_glm(gear ~ 0, family = quasipoisson("log"), data = mtcars)
+  expect_output(print(summary(fit2)))
 })
 
 test_that("Probabilities add up to 1.", {

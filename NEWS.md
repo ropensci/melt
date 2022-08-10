@@ -55,9 +55,6 @@
 ## BUG FIXES
 * `confint()` and `confreg()` check if the `cv` argument is compatible with the `th` value set by `control_el()`.
 
-## DEPRECATED AND DEFUNCT
-* `el_pairwise()` and `lht()` are removed along with the dependency on the RcppProgress package.
-
 
 # melt 1.5.2
 ## NEW FEATURES

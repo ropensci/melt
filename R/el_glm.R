@@ -142,7 +142,14 @@ el_glm <- function(formula,
   )
   if (is.empty.model(mt)) {
     X <- matrix(numeric(0), NROW(Y), 0L)
-    return(new("GLM",
+    if (grepl("quasi", family$family)) {
+      class <- "QGLM"
+      npar <- 1L
+    } else {
+      class <- "GLM"
+      npar <- 0L
+    }
+    return(new(class,
       family = family, sigTests = NULL, call = cl, terms = mt,
       misc = list(
         formula = formula, offset = NULL, control = glm_control,
@@ -152,7 +159,7 @@ el_glm <- function(formula,
       optim = list(
         par = numeric(), lambda = numeric(), iterations = integer(),
         convergence = logical()
-      )
+      ), nobs = NROW(X), npar = npar
     ))
   } else {
     X <- model.matrix(mt, mf, NULL)

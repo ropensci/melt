@@ -3,9 +3,12 @@
 \name{elmt}
 \alias{elmt}
 \alias{elmt,EL-method}
+\alias{elmt,QGLM-method}
 \title{Empirical likelihood multiple tests}
 \usage{
 \S4method{elmt}{EL}(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = el_control())
+
+\S4method{elmt}{QGLM}(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = el_control())
 }
 \arguments{
 \item{object}{An object that inherit from \linkS4class{EL}, including
