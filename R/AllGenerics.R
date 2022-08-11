@@ -578,8 +578,8 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 setGeneric("weights", function(object, ...) standardGeneric("weights"))
 
 
-setGeneric("getDataMatrix", function(x) standardGeneric("getDataMatrix"))
-setMethod("getDataMatrix", "EL", function(x) {
+setGeneric("getData", function(x) standardGeneric("getData"))
+setMethod("getData", "EL", function(x) {
   x@data
 })
 

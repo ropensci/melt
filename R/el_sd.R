@@ -58,7 +58,7 @@ el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
     optim = optim, logp = setNames(out$logp, names(mm)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = 1L,
     pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE), nobs = n,
-    npar = 1L, weights = w, data = if (control@keep_data) mm else NULL,
-    coefficients = est, method = "sd"
+    npar = 1L, weights = w, coefficients = est, method = "sd",
+    data = if (control@keep_data) mm else NULL
   )
 }

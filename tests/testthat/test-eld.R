@@ -40,7 +40,7 @@ test_that("`GLM` class.", {
   expect_s4_class(eld(wfit), "ELD")
 })
 
-test_that("Plot method.", {
+test_that("`plot()` method.", {
   fit <- el_lm(mpg ~ disp + hp + wt, data = mtcars)
   eld <- eld(fit)
   pdf(NULL)

@@ -71,13 +71,13 @@ distribution.}
 
 \item{\code{weights}}{A numeric vector of re-scaled weights used for model fitting.}
 
-\item{\code{data}}{A numeric matrix for the data used for model fitting.}
-
 \item{\code{coefficients}}{A numeric vector of the maximum empirical likelihood
 estimates of the parameters.}
 
 \item{\code{method}}{A single character for the method dispatch in internal
 functions.}
+
+\item{\code{data}}{A numeric matrix for the data used for model fitting.}
 }}
 
 \examples{

@@ -10,7 +10,7 @@ setMethod("elmt", "EL", function(object,
     "`elmt()` method is not applicable to a model with one parameter." =
       (npar != 1L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (!is.null(getDataMatrix(object))),
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypotheses(rhs, lhs, npar)
@@ -24,8 +24,8 @@ setMethod("elmt", "EL", function(object,
   th <- control@th
   m <- control@m
   out <- test_multiple_hypotheses(
-    alpha, h$q, h$m, m, method, coef(object), getDataMatrix(object), h$r,
-    h$l, maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
+    alpha, h$q, h$m, m, method, coef(object), getData(object), h$r, h$l, maxit,
+    maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("ELMT",
     alpha = alpha, statistic = out$statistic, cv = out$cv, pval = out$pval,
@@ -46,7 +46,7 @@ setMethod("elmt", "QGLM", function(object,
     "`elmt()` method is not applicable to a model with one parameter." =
       (p != 1L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (!is.null(getDataMatrix(object))),
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypotheses(rhs, lhs, p)
@@ -59,11 +59,10 @@ setMethod("elmt", "QGLM", function(object,
   step <- control@step
   th <- control@th
   m <- control@m
-  # return(h)
   out <- test_multiple_hypotheses(
     alpha, h$q, h$m, m, method, c(coef(object), object@dispersion),
-    getDataMatrix(object), h$r, cbind(h$l, 0), maxit, maxit_l, tol, tol_l, step,
-    th, getWeights(object)
+    getData(object), h$r, cbind(h$l, 0), maxit, maxit_l, tol, tol_l, step, th,
+    getWeights(object)
   )
   new("ELMT",
     alpha = alpha, statistic = out$statistic, cv = out$cv, pval = out$pval,

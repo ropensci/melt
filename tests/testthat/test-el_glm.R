@@ -114,3 +114,32 @@ test_that("`family` == `quasipoisson`.", {
   )
   expect_s4_class(fit, "QGLM")
 })
+
+test_that("`print()` method.", {
+  fit <- el_glm(wool ~ -1 + ., family = binomial, data = warpbreaks)
+  out <- summary(fit)
+  expect_output(print(out))
+  expect_output(show(out))
+  out@aliased <- c(TRUE, TRUE, TRUE, TRUE)
+  expect_output(print(out))
+  df2 <- warpbreaks
+  df2[1, 1] <- NA
+  fit2 <- el_glm(wool ~ -1 + ., family = binomial, data = df2)
+  out2 <- summary(fit2)
+  expect_output(print(out2))
+  fit3 <- el_glm(gear ~ mpg + cyl + disp,
+    family = quasipoisson("log"), data = mtcars
+  )
+  out3 <- summary(fit3)
+  expect_output(print(out3))
+  expect_output(show(out3))
+  out3@aliased <- c(TRUE, TRUE, TRUE, TRUE)
+  expect_output(print(out3))
+  df3 <- mtcars
+  df3[1, 1] <- NA
+  fit4 <- el_glm(gear ~ mpg + cyl + disp,
+    family = quasipoisson("log"), data = df3
+  )
+  out4 <- summary(fit4)
+  expect_output(print(out4))
+})

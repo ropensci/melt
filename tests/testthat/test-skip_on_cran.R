@@ -402,6 +402,7 @@ test_that(
 #'   parameters used are `n = 1e+05`, `p = 3`, and `tolerance = 1e-02`, with
 #'   three different seeds.
 test_that("Parameter recovery tests.", {
+  skip_on_cran()
   set.seed(5524325)
   n <- 1e+05
   p <- 3
@@ -424,4 +425,44 @@ test_that("Parameter recovery tests.", {
   df3 <- data.frame(y3, x3)
   fit3 <- el_lm(y3 ~ -1 + ., df3)
   expect_equal(max(abs(coef(fit3))), 1, tolerance = 1e-02)
+})
+
+test_that("`el_glm()` (quasipoisson - log).", {
+  skip_on_cran()
+  set.seed(525)
+  n <- 200
+  p <- 3
+  b <- rnorm(p, sd = 0.5)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 2), times = 100)
+  l <- -0.4 + x %*% as.vector(b)
+  mu <- exp(l)
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1)) +
+    sample(1:10, n, replace = TRUE)
+  df <- data.frame(y, x)
+  fit <- el_glm(y ~ .,
+    family = quasipoisson("log"), data = df,
+    control = el_control(tol = 1e-05, th = 1000)
+  )
+  wfit <- el_glm(y ~ .,
+    family = quasipoisson("log"), data = df, weights = w,
+    control = el_control(tol = 1e-05, th = 1000)
+  )
+  lhs <- list(
+    matrix(c(0, 1, 1, 0), nrow = 1),
+    matrix(c(0, 0, 1, 1), nrow = 1)
+  )
+  rhs <- c(0, -0.5)
+  expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
+})
+
+test_that("`el_pairwise()` (deprecated).", {
+  skip_on_cran()
+  out1 <- suppressWarnings(el_pairwise(clo ~ trt | blk, clothianidin, B = 500))
+  out2 <- suppressWarnings(el_pairwise(clo ~ trt | blk, clothianidin,
+    control = "Naked", method = "NB", B = 500, nthreads = 2
+  ))
+  expect_output(print(out1))
+  expect_output(print(out2))
 })

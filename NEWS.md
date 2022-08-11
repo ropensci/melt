@@ -4,14 +4,15 @@
 
 * New accessor methods added (`chisq()`, `critVal()`, `getDF()`, `getOptim()`, `sigTests()`, `logL()`, and `pVal()`).
 
-* `conv()` is applicable to a `SummaryLM` object.
+* `conv()` is applicable to an object returned by `summary()`.
 
 ## MINOR IMPROVEMENTS
+* `print()` shows additional information for an object of class `GLM` or `SummaryGLM`.
+
 * `p.value` returned by `el_eval()` is renamed to `pval` for consistency with other functions.
 
-* `print()` for `LM` and `SummaryLM` shows which type of EL optimization is performed.
-
-* `ConfregEL` inherits from `matrix`. `ELD` and `logLikEL` inherit from `numeric`.
+## BUG FIXES
+* `confint()` and `confreg()` are not applicable to an object whose `data` is `NULL`.
 
 
 # melt 1.6.0

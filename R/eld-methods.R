@@ -2,11 +2,11 @@
 setMethod("eld", "EL", function(object, control = el_control()) {
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (!is.null(getDataMatrix(object))),
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   new("ELD", .Data = compute_ELD(
-    getMethodEL(object), coef(object), getDataMatrix(object), control@maxit_l,
+    getMethodEL(object), coef(object), getData(object), control@maxit_l,
     control@tol_l, control@th, control@nthreads, getWeights(object)
   ))
 })
@@ -15,10 +15,10 @@ setMethod("eld", "EL", function(object, control = el_control()) {
 setMethod("eld", "GLM", function(object, control = el_control()) {
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (!is.null(getDataMatrix(object))),
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  mm <- getDataMatrix(object)
+  mm <- getData(object)
   n <- nobs(object)
   x <- mm[, -1L]
   if (is.null(dim(x))) {

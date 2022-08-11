@@ -9,7 +9,7 @@ setMethod("elt", "EL", function(object,
   stopifnot(
     "`elt()` method is not applicable to an empty model." = (npar != 0L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (!is.null(getDataMatrix(object))),
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypothesis(rhs, lhs, npar)
@@ -30,7 +30,7 @@ setMethod("elt", "EL", function(object,
         (isTRUE(calibrate != "f" || method == "mean"))
     )
     par <- h$r
-    out <- compute_EL(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
+    out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- nm
     p <- length(par)
@@ -49,8 +49,8 @@ setMethod("elt", "EL", function(object,
       (calibrate != "f")
   )
   out <- test_hypothesis(
-    method, coef(object), getDataMatrix(object), h$l, h$r,
-    maxit, maxit_l, tol, tol_l, step, th, w
+    method, coef(object), getData(object), h$l, h$r, maxit, maxit_l, tol, tol_l,
+    step, th, w
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- nm
@@ -75,7 +75,7 @@ setMethod("elt", "QGLM", function(object,
   stopifnot(
     "`elt()` method is not applicable to an empty model." = (p != 0L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (!is.null(getDataMatrix(object))),
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypothesis(rhs, lhs, p)
@@ -95,7 +95,7 @@ setMethod("elt", "QGLM", function(object,
       "F calibration is applicable only to the mean." = (calibrate != "f")
     )
     par <- c(h$r, object@dispersion)
-    out <- compute_EL(method, par, getDataMatrix(object), maxit_l, tol_l, th, w)
+    out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- nm
     npar <- length(par)
@@ -115,8 +115,8 @@ setMethod("elt", "QGLM", function(object,
   )
   l <- cbind(h$l, 0)
   out <- test_hypothesis(
-    method, c(coef(object), object@dispersion), getDataMatrix(object), l, h$r,
-    maxit, maxit_l, tol, tol_l, step, th, w
+    method, c(coef(object), object@dispersion), getData(object), l, h$r, maxit,
+    maxit_l, tol, tol_l, step, th, w
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- nm
@@ -140,7 +140,7 @@ setMethod("elt", "SD", function(object,
   stopifnot(
     "`elt()` method is not applicable to an empty model." = (npar != 0L),
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (!is.null(getDataMatrix(object))),
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypothesis(rhs, lhs, npar)
@@ -160,7 +160,7 @@ setMethod("elt", "SD", function(object,
       "Parametr value must be a positive single numeric." =
         (par >= .Machine$double.eps)
     )
-    out <- compute_EL("sd", par, getDataMatrix(object), maxit_l, tol_l, th, w)
+    out <- compute_EL("sd", par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- nm
     cal <- calibrate(calibrate, alpha, out$statistic, 1L, par, object, control)
@@ -183,7 +183,7 @@ setMethod("elt", "SD", function(object,
     "Parametr value must be a positive single numeric." =
       (par >= .Machine$double.eps)
   )
-  out <- compute_EL("sd", par, getDataMatrix(object), maxit_l, tol_l, th, w)
+  out <- compute_EL("sd", par, getData(object), maxit_l, tol_l, th, w)
   optim <- validate_optim(out$optim)
   names(optim$par) <- nm
   new("ELT",
@@ -204,9 +204,7 @@ setMethod("elt", "missing", function(object,
                                      control = el_control()) {
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
-  stopifnot(
-    "Invalid `control` specified." = (is(control, "ControlEL"))
-  )
+  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
   alpha <- validate_alpha(alpha)
   NULL
 })

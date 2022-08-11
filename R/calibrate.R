@@ -23,12 +23,12 @@ calibrate <- function(calibrate, alpha, statistic, p, par, object, control) {
     "boot" = {
       compute_bootstrap_calibration(
         alpha, statistic, control@b, control@seed, control@nthreads,
-        getMethodEL(object), getDataMatrix(object), par, control@maxit_l,
+        getMethodEL(object), getData(object), par, control@maxit_l,
         control@tol_l, control@th, getWeights(object)
       )
     },
     "f" = {
-      n <- nrow(getDataMatrix(object))
+      n <- nrow(getData(object))
       c(
         cv = qf(1 - alpha, df1 = p, df2 = n - p) * (p * (n - 1)) / (n - p),
         pval = pf(statistic * (n - p) / (p * (n - 1)),

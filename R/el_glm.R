@@ -150,7 +150,7 @@ el_glm <- function(formula,
       npar <- 0L
     }
     return(new(class,
-      family = family, sigTests = NULL, call = cl, terms = mt,
+      family = family, call = cl, terms = mt,
       misc = list(
         formula = formula, offset = NULL, control = glm_control,
         intercept = FALSE, method = "glm.fit", contrasts = attr(X, "contrasts"),
@@ -159,7 +159,7 @@ el_glm <- function(formula,
       optim = list(
         par = numeric(), lambda = numeric(), iterations = integer(),
         convergence = logical()
-      ), nobs = NROW(X), npar = npar
+      ), df = 0L, nobs = nrow(X), npar = npar, method = NA_character_
     ))
   } else {
     X <- model.matrix(mt, mf, NULL)
@@ -236,8 +236,7 @@ el_glm <- function(formula,
     ),
     optim = optim, logp = setNames(out$logp, names(Y)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,
-    nobs = n, npar = npar, weights = w,
-    data = if (control@keep_data) mm else NULL, coefficients = fit$coefficients,
-    method = method
+    nobs = n, npar = npar, weights = w, coefficients = fit$coefficients,
+    method = method, data = if (control@keep_data) mm else NULL
   )
 }

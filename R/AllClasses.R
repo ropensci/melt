@@ -49,11 +49,11 @@
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot npar A single integer for the number of parameters.
 #' @slot weights A numeric vector of re-scaled weights used for model fitting.
-#' @slot data A numeric matrix for the data used for model fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
+#' @slot data A numeric matrix for the data used for model fitting.
 #' @aliases EL
 #' @references Owen A (2001). Empirical Likelihood. Chapman & Hall/CRC.
 #'   \doi{10.1201/9781420036152}.
@@ -76,14 +76,8 @@ setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
     statistic = "numeric", df = "integer", pval = "numeric", nobs = "integer",
-    npar = "integer", weights = "numeric", data = "ANY",
-    coefficients = "numeric", method = "character"
-  ),
-  prototype = list(
-    optim = list(), logp = numeric(), logl = numeric(), loglr = numeric(),
-    statistic = numeric(), df = 0L, pval = numeric(), npar = 0L,
-    weights = numeric(), data = NULL,
-    coefficients = numeric(), method = NA_character_
+    npar = "integer", weights = "numeric",
+    coefficients = "numeric", method = "character", data = "ANY"
   )
 )
 
@@ -160,8 +154,8 @@ setOldClass("terms")
 #' @examples
 #' showClass("LM")
 setClass("LM",
-  contains = "CEL",
-  slots = c(sigTests = "ANY", call = "call", terms = "terms", misc = "list")
+  slots = c(sigTests = "ANY", call = "call", terms = "terms", misc = "list"),
+  contains = "CEL"
 )
 
 
@@ -177,8 +171,8 @@ setOldClass("family")
 #' @examples
 #' showClass("GLM")
 setClass("GLM",
-  contains = "LM",
-  slots = c(family = "family", dispersion = "numeric")
+  slots = c(family = "family", dispersion = "numeric"),
+  contains = "LM"
 )
 
 
@@ -205,11 +199,11 @@ setClass("SD", contains = "EL")
 #' @examples
 #' showClass("ConfregEL")
 setClass("ConfregEL",
-  contains = "matrix",
   slots = c(
     estimates = "numeric", level = "numeric", cv = "numeric",
     pnames = "character"
-  )
+  ),
+  contains = "matrix"
 )
 
 
@@ -319,7 +313,7 @@ setClass("ELMT",
 #' @aliases logLikEL
 #' @examples
 #' showClass("logLikEL")
-setClass("logLikEL", contains = "numeric", slots = c(df = "integer"))
+setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
 
 
 #' \linkS4class{QGLM} class
@@ -372,8 +366,8 @@ setClass("SummaryLM", slots = c(
 #' @examples
 #' showClass("SummaryGLM")
 setClass("SummaryGLM",
-  contains = "SummaryLM",
-  slots = c(family = "family", dispersion = "numeric")
+  slots = c(family = "family", dispersion = "numeric"),
+  contains = "SummaryLM"
 )
 
 

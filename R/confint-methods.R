@@ -5,13 +5,17 @@ setMethod("confint", "EL", function(object,
                                     level = 0.95,
                                     cv = NULL,
                                     control = el_control()) {
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
   # No confidence interval for an empty model
   if (getNumPar(object) == 0L) {
     ci <- matrix(numeric(0), nrow = 0L, ncol = 2L)
     colnames(ci) <- c("lower", "upper")
     return(ci)
   }
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (isFALSE(is.null(getData(object)))),
+    "Invalid `control` specified." = (is(control, "ControlEL"))
+  )
   est <- coef(object)
   # Index for tracking the parameters
   idx <- seq(length(est))
@@ -62,13 +66,13 @@ setMethod("confint", "EL", function(object,
     idx_na <- which(is.na(idx))
     ci <- matrix(NA_real_, nrow = p, ncol = 2L)
     ci[-idx_na, ] <- compute_confidence_intervals(
-      method, est, getDataMatrix(object), cv, idx[-idx_na], maxit, maxit_l,
-      tol, tol_l, step, th, nthreads, w
+      method, est, getData(object), cv, idx[-idx_na], maxit, maxit_l, tol,
+      tol_l, step, th, nthreads, w
     )
   } else {
     ci <- compute_confidence_intervals(
-      method, est, getDataMatrix(object), cv, idx, maxit,
-      maxit_l, tol, tol_l, step, th, nthreads, w
+      method, est, getData(object), cv, idx, maxit, maxit_l, tol, tol_l,
+      step, th, nthreads, w
     )
   }
   dimnames(ci) <- list(pnames, c("lower", "upper"))
@@ -81,12 +85,16 @@ setMethod("confint", "QGLM", function(object,
                                       level = 0.95,
                                       cv = NULL,
                                       control = el_control()) {
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
   if (getNumPar(object) == 1L) {
     ci <- matrix(numeric(0), nrow = 0L, ncol = 2L)
     colnames(ci) <- c("lower", "upper")
     return(ci)
   }
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (isFALSE(is.null(getData(object)))),
+    "Invalid `control` specified." = (is(control, "ControlEL"))
+  )
   est <- coef(object)
   idx <- seq(length(est))
   pnames <- names(est)
@@ -129,12 +137,12 @@ setMethod("confint", "QGLM", function(object,
     idx_na <- which(is.na(idx))
     ci <- matrix(NA_real_, nrow = p, ncol = 2L)
     ci[-idx_na, ] <- compute_confidence_intervals(
-      method, c(est, object@dispersion), getDataMatrix(object), cv,
-      idx[-idx_na], maxit, maxit_l, tol, tol_l, step, th, nthreads, w
+      method, c(est, object@dispersion), getData(object), cv, idx[-idx_na],
+      maxit, maxit_l, tol, tol_l, step, th, nthreads, w
     )
   } else {
     ci <- compute_confidence_intervals(
-      method, c(est, object@dispersion), getDataMatrix(object), cv, idx, maxit,
+      method, c(est, object@dispersion), getData(object), cv, idx, maxit,
       maxit_l, tol, tol_l, step, th, nthreads, w
     )
   }
@@ -148,7 +156,11 @@ setMethod("confint", "SD", function(object,
                                     level = 0.95,
                                     cv = NULL,
                                     control = el_control()) {
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (isFALSE(is.null(getData(object)))),
+    "Invalid `control` specified." = (is(control, "ControlEL"))
+  )
   est <- coef(object)
   idx <- seq(length(est))
   pnames <- if (is.null(names(est))) idx else names(est)
@@ -194,12 +206,12 @@ setMethod("confint", "SD", function(object,
     idx_na <- which(is.na(idx))
     ci <- matrix(NA_real_, nrow = p, ncol = 2L)
     ci[-idx_na, ] <- compute_confidence_intervals(
-      "sd", est, getDataMatrix(object), cv, idx[-idx_na], maxit, maxit_l, tol,
+      "sd", est, getData(object), cv, idx[-idx_na], maxit, maxit_l, tol,
       tol_l, step, th, nthreads, w
     )
   } else {
     ci <- compute_confidence_intervals(
-      "sd", est, getDataMatrix(object), cv, idx, maxit, maxit_l, tol, tol_l,
+      "sd", est, getData(object), cv, idx, maxit, maxit_l, tol, tol_l,
       step, th, nthreads, w
     )
   }

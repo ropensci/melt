@@ -9,7 +9,11 @@ setMethod("confreg", "EL", function(object,
                                     control = el_control()) {
   level <- validate_level(level)
   npoints <- validate_npoints(npoints)
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (isFALSE(is.null(getData(object)))),
+    "Invalid `control` specified." = (is(control, "ControlEL"))
+  )
   npar <- getNumPar(object)
   if (npar == 0L) {
     stop("`confreg` method is not applicable to an empty model.")
@@ -64,9 +68,9 @@ setMethod("confreg", "EL", function(object,
   ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]
   circ <- rbind(cos(ang), sin(ang))
   cr <- compute_confidence_region(
-    getMethodEL(object), coef(object), getDataMatrix(object), npar, cv, idx,
-    circ, control@maxit, control@maxit_l, control@tol, control@tol_l,
-    control@step, control@th, control@nthreads, w
+    getMethodEL(object), coef(object), getData(object), npar, cv, idx, circ,
+    control@maxit, control@maxit_l, control@tol, control@tol_l, control@step,
+    control@th, control@nthreads, w
   )
   new("ConfregEL",
     .Data = t(circ) * cr + rep(est, each = ncol(circ)),
@@ -83,7 +87,11 @@ setMethod("confreg", "QGLM", function(object,
                                       control = el_control()) {
   level <- validate_level(level)
   npoints <- validate_npoints(npoints)
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (isFALSE(is.null(getData(object)))),
+    "Invalid `control` specified." = (is(control, "ControlEL"))
+  )
   npar <- getNumPar(object)
   # `npar` includes the dispersion parameter
   if (npar == 1L) {
@@ -135,9 +143,9 @@ setMethod("confreg", "QGLM", function(object,
   ang <- seq(0, 2 * pi, length.out = npoints + 1L)[-(npoints + 1L)]
   circ <- rbind(cos(ang), sin(ang))
   cr <- compute_confidence_region(
-    getMethodEL(object), c(coef(object), object@dispersion),
-    getDataMatrix(object), npar, cv, idx, circ, control@maxit, control@maxit_l,
-    control@tol, control@tol_l, control@step, control@th, control@nthreads, w
+    getMethodEL(object), c(coef(object), object@dispersion), getData(object),
+    npar, cv, idx, circ, control@maxit, control@maxit_l, control@tol,
+    control@tol_l, control@step, control@th, control@nthreads, w
   )
   new("ConfregEL",
     .Data = t(circ) * cr + rep(est, each = ncol(circ)),
