@@ -63,14 +63,17 @@
 <h3 id="new-features-1-6-0-9000">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-6-0-9000"></a></h3>
 <ul><li><p><code><a href="../reference/el_glm.html">el_glm()</a></code> accepts <code>quasipoisson</code> family.</p></li>
 <li><p>New accessor methods added (<code><a href="../reference/chisq.html">chisq()</a></code>, <code><a href="../reference/critVal.html">critVal()</a></code>, <code><a href="../reference/getDF.html">getDF()</a></code>, <code><a href="../reference/getOptim.html">getOptim()</a></code>, <code><a href="../reference/sigTests.html">sigTests()</a></code>, <code><a href="../reference/logL.html">logL()</a></code>, and <code><a href="../reference/pVal.html">pVal()</a></code>).</p></li>
-<li><p><code><a href="../reference/conv.html">conv()</a></code> is applicable to a <code>SummaryLM</code> object.</p></li>
+<li><p><code><a href="../reference/conv.html">conv()</a></code> is applicable to an object returned by <code><a href="../reference/summary.html">summary()</a></code>.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-improvements-1-6-0-9000">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0-9000"></a></h3>
-<ul><li><p><code>p.value</code> returned by <code><a href="../reference/el_eval.html">el_eval()</a></code> is renamed to <code>pval</code> for consistency with other functions.</p></li>
-<li><p><code><a href="../reference/print.html">print()</a></code> for <code>LM</code> and <code>SummaryLM</code> shows which type of EL optimization is performed.</p></li>
-<li><p><code>ConfregEL</code> inherits from <code>matrix</code>. <code>ELD</code> and <code>logLikEL</code> inherit from <code>numeric</code>.</p></li>
+<ul><li><p><code><a href="../reference/print.html">print()</a></code> shows additional information for an object of class <code>GLM</code> or <code>SummaryGLM</code>.</p></li>
+<li><p><code>p.value</code> returned by <code><a href="../reference/el_eval.html">el_eval()</a></code> is renamed to <code>pval</code> for consistency with other functions.</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-6-0-9000">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-0-9000"></a></h3>
+<ul><li>
+<code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> are not applicable to an object whose <code>data</code> is <code>NULL</code>.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.0" id="melt-160">melt 1.6.0<a class="anchor" aria-label="anchor" href="#melt-160"></a></h2><p class="text-muted">CRAN release: 2022-07-10</p>
@@ -115,7 +118,7 @@
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-5-2">DEPRECATED AND DEFUNCT<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-2"></a></h3>
 <ul><li><p><code>el_test()</code> is removed.</p></li>
-<li><p><code>el_pairwise()</code> is deprecated and will be removed in a future release.</p></li>
+<li><p><code><a href="../reference/el_pairwise.html">el_pairwise()</a></code> is deprecated and will be removed in a future release.</p></li>
 </ul></div>
 </div>
     <div class="section level2">

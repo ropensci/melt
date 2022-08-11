@@ -143,10 +143,6 @@ distribution.</p></dd>
 <dd><p>A numeric vector of re-scaled weights used for model fitting.</p></dd>
 
 
-<dt><code>data</code></dt>
-<dd><p>A numeric matrix for the data used for model fitting.</p></dd>
-
-
 <dt><code>coefficients</code></dt>
 <dd><p>A numeric vector of the maximum empirical likelihood
 estimates of the parameters.</p></dd>
@@ -155,6 +151,10 @@ estimates of the parameters.</p></dd>
 <dt><code>method</code></dt>
 <dd><p>A single character for the method dispatch in internal
 functions.</p></dd>
+
+
+<dt><code>data</code></dt>
+<dd><p>A numeric matrix for the data used for model fitting.</p></dd>
 
 
 </dl></div>
@@ -182,8 +182,8 @@ The Annals of Statistics, 22(1), 300–325. <a href="https://doi.org/10.1214/aos
 <span class="r-out co"><span class="r-pr">#&gt;</span> Name:            df         pval         nobs         npar      weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      numeric      integer      integer      numeric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          data coefficients       method</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:          ANY      numeric    character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:  coefficients       method         data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric    character          ANY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Known Subclasses: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "CEL", directly</span>

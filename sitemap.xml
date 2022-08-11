@@ -109,6 +109,9 @@
     <loc>https://markean.github.io/melt/reference/el_mean.html</loc>
   </url>
   <url>
+    <loc>https://markean.github.io/melt/reference/el_pairwise.html</loc>
+  </url>
+  <url>
     <loc>https://markean.github.io/melt/reference/el_sd.html</loc>
   </url>
   <url>
@@ -140,6 +143,9 @@
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/logLikEL-class.html</loc>
+  </url>
+  <url>
+    <loc>https://markean.github.io/melt/reference/melt-package.html</loc>
   </url>
   <url>
     <loc>https://markean.github.io/melt/reference/nobs.html</loc>
