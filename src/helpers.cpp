@@ -434,7 +434,6 @@ Eigen::VectorXd gr_nloglr_poi_sqrt(const Eigen::Ref<const Eigen::VectorXd> &l,
 Eigen::MatrixXd g_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
                            const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const double n = static_cast<double>(x.rows());
   const int p = x.cols() - 1;
   const Eigen::VectorXd beta = par.head(p);
   const double phi = par(p);

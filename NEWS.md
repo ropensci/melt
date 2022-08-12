@@ -1,4 +1,4 @@
-# melt 1.6.0.9000 (development version)
+# melt 1.7.0
 ## NEW FEATURES
 * `el_glm()` accepts `quasipoisson` family.
 
@@ -7,7 +7,7 @@
 * `conv()` is applicable to an object returned by `summary()`.
 
 ## MINOR IMPROVEMENTS
-* `print()` shows additional information for an object of class `GLM` or `SummaryGLM`.
+* `print()` shows class-specific information.
 
 * `p.value` returned by `el_eval()` is renamed to `pval` for consistency with other functions.
 

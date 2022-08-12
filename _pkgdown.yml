@@ -2,6 +2,9 @@ url: https://markean.github.io/melt/
 template:
   bootstrap: 5
 
+figures:
+  dpi: 300
+
 navbar:
   left:
     - icon: fa-home
@@ -21,7 +24,11 @@ navbar:
 reference:
   - title: Functions (Constructors)
     contents:
-    - starts_with("el_")
+    - el_control
+    - el_glm
+    - el_lm
+    - el_mean
+    - el_sd
 
   - title: Classes
     contents:
@@ -57,3 +64,8 @@ reference:
   - title: Data
     contents:
     - clothianidin
+
+  - title: Miscellaneous
+    contents:
+    - el_eval
+    - el_pairwise

@@ -1,3 +1,4 @@
+AMC
 Adimari
 BH
 Behaviour
@@ -11,6 +12,7 @@ DMS
 Details’
 EL
 Eigen
+FWER
 Github
 Guolo
 Ibrahim
@@ -23,7 +25,6 @@ PLOS
 Qin
 Raphson
 RcppEigen
-RcppProgress
 SES
 SX
 Sinica
@@ -32,13 +33,13 @@ Xoshiro
 Zhang
 Zhao
 Zhu
+arXiv
 arxiv
 blk
 clo
 clothianidin
 coercible
 dqrng
-minimizations
 nonconvex
 optimality
 parallelization

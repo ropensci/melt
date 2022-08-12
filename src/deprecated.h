@@ -54,20 +54,8 @@ Eigen::MatrixXd g_gbd(const Eigen::Ref<const Eigen::VectorXd> &par,
                       const Eigen::Ref<const Eigen::MatrixXd> &x,
                       const Eigen::Ref<const Eigen::MatrixXd> &c);
 
-Eigen::MatrixXd cov_gbd(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                        const Eigen::Ref<const Eigen::MatrixXd> &c);
-
-Eigen::VectorXd lambda2par_gbd(const Eigen::Ref<const Eigen::VectorXd> &l,
-                               const Eigen::Ref<const Eigen::VectorXd> &par,
-                               const Eigen::Ref<const Eigen::MatrixXd> &g,
-                               const Eigen::Ref<const Eigen::MatrixXd> &c,
-                               const double gamma);
-
-void lambda2par_void(const Eigen::Ref<const Eigen::VectorXd> &l,
-                     Eigen::Ref<Eigen::VectorXd> par,
-                     const Eigen::Ref<const Eigen::MatrixXd> &g,
-                     const Eigen::Ref<const Eigen::MatrixXd> &c,
-                     const double gamma);
+Eigen::MatrixXd s_gbd(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                      const Eigen::Ref<const Eigen::MatrixXd> &c);
 
 Eigen::MatrixXd rmvn(const Eigen::MatrixXd &x, const int n);
 

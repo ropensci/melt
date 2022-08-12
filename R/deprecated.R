@@ -34,15 +34,15 @@
 #'   “Empirical Likelihood for the Analysis of Experimental Designs.”
 #'   arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
 #' @examples
-#' ## All pairwise comparisons
+#' \dontrun{
+#' # All pairwise comparisons
 #' data("clothianidin")
-#' el_pairwise(clo ~ trt | blk, clothianidin, B = 1000)
+#' el_pairwise(clo ~ trt | blk, data = clothianidin, B = 1000)
 #'
-#' ## Comparisons with control
-#' el_pairwise(clo ~ trt | blk, clothianidin,
-#'   control = "Naked", method = "NB",
-#'   B = 500
-#' )
+#' # Comparisons with control
+#' el_pairwise(clo ~ trt | blk, data = clothianidin, control = "Naked",
+#'   method = "NB", B = 500
+#' )}
 #' @importFrom stats terms reshape
 #' @keywords internal
 #' @export
@@ -57,33 +57,34 @@ el_pairwise <- function(formula,
                         maxit = 10000L,
                         abstol = 1e-08) {
   .Deprecated(msg = "`el_pairwise()` was deprecated in melt 1.5.2.")
-  # check method
+  alpha <- validate_alpha(alpha)
+  B <- validate_b(B)
+  max_threads <- get_max_threads()
+  nthreads <- validate_nthreads(nthreads, max_threads)
+  maxit <- validate_maxit(maxit)
+  abstol <- validate_tol(abstol)
   method <- match.arg(method)
-  # check formula
   f <- attributes(terms(formula))
-  if (any(
-    # response required & no arbitrary manipulation on intercept
-    f$response == 0, f$intercept == 0,
-    length(f$variables) != 3,
-    # no other formula
-    typeof(f$variables[[3]]) != "language" ||
-      length(f$variables[[3]]) != 3,
-    # "|" operator needed
-    f$variables[[3]][[1]] != "|",
-    # no transformation of variables
-    typeof(f$variables[[3]][[2]]) != "symbol" ||
-      typeof(f$variables[[3]][[3]]) != "symbol",
-    # distinct variables for treatment and block
-    f$variables[[3]][[2]] == f$variables[[3]][[3]]
+  stopifnot(
+    "`formula` must be specified as `response ~ treatment | block`." =
+      (isTRUE(f$response == 1L && f$intercept == 1L)),
+    "`formula` must be specified as `response ~ treatment | block`." =
+      (isTRUE(length(f$variables) == 3L)),
+    "`formula` must be specified as `response ~ treatment | block`." =
+      (isTRUE(typeof(f$variables[[3L]]) == "language" &&
+        length(f$variables[[3L]]) == 3L)),
+    "`|` operator is missing." = (isTRUE(f$variables[[3L]][[1L]] == "|")),
+    "Transformation on variables is not allowed." =
+      (isTRUE(typeof(f$variables[[3L]][[2L]]) == "symbol" &&
+        typeof(f$variables[[3L]][[3L]]) == "symbol")),
+    "Specify distinct variables for the treatments and blocks." =
+      (isTRUE(f$variables[[3L]][[2L]] != f$variables[[3L]][[3L]]))
   )
-  ) {
-    stop("specify formula as 'response ~ treatment | block'.")
-  }
-  # pseudo formula for model.frame
-  lhs <- f$variables[[2]]
-  rhs <- c(f$variables[[3]][[2]], f$variables[[3]][[3]])
+  # Pseudo formula for `model.frame`
+  lhs <- f$variables[[2L]]
+  rhs <- c(f$variables[[3L]][[2L]], f$variables[[3L]][[3L]])
   pf <- formula(paste(lhs, paste(rhs, collapse = " + "), sep = " ~ "))
-  # extract model frame
+  # Extract `model.frame`
   mf <- match.call()
   mf <- mf[c(1L, match(c("formula", "data"), names(mf), 0L))]
   mf$drop.unused.levels <- TRUE
@@ -91,20 +92,17 @@ el_pairwise <- function(formula,
   mf[[2L]] <- pf
   mf <- eval(mf, parent.frame())
   attributes(mf)$terms <- NULL
-  ## type conversion
-  # response
+  ## Type conversion
   mf[[1L]] <- as.numeric(mf[[1L]])
-  # treatment
   mf[[2L]] <- as.factor(mf[[2L]])
-  # block
   mf[[3L]] <- as.factor(mf[[3L]])
   if (nlevels(mf[[2L]]) >= nlevels(mf[[3L]])) {
-    stop("number of blocks should be larger than number of treatments.")
+    stop("The number of blocks must be larger than the number of treatments.")
   }
-  ## construct general block design
-  # incidence matrix
+  ## Construct general block design
+  # Incidence matrix
   c <- unclass(table(mf[[3L]], mf[[2L]]))
-  # model matrix
+  # Model matrix
   x <- reshape(mf[order(mf[[2L]]), ],
     idvar = names(mf)[3L],
     timevar = names(mf)[2L],
@@ -112,25 +110,25 @@ el_pairwise <- function(formula,
     direction = "wide"
   )
   x <- x[order(x[[names(mf)[3L]]]), ]
-  # replace NA with 0
+  # Replace `NA` with `0`
   x[is.na(x)] <- 0
-  # remove block variable and convert to matrix
+  # Remove block variable and convert to matrix
   x[names(mf)[3L]] <- NULL
   x <- as.matrix(x)
-  # name rows and columns
+  # Name rows and columns
   dimnames(x) <- list(levels(mf[[3L]]), levels(mf[[2L]]))
-  # general block design
+  # General block design
   gbd <-
     list("model_matrix" = x, "incidence_matrix" = c, "trt" = levels(mf[[2L]]))
   class(gbd) <- c("gbd", "melt")
-  # check whether all pairwise comparisons or comparisons to control
+  # Check whether all pairwise comparisons or comparisons to control
   match.arg(control, gbd$trt)
   if (is.null(control)) {
     ctrl <- 0
   } else {
     ctrl <- which(control == gbd$trt)
   }
-  ## pairwise comparisons
+  ## Pairwise comparisons
   out <- pairwise(gbd$model_matrix, gbd$incidence_matrix,
     control = ctrl, k, alpha, interval = TRUE,
     method, B, nthreads, th = 50, maxit, abstol
@@ -141,9 +139,11 @@ el_pairwise <- function(formula,
   out$incidence.matrix <- gbd$incidence_matrix
   if (!all(out$convergence)) {
     if (method == "NB") {
-      warning("convergence failed. switched to AMC for confidence intervals.\n")
+      warning(
+        "Convergence failed and switched to AMC for confidence intervals.\n"
+      )
     } else {
-      warning("convergence failed.\n")
+      warning("Convergence failed.\n")
     }
   }
   out
@@ -154,7 +154,7 @@ print.pairwise <- function(x, ...) {
   stopifnot(inherits(x, "melt"))
   cat("\n\tEmpirical Likelihood Multiple Tests\n\n")
   if (is.null(x$control)) {
-    cat("Tests: all pairwise comparisons\n\n")
+    cat("All pairwise comparisons\n\n")
     rname <- vector("character", length = 0L)
     for (i in 1L:(length(x$trt) - 1L)) {
       for (j in (i + 1L):length(x$trt)) {
@@ -162,7 +162,7 @@ print.pairwise <- function(x, ...) {
       }
     }
   } else {
-    cat("Tests: comparisons with control\n\n")
+    cat("Comparisons with control\n\n")
     diff <- setdiff(x$trt, x$control)
     rname <- vector("character", length = length(diff))
     for (i in seq_along(diff)) {
@@ -171,16 +171,16 @@ print.pairwise <- function(x, ...) {
   }
   out <- data.frame(
     row.names = rname, Estimate = x$estimate, Chisq = x$statistic,
-    lwr.ci = x$lower, upr.ci = x$upper, p.adj = x$p.adj
+    Lwr.ci = x$lower, Upr.ci = x$upper, p.adj = x$p.adj
   )
   printCoefmat(out,
     digits = min(4L, getOption("digits")),
-    dig.tst = min(3L, getOption("digits")), cs.ind = c(1, 3, 4), tst.ind = 2L,
-    P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
+    dig.tst = min(3L, getOption("digits")), cs.ind = c(1L, 3L, 4L),
+    tst.ind = 2L, P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
   )
   cat("\n")
   cat(paste(c("k", "level", "method", "cutoff"),
-    c(x$k, x$level, x$method, round(x$cutoff, 4)),
+    c(x$k, x$level, x$method, round(x$cutoff, 4L)),
     collapse = ", ", sep = ": "
   ))
   cat("\n\n")

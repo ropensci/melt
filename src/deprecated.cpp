@@ -20,25 +20,13 @@ Rcpp::List pairwise(const Eigen::MatrixXd &x,
                     const int maxit = 1e+04,
                     const double abstol = 1e-08)
 {
-  if (level <= 0 || level >= 1)
-  {
-    Rcpp::stop("level must be between 0 and 1.");
-  }
-  // pairs
   std::vector<std::array<int, 2>> pairs = comparison_pairs(x.cols(), control);
-  // number of hypotheses
   const int m = pairs.size();
-  // estimates
   std::vector<double> estimate(m);
-  // statistics
   std::vector<double> statistic(m);
-  // convergences
   std::vector<bool> convergence(m);
-
-  // global minimizer
   const Eigen::VectorXd theta_hat =
       x.array().colwise().sum() / c.array().colwise().sum();
-  // 1. statistics
   for (int i = 0; i < m; ++i)
   {
     Rcpp::checkUserInterrupt();
@@ -52,11 +40,9 @@ Rcpp::List pairwise(const Eigen::MatrixXd &x,
     statistic[i] = 2 * pairwise_result.nllr;
     convergence[i] = pairwise_result.convergence;
   }
-  // if any of the statistics is not converged, switch...
   bool anyfail = std::any_of(convergence.begin(), convergence.end(),
                              [](bool v)
                              { return !v; });
-  // bootstrap statistics
   Eigen::ArrayXd bootstrap_statistics_pairwise(B);
   if (method == "AMC")
   {
@@ -68,21 +54,16 @@ Rcpp::List pairwise(const Eigen::MatrixXd &x,
     bootstrap_statistics_pairwise = bootstrap_statistics_pairwise_NB(
         x, c, k, pairs, B, level, nthreads, th, maxit, abstol);
   }
-  // 2. adjusted p-values
   std::vector<double> adj_pvalues(m);
   for (int i = 0; i < m; ++i)
   {
     adj_pvalues[i] =
         static_cast<double>(
-            (bootstrap_statistics_pairwise >= statistic[i]).count()) /
-        B;
+            (bootstrap_statistics_pairwise >= statistic[i]).count()) / B;
   }
-  // 3. cutoff
   Rcpp::Function quantile("quantile");
   double cutoff = Rcpp::as<double>(quantile(bootstrap_statistics_pairwise,
                                             Rcpp::Named("probs") = 1 - level));
-
-  // result
   Rcpp::List result;
   result["estimate"] = estimate;
   result["statistic"] = statistic;
@@ -260,26 +241,12 @@ Eigen::MatrixXd g_gbd(const Eigen::Ref<const Eigen::VectorXd> &par,
   return x - (c.array().rowwise() * par.array().transpose()).matrix();
 }
 
-Eigen::MatrixXd cov_gbd(const Eigen::Ref<const Eigen::MatrixXd> &x,
+Eigen::MatrixXd s_gbd(const Eigen::Ref<const Eigen::MatrixXd> &x,
                         const Eigen::Ref<const Eigen::MatrixXd> &c)
 {
   Eigen::MatrixXd g =
       g_gbd(x.array().colwise().sum() / c.array().colwise().sum(), x, c);
   return (g.transpose() * g) / x.rows();
-}
-
-Eigen::VectorXd lambda2par_gbd(const Eigen::Ref<const Eigen::VectorXd> &l,
-                               const Eigen::Ref<const Eigen::VectorXd> &par,
-                               const Eigen::Ref<const Eigen::MatrixXd> &g,
-                               const Eigen::Ref<const Eigen::MatrixXd> &c,
-                               const double gamma)
-{
-  Eigen::VectorXd ngradient =
-      (PseudoLog_deprecated::dp(Eigen::VectorXd::Ones(g.rows()) + g * l)
-           .matrix()
-           .asDiagonal() *
-       c).array().colwise().sum().transpose() * l.array();
-  return par + gamma * ngradient;
 }
 
 void lambda2theta_void(const Eigen::Ref<const Eigen::VectorXd> &l,
@@ -583,7 +550,7 @@ Eigen::ArrayXd bootstrap_statistics_pairwise_AMC(
     const int B,
     const double level)
 {
-  const Eigen::MatrixXd V_hat = cov_gbd(x, c);
+  const Eigen::MatrixXd V_hat = s_gbd(x, c);
   const Eigen::MatrixXd U_hat = rmvn(V_hat, B);
   const int m = pairs.size();
   Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>

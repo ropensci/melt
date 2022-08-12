@@ -5,6 +5,10 @@ test_that("Invalid `object`.", {
   expect_error(confreg(fit, parm = c(1, 2)))
   expect_error(confreg(fit2, parm = c(1, 2)))
   expect_error(confreg(fit3, parm = c(1, 2)))
+  fit@data <- matrix()
+  expect_error(confreg(fit, parm = c(1, 2)))
+  fit2@data <- matrix()
+  expect_error(confreg(fit2, parm = c(1, 2)))
 })
 
 test_that("Invalid `parm`.", {
