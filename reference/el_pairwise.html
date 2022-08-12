@@ -18,7 +18,7 @@ This function is deprecated and will be removed in a future release."><!-- mathj
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@ This function is deprecated and will be removed in a future release."><!-- mathj
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Pairwise comparisons for general block designs</h1>
-      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/el_pairwise.R" class="external-link"><code>R/el_pairwise.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/markean/melt/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a></small>
       <div class="d-none name"><code>el_pairwise.Rd</code></div>
     </div>
 
@@ -159,48 +159,15 @@ arxiv:2112.09206. URL <a href="https://arxiv.org/abs/2112.09206" class="external
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## All pairwise comparisons</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># All pairwise comparisons</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">el_pairwise</span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">|</span> <span class="va">blk</span>, <span class="va">clothianidin</span>, B <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`el_pairwise()` was deprecated in melt 1.5.2.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood Multiple Tests</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Tests: all pairwise comparisons</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   Estimate  Chisq  lwr.ci  upr.ci  p.adj    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Naked - Fungicide  -1.0525 13.466 -2.1663 -0.2510  0.002 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Naked - Low        -1.6794 15.773 -2.7135 -0.5962 &lt;0.001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Naked - High       -3.1726 30.206 -4.6319 -1.6315 &lt;0.001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fungicide - Low    -0.6269  1.822 -1.6691  0.7039  0.496    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fungicide - High   -2.1201 13.885 -3.2725 -0.6592  0.002 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Low - High         -1.4932 11.461 -2.7838 -0.3445  0.005 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> k: 1, level: 0.05, method: AMC, cutoff: 7.2393</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">el_pairwise</span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">|</span> <span class="va">blk</span>, data <span class="op">=</span> <span class="va">clothianidin</span>, B <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Comparisons with control</span></span></span>
-<span class="r-in"><span><span class="fu">el_pairwise</span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">|</span> <span class="va">blk</span>, <span class="va">clothianidin</span>,</span></span>
-<span class="r-in"><span>  control <span class="op">=</span> <span class="st">"Naked"</span>, method <span class="op">=</span> <span class="st">"NB"</span>,</span></span>
-<span class="r-in"><span>  B <span class="op">=</span> <span class="fl">500</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`el_pairwise()` was deprecated in melt 1.5.2.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood Multiple Tests</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Tests: comparisons with control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   Estimate Chisq lwr.ci upr.ci  p.adj    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fungicide - Naked   1.0525 13.47 0.3072 2.0655  0.006 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Low - Naked         1.6794 15.77 0.6890 2.6287  0.004 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> High - Naked        3.1726 30.21 1.7550 4.5159 &lt;0.001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> k: 1, level: 0.05, method: NB, cutoff: 6.1429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># Comparisons with control</span></span></span>
+<span class="r-in"><span><span class="fu">el_pairwise</span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">|</span> <span class="va">blk</span>, data <span class="op">=</span> <span class="va">clothianidin</span>, control <span class="op">=</span> <span class="st">"Naked"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"NB"</span>, B <span class="op">=</span> <span class="fl">500</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
