@@ -473,7 +473,9 @@ test_that("`el_pairwise()` (deprecated).", {
   df <- clothianidin[1:25, ]
   df$blk <- droplevels(df$blk)
   df$trt <- droplevels(df$trt)
-  out3 <- suppressWarnings(el_pairwise(clo ~ trt | blk,
+  out3 <- suppressWarnings(el_pairwise(clo ~ trt | blk, data = df, B = 1))
+  expect_output(print(out3))
+  out4 <- suppressWarnings(el_pairwise(clo ~ trt | blk,
     data = df, method = "NB", B = 1
   ))
   expect_output(print(out3))
