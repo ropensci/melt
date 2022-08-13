@@ -57,7 +57,9 @@ data("precip")
 fit <- el_mean(precip, par = 30)
 fit
 #> 
-#>  Empirical Likelihood: mean 
+#>  Empirical Likelihood
+#> 
+#> Model: mean 
 #> 
 #> Maximum EL estimates:
 #> [1] 34.89
@@ -84,7 +86,6 @@ summary(fit2)
 #> qsec         0.544160 440.583    < 2e-16 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
 #> Chisq: 433.4, df: 4, Pr(>Chisq): < 2.2e-16
 #> 
 #> Constrained EL: converged
@@ -113,7 +114,6 @@ summary(fit3)
 #> trtHigh        -1.307   4.653      0.031 *  
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
 #> Chisq: 894.4, df: 4, Pr(>Chisq): < 2.2e-16
 #> 
 #> EL evaluation: not converged

@@ -11,9 +11,11 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
+  dpi = 300,
   fig.width = 7,
   fig.height = 5,
-  fig.align = "center"
+  fig.align = "center",
+  out.width = "100%"
 )
 ```
 All the tests were done on an Arch Linux x86_64 machine with an Intel(R) Core(TM) i7 CPU (1.90GHz).
