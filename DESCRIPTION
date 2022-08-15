@@ -1,5 +1,5 @@
 Type: Package
-Package: melt
+Package: pairwise
 Title: Multiple Empirical Likelihood Tests
 Version: 1.7.0.9000
 Authors@R: c(
