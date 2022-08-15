@@ -87,7 +87,7 @@ Rcpp::List pairwise(const Eigen::MatrixXd &x,
       lhs(pairs[i][0]) = 1;
       lhs(pairs[i][1]) = -1;
       std::array<double, 2> ci = pair_confidence_interval_gbd(
-          theta_hat, x, c, lhs, th, estimate[i], cutoff);
+          theta_hat, x, c, lhs, th * 100, estimate[i], cutoff);
       lower[i] = ci[0];
       upper[i] = ci[1];
     }
