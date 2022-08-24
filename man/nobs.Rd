@@ -8,7 +8,7 @@
 \S4method{nobs}{EL}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL}.}
+\item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{...}{Further arguments passed to methods.}
 }

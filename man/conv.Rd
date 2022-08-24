@@ -17,7 +17,7 @@
 \S4method{conv}{ELT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL}, including
+\item{object}{An object that inherits from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{...}{Further arguments passed to methods.}

@@ -98,8 +98,8 @@ plot(cr)
 ``` r
 
 
-# Analysis of variance 
-data("clothianidin") 
+# Analysis of variance
+data("clothianidin")
 fit3 <- el_lm(clo ~ -1 + trt, data = clothianidin)
 summary(fit3)
 #> 
@@ -126,10 +126,12 @@ confint(fit3)
 
 
 # Test of no treatment effect
-lhs <- matrix(c(1, -1, 0, 0,
-                0, 1, -1, 0,
-                0, 0, 1, -1), byrow = TRUE, nrow = 3)
-elt(fit3, lhs = lhs)
+contrast <- matrix(c(
+  1, -1, 0, 0,
+  0, 1, -1, 0,
+  0, 0, 1, -1
+), byrow = TRUE, nrow = 3)
+elt(fit3, lhs = contrast)
 #> 
 #>  Empirical Likelihood Test
 #> 

@@ -12,7 +12,7 @@
 \S4method{eld}{GLM}(object, control = el_control())
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL}, including
+\item{object}{An object that inherits from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
@@ -47,12 +47,12 @@ plot(eld)
 Lazar NA (2005).
 “Assessing the Effect of Individual Data Points on Inference From Empirical
 Likelihood.”
-Journal of Computational and Graphical Statistics, 14(3), 626–642.
+\emph{Journal of Computational and Graphical Statistics}, 14(3), 626–642.
 \doi{10.1198/106186005X59568}.
 
 Zhu H, Ibrahim JG, Tang N, Zhang H (2008).
 “Diagnostic Measures for Empirical Likelihood of General Estimating
-Equations.” Biometrika, 95(2), 489–507.
+Equations.” \emph{Biometrika}, 95(2), 489–507.
 \doi{10.1093/biomet/asm094}.
 }
 \seealso{

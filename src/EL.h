@@ -126,6 +126,15 @@ private:
       gr_fn;
 };
 
+/* PseudoLog class
+ * The constructor takes an input vector `x` and an optional weight vector `w`.
+ * Three member variables are computed: `dplog`, `sqrt_neg_d2plog`, and
+ * `plog_sum`.
+ * 1. `dplog`: first derivatives of the pseudo-log values.
+ * 2. `sqrt_neg_d2plog`: square root of negative second derivatives of the
+ * pseudo-log values.
+ * 3. `plog_sum`: sum of the pseudo-log values.
+ */
 class PseudoLog
 {
 public:

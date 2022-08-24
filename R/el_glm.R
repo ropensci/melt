@@ -40,10 +40,10 @@
 #' @return An object of class of \linkS4class{GLM}.
 #' @references Chen SX, Cui H (2003).
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
-#'   Statistica Sinica, 13(1), 69–81.
+#'   \emph{Statistica Sinica}, 13(1), 69–81.
 #' @references Kolaczyk ED (1994).
 #'   “Empirical Likelihood for Generalized Linear Models.”
-#'   Statistica Sinica, 4(1), 199–218.
+#'   \emph{Statistica Sinica}, 4(1), 199–218.
 #' @seealso [el_control()], [el_lm()], [elt()]
 #' @examples
 #' set.seed(20010)
@@ -61,7 +61,7 @@
 #' summary(fit)
 #' @export
 #' @srrstats {G2.14, G2.14a, RE2.1, RE2.2} Missing values are handled by the
-#'   `na.action` argument via `na.cation()`. `Inf` values are not allowed and
+#'   `na.action` argument via `na.action()`. `Inf` values are not allowed and
 #'   produce an error.Partially missing values (missing response or missing
 #'   predictors) are allowed unless a singular fit is encountered. Although
 #'   singular fits can produce estimates and fitted values, there is no

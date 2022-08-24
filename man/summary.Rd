@@ -18,6 +18,10 @@
 
 \item{...}{Further arguments passed to methods.}
 }
+\value{
+The form of the value returned by \code{\link[=summary]{summary()}} depends on the class of
+its argument.
+}
 \description{
 Provides summary methods for objects.
 }

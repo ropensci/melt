@@ -4,7 +4,15 @@
 \alias{el_lm}
 \title{Empirical likelihood for linear models}
 \usage{
-el_lm(formula, data, weights = NULL, na.action, control = el_control(), ...)
+el_lm(
+  formula,
+  data,
+  weights = NULL,
+  na.action,
+  offset,
+  control = el_control(),
+  ...
+)
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that can be coerced to
@@ -22,6 +30,12 @@ non-\code{NULL}, weighted empirical likelihood is computed.}
 \item{na.action}{A function which indicates what should happen when the data
 contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link{options}}, and is \code{na.fail} if that is unset.}
+
+\item{offset}{An optional expression for specifying an \emph{a priori} known
+component to be included in the linear predictor during fitting. This
+should be \code{NULL} or a numeric vector or matrix of extents matching those of
+the response. One or more \code{\link{offset}} terms can be included in the formula
+instead or as well, and if more than one are specified their sum is used.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link[=el_control]{el_control()}}.}
@@ -62,22 +76,25 @@ and significance tests for each parameter with
 The test results are returned as \code{optim} and \code{sigTests}, respectively.
 }
 \examples{
-set.seed(5649)
-df <- data.frame(y = rnorm(50), x = rnorm(50))
-fit <- el_lm(y ~ x, df)
+## Linear regression
+data("thiamethoxam")
+fit <- el_lm(fruit ~ trt, data = thiamethoxam)
 summary(fit)
 
-fit2 <- el_lm(y ~ x, df, weights = rep(c(1, 2), each = 25))
-summary(fit2)
+## Weighted data
+wfit <- el_lm(fruit ~ trt, data = thiamethoxam, weights = visit)
+summary(wfit)
 
-df[1, 2] <- NA
-fit3 <- el_lm(y ~ x, df, na.action = na.omit)
-summary(fit3)
+## Missing data
+fit2 <- el_lm(fruit ~ trt + scb, data = thiamethoxam,
+  na.action = na.omit, offset = NULL
+)
+summary(fit2)
 }
 \references{
 Owen A (1991).
 “Empirical Likelihood for Linear Models.”
-The Annals of Statistics, 19(4), 1725–1747.
+\emph{The Annals of Statistics}, 19(4), 1725–1747.
 \doi{10.1214/aos/1176348368}.
 }
 \seealso{

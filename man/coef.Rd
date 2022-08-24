@@ -3,22 +3,37 @@
 \name{coef}
 \alias{coef}
 \alias{coef,EL-method}
+\alias{coef,ELMT-method}
 \title{Model coefficients}
 \usage{
 \S4method{coef}{EL}(object, ...)
+
+\S4method{coef}{ELMT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherits from \linkS4class{EL} or
+\linkS4class{ELMT}, including \linkS4class{CEL}, \linkS4class{LM}, and
+\linkS4class{GLM}.}
 
 \item{...}{Further arguments passed to methods.}
 }
 \value{
-A numeric vector of the maximum empirical likelihood estimates.
+The form of the value returned by \code{\link[=coef]{coef()}} depends on the class of
+its argument.
 }
 \description{
 Extracts maximum empirical likelihood estimates from a model.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{coef(EL)}: Extracts the numeric vector of the maximum empirical
+likelihood estimates.
+
+\item \code{coef(ELMT)}: Extracts the list of numeric vectors of the maximum
+empirical likelihood estimates. Each element of the list corresponds to a
+distinct hypothesis.
+
+}}
 \examples{
 data("mtcars")
 fit <- el_lm(mpg ~ wt, data = mtcars)

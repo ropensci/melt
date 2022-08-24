@@ -14,6 +14,11 @@
 #' @param na.action A function which indicates what should happen when the data
 #'   contain `NA`s. The default is set by the `na.action` setting of
 #'   [`options`], and is `na.fail` if that is unset.
+#' @param offset An optional expression for specifying an \emph{a priori} known
+#'   component to be included in the linear predictor during fitting. This
+#'   should be `NULL` or a numeric vector or matrix of extents matching those of
+#'   the response. One or more [`offset`] terms can be included in the formula
+#'   instead or as well, and if more than one are specified their sum is used.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
 #' @param ... Additional arguments to be passed to the low level regression
@@ -45,21 +50,24 @@
 #' @return An object of class of \linkS4class{LM}.
 #' @references Owen A (1991).
 #'   “Empirical Likelihood for Linear Models.”
-#'   The Annals of Statistics, 19(4), 1725–1747.
+#'   \emph{The Annals of Statistics}, 19(4), 1725–1747.
 #'   \doi{10.1214/aos/1176348368}.
 #' @seealso [el_control()], [el_glm()], [elt()]
 #' @examples
-#' set.seed(5649)
-#' df <- data.frame(y = rnorm(50), x = rnorm(50))
-#' fit <- el_lm(y ~ x, df)
+#' ## Linear regression
+#' data("thiamethoxam")
+#' fit <- el_lm(fruit ~ trt, data = thiamethoxam)
 #' summary(fit)
 #'
-#' fit2 <- el_lm(y ~ x, df, weights = rep(c(1, 2), each = 25))
-#' summary(fit2)
+#' ## Weighted data
+#' wfit <- el_lm(fruit ~ trt, data = thiamethoxam, weights = visit)
+#' summary(wfit)
 #'
-#' df[1, 2] <- NA
-#' fit3 <- el_lm(y ~ x, df, na.action = na.omit)
-#' summary(fit3)
+#' ## Missing data
+#' fit2 <- el_lm(fruit ~ trt + scb, data = thiamethoxam,
+#'   na.action = na.omit, offset = NULL
+#' )
+#' summary(fit2)
 #' @export
 #' @srrstats {G2.14, G2.14a, RE2.1, RE2.2} Missing values are handled by the
 #'   `na.action` argument via `na.cation()`. `Inf` values are not allowed and
@@ -99,6 +107,7 @@ el_lm <- function(formula,
                   data,
                   weights = NULL,
                   na.action,
+                  offset,
                   control = el_control(),
                   ...) {
   stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
@@ -107,7 +116,9 @@ el_lm <- function(formula,
     data <- environment(formula)
   }
   mf <- match.call(expand.dots = FALSE)
-  m <- match(c("formula", "data", "weights", "na.action"), names(mf), 0L)
+  m <- match(
+    c("formula", "data", "weights", "na.action", "offset"), names(mf), 0L
+  )
   mf <- mf[c(1L, m)]
   mf$drop.unused.levels <- TRUE
   mf[[1L]] <- quote(stats::model.frame)
@@ -121,6 +132,16 @@ el_lm <- function(formula,
     "`weights` must be positive." = (isTRUE(is.null(w) || all(w > 0))),
     "`el_lm()` does not support multiple responses." = (isFALSE(is.matrix(y)))
   )
+  offset <- model.offset(mf)
+  if (!is.null(offset)) {
+    offset <- as.vector(offset)
+    if (length(offset) != length(y)) {
+      stop(gettextf(
+        "Number of offsets is %d, should equal %d (number of observations).",
+        length(offset), length(y)
+      ), domain = NA)
+    }
+  }
   if (is.empty.model(mt)) {
     x <- matrix(numeric(0), NROW(y), 0L)
     return(new("LM",
@@ -138,13 +159,16 @@ el_lm <- function(formula,
   } else {
     x <- model.matrix(mt, mf, NULL)
     fit <- if (is.null(w)) {
-      lm.fit(x, y, offset = NULL, singular.ok = FALSE, ...)
+      lm.fit(x, y, offset = offset, singular.ok = FALSE, ...)
     } else {
-      lm.wfit(x, y, w, offset = NULL, singular.ok = FALSE, ...)
+      lm.wfit(x, y, w, offset = offset, singular.ok = FALSE, ...)
     }
   }
   pnames <- names(fit$coefficients)
   intercept <- as.logical(attr(mt, "intercept"))
+  if (!is.null(offset)) {
+    y <- y - offset
+  }
   mm <- cbind(y, x)
   n <- nrow(mm)
   p <- ncol(x)
@@ -168,7 +192,7 @@ el_lm <- function(formula,
     sigTests = lapply(out$sig_tests, setNames, pnames), call = cl, terms = mt,
     misc = list(
       intercept = intercept, xlevels = .getXlevels(mt, mf),
-      na.action = attr(mf, "na.action")
+      na.action = attr(mf, "na.action"), offset = offset
     ),
     optim = optim, logp = setNames(out$logp, names(y)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,

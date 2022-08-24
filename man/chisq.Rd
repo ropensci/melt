@@ -17,7 +17,7 @@
 \S4method{chisq}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL},
+\item{object}{An object that inherits from \linkS4class{EL},
 \linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.}
 
 \item{...}{Further arguments passed to methods.}

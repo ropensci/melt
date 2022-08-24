@@ -16,6 +16,12 @@ test_that("Invalid `data`.", {
   expect_error(el_lm(y ~ x + x2, data = df3))
 })
 
+test_that("Invalid `offset`.", {
+  expect_error(el_lm(height ~ weight, data = women, offset = as.matrix(women)))
+  fit <- el_lm(height ~ weight, data = women, offset = weight)
+  expect_s4_class(fit, "LM")
+})
+
 test_that("Invalid `weights`.", {
   w <- women$weight
   w[1] <- -1

@@ -28,6 +28,12 @@ set_g_fn(const std::string method)
   return g_map[method];
 }
 
+Eigen::VectorXd proj(const Eigen::Ref<const Eigen::MatrixXd> &l,
+                     const Eigen::Ref<const Eigen::VectorXd> &x)
+{
+  return x - l.transpose() * ((l * l.transpose()).householderQr().solve(l * x));
+}
+
 Eigen::ArrayXd inverse_linkinv(const Eigen::Ref<const Eigen::VectorXd> &x)
 {
   return x.array().inverse();

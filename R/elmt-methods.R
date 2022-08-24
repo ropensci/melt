@@ -14,6 +14,11 @@ setMethod("elmt", "EL", function(object,
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypotheses(rhs, lhs, npar)
+  qh <- head(h$q, n = length(h$q) - 1L) + 1L
+  qt <- tail(h$q, n = length(h$q) - 1L)
+  coefficients <- lapply(seq_along(qh), \(x) {
+    drop(h$l %*% coef(object))[qh[x]:qt[x]]
+  })
   alpha <- validate_alpha(alpha)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -28,8 +33,8 @@ setMethod("elmt", "EL", function(object,
     maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("ELMT",
-    alpha = alpha, statistic = out$statistic, cv = out$cv, pval = out$pval,
-    calibrate = "mvchisq"
+    alpha = alpha, coefficients = coefficients, statistic = out$statistic,
+    df = diff(h$q), cv = out$cv, pval = out$pval, calibrate = "mvchisq"
   )
 })
 
@@ -50,6 +55,11 @@ setMethod("elmt", "QGLM", function(object,
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   h <- validate_hypotheses(rhs, lhs, p)
+  qh <- head(h$q, n = length(h$q) - 1L) + 1L
+  qt <- tail(h$q, n = length(h$q) - 1L)
+  coefficients <- lapply(seq_along(qh), \(x) {
+    drop(h$l %*% coef(object))[qh[x]:qt[x]]
+  })
   alpha <- validate_alpha(alpha)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -65,7 +75,7 @@ setMethod("elmt", "QGLM", function(object,
     getWeights(object)
   )
   new("ELMT",
-    alpha = alpha, statistic = out$statistic, cv = out$cv, pval = out$pval,
-    calibrate = "mvchisq"
+    alpha = alpha, coefficients = coefficients, statistic = out$statistic,
+    df = diff(h$q), cv = out$cv, pval = out$pval, calibrate = "mvchisq"
   )
 })

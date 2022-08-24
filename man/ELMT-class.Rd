@@ -13,8 +13,14 @@ S4 class for empirical likelihood multiple tests.
 \describe{
 \item{\code{alpha}}{A single numeric for the overall significance level.}
 
+\item{\code{coefficients}}{A list of numeric vectors of the estimates of the linear
+hypotheses.}
+
 \item{\code{statistic}}{A numeric vector for the minus twice the (constrained)
 empirical log-likelihood ratios.}
+
+\item{\code{df}}{An integer vector of the marginal degrees of freedoms of the
+statistic.}
 
 \item{\code{cv}}{A single numeric for the multiplicity adjusted critical value.}
 

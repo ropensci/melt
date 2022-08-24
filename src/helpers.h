@@ -8,6 +8,9 @@ std::function<Eigen::MatrixXd(const Eigen::Ref<const Eigen::MatrixXd> &,
                               const Eigen::Ref<const Eigen::VectorXd> &)>
 set_g_fn(const std::string method);
 
+Eigen::VectorXd proj(const Eigen::Ref<const Eigen::MatrixXd> &l,
+                     const Eigen::Ref<const Eigen::VectorXd> &x);
+
 Eigen::VectorXd mele_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
                           const Eigen::Ref<const Eigen::ArrayXd> &w);
 Eigen::VectorXd mele_sd(const Eigen::Ref<const Eigen::MatrixXd> &x,

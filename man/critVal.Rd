@@ -11,7 +11,7 @@
 \S4method{critVal}{ELMT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{ELT} or
+\item{object}{An object that inherits from \linkS4class{ELT} or
 \linkS4class{ELMT}.}
 
 \item{...}{Further arguments passed to methods.}

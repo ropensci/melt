@@ -156,8 +156,9 @@ double EL::loglik() const
   }
 }
 
+
 /* CEL class (minimization)
- * Last updated: 07/04/22
+ * Last updated: 08/23/22
  */
 CEL::CEL(const std::string method,
          const Eigen::Ref<const Eigen::VectorXd> &par0,
@@ -178,12 +179,9 @@ CEL::CEL(const std::string method,
       gr_fn{CEL::set_gr_fn(method)}
 {
   /// initialization ///
-  // orthogonal projection matrix
-  const Eigen::MatrixXd proj =
-      Eigen::MatrixXd::Identity(lhs.cols(), lhs.cols()) -
-      lhs.transpose() * (lhs * lhs.transpose()).inverse() * lhs;
   // parameter (constraint imposed)
-  par = proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() * rhs;
+  par = proj(lhs, par0) +
+        lhs.bdcSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(rhs);
   // estimating function
   Eigen::MatrixXd g = g_fn(x, par);
   // lambda
@@ -191,14 +189,14 @@ CEL::CEL(const std::string method,
   // function value (-logLR)
   nllr = PseudoLog::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
   // function norm
-  // const double norm0 = (proj * gr_fn(l, g, x, par, wt, weighted)).norm();
+  // const double norm0 = proj(lhs, gr_fn(l, g, x, par, wt, weighted)).norm();
 
   /// minimization (projected gradient descent) ///
   while (!conv && iter != maxit && nllr <= th)
   {
     // update parameter
     Eigen::VectorXd par_tmp =
-        par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
+        par - gamma * proj(lhs, gr_fn(l, g, x, par, wt, weighted));
     // update estimating function
     Eigen::MatrixXd g_tmp = g_fn(x, par_tmp);
     // update lambda
@@ -214,11 +212,10 @@ CEL::CEL(const std::string method,
       gamma /= 2;
       if (gamma < DBL_EPSILON)
       {
-        // Rcpp::Rcout << "seffff" << "\n";
         break;
       }
       // propose new parameter
-      par_tmp = par - gamma * proj * gr_fn(l, g, x, par, wt, weighted);
+      par_tmp = par - gamma * proj(lhs, gr_fn(l, g, x, par, wt, weighted));
       // propose new lambda
       g_tmp = g_fn(x, par_tmp);
       l_tmp = EL(g_tmp, maxit_l, tol_l, th, wt).l;
@@ -235,8 +232,8 @@ CEL::CEL(const std::string method,
     else if (std::isnan(nllr))
     {
       // return initial values
-      par = proj * par0 + lhs.transpose() * (lhs * lhs.transpose()).inverse() *
-                              rhs;
+      par = proj(lhs, par0) +
+            lhs.bdcSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(rhs);
       Eigen::MatrixXd g = g_fn(x, par);
       l = EL(g, maxit_l, tol_l, th, wt).l;
       nllr = PseudoLog::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
@@ -249,7 +246,7 @@ CEL::CEL(const std::string method,
     l = std::move(l_tmp);
     g = std::move(g_tmp);
     // convergence check
-    if ((proj * gr_fn(l, g, x, par, wt, weighted)).norm() < tol ||
+    if (proj(lhs, gr_fn(l, g, x, par, wt, weighted)).norm() < tol ||
         s < tol * d + tol * tol)
     {
       conv = true;
@@ -340,10 +337,7 @@ double CEL::loglik(const Eigen::Ref<const Eigen::ArrayXd> &wt) const
   }
 }
 
-/* PseudoLog class
- * Last updated: 04/07/22
- *
- */
+
 PseudoLog::PseudoLog(const Eigen::Ref<const Eigen::ArrayXd> &x,
                      const Eigen::Ref<const Eigen::ArrayXd> &w)
 {

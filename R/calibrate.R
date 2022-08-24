@@ -7,7 +7,7 @@
 #' @param calibrate A single character.
 #' @param p A single integer.
 #' @param par A numeric vector.
-#' @param object An object that inherit from class \linkS4class{EL}.
+#' @param object An object thats inherit from class \linkS4class{EL}.
 #' @param control An object of class of \linkS4class{ControlEL}.
 #' @return A numeric vector of length two for the critical value and the
 #'   p-value.

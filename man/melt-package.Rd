@@ -29,6 +29,7 @@ Other contributors:
 \itemize{
   \item Steven MacEachern [contributor, thesis advisor]
   \item Mario Peruggia [contributor, thesis advisor]
+  \item Alex Stringer [reviewer]
 }
 
 }

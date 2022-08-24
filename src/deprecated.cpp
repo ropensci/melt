@@ -35,8 +35,8 @@ Rcpp::List pairwise(const Eigen::MatrixXd &x,
     lhs(pairs[i][0]) = 1;
     lhs(pairs[i][1]) = -1;
     minEL pairwise_result =
-        test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0), th,
-                    maxit, abstol);
+        test_gbd_EL(theta_hat, x, c, lhs, Eigen::Matrix<double, 1, 1>(0),
+                    th*100, maxit, abstol);
     statistic[i] = 2 * pairwise_result.nllr;
     convergence[i] = pairwise_result.convergence;
   }
@@ -52,7 +52,7 @@ Rcpp::List pairwise(const Eigen::MatrixXd &x,
   else
   {
     bootstrap_statistics_pairwise = bootstrap_statistics_pairwise_NB(
-        x, c, k, pairs, B, level, nthreads, th, maxit, abstol);
+        x, c, k, pairs, B, level, nthreads, th*100, maxit, abstol);
   }
   std::vector<double> adj_pvalues(m);
   for (int i = 0; i < m; ++i)
@@ -87,7 +87,7 @@ Rcpp::List pairwise(const Eigen::MatrixXd &x,
       lhs(pairs[i][0]) = 1;
       lhs(pairs[i][1]) = -1;
       std::array<double, 2> ci = pair_confidence_interval_gbd(
-          theta_hat, x, c, lhs, th, estimate[i], cutoff);
+          theta_hat, x, c, lhs, th*100, estimate[i], cutoff);
       lower[i] = ci[0];
       upper[i] = ci[1];
     }

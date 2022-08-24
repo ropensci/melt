@@ -16,7 +16,7 @@
 #' @return An object of class \linkS4class{EL}.
 #' @references Owen A (1990).
 #'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   The Annals of Statistics, 18(1), 90–120.
+#'   \emph{The Annals of Statistics}, 18(1), 90–120.
 #'   \doi{10.1214/aos/1176347494}.
 #' @seealso [el_control()], [el_eval()], [elt()]
 #' @examples

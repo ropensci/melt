@@ -25,7 +25,7 @@
 )
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL}, including
+\item{object}{An object that inherits from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{parm}{A specification of which parameters are to be given a confidence
@@ -63,7 +63,7 @@ plot(cr)
 \references{
 Owen A (1990).
 “Empirical Likelihood Ratio Confidence Regions.”
-The Annals of Statistics, 18(1), 90–120.
+\emph{The Annals of Statistics}, 18(1), 90–120.
 \doi{10.1214/aos/1176347494}.
 }
 \seealso{

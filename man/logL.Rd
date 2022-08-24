@@ -11,7 +11,7 @@
 \S4method{logL}{ELT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL} or
+\item{object}{An object that inherits from \linkS4class{EL} or
 \linkS4class{ELT}.}
 
 \item{...}{Further arguments passed to methods.}

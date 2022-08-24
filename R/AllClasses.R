@@ -55,11 +55,12 @@
 #'   functions.
 #' @slot data A numeric matrix for the data used for model fitting.
 #' @aliases EL
-#' @references Owen A (2001). Empirical Likelihood. Chapman & Hall/CRC.
+#' @references Owen A (2001). \emph{Empirical Likelihood}. Chapman & Hall/CRC.
 #'   \doi{10.1201/9781420036152}.
 #' @references Qin J, Lawless J (1994).
 #'   “Empirical Likelihood and General Estimating Equations.”
-#'   The Annals of Statistics, 22(1), 300–325. \doi{10.1214/aos/1176325370}.
+#'   \emph{The Annals of Statistics}, 22(1), 300–325.
+#'   \doi{10.1214/aos/1176325370}.
 #' @examples
 #' showClass("EL")
 #' @srrstats {G1.0} References are included throughout the package
@@ -121,11 +122,12 @@ setClass("EL",
 #' @aliases CEL
 #' @references Adimari G, Guolo A (2010).
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-#'   Statistical Methods & Applications, 19(4), 463–476.
+#'   \emph{Statistical Methods & Applications}, 19(4), 463–476.
 #'   \doi{10.1007/s10260-010-0137-9}.
 #' @references Qin J, Lawless J (1995).
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   Canadian Journal of Statistics, 23(2), 145–159. \doi{10.2307/3315441}.
+#'   \emph{Canadian Journal of Statistics}, 23(2), 145–159.
+#'   \doi{10.2307/3315441}.
 #' @examples
 #' showClass("CEL")
 #' @srrstats {G1.1} The package attempts the first implementation of the nested
@@ -288,8 +290,12 @@ setClass("ELT",
 #' S4 class for empirical likelihood multiple tests.
 #'
 #' @slot alpha A single numeric for the overall significance level.
+#' @slot coefficients A list of numeric vectors of the estimates of the linear
+#'   hypotheses.
 #' @slot statistic A numeric vector for the minus twice the (constrained)
 #'   empirical log-likelihood ratios.
+#' @slot df An integer vector of the marginal degrees of freedoms of the
+#'   statistic.
 #' @slot cv A single numeric for the multiplicity adjusted critical value.
 #' @slot pval A numeric vector for the multiplicity adjusted \eqn{p}-values.
 #' @slot calibrate A single character for the calibration method used.
@@ -298,8 +304,8 @@ setClass("ELT",
 #' showClass("ELMT")
 setClass("ELMT",
   slots = c(
-    alpha = "numeric", statistic = "numeric", cv = "numeric", pval = "numeric",
-    calibrate = "character"
+    alpha = "numeric", coefficients = "list", statistic = "numeric",
+    df = "integer", cv = "numeric", pval = "numeric", calibrate = "character"
   )
 )
 

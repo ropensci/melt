@@ -84,10 +84,11 @@ functions.}
 showClass("EL")
 }
 \references{
-Owen A (2001). Empirical Likelihood. Chapman & Hall/CRC.
+Owen A (2001). \emph{Empirical Likelihood}. Chapman & Hall/CRC.
 \doi{10.1201/9781420036152}.
 
 Qin J, Lawless J (1994).
 “Empirical Likelihood and General Estimating Equations.”
-The Annals of Statistics, 22(1), 300–325. \doi{10.1214/aos/1176325370}.
+\emph{The Annals of Statistics}, 22(1), 300–325.
+\doi{10.1214/aos/1176325370}.
 }

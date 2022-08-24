@@ -11,7 +11,7 @@
 \S4method{elmt}{QGLM}(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = el_control())
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL}, including
+\item{object}{An object that inherits from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{rhs}{A numeric vector (column matrix) or a list of numeric vectors for

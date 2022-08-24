@@ -9,7 +9,7 @@ If you want to make a bigger change, it's a good idea to first file an issue and
 ## Roadmap
 TO DO:
 
-- Additional options of families and link functions for `el_glm()`. Specifically, `quasi` family is our current priority.
+- Additional options of families and link functions for `el_glm()`. 
 
 - Additional model diagnostic tools.
 
@@ -19,10 +19,10 @@ TO DO:
 
 NOT TO DO:
 
-- Other parallelization schemes such as [boot](https://cran.r-project.org/web/packages/boot/index.html), [RcppParallel](https://cran.r-project.org/web/packages/RcppParallel/index.html), etc. 
+- Other parallelization schemes such as [boot](https://cran.r-project.org/package=boot), [RcppParallel](https://cran.r-project.org/package=RcppParallel), etc. 
 OpenMP is employed for parallel computing. Some unit tests are also written with the assumption that OpenMP is available, although the availability does not affect the test results. 
 
-- Other models such as linear mixed models, generalized additive model, etc.
+- Methods for over-identified models.
 
 
 ## Code style

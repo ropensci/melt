@@ -11,7 +11,7 @@
 \S4method{sigTests}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{LM} or
+\item{object}{An object that inherits from \linkS4class{LM} or
 \linkS4class{SummaryLM}.}
 
 \item{...}{Further arguments passed to methods.}

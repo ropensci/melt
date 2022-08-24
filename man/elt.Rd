@@ -18,7 +18,7 @@
 )
 }
 \arguments{
-\item{object}{An object that inherit from \linkS4class{EL}, including
+\item{object}{An object that inherits from \linkS4class{EL}, including
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{rhs}{A numeric vector or a column matrix for the right-hand side of
@@ -83,23 +83,24 @@ elt(fit, rhs = 0.3, calibrate = "f")
 
 ## Test of no treatment effect
 data("clothianidin")
-lhs <- matrix(c(
+contrast <- matrix(c(
   1, -1, 0, 0,
   0, 1, -1, 0,
   0, 0, 1, -1
 ), byrow = TRUE, nrow = 3)
 fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-elt(fit2, lhs = lhs)
+elt(fit2, lhs = contrast)
 }
 \references{
 Adimari G, Guolo A (2010).
 “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-Statistical Methods & Applications, 19(4), 463–476.
+\emph{Statistical Methods & Applications}, 19(4), 463–476.
 \doi{10.1007/s10260-010-0137-9}.
 
 Qin J, Lawless J (1995).
 “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-Canadian Journal of Statistics, 23(2), 145–159. \doi{10.2307/3315441}.
+\emph{Canadian Journal of Statistics}, 23(2), 145–159.
+\doi{10.2307/3315441}.
 }
 \seealso{
 \code{\link[=el_control]{el_control()}}, \code{\link[=elmt]{elmt()}}

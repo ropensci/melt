@@ -1,3 +1,15 @@
+# melt 1.7.0.9000 (development version)
+## NEW FEATURES
+* `el_lm()` gains `offset` argument.
+
+* New dataset `thiamethoxam` added.
+
+## MINOR IMPROVEMENTS
+* `coef()` and `getDF()` is applicable to an object of class `EMLT`.
+
+* `print()` shows more information when applied to an object of class `ELMT`.
+
+
 # melt 1.7.0
 ## NEW FEATURES
 * `el_glm()` accepts `quasipoisson` family.

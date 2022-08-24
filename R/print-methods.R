@@ -192,8 +192,8 @@ setMethod(
         digits = digits, signif.stars = signif.stars,
         P.values = TRUE, has.Pvalue = TRUE, na.print = "NA", ...
       )
-      cat("\nDispersion for ", x@family$family, " family: ", format(x@dispersion),
-        "\n\n",
+      cat("\nDispersion for ", x@family$family, " family: ",
+        format(x@dispersion), "\n\n",
         sep = ""
       )
     }
@@ -323,11 +323,17 @@ setMethod("print", "ELMT", function(x,
   cat("Overall significance level:", x@alpha, "\n\n")
   cat("Calibration:", method, "\n\n")
   cat("Hypotheses:\n")
-  out <- cbind(Chisq = chisq(x), p.adj = pVal(x))
+  out <- cbind(Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x))
   rownames(out) <- seq_along(pVal(x))
+  ind <- 1L
+  est <- coef(x)
+  if (isTRUE(all(vapply(est, length, FUN.VALUE = integer(1L)) == 1L))) {
+    out <- cbind(Estimate = unlist(est), out)
+    ind <- 2L
+  }
   printCoefmat(out,
-    digits = digits, signif.stars = signif.stars, tst.ind = 1, P.values = TRUE,
-    has.Pvalue = TRUE, eps.Pvalue = 1e-03
+    digits = digits, signif.stars = signif.stars, tst.ind = ind,
+    P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
   )
   cat("\n")
   cat(paste("Common critical value:", round(critVal(x), digits = 4L)), "\n\n")
