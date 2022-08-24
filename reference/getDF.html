@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9100</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for EL</span></span>
 <span><span class="fu">getDF</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S4 method for ELMT</span></span>
+<span><span class="fu">getDF</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S4 method for logLikEL</span></span>
 <span><span class="fu">getDF</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span></span>
@@ -77,16 +80,25 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>An object that inherit from <a href="EL-class.html">EL</a>,
-<a href="ELT-class.html">ELT</a>, <a href="logLikEL-class.html">logLikEL</a>, or <a href="SummaryLM-class.html">SummaryLM</a>.</p></dd>
+<dd><p>An object that inherits from <a href="EL-class.html">EL</a>,
+<a href="ELT-class.html">ELT</a>, <a href="ELMT-class.html">ELMT</a>, <a href="logLikEL-class.html">logLikEL</a>, or
+<a href="SummaryLM-class.html">SummaryLM</a>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A single integer.</p>
+<p>An integer vector.</p>
     </div>
+    <div class="section level2">
+    <h2 id="methods-by-class-">Methods (by class)<a class="anchor" aria-label="anchor" href="#methods-by-class-"></a></h2>
+    
+<ul><li><p><code>getDF(EL)</code>: Extracts the degrees of freedom.</p></li>
+<li><p><code>getDF(ELMT)</code>: Extracts the marginal degrees of freedoms.</p></li>
+<li><p><code>getDF(logLikEL)</code>: Extracts the degrees of freedom.</p></li>
+<li><p><code>getDF(SummaryLM)</code>: Extracts the degrees of freedom.</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

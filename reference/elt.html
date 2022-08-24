@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9100</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>An object that inherit from <a href="EL-class.html">EL</a>, including
+<dd><p>An object that inherits from <a href="EL-class.html">EL</a>, including
 <a href="CEL-class.html">CEL</a>, <a href="LM-class.html">LM</a>, and <a href="GLM-class.html">GLM</a>.</p></dd>
 
 
@@ -145,12 +145,13 @@ parameter when <code>lhs</code> is <code>NULL</code>.</p>
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Adimari G, Guolo A (2010).
 “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-Statistical Methods &amp; Applications, 19(4), 463–476.
+<em>Statistical Methods &amp; Applications</em>, 19(4), 463–476.
 <a href="https://doi.org/10.1007/s10260-010-0137-9" class="external-link">doi:10.1007/s10260-010-0137-9</a>
 .</p>
 <p>Qin J, Lawless J (1995).
 “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-Canadian Journal of Statistics, 23(2), 145–159. <a href="https://doi.org/10.2307/3315441" class="external-link">doi:10.2307/3315441</a>
+<em>Canadian Journal of Statistics</em>, 23(2), 145–159.
+<a href="https://doi.org/10.2307/3315441" class="external-link">doi:10.2307/3315441</a>
 .</p>
     </div>
     <div class="section level2">
@@ -177,13 +178,13 @@ Canadian Journal of Statistics, 23(2), 145–159. <a href="https://doi.org/10.23
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Test of no treatment effect</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span> <span class="va">trt</span>, <span class="va">clothianidin</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">elt</span><span class="op">(</span><span class="va">fit2</span>, lhs <span class="op">=</span> <span class="va">lhs</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">elt</span><span class="op">(</span><span class="va">fit2</span>, lhs <span class="op">=</span> <span class="va">contrast</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

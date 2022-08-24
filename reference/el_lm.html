@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9100</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">el_lm</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, weights <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">na.action</span>, control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">el_lm</span><span class="op">(</span></span>
+<span>  <span class="va">formula</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">na.action</span>,</span>
+<span>  <span class="va">offset</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -91,6 +99,14 @@ non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
 <dd><p>A function which indicates what should happen when the data
 contain <code>NA</code>s. The default is set by the <code>na.action</code> setting of
 <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>, and is <code>na.fail</code> if that is unset.</p></dd>
+
+
+<dt>offset</dt>
+<dd><p>An optional expression for specifying an <em>a priori</em> known
+component to be included in the linear predictor during fitting. This
+should be <code>NULL</code> or a numeric vector or matrix of extents matching those of
+the response. One or more <code><a href="https://rdrr.io/r/stats/offset.html" class="external-link">offset</a></code> terms can be included in the formula
+instead or as well, and if more than one are specified their sum is used.</p></dd>
 
 
 <dt>control</dt>
@@ -140,7 +156,7 @@ The test results are returned as <code>optim</code> and <code>sigTests</code>, r
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Owen A (1991).
 “Empirical Likelihood for Linear Models.”
-The Annals of Statistics, 19(4), 1725–1747.
+<em>The Annals of Statistics</em>, 19(4), 1725–1747.
 <a href="https://doi.org/10.1214/aos/1176348368" class="external-link">doi:10.1214/aos/1176348368</a>
 .</p>
     </div>
@@ -151,52 +167,69 @@ The Annals of Statistics, 19(4), 1725–1747.
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">5649</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, <span class="va">df</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Linear regression</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"thiamethoxam"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">fruit</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">thiamethoxam</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = y ~ x, data = df)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = fruit ~ trt, data = thiamethoxam)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.1132 1.081      0.299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1090 1.768      0.184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.768, df: 1, Pr(&gt;Chisq): 0.1837</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   Chisq Pr(&gt;Chisq)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   5.6667 440.823     &lt;2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtSpray     -0.6310   0.481     0.4881    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtFurrow     2.7798   6.074     0.0137 *  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtSeed      -0.3452   0.129     0.7191    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 21.86, df: 3, Pr(&gt;Chisq): 6.964e-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, <span class="va">df</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Weighted data</span></span></span>
+<span class="r-in"><span><span class="va">wfit</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">fruit</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">thiamethoxam</span>, weights <span class="op">=</span> <span class="va">visit</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">wfit</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = fruit ~ trt, data = thiamethoxam, weights = visit)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   Chisq Pr(&gt;Chisq)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   6.0985 445.025     &lt;2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtSpray     -0.4853   0.259     0.6107    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtFurrow     2.1730   3.884     0.0487 *  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtSeed      -0.6454   0.468     0.4937    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 19.63, df: 3, Pr(&gt;Chisq): 0.0002024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Missing data</span></span></span>
+<span class="r-in"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">fruit</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">+</span> <span class="va">scb</span>, data <span class="op">=</span> <span class="va">thiamethoxam</span>,</span></span>
+<span class="r-in"><span>  na.action <span class="op">=</span> <span class="va">na.omit</span>, offset <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = y ~ x, data = df, weights = rep(c(1, 2), each = 25))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = fruit ~ trt + scb, data = thiamethoxam, na.action = na.omit, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     offset = NULL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.1457 1.900      0.168</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1056 1.568      0.211</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.568, df: 1, Pr(&gt;Chisq): 0.2105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
-<span class="r-in"><span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, <span class="va">df</span>, na.action <span class="op">=</span> <span class="va">na.omit</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = y ~ x, data = df, na.action = na.omit)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Chisq Pr(&gt;Chisq)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  -0.1086 0.965      0.326</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1099 1.792      0.181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   Chisq Pr(&gt;Chisq)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  5.75996 433.212    &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtSpray    -0.41891   0.258    0.61181    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtFurrow    2.98597  10.481    0.00121 ** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trtSeed     -0.29911   0.141    0.70748    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> scb         -0.05937   1.150    0.28359    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (1 observation deleted due to missingness)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.792, df: 1, Pr(&gt;Chisq): 0.1806</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 23.27, df: 4, Pr(&gt;Chisq): 0.0001116</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

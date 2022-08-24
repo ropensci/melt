@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9100</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,9 +71,19 @@
 <dd><p>A single numeric for the overall significance level.</p></dd>
 
 
+<dt><code>coefficients</code></dt>
+<dd><p>A list of numeric vectors of the estimates of the linear
+hypotheses.</p></dd>
+
+
 <dt><code>statistic</code></dt>
 <dd><p>A numeric vector for the minus twice the (constrained)
 empirical log-likelihood ratios.</p></dd>
+
+
+<dt><code>df</code></dt>
+<dd><p>An integer vector of the marginal degrees of freedoms of the
+statistic.</p></dd>
 
 
 <dt><code>cv</code></dt>
@@ -96,9 +106,12 @@ empirical log-likelihood ratios.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "ELMT" [package "melt"]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      alpha statistic        cv      pval calibrate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric   numeric   numeric   numeric character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:         alpha coefficients    statistic           df           cv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric         list      numeric      integer      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          pval    calibrate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric    character</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
