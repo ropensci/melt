@@ -26,12 +26,11 @@ and Pollinator Protection Dilemma: The Case of Thiamethoxam Prophylactic
 Applications in Squash Crops.” \emph{PLOS ONE}, 17(5), 1--18.
 \doi{10.1371/journal.pone.0267984}.
 }
-\usage{
-data("thiamethoxam")
-data("thiamethoxam")
-}
 \description{
 A dataset on the effect of the thiamethoxam application method and plant
 variety on bees.
+}
+\examples{
+data("thiamethoxam")
 }
 \keyword{datasets}

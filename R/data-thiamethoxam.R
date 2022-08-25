@@ -17,7 +17,8 @@
 #' \item{scb}{Striped cucumber beetle per plant.}
 #' \item{defoliation}{Defoliation percentage.}
 #' }
-#' @usage data("thiamethoxam")
+#' @usage NULL
+#' @examples
 #' data("thiamethoxam")
 #' @source Obregon D, Pederson G, Taylor A, Poveda K (2022). “The Pest Control
 #'   and Pollinator Protection Dilemma: The Case of Thiamethoxam Prophylactic

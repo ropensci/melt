@@ -96,6 +96,7 @@
 #'   Users should be well aware of the basic transformations done by `lm()`.
 #' @srrstats {RE2.1} Missing values are handled by the `na.action` argument.
 #'   `Inf` values are not allowed and produce an error.
+#' @srrstats {RE2.3} `el_lm()` accepts an optional `offset` argument.
 #' @srrstats {RE2.4, RE2.4a, RE2.4b} Perfect collinearity is handled by
 #'   `model.frame()`. Especially, perfect collinearity among predictor variables
 #'   produces an error in `lm.fit()` since `singular.ok` is set to `FALSE`. This

@@ -13,7 +13,7 @@
 #' @details The original data is provided by Alford and Krupke (2017). Only some
 #'   of the shoot region observations are taken from the original data and
 #'   processed for illustration.
-#' @usage data("clothianidin")
+#' @usage NULL
 #' @examples
 #' data("clothianidin")
 #' @source Alford A, Krupke CH (2017). “Translocation of the Neonicotinoid Seed
