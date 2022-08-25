@@ -99,16 +99,31 @@ If non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
 <p>An object of class <a href="EL-class.html">EL</a>.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Let \(X_i\) be independent and identically distributed
+\(p\)-dimensional random variable from an unknown distribution \(P\)
+for \(i = 1, \dots, n\). We assume that \({\textrm{E}[X_i]} =
+  {\theta_0} \in {\rm{I\!R}}^p\) and that \(P\) has a positive definite
+covariance matrix. Given a value of \(\theta\), the (profile) empirical
+likelihood ratio is defined by
+$$R(\theta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i X_i = \theta, p_i \geq 0, \sum_{i = 1}^n p_i = 1
+  \right\}.$$
+<code>el_mean()</code> computes the empirical log-likelihood ratio statistic
+\(-2\log R(\theta)\), along with other values in <a href="EL-class.html">EL</a>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Owen A (1990).
 “Empirical Likelihood Ratio Confidence Regions.”
-<em>The Annals of Statistics</em>, 18(1), 90–120.
+<em>The Annals of Statistics</em>, 18(1), 90--120.
 <a href="https://doi.org/10.1214/aos/1176347494" class="external-link">doi:10.1214/aos/1176347494</a>
 .</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="el_control.html">el_control()</a></code>, <code><a href="el_eval.html">el_eval()</a></code>, <code><a href="elt.html">elt()</a></code></p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="el_control.html">el_control()</a></code>, <code><a href="el_eval.html">el_eval()</a></code>, <code><a href="elt.html">elt()</a></code></p></div>
     </div>
 
     <div class="section level2">

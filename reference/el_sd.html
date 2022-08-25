@@ -101,8 +101,22 @@ weighted empirical likelihood is computed.</p></dd>
 <p>An object of class <a href="EL-class.html">EL</a>.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Let \(X_i\) be independent and identically random variable from an
+unknown distribution \(P\) for \(i = 1, \dots, n\). We assume that
+\({\textrm{E}[X_i]} = {\mu_0}\) is known and that \(P\) has a variance
+\(\sigma_0^2\). Given a value of \(\sigma\), the
+(profile) empirical likelihood ratio is defined by
+$$R(\sigma) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i (X_i - \mu_0)^2 = \sigma^2, p_i \geq 0, \sum_{i = 1}^n
+  p_i = 1 \right\}.$$
+<code>el_sd()</code> computes the empirical log-likelihood ratio statistic
+\(-2\log R(\sigma)\), along with other values in <a href="EL-class.html">EL</a>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="el_control.html">el_control()</a></code>, <code><a href="el_mean.html">el_mean()</a></code>, <code><a href="elt.html">elt()</a></code></p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="el_control.html">el_control()</a></code>, <code><a href="el_mean.html">el_mean()</a></code>, <code><a href="elt.html">elt()</a></code></p></div>
     </div>
 
     <div class="section level2">
