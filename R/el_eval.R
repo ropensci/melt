@@ -11,10 +11,10 @@
 #'   non-`NULL`, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @details `el_eval` evaluates empirical likelihood with a \eqn{n} by
+#' @details [el_eval()] evaluates empirical likelihood with a \eqn{n} by
 #'   \eqn{p} numeric matrix argument `g`, whose \eqn{i}th row is
 #'   \eqn{g(X_i, \theta)}. Since the estimating function can be arbitrary,
-#'   `el_eval` does not return an object of class \linkS4class{EL}, and the
+#'   [el_eval()] does not return an object of class \linkS4class{EL}, and the
 #'   associated generics and methods are not applicable.
 #' @return A list with the following components:
 #'   * `optim` A list with the following optimization results:
@@ -32,9 +32,9 @@
 #'   * `weights` Re-scaled weights used for model fitting.
 #' @references Qin J, Lawless J (1994).
 #'   “Empirical Likelihood and General Estimating Equations.”
-#'   \emph{The Annals of Statistics}, 22(1), 300–325.
+#'   \emph{The Annals of Statistics}, 22(1), 300--325.
 #'   \doi{10.1214/aos/1176325370}.
-#' @seealso [el_control()]
+#' @seealso \linkS4class{EL}, [el_control()]
 #' @examples
 #' set.seed(3271)
 #' x <- rnorm(50)

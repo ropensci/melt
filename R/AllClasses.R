@@ -3,8 +3,8 @@
 #' S4 class for empirical likelihood.
 #'
 #' @details Let \eqn{X_i} be independent and identically distributed
-#'   \eqn{p}-dimensional random variable from an unknown distribution \eqn{F}
-#'   for \eqn{i = 1, \dots, n}. We assume that \eqn{F} has a positive definite
+#'   \eqn{p}-dimensional random variable from an unknown distribution \eqn{P}
+#'   for \eqn{i = 1, \dots, n}. We assume that \eqn{P} has a positive definite
 #'   covariance matrix. For a parameter of interest
 #'   \eqn{\theta(F) \in {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth
 #'   estimating function \eqn{g(X_i, \theta)} with a moment condition
@@ -12,7 +12,7 @@
 #'   We assume that there exists an unique \eqn{\theta_0} that solves the above
 #'   equation. Given a value of \eqn{\theta}, the (profile) empirical likelihood
 #'   ratio is defined by
-#'   \deqn{\mathcal{R}(\theta) =
+#'   \deqn{R(\theta) =
 #'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
 #'   \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
 #'   \right\}.}
@@ -23,16 +23,16 @@
 #'   \deqn{\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}
 #'   {1 + \lambda^\top g(X_i, \theta)} = 0.}
 #'   Then the empirical log-likelihood ratio is given by
-#'   \deqn{\log\mathcal{R}(\theta) = -\sum_{i = 1}^n
+#'   \deqn{\log R(\theta) = -\sum_{i = 1}^n
 #'   \log(1 + \lambda^\top g(X_i, \theta)).}
 #'   This problem can be efficiently solved by the Newton-Raphson method when
 #'   the zero vector is contained in the interior of the convex hull of
 #'   \eqn{\{g(X_i, \theta)\}_{i = 1}^n}.
 #'
-#'   Under some regularity conditions, it is known that
-#'   \eqn{-2\log\mathcal{R}(\theta_0)} converges in distribution to
-#'   \eqn{\chi^2_p}, where \eqn{\chi^2_p} has a chi-square distribution with
-#'   \eqn{p} degrees of freedom.
+#'   It is known that \eqn{-2\log R(\theta_0)} converges in
+#'   distribution to \eqn{\chi^2_p}, where \eqn{\chi^2_p} has a chi-square
+#'   distribution with \eqn{p} degrees of freedom. See the references below for
+#'   more details.
 #' @slot optim A list with the following optimization results:
 #'   * `par` A numeric vector of the specified parameters.
 #'   * `lambda` A numeric vector of the Lagrange multipliers.
@@ -59,7 +59,7 @@
 #'   \doi{10.1201/9781420036152}.
 #' @references Qin J, Lawless J (1994).
 #'   “Empirical Likelihood and General Estimating Equations.”
-#'   \emph{The Annals of Statistics}, 22(1), 300–325.
+#'   \emph{The Annals of Statistics}, 22(1), 300--325.
 #'   \doi{10.1214/aos/1176325370}.
 #' @examples
 #' showClass("EL")
@@ -122,11 +122,11 @@ setClass("EL",
 #' @aliases CEL
 #' @references Adimari G, Guolo A (2010).
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-#'   \emph{Statistical Methods & Applications}, 19(4), 463–476.
+#'   \emph{Statistical Methods & Applications}, 19(4), 463--476.
 #'   \doi{10.1007/s10260-010-0137-9}.
 #' @references Qin J, Lawless J (1995).
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   \emph{Canadian Journal of Statistics}, 23(2), 145–159.
+#'   \emph{Canadian Journal of Statistics}, 23(2), 145--159.
 #'   \doi{10.2307/3315441}.
 #' @examples
 #' showClass("CEL")

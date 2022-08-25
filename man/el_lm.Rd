@@ -94,9 +94,9 @@ summary(fit2)
 \references{
 Owen A (1991).
 “Empirical Likelihood for Linear Models.”
-\emph{The Annals of Statistics}, 19(4), 1725–1747.
+\emph{The Annals of Statistics}, 19(4), 1725--1747.
 \doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}, \code{\link[=el_glm]{el_glm()}}, \code{\link[=elt]{elt()}}
+\linkS4class{EL}, \code{\link[=el_control]{el_control()}}, \code{\link[=el_glm]{el_glm()}}, \code{\link[=elt]{elt()}}
 }

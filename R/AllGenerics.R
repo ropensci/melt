@@ -59,7 +59,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'  respectively.
 #' @references Owen A (1990).
 #'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   \emph{The Annals of Statistics}, 18(1), 90–120.
+#'   \emph{The Annals of Statistics}, 18(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
 #' @seealso [confreg()], [el_control()], [elt()]
 #' @usage NULL
@@ -97,7 +97,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @return An object of class \linkS4class{ConfregEL}.
 #' @references Owen A (1990).
 #'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   \emph{The Annals of Statistics}, 18(1), 90–120.
+#'   \emph{The Annals of Statistics}, 18(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
 #' @seealso [confint()], [el_control()], [elt()], [plot()]
 #' @usage NULL
@@ -182,7 +182,7 @@ setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
 #'   \doi{10.1198/106186005X59568}.
 #' @references Zhu H, Ibrahim JG, Tang N, Zhang H (2008).
 #'   “Diagnostic Measures for Empirical Likelihood of General Estimating
-#'   Equations.” \emph{Biometrika}, 95(2), 489–507.
+#'   Equations.” \emph{Biometrika}, 95(2), 489--507.
 #'   \doi{10.1093/biomet/asm094}.
 #' @seealso [el_control()], [el_eval()], [plot()]
 #' @usage NULL
@@ -317,11 +317,11 @@ setGeneric("elmt", function(object,
 #'   corresponds to that of \linkS4class{EL}.
 #' @references Adimari G, Guolo A (2010).
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-#'   \emph{Statistical Methods & Applications}, 19(4), 463–476.
+#'   \emph{Statistical Methods & Applications}, 19(4), 463--476.
 #'   \doi{10.1007/s10260-010-0137-9}.
 #' @references Qin J, Lawless J (1995).
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   \emph{Canadian Journal of Statistics}, 23(2), 145–159.
+#'   \emph{Canadian Journal of Statistics}, 23(2), 145--159.
 #'   \doi{10.2307/3315441}.
 #' @seealso [el_control()], [elmt()]
 #' @usage NULL
@@ -571,7 +571,7 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 #' @return A numeric vector of the re-scaled weights.
 #' @references Glenn N, Zhao Y (2007).
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-#'   \emph{Computational Statistics & Data Analysis}, 51(10), 5130–5141.
+#'   \emph{Computational Statistics & Data Analysis}, 51(10), 5130--5141.
 #'   \doi{10.1016/j.csda.2006.07.032}.
 #' @usage NULL
 #' @examples

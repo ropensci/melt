@@ -12,8 +12,19 @@
 #'   weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
+#' @details Let \eqn{X_i} be independent and identically random variable from an
+#'   unknown distribution \eqn{P} for \eqn{i = 1, \dots, n}. We assume that
+#'   \eqn{{\textrm{E}[X_i]} = {\mu_0}} is known and that \eqn{P} has a variance
+#'   \eqn{\sigma_0^2}. Given a value of \eqn{\sigma}, the
+#'   (profile) empirical likelihood ratio is defined by
+#'   \deqn{R(\sigma) =
+#'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+#'   \sum_{i = 1}^n p_i (X_i - \mu_0)^2 = \sigma^2, p_i \geq 0, \sum_{i = 1}^n
+#'   p_i = 1 \right\}.}
+#'   [el_sd()] computes the empirical log-likelihood ratio statistic
+#'   \eqn{-2\log R(\sigma)}, along with other values in \linkS4class{EL}.
 #' @return An object of class \linkS4class{EL}.
-#' @seealso [el_control()], [el_mean()], [elt()]
+#' @seealso \linkS4class{EL}, [el_control()], [el_mean()], [elt()]
 #' @examples
 #' set.seed(4097)
 #' x <- rnorm(100, mean = -2, sd = 3)

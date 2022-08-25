@@ -52,7 +52,7 @@ Likelihood.”
 
 Zhu H, Ibrahim JG, Tang N, Zhang H (2008).
 “Diagnostic Measures for Empirical Likelihood of General Estimating
-Equations.” \emph{Biometrika}, 95(2), 489–507.
+Equations.” \emph{Biometrika}, 95(2), 489--507.
 \doi{10.1093/biomet/asm094}.
 }
 \seealso{

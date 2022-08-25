@@ -28,6 +28,19 @@ An object of class \linkS4class{EL}.
 \description{
 Computes empirical likelihood for the standard deviation.
 }
+\details{
+Let \eqn{X_i} be independent and identically random variable from an
+unknown distribution \eqn{P} for \eqn{i = 1, \dots, n}. We assume that
+\eqn{{\textrm{E}[X_i]} = {\mu_0}} is known and that \eqn{P} has a variance
+\eqn{\sigma_0^2}. Given a value of \eqn{\sigma}, the
+(profile) empirical likelihood ratio is defined by
+\deqn{R(\sigma) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i (X_i - \mu_0)^2 = \sigma^2, p_i \geq 0, \sum_{i = 1}^n
+  p_i = 1 \right\}.}
+\code{\link[=el_sd]{el_sd()}} computes the empirical log-likelihood ratio statistic
+\eqn{-2\log R(\sigma)}, along with other values in \linkS4class{EL}.
+}
 \examples{
 set.seed(4097)
 x <- rnorm(100, mean = -2, sd = 3)
@@ -35,5 +48,5 @@ w <- rep(c(1, 2), each = 50)
 el_sd(x, mean = -2, sd = 3.5, weights = w)
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}, \code{\link[=el_mean]{el_mean()}}, \code{\link[=elt]{elt()}}
+\linkS4class{EL}, \code{\link[=el_control]{el_control()}}, \code{\link[=el_mean]{el_mean()}}, \code{\link[=elt]{elt()}}
 }

@@ -50,9 +50,9 @@
 #' @return An object of class of \linkS4class{LM}.
 #' @references Owen A (1991).
 #'   “Empirical Likelihood for Linear Models.”
-#'   \emph{The Annals of Statistics}, 19(4), 1725–1747.
+#'   \emph{The Annals of Statistics}, 19(4), 1725--1747.
 #'   \doi{10.1214/aos/1176348368}.
-#' @seealso [el_control()], [el_glm()], [elt()]
+#' @seealso \linkS4class{EL}, [el_control()], [el_glm()], [elt()]
 #' @examples
 #' ## Linear regression
 #' data("thiamethoxam")
@@ -132,9 +132,8 @@ el_lm <- function(formula,
     "`weights` must be positive." = (isTRUE(is.null(w) || all(w > 0))),
     "`el_lm()` does not support multiple responses." = (isFALSE(is.matrix(y)))
   )
-  offset <- model.offset(mf)
+  offset <- as.vector(model.offset(mf))
   if (!is.null(offset)) {
-    offset <- as.vector(offset)
     if (length(offset) != length(y)) {
       stop(gettextf(
         "Number of offsets is %d, should equal %d (number of observations).",

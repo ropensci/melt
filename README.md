@@ -17,10 +17,19 @@ coverage](https://codecov.io/gh/markean/melt/branch/master/graph/badge.svg)](htt
 
 ## Overview
 
-The R package **melt** provides a unified framework for data analysis
-with empirical likelihood methods. A collection of functions are
-available for regression analysis and hypothesis testing. The core
-computational routines are implemented with the
+Empirical likelihood enables a nonparametric, likelihood-driven style of
+inference without relying on assumptions frequently made in parametric
+models. Empirical likelihood-based tests are asymptotically pivotal and
+thus avoid explicit studentization, making it also challenging for the
+methods to be directly extended to other packages for parametric models.
+The R package [melt](https://cran.r-project.org/package=melt) aims to
+bridge the gap and provide a unified framework for data analysis with
+empirical likelihood methods. A collection of functions are available to
+perform multiple empirical likelihood tests and construct confidence
+intervals for linear and generalized linear models in R. The package
+offers an easy-to-use interface and flexibility in specifying hypotheses
+and calibration methods, extending the framework to simultaneous
+inference. The core computational routines are implemented with the
 [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) C++
 library and [RcppEigen](https://cran.r-project.org/package=RcppEigen)
 interface, with OpenMP for parallel computation. Details of the testing

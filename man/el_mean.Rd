@@ -28,6 +28,20 @@ An object of class \linkS4class{EL}.
 \description{
 Computes empirical likelihood for the mean.
 }
+\details{
+Let \eqn{X_i} be independent and identically distributed
+\eqn{p}-dimensional random variable from an unknown distribution \eqn{P}
+for \eqn{i = 1, \dots, n}. We assume that \eqn{{\textrm{E}[X_i]} =
+  {\theta_0} \in {\rm{I\!R}}^p} and that \eqn{P} has a positive definite
+covariance matrix. Given a value of \eqn{\theta}, the (profile) empirical
+likelihood ratio is defined by
+\deqn{R(\theta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i X_i = \theta, p_i \geq 0, \sum_{i = 1}^n p_i = 1
+  \right\}.}
+\code{\link[=el_mean]{el_mean()}} computes the empirical log-likelihood ratio statistic
+\eqn{-2\log R(\theta)}, along with other values in \linkS4class{EL}.
+}
 \examples{
 ## Scalar mean
 set.seed(414)
@@ -46,9 +60,9 @@ el_mean(faithful, par = c(3.5, 70), weights = w)
 \references{
 Owen A (1990).
 “Empirical Likelihood Ratio Confidence Regions.”
-\emph{The Annals of Statistics}, 18(1), 90–120.
+\emph{The Annals of Statistics}, 18(1), 90--120.
 \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}, \code{\link[=el_eval]{el_eval()}}, \code{\link[=elt]{elt()}}
+\linkS4class{EL}, \code{\link[=el_control]{el_control()}}, \code{\link[=el_eval]{el_eval()}}, \code{\link[=elt]{elt()}}
 }

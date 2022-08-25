@@ -43,10 +43,10 @@ that has an asymptotic chi-square distribution.
 Computes empirical likelihood with general estimating functions.
 }
 \details{
-\code{el_eval} evaluates empirical likelihood with a \eqn{n} by
+\code{\link[=el_eval]{el_eval()}} evaluates empirical likelihood with a \eqn{n} by
 \eqn{p} numeric matrix argument \code{g}, whose \eqn{i}th row is
 \eqn{g(X_i, \theta)}. Since the estimating function can be arbitrary,
-\code{el_eval} does not return an object of class \linkS4class{EL}, and the
+\code{\link[=el_eval]{el_eval()}} does not return an object of class \linkS4class{EL}, and the
 associated generics and methods are not applicable.
 }
 \examples{
@@ -59,9 +59,9 @@ el_eval(g, weights = rep(c(1, 2), each = 25))
 \references{
 Qin J, Lawless J (1994).
 “Empirical Likelihood and General Estimating Equations.”
-\emph{The Annals of Statistics}, 22(1), 300–325.
+\emph{The Annals of Statistics}, 22(1), 300--325.
 \doi{10.1214/aos/1176325370}.
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}
+\linkS4class{EL}, \code{\link[=el_control]{el_control()}}
 }

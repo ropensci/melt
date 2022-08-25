@@ -40,11 +40,11 @@
 #' @return An object of class of \linkS4class{GLM}.
 #' @references Chen SX, Cui H (2003).
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
-#'   \emph{Statistica Sinica}, 13(1), 69–81.
+#'   \emph{Statistica Sinica}, 13(1), 69--81.
 #' @references Kolaczyk ED (1994).
 #'   “Empirical Likelihood for Generalized Linear Models.”
-#'   \emph{Statistica Sinica}, 4(1), 199–218.
-#' @seealso [el_control()], [el_lm()], [elt()]
+#'   \emph{Statistica Sinica}, 4(1), 199--218.
+#' @seealso \linkS4class{EL}, [el_control()], [el_lm()], [elt()]
 #' @examples
 #' set.seed(20010)
 #' n <- 50
