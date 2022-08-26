@@ -13,7 +13,10 @@
 #' @details The original data is provided by Alford and Krupke (2017). Only some
 #'   of the shoot region observations are taken from the original data and
 #'   processed for illustration.
-#' @usage NULL
+#' @usage data("clothianidin")
+#' @examples
+#' data("clothianidin")
+#' clothianidin
 #' @source Alford A, Krupke CH (2017). “Translocation of the Neonicotinoid Seed
 #'   Treatment Clothianidin in Maize.” \emph{PLOS ONE}, 12(3), 1--19.
 #'   \doi{10.1371/journal.pone.0173836}.

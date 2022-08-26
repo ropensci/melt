@@ -10,10 +10,11 @@ el_glm(
   data,
   weights = NULL,
   na.action,
-  control = el_control(),
   start = NULL,
   etastart = NULL,
   mustart = NULL,
+  offset,
+  control = el_control(),
   ...
 )
 }
@@ -38,9 +39,6 @@ non-\code{NULL}, weighted empirical likelihood is computed.}
 contain \code{NA}s. The default is set by the \code{na.action} setting of
 \code{\link{options}}, and is \code{na.fail} if that is unset.}
 
-\item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
-
 \item{start}{Starting values for the parameters in the linear predictor.
 Defaults to \code{NULL} and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
@@ -49,6 +47,15 @@ and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
 \item{mustart}{Starting values for the vector of means. Defaults to \code{NULL}
 and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
+
+\item{offset}{An optional expression for specifying an \emph{a priori} known
+component to be included in the linear predictor during fitting. This
+should be \code{NULL} or a numeric vector or matrix of extents matching those of
+the response. One or more \code{\link{offset}} terms can be included in the formula
+instead or as well, and if more than one are specified their sum is used.}
+
+\item{control}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link[=el_control]{el_control()}}.}
 
 \item{...}{Additional arguments to be passed to \code{\link[=glm.control]{glm.control()}}.}
 }
@@ -84,7 +91,7 @@ y <- rbinom(n, 1, mu)
 df <- data.frame(y, x, x2)
 fit <- el_glm(y ~ x + x2,
   family = binomial, data = df, weights = NULL, na.action = na.omit,
-  start = NULL, etastart = NULL, mustart = NULL
+  start = NULL, etastart = NULL, mustart = NULL, offset = NULL
 )
 summary(fit)
 }

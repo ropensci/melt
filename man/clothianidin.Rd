@@ -18,6 +18,9 @@ Alford A, Krupke CH (2017). “Translocation of the Neonicotinoid Seed
 Treatment Clothianidin in Maize.” \emph{PLOS ONE}, 12(3), 1--19.
 \doi{10.1371/journal.pone.0173836}.
 }
+\usage{
+data("clothianidin")
+}
 \description{
 A dataset summarizing field experiments result of seed treatments on
 clothianidin concentration.
@@ -29,5 +32,6 @@ processed for illustration.
 }
 \examples{
 data("clothianidin")
+clothianidin
 }
 \keyword{datasets}

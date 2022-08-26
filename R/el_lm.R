@@ -143,7 +143,7 @@ el_lm <- function(formula,
     }
   }
   if (is.empty.model(mt)) {
-    x <- matrix(numeric(0), NROW(y), 0L)
+    x <- matrix(numeric(0), length(y), 0L)
     return(new("LM",
       call = cl, terms = mt,
       misc = list(
@@ -166,10 +166,8 @@ el_lm <- function(formula,
   }
   pnames <- names(fit$coefficients)
   intercept <- as.logical(attr(mt, "intercept"))
-  if (!is.null(offset)) {
-    y <- y - offset
-  }
-  mm <- cbind(y, x)
+  s <- if (is.null(offset)) rep.int(0, length(y)) else offset
+  mm <- cbind(s, y, x)
   n <- nrow(mm)
   p <- ncol(x)
   w <- validate_weights(w, n)

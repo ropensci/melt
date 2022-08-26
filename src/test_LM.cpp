@@ -20,7 +20,8 @@ Rcpp::List test_LM(const Eigen::Map<Eigen::MatrixXd> &x,
                    const int nthreads,
                    const Eigen::Map<Eigen::ArrayXd> &w)
 {
-  const int p = x.cols() - 1;
+  // const int p = x.cols() - 1;
+  const int p = x.cols() - 2;
   const double gamma = set_step(x.rows(), step);
 
   // overall test

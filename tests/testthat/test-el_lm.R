@@ -134,7 +134,7 @@ test_that("All row and column names are preserved.", {
   expect_true(all(names(sigTests(wfit)$statistic) %in% column_names))
   expect_true(all(names(sigTests(wfit)$convergence) %in% column_names))
   expect_true(all(names(getOptim(wfit)$par) %in% column_names))
-  expect_true(all(colnames(getData(wfit)[, -1L]) %in% column_names))
+  expect_true(all(colnames(getData(wfit)[, -c(1L, 2L)]) %in% column_names))
   expect_true(all(names(coef(wfit)) %in% column_names))
   expect_true(all(rownames(confint(wfit)) %in% column_names))
 })

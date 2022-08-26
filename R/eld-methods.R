@@ -20,17 +20,18 @@ setMethod("eld", "GLM", function(object, control = el_control()) {
   )
   mm <- getData(object)
   n <- nobs(object)
-  x <- mm[, -1L]
+  x <- mm[, -c(1L, 2L)]
   if (is.null(dim(x))) {
-    dim(x) <- c(n, ncol(mm) - 1L)
+    dim(x) <- c(n, ncol(mm) - 2L)
   }
-  y <- mm[, 1L]
+  y <- mm[, 2L]
   w <- weights(object)
   glm_control <- object@misc$control
   intercept <- object@misc$intercept
+  offset <- object@misc$offset
   new("ELD", .Data = vapply(seq_len(n), function(i) {
     fit <- suppressWarnings(glm.fit(
-      x = x[-i, ], y = y[-i], weights = w[-i], offset = NULL,
+      x = x[-i, ], y = y[-i], weights = w[-i], offset = offset,
       family = object@family, control = glm_control, intercept = intercept,
       singular.ok = FALSE
     ))

@@ -25,17 +25,18 @@ Eigen::MatrixXd w_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
                      const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
   return static_cast<double>(x.rows()) * (xmat.transpose() * xmat).inverse();
 }
 
 Eigen::MatrixXd w_gauss_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
                             const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  const Eigen::ArrayXd c = y * log_linkinv(xmat * par) -
-                           2.0 * log_linkinv(2.0 * xmat * par);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  const Eigen::ArrayXd c = y * log_linkinv(xmat * par + s) -
+                           2.0 * log_linkinv(2.0 * (xmat * par + s));
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -43,10 +44,12 @@ Eigen::MatrixXd w_gauss_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd> &x,
                                 const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  const Eigen::ArrayXd c = cube(inverse_linkinv(xmat * par)) *
-                           (2.0 * y - 3.0 * inverse_linkinv(xmat * par));
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  const Eigen::ArrayXd c =
+      (DBL_EPSILON + (xmat * par + s).array()).pow(-3) *
+      (2.0 * y - 3.0 * inverse(DBL_EPSILON + (xmat * par + s).array()));
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -54,10 +57,11 @@ Eigen::MatrixXd w_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_bin_logit(const Eigen::Ref<const Eigen::MatrixXd> &x,
                             const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  Eigen::ArrayXd c = logit_linkinv(xmat * par) *
-                     (1.0 - logit_linkinv(xmat * par));
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  Eigen::ArrayXd c =
+      logit_linkinv(xmat * par + s) * (1.0 - logit_linkinv(xmat * par + s));
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -65,16 +69,22 @@ Eigen::MatrixXd w_bin_logit(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_bin_probit(const Eigen::Ref<const Eigen::MatrixXd> &x,
                              const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::VectorXd o = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
   const Eigen::ArrayXd phi = 0.5 * M_SQRT1_2 * M_2_SQRTPI *
-                             exp(-0.5 * (xmat * par).array().square());
+                             exp(-0.5 * (xmat * par + o).array().square());
   const Eigen::ArrayXd dphi = -0.5 * M_SQRT1_2 * M_2_SQRTPI *
-                              exp(-0.5 * (xmat * par).array().square()) * (xmat * par).array();
-  const Eigen::ArrayXd c = y *
-                               (dphi * inverse(probit_linkinv(xmat * par)) -
-                                square(inverse(probit_linkinv(xmat * par)) * phi)) -
-                           dphi;
+                              exp(-0.5 * (xmat * par + o).array().square()) *
+                              (xmat * par + o).array();
+  const Eigen::ArrayXd s = (y - probit_linkinv(xmat * par + o)) * phi;
+  const Eigen::ArrayXd t =
+      DBL_EPSILON +
+      probit_linkinv(xmat * par + o) * (1.0 - probit_linkinv(xmat * par + o));
+  const Eigen::ArrayXd ds =
+      -phi.square() + (y - probit_linkinv(xmat * par + o)) * dphi;
+  const Eigen::ArrayXd dt = phi * (1.0 - 2.0 * probit_linkinv(xmat * par + o));
+  Eigen::ArrayXd c = t.pow(-2) * (ds * t - s * dt);
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -82,10 +92,12 @@ Eigen::MatrixXd w_bin_probit(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_bin_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
                           const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  const Eigen::ArrayXd c = square((1.0 - log_linkinv(xmat * par)).inverse()) *
-                           log_linkinv(xmat * par) * (y - 1.0);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  const Eigen::ArrayXd c =
+      (DBL_EPSILON + 1.0 - log_linkinv(xmat * par + s)).pow(-2) *
+      log_linkinv(xmat * par + s) * (y - 1.0);
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -93,9 +105,10 @@ Eigen::MatrixXd w_bin_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_poi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
                           const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  const Eigen::ArrayXd c = log_linkinv(xmat * par);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  const Eigen::ArrayXd c = log_linkinv(xmat * par + s);
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -103,9 +116,10 @@ Eigen::MatrixXd w_poi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_poi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
                                const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
-  const Eigen::ArrayXd c = y * square(inverse((xmat * par).array()));
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  const Eigen::ArrayXd c = y * (DBL_EPSILON + (xmat * par + s).array()).pow(-2);
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -113,10 +127,11 @@ Eigen::MatrixXd w_poi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd> &x,
                            const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 1);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
   const Eigen::ArrayXd c =
-      2.0 * (y * square(((xmat * par).array().inverse()))) + 2.0;
+      2.0 * y * (DBL_EPSILON + (xmat * par + s).array()).pow(-2) + 2.0;
   return static_cast<double>(x.rows()) *
          (xmat.transpose() * (xmat.array().colwise() * c).matrix()).inverse();
 }
@@ -124,25 +139,28 @@ Eigen::MatrixXd w_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
                            const Eigen::Ref<const Eigen::VectorXd> &par)
 {
-  const int p = x.cols() - 1;
+  const int p = x.cols() - 2;
   const Eigen::VectorXd beta = par.head(p);
   const double phi = par(p);
-  const Eigen::ArrayXd y = x.col(0);
-  const Eigen::MatrixXd xmat = x.rightCols(p);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
   const Eigen::ArrayXd c =
-      -std::pow(phi, -2) *
-      (2.0 * (y - log_linkinv(xmat * beta)) +
-       (log_linkinv(-xmat * beta)) * square(y - log_linkinv(xmat * beta)));
+      -std::pow(phi, -2) * (2.0 * (y - log_linkinv(xmat * beta + s)) +
+                            (log_linkinv(-xmat * beta - s)) *
+                                square(y - log_linkinv(xmat * beta + s)));
   Eigen::MatrixXd out(p + 1, p + 1);
   out.topLeftCorner(p, p) =
-      -(xmat.transpose() *
-        (xmat.array().colwise() * log_linkinv(xmat * beta)).matrix());
+      -(xmat.transpose() * (xmat.array().colwise() *
+                            (std::pow(phi, -1) * log_linkinv(xmat * beta + s)))
+                               .matrix());
   out.topRightCorner(p, 1) = Eigen::VectorXd::Zero(p);
   out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c).colwise().sum();
-  out(p, p) = ((-2.0 * std::pow(phi, -3) * log_linkinv(-xmat * beta) *
-                square(y - log_linkinv(xmat * beta))) +
-               std::pow(phi, -2)).sum();
-  return static_cast<double>(x.rows()) * out;
+  out(p, p) = ((-2.0 * std::pow(phi, -3) * log_linkinv(-xmat * beta - s) *
+                square(y - log_linkinv(xmat * beta + s))) +
+               std::pow(phi, -2))
+                  .sum();
+  return static_cast<double>(x.rows()) * out.inverse();
 }
 
 Eigen::MatrixXd dg0_inv(const std::string method,

@@ -1,6 +1,6 @@
 # melt 1.7.0.9000 (development version)
 ## NEW FEATURES
-* `el_lm()` gains `offset` argument.
+* `el_lm()` and `el_glm()` gain `offset` argument.
 
 * New dataset `thiamethoxam` added.
 
@@ -8,6 +8,11 @@
 * `coef()` and `getDF()` is applicable to an object of class `EMLT`.
 
 * `print()` shows more information when applied to an object of class `ELMT`.
+
+* Internal routines for projection operation do not compute an explicit inverse (thanks to @awstringer1).
+
+## BUG FIXES
+* `elmt()` returns a correct critical value when applied to an object of class `QGLM`.
 
 
 # melt 1.7.0
