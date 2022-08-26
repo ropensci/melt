@@ -17,6 +17,9 @@
 
 \item{...}{Further graphical parameters (see \code{\link{par}}).}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Provides plot methods for objects.
 }

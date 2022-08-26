@@ -59,6 +59,9 @@ passed to \code{\link[=format]{format()}}.}
 \item{signif.stars}{A single logical. If \code{TRUE}, ‘significance stars’
 are printed for each parameter.}
 }
+\value{
+The argument \code{x} (invisibly).
+}
 \description{
 Provides print methods for objects.
 }

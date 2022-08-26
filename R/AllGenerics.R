@@ -401,6 +401,9 @@ setGeneric("getOptim", function(object, ...) standardGeneric("getOptim"))
 #'   \linkS4class{ELT}.
 #' @param ... Further arguments passed to methods.
 #' @return A single numeric.
+#' @references Baggerly KA (1998).
+#'   “Empirical Likelihood as a Goodness-of-Fit Measure.” \emph{Biometrika},
+#'   85(3), 535--547. \doi{10.1093/biomet/asm094}.
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -435,6 +438,9 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #'   \linkS4class{ELT}.
 #' @param ... Further arguments passed to methods.
 #' @return A single numeric.
+#' @references Baggerly KA (1998).
+#'   “Empirical Likelihood as a Goodness-of-Fit Measure.” \emph{Biometrika},
+#'   85(3), 535--547. \doi{10.1093/biomet/asm094}.
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -467,6 +473,7 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 #' @param x An object to be plotted.
 #' @param y Not used.
 #' @param ... Further graphical parameters (see [`par`]).
+#' @return No return value, called for side effects.
 #' @seealso [confreg()], [eld()]
 #' @usage NULL
 #' @examples
@@ -495,6 +502,7 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
 #'   are printed for each parameter.
 #' @param ... Further arguments passed to methods.
+#' @return The argument `x` (invisibly).
 #' @usage NULL
 #' @examples
 #' data("precip")
