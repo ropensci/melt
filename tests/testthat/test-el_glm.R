@@ -47,6 +47,16 @@ test_that("Invalid `weights`.", {
   ))
 })
 
+test_that("Invalid `offset`.", {
+  expect_error(el_glm(height ~ weight,
+    family = gaussian, data = women, offset = as.matrix(women)
+  ))
+  fit <- el_glm(height ~ weight,
+    family = gaussian, data = women, offset = weight,
+  )
+  expect_s4_class(fit, "GLM")
+})
+
 test_that("Invalid `control`.", {
   expect_error(el_glm(wool ~ .,
     family = binomial, data = warpbreaks,
