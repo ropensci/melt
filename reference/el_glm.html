@@ -70,10 +70,11 @@
 <span>  <span class="va">data</span>,</span>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">na.action</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  etastart <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mustart <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">offset</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -110,11 +111,6 @@ contain <code>NA</code>s. The default is set by the <code>na.action</code> setti
 <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>, and is <code>na.fail</code> if that is unset.</p></dd>
 
 
-<dt>control</dt>
-<dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-<code><a href="el_control.html">el_control()</a></code>.</p></dd>
-
-
 <dt>start</dt>
 <dd><p>Starting values for the parameters in the linear predictor.
 Defaults to <code>NULL</code> and is passed to <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm.fit()</a></code>.</p></dd>
@@ -128,6 +124,19 @@ and is passed to <code><a href="https://rdrr.io/r/stats/glm.html" class="externa
 <dt>mustart</dt>
 <dd><p>Starting values for the vector of means. Defaults to <code>NULL</code>
 and is passed to <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm.fit()</a></code>.</p></dd>
+
+
+<dt>offset</dt>
+<dd><p>An optional expression for specifying an <em>a priori</em> known
+component to be included in the linear predictor during fitting. This
+should be <code>NULL</code> or a numeric vector or matrix of extents matching those of
+the response. One or more <code><a href="https://rdrr.io/r/stats/offset.html" class="external-link">offset</a></code> terms can be included in the formula
+instead or as well, and if more than one are specified their sum is used.</p></dd>
+
+
+<dt>control</dt>
+<dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 
 <dt>...</dt>
@@ -178,13 +187,14 @@ The test results are returned as <code>optim</code> and <code>sigTests</code>, r
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">x</span>, <span class="va">x2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">el_glm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">x2</span>,</span></span>
 <span class="r-in"><span>  family <span class="op">=</span> <span class="va">binomial</span>, data <span class="op">=</span> <span class="va">df</span>, weights <span class="op">=</span> <span class="cn">NULL</span>, na.action <span class="op">=</span> <span class="va">na.omit</span>,</span></span>
-<span class="r-in"><span>  start <span class="op">=</span> <span class="cn">NULL</span>, etastart <span class="op">=</span> <span class="cn">NULL</span>, mustart <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span>  start <span class="op">=</span> <span class="cn">NULL</span>, etastart <span class="op">=</span> <span class="cn">NULL</span>, mustart <span class="op">=</span> <span class="cn">NULL</span>, offset <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> el_glm(formula = y ~ x + x2, family = binomial, data = df, weights = NULL, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     na.action = na.omit, start = NULL, etastart = NULL, mustart = NULL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     na.action = na.omit, start = NULL, etastart = NULL, mustart = NULL, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     offset = NULL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate  Chisq Pr(&gt;Chisq)    </span>
