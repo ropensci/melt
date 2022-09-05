@@ -1,21 +1,9 @@
 test_that("Invalid `parm`.", {
   fit <- el_mean(women$height, par = 67)
-  fit2 <- el_sd(women$height, mean = 65, sd = 5)
-  fit3 <- el_glm(gear ~ mpg + cyl + disp,
-    family = quasipoisson("log"), data = mtcars
-  )
   expect_error(confint(fit, parm = NA))
   expect_error(confint(fit, parm = NULL))
   expect_error(confint(fit, parm = NaN))
   expect_error(confint(fit, parm = Inf))
-  expect_error(confint(fit2, parm = NA))
-  expect_error(confint(fit2, parm = NULL))
-  expect_error(confint(fit2, parm = NaN))
-  expect_error(confint(fit2, parm = Inf))
-  expect_error(confint(fit3, parm = NA))
-  expect_error(confint(fit3, parm = NULL))
-  expect_error(confint(fit3, parm = NaN))
-  expect_error(confint(fit3, parm = Inf))
 })
 
 test_that("Invalid `level`.", {

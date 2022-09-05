@@ -10,19 +10,18 @@ test_that("Invalid `x`.", {
 })
 
 test_that("Invalid `par`.", {
-  x <- sleep$extra
-  expect_error(el_mean(x, par = NA))
-  expect_error(el_mean(x, par = NULL))
-  expect_error(el_mean(x, par = Inf))
-  expect_error(el_mean(x, par = NaN))
-  expect_error(el_mean(x, par = c(0, 0)))
+  expect_error(el_mean(precip, par = NA))
+  expect_error(el_mean(precip, par = NULL))
+  expect_error(el_mean(precip, par = Inf))
+  expect_error(el_mean(precip, par = NaN))
+  expect_error(el_mean(precip, par = c(0, 0)))
 })
 
 test_that("Convergence check.", {
   x <- women$weight
-  grid <- seq(120, 160, length.out = 1000)
+  grid <- seq(10, 60, length.out = 100)
   expect_true(all(vapply(grid, function(par) {
-    conv(el_mean(x, par))
+    conv(el_mean(precip, par))
   },
   FUN.VALUE = logical(1)
   )))
@@ -38,14 +37,13 @@ test_that("Probabilities add up to 1.", {
 })
 
 test_that("Identical weights means no weights.", {
-  x <- women$height
-  fit <- el_mean(x, par = 60)
-  fit2 <- el_mean(x, par = 60, weights = rep(0.5, length(x)))
+  fit <- el_mean(precip, par = 60)
+  fit2 <- el_mean(precip, par = 60, weights = rep(0.5, length(precip)))
   fit2@weights <- numeric()
   expect_equal(fit, fit2)
 })
 
-test_that("Conversion between `loglik` and `loglr`.", {
+test_that("Conversion between `logL` and `logLR`.", {
   x <- women$height
   n <- length(x)
   fit <- el_mean(x, par = 60)
@@ -56,14 +54,14 @@ test_that("Conversion between `loglik` and `loglr`.", {
 })
 
 test_that("`verbose` == TRUE in `el_control()`.", {
-  x <- women$height
-  expect_message(el_mean(x, par = 60, control = el_control(verbose = TRUE)))
+  expect_message(el_mean(precip,
+    par = 60, control = el_control(verbose = TRUE)
+  ))
 })
 
 test_that("`conv()` methods.", {
-  x <- women$height
-  fit <- el_mean(x, par = 60)
-  fit2 <- el_mean(x, par = 0)
+  fit <- el_mean(precip, par = 60)
+  fit2 <- el_mean(precip, par = 0)
   expect_true(conv(fit))
   expect_false(conv(fit2))
 })
@@ -71,34 +69,31 @@ test_that("`conv()` methods.", {
 #' @srrstats {G5.7} Larger `tol_l` decreases the number of iterations for
 #'   convergence in `el_mean()`.
 test_that("Larger `tol_l` decreases iterations for convergence.", {
-  x <- women$height
-  fit <- el_mean(x, par = 60, control = el_control(tol_l = 1e-08))
-  fit2 <- el_mean(x, par = 60, control = el_control(tol_l = 1e-02))
+  fit <- el_mean(precip, par = 60, control = el_control(tol_l = 1e-08))
+  fit2 <- el_mean(precip, par = 60, control = el_control(tol_l = 1e-02))
   expect_gte(getOptim(fit)$iterations, getOptim(fit2)$iterations)
 })
 
 #' @srrstats {G5.9, G5.9a} Adding trivial noise does not change the overall
 #'   optimization results.
 test_that("Noise susceptibility tests.", {
-  x <- women$height
-  fit <- el_mean(x, par = 60)
-  fit2 <- el_mean(x, par = 60 + .Machine$double.eps)
+  fit <- el_mean(precip, par = 60)
+  fit2 <- el_mean(precip, par = 60 + .Machine$double.eps)
   expect_equal(getOptim(fit), getOptim(fit2))
 })
 
 #' @srrstats {RE1.4} Violation of the convex hull constraint is tested.
 test_that("Convex hull constraint violated.", {
   x <- women$weight
-  grid <- seq(10, 50, length.out = 1000)
+  grid <- seq(70, 100, length.out = 100)
   conv <- function(par) {
-    getOptim(el_mean(x, par))$convergence
+    getOptim(el_mean(precip, par))$convergence
   }
   expect_false(any(vapply(grid, conv, FUN.VALUE = logical(1))))
 })
 
 test_that("`print()` method.", {
-  x <- women$height
-  fit <- el_mean(x, par = 60)
+  fit <- el_mean(precip, par = 60)
   expect_output(show(fit))
   expect_output(print(fit))
   fit@statistic <- numeric()

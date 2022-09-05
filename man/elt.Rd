@@ -26,9 +26,10 @@ hypothesis, with as many entries as the rows in \code{lhs}. Defaults to \code{NU
 See ‘Details’.}
 
 \item{lhs}{A numeric matrix or a vector (treated as a row matrix) for the
-left-hand side of hypothesis. Each row gives a linear combination of the
+left-hand side of a hypothesis. Each row gives a linear combination of the
 parameters in \code{object}. The number of columns should be equal to the number
-of parameters. Defaults to \code{NULL}. See ‘Details’.}
+of parameters. Or a character vector with a symbolic description of the
+hypothesis is allowed. Defaults to \code{NULL}. See ‘Details’.}
 
 \item{alpha}{A single numeric for the significance level. Defaults to \code{0.05}.}
 
@@ -76,10 +77,9 @@ parameter when \code{lhs} is \code{NULL}.
 }
 \examples{
 ## F calibration for the mean
-set.seed(533414)
-x <- rnorm(100)
-fit <- el_mean(x, 0)
-elt(fit, rhs = 0.3, calibrate = "f")
+data("precip")
+fit <- el_mean(precip, 32)
+elt(fit, rhs = 32, calibrate = "f")
 
 ## Test of no treatment effect
 data("clothianidin")
@@ -90,6 +90,11 @@ contrast <- matrix(c(
 ), byrow = TRUE, nrow = 3)
 fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 elt(fit2, lhs = contrast)
+
+## A symbolic description of the same hypothesis
+elt(fit2, lhs = c(
+  "trtNaked - trtFungicide", "trtFungicide - trtLow", "trtLow - trtHigh"
+))
 }
 \references{
 Adimari G, Guolo A (2010).

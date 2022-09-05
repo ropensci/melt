@@ -2,7 +2,7 @@
 ## NEW FEATURES
 * `el_lm()` and `el_glm()` gain an argument `offset`.
 
-* `elt()` accepts a character vector for the argument `lhs`, allowing symbolic description of a hypothesis.
+* `elt()` accepts a character vector for the argument `lhs`, allowing a symbolic description of a hypothesis.
 
 * New dataset `thiamethoxam` added.
 

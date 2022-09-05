@@ -3,15 +3,9 @@
 \name{confint}
 \alias{confint}
 \alias{confint,EL-method}
-\alias{confint,QGLM-method}
-\alias{confint,SD-method}
 \title{Confidence interval for model parameters}
 \usage{
 \S4method{confint}{EL}(object, parm, level = 0.95, cv = NULL, control = el_control())
-
-\S4method{confint}{QGLM}(object, parm, level = 0.95, cv = NULL, control = el_control())
-
-\S4method{confint}{SD}(object, parm, level = 0.95, cv = NULL, control = el_control())
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL}, including

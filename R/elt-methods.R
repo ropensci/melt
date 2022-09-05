@@ -5,15 +5,14 @@ setMethod("elt", "EL", function(object,
                                 alpha = 0.05,
                                 calibrate = "chisq",
                                 control = el_control()) {
-  npar <- getNumPar(object)
   stopifnot(
-    "`elt()` method is not applicable to an empty model." = (npar != 0L),
+    "`elt()` is not applicable to an empty model." = getDF(object) >= 1L,
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (isFALSE(is.null(getData(object)))),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+      isFALSE(is.null(getData(object))),
+    "Invalid `control` specified." = is(control, "ControlEL")
   )
   nm <- names(getOptim(object)$par)
-  h <- validate_hypothesis(rhs, lhs, npar, nm)
+  h <- validate_hypothesis(rhs, lhs, getNumPar(object), nm)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
@@ -33,8 +32,9 @@ setMethod("elt", "EL", function(object,
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- nm
-    p <- length(par)
-    cal <- calibrate(calibrate, alpha, out$statistic, p, par, object, control)
+    cal <- calibrate(
+      calibrate, alpha, out$statistic, length(par), par, object, control
+    )
     return(new("ELT",
       optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
       statistic = out$statistic, cv = unname(cal["cv"]),
@@ -70,16 +70,15 @@ setMethod("elt", "QGLM", function(object,
                                   alpha = 0.05,
                                   calibrate = "chisq",
                                   control = el_control()) {
-  # `npar` includes the dispersion parameter
-  p <- getNumPar(object) - 1L
   stopifnot(
-    "`elt()` method is not applicable to an empty model." = (p != 0L),
+    "`elt()` is not applicable to an empty model." = getDF(object) >= 1L,
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (isFALSE(is.null(getData(object)))),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+      isFALSE(is.null(getData(object))),
+    "Invalid `control` specified." = is(control, "ControlEL")
   )
+  # `npar` includes the dispersion parameter
   nm <- names(getOptim(object)$par)
-  h <- validate_hypothesis(rhs, lhs, p, nm)
+  h <- validate_hypothesis(rhs, lhs, getNumPar(object) - 1L, nm)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
@@ -98,9 +97,8 @@ setMethod("elt", "QGLM", function(object,
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- nm
-    npar <- length(par)
     cal <- calibrate(
-      calibrate, alpha, out$statistic, npar, par, object, control
+      calibrate, alpha, out$statistic, length(par), par, object, control
     )
     return(new("ELT",
       optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
@@ -136,15 +134,14 @@ setMethod("elt", "SD", function(object,
                                 alpha = 0.05,
                                 calibrate = "chisq",
                                 control = el_control()) {
-  npar <- getNumPar(object)
   stopifnot(
-    "`elt()` method is not applicable to an empty model." = (npar != 0L),
+    "`elt()` is not applicable to an empty model." = getDF(object) >= 1L,
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (isFALSE(is.null(getData(object)))),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+      isFALSE(is.null(getData(object))),
+    "Invalid `control` specified." = is(control, "ControlEL")
   )
   nm <- names(getOptim(object)$par)
-  h <- validate_hypothesis(rhs, lhs, npar, nm)
+  h <- validate_hypothesis(rhs, lhs, getNumPar(object), nm)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   maxit_l <- control@maxit_l
