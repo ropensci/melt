@@ -272,6 +272,8 @@ setClass("ELD", contains = "numeric")
 #'   empirical log-likelihood ratio.
 #' @slot cv A single numeric for the critical value.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot rhs A numeric vector for the right-hand side of the hypothesis.
+#' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
 #' @slot calibrate A single character for the calibration method used.
 #' @aliases ELT
 #' @examples
@@ -279,8 +281,8 @@ setClass("ELD", contains = "numeric")
 setClass("ELT",
   slots = c(
     optim = "list", alpha = "numeric", logl = "numeric", loglr = "numeric",
-    statistic = "numeric", cv = "numeric", pval = "numeric",
-    calibrate = "character"
+    statistic = "numeric", cv = "numeric", pval = "numeric", rhs = "numeric",
+    lhs = "matrix", calibrate = "character"
   )
 )
 

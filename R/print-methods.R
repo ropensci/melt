@@ -42,6 +42,68 @@ setMethod("print", "EL", function(x,
 setMethod("show", "EL", function(object) print(object))
 
 #' @rdname print
+setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
+  cat("\n\tEmpirical Likelihood Test\n\n")
+  method <- switch(x@calibrate,
+    "chisq" = "Chi-square",
+    "boot" = "Bootstrap",
+    "f" = "F"
+  )
+  cat("Hypothesis:", describe_hypothesis(
+    x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))]
+  ),
+  sep = "\n"
+  )
+  cat("\n")
+  out2 <- character()
+  out2 <- c(
+    out2, paste("Significance level:", x@alpha),
+    paste("Calibration:", method)
+  )
+  cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
+  out3 <- character()
+  out3 <- c(
+    out3, paste("Statistic:", format.default(chisq(x), digits = digits)),
+    paste("Critical value:", format.default(critVal(x), digits = digits))
+  )
+  cat(strwrap(paste(out3, collapse = ", ")), "\n\n")
+  cat("p-value:", format.pval(pVal(x), digits = digits), "\n\n")
+  invisible(x)
+})
+setMethod("show", "ELT", function(object) print(object))
+
+#' @rdname print
+setMethod("print", "ELMT", function(x,
+                                    digits = max(3L, getOption("digits") - 3L),
+                                    signif.stars =
+                                      getOption("show.signif.stars"),
+                                    ...) {
+  method <- switch(x@calibrate,
+    "mvchisq" = "Multivariate chi-square"
+  )
+  cat("\n\tEmpirical Likelihood Multiple Tests\n\n")
+  cat("Overall significance level:", x@alpha, "\n\n")
+  cat("Calibration:", method, "\n\n")
+  cat("Hypotheses:\n")
+  out <- cbind(Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x))
+  rownames(out) <- seq_along(pVal(x))
+  ind <- 1L
+  est <- coef(x)
+  if (isTRUE(all(vapply(est, length, FUN.VALUE = integer(1L)) == 1L))) {
+    out <- cbind(Estimate = unlist(est), out)
+    ind <- 2L
+  }
+  printCoefmat(out,
+    digits = digits, signif.stars = signif.stars, tst.ind = ind,
+    P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
+  )
+  cat("\n")
+  cat(paste("Common critical value:", round(critVal(x), digits = 4L)), "\n\n")
+  invisible(x)
+})
+setMethod("show", "ELMT", function(object) print(object))
+
+#' @rdname print
 setMethod("print", "LM", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {
@@ -95,6 +157,87 @@ setMethod("print", "LM", function(x,
   invisible(x)
 })
 setMethod("show", "LM", function(object) print(object))
+
+#' @rdname print
+setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
+  cat("'Empirical log Lik.' ", paste(format(getDataPart(x), digits = digits),
+    collapse = ", "
+  ),
+  " (df=", format(getDF(x)), ")\n",
+  sep = ""
+  )
+  invisible(x)
+})
+setMethod("show", "logLikEL", function(object) print(object))
+
+#' @rdname print
+setMethod(
+  "print", "SummaryGLM", function(x,
+                                  digits = max(3L, getOption("digits") - 3L),
+                                  signif.stars = getOption("show.signif.stars"),
+                                  ...) {
+    cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
+      "\n",
+      sep = ""
+    )
+    aliased <- x@aliased
+    if (length(aliased) == 0L) {
+      cat("\nNo Coefficients\n\n")
+    } else {
+      cat("\nCoefficients:\n")
+      coefs <- sigTests(x)
+      if (any(aliased)) {
+        cn <- names(aliased)
+        coefs <-
+          matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
+        coefs[!aliased, ] <- sigTests(x)
+      }
+      printCoefmat(coefs,
+        digits = digits, signif.stars = signif.stars,
+        P.values = TRUE, has.Pvalue = TRUE, na.print = "NA", ...
+      )
+      cat("\nDispersion for ", x@family$family, " family: ",
+        format(x@dispersion), "\n\n",
+        sep = ""
+      )
+    }
+    mess <- naprint(x@na.action)
+    if (isTRUE(nzchar(mess))) {
+      cat("  (", mess, ")\n", sep = "", "\n")
+    }
+    out <- character()
+    if (length(chisq(x)) != 0L) {
+      out <- c(
+        out,
+        paste("Chisq:", format(chisq(x), digits = digits)),
+        paste("df:", getDF(x)),
+        paste("Pr(>Chisq):", format.pval(
+          pchisq(chisq(x), getDF(x), lower.tail = FALSE),
+          digits = digits
+        ))
+      )
+    } else {
+      out <- c("Empty model")
+    }
+    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
+    if (length(chisq(x)) != 0L) {
+      if (x@intercept) {
+        cat(
+          "\nConstrained EL:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      } else {
+        cat(
+          "\nEL evaluation:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      }
+    }
+    cat("\n")
+    invisible(x)
+  }
+)
+setMethod("show", "SummaryGLM", function(object) print(object))
 
 #' @rdname print
 #' @srrstats {G2.14b} `naprint()` is used to print messages if there are missing
@@ -168,75 +311,6 @@ setMethod("show", "SummaryLM", function(object) print(object))
 
 #' @rdname print
 setMethod(
-  "print", "SummaryGLM", function(x,
-                                  digits = max(3L, getOption("digits") - 3L),
-                                  signif.stars = getOption("show.signif.stars"),
-                                  ...) {
-    cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
-      "\n",
-      sep = ""
-    )
-    aliased <- x@aliased
-    if (length(aliased) == 0L) {
-      cat("\nNo Coefficients\n\n")
-    } else {
-      cat("\nCoefficients:\n")
-      coefs <- sigTests(x)
-      if (any(aliased)) {
-        cn <- names(aliased)
-        coefs <-
-          matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
-        coefs[!aliased, ] <- sigTests(x)
-      }
-      printCoefmat(coefs,
-        digits = digits, signif.stars = signif.stars,
-        P.values = TRUE, has.Pvalue = TRUE, na.print = "NA", ...
-      )
-      cat("\nDispersion for ", x@family$family, " family: ",
-        format(x@dispersion), "\n\n",
-        sep = ""
-      )
-    }
-    mess <- naprint(x@na.action)
-    if (isTRUE(nzchar(mess))) {
-      cat("  (", mess, ")\n", sep = "", "\n")
-    }
-    out <- character()
-    if (length(chisq(x)) != 0L) {
-      out <- c(
-        out,
-        paste("Chisq:", format(chisq(x), digits = digits)),
-        paste("df:", getDF(x)),
-        paste("Pr(>Chisq):", format.pval(
-          pchisq(chisq(x), getDF(x), lower.tail = FALSE),
-          digits = digits
-        ))
-      )
-    } else {
-      out <- c("Empty model")
-    }
-    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-    if (length(chisq(x)) != 0L) {
-      if (x@intercept) {
-        cat(
-          "\nConstrained EL:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      } else {
-        cat(
-          "\nEL evaluation:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      }
-    }
-    cat("\n")
-    invisible(x)
-  }
-)
-setMethod("show", "SummaryGLM", function(object) print(object))
-
-#' @rdname print
-setMethod(
   "print", "SummaryQGLM",
   function(x,
            digits = max(3L, getOption("digits") - 3L),
@@ -297,71 +371,3 @@ setMethod(
   }
 )
 setMethod("show", "SummaryQGLM", function(object) print(object))
-
-#' @rdname print
-setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
-  cat("'Empirical log Lik.' ", paste(format(getDataPart(x), digits = digits),
-    collapse = ", "
-  ),
-  " (df=", format(getDF(x)), ")\n",
-  sep = ""
-  )
-  invisible(x)
-})
-setMethod("show", "logLikEL", function(object) print(object))
-
-#' @rdname print
-setMethod("print", "ELMT", function(x,
-                                    digits = max(3L, getOption("digits") - 3L),
-                                    signif.stars =
-                                      getOption("show.signif.stars"),
-                                    ...) {
-  method <- switch(x@calibrate,
-    "mvchisq" = "Multivariate chi-square"
-  )
-  cat("\n\tEmpirical Likelihood Multiple Tests\n\n")
-  cat("Overall significance level:", x@alpha, "\n\n")
-  cat("Calibration:", method, "\n\n")
-  cat("Hypotheses:\n")
-  out <- cbind(Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x))
-  rownames(out) <- seq_along(pVal(x))
-  ind <- 1L
-  est <- coef(x)
-  if (isTRUE(all(vapply(est, length, FUN.VALUE = integer(1L)) == 1L))) {
-    out <- cbind(Estimate = unlist(est), out)
-    ind <- 2L
-  }
-  printCoefmat(out,
-    digits = digits, signif.stars = signif.stars, tst.ind = ind,
-    P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
-  )
-  cat("\n")
-  cat(paste("Common critical value:", round(critVal(x), digits = 4L)), "\n\n")
-  invisible(x)
-})
-setMethod("show", "ELMT", function(object) print(object))
-
-#' @rdname print
-setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
-  cat("\n\tEmpirical Likelihood Test\n\n")
-  method <- switch(x@calibrate,
-    "chisq" = "Chi-square",
-    "boot" = "Bootstrap",
-    "f" = "F"
-  )
-  out <- character()
-  out <- c(
-    out, paste("Significance level:", x@alpha),
-    paste("Calibration:", method)
-  )
-  cat(strwrap(paste(out, collapse = ", ")), "\n\n")
-  out2 <- character()
-  out2 <- c(
-    out2, paste("Statistic:", format.default(chisq(x), digits = digits)),
-    paste("Critical value:", format.default(critVal(x), digits = digits))
-  )
-  cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
-  cat("p-value:", format.pval(pVal(x), digits = digits), "\n\n")
-  invisible(x)
-})
-setMethod("show", "ELT", function(object) print(object))

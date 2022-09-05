@@ -129,6 +129,6 @@ test_that("`QGLM` class.", {
   )
   out <- elt(fit, rhs = coef(fit))
   expect_s4_class(out, "ELT")
-  out2 <- elt(fit, lhs = c(0, 1, 1))
+  out2 <- elt(fit, lhs = c("mpg + cyl"))
   expect_s4_class(out2, "ELT")
 })

@@ -1,11 +1,12 @@
 Type: Package
 Package: melt
 Title: Multiple Empirical Likelihood Tests
-Version: 1.7.0.9200
+Version: 1.7.0.9300
 Authors@R: c(
     person("Eunseop", "Kim", , "kim.7302@osu.edu", role = c("aut", "cre")),
     person("Steven", "MacEachern", role = c("ctb", "ths")),
     person("Mario", "Peruggia", role = c("ctb", "ths")),
+    person("Pierre", "Chausse", role = "rev"),
     person("Alex", "Stringer", role = "rev")
   )
 Description: Performs multiple empirical likelihood tests for linear and

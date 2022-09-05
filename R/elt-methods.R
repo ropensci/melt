@@ -12,10 +12,10 @@ setMethod("elt", "EL", function(object,
       (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  h <- validate_hypothesis(rhs, lhs, npar)
+  nm <- names(getOptim(object)$par)
+  h <- validate_hypothesis(rhs, lhs, npar, nm)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
-  nm <- names(getOptim(object)$par)
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
@@ -38,7 +38,7 @@ setMethod("elt", "EL", function(object,
     return(new("ELT",
       optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
       statistic = out$statistic, cv = unname(cal["cv"]),
-      pval = unname(cal["pval"]), calibrate = calibrate
+      pval = unname(cal["pval"]), rhs = par, lhs = h$l, calibrate = calibrate
     ))
   }
   # Proceed with chi-square calibration for non-NULL `lhs`
@@ -57,8 +57,8 @@ setMethod("elt", "EL", function(object,
   new("ELT",
     optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, cv = qchisq(1 - alpha, df = nrow(h$l)),
-    pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE),
-    calibrate = calibrate
+    pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE), rhs = h$r,
+    lhs = h$l, calibrate = calibrate
   )
 })
 
@@ -78,10 +78,10 @@ setMethod("elt", "QGLM", function(object,
       (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  h <- validate_hypothesis(rhs, lhs, p)
+  nm <- names(getOptim(object)$par)
+  h <- validate_hypothesis(rhs, lhs, p, nm)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
-  nm <- names(getOptim(object)$par)
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
@@ -105,7 +105,7 @@ setMethod("elt", "QGLM", function(object,
     return(new("ELT",
       optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
       statistic = out$statistic, cv = unname(cal["cv"]),
-      pval = unname(cal["pval"]), calibrate = calibrate
+      pval = unname(cal["pval"]), rhs = h$r, lhs = h$l, calibrate = calibrate
     ))
   }
   stopifnot(
@@ -123,8 +123,8 @@ setMethod("elt", "QGLM", function(object,
   new("ELT",
     optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, cv = qchisq(1 - alpha, df = nrow(l)),
-    pval = pchisq(out$statistic, df = nrow(l), lower.tail = FALSE),
-    calibrate = calibrate
+    pval = pchisq(out$statistic, df = nrow(l), lower.tail = FALSE), rhs = h$r,
+    lhs = h$l, calibrate = calibrate
   )
 })
 
@@ -143,10 +143,10 @@ setMethod("elt", "SD", function(object,
       (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  h <- validate_hypothesis(rhs, lhs, npar)
+  nm <- names(getOptim(object)$par)
+  h <- validate_hypothesis(rhs, lhs, npar, nm)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
-  nm <- names(getOptim(object)$par)
   maxit_l <- control@maxit_l
   tol_l <- control@tol_l
   th <- control@th
@@ -167,7 +167,7 @@ setMethod("elt", "SD", function(object,
     return(new("ELT",
       optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
       statistic = out$statistic, cv = unname(cal["cv"]),
-      pval = unname(cal["pval"]), calibrate = calibrate
+      pval = unname(cal["pval"]), rhs = h$r, lhs = h$l, calibrate = calibrate
     ))
   }
   stopifnot(
@@ -189,8 +189,8 @@ setMethod("elt", "SD", function(object,
   new("ELT",
     optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
     statistic = out$statistic, cv = qchisq(1 - alpha, df = 1L),
-    pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE),
-    calibrate = calibrate
+    pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE), rhs = h$r,
+    lhs = h$l, calibrate = calibrate
   )
 })
 

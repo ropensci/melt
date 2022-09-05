@@ -441,18 +441,20 @@ validate_npoints <- function(npoints) {
 #' @param rhs A numeric vector or a column matrix.
 #' @param lhs A numeric matrix or a vector (treated as a row matrix).
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A list.
 #' @noRd
-validate_hypothesis <- function(rhs, lhs, p) {
+validate_hypothesis <- function(rhs, lhs, p, pnames) {
   if (is.null(rhs) && is.null(lhs)) {
     stop("either `rhs` or `lhs` must be provided.")
   } else if (is.null(lhs)) {
+    lhs <- diag(1L, nrow = p, ncol = p)
     rhs <- validate_rhs(rhs, p)
   } else if (is.null(rhs)) {
-    lhs <- validate_lhs(lhs, p)
+    lhs <- validate_lhs(lhs, p, pnames)
     rhs <- rep(0, nrow(lhs))
   } else {
-    lhs <- validate_lhs(lhs, p)
+    lhs <- validate_lhs(lhs, p, pnames)
     rhs <- validate_rhs(rhs, nrow(lhs))
   }
   list(l = lhs, r = rhs)
@@ -514,12 +516,67 @@ validate_rhs.matrix <- function(rhs, p) {
 #'
 #' @param lhs A numeric matrix or a vector (treated as a row matrix).
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A numeric matrix.
 #' @srrstats {G2.8} A method dispatch is used to the argument `lhs`.
 #'   `validate_lhs()` returns a numeric matrix.
 #' @noRd
-validate_lhs <- function(lhs, p) {
+validate_lhs <- function(lhs, p, pnames) {
   UseMethod("validate_lhs", lhs)
+}
+
+#' Validate `lhs`
+#'
+#' Validate `lhs` in [elt()].
+#'
+#' @param lhs A character vector.
+#' @param p A single integer.
+#' @param pnames An optional character vector.
+#' @return A numeric matrix.
+#' @noRd
+validate_lhs.character <- function(lhs, p, pnames) {
+  if (is.null(pnames)) {
+    pnames <- if (p == 1L) "par" else paste0("par", seq_len(p))
+  }
+  q <- length(lhs)
+  stopifnot(
+    "Length of `lhs` must be positive." = isTRUE(q > 0L),
+    "Use `rhs` for equality comparison." = isFALSE(any(grepl("=", lhs)))
+  )
+  out <- matrix(NA, nrow = q, ncol = p)
+  for (i in seq_len(q)) {
+    idx <- vapply(pnames,
+      FUN = \(j) {
+        grepl(j, x = lhs[i], fixed = TRUE)
+      },
+      FUN.VALUE = logical(1L)
+    )
+    sub0 <- gsub(paste(pnames, collapse = "|"), "(0)", x = lhs[i])
+    eval0 <- tryCatch(eval(parse(text = sub0)),
+      warning = \(x) NA, error = \(x) NA
+    )
+    stopifnot(
+      "`lhs` contains invalid parameter names." = isFALSE(is.na(eval0)),
+      "Constants are not allowed in `lhs`." =
+        isTRUE(abs(eval0) < sqrt(.Machine$double.eps))
+    )
+    for (j in seq_len(p)) {
+      if (idx[j]) {
+        sub1 <- gsub(pnames[j], "(1)", x = lhs[i], fixed = TRUE)
+        sub10 <- gsub(paste(pnames, collapse = "|"), "(0)", x = sub1)
+        eval10 <- tryCatch(eval(parse(text = sub10)),
+          warning = \(x) NA,
+          error = \(x) NA
+        )
+        stopifnot("Invalid `lhs` specified." = isFALSE(is.na(eval10)))
+        out[i, j] <- eval10
+      } else {
+        out[i, j] <- 0
+      }
+    }
+  }
+  # stop("working")
+  out
 }
 
 #' Validate `lhs`
@@ -528,9 +585,10 @@ validate_lhs <- function(lhs, p) {
 #'
 #' @param lhs A numeric vector.
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A numeric matrix.
 #' @noRd
-validate_lhs.numeric <- function(lhs, p) {
+validate_lhs.numeric <- function(lhs, p, pnames) {
   stopifnot(
     "`lhs` must be a finite numeric vector." = (all(is.finite(lhs))),
     "`lhs` must have full row rank." = (get_rank(lhs) == 1L)
@@ -549,7 +607,7 @@ validate_lhs.numeric <- function(lhs, p) {
 #' @param p A single integer.
 #' @return A numeric matrix.
 #' @noRd
-validate_lhs.matrix <- function(lhs, p) {
+validate_lhs.matrix <- function(lhs, p, pnames) {
   q <- nrow(lhs)
   stopifnot(
     "`lhs` must be a finite numeric matrix." = (all(is.finite(lhs))),

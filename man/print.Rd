@@ -3,27 +3,38 @@
 \name{print}
 \alias{print}
 \alias{print,EL-method}
-\alias{print,LM-method}
-\alias{print,SummaryLM-method}
-\alias{print,SummaryGLM-method}
-\alias{print,SummaryQGLM-method}
-\alias{print,logLikEL-method}
-\alias{print,ELMT-method}
 \alias{print,ELT-method}
+\alias{print,ELMT-method}
+\alias{print,LM-method}
+\alias{print,logLikEL-method}
+\alias{print,SummaryGLM-method}
+\alias{print,SummaryLM-method}
+\alias{print,SummaryQGLM-method}
 \title{Print methods}
 \usage{
 \S4method{print}{EL}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
-\S4method{print}{LM}(x, digits = max(3L, getOption("digits") - 3L), ...)
+\S4method{print}{ELT}(x, digits = getOption("digits"), ...)
 
-\S4method{print}{SummaryLM}(
+\S4method{print}{ELMT}(
   x,
   digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"),
   ...
 )
 
+\S4method{print}{LM}(x, digits = max(3L, getOption("digits") - 3L), ...)
+
+\S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
+
 \S4method{print}{SummaryGLM}(
+  x,
+  digits = max(3L, getOption("digits") - 3L),
+  signif.stars = getOption("show.signif.stars"),
+  ...
+)
+
+\S4method{print}{SummaryLM}(
   x,
   digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"),
@@ -36,17 +47,6 @@
   signif.stars = getOption("show.signif.stars"),
   ...
 )
-
-\S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
-
-\S4method{print}{ELMT}(
-  x,
-  digits = max(3L, getOption("digits") - 3L),
-  signif.stars = getOption("show.signif.stars"),
-  ...
-)
-
-\S4method{print}{ELT}(x, digits = getOption("digits"), ...)
 }
 \arguments{
 \item{x}{An object to be printed.}

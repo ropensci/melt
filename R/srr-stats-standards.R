@@ -23,7 +23,8 @@
 #'   with single threaded computation. Those tests are run regardless of the
 #'   availability of OpenMP without affect the test results. See
 #'   `.github/CONTRIBUTING.md`.
-#' @srrstats {RE5.0} Documented in the package [website](https://markean.github.io/melt/articles/performance.html).
+#' @srrstats {RE5.0} Documented in the package
+#' [website](https://markean.github.io/melt/articles/performance.html).
 #' @noRd
 NULL
 

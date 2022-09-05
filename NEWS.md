@@ -1,11 +1,15 @@
-# melt 1.7.0.9000 (development version)
+# melt 1.7.0.9400 (development version)
 ## NEW FEATURES
 * `el_lm()` and `el_glm()` gain `offset` argument.
+
+* `elt()` accepts a character vector for argument `lhs`, allowing symbolic description of a hypothesis.
 
 * New dataset `thiamethoxam` added.
 
 ## MINOR IMPROVEMENTS
 * `coef()` and `getDF()` is applicable to an object of class `EMLT`.
+
+* `print()` shows the tested hypothesis when applied to an object of class `ELT`.
 
 * `print()` shows more information when applied to an object of class `ELMT`.
 

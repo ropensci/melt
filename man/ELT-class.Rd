@@ -27,6 +27,10 @@ empirical log-likelihood ratio.}
 
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
 
+\item{\code{rhs}}{A numeric vector for the right-hand side of the hypothesis.}
+
+\item{\code{lhs}}{A numeric matrix for the left-hand side of the hypothesis.}
+
 \item{\code{calibrate}}{A single character for the calibration method used.}
 }}
 
