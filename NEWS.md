@@ -1,8 +1,8 @@
 # melt 1.7.0.9400 (development version)
 ## NEW FEATURES
-* `el_lm()` and `el_glm()` gain `offset` argument.
+* `el_lm()` and `el_glm()` gain an argument `offset`.
 
-* `elt()` accepts a character vector for argument `lhs`, allowing symbolic description of a hypothesis.
+* `elt()` accepts a character vector for the argument `lhs`, allowing symbolic description of a hypothesis.
 
 * New dataset `thiamethoxam` added.
 
