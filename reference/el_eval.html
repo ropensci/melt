@@ -107,11 +107,26 @@ that has an asymptotic chi-square distribution.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>el_eval()</code> evaluates empirical likelihood with a \(n\) by
-\(p\) numeric matrix argument <code>g</code>, whose \(i\)th row is
-\(g(X_i, \theta)\). Since the estimating function can be arbitrary,
-<code>el_eval()</code> does not return an object of class <a href="EL-class.html">EL</a>, and the
-associated generics and methods are not applicable.</p>
+    <p>Let \(X_i\) be independent and identically distributed
+\(p\)-dimensional random variable from an unknown distribution \(P\)
+for \(i = 1, \dots, n\). We assume that \(P\) has a positive definite
+covariance matrix. For a parameter of interest
+\(\theta(F) \in {\rm{I\!R}}^p\), consider a \(p\)-dimensional smooth
+estimating function \(g(X_i, \theta)\) with a moment condition
+$$\textrm{E}[g(X_i, \theta)] = 0.$$
+We assume that there exists an unique \(\theta_0\) that solves the above
+equation. Given a value of \(\theta\), the (profile) empirical likelihood
+ratio is defined by
+$$R(\theta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
+  \right\}.$$
+<code><a href="el_mean.html">el_mean()</a></code> computes the empirical log-likelihood ratio statistic
+\(-2\log R(\theta)\) with the \(n\) by \(p\) numeric matrix <code>g</code>,
+whose \(i\)th row is \(g(X_i, \theta)\). Since the estimating function
+can be arbitrary, <code>el_eval()</code> does not return an object of class
+<a href="EL-class.html">EL</a>, and the associated generics and methods are not
+applicable.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -128,62 +143,77 @@ associated generics and methods are not applicable.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3271</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">par</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
-<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">-</span> <span class="va">par</span></span></span>
-<span class="r-in"><span><span class="fu">el_eval</span><span class="op">(</span><span class="va">g</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123526</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span><span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="va">mu</span>, <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="va">mu</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">sigma</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">el_eval</span><span class="op">(</span><span class="va">g</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim$lambda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.08646373</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0.07496852 -0.13181246</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim$iterations</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $optim$convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -4.342863 -4.325907 -4.221076 -4.387312 -4.297498 -4.256046 -4.079606</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] -4.320227 -4.396600 -4.398920 -4.375582 -4.328005 -4.281748 -4.418293</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] -4.390601 -4.218404 -4.348142 -4.246736 -4.328291 -4.349014 -4.273737</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] -4.415013 -4.378695 -4.383530 -4.296866 -3.576553 -3.605803 -3.692286</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] -3.509727 -3.683822 -3.591740 -3.625796 -3.702618 -3.641754 -3.679605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] -3.701016 -3.524850 -3.707200 -3.527362 -3.691791 -3.642639 -3.712097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] -3.491151 -3.574178 -3.687045 -3.543326 -3.639110 -3.621348 -3.658742</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] -3.609961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] -4.769471 -4.990644 -4.870218 -5.091557 -5.100253 -4.930272 -5.062251</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] -4.776230 -4.686532 -5.140843 -5.128973 -5.142095 -5.113834 -4.725774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] -5.036367 -5.067660 -5.067015 -5.119565 -5.093684 -5.098870 -4.875005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] -5.078325 -5.023702 -5.131392 -5.090640 -5.123581 -5.084509 -5.124924</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] -5.126164 -5.116142 -4.858517 -4.609268 -4.397857 -5.128368 -5.085189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] -5.028656 -4.858664 -5.096852 -5.133205 -4.281854 -5.140959 -4.618976</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] -5.024714 -5.101541 -4.946874 -5.143709 -5.063363 -5.131133 -5.118396</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] -5.114350 -4.450663 -4.389785 -3.925409 -4.416857 -4.447601 -4.371702</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] -4.442178 -4.450460 -4.438083 -4.379111 -4.449239 -4.105659 -4.330148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] -4.447834 -4.438277 -4.235448 -4.383028 -4.312055 -4.180299 -4.417466</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] -4.432212 -4.396910 -4.081117 -4.330231 -4.394711 -4.127873 -4.432886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] -4.433487 -4.258212 -4.363482 -4.236043 -4.426048 -4.434566 -4.422859</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] -4.415198 -4.302786 -3.988760 -4.300249 -4.429157 -4.320378 -4.330964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] -4.447207 -4.435400 -4.448065 -4.450586 -4.450673 -4.437071 -4.429319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] -4.423978 -3.975990</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -192.8945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -456.2696</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loglr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1250004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.415871</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2500007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.831742</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $df</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6170746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2427141</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nobs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $npar</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 0.6666667 0.6666667 0.6666667 0.6666667 1.3333333 1.3333333 1.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 0.6666667 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333 1.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 1.3333333 1.3333333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

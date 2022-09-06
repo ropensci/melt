@@ -155,28 +155,47 @@ instead or as well, and if more than one are specified their sum is used.</p></d
 \({Z_i} \equiv {(X_i, Y_i)}\) from a common distribution, where \(X_i\)
 is the \(p\)-dimensional covariate (including the intercept if any) and
 \(Y_i\) is the response. A generalized linear model specifies that
-\({\textrm{E}(Y_i | X_i)} = {G(X_i^\top \theta)}\) and
-\({\textrm{Var}(Y_i | X_i)} = {\phi V(G(X_i^\top \theta))}\),
+\({\textrm{E}(Y_i | X_i)} = {\mu_i}\), \({G(\mu_i)} = {X_i^\top \theta}\), and
+\({\textrm{Var}(Y_i | X_i)} = {\phi V(\mu_i)}\),
 where \(\theta = (\theta_0, \dots, \theta_{p-1})\) is an unknown
 \(p\)-dimensional parameter, \(\phi\) is an optional dispersion
 parameter, \(G\) is a known smooth link function, and \(V\) is a known
 variance function.</p>
-<p>Then the least square estimator of
-\(\theta\) solves the following estimating equations:
-$$\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.$$
-Given a value of \(\theta\), let
-\({g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}\) and the (profile)
-empirical likelihood ratio is defined by
-$$R(\theta) =
+<p>With \(H\) denoting the inverse link function, define the quasi-score
+$${g_1(Z_i, \theta)} =
+  \left\{
+  H^\prime(X_i^\top \theta) \left(Y_i - H(X_i^\top \theta)\right) /
+  \left(\phi V\left(H(X_i^\top \theta)\right)\right)
+  \right\}
+  X_i.$$
+Then we have the estimating equations
+\(\sum_{i = 1}^n g_1(Z_i, \theta) = 0\).
+When \(\phi\) is known, the (profile) empirical likelihood ratio for a
+given \(\theta\) is defined by
+$$R_1(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
-  \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta, p_i \geq 0,
+  \sum_{i = 1}^n p_i g_1(Z_i, \theta) = 0,\
+  p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.$$
-<code><a href="el_lm.html">el_lm()</a></code> first computes the parameter estimates by calling <code><a href="https://rdrr.io/r/stats/lmfit.html" class="external-link">lm.fit()</a></code>
+With unknown \(\phi\), we introduce another estimating function based on
+the squared residuals. Let \({\eta} = {(\theta, \phi)}\) and
+$${g_2(Z_i, \eta)} =
+  \left(Y_i - H(X_i^\top \theta)\right)^2 /
+  \left(\phi^2 V\left(H(X_i^\top \theta)\right)\right) - 1 / \phi.$$
+Now the empirical likelihood ratio is defined by
+$$R_2(\eta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i g_1(Z_i, \eta) = 0,\
+  \sum_{i = 1}^n p_i g_2(Z_i, \eta) = 0,\
+  p_i \geq 0,\
+  \sum_{i = 1}^n p_i = 1
+  \right\}.$$
+<code>el_glm()</code> first computes the parameter estimates by calling <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm.fit()</a></code>
 (with <code>...</code> if any) with the <code>model.frame</code> and <code>model.matrix</code> obtained from
 the <code>formula</code>. Note that the maximum empirical likelihood estimator is the
-same as the least square estimator in our model. Next, it performs
-hypothesis tests based on an asymptotic chi-squared distribution of
+same as the the quasi-maximum likelihood estimator in our model. Next, it
+tests hypotheses based on asymptotic chi-square distributions of the
 empirical likelihood ratio statistics. Included in the tests are overall
 test with
 $$H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,$$
@@ -187,12 +206,7 @@ The test results are returned as <code>optim</code> and <code>sigTests</code>, r
 <li><p><code>bimomial</code>: <code>"logit"</code>, <code>"probit"</code>, and <code>"log"</code>.</p></li>
 <li><p><code>poisson</code>: <code>"log"</code>, <code>"identity"</code>, and <code>"sqrt"</code>.</p></li>
 <li><p><code>quasipoisson</code>: <code>"log"</code> and <code>"identity"</code>.</p></li>
-</ul><p>Included in the tests are the overall test with
-$$H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,$$
-and the tests for each parameter with
-$$H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.$$
-The test results are returned as <code>optim</code> and <code>sigTests</code>, respectively.</p>
-    </div>
+</ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Chen SX, Cui H (2003).
@@ -204,7 +218,8 @@ The test results are returned as <code>optim</code> and <code>sigTests</code>, r
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="el_control.html">el_control()</a></code>, <code><a href="el_lm.html">el_lm()</a></code>, <code><a href="elt.html">elt()</a></code></p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="el_control.html">el_control()</a></code>, <code><a href="el_lm.html">el_lm()</a></code>, <code><a href="elt.html">elt()</a></code>,
+<a href="GLM-class.html">GLM</a></p></div>
     </div>
 
     <div class="section level2">
