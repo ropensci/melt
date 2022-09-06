@@ -292,7 +292,7 @@ validate_family <- function(family) {
       }
     },
     "quasipoisson" = {
-      if (!any(l == c("log"))) {
+      if (!any(l == c("log", "identity"))) {
         stop(gettextf(
           "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)

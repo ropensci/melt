@@ -2,6 +2,8 @@
 ## NEW FEATURES
 * `el_lm()` and `el_glm()` gain an argument `offset`.
 
+* `el_glm()` accepts `quasipoisson` family with `"identity"` link function for the argument `family`.
+
 * `elt()` accepts a character vector for the argument `lhs`, allowing a symbolic description of a hypothesis.
 
 * `plot()` is applicable to an object that inherits from `EL` to plot empirical likelihood displacement values versus observation index.
@@ -23,7 +25,7 @@
 
 # melt 1.7.0
 ## NEW FEATURES
-* `el_glm()` accepts `quasipoisson` family.
+* `el_glm()` accepts `quasipoisson` family with `"log"` link function for the argument `family`.
 
 * New accessor methods added (`chisq()`, `critVal()`, `getDF()`, `getOptim()`, `sigTests()`, `logL()`, and `pVal()`).
 

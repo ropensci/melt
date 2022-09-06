@@ -81,7 +81,8 @@ EL::set_g_fn(const std::string method)
              {"poisson_log", g_poi_log},
              {"poisson_identity", g_poi_identity},
              {"poisson_sqrt", g_poi_sqrt},
-             {"quasipoisson_log", g_qpoi_log}}};
+             {"quasipoisson_log", g_qpoi_log},
+             {"quasipoisson_identity", g_qpoi_identity}}};
   return g_map[method];
 }
 
@@ -222,7 +223,6 @@ CEL::CEL(const std::string method,
       // propose new function value
       nllr = PseudoLog::sum(Eigen::VectorXd::Ones(n) + g_tmp * l_tmp, wt);
     }
-
     if (nllr >= f0)
     {
       nllr = f0;
@@ -238,7 +238,6 @@ CEL::CEL(const std::string method,
       l = EL(g, maxit_l, tol_l, th, wt).l;
       nllr = PseudoLog::sum(Eigen::VectorXd::Ones(n) + g * l, wt);
     }
-
     // update
     const double s = (par - par_tmp).norm();
     const double d = par.norm();
@@ -274,7 +273,8 @@ CEL::set_g_fn(const std::string method)
              {"poisson_log", g_poi_log},
              {"poisson_identity", g_poi_identity},
              {"poisson_sqrt", g_poi_sqrt},
-             {"quasipoisson_log", g_qpoi_log}}};
+             {"quasipoisson_log", g_qpoi_log},
+             {"quasipoisson_identity", g_qpoi_identity}}};
   return g_map[method];
 }
 
@@ -306,7 +306,8 @@ CEL::set_gr_fn(const std::string method)
            {"poisson_log", gr_nloglr_poi_log},
            {"poisson_identity", gr_nloglr_poi_identity},
            {"poisson_sqrt", gr_nloglr_poi_sqrt},
-           {"quasipoisson_log", gr_nloglr_qpoi_log}}};
+           {"quasipoisson_log", gr_nloglr_qpoi_log},
+           {"quasipoisson_identity", gr_nloglr_qpoi_identity}}};
   return gr_map[method];
 }
 

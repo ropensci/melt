@@ -35,7 +35,7 @@
 #'   * `gaussian`: `"identity"`, `"log"`, and `"inverse"`.
 #'   * `bimomial`: `"logit"`, `"probit"`, and `"log"`.
 #'   * `poisson`: `"log"`, `"identity"`, and `"sqrt"`.
-#'   * `quasipoisson`: `"log"`.
+#'   * `quasipoisson`: `"log"` and `"identity"`.
 #'
 #'   Included in the tests are the overall test with
 #'   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}

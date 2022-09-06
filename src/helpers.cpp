@@ -509,10 +509,88 @@ Eigen::VectorXd gr_nloglr_qpoi_log(const Eigen::Ref<const Eigen::VectorXd> &l,
         (xmat.array().colwise() *
          (std::pow(phi, -1) * c * log_linkinv(xmat * beta + s)))
             .matrix());
-  out.topRightCorner(p, 1) = Eigen::VectorXd::Zero(p);
+  // out.topRightCorner(p, 1) = Eigen::VectorXd::Zero(p);
+  out.topRightCorner(p, 1) =
+      -std::pow(phi, -2) *
+      (xmat.array().colwise() * (c * (y - log_linkinv(xmat * beta + s))))
+          .colwise()
+          .sum()
+          .transpose();
   out.bottomLeftCorner(1, p) = (xmat.array().colwise() * c2).colwise().sum();
   out(p, p) = (c * ((-2.0 * std::pow(phi, -3) * log_linkinv(-xmat * beta - s) *
                      square(y - log_linkinv(xmat * beta + s))) +
+                    std::pow(phi, -2)))
+                  .sum();
+  return out * l;
+}
+
+Eigen::MatrixXd g_qpoi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                                const Eigen::Ref<const Eigen::VectorXd> &par)
+{
+  const int p = x.cols() - 2;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  Eigen::MatrixXd out(x.rows(), p + 1);
+  out.leftCols(p) =
+      (1.0 / phi) *
+      (xmat.array().colwise() *
+       (y * inverse(DBL_EPSILON + (xmat * par + s).array()) - 1.0));
+  out.col(p) = std::pow(phi, -2) *
+                   inverse(DBL_EPSILON + (xmat * par + s).array()) *
+                   square(y - (xmat * beta + s).array()) -
+               1.0 / phi;
+  return out;
+}
+
+Eigen::VectorXd gr_nloglr_qpoi_identity(
+    const Eigen::Ref<const Eigen::VectorXd> &l,
+    const Eigen::Ref<const Eigen::MatrixXd> &g,
+    const Eigen::Ref<const Eigen::MatrixXd> &x,
+    const Eigen::Ref<const Eigen::VectorXd> &par,
+    const Eigen::Ref<const Eigen::ArrayXd> &w,
+    const bool weighted)
+{
+  const int p = x.cols() - 2;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  Eigen::ArrayXd c(x.rows());
+  if (weighted)
+  {
+    c = w * inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+  else
+  {
+    c = inverse((Eigen::VectorXd::Ones(g.rows()) + g * l).array());
+  }
+  Eigen::MatrixXd out(p + 1, p + 1);
+  out.topLeftCorner(p, p) = -(
+      xmat.transpose() * (xmat.array().colwise() *
+                          (std::pow(phi, -1) * c * y *
+                           ((DBL_EPSILON + (xmat * par + s).array()).pow(-2))))
+                             .matrix());
+  out.topRightCorner(p, 1) =
+      -std::pow(phi, -2) *
+      (xmat.array().colwise() *
+       (c * (y * inverse(DBL_EPSILON + (xmat * par + s).array()) - 1.0)))
+          .colwise()
+          .sum()
+          .transpose();
+  out.bottomLeftCorner(1, p) =
+      -std::pow(phi, -2) *
+      (xmat.array().colwise() *
+       (c *
+        (square(y) * (DBL_EPSILON + (xmat * par + s).array()).pow(-2) - 1.0)))
+          .colwise()
+          .sum();
+  out(p, p) = (c * ((-2.0 * std::pow(phi, -3) *
+                     inverse(DBL_EPSILON + (xmat * par + s).array()) *
+                     square(y - (xmat * beta + s).array())) +
                     std::pow(phi, -2)))
                   .sum();
   return out * l;

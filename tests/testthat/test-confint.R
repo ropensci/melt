@@ -22,37 +22,27 @@ test_that("Invalid `control`.", {
 test_that("`level` == 1.", {
   fit <- el_mean(women$height, par = 67)
   fit2 <- el_sd(women$height, mean = 65, sd = 5)
-  fit3 <- el_glm(gear ~ -1 + mpg, family = quasipoisson("log"), data = mtcars)
   ci <- confint(fit, level = 1)
   ci2 <- confint(fit2, level = 1)
-  ci3 <- confint(fit3, level = 1)
   expect_equal(ci[1], -Inf)
   expect_equal(ci[2], Inf)
   expect_equal(ci2[1], 0)
   expect_equal(ci2[2], Inf)
-  expect_equal(ci3[1], -Inf)
-  expect_equal(ci3[2], Inf)
 })
 
 test_that("`level` == 0.", {
   fit <- el_mean(women$height, par = 67)
   fit2 <- el_sd(women$height, mean = 65, sd = 5)
-  fit3 <- el_glm(gear ~ -1 + mpg, family = quasipoisson("log"), data = mtcars)
   ci <- confint(fit, level = 0)
   ci2 <- confint(fit2, level = 0)
-  ci3 <- confint(fit3, level = 0)
   expect_equal(ci[2] - ci[1], 0)
   expect_equal(ci2[2] - ci2[1], 0)
-  expect_equal(ci3[2] - ci3[1], 0)
 })
 
 test_that("Empty model.", {
   fit <- el_lm(mpg ~ -1, data = mtcars)
-  fit2 <- el_glm(gear ~ 0, family = quasipoisson("log"), data = mtcars)
   ci <- confint(fit)
-  ci2 <- confint(fit2)
   expect_equal(nrow(ci), 0L)
-  expect_equal(nrow(ci2), 0L)
 })
 
 test_that("`nthreads` == 1.", {
@@ -71,22 +61,17 @@ test_that("`nthreads` == 1.", {
 test_that("Unnamed coefficients.", {
   fit <- el_mean(as.matrix(faithful), par = c(4, 60))
   fit2 <- el_sd(women$height, mean = 65, sd = 5)
-  fit3 <- el_glm(gear ~ mpg, family = quasipoisson("log"), data = mtcars)
   names(fit@coefficients) <- NULL
-  names(fit3@coefficients) <- NULL
   expect_type(confint(fit, parm = c(1, 2)), "double")
   expect_type(confint(fit), "double")
   expect_type(confint(fit2, parm = c(1, 2)), "double")
   expect_type(confint(fit2), "double")
-  expect_type(confint(fit3, parm = c(1, 2)), "double")
-  expect_type(confint(fit3), "double")
 })
 
 test_that("Character specification for `parm`.", {
   fit <- el_mean(faithful, par = c(4, 60))
   fit2 <- el_sd(women$height, mean = 35, sd = 13)
   fit3 <- el_sd(women$height, mean = 35, sd = 13, weights = women$weight)
-  fit4 <- el_glm(gear ~ mpg, family = quasipoisson("log"), data = mtcars)
   expect_type(confint(fit, parm = c("eruptions2", "eruptions3")), "double")
   expect_type(confint(fit, parm = c("eruptions", "eruptions2")), "double")
   expect_type(confint(fit2, parm = "1"), "double")
@@ -95,6 +80,4 @@ test_that("Character specification for `parm`.", {
   names(fit2@coefficients) <- "it"
   expect_type(confint(fit2, parm = 1), "double")
   expect_type(confint(fit3, parm = "1"), "double")
-  expect_type(confint(fit4, parm = c("mpg2", "mpg3")), "double")
-  expect_type(confint(fit4, parm = c("mpg", "mpg2")), "double")
 })
