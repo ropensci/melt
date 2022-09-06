@@ -128,18 +128,25 @@ fitting functions. See ‘Details’.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Suppose that we observe \(n\) independent random variables
-\((X_i, Y_i)\) from a common distribution, where \(X_i\) is the
-\(p\)-dimensional covariate (including the intercept if any) and
-\(Y_i\) is the response. We consider the following linear regression
-model:
+\({Z_i} \equiv {(X_i, Y_i)}\) from a common distribution, where \(X_i\)
+is the \(p\)-dimensional covariate (including the intercept if any) and
+\(Y_i\) is the response. We consider the following linear model:
 $$Y_i = X_i^\top \theta + \epsilon_i,$$
 where \(\theta = (\theta_0, \dots, \theta_{p-1})\) is an unknown
 \(p\)-dimensional parameter and the errors \(\epsilon_i\) are
 independent random variables that satisfy
 \(\textrm{E}(\epsilon_i | X_i)\) = 0. We assume that the errors have
 finite conditional variance. Then the least square estimator of
-\(\theta\) solves the following estimating equation:
+\(\theta\) solves the following estimating equations:
 $$\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.$$
+Given a value of \(\theta\), let
+\({g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}\) and the (profile)
+empirical likelihood ratio is defined by
+$$R(\theta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta, p_i \geq 0,
+  \sum_{i = 1}^n p_i = 1
+  \right\}.$$
 <code>el_lm()</code> first computes the parameter estimates by calling <code><a href="https://rdrr.io/r/stats/lmfit.html" class="external-link">lm.fit()</a></code>
 (with <code>...</code> if any) with the <code>model.frame</code> and <code>model.matrix</code> obtained from
 the <code>formula</code>. Note that the maximum empirical likelihood estimator is the
@@ -162,7 +169,8 @@ The test results are returned as <code>optim</code> and <code>sigTests</code>, r
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="el_control.html">el_control()</a></code>, <code><a href="el_glm.html">el_glm()</a></code>, <code><a href="elt.html">elt()</a></code></p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="el_control.html">el_control()</a></code>, <code><a href="el_glm.html">el_glm()</a></code>, <code><a href="elt.html">elt()</a></code>,
+<a href="LM-class.html">LM</a></p></div>
     </div>
 
     <div class="section level2">

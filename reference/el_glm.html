@@ -151,7 +151,39 @@ instead or as well, and if more than one are specified their sum is used.</p></d
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The available families and link functions are as follows:</p><ul><li><p><code>gaussian</code>: <code>"identity"</code>, <code>"log"</code>, and <code>"inverse"</code>.</p></li>
+    <p>Suppose that we observe \(n\) independent random variables
+\({Z_i} \equiv {(X_i, Y_i)}\) from a common distribution, where \(X_i\)
+is the \(p\)-dimensional covariate (including the intercept if any) and
+\(Y_i\) is the response. A generalized linear model specifies that
+\({\textrm{E}(Y_i | X_i)} = {G(X_i^\top \theta)}\) and
+\({\textrm{Var}(Y_i | X_i)} = {\phi V(G(X_i^\top \theta))}\),
+where \(\theta = (\theta_0, \dots, \theta_{p-1})\) is an unknown
+\(p\)-dimensional parameter, \(\phi\) is an optional dispersion
+parameter, \(G\) is a known smooth link function, and \(V\) is a known
+variance function.</p>
+<p>Then the least square estimator of
+\(\theta\) solves the following estimating equations:
+$$\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.$$
+Given a value of \(\theta\), let
+\({g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}\) and the (profile)
+empirical likelihood ratio is defined by
+$$R(\theta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta, p_i \geq 0,
+  \sum_{i = 1}^n p_i = 1
+  \right\}.$$
+<code><a href="el_lm.html">el_lm()</a></code> first computes the parameter estimates by calling <code><a href="https://rdrr.io/r/stats/lmfit.html" class="external-link">lm.fit()</a></code>
+(with <code>...</code> if any) with the <code>model.frame</code> and <code>model.matrix</code> obtained from
+the <code>formula</code>. Note that the maximum empirical likelihood estimator is the
+same as the least square estimator in our model. Next, it performs
+hypothesis tests based on an asymptotic chi-squared distribution of
+empirical likelihood ratio statistics. Included in the tests are overall
+test with
+$$H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,$$
+and significance tests for each parameter with
+$$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$
+The test results are returned as <code>optim</code> and <code>sigTests</code>, respectively.</p>
+<p>The available families and link functions are as follows:</p><ul><li><p><code>gaussian</code>: <code>"identity"</code>, <code>"log"</code>, and <code>"inverse"</code>.</p></li>
 <li><p><code>bimomial</code>: <code>"logit"</code>, <code>"probit"</code>, and <code>"log"</code>.</p></li>
 <li><p><code>poisson</code>: <code>"log"</code>, <code>"identity"</code>, and <code>"sqrt"</code>.</p></li>
 <li><p><code>quasipoisson</code>: <code>"log"</code> and <code>"identity"</code>.</p></li>
