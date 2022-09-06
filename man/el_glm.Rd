@@ -66,6 +66,40 @@ An object of class of \linkS4class{GLM}.
 Fits a generalized linear model with empirical likelihood.
 }
 \details{
+Suppose that we observe \eqn{n} independent random variables
+\eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
+is the \eqn{p}-dimensional covariate (including the intercept if any) and
+\eqn{Y_i} is the response. A generalized linear model specifies that
+\eqn{{\textrm{E}(Y_i | X_i)} = {G(X_i^\top \theta)}} and
+\eqn{{\textrm{Var}(Y_i | X_i)} = {\phi V(G(X_i^\top \theta))}},
+where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
+\eqn{p}-dimensional parameter, \eqn{\phi} is an optional dispersion
+parameter, \eqn{G} is a known smooth link function, and \eqn{V} is a known
+variance function.
+
+Then the least square estimator of
+\eqn{\theta} solves the following estimating equations:
+\deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
+Given a value of \eqn{\theta}, let
+\eqn{{g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}} and the (profile)
+empirical likelihood ratio is defined by
+\deqn{R(\theta) =
+  \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+  \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta, p_i \geq 0,
+  \sum_{i = 1}^n p_i = 1
+  \right\}.}
+\code{\link[=el_lm]{el_lm()}} first computes the parameter estimates by calling \code{\link[=lm.fit]{lm.fit()}}
+(with \code{...} if any) with the \code{model.frame} and \code{model.matrix} obtained from
+the \code{formula}. Note that the maximum empirical likelihood estimator is the
+same as the least square estimator in our model. Next, it performs
+hypothesis tests based on an asymptotic chi-squared distribution of
+empirical likelihood ratio statistics. Included in the tests are overall
+test with
+\deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
+and significance tests for each parameter with
+\deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
+The test results are returned as \code{optim} and \code{sigTests}, respectively.
+
 The available families and link functions are as follows:
 \itemize{
 \item \code{gaussian}: \code{"identity"}, \code{"log"}, and \code{"inverse"}.

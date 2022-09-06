@@ -59,11 +59,11 @@ test_that("`nthreads` == 1.", {
 })
 
 test_that("Unnamed coefficients.", {
-  fit <- el_mean(as.matrix(faithful), par = c(4, 60))
+  # fit <- el_mean(as.matrix(faithful), par = c(4, 60))
   fit2 <- el_sd(women$height, mean = 65, sd = 5)
-  names(fit@coefficients) <- NULL
-  expect_type(confint(fit, parm = c(1, 2)), "double")
-  expect_type(confint(fit), "double")
+  # names(fit@coefficients) <- NULL
+  # expect_type(confint(fit, parm = c(1, 2)), "double")
+  # expect_type(confint(fit), "double")
   expect_type(confint(fit2, parm = c(1, 2)), "double")
   expect_type(confint(fit2), "double")
 })

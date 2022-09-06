@@ -24,18 +24,25 @@
 #' @param ... Additional arguments to be passed to the low level regression
 #'   fitting functions. See ‘Details’.
 #' @details Suppose that we observe \eqn{n} independent random variables
-#'   \eqn{(X_i, Y_i)} from a common distribution, where \eqn{X_i} is the
-#'   \eqn{p}-dimensional covariate (including the intercept if any) and
-#'   \eqn{Y_i} is the response. We consider the following linear regression
-#'   model:
+#'   \eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
+#'   is the \eqn{p}-dimensional covariate (including the intercept if any) and
+#'   \eqn{Y_i} is the response. We consider the following linear model:
 #'   \deqn{Y_i = X_i^\top \theta + \epsilon_i,}
 #'   where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
 #'   \eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
 #'   independent random variables that satisfy
 #'   \eqn{\textrm{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
 #'   finite conditional variance. Then the least square estimator of
-#'   \eqn{\theta} solves the following estimating equation:
+#'   \eqn{\theta} solves the following estimating equations:
 #'   \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
+#'   Given a value of \eqn{\theta}, let
+#'   \eqn{{g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}} and the (profile)
+#'   empirical likelihood ratio is defined by
+#'   \deqn{R(\theta) =
+#'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+#'   \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta, p_i \geq 0,
+#'   \sum_{i = 1}^n p_i = 1
+#'   \right\}.}
 #'   [el_lm()] first computes the parameter estimates by calling [lm.fit()]
 #'   (with `...` if any) with the `model.frame` and `model.matrix` obtained from
 #'   the `formula`. Note that the maximum empirical likelihood estimator is the
@@ -52,7 +59,8 @@
 #'   “Empirical Likelihood for Linear Models.”
 #'   \emph{The Annals of Statistics}, 19(4), 1725--1747.
 #'   \doi{10.1214/aos/1176348368}.
-#' @seealso \linkS4class{EL}, [el_control()], [el_glm()], [elt()]
+#' @seealso \linkS4class{EL}, [el_control()], [el_glm()], [elt()],
+#'   \linkS4class{LM}
 #' @examples
 #' ## Linear regression
 #' data("thiamethoxam")
