@@ -493,6 +493,9 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 #' ## Empirical likelihood displacement
 #' out2 <- eld(fit)
 #' plot(out2)
+#'
+#' ## A shortcut to `ELD`
+#' plot(fit)
 #' @exportMethod plot
 setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 

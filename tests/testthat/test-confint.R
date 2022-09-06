@@ -1,5 +1,5 @@
 test_that("Invalid `parm`.", {
-  fit <- el_mean(women$height, par = 67)
+  fit <- el_mean(precip, par = 60)
   expect_error(confint(fit, parm = NA))
   expect_error(confint(fit, parm = NULL))
   expect_error(confint(fit, parm = NaN))
@@ -7,34 +7,16 @@ test_that("Invalid `parm`.", {
 })
 
 test_that("Invalid `level`.", {
-  fit <- el_mean(women$height, par = 67)
-  fit2 <- el_sd(women$height, mean = 65, sd = 5)
-  fit3 <- el_glm(gear ~ mpg + cyl + disp,
-    family = quasipoisson("log"), data = mtcars
-  )
+  fit <- el_mean(precip, par = 60)
   expect_error(confint(fit, level = -1))
   expect_error(confint(fit, level = 2))
   expect_error(confint(fit, level = Inf))
   expect_error(confint(fit, level = c(0, 0)))
-  expect_error(confint(fit2, level = -1))
-  expect_error(confint(fit2, level = 2))
-  expect_error(confint(fit2, level = Inf))
-  expect_error(confint(fit2, level = c(0, 0)))
-  expect_error(confint(fit3, level = -1))
-  expect_error(confint(fit3, level = 2))
-  expect_error(confint(fit3, level = Inf))
-  expect_error(confint(fit3, level = c(0, 0)))
 })
 
 test_that("Invalid `control`.", {
-  fit <- el_mean(women$height, par = 67)
-  fit2 <- el_sd(women$height, mean = 65, sd = 5)
-  fit3 <- el_glm(gear ~ mpg + cyl + disp,
-    family = quasipoisson("log"), data = mtcars
-  )
+  fit <- el_mean(precip, par = 60)
   expect_error(confint(fit, control = list(maxit = 67)))
-  expect_error(confint(fit2, control = list(maxit = 67)))
-  expect_error(confint(fit3, control = list()))
 })
 
 test_that("`level` == 1.", {

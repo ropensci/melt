@@ -4,6 +4,8 @@
 
 * `elt()` accepts a character vector for the argument `lhs`, allowing a symbolic description of a hypothesis.
 
+* `plot()` is applicable to an object that inherits from `EL` to plot empirical likelihood displacement values versus observation index.
+
 * New dataset `thiamethoxam` added.
 
 ## MINOR IMPROVEMENTS

@@ -28,8 +28,8 @@ setMethod("confint", "EL", function(object,
       pnames <- pnames[parm]
       idx <- if (is.null(nm)) match(pnames, idx) else match(pnames, nm)
     } else if (is.character(parm)) {
-      pnames <- parm
       idx <- match(parm, pnames)
+      pnames <- parm
     } else {
       stop("Invalid `parm` specified.")
     }

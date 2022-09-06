@@ -44,6 +44,7 @@ test_that("`plot()` method.", {
   fit <- el_lm(mpg ~ disp + hp + wt, data = mtcars)
   eld <- eld(fit)
   pdf(NULL)
+  expect_invisible(plot(fit))
   expect_invisible(plot(eld))
 })
 

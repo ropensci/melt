@@ -31,6 +31,12 @@ setMethod("plot", "ConfregEL", function(x, ...) {
 })
 
 #' @describeIn plot Plots empirical likelihood displacement values versus
+#'   observation index. `eld()` is called implicitly.
+setMethod("plot", "EL", function(x, ...) {
+  plot(eld(x), ...)
+})
+
+#' @describeIn plot Plots empirical likelihood displacement values versus
 #'   observation index.
 #' @srrstats {RE6.0} `plot` method is available for an `ELD` object that is
 #'   returned by the `eld()` method.

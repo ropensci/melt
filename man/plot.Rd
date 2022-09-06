@@ -3,10 +3,13 @@
 \name{plot}
 \alias{plot}
 \alias{plot,ConfregEL-method}
+\alias{plot,EL-method}
 \alias{plot,ELD-method}
 \title{Plot methods}
 \usage{
 \S4method{plot}{ConfregEL}(x, y, ...)
+
+\S4method{plot}{EL}(x, y, ...)
 
 \S4method{plot}{ELD}(x, y, ...)
 }
@@ -28,6 +31,9 @@ Provides plot methods for objects.
 \item \code{plot(ConfregEL)}: Plots a two-dimensional confidence region for model
 parameters.
 
+\item \code{plot(EL)}: Plots empirical likelihood displacement values versus
+observation index. \code{eld()} is called implicitly.
+
 \item \code{plot(ELD)}: Plots empirical likelihood displacement values versus
 observation index.
 
@@ -44,6 +50,9 @@ plot(out1)
 ## Empirical likelihood displacement
 out2 <- eld(fit)
 plot(out2)
+
+## A shortcut to `ELD`
+plot(fit)
 }
 \seealso{
 \code{\link[=confreg]{confreg()}}, \code{\link[=eld]{eld()}}
