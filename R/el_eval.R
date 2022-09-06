@@ -11,11 +11,26 @@
 #'   non-`NULL`, weighted empirical likelihood is computed.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
-#' @details [el_eval()] evaluates empirical likelihood with a \eqn{n} by
-#'   \eqn{p} numeric matrix argument `g`, whose \eqn{i}th row is
-#'   \eqn{g(X_i, \theta)}. Since the estimating function can be arbitrary,
-#'   [el_eval()] does not return an object of class \linkS4class{EL}, and the
-#'   associated generics and methods are not applicable.
+#' @details Let \eqn{X_i} be independent and identically distributed
+#'   \eqn{p}-dimensional random variable from an unknown distribution \eqn{P}
+#'   for \eqn{i = 1, \dots, n}. We assume that \eqn{P} has a positive definite
+#'   covariance matrix. For a parameter of interest
+#'   \eqn{\theta(F) \in {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth
+#'   estimating function \eqn{g(X_i, \theta)} with a moment condition
+#'   \deqn{\textrm{E}[g(X_i, \theta)] = 0.}
+#'   We assume that there exists an unique \eqn{\theta_0} that solves the above
+#'   equation. Given a value of \eqn{\theta}, the (profile) empirical likelihood
+#'   ratio is defined by
+#'   \deqn{R(\theta) =
+#'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+#'   \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
+#'   \right\}.}
+#'   [el_mean()] computes the empirical log-likelihood ratio statistic
+#'   \eqn{-2\log R(\theta)} with the \eqn{n} by \eqn{p} numeric matrix `g`,
+#'   whose \eqn{i}th row is \eqn{g(X_i, \theta)}. Since the estimating function
+#'   can be arbitrary, [el_eval()] does not return an object of class
+#'   \linkS4class{EL}, and the associated generics and methods are not
+#'   applicable.
 #' @return A list with the following components:
 #'   * `optim` A list with the following optimization results:
 #'     * `lambda` Lagrange multiplier of the dual problem.
@@ -36,11 +51,12 @@
 #'   \doi{10.1214/aos/1176325370}.
 #' @seealso \linkS4class{EL}, [el_control()]
 #' @examples
-#' set.seed(3271)
-#' x <- rnorm(50)
-#' par <- 0
-#' g <- x - par
-#' el_eval(g, weights = rep(c(1, 2), each = 25))
+#' set.seed(123526)
+#' mu <- 0
+#' sigma <- 1
+#' x <- rnorm(100)
+#' g <- matrix(c(x - mu, (x - mu)^2 - sigma^2), ncol = 2)
+#' el_eval(g, weights = rep(c(1, 2), each = 50))
 #' @export
 el_eval <- function(g, weights = NULL, control = el_control()) {
   mm <- as.matrix(g, rownames.force = TRUE)

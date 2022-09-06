@@ -35,29 +35,48 @@
 #'   \eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
 #'   is the \eqn{p}-dimensional covariate (including the intercept if any) and
 #'   \eqn{Y_i} is the response. A generalized linear model specifies that
-#'   \eqn{{\textrm{E}(Y_i | X_i)} = {G(X_i^\top \theta)}} and
-#'   \eqn{{\textrm{Var}(Y_i | X_i)} = {\phi V(G(X_i^\top \theta))}},
+#'   \eqn{{\textrm{E}(Y_i | X_i)} = {\mu_i}}, \eqn{{G(\mu_i)} = {X_i^\top \theta}}, and
+#'   \eqn{{\textrm{Var}(Y_i | X_i)} = {\phi V(\mu_i)}},
 #'   where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
 #'   \eqn{p}-dimensional parameter, \eqn{\phi} is an optional dispersion
 #'   parameter, \eqn{G} is a known smooth link function, and \eqn{V} is a known
 #'   variance function.
 #'
-#'   Then the least square estimator of
-#'   \eqn{\theta} solves the following estimating equations:
-#'   \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
-#'   Given a value of \eqn{\theta}, let
-#'   \eqn{{g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}} and the (profile)
-#'   empirical likelihood ratio is defined by
-#'   \deqn{R(\theta) =
+#'   With \eqn{H} denoting the inverse link function, define the quasi-score
+#'   \deqn{{g_1(Z_i, \theta)} =
+#'   \left\{
+#'   H^\prime(X_i^\top \theta) \left(Y_i - H(X_i^\top \theta)\right) /
+#'   \left(\phi V\left(H(X_i^\top \theta)\right)\right)
+#'   \right\}
+#'   X_i.}
+#'   Then we have the estimating equations
+#'   \eqn{\sum_{i = 1}^n g_1(Z_i, \theta) = 0}.
+#'   When \eqn{\phi} is known, the (profile) empirical likelihood ratio for a
+#'   given \eqn{\theta} is defined by
+#'   \deqn{R_1(\theta) =
 #'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
-#'   \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta, p_i \geq 0,
+#'   \sum_{i = 1}^n p_i g_1(Z_i, \theta) = 0,\
+#'   p_i \geq 0,\
 #'   \sum_{i = 1}^n p_i = 1
 #'   \right\}.}
-#'   [el_lm()] first computes the parameter estimates by calling [lm.fit()]
+#'   With unknown \eqn{\phi}, we introduce another estimating function based on
+#'   the squared residuals. Let \eqn{{\eta} = {(\theta, \phi)}} and
+#'   \deqn{{g_2(Z_i, \eta)} =
+#'   \left(Y_i - H(X_i^\top \theta)\right)^2 /
+#'   \left(\phi^2 V\left(H(X_i^\top \theta)\right)\right) - 1 / \phi.}
+#'   Now the empirical likelihood ratio is defined by
+#'   \deqn{R_2(\eta) =
+#'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+#'   \sum_{i = 1}^n p_i g_1(Z_i, \eta) = 0,\
+#'   \sum_{i = 1}^n p_i g_2(Z_i, \eta) = 0,\
+#'   p_i \geq 0,\
+#'   \sum_{i = 1}^n p_i = 1
+#'   \right\}.}
+#'   [el_glm()] first computes the parameter estimates by calling [glm.fit()]
 #'   (with `...` if any) with the `model.frame` and `model.matrix` obtained from
 #'   the `formula`. Note that the maximum empirical likelihood estimator is the
-#'   same as the least square estimator in our model. Next, it performs
-#'   hypothesis tests based on an asymptotic chi-squared distribution of
+#'   same as the the quasi-maximum likelihood estimator in our model. Next, it
+#'   tests hypotheses based on asymptotic chi-square distributions of the
 #'   empirical likelihood ratio statistics. Included in the tests are overall
 #'   test with
 #'   \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
@@ -65,24 +84,11 @@
 #'   \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
 #'   The test results are returned as `optim` and `sigTests`, respectively.
 #'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
 #'   The available families and link functions are as follows:
 #'   * `gaussian`: `"identity"`, `"log"`, and `"inverse"`.
 #'   * `bimomial`: `"logit"`, `"probit"`, and `"log"`.
 #'   * `poisson`: `"log"`, `"identity"`, and `"sqrt"`.
 #'   * `quasipoisson`: `"log"` and `"identity"`.
-#'
-#'   Included in the tests are the overall test with
-#'   \deqn{H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} = 0,}
-#'   and the tests for each parameter with
-#'   \deqn{H_{0j}: \beta_j = 0,\ j = 0, \dots, p-1.}
-#'   The test results are returned as `optim` and `sigTests`, respectively.
 #' @return An object of class of \linkS4class{GLM}.
 #' @references Chen SX, Cui H (2003).
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”
@@ -90,7 +96,8 @@
 #' @references Kolaczyk ED (1994).
 #'   “Empirical Likelihood for Generalized Linear Models.”
 #'   \emph{Statistica Sinica}, 4(1), 199--218.
-#' @seealso \linkS4class{EL}, [el_control()], [el_lm()], [elt()]
+#' @seealso \linkS4class{EL}, [el_control()], [el_lm()], [elt()],
+#'   \linkS4class{GLM}
 #' @examples
 #' set.seed(20010)
 #' n <- 50

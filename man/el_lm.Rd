@@ -67,14 +67,15 @@ Given a value of \eqn{\theta}, let
 empirical likelihood ratio is defined by
 \deqn{R(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
-  \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta, p_i \geq 0,
+  \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta,\
+   p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.}
 \code{\link[=el_lm]{el_lm()}} first computes the parameter estimates by calling \code{\link[=lm.fit]{lm.fit()}}
 (with \code{...} if any) with the \code{model.frame} and \code{model.matrix} obtained from
 the \code{formula}. Note that the maximum empirical likelihood estimator is the
-same as the least square estimator in our model. Next, it performs
-hypothesis tests based on an asymptotic chi-squared distribution of
+same as the the quasi-maximum likelihood estimator in our model. Next, it
+tests hypotheses based on asymptotic chi-square distributions of the
 empirical likelihood ratio statistics. Included in the tests are overall
 test with
 \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}

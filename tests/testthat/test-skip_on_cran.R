@@ -41,7 +41,7 @@ test_that("Parallel computation yields the same results (binomial - logit).", {
   w <- rep(c(1, 2), times = 50)
   l <- -1 + x %*% as.vector(b)
   mu <- 1 / (1 + exp(-l))
-  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = binomial("logit"), data = df,
@@ -69,7 +69,7 @@ test_that("Parallel computation yields the same results (binomial - probit).", {
   w <- rep(c(1, 2), times = 50)
   l <- 1.5 + x %*% as.vector(b)
   mu <- pnorm(l)
-  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = binomial("probit"), data = df,
@@ -97,7 +97,7 @@ test_that("Parallel computation yields the same results (binomial - log).", {
   w <- rep(c(1, 1.0005), times = 50)
   l <- -3 + x %*% as.vector(b)
   mu <- exp(l)
-  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = binomial("log"), data = df,
@@ -125,7 +125,7 @@ test_that("Parallel computation yields the same results (poisson - log).", {
   w <- rep(c(1, 2), times = 50)
   l <- -2 + x %*% as.vector(b)
   mu <- exp(l)
-  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = poisson("log"), data = df,
@@ -155,7 +155,7 @@ test_that(
     w <- rep(c(1, 2), times = 50)
     l <- 3 + x %*% as.vector(b)
     mu <- l
-    y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
+    y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L))
     df <- data.frame(y, x)
     fit <- el_glm(y ~ .,
       family = poisson("identity"), data = df,
@@ -184,7 +184,7 @@ test_that("Parallel computation yields the same results (poisson - sqrt).", {
   w <- rep(c(1, 2), times = 50)
   l <- 0.5 + x %*% as.vector(b)
   mu <- l^2
-  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
     family = poisson("sqrt"), data = df,
@@ -279,7 +279,7 @@ test_that("`el_glm()` (binomial - probit).", {
   w <- rep(c(1, 2), times = 50)
   l <- 1.5 + x %*% as.vector(b)
   mu <- pnorm(l)
-  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ ., family = binomial("probit"), data = df)
   wfit <- el_glm(y ~ ., family = binomial("probit"), data = df, weights = w)
@@ -301,7 +301,7 @@ test_that("`el_glm()` (binomial - log).", {
   w <- rep(c(1, 1.0005), times = 50)
   l <- -3 + x %*% as.vector(b)
   mu <- exp(l)
-  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rbinom(1, 1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ ., family = binomial("log"), data = df)
   wfit <- el_glm(y ~ ., family = binomial("log"), data = df, weights = w)
@@ -323,7 +323,7 @@ test_that("`el_glm()` (poisson - identity).", {
   w <- rep(c(1, 2), times = 50)
   l <- 3 + x %*% as.vector(b)
   mu <- l
-  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ ., family = poisson("identity"), data = df)
   wfit <- el_glm(y ~ ., family = poisson("identity"), data = df, weights = w)
@@ -345,7 +345,7 @@ test_that("`el_glm()` (poisson - sqrt).", {
   w <- rep(c(1, 2), times = 50)
   l <- 0.5 + x %*% as.vector(b)
   mu <- l^2
-  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1))
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L))
   df <- data.frame(y, x)
   fit <- el_glm(y ~ ., family = poisson("sqrt"), data = df)
   wfit <- el_glm(y ~ ., family = poisson("sqrt"), data = df, weights = w)
@@ -437,7 +437,7 @@ test_that("`el_glm()` (quasipoisson - log).", {
   w <- rep(c(1, 2), times = 100)
   l <- -0.4 + x %*% as.vector(b)
   mu <- exp(l)
-  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1)) +
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L)) +
     sample(1:10, n, replace = TRUE)
   df <- data.frame(y, x)
   fit <- el_glm(y ~ .,
@@ -456,6 +456,35 @@ test_that("`el_glm()` (quasipoisson - log).", {
   expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
   expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
 })
+
+# test_that("`el_glm()` (quasipoisson - identity).", {
+#   skip_on_cran()
+#   set.seed(5324)
+#   n <- 200
+#   p <- 4
+#   b <- rnorm(p, sd = 0.5)
+#   x <- matrix(rnorm(n * p), ncol = p)
+#   w <- rep(c(1, 2), times = 100)
+#   l <- 4 + x %*% as.vector(b)
+#   y <- vapply(l, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L)) +
+#     sample(1:10, n, replace = TRUE)
+#   df <- data.frame(y, x)
+#   fit <- el_glm(y ~ .,
+#                 family = quasipoisson("identity"), data = df,
+#                 control = el_control(tol = 1e-05, th = 1000)
+#   )
+#   wfit <- el_glm(y ~ .,
+#                  family = quasipoisson("identity"), data = df, weights = w,
+#                  control = el_control(tol = 1e-05, th = 1000)
+#   )
+#   lhs <- list(
+#     matrix(c(0, 1, 1, 0), nrow = 1),
+#     matrix(c(0, 0, 1, 1), nrow = 1)
+#   )
+#   rhs <- c(0, -0.5)
+#   expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
+#   expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
+# })
 
 test_that("`el_pairwise()` (deprecated).", {
   skip_on_cran()

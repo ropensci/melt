@@ -509,7 +509,6 @@ Eigen::VectorXd gr_nloglr_qpoi_log(const Eigen::Ref<const Eigen::VectorXd> &l,
         (xmat.array().colwise() *
          (std::pow(phi, -1) * c * log_linkinv(xmat * beta + s)))
             .matrix());
-  // out.topRightCorner(p, 1) = Eigen::VectorXd::Zero(p);
   out.topRightCorner(p, 1) =
       -std::pow(phi, -2) *
       (xmat.array().colwise() * (c * (y - log_linkinv(xmat * beta + s))))

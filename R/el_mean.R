@@ -21,7 +21,9 @@
 #'   likelihood ratio is defined by
 #'   \deqn{R(\theta) =
 #'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
-#'   \sum_{i = 1}^n p_i X_i = \theta, p_i \geq 0, \sum_{i = 1}^n p_i = 1
+#'   \sum_{i = 1}^n p_i X_i = \theta,\
+#'   p_i \geq 0,\
+#'   \sum_{i = 1}^n p_i = 1
 #'   \right\}.}
 #'   [el_mean()] computes the empirical log-likelihood ratio statistic
 #'   \eqn{-2\log R(\theta)}, along with other values in \linkS4class{EL}.
