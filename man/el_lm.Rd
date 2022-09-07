@@ -81,7 +81,6 @@ test with
 \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
 and significance tests for each parameter with
 \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
-The test results are returned as \code{optim} and \code{sigTests}, respectively.
 }
 \examples{
 ## Linear regression

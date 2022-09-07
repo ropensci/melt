@@ -54,7 +54,6 @@
 #'   \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
 #'   and significance tests for each parameter with
 #'   \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
-#'   The test results are returned as `optim` and `sigTests`, respectively.
 #' @return An object of class of \linkS4class{LM}.
 #' @references Owen A (1991).
 #'   “Empirical Likelihood for Linear Models.”

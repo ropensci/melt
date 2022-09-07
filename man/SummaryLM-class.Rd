@@ -24,6 +24,9 @@ constrained minimization.}
 \item{\code{weighted}}{A single logical for whether the given model is weighted or
 not.}
 
+\item{\code{intercept}}{A single logical for whether the given model has an intercept
+term or not.}
+
 \item{\code{na.action}}{Information returned by \code{\link{model.frame}} on the special
 handling of \code{NA}s.}
 

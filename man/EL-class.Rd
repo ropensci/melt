@@ -67,6 +67,8 @@ distribution.}
 
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
 
+\item{\code{nobs}}{A sinble integer for the number of observations.}
+
 \item{\code{npar}}{A single integer for the number of parameters.}
 
 \item{\code{weights}}{A numeric vector of re-scaled weights used for model fitting.}

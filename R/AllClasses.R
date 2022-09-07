@@ -47,6 +47,7 @@
 #'   distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A sinble integer for the number of observations.
 #' @slot npar A single integer for the number of parameters.
 #' @slot weights A numeric vector of re-scaled weights used for model fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
@@ -119,6 +120,23 @@ setClass("EL",
 #'   * `iterations` A single integer for the number of iterations
 #'   performed.
 #'   * `convergence` A single logical for the convergence status.
+#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#'   likelihood.
+#' @slot logl A single numeric for the empirical log-likelihood.
+#' @slot loglr A single numeric for the empirical log-likelihood ratio.
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio statistic that has an asymptotic chi-square
+#'   distribution.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A sinble integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
+#' @slot data A numeric matrix for the data used for model fitting.
 #' @aliases CEL
 #' @references Adimari G, Guolo A (2010).
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
@@ -152,6 +170,28 @@ setOldClass("terms")
 #' @slot terms A [`terms`] object used.
 #' @slot misc A list with miscellaneous outputs from a model fitting function.
 #'   They are used in other generics and methods.
+#' @slot optim A list with the following optimization results:
+#'   * `par` A numeric vector of the specified parameters.
+#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#'   * `iterations` A single integer for the number of iterations performed.
+#'   * `convergence` A single logical for the convergence status.
+#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#'   likelihood.
+#' @slot logl A single numeric for the empirical log-likelihood.
+#' @slot loglr A single numeric for the empirical log-likelihood ratio.
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio statistic that has an asymptotic chi-square
+#'   distribution.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A sinble integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
+#' @slot data A numeric matrix for the data used for model fitting.
 #' @aliases LM
 #' @examples
 #' showClass("LM")
@@ -169,6 +209,33 @@ setOldClass("family")
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
+#' @slot sigTests A list with the results of significance tests.
+#' @slot call A matched call.
+#' @slot terms A [`terms`] object used.
+#' @slot misc A list with miscellaneous outputs from a model fitting function.
+#'   They are used in other generics and methods.
+#' @slot optim A list with the following optimization results:
+#'   * `par` A numeric vector of the specified parameters.
+#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#'   * `iterations` A single integer for the number of iterations performed.
+#'   * `convergence` A single logical for the convergence status.
+#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#'   likelihood.
+#' @slot logl A single numeric for the empirical log-likelihood.
+#' @slot loglr A single numeric for the empirical log-likelihood ratio.
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio statistic that has an asymptotic chi-square
+#'   distribution.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A sinble integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
+#' @slot data A numeric matrix for the data used for model fitting.
 #' @aliases GLM
 #' @examples
 #' showClass("GLM")
@@ -178,19 +245,9 @@ setClass("GLM",
 )
 
 
-#' \linkS4class{SD} class
-#'
-#' S4 class for standard deviation. It inherits from \linkS4class{EL} class.
-#'
-#' @aliases SD
-#' @examples
-#' showClass("SD")
-setClass("SD", contains = "EL")
-
-
 #' \linkS4class{ConfregEL} class
 #'
-#' S4 class for confidence region.
+#' S4 class for confidence region. It inherits from `"matrix"`.
 #'
 #' @slot estimates A numeric vector of length two for the parameter estimates.
 #' @slot level A single numeric for the confidence level required.
@@ -251,7 +308,7 @@ setClass("ControlEL",
 
 #' \linkS4class{ELD} class
 #'
-#' S4 class for empirical likelihood displacement.
+#' S4 class for empirical likelihood displacement. It inherits from `"numeric"`.
 #'
 #' @aliases ELD
 #' @examples
@@ -314,7 +371,7 @@ setClass("ELMT",
 
 #' \linkS4class{logLikEL} class
 #'
-#' S4 class for empirical log-likelihood.
+#' S4 class for empirical log-likelihood. It inherits from `"numeric"`.
 #'
 #' @slot df A single integer for the degrees of freedom or the number of
 #'   (estimated) parameters in the model.
@@ -329,10 +386,71 @@ setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
 #' S4 class for generalized linear models with quasi-likelihood methods. It
 #'   inherits from \linkS4class{GLM} class.
 #'
+#' @slot family A [`family`] object used.
+#' @slot dispersion A single numeric for the estimated dispersion parameter.
+#' @slot sigTests A list with the results of significance tests.
+#' @slot call A matched call.
+#' @slot terms A [`terms`] object used.
+#' @slot misc A list with miscellaneous outputs from a model fitting function.
+#'   They are used in other generics and methods.
+#' @slot optim A list with the following optimization results:
+#'   * `par` A numeric vector of the specified parameters.
+#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#'   * `iterations` A single integer for the number of iterations performed.
+#'   * `convergence` A single logical for the convergence status.
+#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#'   likelihood.
+#' @slot logl A single numeric for the empirical log-likelihood.
+#' @slot loglr A single numeric for the empirical log-likelihood ratio.
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio statistic that has an asymptotic chi-square
+#'   distribution.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A sinble integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
+#' @slot data A numeric matrix for the data used for model fitting.
 #' @aliases QGLM
 #' @examples
 #' showClass("QGLM")
 setClass("QGLM", contains = "GLM")
+
+
+#' \linkS4class{SD} class
+#'
+#' S4 class for standard deviation. It inherits from \linkS4class{EL} class.
+#'
+#' @slot optim A list with the following optimization results:
+#'   * `par` A numeric vector of the specified parameters.
+#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#'   * `iterations` A single integer for the number of iterations performed.
+#'   * `convergence` A single logical for the convergence status.
+#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#'   likelihood.
+#' @slot logl A single numeric for the empirical log-likelihood.
+#' @slot loglr A single numeric for the empirical log-likelihood ratio.
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio statistic that has an asymptotic chi-square
+#'   distribution.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A sinble integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
+#' @slot data A numeric matrix for the data used for model fitting.
+#' @aliases SD
+#' @examples
+#' showClass("SD")
+setClass("SD", contains = "EL")
 
 
 #' \linkS4class{SummaryLM} class
@@ -347,6 +465,8 @@ setClass("QGLM", contains = "GLM")
 #' @slot sigTests A numeric matrix of the results of significance tests.
 #' @slot weighted A single logical for whether the given model is weighted or
 #'   not.
+#' @slot intercept A single logical for whether the given model has an intercept
+#'   term or not.
 #' @slot na.action Information returned by [`model.frame`] on the special
 #'   handling of `NA`s.
 #' @slot call A matched call.
@@ -370,6 +490,22 @@ setClass("SummaryLM", slots = c(
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio for the overall test of the model.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot convergence A single logical for the convergence status of the
+#'   constrained minimization.
+#' @slot sigTests A numeric matrix of the results of significance tests.
+#' @slot weighted A single logical for whether the given model is weighted or
+#'   not.
+#' @slot intercept A single logical for whether the given model has an intercept
+#'   term or not.
+#' @slot na.action Information returned by [`model.frame`] on the special
+#'   handling of `NA`s.
+#' @slot call A matched call.
+#' @slot terms A [`terms`] object used.
+#' @slot aliased A named logical vector showing if the original coefficients are
+#'   aliased.
 #' @aliases SummaryGLM
 #' @examples
 #' showClass("SummaryGLM")
@@ -384,6 +520,24 @@ setClass("SummaryGLM",
 #' S4 class for a summary of \linkS4class{QGLM} objects. It inherits from
 #'   \linkS4class{SummaryGLM} class.
 #'
+#' @slot family A [`family`] object used.
+#' @slot dispersion A single numeric for the estimated dispersion parameter.
+#' @slot statistic A single numeric for the minus twice the empirical
+#'   log-likelihood ratio for the overall test of the model.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot convergence A single logical for the convergence status of the
+#'   constrained minimization.
+#' @slot sigTests A numeric matrix of the results of significance tests.
+#' @slot weighted A single logical for whether the given model is weighted or
+#'   not.
+#' @slot intercept A single logical for whether the given model has an intercept
+#'   term or not.
+#' @slot na.action Information returned by [`model.frame`] on the special
+#'   handling of `NA`s.
+#' @slot call A matched call.
+#' @slot terms A [`terms`] object used.
+#' @slot aliased A named logical vector showing if the original coefficients are
+#'   aliased.
 #' @aliases SummaryQGLM
 #' @examples
 #' showClass("SummaryQGLM")
