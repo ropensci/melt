@@ -108,5 +108,5 @@ Qin J, Lawless J (1995).
 \doi{10.2307/3315441}.
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}, \code{\link[=elmt]{elmt()}}
+\linkS4class{ELT}, \code{\link[=elmt]{elmt()}}, \code{\link[=el_control]{el_control()}}
 }

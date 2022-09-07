@@ -3,8 +3,8 @@
 \name{print}
 \alias{print}
 \alias{print,EL-method}
-\alias{print,ELT-method}
 \alias{print,ELMT-method}
+\alias{print,ELT-method}
 \alias{print,LM-method}
 \alias{print,logLikEL-method}
 \alias{print,SummaryGLM-method}
@@ -14,14 +14,14 @@
 \usage{
 \S4method{print}{EL}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
-\S4method{print}{ELT}(x, digits = getOption("digits"), ...)
-
 \S4method{print}{ELMT}(
   x,
   digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"),
   ...
 )
+
+\S4method{print}{ELT}(x, digits = getOption("digits"), ...)
 
 \S4method{print}{LM}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
@@ -69,4 +69,9 @@ Provides print methods for objects.
 data("precip")
 fit <- el_mean(precip, par = 40)
 print(fit)
+}
+\seealso{
+\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
+\linkS4class{LM}, \linkS4class{SummaryLM}, \linkS4class{SummaryGLM},
+\linkS4class{SummaryQGLM}
 }

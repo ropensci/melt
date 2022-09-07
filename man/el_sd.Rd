@@ -23,7 +23,7 @@ weighted empirical likelihood is computed.}
 \code{\link[=el_control]{el_control()}}.}
 }
 \value{
-An object of class \linkS4class{EL}.
+An object of class \linkS4class{SD}.
 }
 \description{
 Computes empirical likelihood for the standard deviation.
@@ -41,7 +41,7 @@ unknown distribution \eqn{P} for \eqn{i = 1, \dots, n}. We assume that
   \sum_{i = 1}^n p_i = 1
   \right\}.}
 \code{\link[=el_sd]{el_sd()}} computes the empirical log-likelihood ratio statistic
-\eqn{-2\log R(\sigma)}, along with other values in \linkS4class{EL}.
+\eqn{-2\log R(\sigma)}, along with other values in \linkS4class{SD}.
 }
 \examples{
 data("women")
@@ -50,5 +50,6 @@ w <- women$weight
 el_sd(x, mean = 65, sd = 5, weights = w)
 }
 \seealso{
-\linkS4class{EL}, \code{\link[=el_control]{el_control()}}, \code{\link[=el_mean]{el_mean()}}, \code{\link[=elt]{elt()}}
+\linkS4class{EL}, \linkS4class{SD}, \code{\link[=el_mean]{el_mean()}}, \code{\link[=elt]{elt()}},
+\code{\link[=el_control]{el_control()}}
 }

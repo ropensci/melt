@@ -59,8 +59,8 @@
 #'   “Empirical Likelihood for Linear Models.”
 #'   \emph{The Annals of Statistics}, 19(4), 1725--1747.
 #'   \doi{10.1214/aos/1176348368}.
-#' @seealso \linkS4class{EL}, [el_control()], [el_glm()], [elt()],
-#'   \linkS4class{LM}
+#' @seealso \linkS4class{EL}, \linkS4class{LM}, [el_glm()], [elt()],
+#'   [el_control()]
 #' @examples
 #' ## Linear regression
 #' data("thiamethoxam")

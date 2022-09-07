@@ -7,7 +7,8 @@
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [chisq()] depends on the class of
 #'   its argument.
-#' @seealso [pVal()]
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
+#'   \linkS4class{SummaryLM}, [pVal()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -21,12 +22,13 @@ setGeneric("chisq", function(object, ...) standardGeneric("chisq"))
 #'
 #' Extracts maximum empirical likelihood estimates from a model.
 #'
-#' @param object An object that inherits from \linkS4class{EL} or
-#'   \linkS4class{ELMT}, including \linkS4class{CEL}, \linkS4class{LM}, and
-#'   \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL} (including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}) or
+#'   \linkS4class{ELMT}.
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [coef()] depends on the class of
 #'   its argument.
+#' @seealso \linkS4class{EL}, \linkS4class{ELMT}
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -61,7 +63,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'   “Empirical Likelihood Ratio Confidence Regions.”
 #'   \emph{The Annals of Statistics}, 18(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
-#' @seealso [confreg()], [el_control()], [elt()]
+#' @seealso [confreg()], [elt()], [el_control()]
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -99,7 +101,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #'   “Empirical Likelihood Ratio Confidence Regions.”
 #'   \emph{The Annals of Statistics}, 18(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
-#' @seealso [confint()], [el_control()], [elt()], [plot()]
+#' @seealso [confint()], [elt()], [plot()], [el_control()]
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -121,10 +123,12 @@ setGeneric("confreg", function(object,
 #'
 #' Extracts convergence status from a model.
 #'
-#' @param object An object that inherits from \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL} (including
+#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}) or
+#'   \linkS4class{ELT}.
 #' @param ... Further arguments passed to methods.
 #' @return A single logical.
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{SummaryLM}
 #' @usage NULL
 #' @examples
 #' ## Convergence check for the overall model test
@@ -143,6 +147,7 @@ setGeneric("conv", function(object, ...) standardGeneric("conv"))
 #'   \linkS4class{ELMT}.
 #' @param ... Further arguments passed to methods.
 #' @return A single numeric.
+#' @seealso \linkS4class{ELT}, \linkS4class{ELMT}
 #' @usage NULL
 #' @examples
 #' ## F-calibrated critical value
@@ -184,7 +189,7 @@ setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
 #'   “Diagnostic Measures for Empirical Likelihood of General Estimating
 #'   Equations.” \emph{Biometrika}, 95(2), 489--507.
 #'   \doi{10.1093/biomet/asm094}.
-#' @seealso [el_control()], [el_eval()], [plot()]
+#' @seealso \linkS4class{ELD}, [plot()], [el_control()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -233,7 +238,7 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @references Kim E, MacEachern S, Peruggia M (2021).
 #'   “Empirical Likelihood for the Analysis of Experimental Designs.”
 #'   arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
-#' @seealso [el_control()], [elt()]
+#' @seealso \linkS4class{ELMT}, [elt()], [el_control()]
 #' @usage NULL
 #' @examples
 #' ## Example 1: bivariate mean (list `rhs` & no `lhs`)
@@ -324,7 +329,7 @@ setGeneric("elmt", function(object,
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
 #'   \emph{Canadian Journal of Statistics}, 23(2), 145--159.
 #'   \doi{10.2307/3315441}.
-#' @seealso [el_control()], [elmt()]
+#' @seealso \linkS4class{ELT}, [elmt()], [el_control()]
 #' @usage NULL
 #' @examples
 #' ## F calibration for the mean
@@ -366,6 +371,8 @@ setGeneric("elt", function(object,
 #'   \linkS4class{ELT}, \linkS4class{ELMT}, \linkS4class{logLikEL}, or
 #'   \linkS4class{SummaryLM}.
 #' @return An integer vector.
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
+#'   \linkS4class{SummaryLM}
 #' @usage NULL
 #' @examples
 #' data("faithful")
@@ -388,7 +395,7 @@ setGeneric("getDF", function(object) standardGeneric("getDF"))
 #'   * `lambda` A numeric vector of the Lagrange multipliers.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @seealso [sigTests()]
+#' @seealso \linkS4class{EL}, \linkS4class{CEL}, \linkS4class{ELT}, [sigTests()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -409,6 +416,7 @@ setGeneric("getOptim", function(object, ...) standardGeneric("getOptim"))
 #' @references Baggerly KA (1998).
 #'   “Empirical Likelihood as a Goodness-of-Fit Measure.” \emph{Biometrika},
 #'   85(3), 535--547. \doi{10.1093/biomet/asm094}.
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -426,6 +434,7 @@ setGeneric("logL", function(object, ...) standardGeneric("logL"))
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
 #' @return An object of class \linkS4class{logLikEL}.
+#' @seealso \linkS4class{EL}
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -446,6 +455,7 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 #' @references Baggerly KA (1998).
 #'   “Empirical Likelihood as a Goodness-of-Fit Measure.” \emph{Biometrika},
 #'   85(3), 535--547. \doi{10.1093/biomet/asm094}.
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -455,6 +465,24 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 
 
+#' Log-probabilities
+#'
+#' Extracts log-probabilities of empirical likelihood from a model.
+#'
+#' @param object An object that inherits from \linkS4class{EL} or
+#'   \linkS4class{ELT}.
+#' @param ... Further arguments passed to methods.
+#' @return A numeric vector.
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}
+#' @usage NULL
+#' @examples
+#' data("precip")
+#' fit <- el_mean(precip, par = 40)
+#' logProb(fit)
+#' @exportMethod logProb
+setGeneric("logProb", function(object, ...) standardGeneric("logProb"))
+
+
 #' Number of observations in a model
 #'
 #' Extracts number of observations from a model.
@@ -462,6 +490,7 @@ setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
 #' @return A single integer.
+#' @seealso \linkS4class{EL}
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -479,7 +508,8 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 #' @param y Not used.
 #' @param ... Further graphical parameters (see [`par`]).
 #' @return No return value, called for side effects.
-#' @seealso [confreg()], [eld()]
+#' @seealso \linkS4class{EL}, \linkS4class{ConfregEL}, \linkS4class{ELD},
+#'   [confreg()], [eld()]
 #' @usage NULL
 #' @examples
 #' ## Model
@@ -511,6 +541,9 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #'   are printed for each parameter.
 #' @param ... Further arguments passed to methods.
 #' @return The argument `x` (invisibly).
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
+#'   \linkS4class{LM}, \linkS4class{SummaryLM}, \linkS4class{SummaryGLM},
+#'   \linkS4class{SummaryQGLM}
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -529,7 +562,7 @@ setGeneric("print", function(x, ...) standardGeneric("print"))
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [pVal()] depends on the class of
 #'   its argument.
-#' @seealso [chisq()]
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT}, [chisq()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -548,7 +581,7 @@ setGeneric("pVal", function(object, ...) standardGeneric("pVal"))
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [sigTests()] depends on the
 #'   class of its argument.
-#' @seealso [getOptim()]
+#' @seealso \linkS4class{LM}, \linkS4class{SummaryLM}, [getOptim()]
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -567,6 +600,7 @@ setGeneric("sigTests", function(object, ...) standardGeneric("sigTests"))
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [summary()] depends on the class of
 #'   its argument.
+#' @seealso \linkS4class{LM}, \linkS4class{GLM}, \linkS4class{QGLM}
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -589,6 +623,7 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 #'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
 #'   \emph{Computational Statistics & Data Analysis}, 51(10), 5130--5141.
 #'   \doi{10.1016/j.csda.2006.07.032}.
+#' @seealso \linkS4class{EL}
 #' @usage NULL
 #' @examples
 #' data("airquality")

@@ -24,3 +24,6 @@ data("precip")
 fit <- el_mean(precip, par = 40)
 logLik(fit)
 }
+\seealso{
+\linkS4class{EL}
+}

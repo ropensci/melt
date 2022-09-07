@@ -66,5 +66,5 @@ Owen A (1990).
 \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\linkS4class{EL}, \code{\link[=el_control]{el_control()}}, \code{\link[=el_eval]{el_eval()}}, \code{\link[=elt]{elt()}}
+\linkS4class{EL}, \code{\link[=elt]{elt()}}, \code{\link[=el_eval]{el_eval()}}, \code{\link[=el_control]{el_control()}}
 }

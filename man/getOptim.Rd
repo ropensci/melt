@@ -35,5 +35,5 @@ fit <- el_mean(precip, par = 40)
 getOptim(fit)
 }
 \seealso{
-\code{\link[=sigTests]{sigTests()}}
+\linkS4class{EL}, \linkS4class{CEL}, \linkS4class{ELT}, \code{\link[=sigTests]{sigTests()}}
 }

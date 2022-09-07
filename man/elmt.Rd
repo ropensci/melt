@@ -81,5 +81,5 @@ Kim E, MacEachern S, Peruggia M (2021).
 arxiv:2112.09206. URL \url{https://arxiv.org/abs/2112.09206}.
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}, \code{\link[=elt]{elt()}}
+\linkS4class{ELMT}, \code{\link[=elt]{elt()}}, \code{\link[=el_control]{el_control()}}
 }

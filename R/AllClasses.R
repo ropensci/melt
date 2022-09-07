@@ -294,7 +294,6 @@ setClass("ConfregEL",
 #' @slot b A single integer for the number of bootstrap replicates.
 #' @slot m A single integer for the number of Monte Carlo samples.
 #' @aliases ControlEL
-#' @seealso [el_control()]
 #' @examples
 #' showClass("ControlEL")
 setClass("ControlEL",
@@ -320,26 +319,28 @@ setClass("ELD", contains = "numeric")
 #'
 #' S4 class for empirical likelihood test.
 #'
-#' @slot optim A list with the optimization results.
 #' @slot alpha A single numeric for the significance level.
+#' @slot cv A single numeric for the critical value.
+#' @slot rhs A numeric vector for the right-hand side of the hypothesis.
+#' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
+#' @slot calibrate A single character for the calibration method used.
+#' @slot optim A list with the optimization results.
+#' @slot logp A numeric vector of the log probabilities obtained from the
+#'   (constrained) empirical likelihood.
 #' @slot logl A single numeric for the (constrained) empirical log-likelihood.
 #' @slot loglr A single numeric for the (constrained) empirical log-likelihood
 #'   ratio.
 #' @slot statistic A single numeric for the minus twice the (constrained)
 #'   empirical log-likelihood ratio.
-#' @slot cv A single numeric for the critical value.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot rhs A numeric vector for the right-hand side of the hypothesis.
-#' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
-#' @slot calibrate A single character for the calibration method used.
 #' @aliases ELT
 #' @examples
 #' showClass("ELT")
 setClass("ELT",
   slots = c(
-    optim = "list", alpha = "numeric", logl = "numeric", loglr = "numeric",
-    statistic = "numeric", cv = "numeric", pval = "numeric", rhs = "numeric",
-    lhs = "matrix", calibrate = "character"
+    alpha = "numeric", cv = "numeric", rhs = "numeric", lhs = "matrix",
+    calibrate = "character", optim = "list", logp = "numeric", logl = "numeric",
+    loglr = "numeric", statistic = "numeric", pval = "numeric"
   )
 )
 

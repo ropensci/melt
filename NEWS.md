@@ -1,5 +1,7 @@
 # melt 1.7.0.9400 (development version)
 ## NEW FEATURES
+* New accessor method `logProb()` extracts log-probabilities of empirical likelihood from a model.
+
 * `el_lm()` and `el_glm()` gain an argument `offset`.
 
 * `el_glm()` accepts `quasipoisson` family with `"identity"` link function for the argument `family`.

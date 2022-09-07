@@ -44,3 +44,6 @@ data("mtcars")
 fit <- el_lm(mpg ~ wt, data = mtcars)
 summary(fit)
 }
+\seealso{
+\linkS4class{LM}, \linkS4class{GLM}, \linkS4class{QGLM}
+}

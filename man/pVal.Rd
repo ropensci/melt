@@ -41,5 +41,5 @@ fit <- el_mean(precip, par = 40)
 pVal(fit)
 }
 \seealso{
-\code{\link[=chisq]{chisq()}}
+\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT}, \code{\link[=chisq]{chisq()}}
 }

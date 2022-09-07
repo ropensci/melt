@@ -42,37 +42,6 @@ setMethod("print", "EL", function(x,
 setMethod("show", "EL", function(object) print(object))
 
 #' @rdname print
-setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
-  cat("\n\tEmpirical Likelihood Test\n\n")
-  method <- switch(x@calibrate,
-    "chisq" = "Chi-square",
-    "boot" = "Bootstrap",
-    "f" = "F"
-  )
-  cat("Hypothesis:", describe_hypothesis(
-    x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))]
-  ),
-  sep = "\n"
-  )
-  cat("\n")
-  out2 <- character()
-  out2 <- c(
-    out2, paste("Significance level:", x@alpha),
-    paste("Calibration:", method)
-  )
-  cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
-  out3 <- character()
-  out3 <- c(
-    out3, paste("Statistic:", format.default(chisq(x), digits = digits)),
-    paste("Critical value:", format.default(critVal(x), digits = digits))
-  )
-  cat(strwrap(paste(out3, collapse = ", ")), "\n\n")
-  cat("p-value:", format.pval(pVal(x), digits = digits), "\n\n")
-  invisible(x)
-})
-setMethod("show", "ELT", function(object) print(object))
-
-#' @rdname print
 setMethod("print", "ELMT", function(x,
                                     digits = max(3L, getOption("digits") - 3L),
                                     signif.stars =
@@ -102,6 +71,37 @@ setMethod("print", "ELMT", function(x,
   invisible(x)
 })
 setMethod("show", "ELMT", function(object) print(object))
+
+#' @rdname print
+setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
+  cat("\n\tEmpirical Likelihood Test\n\n")
+  method <- switch(x@calibrate,
+    "chisq" = "Chi-square",
+    "boot" = "Bootstrap",
+    "f" = "F"
+  )
+  cat("Hypothesis:", describe_hypothesis(
+    x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))]
+  ),
+  sep = "\n"
+  )
+  cat("\n")
+  out2 <- character()
+  out2 <- c(
+    out2, paste("Significance level:", x@alpha),
+    paste("Calibration:", method)
+  )
+  cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
+  out3 <- character()
+  out3 <- c(
+    out3, paste("Statistic:", format.default(chisq(x), digits = digits)),
+    paste("Critical value:", format.default(critVal(x), digits = digits))
+  )
+  cat(strwrap(paste(out3, collapse = ", ")), "\n\n")
+  cat("p-value:", format.pval(pVal(x), digits = digits), "\n\n")
+  invisible(x)
+})
+setMethod("show", "ELT", function(object) print(object))
 
 #' @rdname print
 setMethod("print", "LM", function(x,

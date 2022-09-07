@@ -151,6 +151,6 @@ Kolaczyk ED (1994).
 \emph{Statistica Sinica}, 4(1), 199--218.
 }
 \seealso{
-\linkS4class{EL}, \code{\link[=el_control]{el_control()}}, \code{\link[=el_lm]{el_lm()}}, \code{\link[=elt]{elt()}},
-\linkS4class{GLM}
+\linkS4class{EL}, \linkS4class{GLM}, \code{\link[=el_lm]{el_lm()}}, \code{\link[=elt]{elt()}},
+\code{\link[=el_control]{el_control()}}
 }

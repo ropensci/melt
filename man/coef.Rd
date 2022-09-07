@@ -11,9 +11,9 @@
 \S4method{coef}{ELMT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL} or
-\linkS4class{ELMT}, including \linkS4class{CEL}, \linkS4class{LM}, and
-\linkS4class{GLM}.}
+\item{object}{An object that inherits from \linkS4class{EL} (including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}) or
+\linkS4class{ELMT}.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -38,4 +38,7 @@ distinct hypothesis.
 data("mtcars")
 fit <- el_lm(mpg ~ wt, data = mtcars)
 coef(fit)
+}
+\seealso{
+\linkS4class{EL}, \linkS4class{ELMT}
 }

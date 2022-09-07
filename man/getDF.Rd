@@ -43,3 +43,7 @@ data("faithful")
 fit <- el_mean(faithful, par = c(3.5, 70))
 getDF(fit)
 }
+\seealso{
+\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
+\linkS4class{SummaryLM}
+}

@@ -56,5 +56,5 @@ Equations.” \emph{Biometrika}, 95(2), 489--507.
 \doi{10.1093/biomet/asm094}.
 }
 \seealso{
-\code{\link[=el_control]{el_control()}}, \code{\link[=el_eval]{el_eval()}}, \code{\link[=plot]{plot()}}
+\linkS4class{ELD}, \code{\link[=plot]{plot()}}, \code{\link[=el_control]{el_control()}}
 }

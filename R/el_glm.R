@@ -95,8 +95,8 @@
 #' @references Kolaczyk ED (1994).
 #'   “Empirical Likelihood for Generalized Linear Models.”
 #'   \emph{Statistica Sinica}, 4(1), 199--218.
-#' @seealso \linkS4class{EL}, [el_control()], [el_lm()], [elt()],
-#'   \linkS4class{GLM}
+#' @seealso \linkS4class{EL}, \linkS4class{GLM}, [el_lm()], [elt()],
+#'   [el_control()]
 #' @examples
 #' set.seed(20010)
 #' n <- 50

@@ -50,6 +50,3 @@ computation via OpenMP (if available).}
 \examples{
 showClass("ControlEL")
 }
-\seealso{
-\code{\link[=el_control]{el_control()}}
-}

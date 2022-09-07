@@ -23,3 +23,6 @@ data("precip")
 fit <- el_mean(precip, par = 40)
 nobs(fit)
 }
+\seealso{
+\linkS4class{EL}
+}

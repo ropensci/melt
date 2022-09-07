@@ -57,5 +57,5 @@ Owen A (1990).
 \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\code{\link[=confint]{confint()}}, \code{\link[=el_control]{el_control()}}, \code{\link[=elt]{elt()}}, \code{\link[=plot]{plot()}}
+\code{\link[=confint]{confint()}}, \code{\link[=elt]{elt()}}, \code{\link[=plot]{plot()}}, \code{\link[=el_control]{el_control()}}
 }

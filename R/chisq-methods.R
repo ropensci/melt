@@ -3,13 +3,13 @@ setMethod("chisq", "EL", function(object, ...) {
   object@statistic
 })
 
-#' @describeIn chisq Extracts the chi-square statistic.
-setMethod("chisq", "ELT", function(object, ...) {
+#' @describeIn chisq Extracts the vector of chi-square statistics.
+setMethod("chisq", "ELMT", function(object, ...) {
   object@statistic
 })
 
-#' @describeIn chisq Extracts the vector of chi-square statistics.
-setMethod("chisq", "ELMT", function(object, ...) {
+#' @describeIn chisq Extracts the chi-square statistic.
+setMethod("chisq", "ELT", function(object, ...) {
   object@statistic
 })
 

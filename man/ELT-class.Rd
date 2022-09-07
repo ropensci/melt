@@ -11,9 +11,20 @@ S4 class for empirical likelihood test.
 \section{Slots}{
 
 \describe{
+\item{\code{alpha}}{A single numeric for the significance level.}
+
+\item{\code{cv}}{A single numeric for the critical value.}
+
+\item{\code{rhs}}{A numeric vector for the right-hand side of the hypothesis.}
+
+\item{\code{lhs}}{A numeric matrix for the left-hand side of the hypothesis.}
+
+\item{\code{calibrate}}{A single character for the calibration method used.}
+
 \item{\code{optim}}{A list with the optimization results.}
 
-\item{\code{alpha}}{A single numeric for the significance level.}
+\item{\code{logp}}{A numeric vector of the log probabilities obtained from the
+(constrained) empirical likelihood.}
 
 \item{\code{logl}}{A single numeric for the (constrained) empirical log-likelihood.}
 
@@ -23,15 +34,7 @@ ratio.}
 \item{\code{statistic}}{A single numeric for the minus twice the (constrained)
 empirical log-likelihood ratio.}
 
-\item{\code{cv}}{A single numeric for the critical value.}
-
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
-
-\item{\code{rhs}}{A numeric vector for the right-hand side of the hypothesis.}
-
-\item{\code{lhs}}{A numeric matrix for the left-hand side of the hypothesis.}
-
-\item{\code{calibrate}}{A single character for the calibration method used.}
 }}
 
 \examples{

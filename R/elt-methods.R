@@ -11,8 +11,9 @@ setMethod("elt", "EL", function(object,
       isFALSE(is.null(getData(object))),
     "Invalid `control` specified." = is(control, "ControlEL")
   )
-  nm <- names(getOptim(object)$par)
-  h <- validate_hypothesis(rhs, lhs, getNumPar(object), nm)
+  onames <- names(logProb(object))
+  pnames <- names(getOptim(object)$par)
+  h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
@@ -31,14 +32,15 @@ setMethod("elt", "EL", function(object,
     par <- h$r
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
-    names(optim$par) <- nm
+    names(optim$par) <- pnames
     cal <- calibrate(
       calibrate, alpha, out$statistic, length(par), par, object, control
     )
     return(new("ELT",
-      optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
-      statistic = out$statistic, cv = unname(cal["cv"]),
-      pval = unname(cal["pval"]), rhs = par, lhs = h$l, calibrate = calibrate
+      alpha = alpha, cv = unname(cal["cv"]), rhs = par, lhs = h$l,
+      calibrate = calibrate, optim = optim, logp = setNames(out$logp, onames),
+      logl = out$logl, loglr = out$loglr, statistic = out$statistic,
+      pval = unname(cal["pval"])
     ))
   }
   # Proceed with chi-square calibration for non-NULL `lhs`
@@ -53,12 +55,12 @@ setMethod("elt", "EL", function(object,
     step, th, w
   )
   optim <- validate_optim(out$optim)
-  names(optim$par) <- nm
+  names(optim$par) <- pnames
   new("ELT",
-    optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
-    statistic = out$statistic, cv = qchisq(1 - alpha, df = nrow(h$l)),
-    pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE), rhs = h$r,
-    lhs = h$l, calibrate = calibrate
+    alpha = alpha, cv = qchisq(1 - alpha, df = nrow(h$l)), rhs = h$r, lhs = h$l,
+    calibrate = calibrate, optim = optim, logp = setNames(out$logp, onames),
+    logl = out$logl, loglr = out$loglr, statistic = out$statistic,
+    pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE)
   )
 })
 
@@ -77,8 +79,9 @@ setMethod("elt", "QGLM", function(object,
     "Invalid `control` specified." = is(control, "ControlEL")
   )
   # `npar` includes the dispersion parameter
-  nm <- names(getOptim(object)$par)
-  h <- validate_hypothesis(rhs, lhs, getNumPar(object) - 1L, nm)
+  onames <- names(logProb(object))
+  pnames <- names(getOptim(object)$par)
+  h <- validate_hypothesis(rhs, lhs, getNumPar(object) - 1L, pnames)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
@@ -96,14 +99,15 @@ setMethod("elt", "QGLM", function(object,
     par <- c(h$r, object@dispersion)
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
-    names(optim$par) <- nm
+    names(optim$par) <- pnames
     cal <- calibrate(
       calibrate, alpha, out$statistic, length(par), par, object, control
     )
     return(new("ELT",
-      optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
-      statistic = out$statistic, cv = unname(cal["cv"]),
-      pval = unname(cal["pval"]), rhs = h$r, lhs = h$l, calibrate = calibrate
+      alpha = alpha, cv = unname(cal["cv"]), rhs = h$r, lhs = h$l,
+      calibrate = calibrate, optim = optim, logp = setNames(out$logp, onames),
+      logl = out$logl, loglr = out$loglr, statistic = out$statistic,
+      pval = unname(cal["pval"])
     ))
   }
   stopifnot(
@@ -117,12 +121,12 @@ setMethod("elt", "QGLM", function(object,
     maxit_l, tol, tol_l, step, th, w
   )
   optim <- validate_optim(out$optim)
-  names(optim$par) <- nm
+  names(optim$par) <- pnames
   new("ELT",
-    optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
-    statistic = out$statistic, cv = qchisq(1 - alpha, df = nrow(l)),
-    pval = pchisq(out$statistic, df = nrow(l), lower.tail = FALSE), rhs = h$r,
-    lhs = h$l, calibrate = calibrate
+    alpha = alpha, cv = qchisq(1 - alpha, df = nrow(l)), rhs = h$r, lhs = h$l,
+    calibrate = calibrate, optim = optim, logp = setNames(out$logp, onames),
+    logl = out$logl, loglr = out$loglr, statistic = out$statistic,
+    pval = pchisq(out$statistic, df = nrow(l), lower.tail = FALSE)
   )
 })
 
@@ -140,8 +144,9 @@ setMethod("elt", "SD", function(object,
       isFALSE(is.null(getData(object))),
     "Invalid `control` specified." = is(control, "ControlEL")
   )
-  nm <- names(getOptim(object)$par)
-  h <- validate_hypothesis(rhs, lhs, getNumPar(object), nm)
+  onames <- names(logProb(object))
+  pnames <- names(getOptim(object)$par)
+  h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
   maxit_l <- control@maxit_l
@@ -159,12 +164,13 @@ setMethod("elt", "SD", function(object,
     )
     out <- compute_EL("sd", par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
-    names(optim$par) <- nm
+    names(optim$par) <- pnames
     cal <- calibrate(calibrate, alpha, out$statistic, 1L, par, object, control)
     return(new("ELT",
-      optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
-      statistic = out$statistic, cv = unname(cal["cv"]),
-      pval = unname(cal["pval"]), rhs = h$r, lhs = h$l, calibrate = calibrate
+      alpha = alpha, cv = unname(cal["cv"]), rhs = h$r, lhs = h$l,
+      calibrate = calibrate, optim = optim, logp = setNames(out$logp, onames),
+      logl = out$logl, loglr = out$loglr, statistic = out$statistic,
+      pval = unname(cal["pval"])
     ))
   }
   stopifnot(
@@ -182,12 +188,12 @@ setMethod("elt", "SD", function(object,
   )
   out <- compute_EL("sd", par, getData(object), maxit_l, tol_l, th, w)
   optim <- validate_optim(out$optim)
-  names(optim$par) <- nm
+  names(optim$par) <- pnames
   new("ELT",
-    optim = optim, alpha = alpha, logl = out$logl, loglr = out$loglr,
-    statistic = out$statistic, cv = qchisq(1 - alpha, df = 1L),
-    pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE), rhs = h$r,
-    lhs = h$l, calibrate = calibrate
+    alpha = alpha, cv = qchisq(1 - alpha, df = 1L), rhs = h$r, lhs = h$l,
+    calibrate = calibrate, optim = optim, logp = setNames(out$logp, onames),
+    logl = out$logl, loglr = out$loglr, statistic = out$statistic,
+    pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE)
   )
 })
 

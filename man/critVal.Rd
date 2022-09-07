@@ -30,3 +30,6 @@ fit <- el_mean(x, 0)
 elt <- elt(fit, rhs = 0.3, calibrate = "f")
 critVal(elt)
 }
+\seealso{
+\linkS4class{ELT}, \linkS4class{ELMT}
+}

@@ -105,6 +105,6 @@ Owen A (1991).
 \doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\linkS4class{EL}, \code{\link[=el_control]{el_control()}}, \code{\link[=el_glm]{el_glm()}}, \code{\link[=elt]{elt()}},
-\linkS4class{LM}
+\linkS4class{EL}, \linkS4class{LM}, \code{\link[=el_glm]{el_glm()}}, \code{\link[=elt]{elt()}},
+\code{\link[=el_control]{el_control()}}
 }

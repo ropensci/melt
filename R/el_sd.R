@@ -24,9 +24,10 @@
 #'   \sum_{i = 1}^n p_i = 1
 #'   \right\}.}
 #'   [el_sd()] computes the empirical log-likelihood ratio statistic
-#'   \eqn{-2\log R(\sigma)}, along with other values in \linkS4class{EL}.
-#' @return An object of class \linkS4class{EL}.
-#' @seealso \linkS4class{EL}, [el_control()], [el_mean()], [elt()]
+#'   \eqn{-2\log R(\sigma)}, along with other values in \linkS4class{SD}.
+#' @return An object of class \linkS4class{SD}.
+#' @seealso \linkS4class{EL}, \linkS4class{SD}, [el_mean()], [elt()],
+#'   [el_control()]
 #' @examples
 #' data("women")
 #' x <- women$height

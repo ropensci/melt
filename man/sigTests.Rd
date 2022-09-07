@@ -39,5 +39,5 @@ sigTests(fit)
 sigTests(summary(fit))
 }
 \seealso{
-\code{\link[=getOptim]{getOptim()}}
+\linkS4class{LM}, \linkS4class{SummaryLM}, \code{\link[=getOptim]{getOptim()}}
 }

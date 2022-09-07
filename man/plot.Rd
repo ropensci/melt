@@ -55,5 +55,6 @@ plot(out2)
 plot(fit)
 }
 \seealso{
+\linkS4class{EL}, \linkS4class{ConfregEL}, \linkS4class{ELD},
 \code{\link[=confreg]{confreg()}}, \code{\link[=eld]{eld()}}
 }

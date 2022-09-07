@@ -2,23 +2,24 @@
 % Please edit documentation in R/AllGenerics.R, R/conv-methods.R
 \name{conv}
 \alias{conv}
-\alias{conv,EL-method}
 \alias{conv,CEL-method}
-\alias{conv,SummaryLM-method}
+\alias{conv,EL-method}
 \alias{conv,ELT-method}
+\alias{conv,SummaryLM-method}
 \title{Convergence check}
 \usage{
-\S4method{conv}{EL}(object, ...)
-
 \S4method{conv}{CEL}(object, ...)
 
-\S4method{conv}{SummaryLM}(object, ...)
+\S4method{conv}{EL}(object, ...)
 
 \S4method{conv}{ELT}(object, ...)
+
+\S4method{conv}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherits from \linkS4class{EL} (including
+\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}) or
+\linkS4class{ELT}.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -30,17 +31,17 @@ Extracts convergence status from a model.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{conv(EL)}: Extracts the convergence status of the model with respect to
-the Lagrange multiplier.
-
 \item \code{conv(CEL)}: Extracts the convergence status of the model with respect to
 the parameter.
 
-\item \code{conv(SummaryLM)}: Extracts the convergence status of the model. See the
-documentation of \linkS4class{EL} and \linkS4class{CEL}.
+\item \code{conv(EL)}: Extracts the convergence status of the model with respect to
+the Lagrange multiplier.
 
 \item \code{conv(ELT)}: Extracts the convergence status of the model with respect to
 the parameter (or the Lagrange multiplier if \code{lhs} is \code{NULL}).
+
+\item \code{conv(SummaryLM)}: Extracts the convergence status of the model. See the
+documentation of \linkS4class{EL} and \linkS4class{CEL}.
 
 }}
 \examples{
@@ -48,4 +49,7 @@ the parameter (or the Lagrange multiplier if \code{lhs} is \code{NULL}).
 data("mtcars")
 fit <- el_lm(mpg ~ ., data = mtcars)
 conv(fit)
+}
+\seealso{
+\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{SummaryLM}
 }

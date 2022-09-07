@@ -33,3 +33,6 @@ Glenn N, Zhao Y (2007).
 \emph{Computational Statistics & Data Analysis}, 51(10), 5130--5141.
 \doi{10.1016/j.csda.2006.07.032}.
 }
+\seealso{
+\linkS4class{EL}
+}
