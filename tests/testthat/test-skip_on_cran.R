@@ -457,34 +457,34 @@ test_that("`el_glm()` (quasipoisson - log).", {
   expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
 })
 
-# test_that("`el_glm()` (quasipoisson - identity).", {
-#   skip_on_cran()
-#   set.seed(5324)
-#   n <- 200
-#   p <- 4
-#   b <- rnorm(p, sd = 0.5)
-#   x <- matrix(rnorm(n * p), ncol = p)
-#   w <- rep(c(1, 2), times = 100)
-#   l <- 4 + x %*% as.vector(b)
-#   y <- vapply(l, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L)) +
-#     sample(1:10, n, replace = TRUE)
-#   df <- data.frame(y, x)
-#   fit <- el_glm(y ~ .,
-#                 family = quasipoisson("identity"), data = df,
-#                 control = el_control(tol = 1e-05, th = 1000)
-#   )
-#   wfit <- el_glm(y ~ .,
-#                  family = quasipoisson("identity"), data = df, weights = w,
-#                  control = el_control(tol = 1e-05, th = 1000)
-#   )
-#   lhs <- list(
-#     matrix(c(0, 1, 1, 0), nrow = 1),
-#     matrix(c(0, 0, 1, 1), nrow = 1)
-#   )
-#   rhs <- c(0, -0.5)
-#   expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
-#   expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
-# })
+test_that("`el_glm()` (quasipoisson - identity).", {
+  skip_on_cran()
+  set.seed(5324)
+  n <- 200
+  p <- 4
+  b <- rnorm(p, sd = 0.5)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 2), times = 100)
+  l <- 4 + x %*% as.vector(b)
+  y <- vapply(l, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L)) +
+    sample(1:10, n, replace = TRUE)
+  df <- data.frame(y, x)
+  fit <- el_glm(y ~ .,
+    family = quasipoisson("identity"), data = df,
+    control = el_control(tol = 1e-05, th = 1000)
+  )
+  wfit <- el_glm(y ~ .,
+    family = quasipoisson("identity"), data = df, weights = w,
+    control = el_control(tol = 1e-05, th = 1000)
+  )
+  lhs <- list(
+    matrix(c(0, 1, 1, 0, 0), nrow = 1),
+    matrix(c(0, 0, 1, 1, 0), nrow = 1)
+  )
+  rhs <- c(-1, -0.5)
+  expect_s4_class(elmt(fit, rhs = rhs, lhs = lhs), "ELMT")
+  expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
+})
 
 test_that("`el_pairwise()` (deprecated).", {
   skip_on_cran()

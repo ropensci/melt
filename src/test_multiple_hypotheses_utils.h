@@ -36,6 +36,9 @@ Eigen::MatrixXd w_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd> &x,
 Eigen::MatrixXd w_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
                            const Eigen::Ref<const Eigen::VectorXd> &par);
 
+Eigen::MatrixXd w_qpoi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                                const Eigen::Ref<const Eigen::VectorXd> &par);
+
 Eigen::MatrixXd dg0_inv(const std::string method,
                         const Eigen::Ref<const Eigen::MatrixXd> &x,
                         const Eigen::Ref<const Eigen::VectorXd> &par);
