@@ -30,9 +30,9 @@ test_that("Probabilities add up to 1.", {
   w <- women$weight
   fit <- el_sd(x, mean = 65, sd = 4)
   expect_output(print(fit))
-  expect_equal(sum(exp(fit@logp)), 1, tolerance = 1e-07)
+  expect_equal(sum(exp(logProb(fit))), 1, tolerance = 1e-07)
   fit2 <- el_sd(x, mean = 65, sd = 4, weights = w)
-  expect_equal(sum(exp(fit2@logp)), 1, tolerance = 1e-07)
+  expect_equal(sum(exp(logProb(fit2))), 1, tolerance = 1e-07)
 })
 
 test_that("Identical weights means no weights.", {
@@ -47,7 +47,7 @@ test_that("Identical weights means no weights.", {
   expect_equal(fit, fit2)
 })
 
-test_that("Conversion between `loglik` and `loglr`.", {
+test_that("Conversion between `logl` and `loglr`.", {
   x <- women$height
   n <- length(x)
   fit <- el_sd(x, mean = 65, sd = 4)

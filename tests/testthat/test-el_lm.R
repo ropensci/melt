@@ -39,12 +39,12 @@ test_that("Probabilities add up to 1.", {
   y <- 10 + 0.001 * x + rep(c(1, 0.2, 0.5, 2, -1.2), times = 3)
   df <- data.frame(x, y)
   fit <- el_lm(y ~ x, data = df)
-  expect_equal(sum(exp(fit@logp)), 1)
+  expect_equal(sum(exp(logProb(fit))), 1)
   fit2 <- el_lm(y ~ x, data = df, weights = women$height)
-  expect_equal(sum(exp(fit2@logp)), 1)
+  expect_equal(sum(exp(logProb(fit2))), 1)
 })
 
-test_that("Conversion between `loglik` and `loglr`.", {
+test_that("Conversion between `logl` and `loglr`.", {
   fit <- el_lm(eruptions ~ waiting, data = faithful)
   n <- nrow(faithful)
   expect_equal(logL(fit) + n * log(n), logLR(fit))

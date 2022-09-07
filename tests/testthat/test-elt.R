@@ -71,9 +71,15 @@ test_that("When elt == evaluation.", {
 })
 
 test_that("`conv()` method and calibration.", {
-  fit <- el_mean(women$height, par = 65)
-  expect_true(conv(elt(fit, rhs = 67, calibrate = "f")))
-  expect_s4_class(elt(fit, rhs = 67, calibrate = "boot"), "ELT")
+  fit <- el_mean(precip, par = 60)
+  expect_true(conv(elt(fit, rhs = 65, calibrate = "f")))
+  expect_s4_class(elt(fit, rhs = 65, calibrate = "boot"), "ELT")
+})
+
+test_that("Probabilities add up to 1.", {
+  fit <- el_mean(precip, par = 60)
+  elt <- elt(fit, rhs = 65)
+  expect_equal(sum(exp(logProb(elt))), 1, tolerance = 1e-07)
 })
 
 test_that("Vector `lhs`.", {
