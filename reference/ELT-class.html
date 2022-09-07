@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9400</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9500</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,12 +67,33 @@
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
 
-<dl><dt><code>optim</code></dt>
+<dl><dt><code>alpha</code></dt>
+<dd><p>A single numeric for the significance level.</p></dd>
+
+
+<dt><code>cv</code></dt>
+<dd><p>A single numeric for the critical value.</p></dd>
+
+
+<dt><code>rhs</code></dt>
+<dd><p>A numeric vector for the right-hand side of the hypothesis.</p></dd>
+
+
+<dt><code>lhs</code></dt>
+<dd><p>A numeric matrix for the left-hand side of the hypothesis.</p></dd>
+
+
+<dt><code>calibrate</code></dt>
+<dd><p>A single character for the calibration method used.</p></dd>
+
+
+<dt><code>optim</code></dt>
 <dd><p>A list with the optimization results.</p></dd>
 
 
-<dt><code>alpha</code></dt>
-<dd><p>A single numeric for the significance level.</p></dd>
+<dt><code>logp</code></dt>
+<dd><p>A numeric vector of the log probabilities obtained from the
+(constrained) empirical likelihood.</p></dd>
 
 
 <dt><code>logl</code></dt>
@@ -89,24 +110,8 @@ ratio.</p></dd>
 empirical log-likelihood ratio.</p></dd>
 
 
-<dt><code>cv</code></dt>
-<dd><p>A single numeric for the critical value.</p></dd>
-
-
 <dt><code>pval</code></dt>
 <dd><p>A single numeric for the \(p\)-value of the statistic.</p></dd>
-
-
-<dt><code>rhs</code></dt>
-<dd><p>A numeric vector for the right-hand side of the hypothesis.</p></dd>
-
-
-<dt><code>lhs</code></dt>
-<dd><p>A numeric matrix for the left-hand side of the hypothesis.</p></dd>
-
-
-<dt><code>calibrate</code></dt>
-<dd><p>A single character for the calibration method used.</p></dd>
 
 
 </dl></div>
@@ -118,11 +123,11 @@ empirical log-likelihood ratio.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      optim     alpha      logl     loglr statistic        cv      pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      list   numeric   numeric   numeric   numeric   numeric   numeric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:        rhs       lhs calibrate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric    matrix character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      alpha        cv       rhs       lhs calibrate     optim      logp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric   numeric   numeric    matrix character      list   numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:       logl     loglr statistic      pval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric   numeric   numeric   numeric</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

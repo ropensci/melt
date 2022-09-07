@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9400</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9500</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,10 +117,10 @@
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr      min       lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;  n1e2    717.9    822.1    885.237    873.10    907.85   2671.0   100</span></span>
-<span><span class="co">#&gt;  n1e3   2048.3   2397.6   2655.578   2589.20   2840.60   4508.3   100</span></span>
-<span><span class="co">#&gt;  n1e4  19631.1  22975.6  27548.741  28240.35  30911.65  38641.9   100</span></span>
-<span><span class="co">#&gt;  n1e5 346652.7 419487.7 486519.831 469642.10 549381.30 669570.7   100</span></span>
+<span><span class="co">#&gt;  n1e2    532.2    562.2    605.524    599.40    646.40    810.3   100</span></span>
+<span><span class="co">#&gt;  n1e3   1552.9   1710.7   1895.042   1882.30   2010.40   2465.7   100</span></span>
+<span><span class="co">#&gt;  n1e4  14345.7  15697.6  19120.114  19503.85  21665.85  24875.0   100</span></span>
+<span><span class="co">#&gt;  n1e5 264272.5 321257.8 373841.828 358673.10 422066.75 507835.1   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -150,12 +150,12 @@
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
-<span><span class="co">#&gt; Unit: milliseconds</span></span>
-<span><span class="co">#&gt;  expr      min        lq       mean    median       uq      max neval</span></span>
-<span><span class="co">#&gt;    p5   1.1347   1.30960   1.419326   1.38800   1.4873   2.9527   100</span></span>
-<span><span class="co">#&gt;   p25   4.4410   4.81980   5.110377   4.98360   5.1616  10.6818   100</span></span>
-<span><span class="co">#&gt;  p100  34.7121  41.14205  44.717913  42.69565  46.2866  73.6265   100</span></span>
-<span><span class="co">#&gt;  p400 392.9373 440.92495 502.543538 476.26175 525.1373 768.0679   100</span></span>
+<span><span class="co">#&gt; Unit: microseconds</span></span>
+<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
+<span><span class="co">#&gt;    p5    882.3    941.20    994.166    998.75   1037.25   1152.3   100</span></span>
+<span><span class="co">#&gt;   p25   3602.6   3666.75   3734.340   3729.70   3789.30   4183.3   100</span></span>
+<span><span class="co">#&gt;  p100  30934.3  34573.75  36588.000  34745.05  38460.85  60830.8   100</span></span>
+<span><span class="co">#&gt;  p400 367404.3 405339.00 460971.465 441323.95 480603.35 697173.9   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"> On average, evaluating empirical likelihood with a 100000×10 or 1000×400 matrix at a parameter value satisfying the convex hull constraint takes less than a second.</p>
 </div>
