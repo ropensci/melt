@@ -1,6 +1,8 @@
 test_that("Invalid `object`.", {
   fit <- el_lm(mpg ~ 0, data = mtcars)
+  fit2 <- el_glm(gear ~ 1, family = quasipoisson("log"), data = mtcars)
   expect_error(confreg(fit, parm = c(1, 2)))
+  expect_error(confreg(fit2, parm = c(1, 2)))
   fit@data <- matrix()
   expect_error(confreg(fit, parm = c(1, 2)))
 })
@@ -13,8 +15,6 @@ test_that("Invalid `parm`.", {
   expect_error(confreg(fit, parm = c(NaN, NA)))
   names(fit@coefficients) <- NULL
   expect_error(confreg(fit, parm = c("error", "error2")))
-  # fit2 <- el_mean(women$height, 67)
-  # expect_error(confreg(fit2, parm = c(1, 2)))
 })
 
 test_that("Invalid `level`.", {
