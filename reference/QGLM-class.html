@@ -66,6 +66,97 @@ inherits from <a href="GLM-class.html">GLM</a> class.</p>
     </div>
 
 
+    <div class="section level2">
+    <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
+    
+
+<dl><dt><code>family</code></dt>
+<dd><p>A <code><a href="https://rdrr.io/r/stats/family.html" class="external-link">family</a></code> object used.</p></dd>
+
+
+<dt><code>dispersion</code></dt>
+<dd><p>A single numeric for the estimated dispersion parameter.</p></dd>
+
+
+<dt><code>sigTests</code></dt>
+<dd><p>A list with the results of significance tests.</p></dd>
+
+
+<dt><code>call</code></dt>
+<dd><p>A matched call.</p></dd>
+
+
+<dt><code>terms</code></dt>
+<dd><p>A <code><a href="https://rdrr.io/r/stats/terms.html" class="external-link">terms</a></code> object used.</p></dd>
+
+
+<dt><code>misc</code></dt>
+<dd><p>A list with miscellaneous outputs from a model fitting function.
+They are used in other generics and methods.</p></dd>
+
+
+<dt><code>optim</code></dt>
+<dd><p>A list with the following optimization results:</p><ul><li><p><code>par</code> A numeric vector of the specified parameters.</p></li>
+<li><p><code>lambda</code> A numeric vector of the Lagrange multipliers.</p></li>
+<li><p><code>iterations</code> A single integer for the number of iterations performed.</p></li>
+<li><p><code>convergence</code> A single logical for the convergence status.</p></li>
+</ul></dd>
+
+
+<dt><code>logp</code></dt>
+<dd><p>A numeric vector of the log probabilities obtained from empirical
+likelihood.</p></dd>
+
+
+<dt><code>logl</code></dt>
+<dd><p>A single numeric for the empirical log-likelihood.</p></dd>
+
+
+<dt><code>loglr</code></dt>
+<dd><p>A single numeric for the empirical log-likelihood ratio.</p></dd>
+
+
+<dt><code>statistic</code></dt>
+<dd><p>A single numeric for the minus twice the empirical
+log-likelihood ratio statistic that has an asymptotic chi-square
+distribution.</p></dd>
+
+
+<dt><code>df</code></dt>
+<dd><p>A single integer for the degrees of freedom of the statistic.</p></dd>
+
+
+<dt><code>pval</code></dt>
+<dd><p>A single numeric for the \(p\)-value of the statistic.</p></dd>
+
+
+<dt><code>nobs</code></dt>
+<dd><p>A sinble integer for the number of observations.</p></dd>
+
+
+<dt><code>npar</code></dt>
+<dd><p>A single integer for the number of parameters.</p></dd>
+
+
+<dt><code>weights</code></dt>
+<dd><p>A numeric vector of re-scaled weights used for model fitting.</p></dd>
+
+
+<dt><code>coefficients</code></dt>
+<dd><p>A numeric vector of the maximum empirical likelihood
+estimates of the parameters.</p></dd>
+
+
+<dt><code>method</code></dt>
+<dd><p>A single character for the method dispatch in internal
+functions.</p></dd>
+
+
+<dt><code>data</code></dt>
+<dd><p>A numeric matrix for the data used for model fitting.</p></dd>
+
+
+</dl></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -93,7 +184,8 @@ inherits from <a href="GLM-class.html">GLM</a> class.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "EL", by class "GLM", distance 4</span>
 </code></pre></div>
     </div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

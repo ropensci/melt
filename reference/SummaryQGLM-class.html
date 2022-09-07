@@ -66,6 +66,65 @@ SummaryGLM class."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
     </div>
 
 
+    <div class="section level2">
+    <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
+    
+
+<dl><dt><code>family</code></dt>
+<dd><p>A <code><a href="https://rdrr.io/r/stats/family.html" class="external-link">family</a></code> object used.</p></dd>
+
+
+<dt><code>dispersion</code></dt>
+<dd><p>A single numeric for the estimated dispersion parameter.</p></dd>
+
+
+<dt><code>statistic</code></dt>
+<dd><p>A single numeric for the minus twice the empirical
+log-likelihood ratio for the overall test of the model.</p></dd>
+
+
+<dt><code>df</code></dt>
+<dd><p>A single integer for the degrees of freedom of the statistic.</p></dd>
+
+
+<dt><code>convergence</code></dt>
+<dd><p>A single logical for the convergence status of the
+constrained minimization.</p></dd>
+
+
+<dt><code>sigTests</code></dt>
+<dd><p>A numeric matrix of the results of significance tests.</p></dd>
+
+
+<dt><code>weighted</code></dt>
+<dd><p>A single logical for whether the given model is weighted or
+not.</p></dd>
+
+
+<dt><code>intercept</code></dt>
+<dd><p>A single logical for whether the given model has an intercept
+term or not.</p></dd>
+
+
+<dt><code>na.action</code></dt>
+<dd><p>Information returned by <code><a href="https://rdrr.io/r/stats/model.frame.html" class="external-link">model.frame</a></code> on the special
+handling of <code>NA</code>s.</p></dd>
+
+
+<dt><code>call</code></dt>
+<dd><p>A matched call.</p></dd>
+
+
+<dt><code>terms</code></dt>
+<dd><p>A <code><a href="https://rdrr.io/r/stats/terms.html" class="external-link">terms</a></code> object used.</p></dd>
+
+
+<dt><code>aliased</code></dt>
+<dd><p>A named logical vector showing if the original coefficients are
+aliased.</p></dd>
+
+
+</dl></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -85,7 +144,8 @@ SummaryGLM class."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "SummaryLM", by class "SummaryGLM", distance 2</span>
 </code></pre></div>
     </div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
