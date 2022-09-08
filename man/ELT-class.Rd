@@ -21,18 +21,26 @@ S4 class for empirical likelihood test.
 
 \item{\code{calibrate}}{A single character for the calibration method used.}
 
-\item{\code{optim}}{A list with the optimization results.}
+\item{\code{optim}}{A list of the following optimization results:
+\itemize{
+\item \code{par} A numeric vector of the solution to the (constrained) optimization
+problem.
+\item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to \code{par}.
+\item \code{iterations} A single integer for the number of iterations performed.
+\item \code{convergence} A single logical for the convergence status.
+}}
 
-\item{\code{logp}}{A numeric vector of the log probabilities obtained from the
-(constrained) empirical likelihood.}
+\item{\code{logp}}{A numeric vector of the log probabilities of the (constrained)
+empirical likelihood.}
 
-\item{\code{logl}}{A single numeric for the (constrained) empirical log-likelihood.}
+\item{\code{logl}}{A single numeric of the (constrained) empirical log-likelihood.}
 
-\item{\code{loglr}}{A single numeric for the (constrained) empirical log-likelihood
+\item{\code{loglr}}{A single numeric of the (constrained) empirical log-likelihood
 ratio.}
 
-\item{\code{statistic}}{A single numeric for the minus twice the (constrained)
-empirical log-likelihood ratio.}
+\item{\code{statistic}}{A single numeric of the minus twice the (constrained)
+empirical log-likelihood ratio with an asymptotic chi-square distribution.}
 
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
 }}

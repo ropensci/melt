@@ -4,7 +4,7 @@
 \alias{logProb}
 \alias{logProb,EL-method}
 \alias{logProb,ELT-method}
-\title{Log-probabilities}
+\title{Log probabilities}
 \usage{
 \S4method{logProb}{EL}(object, ...)
 
@@ -20,7 +20,7 @@
 A numeric vector.
 }
 \description{
-Extracts log-probabilities of empirical likelihood from a model.
+Extracts log probabilities of empirical likelihood from a model.
 }
 \examples{
 data("precip")

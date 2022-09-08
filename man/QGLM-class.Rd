@@ -9,6 +9,19 @@
 S4 class for generalized linear models with quasi-likelihood methods. It
 inherits from \linkS4class{GLM} class.
 }
+\details{
+The overall test involves a constrained optimization problem. All
+the parameters except for the intercept are constrained to zero. The
+\code{optim} slot contains the results. When there is no intercept, all
+parameters are set to zero, and the results need to be understood in terms
+of \linkS4class{EL} class since no constrained optimization is involved.
+Once the solution is found, the log probabilities (\code{logp}) and the
+(constrained) empirical likelihood values (\code{logl}, \code{loglr}, \code{statistic})
+readily follow, along with the degrees of freedom (\code{df}) and the
+\eqn{p}-value (\code{pval}). The significance tests for each parameter also
+involve constrained optimization problems where only one parameter is
+constrained to zero. The \code{sigTests} slot contains the results.
+}
 \section{Slots}{
 
 \describe{
@@ -16,43 +29,54 @@ inherits from \linkS4class{GLM} class.
 
 \item{\code{dispersion}}{A single numeric for the estimated dispersion parameter.}
 
-\item{\code{sigTests}}{A list with the results of significance tests.}
+\item{\code{sigTests}}{A list of the following results of significance tests:
+\itemize{
+\item \code{statistic} A numeric vector of the minus twice the (constrained)
+empirical log-likelihood ratios with asymptotic chi-square distributions.
+\item \code{iterations} An integer vector for the number of iterations performed for
+each parameter.
+\item \code{convergence} A logical vector for the convergence status of each
+parameter.
+}}
 
 \item{\code{call}}{A matched call.}
 
 \item{\code{terms}}{A \code{\link{terms}} object used.}
 
-\item{\code{misc}}{A list with miscellaneous outputs from a model fitting function.
+\item{\code{misc}}{A list of various outputs obtained from the model fitting process.
 They are used in other generics and methods.}
 
-\item{\code{optim}}{A list with the following optimization results:
+\item{\code{optim}}{A list of the following optimization results:
 \itemize{
-\item \code{par} A numeric vector of the specified parameters.
-\item \code{lambda} A numeric vector of the Lagrange multipliers.
+\item \code{par} A numeric vector of the solution to the (constrained) optimization
+problem.
+\item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to \code{par}.
 \item \code{iterations} A single integer for the number of iterations performed.
 \item \code{convergence} A single logical for the convergence status.
 }}
 
-\item{\code{logp}}{A numeric vector of the log probabilities obtained from empirical
-likelihood.}
+\item{\code{logp}}{A numeric vector of the log probabilities of the (constrained)
+empirical likelihood.}
 
-\item{\code{logl}}{A single numeric for the empirical log-likelihood.}
+\item{\code{logl}}{A single numeric of the (constrained) empirical log-likelihood.}
 
-\item{\code{loglr}}{A single numeric for the empirical log-likelihood ratio.}
+\item{\code{loglr}}{A single numeric of the (constrained) empirical log-likelihood
+ratio.}
 
-\item{\code{statistic}}{A single numeric for the minus twice the empirical
-log-likelihood ratio statistic that has an asymptotic chi-square
-distribution.}
+\item{\code{statistic}}{A single numeric of the minus twice the (constrained)
+empirical log-likelihood ratio with an asymptotic chi-square distribution.}
 
 \item{\code{df}}{A single integer for the degrees of freedom of the statistic.}
 
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
 
-\item{\code{nobs}}{A sinble integer for the number of observations.}
+\item{\code{nobs}}{A single integer for the number of observations.}
 
 \item{\code{npar}}{A single integer for the number of parameters.}
 
-\item{\code{weights}}{A numeric vector of re-scaled weights used for model fitting.}
+\item{\code{weights}}{A numeric vector of the re-scaled weights used for the model
+fitting.}
 
 \item{\code{coefficients}}{A numeric vector of the maximum empirical likelihood
 estimates of the parameters.}
@@ -60,7 +84,7 @@ estimates of the parameters.}
 \item{\code{method}}{A single character for the method dispatch in internal
 functions.}
 
-\item{\code{data}}{A numeric matrix for the data used for model fitting.}
+\item{\code{data}}{A numeric matrix of the data for the model fitting.}
 }}
 
 \examples{

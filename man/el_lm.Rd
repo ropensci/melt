@@ -83,7 +83,7 @@ and significance tests for each parameter with
 \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
 }
 \examples{
-## Linear regression
+## Linear model
 data("thiamethoxam")
 fit <- el_lm(fruit ~ trt, data = thiamethoxam)
 summary(fit)

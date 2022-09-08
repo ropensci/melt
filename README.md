@@ -56,15 +56,27 @@ You can install the latest development version from
 devtools::install_github("markean/melt")
 ```
 
+## Main functions
+
+melt provides an intuitive API for performing the most common data
+analysis tasks:
+
+- `el_lm()` fits a linear model with empirical likelihood.
+- `el_glm()` fits a generalized linear model with empirical likelihood.
+- `confint()` computes confidence intervals for model parameters.
+- `confreg()` computes a confidence region for model parameters.
+- `elt()` tests a linear hypothesis.
+- `elmt()` performs multiple testing simultaneously.
+
 ## Usage
 
 ``` r
 library(melt)
+set.seed(971112)
 
-# Test for the mean
+## Test for the mean
 data("precip")
-fit <- el_mean(precip, par = 30)
-fit
+el_mean(precip, par = 30)
 #> 
 #>  Empirical Likelihood
 #> 
@@ -78,10 +90,10 @@ fit
 #> EL evaluation: converged
 
 
-# Linear regression
+## Linear model
 data("mtcars")
-fit2 <- el_lm(mpg ~ disp + hp + wt + qsec, data = mtcars)
-summary(fit2)
+fit_lm <- el_lm(mpg ~ disp + hp + wt + qsec, data = mtcars)
+summary(fit_lm)
 #> 
 #> Call:
 #> el_lm(formula = mpg ~ disp + hp + wt + qsec, data = mtcars)
@@ -98,19 +110,16 @@ summary(fit2)
 #> Chisq: 433.4, df: 4, Pr(>Chisq): < 2.2e-16
 #> 
 #> Constrained EL: converged
-cr <- confreg(fit2, parm = c("disp", "hp"), npoints = 200)
+cr <- confreg(fit_lm, parm = c("disp", "hp"), npoints = 200)
 plot(cr)
 ```
 
 <img src="man/figures/README-usage-1.png" width="100%" />
 
 ``` r
-
-
-# Analysis of variance
 data("clothianidin")
-fit3 <- el_lm(clo ~ -1 + trt, data = clothianidin)
-summary(fit3)
+fit2_lm <- el_lm(clo ~ -1 + trt, data = clothianidin)
+summary(fit2_lm)
 #> 
 #> Call:
 #> el_lm(formula = clo ~ -1 + trt, data = clothianidin)
@@ -126,7 +135,7 @@ summary(fit3)
 #> Chisq: 894.4, df: 4, Pr(>Chisq): < 2.2e-16
 #> 
 #> EL evaluation: not converged
-confint(fit3)
+confint(fit2_lm)
 #>                  lower      upper
 #> trtNaked     -5.002118 -3.9198229
 #> trtFungicide -4.109816 -2.6069870
@@ -134,19 +143,78 @@ confint(fit3)
 #> trtHigh      -2.499165 -0.1157222
 
 
-# Test of no treatment effect
-contrast <- matrix(c(
-  1, -1, 0, 0,
-  0, 1, -1, 0,
-  0, 0, 1, -1
-), byrow = TRUE, nrow = 3)
-elt(fit3, lhs = contrast)
+## Generalized linear model
+data("thiamethoxam")
+fit_glm <- el_glm(visit ~ log(mass) + fruit + foliage + var + trt,
+  family = quasipoisson(link = "log"), data = thiamethoxam,
+  control = el_control(maxit = 100, tol = 1e-08, nthreads = 4)
+)
+summary(fit_glm)
+#> 
+#> Call:
+#> el_glm(formula = visit ~ log(mass) + fruit + foliage + var + 
+#>     trt, family = quasipoisson(link = "log"), data = thiamethoxam, 
+#>     control = el_control(maxit = 100, tol = 1e-08, nthreads = 4))
+#> 
+#> Coefficients:
+#>              Estimate   Chisq Pr(>Chisq)    
+#> (Intercept)   0.74032 189.226    < 2e-16 ***
+#> log(mass)     0.16938 401.439    < 2e-16 ***
+#> fruit         0.04043  10.044    0.00153 ** 
+#> foliage     -10.84203   5.805    0.01598 *  
+#> varGZ        -0.60770  37.549   8.92e-10 ***
+#> trtSpray      0.06370   0.505    0.47730    
+#> trtFurrow    -0.04124   0.084    0.77170    
+#> trtSeed       0.14281   1.276    0.25857    
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 
+#> Dispersion estimate for quasipoisson family: 1.316692
+#> 
+#> Chisq: 117.2, df: 7, Pr(>Chisq): < 2.2e-16
+#> 
+#> Constrained EL: converged
+
+
+## Test of no treatment effect
+contrast <- c(
+  "trtNaked - trtFungicide", "trtFungicide - trtLow", "trtLow - trtHigh"
+)
+elt(fit2_lm, lhs = contrast)
 #> 
 #>  Empirical Likelihood Test
+#> 
+#> Hypothesis:
+#> trtNaked - trtFungicide = 0
+#> trtFungicide - trtLow = 0
+#> trtLow - trtHigh = 0
 #> 
 #> Significance level: 0.05, Calibration: Chi-square 
 #> 
 #> Statistic: 26.59804, Critical value: 7.814728 
 #> 
 #> p-value: 7.147731e-06
+
+
+## Multiple testing
+contrast2 <- rbind(
+  c(0, 0, 0, 0, 0, 1, 0, 0),
+  c(0, 0, 0, 0, 0, 0, 1, 0),
+  c(0, 0, 0, 0, 0, 0, 0, 1)
+)
+elmt(fit_glm, lhs = contrast2)
+#> 
+#>  Empirical Likelihood Multiple Tests
+#> 
+#> Overall significance level: 0.05 
+#> 
+#> Calibration: Multivariate chi-square 
+#> 
+#> Hypotheses:
+#>   Estimate Chisq Df p.adj
+#> 1  0.06370 0.471  1 0.849
+#> 2 -0.04124 0.078  1 0.987
+#> 3  0.14281 1.276  1 0.558
+#> 
+#> Common critical value: 5.6125
 ```

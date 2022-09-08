@@ -16,8 +16,8 @@ S4 class for empirical likelihood multiple tests.
 \item{\code{coefficients}}{A list of numeric vectors of the estimates of the linear
 hypotheses.}
 
-\item{\code{statistic}}{A numeric vector for the minus twice the (constrained)
-empirical log-likelihood ratios.}
+\item{\code{statistic}}{A numeric vector of the minus twice the (constrained)
+empirical log-likelihood ratios with asymptotic chi-square distributions.}
 
 \item{\code{df}}{An integer vector of the marginal degrees of freedoms of the
 statistic.}

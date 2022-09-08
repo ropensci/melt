@@ -151,10 +151,9 @@ setGeneric("conv", function(object, ...) standardGeneric("conv"))
 #' @usage NULL
 #' @examples
 #' ## F-calibrated critical value
-#' set.seed(533414)
-#' x <- rnorm(100)
-#' fit <- el_mean(x, 0)
-#' elt <- elt(fit, rhs = 0.3, calibrate = "f")
+#' data("precip")
+#' fit <- el_mean(precip, 30)
+#' elt <- elt(fit, rhs = 34, calibrate = "f")
 #' critVal(elt)
 #' @exportMethod critVal
 setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
@@ -241,14 +240,14 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @seealso \linkS4class{ELMT}, [elt()], [el_control()]
 #' @usage NULL
 #' @examples
-#' ## Example 1: bivariate mean (list `rhs` & no `lhs`)
+#' ## Bivariate mean (list `rhs` & no `lhs`)
 #' data("women")
 #' fit <- el_mean(women, par = c(65, 135))
 #' rhs <- list(c(64, 133), c(66, 140))
 #' set.seed(143)
 #' elmt(fit, rhs = rhs)
 #'
-#' ## Example 2: pairwise comparison (no `rhs` & matrix `lhs`)
+#' ## Pairwise comparison (no `rhs` & matrix `lhs`)
 #' data("clothianidin")
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 #' lhs <- matrix(c(
@@ -259,7 +258,7 @@ setGeneric("eld", function(object, control = el_control()) {
 #' set.seed(629)
 #' elmt(fit2, lhs = lhs)
 #'
-#' ## Example 3: arbitrary hypotheses (list `rhs` & list `lhs`)
+#' ## Arbitrary hypotheses (list `rhs` & list `lhs`)
 #' data("mtcars")
 #' fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
 #' lhs <- list(rbind(c(1, 4, 0)), rbind(c(0, 1, 0), c(0, 0, 1)))
@@ -433,8 +432,27 @@ setGeneric("logL", function(object, ...) standardGeneric("logL"))
 #'
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
+#' @details Let \eqn{X_i} be independent and identically distributed
+#'   \eqn{p}-dimensional random variable from an unknown distribution \eqn{P}
+#'   for \eqn{i = 1, \dots, n}. We assume that \eqn{P} has a positive definite
+#'   covariance matrix. For a parameter of interest
+#'   \eqn{\theta(F) \in {\rm{I\!R}}^p}, consider a \eqn{p}-dimensional smooth
+#'   estimating function \eqn{g(X_i, \theta)} with a moment condition
+#'   \deqn{\textrm{E}[g(X_i, \theta)] = 0.}
+#'   We assume that there exists an unique \eqn{\theta_0} that solves the above
+#'   equation. Given a value of \eqn{\theta}, the (profile) empirical likelihood
+#'   ratio is defined by
+#'   \deqn{R(\theta) =
+#'   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
+#'   \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
+#'   \right\}.}
+#'   The maximum empirical likelihood estimator \eqn{\hat{\theta}} solves
+#'   \eqn{n^{-1}\sum_{i = 1}^n g(X_i, \hat{\theta}) = 0} and yields
+#'   \eqn{p_i = 1/n} for \eqn{i = 1, \dots, n}. [logLik()] gives \eqn{-n\log n},
+#'   the maximum empirical log-likelihood. Use [logL()] instead to extract the
+#'   (constrained) empirical log-likelihood computed from a model.
 #' @return An object of class \linkS4class{logLikEL}.
-#' @seealso \linkS4class{EL}
+#' @seealso \linkS4class{EL}, [logL()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -465,9 +483,9 @@ setGeneric("logLik", function(object, ...) standardGeneric("logLik"))
 setGeneric("logLR", function(object, ...) standardGeneric("logLR"))
 
 
-#' Log-probabilities
+#' Log probabilities
 #'
-#' Extracts log-probabilities of empirical likelihood from a model.
+#' Extracts log probabilities of empirical likelihood from a model.
 #'
 #' @param object An object that inherits from \linkS4class{EL} or
 #'   \linkS4class{ELT}.

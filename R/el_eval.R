@@ -31,20 +31,24 @@
 #'   can be arbitrary, [el_eval()] does not return an object of class
 #'   \linkS4class{EL}, and the associated generics and methods are not
 #'   applicable.
-#' @return A list with the following components:
+#' @return A list of the following optimization results:
 #'   * `optim` A list with the following optimization results:
-#'     * `lambda` Lagrange multiplier of the dual problem.
-#'     * `iterations` Number of iterations performed.
-#'     * `convergence` Convergence status.
-#'   * `logp` Log probabilities obtained from empirical likelihood.
-#'   * `logl` Empirical log-likelihood.
-#'   * `loglr` Empirical log-likelihood ratio.
-#'   * `statistic` Minus twice the empirical log-likelihood ratio statistic
-#'   that has an asymptotic chi-square distribution.
-#'   * `df` Degrees of freedom of the statistic.
-#'   * `pval` \eqn{p}-value of the statistic.
-#'   * `npar` Number of parameters.
-#'   * `weights` Re-scaled weights used for model fitting.
+#'     * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'     problem.
+#'     * `iterations` A single integer for the number of iterations performed.
+#'     * `convergence` A single logical for the convergence status.
+#'   * `logp` A numeric vector of the log probabilities of the empirical
+#'   likelihood.
+#'   * `logl` A single numeric of the empirical log-likelihood.
+#'   * `loglr` A single numeric of the empirical log-likelihood ratio.
+#'   * `statistic` A single numeric of the minus twice the empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
+#'   * `df` A single integer for the degrees of freedom of the statistic.
+#'   * `pval` A single numeric for the \eqn{p}-value of the statistic.
+#'   * `nobs` A single integer for the number of observations.
+#'   * `npar` A single integer for the number of parameters.
+#'   * `weights` A numeric vector of the re-scaled weights used for the model
+#'   fitting.
 #' @references Qin J, Lawless J (1994).
 #'   “Empirical Likelihood and General Estimating Equations.”
 #'   \emph{The Annals of Statistics}, 22(1), 300--325.

@@ -35,10 +35,8 @@
 #' @seealso \linkS4class{EL}, [elt()], [el_eval()], [el_control()]
 #' @examples
 #' ## Scalar mean
-#' set.seed(414)
-#' x <- rnorm(100)
-#' par <- 0
-#' el_mean(x, par)
+#' data("precip")
+#' el_mean(precip, 30)
 #'
 #' ## Vector mean
 #' data("faithful")

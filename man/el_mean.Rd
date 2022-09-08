@@ -46,10 +46,8 @@ likelihood ratio is defined by
 }
 \examples{
 ## Scalar mean
-set.seed(414)
-x <- rnorm(100)
-par <- 0
-el_mean(x, par)
+data("precip")
+el_mean(precip, 30)
 
 ## Vector mean
 data("faithful")

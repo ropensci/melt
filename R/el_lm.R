@@ -62,7 +62,7 @@
 #' @seealso \linkS4class{EL}, \linkS4class{LM}, [el_glm()], [elt()],
 #'   [el_control()]
 #' @examples
-#' ## Linear regression
+#' ## Linear model
 #' data("thiamethoxam")
 #' fit <- el_lm(fruit ~ trt, data = thiamethoxam)
 #' summary(fit)

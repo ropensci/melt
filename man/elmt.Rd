@@ -50,14 +50,14 @@ of the test statistics, the adjusted p-values are estimated by Monte Carlo
 simulation.
 }
 \examples{
-## Example 1: bivariate mean (list `rhs` & no `lhs`)
+## Bivariate mean (list `rhs` & no `lhs`)
 data("women")
 fit <- el_mean(women, par = c(65, 135))
 rhs <- list(c(64, 133), c(66, 140))
 set.seed(143)
 elmt(fit, rhs = rhs)
 
-## Example 2: pairwise comparison (no `rhs` & matrix `lhs`)
+## Pairwise comparison (no `rhs` & matrix `lhs`)
 data("clothianidin")
 fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
 lhs <- matrix(c(
@@ -68,7 +68,7 @@ lhs <- matrix(c(
 set.seed(629)
 elmt(fit2, lhs = lhs)
 
-## Example 3: arbitrary hypotheses (list `rhs` & list `lhs`)
+## Arbitrary hypotheses (list `rhs` & list `lhs`)
 data("mtcars")
 fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
 lhs <- list(rbind(c(1, 4, 0)), rbind(c(0, 1, 0), c(0, 0, 1)))

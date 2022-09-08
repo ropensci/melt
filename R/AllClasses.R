@@ -33,28 +33,29 @@
 #'   distribution to \eqn{\chi^2_p}, where \eqn{\chi^2_p} has a chi-square
 #'   distribution with \eqn{p} degrees of freedom. See the references below for
 #'   more details.
-#' @slot optim A list with the following optimization results:
-#'   * `par` A numeric vector of the specified parameters.
-#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#' @slot optim A list of the following optimization results:
+#'   * `par` A numeric vector of the solution to the optimization problem.
+#'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#' @slot logp A numeric vector of the log probabilities of the empirical
 #'   likelihood.
-#' @slot logl A single numeric for the empirical log-likelihood.
-#' @slot loglr A single numeric for the empirical log-likelihood ratio.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio statistic that has an asymptotic chi-square
-#'   distribution.
+#' @slot logl A single numeric of the empirical log-likelihood.
+#' @slot loglr A single numeric of the empirical log-likelihood ratio.
+#' @slot statistic A single numeric of the minus twice the empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot nobs A sinble integer for the number of observations.
+#' @slot nobs A single integer for the number of observations.
 #' @slot npar A single integer for the number of parameters.
-#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot weights A numeric vector of the re-scaled weights used for the model
+#'   fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
-#' @slot data A numeric matrix for the data used for model fitting.
+#' @slot data A numeric matrix of the data for the model fitting.
 #' @aliases EL
 #' @references Owen A (2001). \emph{Empirical Likelihood}. Chapman & Hall/CRC.
 #'   \doi{10.1201/9781420036152}.
@@ -113,30 +114,31 @@ setClass("EL",
 #'   where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
 #'   \eqn{\theta^{(k)}}. The first order optimality condition is
 #'   \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
-#' @slot optim A list with the following optimization results:
-#'   * `par` A numeric vector of the parameter value that minimizes the
-#'   empirical likelihood subject to the constraints.
-#'   * `lambda` A numeric vector of the Lagrange multipliers.
-#'   * `iterations` A single integer for the number of iterations
-#'   performed.
+#' @slot optim A list of the following optimization results:
+#'   * `par` A numeric vector of the solution to the constrained optimization
+#'   problem.
+#'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
+#'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @slot logp A numeric vector of the log probabilities obtained from empirical
-#'   likelihood.
-#' @slot logl A single numeric for the empirical log-likelihood.
-#' @slot loglr A single numeric for the empirical log-likelihood ratio.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio statistic that has an asymptotic chi-square
-#'   distribution.
+#' @slot logp A numeric vector of the log probabilities of the constrained
+#'   empirical likelihood.
+#' @slot logl A single numeric of the constrained empirical log-likelihood.
+#' @slot loglr A single numeric of the constrained empirical log-likelihood
+#'   ratio.
+#' @slot statistic A single numeric of the minus twice the constrained
+#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot nobs A sinble integer for the number of observations.
+#' @slot nobs A single integer for the number of observations.
 #' @slot npar A single integer for the number of parameters.
-#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot weights A numeric vector of the re-scaled weights used for the model
+#'   fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
-#' @slot data A numeric matrix for the data used for model fitting.
+#' @slot data A numeric matrix of the data for the model fitting.
 #' @aliases CEL
 #' @references Adimari G, Guolo A (2010).
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
@@ -162,36 +164,53 @@ setOldClass("terms")
 #' S4 class for linear models with empirical likelihood. It inherits from
 #'   \linkS4class{CEL} class.
 #'
-#' @details If there is no intercept in a model, the `optim` slot need to be
-#'   understood in terms of \linkS4class{EL} class since constrained
-#'   optimization is not involved in the overall test.
-#' @slot sigTests A list with the results of significance tests.
+#' @details The overall test involves a constrained optimization problem. All
+#'   the parameters except for the intercept are constrained to zero. The
+#'   `optim` slot contains the results. When there is no intercept, all
+#'   parameters are set to zero, and the results need to be understood in terms
+#'   of \linkS4class{EL} class since no constrained optimization is involved.
+#'   Once the solution is found, the log probabilities (`logp`) and the
+#'   (constrained) empirical likelihood values (`logl`, `loglr`, `statistic`)
+#'   readily follow, along with the degrees of freedom (`df`) and the
+#'   \eqn{p}-value (`pval`). The significance tests for each parameter also
+#'   involve constrained optimization problems where only one parameter is
+#'   constrained to zero. The `sigTests` slot contains the results.
+#' @slot sigTests A list of the following results of significance tests:
+#'   * `statistic` A numeric vector of the minus twice the (constrained)
+#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
+#'   * `iterations` An integer vector for the number of iterations performed for
+#'   each parameter.
+#'   * `convergence` A logical vector for the convergence status of each
+#'   parameter.
 #' @slot call A matched call.
 #' @slot terms A [`terms`] object used.
-#' @slot misc A list with miscellaneous outputs from a model fitting function.
+#' @slot misc A list of various outputs obtained from the model fitting process.
 #'   They are used in other generics and methods.
-#' @slot optim A list with the following optimization results:
-#'   * `par` A numeric vector of the specified parameters.
-#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#' @slot optim A list of the following optimization results:
+#'   * `par` A numeric vector of the solution to the (constrained) optimization
+#'   problem.
+#'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @slot logp A numeric vector of the log probabilities obtained from empirical
-#'   likelihood.
-#' @slot logl A single numeric for the empirical log-likelihood.
-#' @slot loglr A single numeric for the empirical log-likelihood ratio.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio statistic that has an asymptotic chi-square
-#'   distribution.
+#' @slot logp A numeric vector of the log probabilities of the (constrained)
+#'   empirical likelihood.
+#' @slot logl A single numeric of the (constrained) empirical log-likelihood.
+#' @slot loglr A single numeric of the (constrained) empirical log-likelihood
+#'   ratio.
+#' @slot statistic A single numeric of the minus twice the (constrained)
+#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot nobs A sinble integer for the number of observations.
+#' @slot nobs A single integer for the number of observations.
 #' @slot npar A single integer for the number of parameters.
-#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot weights A numeric vector of the re-scaled weights used for the model
+#'   fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
-#' @slot data A numeric matrix for the data used for model fitting.
+#' @slot data A numeric matrix of the data for the model fitting.
 #' @aliases LM
 #' @examples
 #' showClass("LM")
@@ -207,35 +226,55 @@ setOldClass("family")
 #' S4 class for generalized linear models. It inherits from \linkS4class{LM}
 #'   class.
 #'
+#' @details The overall test involves a constrained optimization problem. All
+#'   the parameters except for the intercept are constrained to zero. The
+#'   `optim` slot contains the results. When there is no intercept, all
+#'   parameters are set to zero, and the results need to be understood in terms
+#'   of \linkS4class{EL} class since no constrained optimization is involved.
+#'   Once the solution is found, the log probabilities (`logp`) and the
+#'   (constrained) empirical likelihood values (`logl`, `loglr`, `statistic`)
+#'   readily follow, along with the degrees of freedom (`df`) and the
+#'   \eqn{p}-value (`pval`). The significance tests for each parameter also
+#'   involve constrained optimization problems where only one parameter is
+#'   constrained to zero. The `sigTests` slot contains the results.
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot sigTests A list with the results of significance tests.
+#' @slot sigTests A list of the following results of significance tests:
+#'   * `statistic` A numeric vector of the minus twice the (constrained)
+#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
+#'   * `iterations` An integer vector for the number of iterations performed for
+#'   each parameter.
+#'   * `convergence` A logical vector for the convergence status of each
+#'   parameter.
 #' @slot call A matched call.
 #' @slot terms A [`terms`] object used.
-#' @slot misc A list with miscellaneous outputs from a model fitting function.
+#' @slot misc A list of various outputs obtained from the model fitting process.
 #'   They are used in other generics and methods.
-#' @slot optim A list with the following optimization results:
-#'   * `par` A numeric vector of the specified parameters.
-#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#' @slot optim A list of the following optimization results:
+#'   * `par` A numeric vector of the solution to the (constrained) optimization
+#'   problem.
+#'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @slot logp A numeric vector of the log probabilities obtained from empirical
-#'   likelihood.
-#' @slot logl A single numeric for the empirical log-likelihood.
-#' @slot loglr A single numeric for the empirical log-likelihood ratio.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio statistic that has an asymptotic chi-square
-#'   distribution.
+#' @slot logp A numeric vector of the log probabilities of the (constrained)
+#'   empirical likelihood.
+#' @slot logl A single numeric of the (constrained) empirical log-likelihood.
+#' @slot loglr A single numeric of the (constrained) empirical log-likelihood
+#'   ratio.
+#' @slot statistic A single numeric of the minus twice the (constrained)
+#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot nobs A sinble integer for the number of observations.
+#' @slot nobs A single integer for the number of observations.
 #' @slot npar A single integer for the number of parameters.
-#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot weights A numeric vector of the re-scaled weights used for the model
+#'   fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
-#' @slot data A numeric matrix for the data used for model fitting.
+#' @slot data A numeric matrix of the data for the model fitting.
 #' @aliases GLM
 #' @examples
 #' showClass("GLM")
@@ -324,14 +363,20 @@ setClass("ELD", contains = "numeric")
 #' @slot rhs A numeric vector for the right-hand side of the hypothesis.
 #' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
 #' @slot calibrate A single character for the calibration method used.
-#' @slot optim A list with the optimization results.
-#' @slot logp A numeric vector of the log probabilities obtained from the
-#'   (constrained) empirical likelihood.
-#' @slot logl A single numeric for the (constrained) empirical log-likelihood.
-#' @slot loglr A single numeric for the (constrained) empirical log-likelihood
+#' @slot optim A list of the following optimization results:
+#'   * `par` A numeric vector of the solution to the (constrained) optimization
+#'   problem.
+#'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
+#'   * `iterations` A single integer for the number of iterations performed.
+#'   * `convergence` A single logical for the convergence status.
+#' @slot logp A numeric vector of the log probabilities of the (constrained)
+#'   empirical likelihood.
+#' @slot logl A single numeric of the (constrained) empirical log-likelihood.
+#' @slot loglr A single numeric of the (constrained) empirical log-likelihood
 #'   ratio.
-#' @slot statistic A single numeric for the minus twice the (constrained)
-#'   empirical log-likelihood ratio.
+#' @slot statistic A single numeric of the minus twice the (constrained)
+#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @aliases ELT
 #' @examples
@@ -352,8 +397,8 @@ setClass("ELT",
 #' @slot alpha A single numeric for the overall significance level.
 #' @slot coefficients A list of numeric vectors of the estimates of the linear
 #'   hypotheses.
-#' @slot statistic A numeric vector for the minus twice the (constrained)
-#'   empirical log-likelihood ratios.
+#' @slot statistic A numeric vector of the minus twice the (constrained)
+#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
 #' @slot df An integer vector of the marginal degrees of freedoms of the
 #'   statistic.
 #' @slot cv A single numeric for the multiplicity adjusted critical value.
@@ -387,35 +432,55 @@ setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
 #' S4 class for generalized linear models with quasi-likelihood methods. It
 #'   inherits from \linkS4class{GLM} class.
 #'
+#' @details The overall test involves a constrained optimization problem. All
+#'   the parameters except for the intercept are constrained to zero. The
+#'   `optim` slot contains the results. When there is no intercept, all
+#'   parameters are set to zero, and the results need to be understood in terms
+#'   of \linkS4class{EL} class since no constrained optimization is involved.
+#'   Once the solution is found, the log probabilities (`logp`) and the
+#'   (constrained) empirical likelihood values (`logl`, `loglr`, `statistic`)
+#'   readily follow, along with the degrees of freedom (`df`) and the
+#'   \eqn{p}-value (`pval`). The significance tests for each parameter also
+#'   involve constrained optimization problems where only one parameter is
+#'   constrained to zero. The `sigTests` slot contains the results.
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot sigTests A list with the results of significance tests.
+#' @slot sigTests A list of the following results of significance tests:
+#'   * `statistic` A numeric vector of the minus twice the (constrained)
+#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
+#'   * `iterations` An integer vector for the number of iterations performed for
+#'   each parameter.
+#'   * `convergence` A logical vector for the convergence status of each
+#'   parameter.
 #' @slot call A matched call.
 #' @slot terms A [`terms`] object used.
-#' @slot misc A list with miscellaneous outputs from a model fitting function.
+#' @slot misc A list of various outputs obtained from the model fitting process.
 #'   They are used in other generics and methods.
-#' @slot optim A list with the following optimization results:
-#'   * `par` A numeric vector of the specified parameters.
-#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#' @slot optim A list of the following optimization results:
+#'   * `par` A numeric vector of the solution to the (constrained) optimization
+#'   problem.
+#'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @slot logp A numeric vector of the log probabilities obtained from empirical
-#'   likelihood.
-#' @slot logl A single numeric for the empirical log-likelihood.
-#' @slot loglr A single numeric for the empirical log-likelihood ratio.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio statistic that has an asymptotic chi-square
-#'   distribution.
+#' @slot logp A numeric vector of the log probabilities of the (constrained)
+#'   empirical likelihood.
+#' @slot logl A single numeric of the (constrained) empirical log-likelihood.
+#' @slot loglr A single numeric of the (constrained) empirical log-likelihood
+#'   ratio.
+#' @slot statistic A single numeric of the minus twice the (constrained)
+#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot nobs A sinble integer for the number of observations.
+#' @slot nobs A single integer for the number of observations.
 #' @slot npar A single integer for the number of parameters.
-#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot weights A numeric vector of the re-scaled weights used for the model
+#'   fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
-#' @slot data A numeric matrix for the data used for model fitting.
+#' @slot data A numeric matrix of the data for the model fitting.
 #' @aliases QGLM
 #' @examples
 #' showClass("QGLM")
@@ -426,28 +491,29 @@ setClass("QGLM", contains = "GLM")
 #'
 #' S4 class for standard deviation. It inherits from \linkS4class{EL} class.
 #'
-#' @slot optim A list with the following optimization results:
-#'   * `par` A numeric vector of the specified parameters.
-#'   * `lambda` A numeric vector of the Lagrange multipliers.
+#' @slot optim A list of the following optimization results:
+#'   * `par` A numeric vector of the solution to the optimization problem.
+#'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#' @slot logp A numeric vector of the log probabilities obtained from empirical
+#' @slot logp A numeric vector of the log probabilities of the empirical
 #'   likelihood.
-#' @slot logl A single numeric for the empirical log-likelihood.
-#' @slot loglr A single numeric for the empirical log-likelihood ratio.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio statistic that has an asymptotic chi-square
-#'   distribution.
+#' @slot logl A single numeric of the empirical log-likelihood.
+#' @slot loglr A single numeric of the empirical log-likelihood ratio.
+#' @slot statistic A single numeric of the minus twice the empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
-#' @slot nobs A sinble integer for the number of observations.
+#' @slot nobs A single integer for the number of observations.
 #' @slot npar A single integer for the number of parameters.
-#' @slot weights A numeric vector of re-scaled weights used for model fitting.
+#' @slot weights A numeric vector of the re-scaled weights used for the model
+#'   fitting.
 #' @slot coefficients A numeric vector of the maximum empirical likelihood
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
-#' @slot data A numeric matrix for the data used for model fitting.
+#' @slot data A numeric matrix of the data for the model fitting.
 #' @aliases SD
 #' @examples
 #' showClass("SD")
@@ -458,8 +524,8 @@ setClass("SD", contains = "EL")
 #'
 #' S4 class for a summary of \linkS4class{LM} objects.
 #'
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio for the overall test of the model.
+#' @slot statistic A single numeric of the minus twice the (constrained)
+#'   empirical log-likelihood ratio for the overall test.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
@@ -491,8 +557,8 @@ setClass("SummaryLM", slots = c(
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio for the overall test of the model.
+#' @slot statistic A single numeric of the minus twice the (constrained)
+#'   empirical log-likelihood ratio for the overall test.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
@@ -523,8 +589,8 @@ setClass("SummaryGLM",
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot statistic A single numeric for the minus twice the empirical
-#'   log-likelihood ratio for the overall test of the model.
+#' @slot statistic A single numeric of the minus twice the (constrained)
+#'   empirical log-likelihood ratio for the overall test.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.

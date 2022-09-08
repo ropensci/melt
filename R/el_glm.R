@@ -98,16 +98,9 @@
 #' @seealso \linkS4class{EL}, \linkS4class{GLM}, [el_lm()], [elt()],
 #'   [el_control()]
 #' @examples
-#' set.seed(20010)
-#' n <- 50
-#' x <- rnorm(n)
-#' x2 <- rnorm(n)
-#' l <- -2 + 0.2 * x + 3 * x2
-#' mu <- 1 / (1 + exp(-l))
-#' y <- rbinom(n, 1, mu)
-#' df <- data.frame(y, x, x2)
-#' fit <- el_glm(y ~ x + x2,
-#'   family = binomial, data = df, weights = NULL, na.action = na.omit,
+#' data("warpbreaks")
+#' fit <- el_glm(wool ~ .,
+#'   family = binomial, data = warpbreaks, weights = NULL, na.action = na.omit,
 #'   start = NULL, etastart = NULL, mustart = NULL, offset = NULL
 #' )
 #' summary(fit)
