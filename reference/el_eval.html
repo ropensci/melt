@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9500</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9600</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,19 +91,23 @@ non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list with the following components:</p><ul><li><p><code>optim</code> A list with the following optimization results:</p><ul><li><p><code>lambda</code> Lagrange multiplier of the dual problem.</p></li>
-<li><p><code>iterations</code> Number of iterations performed.</p></li>
-<li><p><code>convergence</code> Convergence status.</p></li>
+<p>A list of the following optimization results:</p><ul><li><p><code>optim</code> A list with the following optimization results:</p><ul><li><p><code>lambda</code> A numeric vector of the Lagrange multipliers of the dual
+problem.</p></li>
+<li><p><code>iterations</code> A single integer for the number of iterations performed.</p></li>
+<li><p><code>convergence</code> A single logical for the convergence status.</p></li>
 </ul></li>
-<li><p><code>logp</code> Log probabilities obtained from empirical likelihood.</p></li>
-<li><p><code>logl</code> Empirical log-likelihood.</p></li>
-<li><p><code>loglr</code> Empirical log-likelihood ratio.</p></li>
-<li><p><code>statistic</code> Minus twice the empirical log-likelihood ratio statistic
-that has an asymptotic chi-square distribution.</p></li>
-<li><p><code>df</code> Degrees of freedom of the statistic.</p></li>
-<li><p><code>pval</code> \(p\)-value of the statistic.</p></li>
-<li><p><code>npar</code> Number of parameters.</p></li>
-<li><p><code>weights</code> Re-scaled weights used for model fitting.</p></li>
+<li><p><code>logp</code> A numeric vector of the log probabilities of the empirical
+likelihood.</p></li>
+<li><p><code>logl</code> A single numeric of the empirical log-likelihood.</p></li>
+<li><p><code>loglr</code> A single numeric of the empirical log-likelihood ratio.</p></li>
+<li><p><code>statistic</code> A single numeric of the minus twice the empirical
+log-likelihood ratio with an asymptotic chi-square distribution.</p></li>
+<li><p><code>df</code> A single integer for the degrees of freedom of the statistic.</p></li>
+<li><p><code>pval</code> A single numeric for the \(p\)-value of the statistic.</p></li>
+<li><p><code>nobs</code> A single integer for the number of observations.</p></li>
+<li><p><code>npar</code> A single integer for the number of parameters.</p></li>
+<li><p><code>weights</code> A numeric vector of the re-scaled weights used for the model
+fitting.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

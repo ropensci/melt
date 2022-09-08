@@ -38,7 +38,7 @@
     
     <a class="navbar-brand me-2" href="index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9500</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9600</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,15 +106,34 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"markean/melt"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="main-functions">Main functions<a class="anchor" aria-label="anchor" href="#main-functions"></a>
+</h2>
+<p>melt provides an intuitive API for performing the most common data analysis tasks:</p>
+<ul>
+<li>
+<code><a href="reference/el_lm.html">el_lm()</a></code> fits a linear model with empirical likelihood.</li>
+<li>
+<code><a href="reference/el_glm.html">el_glm()</a></code> fits a generalized linear model with empirical likelihood.</li>
+<li>
+<code><a href="reference/confint.html">confint()</a></code> computes confidence intervals for model parameters.</li>
+<li>
+<code><a href="reference/confreg.html">confreg()</a></code> computes a confidence region for model parameters.</li>
+<li>
+<code><a href="reference/elt.html">elt()</a></code> tests a linear hypothesis.</li>
+<li>
+<code><a href="reference/elmt.html">elmt()</a></code> performs multiple testing simultaneously.</li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/markean/melt" class="external-link">melt</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">971112</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Test for the mean</span></span>
+<span><span class="co">## Test for the mean</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"precip"</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">precip</span>, par <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
-<span><span class="va">fit</span></span>
+<span><span class="fu"><a href="reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">precip</span>, par <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Empirical Likelihood</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -128,10 +147,10 @@
 <span><span class="co">#&gt; EL evaluation: converged</span></span>
 <span></span>
 <span></span>
-<span><span class="co"># Linear regression</span></span>
+<span><span class="co">## Linear model</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"mtcars"</span><span class="op">)</span></span>
-<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">qsec</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span>
+<span><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">qsec</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; el_lm(formula = mpg ~ disp + hp + wt + qsec, data = mtcars)</span></span>
@@ -148,16 +167,13 @@
 <span><span class="co">#&gt; Chisq: 433.4, df: 4, Pr(&gt;Chisq): &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Constrained EL: converged</span></span>
-<span><span class="va">cr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/confreg.html">confreg</a></span><span class="op">(</span><span class="va">fit2</span>, parm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"disp"</span>, <span class="st">"hp"</span><span class="op">)</span>, npoints <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span><span class="va">cr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/confreg.html">confreg</a></span><span class="op">(</span><span class="va">fit_lm</span>, parm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"disp"</span>, <span class="st">"hp"</span><span class="op">)</span>, npoints <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="va">cr</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-usage-1.png" width="100%"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span></span>
-<span><span class="co"># Analysis of variance</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span></span>
-<span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">clothianidin</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit3</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"clothianidin"</span><span class="op">)</span></span>
+<span><span class="va">fit2_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_lm.html">el_lm</a></span><span class="op">(</span><span class="va">clo</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">clothianidin</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit2_lm</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; el_lm(formula = clo ~ -1 + trt, data = clothianidin)</span></span>
@@ -173,7 +189,7 @@
 <span><span class="co">#&gt; Chisq: 894.4, df: 4, Pr(&gt;Chisq): &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; EL evaluation: not converged</span></span>
-<span><span class="fu"><a href="reference/confint.html">confint</a></span><span class="op">(</span><span class="va">fit3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/confint.html">confint</a></span><span class="op">(</span><span class="va">fit2_lm</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  lower      upper</span></span>
 <span><span class="co">#&gt; trtNaked     -5.002118 -3.9198229</span></span>
 <span><span class="co">#&gt; trtFungicide -4.109816 -2.6069870</span></span>
@@ -181,21 +197,80 @@
 <span><span class="co">#&gt; trtHigh      -2.499165 -0.1157222</span></span>
 <span></span>
 <span></span>
-<span><span class="co"># Test of no treatment effect</span></span>
-<span><span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span>
-<span>  <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>,</span>
-<span>  <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span></span>
-<span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/elt.html">elt</a></span><span class="op">(</span><span class="va">fit3</span>, lhs <span class="op">=</span> <span class="va">contrast</span><span class="op">)</span></span>
+<span><span class="co">## Generalized linear model</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"thiamethoxam"</span><span class="op">)</span></span>
+<span><span class="va">fit_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/el_glm.html">el_glm</a></span><span class="op">(</span><span class="va">visit</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">mass</span><span class="op">)</span> <span class="op">+</span> <span class="va">fruit</span> <span class="op">+</span> <span class="va">foliage</span> <span class="op">+</span> <span class="va">var</span> <span class="op">+</span> <span class="va">trt</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">quasipoisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">thiamethoxam</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="reference/el_control.html">el_control</a></span><span class="op">(</span>maxit <span class="op">=</span> <span class="fl">100</span>, tol <span class="op">=</span> <span class="fl">1e-08</span>, nthreads <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_glm</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; el_glm(formula = visit ~ log(mass) + fruit + foliage + var + </span></span>
+<span><span class="co">#&gt;     trt, family = quasipoisson(link = "log"), data = thiamethoxam, </span></span>
+<span><span class="co">#&gt;     control = el_control(maxit = 100, tol = 1e-08, nthreads = 4))</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;              Estimate   Chisq Pr(&gt;Chisq)    </span></span>
+<span><span class="co">#&gt; (Intercept)   0.74032 189.226    &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; log(mass)     0.16938 401.439    &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; fruit         0.04043  10.044    0.00153 ** </span></span>
+<span><span class="co">#&gt; foliage     -10.84203   5.805    0.01598 *  </span></span>
+<span><span class="co">#&gt; varGZ        -0.60770  37.549   8.92e-10 ***</span></span>
+<span><span class="co">#&gt; trtSpray      0.06370   0.505    0.47730    </span></span>
+<span><span class="co">#&gt; trtFurrow    -0.04124   0.084    0.77170    </span></span>
+<span><span class="co">#&gt; trtSeed       0.14281   1.276    0.25857    </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Dispersion estimate for quasipoisson family: 1.316692</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Chisq: 117.2, df: 7, Pr(&gt;Chisq): &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Constrained EL: converged</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Test of no treatment effect</span></span>
+<span><span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"trtNaked - trtFungicide"</span>, <span class="st">"trtFungicide - trtLow"</span>, <span class="st">"trtLow - trtHigh"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/elt.html">elt</a></span><span class="op">(</span><span class="va">fit2_lm</span>, lhs <span class="op">=</span> <span class="va">contrast</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Empirical Likelihood Test</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Hypothesis:</span></span>
+<span><span class="co">#&gt; trtNaked - trtFungicide = 0</span></span>
+<span><span class="co">#&gt; trtFungicide - trtLow = 0</span></span>
+<span><span class="co">#&gt; trtLow - trtHigh = 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Significance level: 0.05, Calibration: Chi-square </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Statistic: 26.59804, Critical value: 7.814728 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; p-value: 7.147731e-06</span></span></code></pre></div>
+<span><span class="co">#&gt; p-value: 7.147731e-06</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Multiple testing</span></span>
+<span><span class="va">contrast2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/elmt.html">elmt</a></span><span class="op">(</span><span class="va">fit_glm</span>, lhs <span class="op">=</span> <span class="va">contrast2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Empirical Likelihood Multiple Tests</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Overall significance level: 0.05 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Calibration: Multivariate chi-square </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Hypotheses:</span></span>
+<span><span class="co">#&gt;   Estimate Chisq Df p.adj</span></span>
+<span><span class="co">#&gt; 1  0.06370 0.471  1 0.849</span></span>
+<span><span class="co">#&gt; 2 -0.04124 0.078  1 0.987</span></span>
+<span><span class="co">#&gt; 3  0.14281 1.276  1 0.558</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Common critical value: 5.6125</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

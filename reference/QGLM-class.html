@@ -12,7 +12,7 @@ inherits from GLM class."><!-- mathjax --><script src="https://cdnjs.cloudflare.
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9500</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9600</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,20 @@ inherits from <a href="GLM-class.html">GLM</a> class.</p>
 
 
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The overall test involves a constrained optimization problem. All
+the parameters except for the intercept are constrained to zero. The
+<code>optim</code> slot contains the results. When there is no intercept, all
+parameters are set to zero, and the results need to be understood in terms
+of <a href="EL-class.html">EL</a> class since no constrained optimization is involved.
+Once the solution is found, the log probabilities (<code>logp</code>) and the
+(constrained) empirical likelihood values (<code>logl</code>, <code>loglr</code>, <code>statistic</code>)
+readily follow, along with the degrees of freedom (<code>df</code>) and the
+\(p\)-value (<code>pval</code>). The significance tests for each parameter also
+involve constrained optimization problems where only one parameter is
+constrained to zero. The <code>sigTests</code> slot contains the results.</p>
+    </div>
+    <div class="section level2">
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
 
@@ -79,7 +93,13 @@ inherits from <a href="GLM-class.html">GLM</a> class.</p>
 
 
 <dt><code>sigTests</code></dt>
-<dd><p>A list with the results of significance tests.</p></dd>
+<dd><p>A list of the following results of significance tests:</p><ul><li><p><code>statistic</code> A numeric vector of the minus twice the (constrained)
+empirical log-likelihood ratios with asymptotic chi-square distributions.</p></li>
+<li><p><code>iterations</code> An integer vector for the number of iterations performed for
+each parameter.</p></li>
+<li><p><code>convergence</code> A logical vector for the convergence status of each
+parameter.</p></li>
+</ul></dd>
 
 
 <dt><code>call</code></dt>
@@ -91,35 +111,37 @@ inherits from <a href="GLM-class.html">GLM</a> class.</p>
 
 
 <dt><code>misc</code></dt>
-<dd><p>A list with miscellaneous outputs from a model fitting function.
+<dd><p>A list of various outputs obtained from the model fitting process.
 They are used in other generics and methods.</p></dd>
 
 
 <dt><code>optim</code></dt>
-<dd><p>A list with the following optimization results:</p><ul><li><p><code>par</code> A numeric vector of the specified parameters.</p></li>
-<li><p><code>lambda</code> A numeric vector of the Lagrange multipliers.</p></li>
+<dd><p>A list of the following optimization results:</p><ul><li><p><code>par</code> A numeric vector of the solution to the (constrained) optimization
+problem.</p></li>
+<li><p><code>lambda</code> A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to <code>par</code>.</p></li>
 <li><p><code>iterations</code> A single integer for the number of iterations performed.</p></li>
 <li><p><code>convergence</code> A single logical for the convergence status.</p></li>
 </ul></dd>
 
 
 <dt><code>logp</code></dt>
-<dd><p>A numeric vector of the log probabilities obtained from empirical
-likelihood.</p></dd>
+<dd><p>A numeric vector of the log probabilities of the (constrained)
+empirical likelihood.</p></dd>
 
 
 <dt><code>logl</code></dt>
-<dd><p>A single numeric for the empirical log-likelihood.</p></dd>
+<dd><p>A single numeric of the (constrained) empirical log-likelihood.</p></dd>
 
 
 <dt><code>loglr</code></dt>
-<dd><p>A single numeric for the empirical log-likelihood ratio.</p></dd>
+<dd><p>A single numeric of the (constrained) empirical log-likelihood
+ratio.</p></dd>
 
 
 <dt><code>statistic</code></dt>
-<dd><p>A single numeric for the minus twice the empirical
-log-likelihood ratio statistic that has an asymptotic chi-square
-distribution.</p></dd>
+<dd><p>A single numeric of the minus twice the (constrained)
+empirical log-likelihood ratio with an asymptotic chi-square distribution.</p></dd>
 
 
 <dt><code>df</code></dt>
@@ -131,7 +153,7 @@ distribution.</p></dd>
 
 
 <dt><code>nobs</code></dt>
-<dd><p>A sinble integer for the number of observations.</p></dd>
+<dd><p>A single integer for the number of observations.</p></dd>
 
 
 <dt><code>npar</code></dt>
@@ -139,7 +161,8 @@ distribution.</p></dd>
 
 
 <dt><code>weights</code></dt>
-<dd><p>A numeric vector of re-scaled weights used for model fitting.</p></dd>
+<dd><p>A numeric vector of the re-scaled weights used for the model
+fitting.</p></dd>
 
 
 <dt><code>coefficients</code></dt>
@@ -153,7 +176,7 @@ functions.</p></dd>
 
 
 <dt><code>data</code></dt>
-<dd><p>A numeric matrix for the data used for model fitting.</p></dd>
+<dd><p>A numeric matrix of the data for the model fitting.</p></dd>
 
 
 </dl></div>
