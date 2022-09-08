@@ -70,7 +70,8 @@ Suppose that we observe \eqn{n} independent random variables
 \eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
 is the \eqn{p}-dimensional covariate (including the intercept if any) and
 \eqn{Y_i} is the response. A generalized linear model specifies that
-\eqn{{\textrm{E}(Y_i | X_i)} = {\mu_i}}, \eqn{{G(\mu_i)} = {X_i^\top \theta}}, and
+\eqn{{\textrm{E}(Y_i | X_i)} = {\mu_i}},
+\eqn{{G(\mu_i)} = {X_i^\top \theta}}, and
 \eqn{{\textrm{Var}(Y_i | X_i)} = {\phi V(\mu_i)}},
 where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
 \eqn{p}-dimensional parameter, \eqn{\phi} is an optional dispersion
