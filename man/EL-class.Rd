@@ -60,8 +60,8 @@ likelihood.}
 
 \item{\code{loglr}}{A single numeric of the empirical log-likelihood ratio.}
 
-\item{\code{statistic}}{A single numeric of the minus twice the empirical
-log-likelihood ratio with an asymptotic chi-square distribution.}
+\item{\code{statistic}}{A single numeric of minus twice the empirical log-likelihood
+ratio with an asymptotic chi-square distribution.}
 
 \item{\code{df}}{A single integer for the degrees of freedom of the statistic.}
 

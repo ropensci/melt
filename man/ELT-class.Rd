@@ -39,8 +39,8 @@ empirical likelihood.}
 \item{\code{loglr}}{A single numeric of the (constrained) empirical log-likelihood
 ratio.}
 
-\item{\code{statistic}}{A single numeric of the minus twice the (constrained)
-empirical log-likelihood ratio with an asymptotic chi-square distribution.}
+\item{\code{statistic}}{A single numeric of minus twice the (constrained) empirical
+log-likelihood ratio with an asymptotic chi-square distribution.}
 
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
 }}

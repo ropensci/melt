@@ -43,8 +43,8 @@
 #'   likelihood.
 #' @slot logl A single numeric of the empirical log-likelihood.
 #' @slot loglr A single numeric of the empirical log-likelihood ratio.
-#' @slot statistic A single numeric of the minus twice the empirical
-#'   log-likelihood ratio with an asymptotic chi-square distribution.
+#' @slot statistic A single numeric of minus twice the empirical log-likelihood
+#'   ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot nobs A single integer for the number of observations.
@@ -92,8 +92,8 @@ setClass("EL",
 #'   optimization results with respect to the parameters, not the Lagrange
 #'   multiplier.
 #'
-#' @details Let \eqn{l(\theta)} denote the minus twice the empirical
-#'   log-likelihood ratio function. We consider a linear hypothesis of the form
+#' @details Let \eqn{l(\theta)} denote minus twice the empirical log-likelihood
+#'   ratio function. We consider a linear hypothesis of the form
 #'   \deqn{L\theta = r,} where the left-hand-side \eqn{L} is a \eqn{q} by
 #'   \eqn{p} matrix and the right-hand-side \eqn{r} is a \eqn{q}-dimensional
 #'   vector. Under some regularity conditions, \eqn{l(\theta)} converges in
@@ -126,8 +126,8 @@ setClass("EL",
 #' @slot logl A single numeric of the constrained empirical log-likelihood.
 #' @slot loglr A single numeric of the constrained empirical log-likelihood
 #'   ratio.
-#' @slot statistic A single numeric of the minus twice the constrained
-#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
+#' @slot statistic A single numeric of minus twice the constrained empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot nobs A single integer for the number of observations.
@@ -176,8 +176,8 @@ setOldClass("terms")
 #'   involve constrained optimization problems where only one parameter is
 #'   constrained to zero. The `sigTests` slot contains the results.
 #' @slot sigTests A list of the following results of significance tests:
-#'   * `statistic` A numeric vector of the minus twice the (constrained)
-#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
+#'   * `statistic` A numeric vector of minus twice the (constrained) empirical
+#'   log-likelihood ratios with asymptotic chi-square distributions.
 #'   * `iterations` An integer vector for the number of iterations performed for
 #'   each parameter.
 #'   * `convergence` A logical vector for the convergence status of each
@@ -198,8 +198,8 @@ setOldClass("terms")
 #' @slot logl A single numeric of the (constrained) empirical log-likelihood.
 #' @slot loglr A single numeric of the (constrained) empirical log-likelihood
 #'   ratio.
-#' @slot statistic A single numeric of the minus twice the (constrained)
-#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot nobs A single integer for the number of observations.
@@ -240,8 +240,8 @@ setOldClass("family")
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
 #' @slot sigTests A list of the following results of significance tests:
-#'   * `statistic` A numeric vector of the minus twice the (constrained)
-#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
+#'   * `statistic` A numeric vector of minus twice the (constrained) empirical
+#'   log-likelihood ratios with asymptotic chi-square distributions.
 #'   * `iterations` An integer vector for the number of iterations performed for
 #'   each parameter.
 #'   * `convergence` A logical vector for the convergence status of each
@@ -262,8 +262,8 @@ setOldClass("family")
 #' @slot logl A single numeric of the (constrained) empirical log-likelihood.
 #' @slot loglr A single numeric of the (constrained) empirical log-likelihood
 #'   ratio.
-#' @slot statistic A single numeric of the minus twice the (constrained)
-#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot nobs A single integer for the number of observations.
@@ -375,8 +375,8 @@ setClass("ELD", contains = "numeric")
 #' @slot logl A single numeric of the (constrained) empirical log-likelihood.
 #' @slot loglr A single numeric of the (constrained) empirical log-likelihood
 #'   ratio.
-#' @slot statistic A single numeric of the minus twice the (constrained)
-#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @aliases ELT
 #' @examples
@@ -397,8 +397,8 @@ setClass("ELT",
 #' @slot alpha A single numeric for the overall significance level.
 #' @slot coefficients A list of numeric vectors of the estimates of the linear
 #'   hypotheses.
-#' @slot statistic A numeric vector of the minus twice the (constrained)
-#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
+#' @slot statistic A numeric vector of minus twice the (constrained) empirical
+#'   log-likelihood ratios with asymptotic chi-square distributions.
 #' @slot df An integer vector of the marginal degrees of freedoms of the
 #'   statistic.
 #' @slot cv A single numeric for the multiplicity adjusted critical value.
@@ -446,8 +446,8 @@ setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
 #' @slot sigTests A list of the following results of significance tests:
-#'   * `statistic` A numeric vector of the minus twice the (constrained)
-#'   empirical log-likelihood ratios with asymptotic chi-square distributions.
+#'   * `statistic` A numeric vector of minus twice the (constrained) empirical
+#'   log-likelihood ratios with asymptotic chi-square distributions.
 #'   * `iterations` An integer vector for the number of iterations performed for
 #'   each parameter.
 #'   * `convergence` A logical vector for the convergence status of each
@@ -468,8 +468,8 @@ setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
 #' @slot logl A single numeric of the (constrained) empirical log-likelihood.
 #' @slot loglr A single numeric of the (constrained) empirical log-likelihood
 #'   ratio.
-#' @slot statistic A single numeric of the minus twice the (constrained)
-#'   empirical log-likelihood ratio with an asymptotic chi-square distribution.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot nobs A single integer for the number of observations.
@@ -501,8 +501,8 @@ setClass("QGLM", contains = "GLM")
 #'   likelihood.
 #' @slot logl A single numeric of the empirical log-likelihood.
 #' @slot loglr A single numeric of the empirical log-likelihood ratio.
-#' @slot statistic A single numeric of the minus twice the empirical
-#'   log-likelihood ratio with an asymptotic chi-square distribution.
+#' @slot statistic A single numeric of minus twice the empirical log-likelihood
+#'   ratio with an asymptotic chi-square distribution.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
 #' @slot nobs A single integer for the number of observations.
@@ -524,8 +524,8 @@ setClass("SD", contains = "EL")
 #'
 #' S4 class for a summary of \linkS4class{LM} objects.
 #'
-#' @slot statistic A single numeric of the minus twice the (constrained)
-#'   empirical log-likelihood ratio for the overall test.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio for the overall test.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
@@ -557,8 +557,8 @@ setClass("SummaryLM", slots = c(
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot statistic A single numeric of the minus twice the (constrained)
-#'   empirical log-likelihood ratio for the overall test.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio for the overall test.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
@@ -589,8 +589,8 @@ setClass("SummaryGLM",
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot statistic A single numeric of the minus twice the (constrained)
-#'   empirical log-likelihood ratio for the overall test.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio for the overall test.
 #' @slot df A single integer for the degrees of freedom of the statistic.
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.

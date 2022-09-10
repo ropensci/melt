@@ -12,8 +12,8 @@ optimization results with respect to the parameters, not the Lagrange
 multiplier.
 }
 \details{
-Let \eqn{l(\theta)} denote the minus twice the empirical
-log-likelihood ratio function. We consider a linear hypothesis of the form
+Let \eqn{l(\theta)} denote minus twice the empirical log-likelihood
+ratio function. We consider a linear hypothesis of the form
 \deqn{L\theta = r,} where the left-hand-side \eqn{L} is a \eqn{q} by
 \eqn{p} matrix and the right-hand-side \eqn{r} is a \eqn{q}-dimensional
 vector. Under some regularity conditions, \eqn{l(\theta)} converges in
@@ -56,8 +56,8 @@ empirical likelihood.}
 \item{\code{loglr}}{A single numeric of the constrained empirical log-likelihood
 ratio.}
 
-\item{\code{statistic}}{A single numeric of the minus twice the constrained
-empirical log-likelihood ratio with an asymptotic chi-square distribution.}
+\item{\code{statistic}}{A single numeric of minus twice the constrained empirical
+log-likelihood ratio with an asymptotic chi-square distribution.}
 
 \item{\code{df}}{A single integer for the degrees of freedom of the statistic.}
 

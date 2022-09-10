@@ -34,8 +34,8 @@ constrained to zero. The \code{sigTests} slot contains the results.
 \describe{
 \item{\code{sigTests}}{A list of the following results of significance tests:
 \itemize{
-\item \code{statistic} A numeric vector of the minus twice the (constrained)
-empirical log-likelihood ratios with asymptotic chi-square distributions.
+\item \code{statistic} A numeric vector of minus twice the (constrained) empirical
+log-likelihood ratios with asymptotic chi-square distributions.
 \item \code{iterations} An integer vector for the number of iterations performed for
 each parameter.
 \item \code{convergence} A logical vector for the convergence status of each
@@ -67,8 +67,8 @@ empirical likelihood.}
 \item{\code{loglr}}{A single numeric of the (constrained) empirical log-likelihood
 ratio.}
 
-\item{\code{statistic}}{A single numeric of the minus twice the (constrained)
-empirical log-likelihood ratio with an asymptotic chi-square distribution.}
+\item{\code{statistic}}{A single numeric of minus twice the (constrained) empirical
+log-likelihood ratio with an asymptotic chi-square distribution.}
 
 \item{\code{df}}{A single integer for the degrees of freedom of the statistic.}
 

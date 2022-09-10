@@ -41,8 +41,8 @@
 #'   likelihood.
 #'   * `logl` A single numeric of the empirical log-likelihood.
 #'   * `loglr` A single numeric of the empirical log-likelihood ratio.
-#'   * `statistic` A single numeric of the minus twice the empirical
-#'   log-likelihood ratio with an asymptotic chi-square distribution.
+#'   * `statistic` A single numeric of minus twice the empirical log-likelihood
+#'   ratio with an asymptotic chi-square distribution.
 #'   * `df` A single integer for the degrees of freedom of the statistic.
 #'   * `pval` A single numeric for the \eqn{p}-value of the statistic.
 #'   * `nobs` A single integer for the number of observations.

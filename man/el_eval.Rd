@@ -33,8 +33,8 @@ problem.
 likelihood.
 \item \code{logl} A single numeric of the empirical log-likelihood.
 \item \code{loglr} A single numeric of the empirical log-likelihood ratio.
-\item \code{statistic} A single numeric of the minus twice the empirical
-log-likelihood ratio with an asymptotic chi-square distribution.
+\item \code{statistic} A single numeric of minus twice the empirical log-likelihood
+ratio with an asymptotic chi-square distribution.
 \item \code{df} A single integer for the degrees of freedom of the statistic.
 \item \code{pval} A single numeric for the \eqn{p}-value of the statistic.
 \item \code{nobs} A single integer for the number of observations.

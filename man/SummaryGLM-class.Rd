@@ -16,8 +16,8 @@ S4 class for a summary of \linkS4class{GLM} objects. It inherits from
 
 \item{\code{dispersion}}{A single numeric for the estimated dispersion parameter.}
 
-\item{\code{statistic}}{A single numeric of the minus twice the (constrained)
-empirical log-likelihood ratio for the overall test.}
+\item{\code{statistic}}{A single numeric of minus twice the (constrained) empirical
+log-likelihood ratio for the overall test.}
 
 \item{\code{df}}{A single integer for the degrees of freedom of the statistic.}
 
