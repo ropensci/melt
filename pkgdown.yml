@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   model: model.html
   performance: performance.html
-last_built: 2022-09-13T01:38Z
+last_built: 2022-09-13T04:55Z
 urls:
   reference: https://markean.github.io/melt/reference
   article: https://markean.github.io/melt/articles
