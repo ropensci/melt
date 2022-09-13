@@ -61,24 +61,26 @@
 <h2 class="pkg-version" data-toc-text="1.7.0.9600" id="melt-1709600-development-version">melt 1.7.0.9600 (development version)<a class="anchor" aria-label="anchor" href="#melt-1709600-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-7-0-9600">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-7-0-9600"></a></h3>
-<ul><li><p>New accessor method <code><a href="../reference/logProb.html">logProb()</a></code> extracts log-probabilities of empirical likelihood from a model.</p></li>
+<ul><li><p>New accessor method <code><a href="../reference/logProb.html">logProb()</a></code> extracts a model’s log probabilities of empirical likelihood.</p></li>
 <li><p><code><a href="../reference/el_lm.html">el_lm()</a></code> and <code><a href="../reference/el_glm.html">el_glm()</a></code> gain an argument <code>offset</code>.</p></li>
 <li><p><code><a href="../reference/el_glm.html">el_glm()</a></code> accepts <code>quasipoisson</code> family with <code>"identity"</code> link function for the argument <code>family</code>.</p></li>
 <li><p><code><a href="../reference/elt.html">elt()</a></code> accepts a character vector for the argument <code>lhs</code>, allowing a symbolic description of a hypothesis.</p></li>
-<li><p><code><a href="../reference/plot.html">plot()</a></code> is applicable to an object that inherits from <code>EL</code> to plot empirical likelihood displacement values versus observation index.</p></li>
+<li><p><code><a href="../reference/plot.html">plot()</a></code> applies to an object that inherits from <code>EL</code> to plot empirical likelihood displacement values versus observation index.</p></li>
 <li><p>New dataset <code>thiamethoxam</code> added.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-improvements-1-7-0-9600">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-7-0-9600"></a></h3>
 <ul><li><p><code><a href="../reference/coef.html">coef()</a></code> and <code><a href="../reference/getDF.html">getDF()</a></code> is applicable to an object of class <code>EMLT</code>.</p></li>
 <li><p><code><a href="../reference/print.html">print()</a></code> shows the tested hypothesis when applied to an object of class <code>ELT</code>.</p></li>
-<li><p><code><a href="../reference/print.html">print()</a></code> shows more information when applied to an object of class <code>ELMT</code>.</p></li>
+<li><p><code><a href="../reference/print.html">print()</a></code> shows the estimates and marginal degrees of freedoms when applied to an object of class <code>ELMT</code>.</p></li>
+<li><p><code>"boot"</code> option in the <code>calibrate</code> argument of <code><a href="../reference/elt.html">elt()</a></code> yields a more reliable result when applied to an object that inherits from <code>LM</code>.</p></li>
 <li><p>Internal routines for projection operation do not compute an explicit inverse (thanks to <a href="https://github.com/awstringer1" class="external-link">@awstringer1</a>).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-7-0-9600">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-7-0-9600"></a></h3>
-<ul><li>
-<code><a href="../reference/elmt.html">elmt()</a></code> returns a correct critical value when applied to an object of class <code>QGLM</code>.</li></ul></div>
+<ul><li><p><code><a href="../reference/elmt.html">elmt()</a></code> returns a correct critical value when applied to an object of class <code>QGLM</code>.</p></li>
+<li><p><code>"boot"</code> option in the <code>calibrate</code> argument of <code><a href="../reference/elt.html">elt()</a></code> works with an object of class <code>SD</code>.</p></li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.7.0" id="melt-170">melt 1.7.0<a class="anchor" aria-label="anchor" href="#melt-170"></a></h2><p class="text-muted">CRAN release: 2022-08-12</p>
@@ -122,7 +124,7 @@
 <div class="section level3">
 <h3 id="minor-improvements-1-6-0">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-6-0"></a></h3>
 <ul><li><p><code>cv</code> argument in <code><a href="../reference/confint.html">confint()</a></code> and <code><a href="../reference/confreg.html">confreg()</a></code> defaults to <code>NULL</code>. If non-<code>NULL</code>, <code>level</code> is ignored.</p></li>
-<li><p><code>probit</code> link produces more accurate result in <code><a href="../reference/el_glm.html">el_glm()</a></code></p></li>
+<li><p><code>probit</code> link produces a more accurate result in <code><a href="../reference/el_glm.html">el_glm()</a></code>.</p></li>
 <li><p><code><a href="../reference/print.html">print()</a></code> method for an <code>EL</code> object shows whether the data are weighted or not.</p></li>
 <li><p>All row or column names (if any) of input data are preserved in a fitted <code>EL</code> object.</p></li>
 </ul></div>
@@ -198,7 +200,7 @@
 <h2 class="pkg-version" data-toc-text="1.1.0" id="melt-110">melt 1.1.0<a class="anchor" aria-label="anchor" href="#melt-110"></a></h2><p class="text-muted">CRAN release: 2021-12-22</p>
 <div class="section level3">
 <h3 id="new-features-1-1-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
-<ul><li>New <code>el_aov()</code> performs one-way analysis of variance.</li></ul></div>
+<ul><li>New <code>el_aov()</code> performs a one-way analysis of variance.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.1" id="melt-101">melt 1.0.1<a class="anchor" aria-label="anchor" href="#melt-101"></a></h2><p class="text-muted">CRAN release: 2021-10-08</p>
