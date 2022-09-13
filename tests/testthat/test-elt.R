@@ -73,7 +73,6 @@ test_that("When elt == evaluation.", {
 test_that("`conv()` method and calibration.", {
   fit <- el_mean(precip, par = 60)
   expect_true(conv(elt(fit, rhs = 65, calibrate = "f")))
-  expect_s4_class(elt(fit, rhs = 65, calibrate = "boot"), "ELT")
 })
 
 test_that("Probabilities add up to 1.", {
@@ -138,4 +137,9 @@ test_that("`QGLM` class.", {
   expect_s4_class(out, "ELT")
   out2 <- elt(fit, lhs = c("mpg + cyl"))
   expect_s4_class(out2, "ELT")
+})
+
+test_that("Calibration optoins.", {
+  fit <- el_mean(precip, par = 60)
+  expect_s4_class(elt(fit, rhs = 65, calibrate = "boot"), "ELT")
 })

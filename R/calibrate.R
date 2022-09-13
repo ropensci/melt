@@ -7,7 +7,7 @@
 #' @param calibrate A single character.
 #' @param p A single integer.
 #' @param par A numeric vector.
-#' @param object An object thats inherit from class \linkS4class{EL}.
+#' @param object An object that inherits from class \linkS4class{EL}.
 #' @param control An object of class of \linkS4class{ControlEL}.
 #' @return A numeric vector of length two for the critical value and the
 #'   p-value.
@@ -23,8 +23,8 @@ calibrate <- function(calibrate, alpha, statistic, p, par, object, control) {
     "boot" = {
       compute_bootstrap_calibration(
         alpha, statistic, control@b, control@seed, control@nthreads,
-        getMethodEL(object), getData(object), par, control@maxit_l,
-        control@tol_l, control@th, getWeights(object)
+        getMethodEL(object), getData(object), par, coef(object),
+        control@maxit_l, control@tol_l, control@th, getWeights(object)
       )
     },
     "f" = {

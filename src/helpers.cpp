@@ -14,6 +14,7 @@ set_g_fn(const std::string method)
                             const Eigen::Ref<const Eigen::MatrixXd> &,
                             const Eigen::Ref<const Eigen::VectorXd> &)>>
       g_map{{{"mean", g_mean},
+             {"sd", g_sd},
              {"lm", g_lm},
              {"gaussian_identity", g_lm},
              {"gaussian_log", g_gauss_log},

@@ -47,8 +47,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // compute_bootstrap_calibration
-Rcpp::NumericVector compute_bootstrap_calibration(const double alpha, const double statistic, const int B, const int seed, const int nthreads, const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& w);
-RcppExport SEXP _melt_compute_bootstrap_calibration(SEXP alphaSEXP, SEXP statisticSEXP, SEXP BSEXP, SEXP seedSEXP, SEXP nthreadsSEXP, SEXP methodSEXP, SEXP xSEXP, SEXP parSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP wSEXP) {
+Rcpp::NumericVector compute_bootstrap_calibration(const double alpha, const double statistic, const int B, const int seed, const int nthreads, const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par, const Eigen::Map<Eigen::VectorXd>& est, const int maxit_l, const double tol_l, const Rcpp::Nullable<double> th, const Eigen::Map<Eigen::ArrayXd>& w);
+RcppExport SEXP _melt_compute_bootstrap_calibration(SEXP alphaSEXP, SEXP statisticSEXP, SEXP BSEXP, SEXP seedSEXP, SEXP nthreadsSEXP, SEXP methodSEXP, SEXP xSEXP, SEXP parSEXP, SEXP estSEXP, SEXP maxit_lSEXP, SEXP tol_lSEXP, SEXP thSEXP, SEXP wSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -60,11 +60,12 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par(parSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type est(estSEXP);
     Rcpp::traits::input_parameter< const int >::type maxit_l(maxit_lSEXP);
     Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
     Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
-    rcpp_result_gen = Rcpp::wrap(compute_bootstrap_calibration(alpha, statistic, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, w));
+    rcpp_result_gen = Rcpp::wrap(compute_bootstrap_calibration(alpha, statistic, B, seed, nthreads, method, x, par, est, maxit_l, tol_l, th, w));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -291,7 +292,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_melt_compute_EL", (DL_FUNC) &_melt_compute_EL, 7},
     {"_melt_compute_ELD", (DL_FUNC) &_melt_compute_ELD, 8},
-    {"_melt_compute_bootstrap_calibration", (DL_FUNC) &_melt_compute_bootstrap_calibration, 12},
+    {"_melt_compute_bootstrap_calibration", (DL_FUNC) &_melt_compute_bootstrap_calibration, 13},
     {"_melt_compute_confidence_intervals", (DL_FUNC) &_melt_compute_confidence_intervals, 13},
     {"_melt_compute_confidence_region", (DL_FUNC) &_melt_compute_confidence_region, 15},
     {"_melt_compute_generic_EL", (DL_FUNC) &_melt_compute_generic_EL, 5},

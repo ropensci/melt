@@ -96,7 +96,11 @@ setMethod("elt", "QGLM", function(object,
     stopifnot(
       "F calibration is applicable only to the mean." = (calibrate != "f")
     )
-    par <- c(h$r, object@dispersion)
+    if (calibrate == "boot") {
+      par <- c(h$r, compute_dispersion(object, h$r))
+    } else {
+      par <- c(h$r, object@dispersion)
+    }
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames

@@ -9,8 +9,8 @@ compute_ELD <- function(method, par0, x, maxit_l, tol_l, th, nthreads, wt) {
     .Call(`_melt_compute_ELD`, method, par0, x, maxit_l, tol_l, th, nthreads, wt)
 }
 
-compute_bootstrap_calibration <- function(alpha, statistic, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, w) {
-    .Call(`_melt_compute_bootstrap_calibration`, alpha, statistic, B, seed, nthreads, method, x, par, maxit_l, tol_l, th, w)
+compute_bootstrap_calibration <- function(alpha, statistic, B, seed, nthreads, method, x, par, est, maxit_l, tol_l, th, w) {
+    .Call(`_melt_compute_bootstrap_calibration`, alpha, statistic, B, seed, nthreads, method, x, par, est, maxit_l, tol_l, th, w)
 }
 
 compute_confidence_intervals <- function(method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {

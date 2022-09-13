@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "apply_null_transformation.h"
 #include "helpers.h"
 #include "EL.h"
 #include <RcppEigen.h>
@@ -20,24 +21,29 @@ Rcpp::NumericVector compute_bootstrap_calibration(
     const int nthreads,
     const std::string method,
     const Eigen::Map<Eigen::MatrixXd> &x,
-    const Eigen::Map<Eigen::VectorXd> &par, const int maxit_l,
-    const double tol_l, const Rcpp::Nullable<double> th,
+    const Eigen::Map<Eigen::VectorXd> &par,
+    const Eigen::Map<Eigen::VectorXd> &est,
+    const int maxit_l,
+    const double tol_l,
+    const Rcpp::Nullable<double> th,
     const Eigen::Map<Eigen::ArrayXd> &w)
 {
   // estimating function
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &)>
-      g_fn = set_g_fn(method);
+    g_fn = set_g_fn(method);
   // null transformation
-  const Eigen::MatrixXd g0 =
-      g_fn(x, par).rowwise() - g_fn(x, par).colwise().mean();
-  const int n = g0.rows();
-  const int p = g0.cols();
+  const std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd> &,
+      const Eigen::Ref<const Eigen::VectorXd> &,
+      const Eigen::Ref<const Eigen::VectorXd> &)>
+    x0_fn = transform_x_fn(method);
+  const Eigen::MatrixXd g0 = g_fn(x0_fn(x, par, est), par);
   // initialize seed
   dqrng::xoshiro256plus gen(seed);
   // discrete uniform distribution
-  boost::random::uniform_int_distribution<> u(0, n - 1);
+  boost::random::uniform_int_distribution<> u(0, g0.rows() - 1);
   // bootstrap statistics
   std::vector<double> boot_statistic(B);
   const double test_th = set_threshold(par.size(), th);
@@ -54,8 +60,8 @@ Rcpp::NumericVector compute_bootstrap_calibration(
     #endif
     for (int i = 0; i < B; ++i)
     {
-      Eigen::MatrixXd boot_g(n, p);
-      for (int j = 0; j < n; ++j)
+      Eigen::MatrixXd boot_g(g0.rows(), g0.cols());
+      for (int j = 0; j < g0.rows(); ++j)
       {
         boot_g.row(j) = g0.row(u(lgen));
       }

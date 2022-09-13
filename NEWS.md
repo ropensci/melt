@@ -1,6 +1,6 @@
 # melt 1.7.0.9600 (development version)
 ## NEW FEATURES
-* New accessor method `logProb()` extracts log-probabilities of empirical likelihood from a model.
+* New accessor method `logProb()` extracts a model's log probabilities of empirical likelihood.
 
 * `el_lm()` and `el_glm()` gain an argument `offset`.
 
@@ -8,7 +8,7 @@
 
 * `elt()` accepts a character vector for the argument `lhs`, allowing a symbolic description of a hypothesis.
 
-* `plot()` is applicable to an object that inherits from `EL` to plot empirical likelihood displacement values versus observation index.
+* `plot()` applies to an object that inherits from `EL` to plot empirical likelihood displacement values versus observation index.
 
 * New dataset `thiamethoxam` added.
 
@@ -17,12 +17,16 @@
 
 * `print()` shows the tested hypothesis when applied to an object of class `ELT`.
 
-* `print()` shows more information when applied to an object of class `ELMT`.
+* `print()` shows the estimates and marginal degrees of freedoms when applied to an object of class `ELMT`.
+
+* `"boot"` option in the `calibrate` argument of `elt()` yields a more reliable result when applied to an object that inherits from `LM`.
 
 * Internal routines for projection operation do not compute an explicit inverse (thanks to @awstringer1).
 
 ## BUG FIXES
 * `elmt()` returns a correct critical value when applied to an object of class `QGLM`.
+
+* `"boot"` option in the `calibrate` argument of `elt()` works with an object of class `SD`.
 
 
 # melt 1.7.0
@@ -74,7 +78,7 @@
 ## MINOR IMPROVEMENTS
 * `cv` argument in `confint()` and `confreg()` defaults to `NULL`. If non-`NULL`, `level` is ignored.
 
-* `probit` link produces more accurate result in `el_glm()`
+* `probit` link produces a more accurate result in `el_glm()`.
 
 * `print()` method for an `EL` object shows whether the data are weighted or not.
 
@@ -147,7 +151,7 @@
 
 # melt 1.1.0
 ## NEW FEATURES
-* New `el_aov()` performs one-way analysis of variance. 
+* New `el_aov()` performs a one-way analysis of variance. 
 
 
 # melt 1.0.1
