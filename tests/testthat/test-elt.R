@@ -141,7 +141,7 @@ test_that("`QGLM` class.", {
 
 test_that("Calibration optoins.", {
   fit <- el_mean(precip, par = 60)
-  fit2 <- el_glm(gear ~ mpg + disp,
+  fit2 <- el_glm(gear ~ 1,
     family = quasipoisson("log"), data = mtcars
   )
   fit3 <- el_glm(gear ~ mpg + disp,
