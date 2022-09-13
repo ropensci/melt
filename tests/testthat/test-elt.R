@@ -157,6 +157,7 @@ test_that("Calibration optoins.", {
   expect_s4_class(elt(fit, rhs = 65, calibrate = "boot"), "ELT")
   expect_s4_class(elt(fit2, rhs = coef(fit2), calibrate = "boot"), "ELT")
   expect_s4_class(elt(fit3, rhs = coef(fit3), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit4, rhs = coef(fit4), calibrate = "boot"), "ELT")
   expect_s4_class(elt(fit5, rhs = coef(fit5), calibrate = "boot"), "ELT")
   expect_s4_class(elt(fit6, rhs = coef(fit6), calibrate = "boot"), "ELT")
   expect_s4_class(elt(fit7, rhs = coef(fit7), calibrate = "boot"), "ELT")
