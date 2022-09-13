@@ -309,6 +309,7 @@ test_that("`el_glm()` (binomial - log).", {
     matrix(c(1, 5, 0), nrow = 1),
     matrix(c(0, 1, -1), nrow = 1)
   )
+  expect_s4_class(elt(fit, rhs = coef(fit), calibrate = "boot"), "ELT")
   expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
   expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
 })

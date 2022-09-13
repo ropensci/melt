@@ -141,5 +141,26 @@ test_that("`QGLM` class.", {
 
 test_that("Calibration optoins.", {
   fit <- el_mean(precip, par = 60)
+  fit2 <- el_glm(gear ~ mpg + disp,
+    family = quasipoisson("log"), data = mtcars
+  )
+  fit3 <- el_glm(gear ~ mpg + disp,
+    family = quasipoisson("identity"), data = mtcars, weights = wt
+  )
+  fit4 <- el_sd(women$height, mean = 65, sd = 5)
+  fit5 <- el_lm(fruit ~ trt, data = thiamethoxam)
+  fit6 <- el_glm(fruit ~ trt, family = gaussian("log"), data = thiamethoxam)
+  fit7 <- el_glm(fruit ~ trt, family = gaussian("inverse"), data = thiamethoxam)
+  fit8 <- el_glm(gear ~ mpg + disp, family = poisson("sqrt"), data = mtcars)
+  fit9 <- el_glm(wool ~ ., family = binomial("logit"), data = warpbreaks)
+  fit10 <- el_glm(wool ~ ., family = binomial("probit"), data = warpbreaks)
   expect_s4_class(elt(fit, rhs = 65, calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit2, rhs = coef(fit2), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit3, rhs = coef(fit3), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit5, rhs = coef(fit5), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit6, rhs = coef(fit6), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit7, rhs = coef(fit7), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit8, rhs = coef(fit8), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit9, rhs = coef(fit9), calibrate = "boot"), "ELT")
+  expect_s4_class(elt(fit10, rhs = coef(fit10), calibrate = "boot"), "ELT")
 })
