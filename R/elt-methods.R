@@ -80,7 +80,7 @@ setMethod("elt", "QGLM", function(object,
   )
   # `npar` includes the dispersion parameter
   onames <- names(logProb(object))
-  pnames <- names(getOptim(object)$par)
+  pnames <- names(getOptim(object)$par[-getNumPar(object)])
   h <- validate_hypothesis(rhs, lhs, getNumPar(object) - 1L, pnames)
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)

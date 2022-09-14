@@ -4,7 +4,14 @@ setMethod("elmt", "EL", function(object,
                                  lhs = NULL,
                                  alpha = 0.05,
                                  control = el_control()) {
-  p <- if (is(object, "QGLM")) getNumPar(object) - 1L else getNumPar(object)
+  # p <- if (is(object, "QGLM")) getNumPar(object) - 1L else getNumPar(object)
+  if (is(object, "QGLM")) {
+    p <- getNumPar(object) - 1L
+    pnames <- names(getOptim(object)$par[-getNumPar(object)])
+  } else {
+    p <- getNumPar(object)
+    pnames <- names(getOptim(object)$par)
+  }
   stopifnot(
     "`elmt()` is not applicable to to an empty model." = getDF(object) >= 1L,
     "`elmt()` is not applicable to a model with one parameter." = p != 1L,
@@ -12,7 +19,7 @@ setMethod("elmt", "EL", function(object,
       isFALSE(is.null(getData(object))),
     "Invalid `control` specified." = is(control, "ControlEL")
   )
-  h <- validate_hypotheses(rhs, lhs, p)
+  h <- validate_hypotheses(rhs, lhs, p, pnames)
   l <- if (is(object, "QGLM")) cbind(h$l, 0) else h$l
   qh <- head(h$q, n = length(h$q) - 1L) + 1L
   qt <- tail(h$q, n = length(h$q) - 1L)

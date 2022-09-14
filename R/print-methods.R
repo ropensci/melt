@@ -67,13 +67,17 @@ setMethod("print", "ELMT", function(x,
     P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
   )
   cat("\n")
-  cat(paste("Common critical value:", round(critVal(x), digits = 4L)), "\n\n")
+  cat(paste(
+    "Common critical value:", format.default(critVal(x), digits = digits)
+  ), "\n\n")
   invisible(x)
 })
 setMethod("show", "ELMT", function(object) print(object))
 
 #' @rdname print
-setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
+setMethod("print", "ELT", function(x,
+                                   digits = max(3L, getOption("digits") - 3L),
+                                   ...) {
   cat("\n\tEmpirical Likelihood Test\n\n")
   method <- switch(x@calibrate,
     "chisq" = "Chi-square",
@@ -81,7 +85,7 @@ setMethod("print", "ELT", function(x, digits = getOption("digits"), ...) {
     "f" = "F"
   )
   cat("Hypothesis:", describe_hypothesis(
-    x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))]
+    x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))], digits
   ),
   sep = "\n"
   )

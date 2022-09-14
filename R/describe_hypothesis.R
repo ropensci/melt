@@ -5,12 +5,15 @@
 #' @param rhs A numeric vector.
 #' @param lhs A numeric matrix.
 #' @param pnames A character vector.
+#' @param digits A single integer for the number of significant digits to be
+#'   passed to [format()].
 #' @return A character vector for symbolic description of a hypothesis.
 #' @noRd
-describe_hypothesis <- function(rhs, lhs, pnames) {
+describe_hypothesis <- function(rhs, lhs, pnames, digits) {
   if (is.null(pnames)) {
     pnames <- if (ncol(lhs) == 1L) "par" else paste0("par", seq_len(ncol(lhs)))
   }
+  r <- format.default(rhs, digits = digits)
   out <- vector("character", length = nrow(lhs))
   for (i in seq_len(nrow(lhs))) {
     # Indices of the nonzero elements
@@ -31,7 +34,7 @@ describe_hypothesis <- function(rhs, lhs, pnames) {
     # Replace any leading "- " with "-"
     h <- gsub("^\\-\\s", "-", h)
     # Append the corresponding element of `rhs`
-    h <- paste(h, "=", rhs[i])
+    h <- paste(h, "=", r[i])
     out[i] <- h
   }
   out

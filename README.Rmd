@@ -27,7 +27,7 @@ Empirical likelihood enables a nonparametric, likelihood-driven style of inferen
 Empirical likelihood-based tests are asymptotically pivotal and thus avoid explicit studentization, making it also challenging for the methods to be directly extended to other packages for parametric models. 
 The R package [melt](https://cran.r-project.org/package=melt) aims to bridge the gap and provide a unified framework for data analysis with empirical likelihood methods.
 A collection of functions are available to perform multiple empirical likelihood tests and construct confidence intervals for linear and generalized linear models in R.
-The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inference.
+The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences.
 The core computational routines are implemented with the [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) C++ library and [RcppEigen](https://cran.r-project.org/package=RcppEigen) interface, with OpenMP for parallel computation. 
 Details of the testing procedures are given in [Kim, MacEachern, and Peruggia (2021)](https://arxiv.org/abs/2112.09206). 
 This work was supported by the U.S. National Science Foundation under Grants No. [SES-1921523](https://nsf.gov/awardsearch/showAward?AWD_ID=1921523) and [DMS-2015552](https://nsf.gov/awardsearch/showAward?AWD_ID=2015552).

@@ -21,7 +21,7 @@
   ...
 )
 
-\S4method{print}{ELT}(x, digits = getOption("digits"), ...)
+\S4method{print}{ELT}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
 \S4method{print}{LM}(x, digits = max(3L, getOption("digits") - 3L), ...)
 

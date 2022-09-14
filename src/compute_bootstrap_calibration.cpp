@@ -1,6 +1,6 @@
-#include "utils.h"
 #include "apply_null_transformation.h"
 #include "helpers.h"
+#include "utils.h"
 #include "EL.h"
 #include <RcppEigen.h>
 #include <boost/random/uniform_int_distribution.hpp>
@@ -32,13 +32,13 @@ Rcpp::NumericVector compute_bootstrap_calibration(
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &)>
-    g_fn = set_g_fn(method);
+      g_fn = set_g_fn(method);
   // null transformation
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &)>
-    x0_fn = transform_x_fn(method);
+      x0_fn = transform_x_fn(method);
   const Eigen::MatrixXd g0 = g_fn(x0_fn(x, par, est), par);
   // initialize seed
   dqrng::xoshiro256plus gen(seed);
@@ -53,7 +53,7 @@ Rcpp::NumericVector compute_bootstrap_calibration(
   #endif
     // make thread local copy of gen
     dqrng::xoshiro256plus lgen(gen);
-  #ifdef _OPENMP
+    #ifdef _OPENMP
     // advance gen by 1 ... nthreads jumps
     lgen.jump(omp_get_thread_num() + 1);
     #pragma omp for
@@ -68,16 +68,18 @@ Rcpp::NumericVector compute_bootstrap_calibration(
       const EL el(boot_g, maxit_l, tol_l, test_th, w);
       boot_statistic[i] = 2.0 * el.nllr;
     }
-    #ifdef _OPENMP
+  #ifdef _OPENMP
   }
   #endif
   // p-value
-  const double pval = count_if(boot_statistic.begin(), boot_statistic.end(),
-                               [statistic](double x)
-                               {
-                                 return (x > statistic);
-                               }) /
-                      static_cast<double>(B);
+  boot_statistic.erase(
+      std::remove_if(std::begin(boot_statistic), std::end(boot_statistic),
+                     [](const double &x) { return std::isnan(x); }),
+      std::end(boot_statistic));
+  const double pval =
+      count_if(boot_statistic.begin(), boot_statistic.end(),
+               [statistic](const double &x) { return (x > statistic); }) /
+      static_cast<double>(boot_statistic.size());
   const Rcpp::NumericVector out =
       Rcpp::NumericVector::create(Rcpp::Named("cv") = compute_quantile(
                                       Rcpp::wrap(boot_statistic), 1 - alpha),

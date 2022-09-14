@@ -29,7 +29,7 @@ perform multiple empirical likelihood tests and construct confidence
 intervals for linear and generalized linear models in R. The package
 offers an easy-to-use interface and flexibility in specifying hypotheses
 and calibration methods, extending the framework to simultaneous
-inference. The core computational routines are implemented with the
+inferences. The core computational routines are implemented with the
 [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) C++
 library and [RcppEigen](https://cran.r-project.org/package=RcppEigen)
 interface, with OpenMP for parallel computation. Details of the testing

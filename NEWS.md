@@ -1,4 +1,4 @@
-# melt 1.7.0.9600 (development version)
+# melt 1.7.0.9700 (development version)
 ## NEW FEATURES
 * New accessor method `logProb()` extracts a model's log probabilities of empirical likelihood.
 
@@ -7,6 +7,8 @@
 * `el_glm()` accepts `quasipoisson` family with `"identity"` link function for the argument `family`.
 
 * `elt()` accepts a character vector for the argument `lhs`, allowing a symbolic description of a hypothesis.
+
+* `eltmt()` accepts a character vector as an element of the argument `lhs`, allowing a symbolic description of hypotheses.
 
 * `plot()` applies to an object that inherits from `EL` to plot empirical likelihood displacement values versus observation index.
 

@@ -602,9 +602,10 @@ validate_lhs.matrix <- function(lhs, p, pnames) {
 #' @param rhs A numeric vector (column matrix) or a list of numeric vectors.
 #' @param lhs A numeric matrix or a list of numeric matrices.
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A list.
 #' @noRd
-validate_hypotheses <- function(rhs, lhs, p) {
+validate_hypotheses <- function(rhs, lhs, p, pnames) {
   if (isTRUE(is.null(rhs) && is.null(lhs))) {
     stop("either `rhs` or `lhs` must be provided.")
   } else if (is.null(lhs)) {
@@ -616,13 +617,13 @@ validate_hypotheses <- function(rhs, lhs, p) {
     q <- attr(rhs, "q")
     m <- attr(rhs, "m")
   } else if (is.null(rhs)) {
-    lhs <- validate_lhses(lhs, p)
+    lhs <- validate_lhses(lhs, p, pnames)
     rhs <- rep(0, nrow(lhs))
     q <- attr(lhs, "q")
     m <- attr(lhs, "m")
   } else {
     rhs <- validate_rhses(rhs, p)
-    lhs <- validate_lhses(lhs, p)
+    lhs <- validate_lhses(lhs, p, pnames)
     q <- attr(lhs, "q")
     m <- attr(lhs, "m")
     stopifnot(
@@ -652,18 +653,25 @@ validate_rhses <- function(rhs, p) {
 #'
 #' Validate `rhs` in [elmt()].
 #'
-#' @param rhs A numeric vector.
+#' @param rhs A list of numeric vectors.
 #' @param p A single integer.
 #' @return A numeric vector.
 #' @noRd
-validate_rhses.numeric <- function(rhs, p) {
-  stopifnot(
-    "`rhs` must be a finite numeric vector." = all(is.finite(rhs))
-  )
+validate_rhses.list <- function(rhs, p) {
   m <- length(rhs)
-  attr(rhs, "q") <- c(0L, cumsum(rep(1L, m)))
-  attr(rhs, "m") <- m
-  rhs
+  stopifnot(
+    "`rhs` must specify multiple hypotheses." = m >= 2L,
+    "`rhs` must be a list of finite numeric vectors." =
+      all(vapply(rhs, is.vector, TRUE)),
+    "`rhs` must be a list of finite numeric vectors." =
+      all(vapply(rhs, \(x) {
+        is.numeric(x) && all(is.finite(x))
+      }, TRUE))
+  )
+  out <- do.call(c, rhs)
+  attr(out, "q") <- c(0L, cumsum(vapply(rhs, length, 1L)))
+  attr(out, "m") <- m
+  out
 }
 
 #' Validate `rhs`
@@ -690,25 +698,18 @@ validate_rhses.matrix <- function(rhs, p) {
 #'
 #' Validate `rhs` in [elmt()].
 #'
-#' @param rhs A list of numeric vectors.
+#' @param rhs A numeric vector.
 #' @param p A single integer.
 #' @return A numeric vector.
 #' @noRd
-validate_rhses.list <- function(rhs, p) {
-  m <- length(rhs)
+validate_rhses.numeric <- function(rhs, p) {
   stopifnot(
-    "`rhs` must specify multiple hypotheses." = m >= 2L,
-    "`rhs` must be a list of finite numeric vectors." =
-      all(vapply(rhs, is.vector, TRUE)),
-    "`rhs` must be a list of finite numeric vectors." =
-      all(vapply(rhs, \(x) {
-        is.numeric(x) && all(is.finite(x))
-      }, TRUE))
+    "`rhs` must be a finite numeric vector." = all(is.finite(rhs))
   )
-  out <- do.call(c, rhs)
-  attr(out, "q") <- c(0L, cumsum(vapply(rhs, length, 1L)))
-  attr(out, "m") <- m
-  out
+  m <- length(rhs)
+  attr(rhs, "q") <- c(0L, cumsum(rep(1L, m)))
+  attr(rhs, "m") <- m
+  rhs
 }
 
 #' Validate `lhs`
@@ -717,9 +718,10 @@ validate_rhses.list <- function(rhs, p) {
 #'
 #' @param lhs A numeric matrix or a list of numeric matrices.
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A numeric matrix.
 #' @noRd
-validate_lhses <- function(lhs, p) {
+validate_lhses <- function(lhs, p, pnames) {
   UseMethod("validate_lhses", lhs)
 }
 
@@ -729,15 +731,16 @@ validate_lhses <- function(lhs, p) {
 #'
 #' @param lhs A numeric matrix.
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A numeric matrix.
 #' @noRd
-validate_lhses.matrix <- function(lhs, p) {
+validate_lhses.matrix <- function(lhs, p, pnames) {
   m <- nrow(lhs)
   stopifnot(
     "`lhs` must specify multiple hypotheses." = m >= 2L,
     "`lhs` must be a finite numeric matrix." =
       isTRUE(is.numeric(lhs) && all(is.finite(lhs))),
-    "every row of `lhs` must be a nonzero vector." =
+    "Every row of `lhs` must be a nonzero vector." =
       all(apply(lhs, 1L, get_rank))
   )
   if (ncol(lhs) != p) {
@@ -754,30 +757,20 @@ validate_lhses.matrix <- function(lhs, p) {
 #'
 #' @param lhs A list of numeric matrices.
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A numeric matrix.
 #' @noRd
-validate_lhses.list <- function(lhs, p) {
+validate_lhses.list <- function(lhs, p, pnames) {
   m <- length(lhs)
   stopifnot(
     "`lhs` must specify multiple hypotheses." = m >= 2L,
-    "`lhs` must be a list of finite numeric matrices." =
-      all(vapply(lhs, is.matrix, TRUE)),
-    "`lhs` must be a list of finite numeric matrices." =
-      all(vapply(lhs, \(x) {
-        is.numeric(x) && all(is.finite(x))
-      }, TRUE)),
-    "every matrix in `lhs` must have full row rank." =
-      all(vapply(lhs, \(x) {
-        nrow(x) >= 1L && nrow(x) <= p && get_rank(x) == nrow(x)
-      }, TRUE))
+    "Invalid `lhs` specified." = all(vapply(lhs, \(x) {
+      isTRUE(is.matrix(x) || is.character(x) || is.numeric(x))
+    }, TRUE))
   )
-  if (any(vapply(lhs, \(x) {
-    ncol(x) != p
-  }, FALSE))) {
-    stop(gettextf("every matrix in `lhs` must have %d columns.", p,
-      domain = NA
-    ))
-  }
+  lhs <- lapply(lhs, \(x) {
+    validate_lhs(x, p, pnames)
+  })
   out <- do.call(rbind, lhs)
   attr(out, "q") <- c(0L, cumsum(vapply(lhs, nrow, 1L)))
   attr(out, "m") <- m
