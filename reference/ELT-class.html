@@ -96,8 +96,14 @@ ratio.</p></dd>
 log-likelihood ratio with an asymptotic chi-square distribution.</p></dd>
 
 
+<dt><code>df</code></dt>
+<dd><p>A single integer for the chi-square degrees of freedom of the
+statistic.</p></dd>
+
+
 <dt><code>pval</code></dt>
-<dd><p>A single numeric for the \(p\)-value of the statistic.</p></dd>
+<dd><p>A single numeric for the (calibrated) \(p\)-value of the
+statistic.</p></dd>
 
 
 <dt><code>cv</code></dt>
@@ -129,11 +135,11 @@ log-likelihood ratio with an asymptotic chi-square distribution.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      optim      logp      logl     loglr statistic      pval        cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      list   numeric   numeric   numeric   numeric   numeric   numeric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:        rhs       lhs     alpha calibrate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric    matrix   numeric character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      optim      logp      logl     loglr statistic        df      pval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      list   numeric   numeric   numeric   numeric   integer   numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:         cv       rhs       lhs     alpha calibrate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric   numeric    matrix   numeric character</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
