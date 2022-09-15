@@ -11,16 +11,6 @@ S4 class for empirical likelihood test.
 \section{Slots}{
 
 \describe{
-\item{\code{alpha}}{A single numeric for the significance level.}
-
-\item{\code{cv}}{A single numeric for the critical value.}
-
-\item{\code{rhs}}{A numeric vector for the right-hand side of the hypothesis.}
-
-\item{\code{lhs}}{A numeric matrix for the left-hand side of the hypothesis.}
-
-\item{\code{calibrate}}{A single character for the calibration method used.}
-
 \item{\code{optim}}{A list of the following optimization results:
 \itemize{
 \item \code{par} A numeric vector of the solution to the (constrained) optimization
@@ -43,6 +33,16 @@ ratio.}
 log-likelihood ratio with an asymptotic chi-square distribution.}
 
 \item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
+
+\item{\code{cv}}{A single numeric for the critical value.}
+
+\item{\code{rhs}}{A numeric vector for the right-hand side of the hypothesis.}
+
+\item{\code{lhs}}{A numeric matrix for the left-hand side of the hypothesis.}
+
+\item{\code{alpha}}{A single numeric for the significance level.}
+
+\item{\code{calibrate}}{A single character for the calibration method used.}
 }}
 
 \examples{

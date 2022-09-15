@@ -27,7 +27,7 @@ See ‘Details’.}
 
 \item{lhs}{A numeric matrix or a vector (treated as a row matrix) for the
 left-hand side of a hypothesis. Each row gives a linear combination of the
-parameters in \code{object}. The number of columns should be equal to the number
+parameters in \code{object}. The number of columns must be equal to the number
 of parameters. Or a character vector with a symbolic description of the
 hypothesis is allowed. Defaults to \code{NULL}. See ‘Details’.}
 
@@ -93,7 +93,9 @@ elt(fit2, lhs = contrast)
 
 ## A symbolic description of the same hypothesis
 elt(fit2, lhs = c(
-  "trtNaked - trtFungicide", "trtFungicide - trtLow", "trtLow - trtHigh"
+  "trtNaked - trtFungicide",
+  "trtFungicide - trtLow",
+  "trtLow - trtHigh"
 ))
 }
 \references{

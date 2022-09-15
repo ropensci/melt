@@ -19,7 +19,7 @@
 \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
 
 \item{parm}{A specification of which parameters are to be given a confidence
-region, either a vector of numbers or a vector of names. It should be a
+region, either a vector of numbers or a vector of names. It must be a
 vector of length two of the form \code{c(x, y)}. If missing, the first two
 parameter in \code{object} are considered.}
 

@@ -354,15 +354,38 @@ setClass("ControlEL",
 setClass("ELD", contains = "numeric")
 
 
+#' \linkS4class{ELMT} class
+#'
+#' S4 class for empirical likelihood multiple tests.
+#'
+#' @slot coefficients A list of numeric vectors of the estimates of the linear
+#'   hypotheses.
+#' @slot statistic A numeric vector of minus twice the (constrained) empirical
+#'   log-likelihood ratios with asymptotic chi-square distributions.
+#' @slot df An integer vector of the marginal degrees of freedom of the
+#'   statistic.
+#' @slot pval A numeric vector for the multiplicity adjusted \eqn{p}-values.
+#' @slot cv A single numeric for the multiplicity adjusted critical value.
+#' @slot rhs A numeric vector for the right-hand sides of the hypotheses.
+#' @slot lhs A numeric matrix for the left-hand side of the hypotheses.
+#' @slot alpha A single numeric for the overall significance level.
+#' @slot calibrate A single character for the calibration method used.
+#' @aliases ELMT
+#' @examples
+#' showClass("ELMT")
+setClass("ELMT",
+  slots = c(
+    coefficients = "list", statistic = "numeric", df = "integer",
+    pval = "numeric", cv = "numeric", rhs = "numeric", lhs = "matrix",
+    alpha = "numeric", calibrate = "character"
+  )
+)
+
+
 #' \linkS4class{ELT} class
 #'
 #' S4 class for empirical likelihood test.
 #'
-#' @slot alpha A single numeric for the significance level.
-#' @slot cv A single numeric for the critical value.
-#' @slot rhs A numeric vector for the right-hand side of the hypothesis.
-#' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
-#' @slot calibrate A single character for the calibration method used.
 #' @slot optim A list of the following optimization results:
 #'   * `par` A numeric vector of the solution to the (constrained) optimization
 #'   problem.
@@ -378,39 +401,19 @@ setClass("ELD", contains = "numeric")
 #' @slot statistic A single numeric of minus twice the (constrained) empirical
 #'   log-likelihood ratio with an asymptotic chi-square distribution.
 #' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot cv A single numeric for the critical value.
+#' @slot rhs A numeric vector for the right-hand side of the hypothesis.
+#' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
+#' @slot alpha A single numeric for the significance level.
+#' @slot calibrate A single character for the calibration method used.
 #' @aliases ELT
 #' @examples
 #' showClass("ELT")
 setClass("ELT",
   slots = c(
-    alpha = "numeric", cv = "numeric", rhs = "numeric", lhs = "matrix",
-    calibrate = "character", optim = "list", logp = "numeric", logl = "numeric",
-    loglr = "numeric", statistic = "numeric", pval = "numeric"
-  )
-)
-
-
-#' \linkS4class{ELMT} class
-#'
-#' S4 class for empirical likelihood multiple tests.
-#'
-#' @slot alpha A single numeric for the overall significance level.
-#' @slot coefficients A list of numeric vectors of the estimates of the linear
-#'   hypotheses.
-#' @slot statistic A numeric vector of minus twice the (constrained) empirical
-#'   log-likelihood ratios with asymptotic chi-square distributions.
-#' @slot df An integer vector of the marginal degrees of freedoms of the
-#'   statistic.
-#' @slot cv A single numeric for the multiplicity adjusted critical value.
-#' @slot pval A numeric vector for the multiplicity adjusted \eqn{p}-values.
-#' @slot calibrate A single character for the calibration method used.
-#' @aliases ELMT
-#' @examples
-#' showClass("ELMT")
-setClass("ELMT",
-  slots = c(
-    alpha = "numeric", coefficients = "list", statistic = "numeric",
-    df = "integer", cv = "numeric", pval = "numeric", calibrate = "character"
+    optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
+    statistic = "numeric", pval = "numeric", cv = "numeric", rhs = "numeric",
+    lhs = "matrix", alpha = "numeric", calibrate = "character"
   )
 )
 

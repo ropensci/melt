@@ -14,10 +14,11 @@
 \item{rhs}{A numeric vector (column matrix) or a list of numeric vectors for
 the right-hand sides of hypotheses. Defaults to \code{NULL}. See ‘Details’.}
 
-\item{lhs}{A numeric matrix or a list of numeric matrices for the left-hand
-sides of hypothesis. Each row of the matrices gives a linear combination of
-the parameters in \code{object}. The number of columns should be equal to the
-number of parameters. Defaults to \code{NULL}. See ‘Details’.}
+\item{lhs}{A list or a numeric matrix for the left-hand sides of hypotheses.
+For a list \code{lhs}, each element must be specified as a single instance of
+the \code{lhs} in \code{\link[=elt]{elt()}}. For a matrix \code{lhs}, each row gives a linear
+combination of the parameters in \code{object}. The number of columns must be
+equal to the number of parameters. Defaults to \code{NULL}. See ‘Details’.}
 
 \item{alpha}{A single numeric for the overall significance level. Defaults to
 \code{0.05}.}
@@ -51,29 +52,28 @@ simulation.
 }
 \examples{
 ## Bivariate mean (list `rhs` & no `lhs`)
+set.seed(143)
 data("women")
 fit <- el_mean(women, par = c(65, 135))
 rhs <- list(c(64, 133), c(66, 140))
-set.seed(143)
 elmt(fit, rhs = rhs)
 
-## Pairwise comparison (no `rhs` & matrix `lhs`)
+## Pairwise comparison (no `rhs` & list `lhs`)
 data("clothianidin")
 fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-lhs <- matrix(c(
-  1, -1, 0, 0,
-  0, 1, -1, 0,
-  0, 0, 1, -1
-), byrow = TRUE, nrow = 3)
-set.seed(629)
-elmt(fit2, lhs = lhs)
+lhs2 <- list(
+  "trtNaked - trtFungicide",
+  "trtFungicide - trtLow",
+  "trtLow - trtHigh"
+)
+elmt(fit2, lhs = lhs2)
 
 ## Arbitrary hypotheses (list `rhs` & list `lhs`)
 data("mtcars")
-fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
-lhs <- list(rbind(c(1, 4, 0)), rbind(c(0, 1, 0), c(0, 0, 1)))
-rhs <- list(0, c(-6, 1))
-elmt(fit, rhs = rhs, lhs = lhs)
+fit3 <- el_lm(mpg ~ wt + qsec, data = mtcars)
+lhs3 <- list(c(1, 4, 0), rbind(c(0, 1, 0), c(0, 0, 1)))
+rhs3 <- list(0, c(-6, 1))
+elmt(fit3, rhs = rhs3, lhs = lhs3)
 }
 \references{
 Kim E, MacEachern S, Peruggia M (2021).

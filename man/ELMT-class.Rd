@@ -11,20 +11,24 @@ S4 class for empirical likelihood multiple tests.
 \section{Slots}{
 
 \describe{
-\item{\code{alpha}}{A single numeric for the overall significance level.}
-
 \item{\code{coefficients}}{A list of numeric vectors of the estimates of the linear
 hypotheses.}
 
 \item{\code{statistic}}{A numeric vector of minus twice the (constrained) empirical
 log-likelihood ratios with asymptotic chi-square distributions.}
 
-\item{\code{df}}{An integer vector of the marginal degrees of freedoms of the
+\item{\code{df}}{An integer vector of the marginal degrees of freedom of the
 statistic.}
+
+\item{\code{pval}}{A numeric vector for the multiplicity adjusted \eqn{p}-values.}
 
 \item{\code{cv}}{A single numeric for the multiplicity adjusted critical value.}
 
-\item{\code{pval}}{A numeric vector for the multiplicity adjusted \eqn{p}-values.}
+\item{\code{rhs}}{A numeric vector for the right-hand sides of the hypotheses.}
+
+\item{\code{lhs}}{A numeric matrix for the left-hand side of the hypotheses.}
+
+\item{\code{alpha}}{A single numeric for the overall significance level.}
 
 \item{\code{calibrate}}{A single character for the calibration method used.}
 }}

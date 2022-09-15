@@ -662,14 +662,14 @@ validate_rhses.list <- function(rhs, p) {
   stopifnot(
     "`rhs` must specify multiple hypotheses." = m >= 2L,
     "`rhs` must be a list of finite numeric vectors." =
-      all(vapply(rhs, is.vector, TRUE)),
+      all(vapply(rhs, FUN = is.vector, FUN.VALUE = TRUE)),
     "`rhs` must be a list of finite numeric vectors." =
-      all(vapply(rhs, \(x) {
+      all(vapply(rhs, FUN = \(x) {
         is.numeric(x) && all(is.finite(x))
-      }, TRUE))
+      }, FUN.VALUE = TRUE))
   )
   out <- do.call(c, rhs)
-  attr(out, "q") <- c(0L, cumsum(vapply(rhs, length, 1L)))
+  attr(out, "q") <- c(0L, cumsum(vapply(rhs, FUN = length, FUN.VALUE = 1L)))
   attr(out, "m") <- m
   out
 }
@@ -764,15 +764,15 @@ validate_lhses.list <- function(lhs, p, pnames) {
   m <- length(lhs)
   stopifnot(
     "`lhs` must specify multiple hypotheses." = m >= 2L,
-    "Invalid `lhs` specified." = all(vapply(lhs, \(x) {
+    "Invalid `lhs` specified." = all(vapply(lhs, FUN = \(x) {
       isTRUE(is.matrix(x) || is.character(x) || is.numeric(x))
-    }, TRUE))
+    }, FUN.VALUE = TRUE))
   )
   lhs <- lapply(lhs, \(x) {
     validate_lhs(x, p, pnames)
   })
   out <- do.call(rbind, lhs)
-  attr(out, "q") <- c(0L, cumsum(vapply(lhs, nrow, 1L)))
+  attr(out, "q") <- c(0L, cumsum(vapply(lhs, FUN = nrow, FUN.VALUE = 1L)))
   attr(out, "m") <- m
   out
 }

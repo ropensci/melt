@@ -83,7 +83,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @param object An object that inherits from \linkS4class{EL}, including
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param parm A specification of which parameters are to be given a confidence
-#'   region, either a vector of numbers or a vector of names. It should be a
+#'   region, either a vector of numbers or a vector of names. It must be a
 #'   vector of length two of the form `c(x, y)`. If missing, the first two
 #'   parameter in `object` are considered.
 #' @param level A single numeric for the confidence level required. Defaults to
@@ -209,10 +209,11 @@ setGeneric("eld", function(object, control = el_control()) {
 #'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
 #' @param rhs A numeric vector (column matrix) or a list of numeric vectors for
 #'   the right-hand sides of hypotheses. Defaults to `NULL`. See ‘Details’.
-#' @param lhs A numeric matrix or a list of numeric matrices for the left-hand
-#'   sides of hypothesis. Each row of the matrices gives a linear combination of
-#'   the parameters in `object`. The number of columns should be equal to the
-#'   number of parameters. Defaults to `NULL`. See ‘Details’.
+#' @param lhs A list or a numeric matrix for the left-hand sides of hypotheses.
+#'   For a list `lhs`, each element must be specified as a single instance of
+#'   the `lhs` in [elt()]. For a matrix `lhs`, each row gives a linear
+#'   combination of the parameters in `object`. The number of columns must be
+#'   equal to the number of parameters. Defaults to `NULL`. See ‘Details’.
 #' @param alpha A single numeric for the overall significance level. Defaults to
 #'   `0.05`.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
@@ -241,29 +242,28 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @usage NULL
 #' @examples
 #' ## Bivariate mean (list `rhs` & no `lhs`)
+#' set.seed(143)
 #' data("women")
 #' fit <- el_mean(women, par = c(65, 135))
 #' rhs <- list(c(64, 133), c(66, 140))
-#' set.seed(143)
 #' elmt(fit, rhs = rhs)
 #'
-#' ## Pairwise comparison (no `rhs` & matrix `lhs`)
+#' ## Pairwise comparison (no `rhs` & list `lhs`)
 #' data("clothianidin")
 #' fit2 <- el_lm(clo ~ -1 + trt, clothianidin)
-#' lhs <- matrix(c(
-#'   1, -1, 0, 0,
-#'   0, 1, -1, 0,
-#'   0, 0, 1, -1
-#' ), byrow = TRUE, nrow = 3)
-#' set.seed(629)
-#' elmt(fit2, lhs = lhs)
+#' lhs2 <- list(
+#'   "trtNaked - trtFungicide",
+#'   "trtFungicide - trtLow",
+#'   "trtLow - trtHigh"
+#' )
+#' elmt(fit2, lhs = lhs2)
 #'
 #' ## Arbitrary hypotheses (list `rhs` & list `lhs`)
 #' data("mtcars")
-#' fit <- el_lm(mpg ~ wt + qsec, data = mtcars)
-#' lhs <- list(rbind(c(1, 4, 0)), rbind(c(0, 1, 0), c(0, 0, 1)))
-#' rhs <- list(0, c(-6, 1))
-#' elmt(fit, rhs = rhs, lhs = lhs)
+#' fit3 <- el_lm(mpg ~ wt + qsec, data = mtcars)
+#' lhs3 <- list(c(1, 4, 0), rbind(c(0, 1, 0), c(0, 0, 1)))
+#' rhs3 <- list(0, c(-6, 1))
+#' elmt(fit3, rhs = rhs3, lhs = lhs3)
 #' @exportMethod elmt
 setGeneric("elmt", function(object,
                             rhs = NULL,
@@ -285,7 +285,7 @@ setGeneric("elmt", function(object,
 #'   See ‘Details’.
 #' @param lhs A numeric matrix or a vector (treated as a row matrix) for the
 #'   left-hand side of a hypothesis. Each row gives a linear combination of the
-#'   parameters in `object`. The number of columns should be equal to the number
+#'   parameters in `object`. The number of columns must be equal to the number
 #'   of parameters. Or a character vector with a symbolic description of the
 #'   hypothesis is allowed. Defaults to `NULL`. See ‘Details’.
 #' @param alpha A single numeric for the significance level. Defaults to `0.05`.
@@ -348,7 +348,9 @@ setGeneric("elmt", function(object,
 #'
 #' ## A symbolic description of the same hypothesis
 #' elt(fit2, lhs = c(
-#'   "trtNaked - trtFungicide", "trtFungicide - trtLow", "trtLow - trtHigh"
+#'   "trtNaked - trtFungicide",
+#'   "trtFungicide - trtLow",
+#'   "trtLow - trtHigh"
 #' ))
 #' @exportMethod elt
 #' @srrstats {G5.1} `clothianidin` data set is exported.

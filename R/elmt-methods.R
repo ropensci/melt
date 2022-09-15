@@ -20,6 +20,7 @@ setMethod("elmt", "EL", function(object,
     "Invalid `control` specified." = is(control, "ControlEL")
   )
   h <- validate_hypotheses(rhs, lhs, p, pnames)
+  colnames(h$l) <- pnames
   l <- if (is(object, "QGLM")) cbind(h$l, 0) else h$l
   qh <- head(h$q, n = length(h$q) - 1L) + 1L
   qt <- tail(h$q, n = length(h$q) - 1L)
@@ -40,7 +41,8 @@ setMethod("elmt", "EL", function(object,
     maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("ELMT",
-    alpha = alpha, coefficients = coefficients, statistic = out$statistic,
-    df = diff(h$q), cv = out$cv, pval = out$pval, calibrate = "mvchisq"
+    coefficients = coefficients, statistic = out$statistic, df = diff(h$q),
+    pval = out$pval, cv = out$cv, rhs = h$r, lhs = h$l, alpha = alpha,
+    calibrate = "mvchisq"
   )
 })

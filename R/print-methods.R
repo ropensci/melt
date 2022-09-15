@@ -54,13 +54,17 @@ setMethod("print", "ELMT", function(x,
   cat("Overall significance level:", x@alpha, "\n\n")
   cat("Calibration:", method, "\n\n")
   cat("Hypotheses:\n")
-  out <- cbind(Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x))
-  rownames(out) <- seq_along(pVal(x))
-  ind <- 1L
   est <- coef(x)
-  if (isTRUE(all(vapply(est, length, FUN.VALUE = integer(1L)) == 1L))) {
-    out <- cbind(Estimate = unlist(est), out)
+  if (isTRUE(all(vapply(est, FUN = length, FUN.VALUE = integer(1L)) == 1L))) {
+    out <- cbind(
+      Estimate = unlist(est), Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x)
+    )
+    rownames(out) <- describe_hypothesis(x@rhs, x@lhs, colnames(x@lhs), digits)
     ind <- 2L
+  } else {
+    out <- cbind(Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x))
+    rownames(out) <- seq_along(pVal(x))
+    ind <- 1L
   }
   printCoefmat(out,
     digits = digits, signif.stars = signif.stars, tst.ind = ind,

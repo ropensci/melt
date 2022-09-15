@@ -19,7 +19,7 @@
 
 * `print()` shows the tested hypothesis when applied to an object of class `ELT`.
 
-* `print()` shows the estimates and marginal degrees of freedoms when applied to an object of class `ELMT`.
+* `print()` shows the tested hypotheses, the estimates, and marginal degrees of freedom when applied to an object of class `ELMT`. The description of the hypotheses and the estimates are printed only when the marginal degrees of freedom are all one.
 
 * `"boot"` option in the `calibrate` argument of `elt()` yields a more reliable result when applied to an object that inherits from `LM`.
 
