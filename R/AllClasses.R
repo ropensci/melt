@@ -400,7 +400,10 @@ setClass("ELMT",
 #'   ratio.
 #' @slot statistic A single numeric of minus twice the (constrained) empirical
 #'   log-likelihood ratio with an asymptotic chi-square distribution.
-#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot df A single integer for the chi-square degrees of freedom of the
+#'   statistic.
+#' @slot pval A single numeric for the (calibrated) \eqn{p}-value of the
+#'   statistic.
 #' @slot cv A single numeric for the critical value.
 #' @slot rhs A numeric vector for the right-hand side of the hypothesis.
 #' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
@@ -412,8 +415,8 @@ setClass("ELMT",
 setClass("ELT",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
-    statistic = "numeric", pval = "numeric", cv = "numeric", rhs = "numeric",
-    lhs = "matrix", alpha = "numeric", calibrate = "character"
+    statistic = "numeric", df = "integer", pval = "numeric", cv = "numeric",
+    rhs = "numeric", lhs = "matrix", alpha = "numeric", calibrate = "character"
   )
 )
 

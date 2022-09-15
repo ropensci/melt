@@ -32,7 +32,11 @@ ratio.}
 \item{\code{statistic}}{A single numeric of minus twice the (constrained) empirical
 log-likelihood ratio with an asymptotic chi-square distribution.}
 
-\item{\code{pval}}{A single numeric for the \eqn{p}-value of the statistic.}
+\item{\code{df}}{A single integer for the chi-square degrees of freedom of the
+statistic.}
+
+\item{\code{pval}}{A single numeric for the (calibrated) \eqn{p}-value of the
+statistic.}
 
 \item{\code{cv}}{A single numeric for the critical value.}
 

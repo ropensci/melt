@@ -38,9 +38,9 @@ setMethod("elt", "EL", function(object,
     )
     return(new("ELT",
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
-      loglr = out$loglr, statistic = out$statistic, pval = unname(cal["pval"]),
-      cv = unname(cal["cv"]), rhs = par, lhs = h$l, alpha = alpha,
-      calibrate = calibrate
+      loglr = out$loglr, statistic = out$statistic, df = length(par),
+      pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = par, lhs = h$l,
+      alpha = alpha, calibrate = calibrate
     ))
   }
   # Proceed with chi-square calibration for non-NULL `lhs`
@@ -56,11 +56,12 @@ setMethod("elt", "EL", function(object,
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- pnames
+  q <- nrow(h$l)
   new("ELT",
     optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
-    loglr = out$loglr, statistic = out$statistic,
-    pval = pchisq(out$statistic, df = nrow(h$l), lower.tail = FALSE),
-    cv = qchisq(1 - alpha, df = nrow(h$l)), rhs = h$r, lhs = h$l, alpha = alpha,
+    loglr = out$loglr, statistic = out$statistic, df = q,
+    pval = pchisq(out$statistic, df = q, lower.tail = FALSE),
+    cv = qchisq(1 - alpha, df = q), rhs = h$r, lhs = h$l, alpha = alpha,
     calibrate = calibrate
   )
 })
@@ -110,9 +111,9 @@ setMethod("elt", "QGLM", function(object,
     )
     return(new("ELT",
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
-      loglr = out$loglr, statistic = out$statistic, pval = unname(cal["pval"]),
-      cv = unname(cal["cv"]), rhs = h$r, lhs = h$l, alpha = alpha,
-      calibrate = calibrate
+      loglr = out$loglr, statistic = out$statistic, df = length(par),
+      pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = h$r, lhs = h$l,
+      alpha = alpha, calibrate = calibrate
     ))
   }
   stopifnot(
@@ -127,11 +128,12 @@ setMethod("elt", "QGLM", function(object,
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- pnames
+  q <- nrow(l)
   new("ELT",
     optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
-    loglr = out$loglr, statistic = out$statistic,
-    pval = pchisq(out$statistic, df = nrow(l), lower.tail = FALSE),
-    cv = qchisq(1 - alpha, df = nrow(l)), rhs = h$r, lhs = h$l, alpha = alpha,
+    loglr = out$loglr, statistic = out$statistic, df = q,
+    pval = pchisq(out$statistic, df = q, lower.tail = FALSE),
+    cv = qchisq(1 - alpha, df = q), rhs = h$r, lhs = h$l, alpha = alpha,
     calibrate = calibrate
   )
 })
@@ -174,9 +176,9 @@ setMethod("elt", "SD", function(object,
     cal <- calibrate(calibrate, alpha, out$statistic, 1L, par, object, control)
     return(new("ELT",
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
-      loglr = out$loglr, statistic = out$statistic, pval = unname(cal["pval"]),
-      cv = unname(cal["cv"]), rhs = h$r, lhs = h$l, alpha = alpha,
-      calibrate = calibrate
+      loglr = out$loglr, statistic = out$statistic, df = 1L,
+      pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = h$r, lhs = h$l,
+      alpha = alpha, calibrate = calibrate
     ))
   }
   stopifnot(
@@ -197,7 +199,7 @@ setMethod("elt", "SD", function(object,
   names(optim$par) <- pnames
   new("ELT",
     optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
-    loglr = out$loglr, statistic = out$statistic,
+    loglr = out$loglr, statistic = out$statistic, df = 1L,
     pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE),
     cv = qchisq(1 - alpha, df = 1L), rhs = h$r, lhs = h$l, alpha = alpha,
     calibrate = calibrate

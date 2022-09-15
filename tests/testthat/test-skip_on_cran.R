@@ -377,12 +377,12 @@ test_that("`el_glm()` (poisson - sqrt).", {
   df <- data.frame(y, x)
   fit <- el_glm(y ~ ., family = poisson("sqrt"), data = df)
   wfit <- el_glm(y ~ ., family = poisson("sqrt"), data = df, weights = w)
-  lhs <- list(
-    matrix(c(1, -5, 0, 0), nrow = 1),
-    matrix(c(0, 0, 1, -100), nrow = 1)
-  )
-  expect_s4_class(elmt(fit, lhs = lhs), "ELMT")
-  expect_s4_class(elmt(wfit, lhs = lhs), "ELMT")
+  lhs <- list(diag(4), c(0, 0, 1, -100))
+  out <- elmt(fit, lhs = lhs)
+  wout <- elmt(wfit, lhs = lhs)
+  expect_output(print(out))
+  expect_s4_class(out, "ELMT")
+  expect_s4_class(wout, "ELMT")
 })
 
 #' @srrstats {G5.9, G5.9b} Different random seeds do not produce significantly
