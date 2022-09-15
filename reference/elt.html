@@ -91,7 +91,7 @@ See ‘Details’.</p></dd>
 <dt>lhs</dt>
 <dd><p>A numeric matrix or a vector (treated as a row matrix) for the
 left-hand side of a hypothesis. Each row gives a linear combination of the
-parameters in <code>object</code>. The number of columns should be equal to the number
+parameters in <code>object</code>. The number of columns must be equal to the number
 of parameters. Or a character vector with a symbolic description of the
 hypothesis is allowed. Defaults to <code>NULL</code>. See ‘Details’.</p></dd>
 
@@ -205,7 +205,9 @@ parameter when <code>lhs</code> is <code>NULL</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## A symbolic description of the same hypothesis</span></span></span>
 <span class="r-in"><span><span class="fu">elt</span><span class="op">(</span><span class="va">fit2</span>, lhs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">"trtNaked - trtFungicide"</span>, <span class="st">"trtFungicide - trtLow"</span>, <span class="st">"trtLow - trtHigh"</span></span></span>
+<span class="r-in"><span>  <span class="st">"trtNaked - trtFungicide"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"trtFungicide - trtLow"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"trtLow - trtHigh"</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood Test</span>

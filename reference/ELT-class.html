@@ -67,27 +67,7 @@
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
 
-<dl><dt><code>alpha</code></dt>
-<dd><p>A single numeric for the significance level.</p></dd>
-
-
-<dt><code>cv</code></dt>
-<dd><p>A single numeric for the critical value.</p></dd>
-
-
-<dt><code>rhs</code></dt>
-<dd><p>A numeric vector for the right-hand side of the hypothesis.</p></dd>
-
-
-<dt><code>lhs</code></dt>
-<dd><p>A numeric matrix for the left-hand side of the hypothesis.</p></dd>
-
-
-<dt><code>calibrate</code></dt>
-<dd><p>A single character for the calibration method used.</p></dd>
-
-
-<dt><code>optim</code></dt>
+<dl><dt><code>optim</code></dt>
 <dd><p>A list of the following optimization results:</p><ul><li><p><code>par</code> A numeric vector of the solution to the (constrained) optimization
 problem.</p></li>
 <li><p><code>lambda</code> A numeric vector of the Lagrange multipliers of the dual
@@ -120,6 +100,26 @@ log-likelihood ratio with an asymptotic chi-square distribution.</p></dd>
 <dd><p>A single numeric for the \(p\)-value of the statistic.</p></dd>
 
 
+<dt><code>cv</code></dt>
+<dd><p>A single numeric for the critical value.</p></dd>
+
+
+<dt><code>rhs</code></dt>
+<dd><p>A numeric vector for the right-hand side of the hypothesis.</p></dd>
+
+
+<dt><code>lhs</code></dt>
+<dd><p>A numeric matrix for the left-hand side of the hypothesis.</p></dd>
+
+
+<dt><code>alpha</code></dt>
+<dd><p>A single numeric for the significance level.</p></dd>
+
+
+<dt><code>calibrate</code></dt>
+<dd><p>A single character for the calibration method used.</p></dd>
+
+
 </dl></div>
 
     <div class="section level2">
@@ -129,11 +129,11 @@ log-likelihood ratio with an asymptotic chi-square distribution.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      alpha        cv       rhs       lhs calibrate     optim      logp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric   numeric   numeric    matrix character      list   numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      optim      logp      logl     loglr statistic      pval        cv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      list   numeric   numeric   numeric   numeric   numeric   numeric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:       logl     loglr statistic      pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric   numeric   numeric   numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:        rhs       lhs     alpha calibrate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:   numeric    matrix   numeric character</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -67,11 +67,7 @@
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
 
-<dl><dt><code>alpha</code></dt>
-<dd><p>A single numeric for the overall significance level.</p></dd>
-
-
-<dt><code>coefficients</code></dt>
+<dl><dt><code>coefficients</code></dt>
 <dd><p>A list of numeric vectors of the estimates of the linear
 hypotheses.</p></dd>
 
@@ -82,16 +78,28 @@ log-likelihood ratios with asymptotic chi-square distributions.</p></dd>
 
 
 <dt><code>df</code></dt>
-<dd><p>An integer vector of the marginal degrees of freedoms of the
+<dd><p>An integer vector of the marginal degrees of freedom of the
 statistic.</p></dd>
+
+
+<dt><code>pval</code></dt>
+<dd><p>A numeric vector for the multiplicity adjusted \(p\)-values.</p></dd>
 
 
 <dt><code>cv</code></dt>
 <dd><p>A single numeric for the multiplicity adjusted critical value.</p></dd>
 
 
-<dt><code>pval</code></dt>
-<dd><p>A numeric vector for the multiplicity adjusted \(p\)-values.</p></dd>
+<dt><code>rhs</code></dt>
+<dd><p>A numeric vector for the right-hand sides of the hypotheses.</p></dd>
+
+
+<dt><code>lhs</code></dt>
+<dd><p>A numeric matrix for the left-hand side of the hypotheses.</p></dd>
+
+
+<dt><code>alpha</code></dt>
+<dd><p>A single numeric for the overall significance level.</p></dd>
 
 
 <dt><code>calibrate</code></dt>
@@ -107,11 +115,11 @@ statistic.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:         alpha coefficients    statistic           df           cv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric         list      numeric      integer      numeric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          pval    calibrate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric    character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:  coefficients    statistic           df         pval           cv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:         list      numeric      integer      numeric      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:           rhs          lhs        alpha    calibrate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric       matrix      numeric    character</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
