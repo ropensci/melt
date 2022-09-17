@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">melt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9700</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0.9800</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,11 +116,11 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;  n1e2    596.3    628.75    670.459    660.90    714.15    818.7   100</span></span>
-<span><span class="co">#&gt;  n1e3   1723.7   1886.50   2053.723   2031.85   2165.75   2581.7   100</span></span>
-<span><span class="co">#&gt;  n1e4  15443.7  16936.95  20191.473  20537.20  22622.95  26415.6   100</span></span>
-<span><span class="co">#&gt;  n1e5 298304.6 355390.20 411882.345 392499.50 467194.45 557422.4   100</span></span>
+<span><span class="co">#&gt;  expr      min       lq       mean    median       uq      max neval</span></span>
+<span><span class="co">#&gt;  n1e2    524.3    555.8    588.641    576.75    626.7    674.1   100</span></span>
+<span><span class="co">#&gt;  n1e3   1565.2   1705.2   1888.095   1865.20   1988.7   2395.9   100</span></span>
+<span><span class="co">#&gt;  n1e4  14354.4  15651.9  19060.261  19462.50  21583.8  24641.7   100</span></span>
+<span><span class="co">#&gt;  n1e5 248320.1 291630.5 339877.512 325951.95 387206.7 484899.2   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -150,12 +150,12 @@
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
-<span><span class="co">#&gt; Unit: milliseconds</span></span>
+<span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;    p5   1.0196   1.07985   1.137491   1.14425   1.18250   1.2631   100</span></span>
-<span><span class="co">#&gt;   p25   3.9536   4.01495   4.090923   4.07590   4.16825   4.4662   100</span></span>
-<span><span class="co">#&gt;  p100  31.1282  34.30695  36.214035  34.66180  37.81540  57.4112   100</span></span>
-<span><span class="co">#&gt;  p400 360.7975 393.00050 443.168944 425.34645 462.21820 653.1088   100</span></span>
+<span><span class="co">#&gt;    p5    866.0    918.75    965.966    962.05    998.20   1090.5   100</span></span>
+<span><span class="co">#&gt;   p25   3671.1   3746.45   3789.940   3782.05   3811.25   4212.1   100</span></span>
+<span><span class="co">#&gt;  p100  32193.7  36001.65  37953.474  36150.40  39793.50  61998.1   100</span></span>
+<span><span class="co">#&gt;  p400 388138.0 425321.65 479719.369 460649.35 498936.05 713170.8   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"> On average, evaluating empirical likelihood with a 100000×10 or 1000×400 matrix at a parameter value satisfying the convex hull constraint takes less than a second.</p>
 </div>
