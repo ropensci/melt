@@ -20,16 +20,17 @@ coverage](https://codecov.io/gh/markean/melt/branch/master/graph/badge.svg)](htt
 Empirical likelihood enables a nonparametric, likelihood-driven style of
 inference without relying on assumptions frequently made in parametric
 models. Empirical likelihood-based tests are asymptotically pivotal and
-thus avoid explicit studentization, making it also challenging for the
-methods to be directly extended to other packages for parametric models.
-The R package [melt](https://cran.r-project.org/package=melt) aims to
-bridge the gap and provide a unified framework for data analysis with
-empirical likelihood methods. A collection of functions are available to
-perform multiple empirical likelihood tests and construct confidence
-intervals for linear and generalized linear models in R. The package
-offers an easy-to-use interface and flexibility in specifying hypotheses
-and calibration methods, extending the framework to simultaneous
-inferences. The core computational routines are implemented with the
+thus avoid explicit studentization. For this reason it is challenging to
+incorporate empirical likelihood methods directly into other packages
+that perform inferences for parametric models. The R package
+[melt](https://cran.r-project.org/package=melt) aims to bridge the gap
+and provide a unified framework for data analysis with empirical
+likelihood methods. A collection of functions are available to perform
+multiple empirical likelihood tests and construct confidence intervals
+for linear and generalized linear models in R. The package offers an
+easy-to-use interface and flexibility in specifying hypotheses and
+calibration methods, extending the framework to simultaneous inferences.
+The core computational routines are implemented with the
 [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) C++
 library and [RcppEigen](https://cran.r-project.org/package=RcppEigen)
 interface, with OpenMP for parallel computation. Details of the testing
@@ -191,9 +192,9 @@ elt(fit2_lm, lhs = contrast)
 #> 
 #> Significance level: 0.05, Calibration: Chi-square 
 #> 
-#> Statistic: 26.59804, Critical value: 7.814728 
+#> Statistic: 26.6, Critical value: 7.815 
 #> 
-#> p-value: 7.147731e-06
+#> p-value: 7.148e-06
 
 
 ## Multiple testing
@@ -211,10 +212,10 @@ elmt(fit_glm, lhs = contrast2)
 #> Calibration: Multivariate chi-square 
 #> 
 #> Hypotheses:
-#>   Estimate Chisq Df p.adj
-#> 1  0.06370 0.471  1 0.849
-#> 2 -0.04124 0.078  1 0.987
-#> 3  0.14281 1.276  1 0.558
+#>               Estimate Chisq Df p.adj
+#> trtSpray = 0   0.06370 0.471  1 0.849
+#> trtFurrow = 0 -0.04124 0.078  1 0.987
+#> trtSeed = 0    0.14281 1.276  1 0.558
 #> 
-#> Common critical value: 5.6125
+#> Common critical value: 5.612
 ```

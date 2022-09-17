@@ -1,7 +1,7 @@
 Type: Package
 Package: melt
 Title: Multiple Empirical Likelihood Tests
-Version: 1.7.0.9700
+Version: 1.7.0.9800
 Authors@R: c(
     person("Eunseop", "Kim", , "kim.7302@osu.edu", role = c("aut", "cre")),
     person("Steven", "MacEachern", role = c("ctb", "ths")),
@@ -10,12 +10,15 @@ Authors@R: c(
     person("Alex", "Stringer", role = "rev")
   )
 Description: Performs multiple empirical likelihood tests for linear and
-    generalized linear models. The core computational routines are
-    implemented using the 'Eigen' C++ library and 'RcppEigen' interface,
-    with OpenMP for parallel computation. Details of the testing
-    procedures are given in Kim, MacEachern, and Peruggia (2021)
-    <arxiv:2112.09206>. This work was supported by the U.S. National
-    Science Foundation under Grants No. SES-1921523 and DMS-2015552.
+    generalized linear models. The package offers an easy-to-use interface
+    and flexibility in specifying hypotheses and calibration methods,
+    extending the framework to simultaneous inferences. The core
+    computational routines are implemented using the 'Eigen' C++ library
+    and 'RcppEigen' interface, with OpenMP for parallel computation.
+    Details of the testing procedures are given in Kim, MacEachern, and
+    Peruggia (2021) <arxiv:2112.09206>. This work was supported by the
+    U.S. National Science Foundation under Grants No.  SES-1921523 and
+    DMS-2015552.
 License: GPL (>= 2)
 URL: https://github.com/markean/melt, https://markean.github.io/melt/
 BugReports: https://github.com/markean/melt/issues
