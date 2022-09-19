@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# melt - Multiple Empirical Likelihood Tests
+# melt - Multiple Empirical Likelihood Tests <a href="https://markean.github.io/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -65,7 +65,7 @@ analysis tasks:
 - `el_lm()` fits a linear model with empirical likelihood.
 - `el_glm()` fits a generalized linear model with empirical likelihood.
 - `confint()` computes confidence intervals for model parameters.
-- `confreg()` computes a confidence region for model parameters.
+- `confreg()` computes confidence region for model parameters.
 - `elt()` tests a linear hypothesis.
 - `elmt()` performs multiple testing simultaneously.
 
