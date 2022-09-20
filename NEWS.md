@@ -1,4 +1,4 @@
-# melt 1.7.0.9900 (development version)
+# melt 1.8.0
 ## NEW FEATURES
 * New accessor method `logProb()` extracts a model's log probabilities of empirical likelihood.
 
