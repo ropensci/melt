@@ -20,7 +20,7 @@ Description: Performs multiple empirical likelihood tests for linear and
     U.S. National Science Foundation under Grants No.  SES-1921523 and
     DMS-2015552.
 License: GPL (>= 2)
-URL: https://docs.ropensci.org/melt, https://github.com/ropensci/melt
+URL: https://docs.ropensci.org/melt/, https://github.com/ropensci/melt
 BugReports: https://github.com/ropensci/melt/issues
 Depends: 
     R (>= 4.1.0)
