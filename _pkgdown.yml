@@ -1,19 +1,5 @@
 url: https://docs.ropensci.org/melt
 
-navbar:
-  left:
-    - text: "Reference"
-      href: reference/index.html
-    - text: "Articles"
-      href: articles/index.html
-      menu:
-      - text: Model fitting
-        href: articles/model.html
-      - text: Peformance
-        href: articles/performance.html
-    - text: "News"
-      href: news/index.html
-
 reference:
   - title: Functions (Constructors)
     contents:
