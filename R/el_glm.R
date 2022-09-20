@@ -86,7 +86,7 @@
 #'
 #'   The available families and link functions are as follows:
 #'   * `gaussian`: `"identity"`, `"log"`, and `"inverse"`.
-#'   * `bimomial`: `"logit"`, `"probit"`, and `"log"`.
+#'   * `binomial`: `"logit"`, `"probit"`, and `"log"`.
 #'   * `poisson`: `"log"`, `"identity"`, and `"sqrt"`.
 #'   * `quasipoisson`: `"log"` and `"identity"`.
 #' @return An object of class of \linkS4class{GLM}.

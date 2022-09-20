@@ -52,6 +52,7 @@ test_that("When elt == evaluation.", {
   x <- sleep$extra
   fit <- el_mean(x, par = 1.2)
   fit2 <- elt(fit, lhs = c("par"), rhs = 1.2)
+  expect_equal(getDF(fit2), 1L)
   expect_output(print(fit2))
   expect_equal(getOptim(fit)$lambda, getOptim(fit2)$lambda)
   wfit <- el_mean(x, par = 1.2, weights = as.numeric(sleep$group))

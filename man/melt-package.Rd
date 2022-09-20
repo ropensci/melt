@@ -18,7 +18,7 @@ Kim E, MacEachern S, Peruggia M (2021).
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://docs.ropensci.org/melt}
+  \item \url{https://docs.ropensci.org/melt/}
   \item \url{https://github.com/ropensci/melt}
   \item Report bugs at \url{https://github.com/ropensci/melt/issues}
 }
