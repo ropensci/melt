@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# melt - Multiple Empirical Likelihood Tests <a href="https://markean.github.io/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# melt - Multiple Empirical Likelihood Tests <a href="https://docs.ropensci.org/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -10,9 +10,10 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/ropensci/melt/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/ropensci/melt/actions/workflows/check-standard.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/markean/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/markean/melt?branch=master)
+coverage](https://codecov.io/gh/ropensci/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/melt?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
+[![runiverse](https://ropensci.r-universe.dev/badges/melt)](https://ropensci.r-universe.dev/ui#package:melt)
 [![ropensci
 review](https://badges.ropensci.org/550_status.svg)](https://github.com/ropensci/software-review/issues/550)
 <!-- badges: end -->
@@ -52,11 +53,14 @@ install.packages("melt")
 ```
 
 You can install the latest development version from
-[Github](https://github.com/ropensci/melt).
+[Github](https://github.com/ropensci/melt) or
+[R-universe](https://ropensci.r-universe.dev/ui#package:melt).
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("markean/melt")
+devtools::install_github("ropensci/melt")
+
+install.packages("melt", repos = "https://ropensci.r-universe.dev")
 ```
 
 ## Main functions

@@ -1,7 +1,7 @@
 Type: Package
 Package: melt
 Title: Multiple Empirical Likelihood Tests
-Version: 1.7.0.9800
+Version: 1.7.0.9900
 Authors@R: c(
     person("Eunseop", "Kim", , "kim.7302@osu.edu", role = c("aut", "cre")),
     person("Steven", "MacEachern", role = c("ctb", "ths")),
@@ -20,8 +20,8 @@ Description: Performs multiple empirical likelihood tests for linear and
     U.S. National Science Foundation under Grants No.  SES-1921523 and
     DMS-2015552.
 License: GPL (>= 2)
-URL: https://github.com/markean/melt, https://markean.github.io/melt/
-BugReports: https://github.com/markean/melt/issues
+URL: https://docs.ropensci.org/melt, https://github.com/ropensci/melt
+BugReports: https://github.com/ropensci/melt/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
