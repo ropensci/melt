@@ -8,11 +8,13 @@
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
-[![R-CMD-check](https://github.com/markean/melt/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/markean/melt/actions/workflows/check-standard.yaml)
+[![R-CMD-check](https://github.com/ropensci/melt/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/ropensci/melt/actions/workflows/check-standard.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/markean/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/markean/melt?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
+[![ropensci
+review](https://badges.ropensci.org/550_status.svg)](https://github.com/ropensci/software-review/issues/550)
 <!-- badges: end -->
 
 ## Overview
@@ -50,7 +52,7 @@ install.packages("melt")
 ```
 
 You can install the latest development version from
-[Github](https://github.com/markean/melt).
+[Github](https://github.com/ropensci/melt).
 
 ``` r
 # install.packages("devtools")
@@ -219,3 +221,9 @@ elmt(fit_glm, lhs = contrast2)
 #> 
 #> Common critical value: 5.612
 ```
+
+------------------------------------------------------------------------
+
+Please note that this package is released with a [Contributor Code of
+Conduct](https://ropensci.org/code-of-conduct/). By contributing to this
+project, you agree to abide by its terms.
