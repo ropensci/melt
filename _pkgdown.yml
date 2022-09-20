@@ -1,6 +1,4 @@
 url: https://docs.ropensci.org/melt
-figures:
-  dpi: 300
 
 navbar:
   left:
@@ -66,3 +64,6 @@ reference:
     contents:
     - el_eval
     - el_pairwise
+
+figures:
+  dpi: 300
