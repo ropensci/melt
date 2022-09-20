@@ -6,7 +6,7 @@
 \alias{ELD}
 \title{\linkS4class{ELD} class}
 \description{
-S4 class for empirical likelihood displacement. It inherits from \code{"numeric"}.
+S4 class for empirical likelihood displacement. It inherits from `"numeric"`.
 }
 \examples{
 showClass("ELD")

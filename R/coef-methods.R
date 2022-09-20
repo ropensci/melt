@@ -1,6 +1,5 @@
 #' @describeIn coef Extracts the numeric vector of the maximum empirical
 #'   likelihood estimates.
-#' @srrstats {RE4.2} `coef()` method is exported.
 setMethod("coef", "EL", function(object, ...) {
   object@coefficients
 })

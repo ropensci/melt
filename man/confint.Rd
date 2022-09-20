@@ -8,29 +8,28 @@
 \S4method{confint}{EL}(object, parm, level = 0.95, cv = NULL, control = el_control())
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{parm}{A specification of which parameters are to be given confidence
 intervals, either a vector of numbers or a vector of names. If missing, all
 parameters are considered.}
 
 \item{level}{A single numeric for the confidence level required. Defaults to
-\code{0.95}.}
+`0.95`.}
 
 \item{cv}{A single numeric for the critical value for calibration of
-empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
-\code{qchisq(level, 1L)}. If non-\code{NULL}, \code{level} is ignored.}
+empirical likelihood ratio statistic. Defaults to `NULL` and set to
+`qchisq(level, 1L)`. If non-`NULL`, `level` is ignored.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+[el_control()].}
 }
 \value{
 A matrix with columns giving lower and upper confidence limits for
-each parameter. In contrast to other methods that rely on studentization,
-the lower and upper limits obtained from empirical likelihood do not
-correspond to the \code{(1 - level) / 2} and \code{1 - (1 - level) / 2} in \%,
-respectively.
+ each parameter. In contrast to other methods that rely on studentization,
+ the lower and upper limits obtained from empirical likelihood do not
+ correspond to the `(1 - level) / 2` and `1 - (1 - level) / 2` in %,
+ respectively.
 }
 \description{
 Computes confidence intervals for one or more parameters in a model.
@@ -42,10 +41,10 @@ confint(fit, parm = c(2, 3))
 }
 \references{
 Owen A (1990).
-“Empirical Likelihood Ratio Confidence Regions.”
-\emph{The Annals of Statistics}, 18(1), 90--120.
-\doi{10.1214/aos/1176347494}.
+  “Empirical Likelihood Ratio Confidence Regions.”
+  \emph{The Annals of Statistics}, 18(1), 90--120.
+  \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\code{\link[=confreg]{confreg()}}, \code{\link[=elt]{elt()}}, \code{\link[=el_control]{el_control()}}
+[confreg()], [elt()], [el_control()]
 }

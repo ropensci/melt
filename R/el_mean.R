@@ -46,14 +46,6 @@
 #' w <- rep(c(1, 2), each = nrow(faithful) / 2)
 #' el_mean(faithful, par = c(3.5, 70), weights = w)
 #' @export
-#' @srrstats {G2.0, G2.0a} Assertions on lengths of inputs are clarified
-#'   throughout the package documentation.
-#' @srrstats {G2.16} All functions in the package strictly prohibit undefined
-#'   values. They will trigger error messages in all cases.
-#' @srrstats {G2.7} `el_mean()` accepts a numeric matrix (or an object that can
-#'   be coerced to a numeric matrix by `as.matrix()`) for the argument `x`. This
-#'   includes a data frame with only numeric variables. Unit tests use a data
-#'   frame for the argument `x`. See `tests/testthat/test-confint.R`.
 el_mean <- function(x,
                     par,
                     weights = NULL,

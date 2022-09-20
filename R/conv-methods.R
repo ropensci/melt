@@ -6,7 +6,6 @@ setMethod("conv", "CEL", function(object, ...) {
 
 #' @describeIn conv Extracts the convergence status of the model with respect to
 #'   the Lagrange multiplier.
-#' @srrstats {RE4.7} `conv()` method extracts information on convergence status.
 setMethod("conv", "EL", function(object, ...) {
   getOptim(object)$convergence
 })

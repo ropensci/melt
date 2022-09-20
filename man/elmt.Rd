@@ -8,23 +8,22 @@
 \S4method{elmt}{EL}(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = el_control())
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{rhs}{A numeric vector (column matrix) or a list of numeric vectors for
-the right-hand sides of hypotheses. Defaults to \code{NULL}. See ‘Details’.}
+the right-hand sides of hypotheses. Defaults to `NULL`. See ‘Details’.}
 
 \item{lhs}{A list or a numeric matrix for the left-hand sides of hypotheses.
-For a list \code{lhs}, each element must be specified as a single instance of
-the \code{lhs} in \code{\link[=elt]{elt()}}. For a matrix \code{lhs}, each row gives a linear
-combination of the parameters in \code{object}. The number of columns must be
-equal to the number of parameters. Defaults to \code{NULL}. See ‘Details’.}
+For a list `lhs`, each element must be specified as a single instance of
+the `lhs` in [elt()]. For a matrix `lhs`, each row gives a linear
+combination of the parameters in `object`. The number of columns must be
+equal to the number of parameters. Defaults to `NULL`. See ‘Details’.}
 
 \item{alpha}{A single numeric for the overall significance level. Defaults to
-\code{0.05}.}
+`0.05`.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+[el_control()].}
 }
 \value{
 An object of class of \linkS4class{ELMT}.
@@ -33,22 +32,22 @@ An object of class of \linkS4class{ELMT}.
 Tests multiple linear hypotheses simultaneously.
 }
 \details{
-\code{\link[=elmt]{elmt()}} tests multiple hypotheses simultaneously. Each hypothesis
-corresponds to the constrained empirical likelihood ratio described in
-\linkS4class{CEL}. \code{rhs} and \code{lhs} cannot be both \code{NULL}. The right-hand
-side and left-hand side of each hypothesis must be specified as described
-in \code{\link[=elt]{elt()}}.
+[elmt()] tests multiple hypotheses simultaneously. Each hypothesis
+  corresponds to the constrained empirical likelihood ratio described in
+  \linkS4class{CEL}. `rhs` and `lhs` cannot be both `NULL`. The right-hand
+  side and left-hand side of each hypothesis must be specified as described
+  in [elt()].
 
-For specifying linear contrasts more conveniently, \code{rhs} and \code{lhs} also
-take a numeric vector and a numeric matrix, respectively. Each element of
-\code{rhs} and each row of \code{lhs} correspond to a contrast (hypothesis).
+  For specifying linear contrasts more conveniently, `rhs` and `lhs` also
+  take a numeric vector and a numeric matrix, respectively. Each element of
+  `rhs` and each row of `lhs` correspond to a contrast (hypothesis).
 
-The vector of empirical likelihood ratio statistics asymptotically follows
-a multivariate chi-square distribution under the complete null hypothesis.
-The multiple testing procedure asymptotically controls the family-wise
-error rate at the level \code{alpha}. Based on the distribution of the maximum
-of the test statistics, the adjusted p-values are estimated by Monte Carlo
-simulation.
+  The vector of empirical likelihood ratio statistics asymptotically follows
+  a multivariate chi-square distribution under the complete null hypothesis.
+  The multiple testing procedure asymptotically controls the family-wise
+  error rate at the level `alpha`. Based on the distribution of the maximum
+  of the test statistics, the adjusted p-values are estimated by Monte Carlo
+  simulation.
 }
 \examples{
 ## Bivariate mean (list `rhs` & no `lhs`)
@@ -77,9 +76,9 @@ elmt(fit3, rhs = rhs3, lhs = lhs3)
 }
 \references{
 Kim E, MacEachern S, Peruggia M (2021).
-“Empirical Likelihood for the Analysis of Experimental Designs.”
-arxiv:2112.09206. URL \url{https://arxiv.org/abs/2112.09206}.
+  “Empirical Likelihood for the Analysis of Experimental Designs.”
+  arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
 }
 \seealso{
-\linkS4class{ELMT}, \code{\link[=elt]{elt()}}, \code{\link[=el_control]{el_control()}}
+\linkS4class{ELMT}, [elt()], [el_control()]
 }

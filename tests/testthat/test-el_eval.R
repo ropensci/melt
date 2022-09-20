@@ -40,7 +40,6 @@ test_that("Conversion between `logl` and `loglr`.", {
   )
 })
 
-#' @srrstats {G5.3} `el_eval()` returns `logp` that has no missing values.
 test_that("No missing values are returned.", {
   x <- women$height
   n <- length(x)

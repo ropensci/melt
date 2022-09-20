@@ -106,39 +106,6 @@
 #' )
 #' summary(fit)
 #' @export
-#' @srrstats {G2.14, G2.14a, RE2.1, RE2.2} Missing values are handled by the
-#'   `na.action` argument via `na.action()`. `Inf` values are not allowed and
-#'   produce an error.Partially missing values (missing response or missing
-#'   predictors) are allowed unless a singular fit is encountered. Although
-#'   singular fits can produce estimates and fitted values, there is no
-#'   practical advantage of using the package for singular fits since further
-#'   inference based on empirical likelihood is unavailable. Note that at least
-#'   for the linear models the maximum empirical likelihood estimates (and thus
-#'   the fitted values as well) are identical to the estimates returned by
-#'   `glm.fit()`.
-#' @srrstats {G5.8, G5.8d} Data with more fields than observations produces an
-#'   error.
-#' @srrstats {G2.11, G2.12} Given the `formula` and `data` input,
-#'   `stats::model.frame()` (which calls `as.data.frame()`) checks whether the
-#'   `data` input is valid or not. If not, an error is triggered. The
-#'   requirement is documented and tested.
-#' @srrstats {RE1.0, RE1.1} Formula interface is used to the `formula` argument,
-#'   and how it is converted to a matrix input is documented as well.
-#' @srrstats {RE1.2} The expected format for the argument `data` is documented.
-#' @srrstats {RE1.3, RE1.3a} The transformation only applies to the `data`
-#'   argument. The only attributes that are passed to the output are the row and
-#'   column names, and these are preserved.
-#' @srrstats {RE2.0} Documented the use of `model.frame` and `model.matrix`.
-#'   Users should be well aware of the basic transformations done by `glm()`.
-#' @srrstats {RE2.1} Missing values are handled by the `na.action` argument.
-#'   `Inf` values are not allowed and produce an error.
-#' @srrstats {RE2.4, RE2.4a, RE2.4b} Perfect collinearity is handled by
-#'   `model.frame()`. Especially, perfect collinearity among predictor variables
-#'   produces an error in `glm.fit()` since `singular.ok` is set to `FALSE`.
-#'   This is because the underlying asymptotic empirical likelihood theory
-#'   requires a full-rank covariance structure in order for a limiting argument
-#'   to work. See `EL-class` documentation.
-#' @srrstats {RE4.0} `el_glm()` returns an object of class `GLM`.
 el_glm <- function(formula,
                    family = gaussian,
                    data,

@@ -65,16 +65,6 @@
 #'   \doi{10.1214/aos/1176325370}.
 #' @examples
 #' showClass("EL")
-#' @srrstats {G1.0} References are included throughout the package
-#'   documentation.
-#' @srrstats {G1.4} `roxygen2` is used to document all functions.
-#' @srrstats {G1.3} Statistical terminology is unambiguously defined throughout
-#'   the package documentation.
-#' @srrstats {RE1.4} Some of the core distributional assumptions are documented.
-#'   We note that these are not exhaustive and added the phrase "Under some
-#'   regularity conditions" instead. For more details, interested users are
-#'   expected to resort to published references. Additionally, violation of the
-#'   convex hull constraint is tested in `test/testthat/test-el_mean.R`.
 setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
@@ -150,11 +140,6 @@ setClass("EL",
 #'   \doi{10.2307/3315441}.
 #' @examples
 #' showClass("CEL")
-#' @srrstats {G1.1} The package attempts the first implementation of the nested
-#'   bilevel optimization approach within R to compute constrained empirical
-#'   likelihood. The inner layer Newton-Raphson method for empirical likelihood
-#'   is written in C++, enabling faster computation than other routines written
-#'   in R.
 setClass("CEL", contains = "EL")
 
 

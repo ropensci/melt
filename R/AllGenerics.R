@@ -22,8 +22,7 @@ setGeneric("chisq", function(object, ...) standardGeneric("chisq"))
 #'
 #' Extracts maximum empirical likelihood estimates from a model.
 #'
-#' @param object An object that inherits from \linkS4class{EL} (including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}) or
+#' @param object An object that inherits from \linkS4class{EL} or
 #'   \linkS4class{ELMT}.
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [coef()] depends on the class of
@@ -42,8 +41,7 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'
 #' Computes confidence intervals for one or more parameters in a model.
 #'
-#' @param object An object that inherits from \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL}.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
@@ -80,8 +78,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' Computes boundary points of a two-dimensional confidence region for model
 #'   parameters.
 #'
-#' @param object An object that inherits from \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL}.
 #' @param parm A specification of which parameters are to be given a confidence
 #'   region, either a vector of numbers or a vector of names. It must be a
 #'   vector of length two of the form `c(x, y)`. If missing, the first two
@@ -123,9 +120,8 @@ setGeneric("confreg", function(object,
 #'
 #' Extracts convergence status from a model.
 #'
-#' @param object An object that inherits from \linkS4class{EL} (including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}) or
-#'   \linkS4class{ELT}.
+#' @param object An object that inherits from \linkS4class{EL},
+#'   \linkS4class{SummaryLM}, or \linkS4class{ELT}.
 #' @param ... Further arguments passed to methods.
 #' @return A single logical.
 #' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{SummaryLM}
@@ -164,8 +160,7 @@ setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
 #' Computes empirical likelihood displacement for model diagnostics and outlier
 #'   detection.
 #'
-#' @param object An object that inherits from \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL}.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
 #' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
@@ -205,8 +200,7 @@ setGeneric("eld", function(object, control = el_control()) {
 #'
 #' Tests multiple linear hypotheses simultaneously.
 #'
-#' @param object An object that inherits from \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL}.
 #' @param rhs A numeric vector (column matrix) or a list of numeric vectors for
 #'   the right-hand sides of hypotheses. Defaults to `NULL`. See ‘Details’.
 #' @param lhs A list or a numeric matrix for the left-hand sides of hypotheses.
@@ -278,8 +272,7 @@ setGeneric("elmt", function(object,
 #'
 #' Tests a linear hypothesis.
 #'
-#' @param object An object that inherits from \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL}.
 #' @param rhs A numeric vector or a column matrix for the right-hand side of
 #'   hypothesis, with as many entries as the rows in `lhs`. Defaults to `NULL`.
 #'   See ‘Details’.
@@ -353,7 +346,6 @@ setGeneric("elmt", function(object,
 #'   "trtLow - trtHigh"
 #' ))
 #' @exportMethod elt
-#' @srrstats {G5.1} `clothianidin` data set is exported.
 setGeneric("elt", function(object,
                            rhs = NULL,
                            lhs = NULL,
@@ -369,8 +361,7 @@ setGeneric("elt", function(object,
 #' Extracts degrees of freedom from a model.
 #'
 #' @param object An object that inherits from \linkS4class{EL},
-#'   \linkS4class{ELT}, \linkS4class{ELMT}, \linkS4class{logLikEL}, or
-#'   \linkS4class{SummaryLM}.
+#'   \linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.
 #' @return An integer vector.
 #' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
 #'   \linkS4class{SummaryLM}
@@ -524,7 +515,8 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 #'
 #' Provides plot methods for objects.
 #'
-#' @param x An object to be plotted.
+#' @param x An object that inherits from \linkS4class{EL}, \linkS4class{ELD}, or
+#'   \linkS4class{ConfregEL}.
 #' @param y Not used.
 #' @param ... Further graphical parameters (see [`par`]).
 #' @return No return value, called for side effects.
@@ -554,7 +546,8 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #'
 #' Provides print methods for objects.
 #'
-#' @param x An object to be printed.
+#' @param x An object that inherits from \linkS4class{EL},
+#'   \linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.
 #' @param digits A single integer for the number of significant digits to be
 #'   passed to [format()].
 #' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
@@ -616,7 +609,7 @@ setGeneric("sigTests", function(object, ...) standardGeneric("sigTests"))
 #'
 #' Provides summary methods for objects.
 #'
-#' @param object An object to be summarized.
+#' @param object An object that inherits from \linkS4class{LM}.
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [summary()] depends on the class of
 #'   its argument.
@@ -635,8 +628,7 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 #' Extracts weights from model objects. The weights are re-scaled to up to the
 #'   total number of observations in the fitting procedure.
 #'
-#' @param object An object that inherits from \linkS4class{EL}, including
-#'   \linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.
+#' @param object An object that inherits from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
 #' @return A numeric vector of the re-scaled weights.
 #' @references Glenn N, Zhao Y (2007).

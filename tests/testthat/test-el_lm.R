@@ -109,7 +109,6 @@ test_that("`conv()`, `formula()`, and `nobs()` methods.", {
   expect_identical(nobs(fit), nrow(mtcars))
 })
 
-#' @srrstats {RE7.0, RE7.0a} Exact relationship between predictors causes erros.
 test_that("Exact relationship between predictors.", {
   x <- mtcars$disp
   x2 <- x
@@ -120,8 +119,6 @@ test_that("Exact relationship between predictors.", {
   expect_error(el_lm(y ~ x + x2, data = df, weights = w))
 })
 
-#' @srrstats {RE7.2, RE7.3} All row or column names (if any) are preserved in
-#'   the fitted objects and can be retrieved by accessor methods.
 test_that("All row and column names are preserved.", {
   wfit <- el_lm(mpg ~ -1 + disp + hp, data = mtcars, weights = qsec)
   row_names <- rownames(mtcars)

@@ -23,8 +23,8 @@
 \item{...}{Further arguments passed to methods.}
 }
 \value{
-The form of the value returned by \code{\link[=chisq]{chisq()}} depends on the class of
-its argument.
+The form of the value returned by [chisq()] depends on the class of
+  its argument.
 }
 \description{
 Extracts chi-square statistic from a model.
@@ -48,5 +48,5 @@ chisq(fit)
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
-\linkS4class{SummaryLM}, \code{\link[=pVal]{pVal()}}
+  \linkS4class{SummaryLM}, [pVal()]
 }

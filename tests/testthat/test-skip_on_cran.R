@@ -229,28 +229,6 @@ test_that("Parallel computation yields the same results (poisson - sqrt).", {
   expect_equal(sigTests(wfit), sigTests(wfit2))
 })
 
-#' @srrstats {G5.4, G5.4a, G5.5} We perform correctness tests with two different
-#'   data sets; one is the `women` data set from the `datasets` package and the
-#'   other is simulated. `set.seed()` is used for the simulated data.
-#'   Specifically, we consider the correctness of `elt()`, one of the main
-#'   functions in the package. This function performs a constrained optimization
-#'   of empirical likelihood. Since this is the first implementation of using
-#'   projected gradient descent to the nested optimization of empirical
-#'   likelihood, we consider a very simple problem with only two parameters.
-#'   The hypothesis states that the second parameter in the model is some fixed
-#'   number (150 for the `women` and 0 for the simulated data set). Then the
-#'   optimization problem reduces to finding an optimal value for the first
-#'   parameter, and this can be done using `optim()` function in the `stats`
-#'   package. We test whether the `eld()` and the `optim()` produces the same
-#'   results in terms of the solution and the convergence status. The tolerance
-#'   for comparing floating point numbers is set to `1e-07`, which we used
-#'   throughout all unit tests in the package. The threshold value `th` for
-#'   empirical likelihood calculation is set to a large number `1e+10`. This
-#'   prevents the optimization routine from exiting early when large empirical
-#'   likelihood value is encountered. Note that it serves as a safeguard and
-#'   does not affect the correctness of the test. No further manual
-#'   specification of the control parameters are made in `el_control()` or
-#'   `optim()`.
 test_that("Correctness tests.", {
   skip_on_cran()
   fit <- el_mean(women, par = colMeans(women))
@@ -276,10 +254,6 @@ test_that("Correctness tests.", {
   expect_equal(getOptim(out3)$par[1], out4$par, tolerance = 1e-07)
 })
 
-#' @srrstats {RE7.1, RE7.1a} We first simulate a design matrix with fixed
-#'   coefficients. Then two response vectors `y1` and `y2` are generated, where
-#'   `y1` has no noise while some noise is added to `y2`. Fitting a model using
-#'   `el_lm()` is faster with `y1` than with `y2`.
 test_that("Exact relationships between predictor and response.", {
   skip_on_cran()
   set.seed(311116)
@@ -385,8 +359,6 @@ test_that("`el_glm()` (poisson - sqrt).", {
   expect_s4_class(wout, "ELMT")
 })
 
-#' @srrstats {G5.9, G5.9b} Different random seeds do not produce significantly
-#'   different critical values.
 test_that("Noise susceptibility tests.", {
   skip_on_cran()
   fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
@@ -425,10 +397,6 @@ test_that(
   }
 )
 
-#' @srrstats {G5.6, G5.6a, G5.6b} `el_lm()` returns the expected coefficients
-#'   (`rep(1, p)`) for a simulated data set generated from a linear model. The
-#'   parameters used are `n = 1e+05`, `p = 3`, and `tolerance = 1e-02`, with
-#'   three different seeds.
 test_that("Parameter recovery tests.", {
   skip_on_cran()
   set.seed(5524325)

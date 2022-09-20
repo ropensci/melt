@@ -21,58 +21,58 @@ el_control(
 }
 \arguments{
 \item{maxit}{A single integer for the maximum number of iterations for
-constrained minimization of empirical likelihood. Defaults to \code{200}.}
+constrained minimization of empirical likelihood. Defaults to `200`.}
 
 \item{maxit_l}{A single integer for the maximum number of iterations for
-evaluation of empirical likelihood. Defaults to \code{25}.}
+evaluation of empirical likelihood. Defaults to `25`.}
 
 \item{tol}{A single numeric for the convergence tolerance for the constrained
-minimization. Defaults to \code{1e-06}.}
+minimization. Defaults to `1e-06`.}
 
 \item{tol_l}{A single numeric for the relative convergence tolerance for the
-evaluation. Defaults to \code{1e-06}.}
+evaluation. Defaults to `1e-06`.}
 
 \item{step}{A single numeric for the step size for projected gradient descent
-method. Defaults to \code{NULL} and set to the reciprocal of sample size.}
+method. Defaults to `NULL` and set to the reciprocal of sample size.}
 
 \item{th}{A single numeric for the threshold for the negative empirical
 log-likelihood ratio. The iteration stops if the value exceeds the
-threshold. Defaults to \code{NULL} and sets the threshold to \code{200 * d}, where
-\code{d} corresponds to the degrees of freedom of the limiting chi-squared
+threshold. Defaults to `NULL` and sets the threshold to `200 * d`, where
+`d` corresponds to the degrees of freedom of the limiting chi-squared
 distribution of the statistic.}
 
-\item{verbose}{A single logical. If \code{TRUE}, a message on the convergence
+\item{verbose}{A single logical. If `TRUE`, a message on the convergence
 status is printed when fitting objects that inherit from class
 \linkS4class{EL}.
-Defaults to \code{FALSE}.}
+Defaults to `FALSE`.}
 
-\item{keep_data}{A single logical. If \code{TRUE}, the data used for fitting
+\item{keep_data}{A single logical. If `TRUE`, the data used for fitting
 objects that inherit from class \linkS4class{EL} are stored for later use
-with other methods. Defaults to \code{TRUE}.}
+with other methods. Defaults to `TRUE`.}
 
 \item{nthreads}{A single integer for the number of threads for parallel
 computation via OpenMP (if available). Defaults to half the available
 threads. For better performance, it is generally recommended in most
 platforms to limit the number of threads to the number of physical cores.
 Note that it applies to the following functions that involve multiple
-evaluations or optimizations: \code{\link[=confint]{confint()}}, \code{\link[=confreg]{confreg()}}, \code{\link[=el_lm]{el_lm()}},
-\code{\link[=el_glm]{el_glm()}}, \code{\link[=eld]{eld()}}, and \code{\link[=elt]{elt()}}.}
+evaluations or optimizations: [confint()], [confreg()], [el_lm()],
+[el_glm()], [eld()], and [elt()].}
 
 \item{seed}{A single integer for the seed for random number generation. It
-only applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to a
+only applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to a
 random integer generated from 1 to the maximum integer supported by \R on
-the machine, which is determined by \code{\link[=set.seed]{set.seed()}}. Only one seed is
-needed even when multiple threads are used with \code{nthreads}. Each thread is
+the machine, which is determined by [set.seed()]. Only one seed is
+needed even when multiple threads are used with `nthreads`. Each thread is
 given a separate seed to produce a non-overlapping but reproducible
 sequence of random numbers. The Xoshiro256+ pseudo-random number generator
 is used internally to work with OpenMP.}
 
 \item{b}{A single integer for the number of bootstrap replicates. It only
-applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to
-\code{10000}.}
+applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to
+`10000`.}
 
 \item{m}{A single integer for the number of Monte Carlo samples. It only
-applies to \code{\link[=elmt]{elmt()}}. Defaults to \code{1e+06}.}
+applies to [elmt()]. Defaults to `1e+06`.}
 }
 \value{
 An object of class of \linkS4class{ControlEL}.
@@ -84,5 +84,5 @@ Specifies computational details of (constrained) empirical likelihood.
 optcfg <- el_control(maxit = 300, step = 0.01, th = 200, nthreads = 1)
 }
 \seealso{
-\code{\link[=el_eval]{el_eval()}}, \code{\link[=elt]{elt()}}
+[el_eval()], [elt()]
 }

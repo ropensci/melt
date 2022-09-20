@@ -49,14 +49,6 @@
 #' @examples
 #' optcfg <- el_control(maxit = 300, step = 0.01, th = 200, nthreads = 1)
 #' @export
-#' @srrstats {G2.1, G2.1a} Assertions on types of inputs are clarified
-#'   throughout the package documentation.
-#' @srrstats {RE3.2, RE3.3} Convergence thresholds can be set by the `tol` and
-#'   `tol_l` arguments with the default values documented.
-#' @srrstats {RE3.0, RE3.1} The `verbose` argument controls whether to print a
-#'   message on the convergence status when fitting objects. The status is
-#'   printed regardless of the `verbose` when `print()` method is used to the
-#'   fitted objects. Alternatively, `conv()` method also extracts the status.
 el_control <- function(maxit = 200L,
                        maxit_l = 25L,
                        tol = 1e-06,

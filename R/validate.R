@@ -4,11 +4,6 @@
 #'
 #' @param maxit A single integer.
 #' @return A single integer.
-#' @srrstats {G1.4, G1.4a} All internal functions are documented in `roxygen2`
-#'   format with `@noRd` tags.
-#' @srrstats {G2.4, G2.4a} `as.integer()` is used to the argument `maxit`.
-#' @srrstats {G2.2} Multivariate input for the argument `maxit` produces an
-#'   error.
 #' @noRd
 validate_maxit <- function(maxit) {
   maxit <- tryCatch(as.integer(maxit), warning = \(x) NA, error = \(x) NA)
@@ -41,7 +36,6 @@ validate_maxit_l <- function(maxit_l) {
 #'
 #' @param tol A single numeric.
 #' @return A single numeric.
-#' @srrstats {G2.4, G2.4b} `as.numeric()` is used to the argument `tol`.
 #' @noRd
 validate_tol <- function(tol) {
   tol <- tryCatch(as.numeric(tol), warning = \(x) NA, error = \(x) NA)
@@ -110,8 +104,6 @@ validate_th <- function(th) {
 #'
 #' @param verbose A single logical.
 #' @return A single logical.
-#' @srrstats {G3.0} The package does not compare floating point numbers for
-#'   equality. All numeric equality comparisons are made between integers.
 #' @noRd
 validate_verbose <- function(verbose) {
   stopifnot(
@@ -143,9 +135,6 @@ validate_keep_data <- function(keep_data) {
 #' @param nthreads A single integer.
 #' @param max_threads A single integer.
 #' @return A single integer.
-#' @srrstats {G2.6} `nthreads` is coerced to a single integer. Then, it is set
-#'   to an appropriate value `max_threads` set by `get_max_threads()` in
-#'   `el_control()`.
 #' @noRd
 validate_nthreads <- function(nthreads, max_threads) {
   nthreads <- tryCatch(as.integer(nthreads), warning = \(x) NA, error = \(x) NA)
@@ -213,11 +202,6 @@ validate_m <- function(m) {
 #' @param x A numeric matrix, or an object that can be coerced to a numeric
 #'   matrix.
 #' @return A numeric matrix.
-#' @srrstats {G2.13} `validate_x()` produces an error if there are any missing
-#'   data in the argument `x` prior to passing `x` to `el_mean()`.
-#' @srrstats {G5.8, G5.8a} Zero-length data produces an error.
-#' @srrstats {G5.8, G5.8c} Data with all-`NA` produces an error.
-#' @srrstats {G5.8, G5.8b} Only numeric data is allowed for the argument `x`.
 #' @noRd
 validate_x <- function(x) {
   x <- as.matrix(x, rownames.force = TRUE)
@@ -328,10 +312,6 @@ validate_alpha <- function(alpha) {
 #'
 #' @param calibrate A single character.
 #' @return A single character.
-#' @srrstats {G2.3, G2.3a} `pmatch()` is used to the argument `calibrate`
-#'   instead of `match.arg()` in order to generate a custom error message that
-#'   is consistent in style with other messages.
-#' @srrstats {G2.3, G2.3b} `tolower()` is used to the argument `calibrate`.
 #' @noRd
 validate_calibrate <- function(calibrate) {
   stopifnot(
@@ -468,7 +448,6 @@ validate_rhs.numeric <- function(rhs, p) {
 #' @param rhs A numeric matrix.
 #' @param p A single integer.
 #' @return A numeric vector.
-#' @srrstats {G2.9} Matrix `rhs` is converted a vector with a message.
 #' @noRd
 validate_rhs.matrix <- function(rhs, p) {
   stopifnot(
@@ -491,8 +470,6 @@ validate_rhs.matrix <- function(rhs, p) {
 #' @param p A single integer.
 #' @param pnames An optional character vector.
 #' @return A numeric matrix.
-#' @srrstats {G2.8} A method dispatch is used to the argument `lhs`.
-#'   `validate_lhs()` returns a numeric matrix.
 #' @noRd
 validate_lhs <- function(lhs, p, pnames) {
   UseMethod("validate_lhs", lhs)

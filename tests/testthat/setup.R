@@ -1,4 +1,3 @@
-#' @srrstats {G5.0} Tests use data sets provided by the `datasets` package.
 data("airquality")
 data("attenu")
 data("clothianidin")

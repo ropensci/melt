@@ -1,7 +1,5 @@
 #' @describeIn plot Plots a two-dimensional confidence region for model
 #'   parameters.
-#' @srrstats {RE6.0} `plot` method is available for an `ConfregEL` object that
-#'   is returned by the `confreg()` method.
 setMethod("plot", "ConfregEL", function(x, ...) {
   args <- list(...)
   if (!exists("main", args)) {
@@ -38,8 +36,6 @@ setMethod("plot", "EL", function(x, ...) {
 
 #' @describeIn plot Plots empirical likelihood displacement values versus
 #'   observation index.
-#' @srrstats {RE6.0} `plot` method is available for an `ELD` object that is
-#'   returned by the `eld()` method.
 setMethod("plot", "ELD", function(x, ...) {
   args <- list(...)
   if (!exists("xlab", args)) {

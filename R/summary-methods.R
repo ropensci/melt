@@ -1,7 +1,5 @@
 #' @describeIn summary Summarizes the results of the overall model test and the
 #'   significance tests for coefficients.
-#' @srrstats {RE4.18} `summary` method is applicable to an object of class `LM`,
-#'   `GLM`, or `QGLM` by `el_lm()` and `el_glm()`.
 setMethod("summary", "LM", function(object, ...) {
   z <- object
   p <- getNumPar(z)

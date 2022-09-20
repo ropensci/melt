@@ -8,8 +8,7 @@
 \S4method{weights}{EL}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -18,7 +17,7 @@ A numeric vector of the re-scaled weights.
 }
 \description{
 Extracts weights from model objects. The weights are re-scaled to up to the
-total number of observations in the fitting procedure.
+  total number of observations in the fitting procedure.
 }
 \examples{
 data("airquality")
@@ -29,9 +28,9 @@ weights(fit)
 }
 \references{
 Glenn N, Zhao Y (2007).
-“Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-\emph{Computational Statistics & Data Analysis}, 51(10), 5130--5141.
-\doi{10.1016/j.csda.2006.07.032}.
+  “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
+  \emph{Computational Statistics & Data Analysis}, 51(10), 5130--5141.
+  \doi{10.1016/j.csda.2006.07.032}.
 }
 \seealso{
 \linkS4class{EL}

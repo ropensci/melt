@@ -53,13 +53,15 @@ install.packages("melt")
 ```
 
 You can install the latest development version from
-[Github](https://github.com/ropensci/melt) or
+[GitHub](https://github.com/ropensci/melt) or
 [R-universe](https://ropensci.r-universe.dev/ui#package:melt).
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("ropensci/melt")
+```
 
+``` r
 install.packages("melt", repos = "https://ropensci.r-universe.dev")
 ```
 

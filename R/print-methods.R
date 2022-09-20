@@ -1,7 +1,4 @@
 #' @rdname print
-#' @srrstats {RE4.17} `print` method is applicable to an `EL` object. The test
-#'   results are displayed, including the type of test, test statistic,
-#'   coefficients, p-value, and convergence status.
 setMethod("print", "EL", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {
@@ -248,11 +245,6 @@ setMethod(
 setMethod("show", "SummaryGLM", function(object) print(object))
 
 #' @rdname print
-#' @srrstats {G2.14b} `naprint()` is used to print messages if there are missing
-#'   values.
-#' @srrstats {RE4.17} `print` method is applicable to a `SummaryLM` object
-#'   returned by `summary` method. The function call and test results are
-#'   displayed, including the coefficients and p-values.
 setMethod(
   "print", "SummaryLM", function(x,
                                  digits = max(3L, getOption("digits") - 3L),

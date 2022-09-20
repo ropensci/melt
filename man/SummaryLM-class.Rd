@@ -27,12 +27,12 @@ not.}
 \item{\code{intercept}}{A single logical for whether the given model has an intercept
 term or not.}
 
-\item{\code{na.action}}{Information returned by \code{\link{model.frame}} on the special
-handling of \code{NA}s.}
+\item{\code{na.action}}{Information returned by [`model.frame`] on the special
+handling of `NA`s.}
 
 \item{\code{call}}{A matched call.}
 
-\item{\code{terms}}{A \code{\link{terms}} object used.}
+\item{\code{terms}}{A [`terms`] object used.}
 
 \item{\code{aliased}}{A named logical vector showing if the original coefficients are
 aliased.}

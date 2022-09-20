@@ -14,11 +14,12 @@
 \S4method{plot}{ELD}(x, y, ...)
 }
 \arguments{
-\item{x}{An object to be plotted.}
+\item{x}{An object that inherits from \linkS4class{EL}, \linkS4class{ELD}, or
+\linkS4class{ConfregEL}.}
 
 \item{y}{Not used.}
 
-\item{...}{Further graphical parameters (see \code{\link{par}}).}
+\item{...}{Further graphical parameters (see [`par`]).}
 }
 \value{
 No return value, called for side effects.
@@ -32,7 +33,7 @@ Provides plot methods for objects.
 parameters.
 
 \item \code{plot(EL)}: Plots empirical likelihood displacement values versus
-observation index. \code{eld()} is called implicitly.
+observation index. `eld()` is called implicitly.
 
 \item \code{plot(ELD)}: Plots empirical likelihood displacement values versus
 observation index.
@@ -56,5 +57,5 @@ plot(fit)
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{ConfregEL}, \linkS4class{ELD},
-\code{\link[=confreg]{confreg()}}, \code{\link[=eld]{eld()}}
+  [confreg()], [eld()]
 }

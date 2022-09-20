@@ -12,14 +12,12 @@ S4 class for empirical likelihood test.
 
 \describe{
 \item{\code{optim}}{A list of the following optimization results:
-\itemize{
-\item \code{par} A numeric vector of the solution to the (constrained) optimization
+* `par` A numeric vector of the solution to the (constrained) optimization
 problem.
-\item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to \code{par}.
-\item \code{iterations} A single integer for the number of iterations performed.
-\item \code{convergence} A single logical for the convergence status.
-}}
+* `lambda` A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to `par`.
+* `iterations` A single integer for the number of iterations performed.
+* `convergence` A single logical for the convergence status.}
 
 \item{\code{logp}}{A numeric vector of the log probabilities of the (constrained)
 empirical likelihood.}

@@ -66,23 +66,18 @@ test_that("`conv()` methods.", {
   expect_false(conv(fit2))
 })
 
-#' @srrstats {G5.7} Larger `tol_l` decreases the number of iterations for
-#'   convergence in `el_mean()`.
 test_that("Larger `tol_l` decreases iterations for convergence.", {
   fit <- el_mean(precip, par = 60, control = el_control(tol_l = 1e-08))
   fit2 <- el_mean(precip, par = 60, control = el_control(tol_l = 1e-02))
   expect_gte(getOptim(fit)$iterations, getOptim(fit2)$iterations)
 })
 
-#' @srrstats {G5.9, G5.9a} Adding trivial noise does not change the overall
-#'   optimization results.
 test_that("Noise susceptibility tests.", {
   fit <- el_mean(precip, par = 60)
   fit2 <- el_mean(precip, par = 60 + .Machine$double.eps)
   expect_equal(getOptim(fit), getOptim(fit2))
 })
 
-#' @srrstats {RE1.4} Violation of the convex hull constraint is tested.
 test_that("Convex hull constraint violated.", {
   x <- women$weight
   grid <- seq(70, 100, length.out = 100)

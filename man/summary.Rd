@@ -14,13 +14,13 @@
 \S4method{summary}{QGLM}(object, ...)
 }
 \arguments{
-\item{object}{An object to be summarized.}
+\item{object}{An object that inherits from \linkS4class{LM}.}
 
 \item{...}{Further arguments passed to methods.}
 }
 \value{
-The form of the value returned by \code{\link[=summary]{summary()}} depends on the class of
-its argument.
+The form of the value returned by [summary()] depends on the class of
+  its argument.
 }
 \description{
 Provides summary methods for objects.

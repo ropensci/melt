@@ -15,34 +15,33 @@
 )
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL}, including
-\linkS4class{CEL}, \linkS4class{LM}, and \linkS4class{GLM}.}
+\item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{parm}{A specification of which parameters are to be given a confidence
 region, either a vector of numbers or a vector of names. It must be a
-vector of length two of the form \code{c(x, y)}. If missing, the first two
-parameter in \code{object} are considered.}
+vector of length two of the form `c(x, y)`. If missing, the first two
+parameter in `object` are considered.}
 
 \item{level}{A single numeric for the confidence level required. Defaults to
-\code{0.95}. It is ignored if \code{cv} is non-\code{NULL}.}
+`0.95`. It is ignored if `cv` is non-`NULL`.}
 
 \item{cv}{A single numeric for the critical value for calibration of
 empirical likelihood ratio statistic. Defaults to NULL and set to
-\code{qchisq(level, 2L)}. It must be compatible with the \code{th} value in
-\code{control}.}
+`qchisq(level, 2L)`. It must be compatible with the `th` value in
+`control`.}
 
 \item{npoints}{A single integer for the number of boundary points to compute.
-Defaults to \code{50}.}
+Defaults to `50`.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+[el_control()].}
 }
 \value{
 An object of class \linkS4class{ConfregEL}.
 }
 \description{
 Computes boundary points of a two-dimensional confidence region for model
-parameters.
+  parameters.
 }
 \examples{
 data("mtcars")
@@ -52,10 +51,10 @@ plot(cr)
 }
 \references{
 Owen A (1990).
-“Empirical Likelihood Ratio Confidence Regions.”
-\emph{The Annals of Statistics}, 18(1), 90--120.
-\doi{10.1214/aos/1176347494}.
+  “Empirical Likelihood Ratio Confidence Regions.”
+  \emph{The Annals of Statistics}, 18(1), 90--120.
+  \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\code{\link[=confint]{confint()}}, \code{\link[=elt]{elt()}}, \code{\link[=plot]{plot()}}, \code{\link[=el_control]{el_control()}}
+[confint()], [elt()], [plot()], [el_control()]
 }

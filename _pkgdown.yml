@@ -1,7 +1,4 @@
-url: https://docs.ropensci.org/melt/
-template:
-  bootstrap: 5
-
+url: https://docs.ropensci.org/melt
 figures:
   dpi: 300
 
