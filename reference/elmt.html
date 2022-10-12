@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -78,25 +78,25 @@
 
 <dt>rhs</dt>
 <dd><p>A numeric vector (column matrix) or a list of numeric vectors for
-the right-hand sides of hypotheses. Defaults to `NULL`. See ‘Details’.</p></dd>
+the right-hand sides of hypotheses. Defaults to <code>NULL</code>. See ‘Details’.</p></dd>
 
 
 <dt>lhs</dt>
 <dd><p>A list or a numeric matrix for the left-hand sides of hypotheses.
-For a list `lhs`, each element must be specified as a single instance of
-the `lhs` in [elt()]. For a matrix `lhs`, each row gives a linear
-combination of the parameters in `object`. The number of columns must be
-equal to the number of parameters. Defaults to `NULL`. See ‘Details’.</p></dd>
+For a list <code>lhs</code>, each element must be specified as a single instance of
+the <code>lhs</code> in <code><a href="elt.html">elt()</a></code>. For a matrix <code>lhs</code>, each row gives a linear
+combination of the parameters in <code>object</code>. The number of columns must be
+equal to the number of parameters. Defaults to <code>NULL</code>. See ‘Details’.</p></dd>
 
 
 <dt>alpha</dt>
 <dd><p>A single numeric for the overall significance level. Defaults to
-`0.05`.</p></dd>
+<code>0.05</code>.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -107,30 +107,30 @@ equal to the number of parameters. Defaults to `NULL`. See ‘Details’.</p></d
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>[elmt()] tests multiple hypotheses simultaneously. Each hypothesis
-  corresponds to the constrained empirical likelihood ratio described in
-  <a href="CEL-class.html">CEL</a>. `rhs` and `lhs` cannot be both `NULL`. The right-hand
-  side and left-hand side of each hypothesis must be specified as described
-  in [elt()].</p>
-<p>For specifying linear contrasts more conveniently, `rhs` and `lhs` also
-  take a numeric vector and a numeric matrix, respectively. Each element of
-  `rhs` and each row of `lhs` correspond to a contrast (hypothesis).</p>
+    <p><code>elmt()</code> tests multiple hypotheses simultaneously. Each hypothesis
+corresponds to the constrained empirical likelihood ratio described in
+<a href="CEL-class.html">CEL</a>. <code>rhs</code> and <code>lhs</code> cannot be both <code>NULL</code>. The right-hand
+side and left-hand side of each hypothesis must be specified as described
+in <code><a href="elt.html">elt()</a></code>.</p>
+<p>For specifying linear contrasts more conveniently, <code>rhs</code> and <code>lhs</code> also
+take a numeric vector and a numeric matrix, respectively. Each element of
+<code>rhs</code> and each row of <code>lhs</code> correspond to a contrast (hypothesis).</p>
 <p>The vector of empirical likelihood ratio statistics asymptotically follows
-  a multivariate chi-square distribution under the complete null hypothesis.
-  The multiple testing procedure asymptotically controls the family-wise
-  error rate at the level `alpha`. Based on the distribution of the maximum
-  of the test statistics, the adjusted p-values are estimated by Monte Carlo
-  simulation.</p>
+a multivariate chi-square distribution under the complete null hypothesis.
+The multiple testing procedure asymptotically controls the family-wise
+error rate at the level <code>alpha</code>. Based on the distribution of the maximum
+of the test statistics, the adjusted p-values are estimated by Monte Carlo
+simulation.</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Kim E, MacEachern S, Peruggia M (2021).
-  “Empirical Likelihood for the Analysis of Experimental Designs.”
-  arxiv:2112.09206. URL &lt;https://arxiv.org/abs/2112.09206&gt;.</p>
+“Empirical Likelihood for the Analysis of Experimental Designs.”
+arxiv:2112.09206. URL <a href="https://arxiv.org/abs/2112.09206" class="external-link">https://arxiv.org/abs/2112.09206</a>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="ELMT-class.html">ELMT</a>, [elt()], [el_control()]</p></div>
+    <div class="dont-index"><p><a href="ELMT-class.html">ELMT</a>, <code><a href="elt.html">elt()</a></code>, <code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">

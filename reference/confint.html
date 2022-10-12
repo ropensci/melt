@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -84,18 +84,18 @@ parameters are considered.</p></dd>
 
 <dt>level</dt>
 <dd><p>A single numeric for the confidence level required. Defaults to
-`0.95`.</p></dd>
+<code>0.95</code>.</p></dd>
 
 
 <dt>cv</dt>
 <dd><p>A single numeric for the critical value for calibration of
-empirical likelihood ratio statistic. Defaults to `NULL` and set to
-`qchisq(level, 1L)`. If non-`NULL`, `level` is ignored.</p></dd>
+empirical likelihood ratio statistic. Defaults to <code>NULL</code> and set to
+<code>qchisq(level, 1L)</code>. If non-<code>NULL</code>, <code>level</code> is ignored.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -103,24 +103,22 @@ empirical likelihood ratio statistic. Defaults to `NULL` and set to
     
 
 <p>A matrix with columns giving lower and upper confidence limits for
- each parameter. In contrast to other methods that rely on studentization,
- the lower and upper limits obtained from empirical likelihood do not
- correspond to the `(1 - level) / 2` and `1 - (1 - level) / 2` in <!-- %, --></p>
-
-
-<p>respectively.</p>
+each parameter. In contrast to other methods that rely on studentization,
+the lower and upper limits obtained from empirical likelihood do not
+correspond to the <code>(1 - level) / 2</code> and <code>1 - (1 - level) / 2</code> in %,
+respectively.</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Owen A (1990).
-  “Empirical Likelihood Ratio Confidence Regions.”
-  <em>The Annals of Statistics</em>, 18(1), 90--120.
-  <a href="https://doi.org/10.1214/aos/1176347494" class="external-link">doi:10.1214/aos/1176347494</a>
+“Empirical Likelihood Ratio Confidence Regions.”
+<em>The Annals of Statistics</em>, 18(1), 90--120.
+<a href="https://doi.org/10.1214/aos/1176347494" class="external-link">doi:10.1214/aos/1176347494</a>
 .</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>[confreg()], [elt()], [el_control()]</p></div>
+    <div class="dont-index"><p><code><a href="confreg.html">confreg()</a></code>, <code><a href="elt.html">elt()</a></code>, <code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">

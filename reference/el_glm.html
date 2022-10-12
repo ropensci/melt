@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>formula</dt>
-<dd><p>An object of class [`formula`] (or one that can be coerced to
+<dd><p>An object of class <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></code> (or one that can be coerced to
 that class): a symbolic description of the model to be fitted.</p></dd>
 
 
@@ -96,53 +96,53 @@ supported. See ‘Details’.</p></dd>
 
 <dt>data</dt>
 <dd><p>An optional data frame, list or environment (or object coercible
-by [as.data.frame()] to a data frame) containing the variables in the
+by <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> to a data frame) containing the variables in the
 formula. If not found in data, the variables are taken from
-`environment(formula)`.</p></dd>
+<code>environment(formula)</code>.</p></dd>
 
 
 <dt>weights</dt>
 <dd><p>An optional numeric vector of weights to be used in the
-fitting process. Defaults to `NULL`, corresponding to identical weights. If
-non-`NULL`, weighted empirical likelihood is computed.</p></dd>
+fitting process. Defaults to <code>NULL</code>, corresponding to identical weights. If
+non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
 
 
 <dt>na.action</dt>
 <dd><p>A function which indicates what should happen when the data
-contain `NA`s. The default is set by the `na.action` setting of
-[`options`], and is `na.fail` if that is unset.</p></dd>
+contain <code>NA</code>s. The default is set by the <code>na.action</code> setting of
+<code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>, and is <code>na.fail</code> if that is unset.</p></dd>
 
 
 <dt>start</dt>
 <dd><p>Starting values for the parameters in the linear predictor.
-Defaults to `NULL` and is passed to [glm.fit()].</p></dd>
+Defaults to <code>NULL</code> and is passed to <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm.fit()</a></code>.</p></dd>
 
 
 <dt>etastart</dt>
-<dd><p>Starting values for the linear predictor. Defaults to `NULL`
-and is passed to [glm.fit()].</p></dd>
+<dd><p>Starting values for the linear predictor. Defaults to <code>NULL</code>
+and is passed to <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm.fit()</a></code>.</p></dd>
 
 
 <dt>mustart</dt>
-<dd><p>Starting values for the vector of means. Defaults to `NULL`
-and is passed to [glm.fit()].</p></dd>
+<dd><p>Starting values for the vector of means. Defaults to <code>NULL</code>
+and is passed to <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm.fit()</a></code>.</p></dd>
 
 
 <dt>offset</dt>
 <dd><p>An optional expression for specifying an <em>a priori</em> known
 component to be included in the linear predictor during fitting. This
-should be `NULL` or a numeric vector or matrix of extents matching those of
-the response. One or more [`offset`] terms can be included in the formula
+should be <code>NULL</code> or a numeric vector or matrix of extents matching those of
+the response. One or more <code><a href="https://rdrr.io/r/stats/offset.html" class="external-link">offset</a></code> terms can be included in the formula
 instead or as well, and if more than one are specified their sum is used.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Additional arguments to be passed to [glm.control()].</p></dd>
+<dd><p>Additional arguments to be passed to <code><a href="https://rdrr.io/r/stats/glm.control.html" class="external-link">glm.control()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -154,75 +154,74 @@ instead or as well, and if more than one are specified their sum is used.</p></d
     <div id="details">
     <h2>Details</h2>
     <p>Suppose that we observe \(n\) independent random variables
-  \({Z_i} \equiv {(X_i, Y_i)}\) from a common distribution, where \(X_i\)
-  is the \(p\)-dimensional covariate (including the intercept if any) and
-  \(Y_i\) is the response. A generalized linear model specifies that
-  \({\textrm{E}(Y_i | X_i)} = {\mu_i}\),
-  \({G(\mu_i)} = {X_i^\top \theta}\), and
-  \({\textrm{Var}(Y_i | X_i)} = {\phi V(\mu_i)}\),
-  where \(\theta = (\theta_0, \dots, \theta_{p-1})\) is an unknown
-  \(p\)-dimensional parameter, \(\phi\) is an optional dispersion
-  parameter, \(G\) is a known smooth link function, and \(V\) is a known
-  variance function.</p>
+\({Z_i} \equiv {(X_i, Y_i)}\) from a common distribution, where \(X_i\)
+is the \(p\)-dimensional covariate (including the intercept if any) and
+\(Y_i\) is the response. A generalized linear model specifies that
+\({\textrm{E}(Y_i | X_i)} = {\mu_i}\),
+\({G(\mu_i)} = {X_i^\top \theta}\), and
+\({\textrm{Var}(Y_i | X_i)} = {\phi V(\mu_i)}\),
+where \(\theta = (\theta_0, \dots, \theta_{p-1})\) is an unknown
+\(p\)-dimensional parameter, \(\phi\) is an optional dispersion
+parameter, \(G\) is a known smooth link function, and \(V\) is a known
+variance function.</p>
 <p>With \(H\) denoting the inverse link function, define the quasi-score
-  $${g_1(Z_i, \theta)} =
+$${g_1(Z_i, \theta)} =
   \left\{
   H^\prime(X_i^\top \theta) \left(Y_i - H(X_i^\top \theta)\right) /
   \left(\phi V\left(H(X_i^\top \theta)\right)\right)
   \right\}
   X_i.$$
-  Then we have the estimating equations
-  \(\sum_{i = 1}^n g_1(Z_i, \theta) = 0\).
-  When \(\phi\) is known, the (profile) empirical likelihood ratio for a
-  given \(\theta\) is defined by
-  $$R_1(\theta) =
+Then we have the estimating equations
+\(\sum_{i = 1}^n g_1(Z_i, \theta) = 0\).
+When \(\phi\) is known, the (profile) empirical likelihood ratio for a
+given \(\theta\) is defined by
+$$R_1(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i g_1(Z_i, \theta) = 0,\
   p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.$$
-  With unknown \(\phi\), we introduce another estimating function based on
-  the squared residuals. Let \({\eta} = {(\theta, \phi)}\) and
-  $${g_2(Z_i, \eta)} =
+With unknown \(\phi\), we introduce another estimating function based on
+the squared residuals. Let \({\eta} = {(\theta, \phi)}\) and
+$${g_2(Z_i, \eta)} =
   \left(Y_i - H(X_i^\top \theta)\right)^2 /
   \left(\phi^2 V\left(H(X_i^\top \theta)\right)\right) - 1 / \phi.$$
-  Now the empirical likelihood ratio is defined by
-  $$R_2(\eta) =
+Now the empirical likelihood ratio is defined by
+$$R_2(\eta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i g_1(Z_i, \eta) = 0,\
   \sum_{i = 1}^n p_i g_2(Z_i, \eta) = 0,\
   p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.$$
-  [el_glm()] first computes the parameter estimates by calling [glm.fit()]
-  (with `...` if any) with the `model.frame` and `model.matrix` obtained from
-  the `formula`. Note that the maximum empirical likelihood estimator is the
-  same as the the quasi-maximum likelihood estimator in our model. Next, it
-  tests hypotheses based on asymptotic chi-square distributions of the
-  empirical likelihood ratio statistics. Included in the tests are overall
-  test with
-  $$H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,$$
-  and significance tests for each parameter with
-  $$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
-<p>The available families and link functions are as follows:
-  * `gaussian`: `"identity"`, `"log"`, and `"inverse"`.
-  * `binomial`: `"logit"`, `"probit"`, and `"log"`.
-  * `poisson`: `"log"`, `"identity"`, and `"sqrt"`.
-  * `quasipoisson`: `"log"` and `"identity"`.</p>
-    </div>
+<code>el_glm()</code> first computes the parameter estimates by calling <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm.fit()</a></code>
+(with <code>...</code> if any) with the <code>model.frame</code> and <code>model.matrix</code> obtained from
+the <code>formula</code>. Note that the maximum empirical likelihood estimator is the
+same as the the quasi-maximum likelihood estimator in our model. Next, it
+tests hypotheses based on asymptotic chi-square distributions of the
+empirical likelihood ratio statistics. Included in the tests are overall
+test with
+$$H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,$$
+and significance tests for each parameter with
+$$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
+<p>The available families and link functions are as follows:</p><ul><li><p><code>gaussian</code>: <code>"identity"</code>, <code>"log"</code>, and <code>"inverse"</code>.</p></li>
+<li><p><code>binomial</code>: <code>"logit"</code>, <code>"probit"</code>, and <code>"log"</code>.</p></li>
+<li><p><code>poisson</code>: <code>"log"</code>, <code>"identity"</code>, and <code>"sqrt"</code>.</p></li>
+<li><p><code>quasipoisson</code>: <code>"log"</code> and <code>"identity"</code>.</p></li>
+</ul></div>
     <div id="references">
     <h2>References</h2>
     <p>Chen SX, Cui H (2003).
-  “An Extended Empirical Likelihood for Generalized Linear Models.”
-  <em>Statistica Sinica</em>, 13(1), 69--81.</p>
+“An Extended Empirical Likelihood for Generalized Linear Models.”
+<em>Statistica Sinica</em>, 13(1), 69--81.</p>
 <p>Kolaczyk ED (1994).
-  “Empirical Likelihood for Generalized Linear Models.”
-  <em>Statistica Sinica</em>, 4(1), 199--218.</p>
+“Empirical Likelihood for Generalized Linear Models.”
+<em>Statistica Sinica</em>, 4(1), 199--218.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <a href="GLM-class.html">GLM</a>, [el_lm()], [elt()],
-  [el_control()]</p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <a href="GLM-class.html">GLM</a>, <code><a href="el_lm.html">el_lm()</a></code>, <code><a href="elt.html">elt()</a></code>,
+<code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">

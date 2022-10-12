@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -79,19 +79,19 @@ greater than the number of columns.</p></dd>
 
 <dt>par</dt>
 <dd><p>A numeric vector of parameter values to be tested. The length of
-the vector must be the same as the number of columns in `x`.</p></dd>
+the vector must be the same as the number of columns in <code>x</code>.</p></dd>
 
 
 <dt>weights</dt>
 <dd><p>An optional numeric vector of weights to be used in the
 fitting process. The length of the vector must be the same as the number of
-rows in `x`. Defaults to `NULL`, corresponding to identical weights.
-If non-`NULL`, weighted empirical likelihood is computed.</p></dd>
+rows in <code>x</code>. Defaults to <code>NULL</code>, corresponding to identical weights.
+If non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -103,31 +103,31 @@ If non-`NULL`, weighted empirical likelihood is computed.</p></dd>
     <div id="details">
     <h2>Details</h2>
     <p>Let \(X_i\) be independent and identically distributed
-  \(p\)-dimensional random variable from an unknown distribution \(P\)
-  for \(i = 1, \dots, n\). We assume that \({\textrm{E}[X_i]} =
+\(p\)-dimensional random variable from an unknown distribution \(P\)
+for \(i = 1, \dots, n\). We assume that \({\textrm{E}[X_i]} =
   {\theta_0} \in {\rm{I\!R}}^p\) and that \(P\) has a positive definite
-  covariance matrix. Given a value of \(\theta\), the (profile) empirical
-  likelihood ratio is defined by
-  $$R(\theta) =
+covariance matrix. Given a value of \(\theta\), the (profile) empirical
+likelihood ratio is defined by
+$$R(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i X_i = \theta,\
   p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.$$
-  [el_mean()] computes the empirical log-likelihood ratio statistic
-  \(-2\log R(\theta)\), along with other values in <a href="EL-class.html">EL</a>.</p>
+<code>el_mean()</code> computes the empirical log-likelihood ratio statistic
+\(-2\log R(\theta)\), along with other values in <a href="EL-class.html">EL</a>.</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Owen A (1990).
-  “Empirical Likelihood Ratio Confidence Regions.”
-  <em>The Annals of Statistics</em>, 18(1), 90--120.
-  <a href="https://doi.org/10.1214/aos/1176347494" class="external-link">doi:10.1214/aos/1176347494</a>
+“Empirical Likelihood Ratio Confidence Regions.”
+<em>The Annals of Statistics</em>, 18(1), 90--120.
+<a href="https://doi.org/10.1214/aos/1176347494" class="external-link">doi:10.1214/aos/1176347494</a>
 .</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="EL-class.html">EL</a>, [elt()], [el_eval()], [el_control()]</p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="elt.html">elt()</a></code>, <code><a href="el_eval.html">el_eval()</a></code>, <code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">

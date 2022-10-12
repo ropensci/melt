@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -80,72 +80,71 @@ The number of rows must be greater than the number of columns.</p></dd>
 <dt>weights</dt>
 <dd><p>An optional numeric vector of weights to be used in the
 fitting process. The length of the vector must be the same as the number of
-rows in `g`. Defaults to `NULL`, corresponding to identical weights. If
-non-`NULL`, weighted empirical likelihood is computed.</p></dd>
+rows in <code>g</code>. Defaults to <code>NULL</code>, corresponding to identical weights. If
+non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>A list of the following optimization results:
-  * `optim` A list with the following optimization results:
-    * `lambda` A numeric vector of the Lagrange multipliers of the dual
-    problem.
-    * `iterations` A single integer for the number of iterations performed.
-    * `convergence` A single logical for the convergence status.
-  * `logp` A numeric vector of the log probabilities of the empirical
-  likelihood.
-  * `logl` A single numeric of the empirical log-likelihood.
-  * `loglr` A single numeric of the empirical log-likelihood ratio.
-  * `statistic` A single numeric of minus twice the empirical log-likelihood
-  ratio with an asymptotic chi-square distribution.
-  * `df` A single integer for the degrees of freedom of the statistic.
-  * `pval` A single numeric for the \(p\)-value of the statistic.
-  * `nobs` A single integer for the number of observations.
-  * `npar` A single integer for the number of parameters.
-  * `weights` A numeric vector of the re-scaled weights used for the model
-  fitting.</p>
-    </div>
+<p>A list of the following optimization results:</p><ul><li><p><code>optim</code> A list with the following optimization results:</p><ul><li><p><code>lambda</code> A numeric vector of the Lagrange multipliers of the dual
+problem.</p></li>
+<li><p><code>iterations</code> A single integer for the number of iterations performed.</p></li>
+<li><p><code>convergence</code> A single logical for the convergence status.</p></li>
+</ul></li>
+<li><p><code>logp</code> A numeric vector of the log probabilities of the empirical
+likelihood.</p></li>
+<li><p><code>logl</code> A single numeric of the empirical log-likelihood.</p></li>
+<li><p><code>loglr</code> A single numeric of the empirical log-likelihood ratio.</p></li>
+<li><p><code>statistic</code> A single numeric of minus twice the empirical log-likelihood
+ratio with an asymptotic chi-square distribution.</p></li>
+<li><p><code>df</code> A single integer for the degrees of freedom of the statistic.</p></li>
+<li><p><code>pval</code> A single numeric for the \(p\)-value of the statistic.</p></li>
+<li><p><code>nobs</code> A single integer for the number of observations.</p></li>
+<li><p><code>npar</code> A single integer for the number of parameters.</p></li>
+<li><p><code>weights</code> A numeric vector of the re-scaled weights used for the model
+fitting.</p></li>
+</ul></div>
     <div id="details">
     <h2>Details</h2>
     <p>Let \(X_i\) be independent and identically distributed
-  \(p\)-dimensional random variable from an unknown distribution \(P\)
-  for \(i = 1, \dots, n\). We assume that \(P\) has a positive definite
-  covariance matrix. For a parameter of interest
-  \(\theta(F) \in {\rm{I\!R}}^p\), consider a \(p\)-dimensional smooth
-  estimating function \(g(X_i, \theta)\) with a moment condition
-  $$\textrm{E}[g(X_i, \theta)] = 0.$$
-  We assume that there exists an unique \(\theta_0\) that solves the above
-  equation. Given a value of \(\theta\), the (profile) empirical likelihood
-  ratio is defined by
-  $$R(\theta) =
+\(p\)-dimensional random variable from an unknown distribution \(P\)
+for \(i = 1, \dots, n\). We assume that \(P\) has a positive definite
+covariance matrix. For a parameter of interest
+\(\theta(F) \in {\rm{I\!R}}^p\), consider a \(p\)-dimensional smooth
+estimating function \(g(X_i, \theta)\) with a moment condition
+$$\textrm{E}[g(X_i, \theta)] = 0.$$
+We assume that there exists an unique \(\theta_0\) that solves the above
+equation. Given a value of \(\theta\), the (profile) empirical likelihood
+ratio is defined by
+$$R(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i g(X_i, \theta) = 0, p_i \geq 0, \sum_{i = 1}^n p_i = 1
   \right\}.$$
-  [el_mean()] computes the empirical log-likelihood ratio statistic
-  \(-2\log R(\theta)\) with the \(n\) by \(p\) numeric matrix `g`,
-  whose \(i\)th row is \(g(X_i, \theta)\). Since the estimating function
-  can be arbitrary, [el_eval()] does not return an object of class
-  <a href="EL-class.html">EL</a>, and the associated generics and methods are not
-  applicable.</p>
+<code><a href="el_mean.html">el_mean()</a></code> computes the empirical log-likelihood ratio statistic
+\(-2\log R(\theta)\) with the \(n\) by \(p\) numeric matrix <code>g</code>,
+whose \(i\)th row is \(g(X_i, \theta)\). Since the estimating function
+can be arbitrary, <code>el_eval()</code> does not return an object of class
+<a href="EL-class.html">EL</a>, and the associated generics and methods are not
+applicable.</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Qin J, Lawless J (1994).
-  “Empirical Likelihood and General Estimating Equations.”
-  <em>The Annals of Statistics</em>, 22(1), 300--325.
-  <a href="https://doi.org/10.1214/aos/1176325370" class="external-link">doi:10.1214/aos/1176325370</a>
+“Empirical Likelihood and General Estimating Equations.”
+<em>The Annals of Statistics</em>, 22(1), 300--325.
+<a href="https://doi.org/10.1214/aos/1176325370" class="external-link">doi:10.1214/aos/1176325370</a>
 .</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="EL-class.html">EL</a>, [el_control()]</p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">

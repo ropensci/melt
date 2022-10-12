@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -80,40 +80,40 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>formula</dt>
-<dd><p>An object of class [`formula`] (or one that can be coerced to
+<dd><p>An object of class <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></code> (or one that can be coerced to
 that class) for a symbolic description of the model to be fitted.</p></dd>
 
 
 <dt>data</dt>
 <dd><p>An optional data frame, list or environment (or object coercible
-by [as.data.frame()] to a data frame) containing the variables in
-`formula`. If not found in data, the variables are taken from
-`environment(formula)`.</p></dd>
+by <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> to a data frame) containing the variables in
+<code>formula</code>. If not found in data, the variables are taken from
+<code>environment(formula)</code>.</p></dd>
 
 
 <dt>weights</dt>
 <dd><p>An optional numeric vector of weights to be used in the
-fitting process. Defaults to `NULL`, corresponding to identical weights. If
-non-`NULL`, weighted empirical likelihood is computed.</p></dd>
+fitting process. Defaults to <code>NULL</code>, corresponding to identical weights. If
+non-<code>NULL</code>, weighted empirical likelihood is computed.</p></dd>
 
 
 <dt>na.action</dt>
 <dd><p>A function which indicates what should happen when the data
-contain `NA`s. The default is set by the `na.action` setting of
-[`options`], and is `na.fail` if that is unset.</p></dd>
+contain <code>NA</code>s. The default is set by the <code>na.action</code> setting of
+<code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>, and is <code>na.fail</code> if that is unset.</p></dd>
 
 
 <dt>offset</dt>
 <dd><p>An optional expression for specifying an <em>a priori</em> known
 component to be included in the linear predictor during fitting. This
-should be `NULL` or a numeric vector or matrix of extents matching those of
-the response. One or more [`offset`] terms can be included in the formula
+should be <code>NULL</code> or a numeric vector or matrix of extents matching those of
+the response. One or more <code><a href="https://rdrr.io/r/stats/offset.html" class="external-link">offset</a></code> terms can be included in the formula
 instead or as well, and if more than one are specified their sum is used.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 
 <dt>...</dt>
@@ -130,49 +130,49 @@ fitting functions. See ‘Details’.</p></dd>
     <div id="details">
     <h2>Details</h2>
     <p>Suppose that we observe \(n\) independent random variables
-  \({Z_i} \equiv {(X_i, Y_i)}\) from a common distribution, where \(X_i\)
-  is the \(p\)-dimensional covariate (including the intercept if any) and
-  \(Y_i\) is the response. We consider the following linear model:
-  $$Y_i = X_i^\top \theta + \epsilon_i,$$
-  where \(\theta = (\theta_0, \dots, \theta_{p-1})\) is an unknown
-  \(p\)-dimensional parameter and the errors \(\epsilon_i\) are
-  independent random variables that satisfy
-  \(\textrm{E}(\epsilon_i | X_i)\) = 0. We assume that the errors have
-  finite conditional variance. Then the least square estimator of
-  \(\theta\) solves the following estimating equations:
-  $$\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.$$
-  Given a value of \(\theta\), let
-  \({g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}\) and the (profile)
-  empirical likelihood ratio is defined by
-  $$R(\theta) =
+\({Z_i} \equiv {(X_i, Y_i)}\) from a common distribution, where \(X_i\)
+is the \(p\)-dimensional covariate (including the intercept if any) and
+\(Y_i\) is the response. We consider the following linear model:
+$$Y_i = X_i^\top \theta + \epsilon_i,$$
+where \(\theta = (\theta_0, \dots, \theta_{p-1})\) is an unknown
+\(p\)-dimensional parameter and the errors \(\epsilon_i\) are
+independent random variables that satisfy
+\(\textrm{E}(\epsilon_i | X_i)\) = 0. We assume that the errors have
+finite conditional variance. Then the least square estimator of
+\(\theta\) solves the following estimating equations:
+$$\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.$$
+Given a value of \(\theta\), let
+\({g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}\) and the (profile)
+empirical likelihood ratio is defined by
+$$R(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta,\
    p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.$$
-  [el_lm()] first computes the parameter estimates by calling [lm.fit()]
-  (with `...` if any) with the `model.frame` and `model.matrix` obtained from
-  the `formula`. Note that the maximum empirical likelihood estimator is the
-  same as the the quasi-maximum likelihood estimator in our model. Next, it
-  tests hypotheses based on asymptotic chi-square distributions of the
-  empirical likelihood ratio statistics. Included in the tests are overall
-  test with
-  $$H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,$$
-  and significance tests for each parameter with
-  $$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
+<code>el_lm()</code> first computes the parameter estimates by calling <code><a href="https://rdrr.io/r/stats/lmfit.html" class="external-link">lm.fit()</a></code>
+(with <code>...</code> if any) with the <code>model.frame</code> and <code>model.matrix</code> obtained from
+the <code>formula</code>. Note that the maximum empirical likelihood estimator is the
+same as the the quasi-maximum likelihood estimator in our model. Next, it
+tests hypotheses based on asymptotic chi-square distributions of the
+empirical likelihood ratio statistics. Included in the tests are overall
+test with
+$$H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,$$
+and significance tests for each parameter with
+$$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Owen A (1991).
-  “Empirical Likelihood for Linear Models.”
-  <em>The Annals of Statistics</em>, 19(4), 1725--1747.
-  <a href="https://doi.org/10.1214/aos/1176348368" class="external-link">doi:10.1214/aos/1176348368</a>
+“Empirical Likelihood for Linear Models.”
+<em>The Annals of Statistics</em>, 19(4), 1725--1747.
+<a href="https://doi.org/10.1214/aos/1176348368" class="external-link">doi:10.1214/aos/1176348368</a>
 .</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <a href="LM-class.html">LM</a>, [el_glm()], [elt()],
-  [el_control()]</p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <a href="LM-class.html">LM</a>, <code><a href="el_glm.html">el_glm()</a></code>, <code><a href="elt.html">elt()</a></code>,
+<code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">

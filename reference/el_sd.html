@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -87,13 +87,13 @@ vector.</p></dd>
 <dt>weights</dt>
 <dd><p>An optional numeric vector of weights to be used in the
 fitting process. The length of the vector must be the same as the length of
-`x`. Defaults to `NULL`, corresponding to identical weights. If non-`NULL`,
+<code>x</code>. Defaults to <code>NULL</code>, corresponding to identical weights. If non-<code>NULL</code>,
 weighted empirical likelihood is computed.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -105,23 +105,23 @@ weighted empirical likelihood is computed.</p></dd>
     <div id="details">
     <h2>Details</h2>
     <p>Let \(X_i\) be independent and identically random variable from an
-  unknown distribution \(P\) for \(i = 1, \dots, n\). We assume that
-  \({\textrm{E}[X_i]} = {\mu_0}\) is known and that \(P\) has a variance
-  \(\sigma_0^2\). Given a value of \(\sigma\), the
-  (profile) empirical likelihood ratio is defined by
-  $$R(\sigma) =
+unknown distribution \(P\) for \(i = 1, \dots, n\). We assume that
+\({\textrm{E}[X_i]} = {\mu_0}\) is known and that \(P\) has a variance
+\(\sigma_0^2\). Given a value of \(\sigma\), the
+(profile) empirical likelihood ratio is defined by
+$$R(\sigma) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i (X_i - \mu_0)^2 = \sigma^2,\
   p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.$$
-  [el_sd()] computes the empirical log-likelihood ratio statistic
-  \(-2\log R(\sigma)\), along with other values in <a href="SD-class.html">SD</a>.</p>
+<code>el_sd()</code> computes the empirical log-likelihood ratio statistic
+\(-2\log R(\sigma)\), along with other values in <a href="SD-class.html">SD</a>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <a href="SD-class.html">SD</a>, [el_mean()], [elt()],
-  [el_control()]</p></div>
+    <div class="dont-index"><p><a href="EL-class.html">EL</a>, <a href="SD-class.html">SD</a>, <code><a href="el_mean.html">el_mean()</a></code>, <code><a href="elt.html">elt()</a></code>,
+<code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9000</span>
       </span>
     </div>
 
@@ -85,81 +85,80 @@
 
 <dt>rhs</dt>
 <dd><p>A numeric vector or a column matrix for the right-hand side of
-hypothesis, with as many entries as the rows in `lhs`. Defaults to `NULL`.
+hypothesis, with as many entries as the rows in <code>lhs</code>. Defaults to <code>NULL</code>.
 See ‘Details’.</p></dd>
 
 
 <dt>lhs</dt>
 <dd><p>A numeric matrix or a vector (treated as a row matrix) for the
 left-hand side of a hypothesis. Each row gives a linear combination of the
-parameters in `object`. The number of columns must be equal to the number
+parameters in <code>object</code>. The number of columns must be equal to the number
 of parameters. Or a character vector with a symbolic description of the
-hypothesis is allowed. Defaults to `NULL`. See ‘Details’.</p></dd>
+hypothesis is allowed. Defaults to <code>NULL</code>. See ‘Details’.</p></dd>
 
 
 <dt>alpha</dt>
-<dd><p>A single numeric for the significance level. Defaults to `0.05`.</p></dd>
+<dd><p>A single numeric for the significance level. Defaults to <code>0.05</code>.</p></dd>
 
 
 <dt>calibrate</dt>
 <dd><p>A single character for the calibration method. It is
-case-insensitive and must be one of `"chisq"`, `"boot"`, or `"f"`.
-Defaults to `"chisq"`. See ‘Details’.</p></dd>
+case-insensitive and must be one of <code>"chisq"</code>, <code>"boot"</code>, or <code>"f"</code>.
+Defaults to <code>"chisq"</code>. See ‘Details’.</p></dd>
 
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-[el_control()].</p></dd>
+<code><a href="el_control.html">el_control()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>An object of class of <a href="ELT-class.html">ELT</a>. If `lhs` is non-`NULL`, the
-  `optim` slot corresponds to that of <a href="CEL-class.html">CEL</a>. Otherwise, it
-  corresponds to that of <a href="EL-class.html">EL</a>.</p>
+<p>An object of class of <a href="ELT-class.html">ELT</a>. If <code>lhs</code> is non-<code>NULL</code>, the
+<code>optim</code> slot corresponds to that of <a href="CEL-class.html">CEL</a>. Otherwise, it
+corresponds to that of <a href="EL-class.html">EL</a>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>[elt()] performs the constrained minimization of \(l(\theta)\)
-  described in <a href="CEL-class.html">CEL</a>. `rhs` and `lhs` cannot be both `NULL`. For
-  non-`NULL` `lhs`, it is required that `lhs` have full row rank
-  \(q \leq p\) and \(p\) be equal to the number of parameters in the
-  `object`.</p>
-<p>Depending on the specification of `rhs` and `lhs`, we have the following
-  three cases:
-  1. If both `rhs` and `lhs` are non-`NULL`, the constrained minimization
-  is performed with the right-hand side \(r\) and the left-hand side
-  \(L\) as
-  $$\inf_{\theta: L\theta = r} l(\theta).$$
-  1. If `rhs` is `NULL`, \(r\) is set to the zero vector as
-  \(\inf_{\theta: L\theta = 0} l(\theta)\).
-  1. If `lhs` is `NULL`, \(L\) is set to the identity matrix and the
-  problem reduces to evaluating at \(r\) as \(l(r)\).</p>
-<p>`calibrate` specifies the calibration method used. Three methods are
-  available: `"chisq"` (chi-square calibration), `"boot"` (bootstrap
-  calibration), and `"f"` (\(F\) calibration). `"boot"` is applicable only
-  when `lhs` is `NULL`. The `nthreads`, `seed`, and `B` slots in `control`
-  apply to the bootstrap procedure. `"f"` is applicable only to the mean
-  parameter when `lhs` is `NULL`.</p>
+    <p><code>elt()</code> performs the constrained minimization of \(l(\theta)\)
+described in <a href="CEL-class.html">CEL</a>. <code>rhs</code> and <code>lhs</code> cannot be both <code>NULL</code>. For
+non-<code>NULL</code> <code>lhs</code>, it is required that <code>lhs</code> have full row rank
+\(q \leq p\) and \(p\) be equal to the number of parameters in the
+<code>object</code>.</p>
+<p>Depending on the specification of <code>rhs</code> and <code>lhs</code>, we have the following
+three cases:</p><ol><li><p>If both <code>rhs</code> and <code>lhs</code> are non-<code>NULL</code>, the constrained minimization
+is performed with the right-hand side \(r\) and the left-hand side
+\(L\) as
+$$\inf_{\theta: L\theta = r} l(\theta).$$</p></li>
+<li><p>If <code>rhs</code> is <code>NULL</code>, \(r\) is set to the zero vector as
+\(\inf_{\theta: L\theta = 0} l(\theta)\).</p></li>
+<li><p>If <code>lhs</code> is <code>NULL</code>, \(L\) is set to the identity matrix and the
+problem reduces to evaluating at \(r\) as \(l(r)\).</p></li>
+</ol><p><code>calibrate</code> specifies the calibration method used. Three methods are
+available: <code>"chisq"</code> (chi-square calibration), <code>"boot"</code> (bootstrap
+calibration), and <code>"f"</code> (\(F\) calibration). <code>"boot"</code> is applicable only
+when <code>lhs</code> is <code>NULL</code>. The <code>nthreads</code>, <code>seed</code>, and <code>B</code> slots in <code>control</code>
+apply to the bootstrap procedure. <code>"f"</code> is applicable only to the mean
+parameter when <code>lhs</code> is <code>NULL</code>.</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Adimari G, Guolo A (2010).
-  “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-  <em>Statistical Methods &amp; Applications</em>, 19(4), 463--476.
-  <a href="https://doi.org/10.1007/s10260-010-0137-9" class="external-link">doi:10.1007/s10260-010-0137-9</a>
+“A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
+<em>Statistical Methods &amp; Applications</em>, 19(4), 463--476.
+<a href="https://doi.org/10.1007/s10260-010-0137-9" class="external-link">doi:10.1007/s10260-010-0137-9</a>
 .</p>
 <p>Qin J, Lawless J (1995).
-  “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-  <em>Canadian Journal of Statistics</em>, 23(2), 145--159.
-  <a href="https://doi.org/10.2307/3315441" class="external-link">doi:10.2307/3315441</a>
+“Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
+<em>Canadian Journal of Statistics</em>, 23(2), 145--159.
+<a href="https://doi.org/10.2307/3315441" class="external-link">doi:10.2307/3315441</a>
 .</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="ELT-class.html">ELT</a>, [elmt()], [el_control()]</p></div>
+    <div class="dont-index"><p><a href="ELT-class.html">ELT</a>, <code><a href="elmt.html">elmt()</a></code>, <code><a href="el_control.html">el_control()</a></code></p></div>
     </div>
 
     <div id="ref-examples">
