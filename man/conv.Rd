@@ -37,7 +37,7 @@ the parameter.
 the Lagrange multiplier.
 
 \item \code{conv(ELT)}: Extracts the convergence status of the model with respect to
-the parameter (or the Lagrange multiplier if `lhs` is `NULL`).
+the parameter (or the Lagrange multiplier if \code{lhs} is \code{NULL}).
 
 \item \code{conv(SummaryLM)}: Extracts the convergence status of the model. See the
 documentation of \linkS4class{EL} and \linkS4class{CEL}.

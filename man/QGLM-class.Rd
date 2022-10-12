@@ -7,50 +7,54 @@
 \title{\linkS4class{QGLM} class}
 \description{
 S4 class for generalized linear models with quasi-likelihood methods. It
-  inherits from \linkS4class{GLM} class.
+inherits from \linkS4class{GLM} class.
 }
 \details{
 The overall test involves a constrained optimization problem. All
-  the parameters except for the intercept are constrained to zero. The
-  `optim` slot contains the results. When there is no intercept, all
-  parameters are set to zero, and the results need to be understood in terms
-  of \linkS4class{EL} class since no constrained optimization is involved.
-  Once the solution is found, the log probabilities (`logp`) and the
-  (constrained) empirical likelihood values (`logl`, `loglr`, `statistic`)
-  readily follow, along with the degrees of freedom (`df`) and the
-  \eqn{p}-value (`pval`). The significance tests for each parameter also
-  involve constrained optimization problems where only one parameter is
-  constrained to zero. The `sigTests` slot contains the results.
+the parameters except for the intercept are constrained to zero. The
+\code{optim} slot contains the results. When there is no intercept, all
+parameters are set to zero, and the results need to be understood in terms
+of \linkS4class{EL} class since no constrained optimization is involved.
+Once the solution is found, the log probabilities (\code{logp}) and the
+(constrained) empirical likelihood values (\code{logl}, \code{loglr}, \code{statistic})
+readily follow, along with the degrees of freedom (\code{df}) and the
+\eqn{p}-value (\code{pval}). The significance tests for each parameter also
+involve constrained optimization problems where only one parameter is
+constrained to zero. The \code{sigTests} slot contains the results.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{family}}{A [`family`] object used.}
+\item{\code{family}}{A \code{\link{family}} object used.}
 
 \item{\code{dispersion}}{A single numeric for the estimated dispersion parameter.}
 
 \item{\code{sigTests}}{A list of the following results of significance tests:
-* `statistic` A numeric vector of minus twice the (constrained) empirical
+\itemize{
+\item \code{statistic} A numeric vector of minus twice the (constrained) empirical
 log-likelihood ratios with asymptotic chi-square distributions.
-* `iterations` An integer vector for the number of iterations performed for
+\item \code{iterations} An integer vector for the number of iterations performed for
 each parameter.
-* `convergence` A logical vector for the convergence status of each
-parameter.}
+\item \code{convergence} A logical vector for the convergence status of each
+parameter.
+}}
 
 \item{\code{call}}{A matched call.}
 
-\item{\code{terms}}{A [`terms`] object used.}
+\item{\code{terms}}{A \code{\link{terms}} object used.}
 
 \item{\code{misc}}{A list of various outputs obtained from the model fitting process.
 They are used in other generics and methods.}
 
 \item{\code{optim}}{A list of the following optimization results:
-* `par` A numeric vector of the solution to the (constrained) optimization
+\itemize{
+\item \code{par} A numeric vector of the solution to the (constrained) optimization
 problem.
-* `lambda` A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to `par`.
-* `iterations` A single integer for the number of iterations performed.
-* `convergence` A single logical for the convergence status.}
+\item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to \code{par}.
+\item \code{iterations} A single integer for the number of iterations performed.
+\item \code{convergence} A single logical for the convergence status.
+}}
 
 \item{\code{logp}}{A numeric vector of the log probabilities of the (constrained)
 empirical likelihood.}

@@ -482,7 +482,7 @@ test_that("`el_glm()` (quasipoisson - identity).", {
   expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
 })
 
-test_that("`el_pairwise()` (deprecated).", {
+test_that("`el_pairwise()`. Deprecated.", {
   skip_on_cran()
   out1 <- suppressWarnings(el_pairwise(clo ~ trt | blk,
     data = clothianidin, B = 500
@@ -505,3 +505,20 @@ test_that("`el_pairwise()` (deprecated).", {
   ))
   expect_output(print(out3))
 })
+
+test_that("Invalid `formula`. Deprecated.", {
+  fit <- el_lm(mpg ~ 0, data = mtcars)
+  expect_error(suppressWarnings(logLik(fit)))
+})
+
+test_that(
+  "`logLik()` at the maximum empirical likelihood estimate. Deprecated.",
+  {
+    n <- nrow(airquality)
+    fit <- el_lm(Wind ~ Temp, data = airquality)
+    logLik <- suppressWarnings(logLik(fit, REML = TRUE))
+    expect_output(show(logLik))
+    expect_output(print(logLik))
+    expect_equal(getDataPart(logLik), -n * log(n))
+  }
+)

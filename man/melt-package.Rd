@@ -12,8 +12,8 @@ Performs multiple empirical likelihood tests for linear and generalized linear m
 }
 \references{
 Kim E, MacEachern S, Peruggia M (2021).
-  “Empirical Likelihood for the Analysis of Experimental Designs.”
-  arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
+“Empirical Likelihood for the Analysis of Experimental Designs.”
+arxiv:2112.09206. URL \url{https://arxiv.org/abs/2112.09206}.
 }
 \seealso{
 Useful links:

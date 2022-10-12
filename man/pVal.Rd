@@ -20,8 +20,8 @@
 \item{...}{Further arguments passed to methods.}
 }
 \value{
-The form of the value returned by [pVal()] depends on the class of
-  its argument.
+The form of the value returned by \code{\link[=pVal]{pVal()}} depends on the class of
+its argument.
 }
 \description{
 Extracts \eqn{p}-value from a model.
@@ -41,5 +41,5 @@ fit <- el_mean(precip, par = 40)
 pVal(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT}, [chisq()]
+\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT}, \code{\link[=chisq]{chisq()}}
 }

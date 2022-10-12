@@ -49,5 +49,5 @@ getDF(fit)
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
-  \linkS4class{SummaryLM}
+\linkS4class{SummaryLM}
 }

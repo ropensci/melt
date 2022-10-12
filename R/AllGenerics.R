@@ -420,8 +420,10 @@ setGeneric("logL", function(object, ...) standardGeneric("logL"))
 
 #' Maximum empirical log-likelihood
 #'
-#' Extracts empirical log-likelihood from a model evaluated at the estimated
-#'   coefficients.
+#' @description Extracts empirical log-likelihood from a model evaluated at the
+#'   estimated coefficients.
+#'
+#' \emph{This function is deprecated and will be removed in a future release.}
 #'
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.

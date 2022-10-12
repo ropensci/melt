@@ -55,13 +55,13 @@
 \item{...}{Further arguments passed to methods.}
 
 \item{digits}{A single integer for the number of significant digits to be
-passed to [format()].}
+passed to \code{\link[=format]{format()}}.}
 
-\item{signif.stars}{A single logical. If `TRUE`, ‘significance stars’
+\item{signif.stars}{A single logical. If \code{TRUE}, ‘significance stars’
 are printed for each parameter.}
 }
 \value{
-The argument `x` (invisibly).
+The argument \code{x} (invisibly).
 }
 \description{
 Provides print methods for objects.
@@ -73,6 +73,6 @@ print(fit)
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
-  \linkS4class{LM}, \linkS4class{SummaryLM}, \linkS4class{SummaryGLM},
-  \linkS4class{SummaryQGLM}
+\linkS4class{LM}, \linkS4class{SummaryLM}, \linkS4class{SummaryGLM},
+\linkS4class{SummaryQGLM}
 }

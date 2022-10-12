@@ -6,7 +6,7 @@
 \alias{logLikEL}
 \title{\linkS4class{logLikEL} class}
 \description{
-S4 class for empirical log-likelihood. It inherits from `"numeric"`.
+S4 class for empirical log-likelihood. It inherits from \code{"numeric"}.
 }
 \section{Slots}{
 

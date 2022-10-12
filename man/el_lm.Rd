@@ -15,30 +15,30 @@ el_lm(
 )
 }
 \arguments{
-\item{formula}{An object of class [`formula`] (or one that can be coerced to
+\item{formula}{An object of class \code{\link{formula}} (or one that can be coerced to
 that class) for a symbolic description of the model to be fitted.}
 
 \item{data}{An optional data frame, list or environment (or object coercible
-by [as.data.frame()] to a data frame) containing the variables in
-`formula`. If not found in data, the variables are taken from
-`environment(formula)`.}
+by \code{\link[=as.data.frame]{as.data.frame()}} to a data frame) containing the variables in
+\code{formula}. If not found in data, the variables are taken from
+\code{environment(formula)}.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to `NULL`, corresponding to identical weights. If
-non-`NULL`, weighted empirical likelihood is computed.}
+fitting process. Defaults to \code{NULL}, corresponding to identical weights. If
+non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{na.action}{A function which indicates what should happen when the data
-contain `NA`s. The default is set by the `na.action` setting of
-[`options`], and is `na.fail` if that is unset.}
+contain \code{NA}s. The default is set by the \code{na.action} setting of
+\code{\link{options}}, and is \code{na.fail} if that is unset.}
 
 \item{offset}{An optional expression for specifying an \emph{a priori} known
 component to be included in the linear predictor during fitting. This
-should be `NULL` or a numeric vector or matrix of extents matching those of
-the response. One or more [`offset`] terms can be included in the formula
+should be \code{NULL} or a numeric vector or matrix of extents matching those of
+the response. One or more \code{\link{offset}} terms can be included in the formula
 instead or as well, and if more than one are specified their sum is used.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-[el_control()].}
+\code{\link[=el_control]{el_control()}}.}
 
 \item{...}{Additional arguments to be passed to the low level regression
 fitting functions. See ‘Details’.}
@@ -51,36 +51,36 @@ Fits a linear model with empirical likelihood.
 }
 \details{
 Suppose that we observe \eqn{n} independent random variables
-  \eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
-  is the \eqn{p}-dimensional covariate (including the intercept if any) and
-  \eqn{Y_i} is the response. We consider the following linear model:
-  \deqn{Y_i = X_i^\top \theta + \epsilon_i,}
-  where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
-  \eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
-  independent random variables that satisfy
-  \eqn{\textrm{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
-  finite conditional variance. Then the least square estimator of
-  \eqn{\theta} solves the following estimating equations:
-  \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
-  Given a value of \eqn{\theta}, let
-  \eqn{{g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}} and the (profile)
-  empirical likelihood ratio is defined by
-  \deqn{R(\theta) =
+\eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
+is the \eqn{p}-dimensional covariate (including the intercept if any) and
+\eqn{Y_i} is the response. We consider the following linear model:
+\deqn{Y_i = X_i^\top \theta + \epsilon_i,}
+where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
+\eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
+independent random variables that satisfy
+\eqn{\textrm{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
+finite conditional variance. Then the least square estimator of
+\eqn{\theta} solves the following estimating equations:
+\deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
+Given a value of \eqn{\theta}, let
+\eqn{{g(Z_i, \theta)} = {(Y_i - X_i^\top \theta)X_i}} and the (profile)
+empirical likelihood ratio is defined by
+\deqn{R(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i g(Z_i, \theta) = \theta,\
    p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.}
-  [el_lm()] first computes the parameter estimates by calling [lm.fit()]
-  (with `...` if any) with the `model.frame` and `model.matrix` obtained from
-  the `formula`. Note that the maximum empirical likelihood estimator is the
-  same as the the quasi-maximum likelihood estimator in our model. Next, it
-  tests hypotheses based on asymptotic chi-square distributions of the
-  empirical likelihood ratio statistics. Included in the tests are overall
-  test with
-  \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
-  and significance tests for each parameter with
-  \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
+\code{\link[=el_lm]{el_lm()}} first computes the parameter estimates by calling \code{\link[=lm.fit]{lm.fit()}}
+(with \code{...} if any) with the \code{model.frame} and \code{model.matrix} obtained from
+the \code{formula}. Note that the maximum empirical likelihood estimator is the
+same as the the quasi-maximum likelihood estimator in our model. Next, it
+tests hypotheses based on asymptotic chi-square distributions of the
+empirical likelihood ratio statistics. Included in the tests are overall
+test with
+\deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
+and significance tests for each parameter with
+\deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
 }
 \examples{
 ## Linear model
@@ -100,11 +100,11 @@ summary(fit2)
 }
 \references{
 Owen A (1991).
-  “Empirical Likelihood for Linear Models.”
-  \emph{The Annals of Statistics}, 19(4), 1725--1747.
-  \doi{10.1214/aos/1176348368}.
+“Empirical Likelihood for Linear Models.”
+\emph{The Annals of Statistics}, 19(4), 1725--1747.
+\doi{10.1214/aos/1176348368}.
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{LM}, [el_glm()], [elt()],
-  [el_control()]
+\linkS4class{EL}, \linkS4class{LM}, \code{\link[=el_glm]{el_glm()}}, \code{\link[=elt]{elt()}},
+\code{\link[=el_control]{el_control()}}
 }

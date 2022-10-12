@@ -40,9 +40,10 @@
 #' el_pairwise(clo ~ trt | blk, data = clothianidin, B = 1000)
 #'
 #' # Comparisons with control
-#' el_pairwise(clo ~ trt | blk, data = clothianidin, control = "Naked",
-#'   method = "NB", B = 500
-#' )}
+#' el_pairwise(clo ~ trt | blk,
+#'   data = clothianidin, control = "Naked", method = "NB", B = 500
+#' )
+#' }
 #' @importFrom stats terms reshape
 #' @keywords internal
 #' @export
@@ -56,7 +57,7 @@ el_pairwise <- function(formula,
                         nthreads = 1L,
                         maxit = 10000L,
                         abstol = 1e-08) {
-  .Deprecated(msg = "`el_pairwise()` was deprecated in melt 1.5.2.")
+  .Deprecated(msg = "`el_pairwise()` is deprecated in melt v1.5.2.")
   alpha <- validate_alpha(alpha)
   B <- validate_b(B)
   max_threads <- get_max_threads()
@@ -185,3 +186,19 @@ print.pairwise <- function(x, ...) {
   ))
   cat("\n\n")
 }
+
+#' @rdname logLik
+setMethod("logLik", "EL", function(object, ...) {
+  .Deprecated(
+    msg = "`logLik()` is deprecated in melt v1.8.1. Use `logL()` instead."
+  )
+  if (!missing(...)) {
+    warning("Extra arguments are not supported.")
+  }
+  stopifnot(
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (isFALSE(is.null(getData(object))))
+  )
+  out <- elt(object, rhs = coef(object))
+  new("logLikEL", .Data = logL(out), df = getNumPar(object))
+})

@@ -19,7 +19,7 @@ el_glm(
 )
 }
 \arguments{
-\item{formula}{An object of class [`formula`] (or one that can be coerced to
+\item{formula}{An object of class \code{\link{formula}} (or one that can be coerced to
 that class): a symbolic description of the model to be fitted.}
 
 \item{family}{A description of the error distribution and link function to be
@@ -27,37 +27,37 @@ used in the model. Only the result of a call to a family function is
 supported. See ‘Details’.}
 
 \item{data}{An optional data frame, list or environment (or object coercible
-by [as.data.frame()] to a data frame) containing the variables in the
+by \code{\link[=as.data.frame]{as.data.frame()}} to a data frame) containing the variables in the
 formula. If not found in data, the variables are taken from
-`environment(formula)`.}
+\code{environment(formula)}.}
 
 \item{weights}{An optional numeric vector of weights to be used in the
-fitting process. Defaults to `NULL`, corresponding to identical weights. If
-non-`NULL`, weighted empirical likelihood is computed.}
+fitting process. Defaults to \code{NULL}, corresponding to identical weights. If
+non-\code{NULL}, weighted empirical likelihood is computed.}
 
 \item{na.action}{A function which indicates what should happen when the data
-contain `NA`s. The default is set by the `na.action` setting of
-[`options`], and is `na.fail` if that is unset.}
+contain \code{NA}s. The default is set by the \code{na.action} setting of
+\code{\link{options}}, and is \code{na.fail} if that is unset.}
 
 \item{start}{Starting values for the parameters in the linear predictor.
-Defaults to `NULL` and is passed to [glm.fit()].}
+Defaults to \code{NULL} and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
-\item{etastart}{Starting values for the linear predictor. Defaults to `NULL`
-and is passed to [glm.fit()].}
+\item{etastart}{Starting values for the linear predictor. Defaults to \code{NULL}
+and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
-\item{mustart}{Starting values for the vector of means. Defaults to `NULL`
-and is passed to [glm.fit()].}
+\item{mustart}{Starting values for the vector of means. Defaults to \code{NULL}
+and is passed to \code{\link[=glm.fit]{glm.fit()}}.}
 
 \item{offset}{An optional expression for specifying an \emph{a priori} known
 component to be included in the linear predictor during fitting. This
-should be `NULL` or a numeric vector or matrix of extents matching those of
-the response. One or more [`offset`] terms can be included in the formula
+should be \code{NULL} or a numeric vector or matrix of extents matching those of
+the response. One or more \code{\link{offset}} terms can be included in the formula
 instead or as well, and if more than one are specified their sum is used.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-[el_control()].}
+\code{\link[=el_control]{el_control()}}.}
 
-\item{...}{Additional arguments to be passed to [glm.control()].}
+\item{...}{Additional arguments to be passed to \code{\link[=glm.control]{glm.control()}}.}
 }
 \value{
 An object of class of \linkS4class{GLM}.
@@ -67,63 +67,65 @@ Fits a generalized linear model with empirical likelihood.
 }
 \details{
 Suppose that we observe \eqn{n} independent random variables
-  \eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
-  is the \eqn{p}-dimensional covariate (including the intercept if any) and
-  \eqn{Y_i} is the response. A generalized linear model specifies that
-  \eqn{{\textrm{E}(Y_i | X_i)} = {\mu_i}},
-  \eqn{{G(\mu_i)} = {X_i^\top \theta}}, and
-  \eqn{{\textrm{Var}(Y_i | X_i)} = {\phi V(\mu_i)}},
-  where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
-  \eqn{p}-dimensional parameter, \eqn{\phi} is an optional dispersion
-  parameter, \eqn{G} is a known smooth link function, and \eqn{V} is a known
-  variance function.
+\eqn{{Z_i} \equiv {(X_i, Y_i)}} from a common distribution, where \eqn{X_i}
+is the \eqn{p}-dimensional covariate (including the intercept if any) and
+\eqn{Y_i} is the response. A generalized linear model specifies that
+\eqn{{\textrm{E}(Y_i | X_i)} = {\mu_i}},
+\eqn{{G(\mu_i)} = {X_i^\top \theta}}, and
+\eqn{{\textrm{Var}(Y_i | X_i)} = {\phi V(\mu_i)}},
+where \eqn{\theta = (\theta_0, \dots, \theta_{p-1})} is an unknown
+\eqn{p}-dimensional parameter, \eqn{\phi} is an optional dispersion
+parameter, \eqn{G} is a known smooth link function, and \eqn{V} is a known
+variance function.
 
-  With \eqn{H} denoting the inverse link function, define the quasi-score
-  \deqn{{g_1(Z_i, \theta)} =
+With \eqn{H} denoting the inverse link function, define the quasi-score
+\deqn{{g_1(Z_i, \theta)} =
   \left\{
   H^\prime(X_i^\top \theta) \left(Y_i - H(X_i^\top \theta)\right) /
   \left(\phi V\left(H(X_i^\top \theta)\right)\right)
   \right\}
   X_i.}
-  Then we have the estimating equations
-  \eqn{\sum_{i = 1}^n g_1(Z_i, \theta) = 0}.
-  When \eqn{\phi} is known, the (profile) empirical likelihood ratio for a
-  given \eqn{\theta} is defined by
-  \deqn{R_1(\theta) =
+Then we have the estimating equations
+\eqn{\sum_{i = 1}^n g_1(Z_i, \theta) = 0}.
+When \eqn{\phi} is known, the (profile) empirical likelihood ratio for a
+given \eqn{\theta} is defined by
+\deqn{R_1(\theta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i g_1(Z_i, \theta) = 0,\
   p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.}
-  With unknown \eqn{\phi}, we introduce another estimating function based on
-  the squared residuals. Let \eqn{{\eta} = {(\theta, \phi)}} and
-  \deqn{{g_2(Z_i, \eta)} =
+With unknown \eqn{\phi}, we introduce another estimating function based on
+the squared residuals. Let \eqn{{\eta} = {(\theta, \phi)}} and
+\deqn{{g_2(Z_i, \eta)} =
   \left(Y_i - H(X_i^\top \theta)\right)^2 /
   \left(\phi^2 V\left(H(X_i^\top \theta)\right)\right) - 1 / \phi.}
-  Now the empirical likelihood ratio is defined by
-  \deqn{R_2(\eta) =
+Now the empirical likelihood ratio is defined by
+\deqn{R_2(\eta) =
   \max_{p_i}\left\{\prod_{i = 1}^n np_i :
   \sum_{i = 1}^n p_i g_1(Z_i, \eta) = 0,\
   \sum_{i = 1}^n p_i g_2(Z_i, \eta) = 0,\
   p_i \geq 0,\
   \sum_{i = 1}^n p_i = 1
   \right\}.}
-  [el_glm()] first computes the parameter estimates by calling [glm.fit()]
-  (with `...` if any) with the `model.frame` and `model.matrix` obtained from
-  the `formula`. Note that the maximum empirical likelihood estimator is the
-  same as the the quasi-maximum likelihood estimator in our model. Next, it
-  tests hypotheses based on asymptotic chi-square distributions of the
-  empirical likelihood ratio statistics. Included in the tests are overall
-  test with
-  \deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
-  and significance tests for each parameter with
-  \deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
+\code{\link[=el_glm]{el_glm()}} first computes the parameter estimates by calling \code{\link[=glm.fit]{glm.fit()}}
+(with \code{...} if any) with the \code{model.frame} and \code{model.matrix} obtained from
+the \code{formula}. Note that the maximum empirical likelihood estimator is the
+same as the the quasi-maximum likelihood estimator in our model. Next, it
+tests hypotheses based on asymptotic chi-square distributions of the
+empirical likelihood ratio statistics. Included in the tests are overall
+test with
+\deqn{H_0: \theta_1 = \theta_2 = \cdots = \theta_{p-1} = 0,}
+and significance tests for each parameter with
+\deqn{H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.}
 
-  The available families and link functions are as follows:
-  * `gaussian`: `"identity"`, `"log"`, and `"inverse"`.
-  * `binomial`: `"logit"`, `"probit"`, and `"log"`.
-  * `poisson`: `"log"`, `"identity"`, and `"sqrt"`.
-  * `quasipoisson`: `"log"` and `"identity"`.
+The available families and link functions are as follows:
+\itemize{
+\item \code{gaussian}: \code{"identity"}, \code{"log"}, and \code{"inverse"}.
+\item \code{binomial}: \code{"logit"}, \code{"probit"}, and \code{"log"}.
+\item \code{poisson}: \code{"log"}, \code{"identity"}, and \code{"sqrt"}.
+\item \code{quasipoisson}: \code{"log"} and \code{"identity"}.
+}
 }
 \examples{
 data("warpbreaks")
@@ -135,14 +137,14 @@ summary(fit)
 }
 \references{
 Chen SX, Cui H (2003).
-  “An Extended Empirical Likelihood for Generalized Linear Models.”
-  \emph{Statistica Sinica}, 13(1), 69--81.
+“An Extended Empirical Likelihood for Generalized Linear Models.”
+\emph{Statistica Sinica}, 13(1), 69--81.
 
 Kolaczyk ED (1994).
-  “Empirical Likelihood for Generalized Linear Models.”
-  \emph{Statistica Sinica}, 4(1), 199--218.
+“Empirical Likelihood for Generalized Linear Models.”
+\emph{Statistica Sinica}, 4(1), 199--218.
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{GLM}, [el_lm()], [elt()],
-  [el_control()]
+\linkS4class{EL}, \linkS4class{GLM}, \code{\link[=el_lm]{el_lm()}}, \code{\link[=elt]{elt()}},
+\code{\link[=el_control]{el_control()}}
 }

@@ -1,3 +1,14 @@
+# melt 1.8.0.9000 (development version)
+## NEW FEATURES
+* empty
+
+## MINOR IMPROVEMENTS
+* empty
+
+## DEPRECATED AND DEFUNCT
+* `logLik()` is deprecated and will be removed in a future release. 
+
+
 # melt 1.8.0
 ## NEW FEATURES
 * New accessor method `logProb()` extracts a model's log probabilities of empirical likelihood.

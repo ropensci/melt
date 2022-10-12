@@ -15,26 +15,26 @@
 \item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-[el_control()].}
+\code{\link[=el_control]{el_control()}}.}
 }
 \value{
 An object of class \linkS4class{ELD}.
 }
 \description{
 Computes empirical likelihood displacement for model diagnostics and outlier
-  detection.
+detection.
 }
 \details{
 Let \eqn{L(\theta)} be the empirical log-likelihood function based
-  on the full sample with \eqn{n} observations. The maximum empirical
-  likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
-  sample with the \eqn{i}th observation deleted and the corresponding
-  estimate \eqn{\hat{\theta}_{(i)}}. The empirical likelihood displacement is
-  defined by
-  \deqn{\textrm{ELD}_i = 2\{L(\hat{\theta}) - L(\hat{\theta}_{(i)})\}.}
-  If \eqn{\textrm{ELD}_i } is large, then the \eqn{i}th observation is an
-  influential point and can be inspected as a possible outlier. `eld`
-  computes \eqn{\textrm{ELD}_i } for \eqn{i = 1, \dots, n }.
+on the full sample with \eqn{n} observations. The maximum empirical
+likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
+sample with the \eqn{i}th observation deleted and the corresponding
+estimate \eqn{\hat{\theta}_{(i)}}. The empirical likelihood displacement is
+defined by
+\deqn{\textrm{ELD}_i = 2\{L(\hat{\theta}) - L(\hat{\theta}_{(i)})\}.}
+If \eqn{\textrm{ELD}_i } is large, then the \eqn{i}th observation is an
+influential point and can be inspected as a possible outlier. \code{eld}
+computes \eqn{\textrm{ELD}_i } for \eqn{i = 1, \dots, n }.
 }
 \examples{
 data("precip")
@@ -44,16 +44,16 @@ plot(eld)
 }
 \references{
 Lazar NA (2005).
-  “Assessing the Effect of Individual Data Points on Inference From Empirical
-  Likelihood.”
-  \emph{Journal of Computational and Graphical Statistics}, 14(3), 626–642.
-  \doi{10.1198/106186005X59568}.
+“Assessing the Effect of Individual Data Points on Inference From Empirical
+Likelihood.”
+\emph{Journal of Computational and Graphical Statistics}, 14(3), 626–642.
+\doi{10.1198/106186005X59568}.
 
 Zhu H, Ibrahim JG, Tang N, Zhang H (2008).
-  “Diagnostic Measures for Empirical Likelihood of General Estimating
-  Equations.” \emph{Biometrika}, 95(2), 489--507.
-  \doi{10.1093/biomet/asm094}.
+“Diagnostic Measures for Empirical Likelihood of General Estimating
+Equations.” \emph{Biometrika}, 95(2), 489--507.
+\doi{10.1093/biomet/asm094}.
 }
 \seealso{
-\linkS4class{ELD}, [plot()], [el_control()]
+\linkS4class{ELD}, \code{\link[=plot]{plot()}}, \code{\link[=el_control]{el_control()}}
 }

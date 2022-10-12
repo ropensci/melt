@@ -6,7 +6,7 @@
 \alias{ConfregEL}
 \title{\linkS4class{ConfregEL} class}
 \description{
-S4 class for confidence region. It inherits from `"matrix"`.
+S4 class for confidence region. It inherits from \code{"matrix"}.
 }
 \section{Slots}{
 

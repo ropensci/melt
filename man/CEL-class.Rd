@@ -7,44 +7,46 @@
 \title{\linkS4class{CEL} class}
 \description{
 S4 class for constrained empirical likelihood. It inherits from
-  \linkS4class{EL} class. Note that the `optim` slot has constrained
-  optimization results with respect to the parameters, not the Lagrange
-  multiplier.
+\linkS4class{EL} class. Note that the \code{optim} slot has constrained
+optimization results with respect to the parameters, not the Lagrange
+multiplier.
 }
 \details{
 Let \eqn{l(\theta)} denote minus twice the empirical log-likelihood
-  ratio function. We consider a linear hypothesis of the form
-  \deqn{L\theta = r,} where the left-hand-side \eqn{L} is a \eqn{q} by
-  \eqn{p} matrix and the right-hand-side \eqn{r} is a \eqn{q}-dimensional
-  vector. Under some regularity conditions, \eqn{l(\theta)} converges in
-  distribution to \eqn{\chi^2_q} under the constraint of hypothesis, i.e.,
-  \deqn{\min_{\theta: L\theta = r} l(\theta) \to_d \chi^2_q .}
+ratio function. We consider a linear hypothesis of the form
+\deqn{L\theta = r,} where the left-hand-side \eqn{L} is a \eqn{q} by
+\eqn{p} matrix and the right-hand-side \eqn{r} is a \eqn{q}-dimensional
+vector. Under some regularity conditions, \eqn{l(\theta)} converges in
+distribution to \eqn{\chi^2_q} under the constraint of hypothesis, i.e.,
+\deqn{\min_{\theta: L\theta = r} l(\theta) \to_d \chi^2_q .}
 
-  Minimization of \eqn{l(\theta)} with respect to \eqn{\theta} is
-  computationally expensive since it implicitly involves the
-  evaluation step as described in \linkS4class{EL}. Further, depending on the
-  form of \eqn{g(X_i, \theta)} and the constraint, the optimization problem
-  can be nonconvex and have multiple local minima. For this reason, the
-  package \pkg{melt} only considers linear hypotheses and performs local
-  minimization of \eqn{l(\theta)} using projected gradient descent method.
-  With the orthogonal projection matrix \eqn{P} and a step size \eqn{\gamma},
-  the algorithm updates \eqn{\theta} as
-  \deqn{\theta^{(k + 1)} \leftarrow \theta^{(k)} -
+Minimization of \eqn{l(\theta)} with respect to \eqn{\theta} is
+computationally expensive since it implicitly involves the
+evaluation step as described in \linkS4class{EL}. Further, depending on the
+form of \eqn{g(X_i, \theta)} and the constraint, the optimization problem
+can be nonconvex and have multiple local minima. For this reason, the
+package \pkg{melt} only considers linear hypotheses and performs local
+minimization of \eqn{l(\theta)} using projected gradient descent method.
+With the orthogonal projection matrix \eqn{P} and a step size \eqn{\gamma},
+the algorithm updates \eqn{\theta} as
+\deqn{\theta^{(k + 1)} \leftarrow \theta^{(k)} -
   \gamma P \nabla l(\theta^{(k)}),}
-  where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
-  \eqn{\theta^{(k)}}. The first order optimality condition is
-  \eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
+where \eqn{\nabla l(\theta^{(k)})} denotes the gradient of \eqn{l} at
+\eqn{\theta^{(k)}}. The first order optimality condition is
+\eqn{P \nabla l(\theta) = 0}, which is used as the stopping criterion.
 }
 \section{Slots}{
 
 \describe{
 \item{\code{optim}}{A list of the following optimization results:
-* `par` A numeric vector of the solution to the constrained optimization
+\itemize{
+\item \code{par} A numeric vector of the solution to the constrained optimization
 problem.
-* `lambda` A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to `par`.
-* `iterations` A single integer for the number of iterations performed.
-* `convergence` A single logical for the convergence status.}
+\item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to \code{par}.
+\item \code{iterations} A single integer for the number of iterations performed.
+\item \code{convergence} A single logical for the convergence status.
+}}
 
 \item{\code{logp}}{A numeric vector of the log probabilities of the constrained
 empirical likelihood.}
@@ -82,12 +84,12 @@ showClass("CEL")
 }
 \references{
 Adimari G, Guolo A (2010).
-  “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-  \emph{Statistical Methods & Applications}, 19(4), 463--476.
-  \doi{10.1007/s10260-010-0137-9}.
+“A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
+\emph{Statistical Methods & Applications}, 19(4), 463--476.
+\doi{10.1007/s10260-010-0137-9}.
 
 Qin J, Lawless J (1995).
-  “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-  \emph{Canadian Journal of Statistics}, 23(2), 145--159.
-  \doi{10.2307/3315441}.
+“Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
+\emph{Canadian Journal of Statistics}, 23(2), 145--159.
+\doi{10.2307/3315441}.
 }

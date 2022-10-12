@@ -21,56 +21,58 @@
 \item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{rhs}{A numeric vector or a column matrix for the right-hand side of
-hypothesis, with as many entries as the rows in `lhs`. Defaults to `NULL`.
+hypothesis, with as many entries as the rows in \code{lhs}. Defaults to \code{NULL}.
 See ‘Details’.}
 
 \item{lhs}{A numeric matrix or a vector (treated as a row matrix) for the
 left-hand side of a hypothesis. Each row gives a linear combination of the
-parameters in `object`. The number of columns must be equal to the number
+parameters in \code{object}. The number of columns must be equal to the number
 of parameters. Or a character vector with a symbolic description of the
-hypothesis is allowed. Defaults to `NULL`. See ‘Details’.}
+hypothesis is allowed. Defaults to \code{NULL}. See ‘Details’.}
 
-\item{alpha}{A single numeric for the significance level. Defaults to `0.05`.}
+\item{alpha}{A single numeric for the significance level. Defaults to \code{0.05}.}
 
 \item{calibrate}{A single character for the calibration method. It is
-case-insensitive and must be one of `"chisq"`, `"boot"`, or `"f"`.
-Defaults to `"chisq"`. See ‘Details’.}
+case-insensitive and must be one of \code{"chisq"}, \code{"boot"}, or \code{"f"}.
+Defaults to \code{"chisq"}. See ‘Details’.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-[el_control()].}
+\code{\link[=el_control]{el_control()}}.}
 }
 \value{
-An object of class of \linkS4class{ELT}. If `lhs` is non-`NULL`, the
-  `optim` slot corresponds to that of \linkS4class{CEL}. Otherwise, it
-  corresponds to that of \linkS4class{EL}.
+An object of class of \linkS4class{ELT}. If \code{lhs} is non-\code{NULL}, the
+\code{optim} slot corresponds to that of \linkS4class{CEL}. Otherwise, it
+corresponds to that of \linkS4class{EL}.
 }
 \description{
 Tests a linear hypothesis.
 }
 \details{
-[elt()] performs the constrained minimization of \eqn{l(\theta)}
-  described in \linkS4class{CEL}. `rhs` and `lhs` cannot be both `NULL`. For
-  non-`NULL` `lhs`, it is required that `lhs` have full row rank
-  \eqn{q \leq p} and \eqn{p} be equal to the number of parameters in the
-  `object`.
+\code{\link[=elt]{elt()}} performs the constrained minimization of \eqn{l(\theta)}
+described in \linkS4class{CEL}. \code{rhs} and \code{lhs} cannot be both \code{NULL}. For
+non-\code{NULL} \code{lhs}, it is required that \code{lhs} have full row rank
+\eqn{q \leq p} and \eqn{p} be equal to the number of parameters in the
+\code{object}.
 
-  Depending on the specification of `rhs` and `lhs`, we have the following
-  three cases:
-  1. If both `rhs` and `lhs` are non-`NULL`, the constrained minimization
-  is performed with the right-hand side \eqn{r} and the left-hand side
-  \eqn{L} as
-  \deqn{\inf_{\theta: L\theta = r} l(\theta).}
-  1. If `rhs` is `NULL`, \eqn{r} is set to the zero vector as
-  \eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
-  1. If `lhs` is `NULL`, \eqn{L} is set to the identity matrix and the
-  problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
+Depending on the specification of \code{rhs} and \code{lhs}, we have the following
+three cases:
+\enumerate{
+\item If both \code{rhs} and \code{lhs} are non-\code{NULL}, the constrained minimization
+is performed with the right-hand side \eqn{r} and the left-hand side
+\eqn{L} as
+\deqn{\inf_{\theta: L\theta = r} l(\theta).}
+\item If \code{rhs} is \code{NULL}, \eqn{r} is set to the zero vector as
+\eqn{\inf_{\theta: L\theta = 0} l(\theta)}.
+\item If \code{lhs} is \code{NULL}, \eqn{L} is set to the identity matrix and the
+problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
+}
 
-  `calibrate` specifies the calibration method used. Three methods are
-  available: `"chisq"` (chi-square calibration), `"boot"` (bootstrap
-  calibration), and `"f"` (\eqn{F} calibration). `"boot"` is applicable only
-  when `lhs` is `NULL`. The `nthreads`, `seed`, and `B` slots in `control`
-  apply to the bootstrap procedure. `"f"` is applicable only to the mean
-  parameter when `lhs` is `NULL`.
+\code{calibrate} specifies the calibration method used. Three methods are
+available: \code{"chisq"} (chi-square calibration), \code{"boot"} (bootstrap
+calibration), and \code{"f"} (\eqn{F} calibration). \code{"boot"} is applicable only
+when \code{lhs} is \code{NULL}. The \code{nthreads}, \code{seed}, and \code{B} slots in \code{control}
+apply to the bootstrap procedure. \code{"f"} is applicable only to the mean
+parameter when \code{lhs} is \code{NULL}.
 }
 \examples{
 ## F calibration for the mean
@@ -97,15 +99,15 @@ elt(fit2, lhs = c(
 }
 \references{
 Adimari G, Guolo A (2010).
-  “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-  \emph{Statistical Methods & Applications}, 19(4), 463--476.
-  \doi{10.1007/s10260-010-0137-9}.
+“A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
+\emph{Statistical Methods & Applications}, 19(4), 463--476.
+\doi{10.1007/s10260-010-0137-9}.
 
 Qin J, Lawless J (1995).
-  “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-  \emph{Canadian Journal of Statistics}, 23(2), 145--159.
-  \doi{10.2307/3315441}.
+“Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
+\emph{Canadian Journal of Statistics}, 23(2), 145--159.
+\doi{10.2307/3315441}.
 }
 \seealso{
-\linkS4class{ELT}, [elmt()], [el_control()]
+\linkS4class{ELT}, \code{\link[=elmt]{elmt()}}, \code{\link[=el_control]{el_control()}}
 }

@@ -17,8 +17,8 @@
 \item{...}{Further arguments passed to methods.}
 }
 \value{
-The form of the value returned by [sigTests()] depends on the
-  class of its argument.
+The form of the value returned by \code{\link[=sigTests]{sigTests()}} depends on the
+class of its argument.
 }
 \description{
 Extracts the results of significance tests from a model.
@@ -39,5 +39,5 @@ sigTests(fit)
 sigTests(summary(fit))
 }
 \seealso{
-\linkS4class{LM}, \linkS4class{SummaryLM}, [getOptim()]
+\linkS4class{LM}, \linkS4class{SummaryLM}, \code{\link[=getOptim]{getOptim()}}
 }
