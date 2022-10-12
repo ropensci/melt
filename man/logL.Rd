@@ -4,11 +4,14 @@
 \alias{logL}
 \alias{logL,EL-method}
 \alias{logL,ELT-method}
+\alias{logL,SummaryEL-method}
 \title{Empirical log-likelihood}
 \usage{
 \S4method{logL}{EL}(object, ...)
 
 \S4method{logL}{ELT}(object, ...)
+
+\S4method{logL}{SummaryEL}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL} or

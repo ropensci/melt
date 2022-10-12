@@ -34,7 +34,7 @@
 #'   distribution with \eqn{p} degrees of freedom. See the references below for
 #'   more details.
 #' @slot optim A list of the following optimization results:
-#'   * `par` A numeric vector of the solution to the optimization problem.
+#'   * `par` A numeric vector of the specified parameters.
 #'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
@@ -69,8 +69,8 @@ setClass("EL",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
     statistic = "numeric", df = "integer", pval = "numeric", nobs = "integer",
-    npar = "integer", weights = "numeric",
-    coefficients = "numeric", method = "character", data = "ANY"
+    npar = "integer", weights = "numeric", coefficients = "numeric",
+    method = "character", data = "ANY"
   )
 )
 
@@ -483,7 +483,7 @@ setClass("QGLM", contains = "GLM")
 #' S4 class for standard deviation. It inherits from \linkS4class{EL} class.
 #'
 #' @slot optim A list of the following optimization results:
-#'   * `par` A numeric vector of the solution to the optimization problem.
+#'   * `par` A numeric vector of the specified parameters.
 #'   * `lambda` A numeric vector of the Lagrange multipliers of the dual
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
@@ -511,6 +511,70 @@ setClass("QGLM", contains = "GLM")
 setClass("SD", contains = "EL")
 
 
+#' \linkS4class{SummaryEL} class
+#'
+#' S4 class for a summary of \linkS4class{EL} objects.
+#'
+#' @slot logl A single numeric of the empirical log-likelihood.
+#' @slot loglr A single numeric of the empirical log-likelihood ratio.
+#' @slot statistic A single numeric of minus twice the empirical log-likelihood
+#'   ratio with an asymptotic chi-square distribution.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A single integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
+#' @slot weighted A single logical for whether the data are weighted or not.
+#' @slot convergence A single logical for the convergence status.
+#' @slot par A numeric vector of the specified parameters.
+#' @slot lambda A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
+#' @aliases SummaryEL
+#' @examples
+#' showClass("SummaryEL")
+setClass("SummaryEL", slots = c(
+  logl = "numeric", loglr = "numeric", statistic = "numeric", df = "integer",
+  pval = "numeric", nobs = "integer", npar = "integer",
+  coefficients = "numeric", method = "character", weighted = "logical",
+  convergence = "logical", par = "numeric", lambda = "numeric"
+))
+
+
+#' \linkS4class{SummaryELMT} class
+#'
+#' S4 class for a summary of \linkS4class{ELMT} objects.
+#'
+#' @slot aliased A named logical vector showing if the original coefficients are
+#'   aliased.
+#' @aliases SummaryELMT
+#' @examples
+#' showClass("SummaryELMT")
+setClass("SummaryELMT", slots = c(
+  statistic = "numeric", df = "integer", convergence = "logical",
+  sigTests = "matrix", weighted = "logical", intercept = "logical",
+  na.action = "ANY", call = "call", terms = "terms", aliased = "logical"
+))
+
+
+#' \linkS4class{SummaryELT} class
+#'
+#' S4 class for a summary of \linkS4class{ELT} objects.
+#'
+#' @slot aliased A named logical vector showing if the original coefficients are
+#'   aliased.
+#' @aliases SummaryELT
+#' @examples
+#' showClass("SummaryELT")
+setClass("SummaryELT", slots = c(
+  statistic = "numeric", df = "integer", convergence = "logical",
+  sigTests = "matrix", weighted = "logical", intercept = "logical",
+  na.action = "ANY", call = "call", terms = "terms", aliased = "logical"
+))
+
+
 #' \linkS4class{SummaryLM} class
 #'
 #' S4 class for a summary of \linkS4class{LM} objects.
@@ -521,8 +585,7 @@ setClass("SD", contains = "EL")
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
 #' @slot sigTests A numeric matrix of the results of significance tests.
-#' @slot weighted A single logical for whether the given model is weighted or
-#'   not.
+#' @slot weighted A single logical for whether the data are weighted or not.
 #' @slot intercept A single logical for whether the given model has an intercept
 #'   term or not.
 #' @slot na.action Information returned by [`model.frame`] on the special
@@ -554,8 +617,7 @@ setClass("SummaryLM", slots = c(
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
 #' @slot sigTests A numeric matrix of the results of significance tests.
-#' @slot weighted A single logical for whether the given model is weighted or
-#'   not.
+#' @slot weighted A single logical for whether data are weighted or not.
 #' @slot intercept A single logical for whether the given model has an intercept
 #'   term or not.
 #' @slot na.action Information returned by [`model.frame`] on the special
@@ -586,8 +648,7 @@ setClass("SummaryGLM",
 #' @slot convergence A single logical for the convergence status of the
 #'   constrained minimization.
 #' @slot sigTests A numeric matrix of the results of significance tests.
-#' @slot weighted A single logical for whether the given model is weighted or
-#'   not.
+#' @slot weighted A single logical for whether the data are weighted or not.
 #' @slot intercept A single logical for whether the given model has an intercept
 #'   term or not.
 #' @slot na.action Information returned by [`model.frame`] on the special

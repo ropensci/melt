@@ -3,17 +3,19 @@ setMethod("print", "EL", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   ...) {
   if (is.null(weights(x))) {
-    cat("\n\tEmpirical Likelihood\n\n")
+    cat("\n\tEmpirical Likelihood\n")
   } else {
-    cat("\n\tWeighted Empirical Likelihood\n\n")
+    cat("\n\tWeighted Empirical Likelihood\n")
   }
   method <- getMethodEL(x)
   if (isFALSE(is.na(method))) {
-    cat("Model:", method, "\n\n")
+    cat("\nModel:", method, "\n")
   }
   if (length(coef(x)) != 0L) {
-    cat("Maximum EL estimates:\n")
-    print.default(coef(x), digits = digits, ...)
+    cat(
+      "\nMaximum EL estimates:\n",
+      format.default(coef(x), digits = digits, ...), "\n"
+    )
   }
   cat("\n")
   out <- character()
@@ -174,6 +176,46 @@ setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
   invisible(x)
 })
 setMethod("show", "logLikEL", function(object) print(object))
+
+#' @rdname print
+setMethod(
+  "print", "SummaryEL",
+  function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+    if (x@weighted) {
+      cat("\n\tWeighted Empirical Likelihood\n")
+    } else {
+      cat("\n\tEmpirical Likelihood\n")
+    }
+    cat(
+      "\nModel:", getMethodEL(x), "\n",
+      "\nParameters:\n", format.default(x@par, digits = digits, ...),
+      "\n\nLagrange multipliers:\n",
+      format.default(x@lambda, digits = digits, ...),
+      "\n\nMaximum EL estimates:\n",
+      format.default(coef(x), digits = digits, ...), "\n"
+    )
+    cat(
+      "------\nNumber of observations:", nobs(x),
+      "\nNumber of parameters:", getNumPar(x),
+      paste0(
+        "\n------\nlogL: ", format.default(logL(x), digits = digits, ...),
+        ", logLR: ", format.default(logLR(x), digits = digits, ...)
+      ), "\n"
+    )
+    out <- c(
+      paste("Chisq:", format.default(chisq(x), digits = digits), ...),
+      paste("df:", getDF(x)),
+      paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits), ...)
+    )
+    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
+    cat(
+      "------\nEL evaluation:",
+      if (conv(x)) "converged" else "not converged", "\n\n"
+    )
+    invisible(x)
+  }
+)
+setMethod("show", "SummaryEL", function(object) print(object))
 
 #' @rdname print
 setMethod(

@@ -46,7 +46,7 @@ more details.
 \describe{
 \item{\code{optim}}{A list of the following optimization results:
 \itemize{
-\item \code{par} A numeric vector of the solution to the optimization problem.
+\item \code{par} A numeric vector of the specified parameters.
 \item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
 problem corresponding to \code{par}.
 \item \code{iterations} A single integer for the number of iterations performed.

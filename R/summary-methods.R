@@ -1,3 +1,14 @@
+#' @describeIn summary Summarizes the.
+setMethod("summary", "EL", function(object, ...) {
+  z <- object
+  new("SummaryEL",
+    logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
+    pval = pVal(z), nobs = nobs(z), npar = getNumPar(z), coefficients = coef(z),
+    method = getMethodEL(z), weighted = !is.null(weights(z)),
+    convergence = conv(z), par = getOptim(z)$par, lambda = getOptim(z)$lambda
+  )
+})
+
 #' @describeIn summary Summarizes the results of the overall model test and the
 #'   significance tests for coefficients.
 setMethod("summary", "LM", function(object, ...) {
@@ -98,4 +109,14 @@ setMethod("summary", "QGLM", function(object, ...) {
     na.action = z@misc$na.action, call = z@call, terms = z@terms,
     aliased = is.na(coef(z))
   )
+})
+
+#' @describeIn summary Summarizes the.
+setMethod("summary", "ELT", function(object, ...) {
+  new("SummaryELT")
+})
+
+#' @describeIn summary Summarizes the.
+setMethod("summary", "ELMT", function(object, ...) {
+  new("SummaryELMT")
 })

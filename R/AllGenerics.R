@@ -548,17 +548,16 @@ setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 #'
 #' Provides print methods for objects.
 #'
-#' @param x An object that inherits from \linkS4class{EL},
-#'   \linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.
+#' @param x An object to be printed.
 #' @param digits A single integer for the number of significant digits to be
 #'   passed to [format()].
 #' @param signif.stars A single logical. If `TRUE`, ‘significance stars’
 #'   are printed for each parameter.
 #' @param ... Further arguments passed to methods.
 #' @return The argument `x` (invisibly).
-#' @seealso \linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
-#'   \linkS4class{LM}, \linkS4class{SummaryLM}, \linkS4class{SummaryGLM},
-#'   \linkS4class{SummaryQGLM}
+#' @seealso \linkS4class{EL}, \linkS4class{SummaryEL}, \linkS4class{ELT},
+#'   \linkS4class{ELMT}, \linkS4class{LM}, \linkS4class{SummaryLM},
+#'   \linkS4class{SummaryGLM}, \linkS4class{SummaryQGLM}
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -611,11 +610,12 @@ setGeneric("sigTests", function(object, ...) standardGeneric("sigTests"))
 #'
 #' Provides summary methods for objects.
 #'
-#' @param object An object that inherits from \linkS4class{LM}.
+#' @param object An object for which a summary is desired.
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [summary()] depends on the class of
 #'   its argument.
-#' @seealso \linkS4class{LM}, \linkS4class{GLM}, \linkS4class{QGLM}
+#' @seealso \linkS4class{EL}, \linkS4class{LM}, \linkS4class{GLM},
+#'   \linkS4class{QGLM}, \linkS4class{ELT}, \linkS4class{ELMT}
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -669,10 +669,16 @@ setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
 setMethod("getMethodEL", "EL", function(x) {
   x@method
 })
+setMethod("getMethodEL", "SummaryEL", function(x) {
+  x@method
+})
 
 
 setGeneric("getNumPar", function(x) standardGeneric("getNumPar"))
 setMethod("getNumPar", "EL", function(x) {
+  x@npar
+})
+setMethod("getNumPar", "SummaryEL", function(x) {
   x@npar
 })
 

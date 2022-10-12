@@ -1,9 +1,6 @@
 # melt 1.8.0.9000 (development version)
-## NEW FEATURES
-* empty
-
 ## MINOR IMPROVEMENTS
-* empty
+* `summary()` is applicable to an object that inherits from `EL`, `ELT`, and `EMLT`.
 
 ## DEPRECATED AND DEFUNCT
 * `logLik()` is deprecated and will be removed in a future release. 

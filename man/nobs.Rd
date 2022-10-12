@@ -3,9 +3,12 @@
 \name{nobs}
 \alias{nobs}
 \alias{nobs,EL-method}
+\alias{nobs,SummaryEL-method}
 \title{Number of observations in a model}
 \usage{
 \S4method{nobs}{EL}(object, ...)
+
+\S4method{nobs}{SummaryEL}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL}.}

@@ -4,11 +4,14 @@
 \alias{coef}
 \alias{coef,EL-method}
 \alias{coef,ELMT-method}
+\alias{coef,SummaryEL-method}
 \title{Model coefficients}
 \usage{
 \S4method{coef}{EL}(object, ...)
 
 \S4method{coef}{ELMT}(object, ...)
+
+\S4method{coef}{SummaryEL}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL} or
@@ -31,6 +34,9 @@ likelihood estimates.
 \item \code{coef(ELMT)}: Extracts the list of numeric vectors of the maximum
 empirical likelihood estimates. Each element of the list corresponds to a
 distinct hypothesis.
+
+\item \code{coef(SummaryEL)}: Extracts the numeric vector of the maximum empirical
+likelihood estimates.
 
 }}
 \examples{

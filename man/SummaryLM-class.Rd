@@ -21,8 +21,7 @@ constrained minimization.}
 
 \item{\code{sigTests}}{A numeric matrix of the results of significance tests.}
 
-\item{\code{weighted}}{A single logical for whether the given model is weighted or
-not.}
+\item{\code{weighted}}{A single logical for whether the data are weighted or not.}
 
 \item{\code{intercept}}{A single logical for whether the given model has an intercept
 term or not.}

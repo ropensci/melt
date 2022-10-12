@@ -5,6 +5,7 @@
 \alias{pVal,EL-method}
 \alias{pVal,ELMT-method}
 \alias{pVal,ELT-method}
+\alias{pVal,SummaryEL-method}
 \title{\eqn{p}-value}
 \usage{
 \S4method{pVal}{EL}(object, ...)
@@ -12,6 +13,8 @@
 \S4method{pVal}{ELMT}(object, ...)
 
 \S4method{pVal}{ELT}(object, ...)
+
+\S4method{pVal}{SummaryEL}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL},
@@ -33,6 +36,8 @@ Extracts \eqn{p}-value from a model.
 \item \code{pVal(ELMT)}: Extracts the multiplicity adjusted \eqn{p}-values.
 
 \item \code{pVal(ELT)}: Extracts the \eqn{p}-value.
+
+\item \code{pVal(SummaryEL)}: Extracts the \eqn{p}-value.
 
 }}
 \examples{

@@ -12,3 +12,8 @@ setMethod("pVal", "ELMT", function(object, ...) {
 setMethod("pVal", "ELT", function(object, ...) {
   object@pval
 })
+
+#' @describeIn pVal Extracts the \eqn{p}-value.
+setMethod("pVal", "SummaryEL", function(object, ...) {
+  object@pval
+})

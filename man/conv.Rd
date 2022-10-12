@@ -5,6 +5,7 @@
 \alias{conv,CEL-method}
 \alias{conv,EL-method}
 \alias{conv,ELT-method}
+\alias{conv,SummaryEL-method}
 \alias{conv,SummaryLM-method}
 \title{Convergence check}
 \usage{
@@ -13,6 +14,8 @@
 \S4method{conv}{EL}(object, ...)
 
 \S4method{conv}{ELT}(object, ...)
+
+\S4method{conv}{SummaryEL}(object, ...)
 
 \S4method{conv}{SummaryLM}(object, ...)
 }
@@ -38,6 +41,9 @@ the Lagrange multiplier.
 
 \item \code{conv(ELT)}: Extracts the convergence status of the model with respect to
 the parameter (or the Lagrange multiplier if \code{lhs} is \code{NULL}).
+
+\item \code{conv(SummaryEL)}: Extracts the convergence status of the model with respect to
+the Lagrange multiplier.
 
 \item \code{conv(SummaryLM)}: Extracts the convergence status of the model. See the
 documentation of \linkS4class{EL} and \linkS4class{CEL}.

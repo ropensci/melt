@@ -16,6 +16,12 @@ setMethod("conv", "ELT", function(object, ...) {
   getOptim(object)$convergence
 })
 
+#' @describeIn conv Extracts the convergence status of the model with respect to
+#'   the Lagrange multiplier.
+setMethod("conv", "SummaryEL", function(object, ...) {
+  object@convergence
+})
+
 #' @describeIn conv Extracts the convergence status of the model. See the
 #'   documentation of \linkS4class{EL} and \linkS4class{CEL}.
 setMethod("conv", "SummaryLM", function(object, ...) {

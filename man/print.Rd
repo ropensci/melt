@@ -7,6 +7,7 @@
 \alias{print,ELT-method}
 \alias{print,LM-method}
 \alias{print,logLikEL-method}
+\alias{print,SummaryEL-method}
 \alias{print,SummaryGLM-method}
 \alias{print,SummaryLM-method}
 \alias{print,SummaryQGLM-method}
@@ -26,6 +27,8 @@
 \S4method{print}{LM}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
 \S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
+
+\S4method{print}{SummaryEL}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
 \S4method{print}{SummaryGLM}(
   x,
@@ -49,8 +52,7 @@
 )
 }
 \arguments{
-\item{x}{An object that inherits from \linkS4class{EL},
-\linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.}
+\item{x}{An object to be printed.}
 
 \item{...}{Further arguments passed to methods.}
 
@@ -72,7 +74,7 @@ fit <- el_mean(precip, par = 40)
 print(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
-\linkS4class{LM}, \linkS4class{SummaryLM}, \linkS4class{SummaryGLM},
-\linkS4class{SummaryQGLM}
+\linkS4class{EL}, \linkS4class{SummaryEL}, \linkS4class{ELT},
+\linkS4class{ELMT}, \linkS4class{LM}, \linkS4class{SummaryLM},
+\linkS4class{SummaryGLM}, \linkS4class{SummaryQGLM}
 }

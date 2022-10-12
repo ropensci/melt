@@ -2,19 +2,28 @@
 % Please edit documentation in R/AllGenerics.R, R/summary-methods.R
 \name{summary}
 \alias{summary}
+\alias{summary,EL-method}
 \alias{summary,LM-method}
 \alias{summary,GLM-method}
 \alias{summary,QGLM-method}
+\alias{summary,ELT-method}
+\alias{summary,ELMT-method}
 \title{Summary methods}
 \usage{
+\S4method{summary}{EL}(object, ...)
+
 \S4method{summary}{LM}(object, ...)
 
 \S4method{summary}{GLM}(object, ...)
 
 \S4method{summary}{QGLM}(object, ...)
+
+\S4method{summary}{ELT}(object, ...)
+
+\S4method{summary}{ELMT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{LM}.}
+\item{object}{An object for which a summary is desired.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -27,6 +36,8 @@ Provides summary methods for objects.
 }
 \section{Methods (by class)}{
 \itemize{
+\item \code{summary(EL)}: Summarizes the.
+
 \item \code{summary(LM)}: Summarizes the results of the overall model test and the
 significance tests for coefficients.
 
@@ -38,6 +49,10 @@ for display.
 significance tests for coefficients. The estimated dispersion parameter is
 extracted for display.
 
+\item \code{summary(ELT)}: Summarizes the.
+
+\item \code{summary(ELMT)}: Summarizes the.
+
 }}
 \examples{
 data("mtcars")
@@ -45,5 +60,6 @@ fit <- el_lm(mpg ~ wt, data = mtcars)
 summary(fit)
 }
 \seealso{
-\linkS4class{LM}, \linkS4class{GLM}, \linkS4class{QGLM}
+\linkS4class{EL}, \linkS4class{LM}, \linkS4class{GLM},
+\linkS4class{QGLM}, \linkS4class{ELT}, \linkS4class{ELMT}
 }
