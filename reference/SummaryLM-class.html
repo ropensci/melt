@@ -97,23 +97,14 @@ handling of <code>NA</code>s.</p></dd>
 aliased.</p></dd>
 
 
-<dt><code>par</code></dt>
-<dd><p>A numeric vector of the solution to the (constrained) optimization
-problem.</p></dd>
-
-
-<dt><code>lambda</code></dt>
-<dd><p>A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to <code>par</code>.</p></dd>
-
-
-<dt><code>weighted</code></dt>
-<dd><p>A single logical for whether the data are weighted or not.</p></dd>
-
-
-<dt><code>convergence</code></dt>
-<dd><p>A single logical for the convergence status of the
-constrained minimization.</p></dd>
+<dt><code>optim</code></dt>
+<dd><p>A list of the following optimization results:</p><ul><li><p><code>par</code> A numeric vector of the solution to the (constrained) optimization
+problem.</p></li>
+<li><p><code>lambda</code> A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to <code>par</code>.</p></li>
+<li><p><code>iterations</code> A single integer for the number of iterations performed.</p></li>
+<li><p><code>convergence</code> A single logical for the convergence status.</p></li>
+</ul></dd>
 
 
 <dt><code>logl</code></dt>
@@ -145,6 +136,10 @@ log-likelihood ratio for the overall test.</p></dd>
 <dd><p>A single integer for the number of parameters.</p></dd>
 
 
+<dt><code>weighted</code></dt>
+<dd><p>A single logical for whether the data are weighted or not.</p></dd>
+
+
 <dt><code>coefficients</code></dt>
 <dd><p>A numeric vector of the maximum empirical likelihood
 estimates of the parameters.</p></dd>
@@ -167,14 +162,14 @@ functions.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Name:      sigTests    intercept    na.action         call        terms</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class:       matrix      logical          ANY         call        terms</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:       aliased          par       lambda     weighted  convergence</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      logical      numeric      numeric      logical      logical</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:       aliased        optim         logl        loglr    statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      logical         list      numeric      numeric      numeric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          logl        loglr    statistic           df         pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      numeric      integer      numeric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          nobs         npar coefficients       method</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      integer      numeric    character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:            df         pval         nobs         npar     weighted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      numeric      integer      integer      logical</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:  coefficients       method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric    character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Known Subclasses: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "SummaryGLM", directly</span>

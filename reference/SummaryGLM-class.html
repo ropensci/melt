@@ -107,23 +107,14 @@ handling of <code>NA</code>s.</p></dd>
 aliased.</p></dd>
 
 
-<dt><code>par</code></dt>
-<dd><p>A numeric vector of the solution to the (constrained) optimization
-problem.</p></dd>
-
-
-<dt><code>lambda</code></dt>
-<dd><p>A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to <code>par</code>.</p></dd>
-
-
-<dt><code>weighted</code></dt>
-<dd><p>A single logical for whether the data are weighted or not.</p></dd>
-
-
-<dt><code>convergence</code></dt>
-<dd><p>A single logical for the convergence status of the
-constrained minimization.</p></dd>
+<dt><code>optim</code></dt>
+<dd><p>A list of the following optimization results:</p><ul><li><p><code>par</code> A numeric vector of the solution to the (constrained) optimization
+problem.</p></li>
+<li><p><code>lambda</code> A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to <code>par</code>.</p></li>
+<li><p><code>iterations</code> A single integer for the number of iterations performed.</p></li>
+<li><p><code>convergence</code> A single logical for the convergence status.</p></li>
+</ul></dd>
 
 
 <dt><code>logl</code></dt>
@@ -155,6 +146,10 @@ log-likelihood ratio for the overall test.</p></dd>
 <dd><p>A single integer for the number of parameters.</p></dd>
 
 
+<dt><code>weighted</code></dt>
+<dd><p>A single logical for whether the data are weighted or not.</p></dd>
+
+
 <dt><code>coefficients</code></dt>
 <dd><p>A numeric vector of the maximum empirical likelihood
 estimates of the parameters.</p></dd>
@@ -177,17 +172,14 @@ functions.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Name:        family   dispersion     sigTests    intercept    na.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class:       family      numeric       matrix      logical          ANY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          call        terms      aliased          par       lambda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:         call        terms      logical      numeric      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          call        terms      aliased        optim         logl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:         call        terms      logical         list      numeric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      weighted  convergence         logl        loglr    statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      logical      logical      numeric      numeric      numeric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:            df         pval         nobs         npar coefficients</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      numeric      integer      integer      numeric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:        method</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:    character</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:         loglr    statistic           df         pval         nobs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      integer      numeric      integer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          npar     weighted coefficients       method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      logical      numeric    character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Extends: "SummaryLM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
