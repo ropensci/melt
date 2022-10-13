@@ -129,7 +129,8 @@ $$R(\sigma) =
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"women"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">women</span><span class="op">$</span><span class="va">height</span></span></span>
 <span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="va">women</span><span class="op">$</span><span class="va">weight</span></span></span>
-<span class="r-in"><span><span class="fu">el_sd</span><span class="op">(</span><span class="va">x</span>, mean <span class="op">=</span> <span class="fl">65</span>, sd <span class="op">=</span> <span class="fl">5</span>, weights <span class="op">=</span> <span class="va">w</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">el_sd</span><span class="op">(</span><span class="va">x</span>, mean <span class="op">=</span> <span class="fl">65</span>, sd <span class="op">=</span> <span class="fl">5</span>, weights <span class="op">=</span> <span class="va">w</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Weighted Empirical Likelihood</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -139,7 +140,26 @@ $$R(\sigma) =
 <span class="r-out co"><span class="r-pr">#&gt;</span>  4.34 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.843, df: 1, Pr(&gt;Chisq): 0.1746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> EL evaluation: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Weighted Empirical Likelihood</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model: sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of observations: 15 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of parameters: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameters:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Lagrange multipliers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.01913 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum EL estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4.34 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> logL: -41.45, logLR: -0.9215 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 1.843, df: 1, Pr(&gt;Chisq): 0.1746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EL evaluation: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>

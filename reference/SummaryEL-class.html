@@ -70,7 +70,24 @@
     <h2>Slots</h2>
     
 
-<dl><dt><code>logl</code></dt>
+<dl><dt><code>par</code></dt>
+<dd><p>A numeric vector of the specified parameters.</p></dd>
+
+
+<dt><code>lambda</code></dt>
+<dd><p>A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to <code>par</code>.</p></dd>
+
+
+<dt><code>weighted</code></dt>
+<dd><p>A single logical for whether the data are weighted or not.</p></dd>
+
+
+<dt><code>convergence</code></dt>
+<dd><p>A single logical for the convergence status.</p></dd>
+
+
+<dt><code>logl</code></dt>
 <dd><p>A single numeric of the empirical log-likelihood.</p></dd>
 
 
@@ -109,23 +126,6 @@ estimates of the parameters.</p></dd>
 functions.</p></dd>
 
 
-<dt><code>weighted</code></dt>
-<dd><p>A single logical for whether the data are weighted or not.</p></dd>
-
-
-<dt><code>convergence</code></dt>
-<dd><p>A single logical for the convergence status.</p></dd>
-
-
-<dt><code>par</code></dt>
-<dd><p>A numeric vector of the specified parameters.</p></dd>
-
-
-<dt><code>lambda</code></dt>
-<dd><p>A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to <code>par</code>.</p></dd>
-
-
 </dl></div>
 
     <div id="ref-examples">
@@ -135,14 +135,14 @@ problem corresponding to <code>par</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          logl        loglr    statistic           df         pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      numeric      integer      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:           par       lambda     weighted  convergence         logl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      logical      logical      numeric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          nobs         npar coefficients       method     weighted</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      integer      numeric    character      logical</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:         loglr    statistic           df         pval         nobs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      integer      numeric      integer</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:   convergence          par       lambda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      logical      numeric      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          npar coefficients       method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      numeric    character</span>
 </code></pre></div>
     </div>
   </div>

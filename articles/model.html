@@ -167,7 +167,6 @@
 <span><span class="co">#&gt;   3.488 70.897 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chisq: 8.483, df: 2, Pr(&gt;Chisq): 0.01439</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; EL evaluation: converged</span></span></code></pre></div>
 <p>Note that the maximum empirical likelihood estimates are the same as the sample average. The chi-square value shown corresponds to the minus twice the empirical log-likelihood ratio. It has an asymptotic chi-square distribution of 2 degrees of freedom under the null hypothesis. Hence the <span class="math inline">\(p\)</span>-value here is not exact. The convergence status at the bottom can be used to check the convex hull constraint.</p>
 <p>Weighted data can be handled by supplying the <code>weights</code> argument. For non-<code>NULL</code> <code>weights</code>, weighted empirical likelihood is computed. Any valid <code>weights</code> is re-scaled for internal computation to add up to the total number of observations. For simplicity, we use <code>faithful$waiting</code> as our weight vector.</p>
@@ -183,7 +182,6 @@
 <span><span class="co">#&gt;   3.684 73.494 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chisq: 25.41, df: 2, Pr(&gt;Chisq): 3.039e-06</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; EL evaluation: converged</span></span></code></pre></div>
 <p>We get different results, where the estimates are now the weighted sample average. The chi-square value and the associated <span class="math inline">\(p\)</span>-value are based on the same limit theorem, but care must be taken when interpreting the results since they are largely affected by the limiting behavior of the weights.</p>
 </div>

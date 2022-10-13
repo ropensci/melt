@@ -182,8 +182,26 @@ $$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">fruit</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">thiamethoxam</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model: lm </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = fruit ~ trt, data = thiamethoxam)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of observations: 55 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of parameters: 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameters:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6.015 0.000 0.000 0.000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Lagrange multipliers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.03812 -0.28612  0.59622 -0.16034 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum EL estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5.6667 -0.6310  2.7798 -0.3452 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> logL: -231.3 , logLR: -10.93 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 21.86, df: 3, Pr(&gt;Chisq): 6.964e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   Chisq Pr(&gt;Chisq)    </span>
@@ -193,17 +211,32 @@ $$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> trtSeed      -0.3452   0.129     0.7191    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 21.86, df: 3, Pr(&gt;Chisq): 6.964e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Weighted data</span></span></span>
 <span class="r-in"><span><span class="va">wfit</span> <span class="op">&lt;-</span> <span class="fu">el_lm</span><span class="op">(</span><span class="va">fruit</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">thiamethoxam</span>, weights <span class="op">=</span> <span class="va">visit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">wfit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Weighted Empirical Likelihood</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model: lm </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = fruit ~ trt, data = thiamethoxam, weights = visit)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of observations: 55 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of parameters: 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameters:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6.262 0.000 0.000 0.000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Lagrange multipliers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.01852 -0.26595  0.50298 -0.26944 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum EL estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6.0985 -0.4853  2.1730 -0.6454 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> logL: -221.4 , logLR: -9.815 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 19.63, df: 3, Pr(&gt;Chisq): 0.0002024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   Chisq Pr(&gt;Chisq)    </span>
@@ -213,9 +246,6 @@ $$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> trtSeed      -0.6454   0.468     0.4937    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 19.63, df: 3, Pr(&gt;Chisq): 0.0002024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Missing data</span></span></span>
@@ -224,9 +254,27 @@ $$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Empirical Likelihood</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model: lm </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> el_lm(formula = fruit ~ trt + scb, data = thiamethoxam, na.action = na.omit, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     offset = NULL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of observations: 54 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of parameters: 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameters:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6.013 0.000 0.000 0.000 0.000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Lagrange multipliers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.08043 -0.23283  0.54511 -0.18416 -0.05059 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum EL estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5.75996 -0.41891  2.98597 -0.29911 -0.05937 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> logL: -227 , logLR: -11.64 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 23.27, df: 4, Pr(&gt;Chisq): 0.0001116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   Chisq Pr(&gt;Chisq)    </span>
@@ -238,10 +286,6 @@ $$H_{0j}: \theta_j = 0,\ j = 0, \dots, p-1.$$</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (1 observation deleted due to missingness)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chisq: 23.27, df: 4, Pr(&gt;Chisq): 0.0001116</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Constrained EL: converged </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

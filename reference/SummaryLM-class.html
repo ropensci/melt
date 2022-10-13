@@ -70,26 +70,8 @@
     <h2>Slots</h2>
     
 
-<dl><dt><code>statistic</code></dt>
-<dd><p>A single numeric of minus twice the (constrained) empirical
-log-likelihood ratio for the overall test.</p></dd>
-
-
-<dt><code>df</code></dt>
-<dd><p>A single integer for the degrees of freedom of the statistic.</p></dd>
-
-
-<dt><code>convergence</code></dt>
-<dd><p>A single logical for the convergence status of the
-constrained minimization.</p></dd>
-
-
-<dt><code>sigTests</code></dt>
+<dl><dt><code>sigTests</code></dt>
 <dd><p>A numeric matrix of the results of significance tests.</p></dd>
-
-
-<dt><code>weighted</code></dt>
-<dd><p>A single logical for whether the data are weighted or not.</p></dd>
 
 
 <dt><code>intercept</code></dt>
@@ -115,6 +97,64 @@ handling of <code>NA</code>s.</p></dd>
 aliased.</p></dd>
 
 
+<dt><code>par</code></dt>
+<dd><p>A numeric vector of the solution to the (constrained) optimization
+problem.</p></dd>
+
+
+<dt><code>lambda</code></dt>
+<dd><p>A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to <code>par</code>.</p></dd>
+
+
+<dt><code>weighted</code></dt>
+<dd><p>A single logical for whether the data are weighted or not.</p></dd>
+
+
+<dt><code>convergence</code></dt>
+<dd><p>A single logical for the convergence status of the
+constrained minimization.</p></dd>
+
+
+<dt><code>logl</code></dt>
+<dd><p>A single numeric of the empirical log-likelihood.</p></dd>
+
+
+<dt><code>loglr</code></dt>
+<dd><p>A single numeric of the empirical log-likelihood ratio.</p></dd>
+
+
+<dt><code>statistic</code></dt>
+<dd><p>A single numeric of minus twice the (constrained) empirical
+log-likelihood ratio for the overall test.</p></dd>
+
+
+<dt><code>df</code></dt>
+<dd><p>A single integer for the degrees of freedom of the statistic.</p></dd>
+
+
+<dt><code>pval</code></dt>
+<dd><p>A single numeric for the \(p\)-value of the statistic.</p></dd>
+
+
+<dt><code>nobs</code></dt>
+<dd><p>A single integer for the number of observations.</p></dd>
+
+
+<dt><code>npar</code></dt>
+<dd><p>A single integer for the number of parameters.</p></dd>
+
+
+<dt><code>coefficients</code></dt>
+<dd><p>A numeric vector of the maximum empirical likelihood
+estimates of the parameters.</p></dd>
+
+
+<dt><code>method</code></dt>
+<dd><p>A single character for the method dispatch in internal
+functions.</p></dd>
+
+
 </dl></div>
 
     <div id="ref-examples">
@@ -123,12 +163,18 @@ aliased.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "SummaryLM" [package "melt"]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:    statistic          df convergence    sigTests    weighted   intercept</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:     numeric     integer     logical      matrix     logical     logical</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:    na.action        call       terms     aliased</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:         ANY        call       terms     logical</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:      sigTests    intercept    na.action         call        terms</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:       matrix      logical          ANY         call        terms</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:       aliased          par       lambda     weighted  convergence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      logical      numeric      numeric      logical      logical</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          logl        loglr    statistic           df         pval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      numeric      integer      numeric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          nobs         npar coefficients       method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      integer      numeric    character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Known Subclasses: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class "SummaryGLM", directly</span>
