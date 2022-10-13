@@ -96,4 +96,8 @@ test_that("`print()` method.", {
   expect_output(show(out))
   fit@statistic <- numeric()
   expect_output(print(fit))
+  fit2 <- el_mean(women$height, par = 60, weights = women$weight)
+  out2 <- summary(fit2)
+  expect_output(print(out2))
+  expect_output(show(out2))
 })

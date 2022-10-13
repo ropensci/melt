@@ -4,11 +4,20 @@
 \alias{getOptim}
 \alias{getOptim,EL-method}
 \alias{getOptim,ELT-method}
+\alias{getOptim,SummaryEL-method}
+\alias{getOptim,SummaryELT-method}
+\alias{getOptim,SummaryLM-method}
 \title{Optimization results}
 \usage{
 \S4method{getOptim}{EL}(object, ...)
 
 \S4method{getOptim}{ELT}(object, ...)
+
+\S4method{getOptim}{SummaryEL}(object, ...)
+
+\S4method{getOptim}{SummaryELT}(object, ...)
+
+\S4method{getOptim}{SummaryLM}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL} or

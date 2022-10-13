@@ -5,6 +5,7 @@
 \alias{logLR,EL-method}
 \alias{logLR,ELT-method}
 \alias{logLR,SummaryEL-method}
+\alias{logLR,SummaryELT-method}
 \alias{logLR,SummaryLM-method}
 \title{Empirical log-likelihood ratio}
 \usage{
@@ -13,6 +14,8 @@
 \S4method{logLR}{ELT}(object, ...)
 
 \S4method{logLR}{SummaryEL}(object, ...)
+
+\S4method{logLR}{SummaryELT}(object, ...)
 
 \S4method{logLR}{SummaryLM}(object, ...)
 }

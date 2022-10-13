@@ -90,7 +90,7 @@
 
 * `probit` link produces a more accurate result in `el_glm()`.
 
-* `print()` method for an `EL` object shows whether the data are weighted or not.
+* `print()` for an `EL` object shows whether the data are weighted or not.
 
 * All row or column names (if any) of input data are preserved in a fitted `EL` object.
 

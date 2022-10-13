@@ -26,16 +26,15 @@ handling of \code{NA}s.}
 \item{\code{aliased}}{A named logical vector showing if the original coefficients are
 aliased.}
 
-\item{\code{par}}{A numeric vector of the solution to the (constrained) optimization
-problem.}
-
-\item{\code{lambda}}{A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to \code{par}.}
-
-\item{\code{weighted}}{A single logical for whether the data are weighted or not.}
-
-\item{\code{convergence}}{A single logical for the convergence status of the
-constrained minimization.}
+\item{\code{optim}}{A list of the following optimization results:
+\itemize{
+\item \code{par} A numeric vector of the solution to the (constrained) optimization
+problem.
+\item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to \code{par}.
+\item \code{iterations} A single integer for the number of iterations performed.
+\item \code{convergence} A single logical for the convergence status.
+}}
 
 \item{\code{logl}}{A single numeric of the empirical log-likelihood.}
 
@@ -51,6 +50,8 @@ log-likelihood ratio for the overall test.}
 \item{\code{nobs}}{A single integer for the number of observations.}
 
 \item{\code{npar}}{A single integer for the number of parameters.}
+
+\item{\code{weighted}}{A single logical for whether the data are weighted or not.}
 
 \item{\code{coefficients}}{A numeric vector of the maximum empirical likelihood
 estimates of the parameters.}

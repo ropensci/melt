@@ -4,11 +4,14 @@
 \alias{critVal}
 \alias{critVal,ELT-method}
 \alias{critVal,ELMT-method}
+\alias{critVal,SummaryELT-method}
 \title{Critical value}
 \usage{
 \S4method{critVal}{ELT}(object, ...)
 
 \S4method{critVal}{ELMT}(object, ...)
+
+\S4method{critVal}{SummaryELT}(object, ...)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{ELT} or

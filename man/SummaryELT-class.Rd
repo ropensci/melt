@@ -11,8 +11,39 @@ S4 class for a summary of \linkS4class{ELT} objects.
 \section{Slots}{
 
 \describe{
-\item{\code{aliased}}{A named logical vector showing if the original coefficients are
-aliased.}
+\item{\code{optim}}{A list of the following optimization results:
+\itemize{
+\item \code{par} A numeric vector of the solution to the (constrained) optimization
+problem.
+\item \code{lambda} A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to \code{par}.
+\item \code{iterations} A single integer for the number of iterations performed.
+\item \code{convergence} A single logical for the convergence status.
+}}
+
+\item{\code{logl}}{A single numeric of the (constrained) empirical log-likelihood.}
+
+\item{\code{loglr}}{A single numeric of the (constrained) empirical log-likelihood
+ratio.}
+
+\item{\code{statistic}}{A single numeric of minus twice the (constrained) empirical
+log-likelihood ratio with an asymptotic chi-square distribution.}
+
+\item{\code{df}}{A single integer for the chi-square degrees of freedom of the
+statistic.}
+
+\item{\code{pval}}{A single numeric for the (calibrated) \eqn{p}-value of the
+statistic.}
+
+\item{\code{cv}}{A single numeric for the critical value.}
+
+\item{\code{rhs}}{A numeric vector for the right-hand side of the hypothesis.}
+
+\item{\code{lhs}}{A numeric matrix for the left-hand side of the hypothesis.}
+
+\item{\code{alpha}}{A single numeric for the significance level.}
+
+\item{\code{calibrate}}{A single character for the calibration method used.}
 }}
 
 \examples{

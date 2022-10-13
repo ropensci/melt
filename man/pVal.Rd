@@ -6,6 +6,7 @@
 \alias{pVal,ELMT-method}
 \alias{pVal,ELT-method}
 \alias{pVal,SummaryEL-method}
+\alias{pVal,SummaryELT-method}
 \alias{pVal,SummaryLM-method}
 \title{\eqn{p}-value}
 \usage{
@@ -16,6 +17,8 @@
 \S4method{pVal}{ELT}(object, ...)
 
 \S4method{pVal}{SummaryEL}(object, ...)
+
+\S4method{pVal}{SummaryELT}(object, ...)
 
 \S4method{pVal}{SummaryLM}(object, ...)
 }
@@ -41,6 +44,8 @@ Extracts \eqn{p}-value from a model.
 \item \code{pVal(ELT)}: Extracts the \eqn{p}-value.
 
 \item \code{pVal(SummaryEL)}: Extracts the \eqn{p}-value.
+
+\item \code{pVal(SummaryELT)}: Extracts the \eqn{p}-value.
 
 \item \code{pVal(SummaryLM)}: Extracts the \eqn{p}-value.
 

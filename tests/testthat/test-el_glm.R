@@ -82,6 +82,7 @@ test_that("Probabilities add up to 1.", {
   )
   expect_output(print(fit))
   expect_output(print(summary(fit)))
+  expect_output(print(summary(wfit)))
   expect_equal(sum(exp(logProb(fit))), 1)
   expect_equal(sum(exp(logProb(wfit))), 1)
 })

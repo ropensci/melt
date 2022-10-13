@@ -33,6 +33,7 @@ setMethod("elt", "EL", function(object,
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames
+    optim$cel <- FALSE
     cal <- calibrate(
       calibrate, alpha, out$statistic, length(par), par, object, control
     )
@@ -56,6 +57,7 @@ setMethod("elt", "EL", function(object,
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- pnames
+  optim$cel <- TRUE
   q <- nrow(h$l)
   new("ELT",
     optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
@@ -105,7 +107,8 @@ setMethod("elt", "QGLM", function(object,
     }
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
-    names(optim$par) <- pnames
+    names(optim$par) <- names(getOptim(object)$par)
+    optim$cel <- TRUE
     cal <- calibrate(
       calibrate, alpha, out$statistic, length(par), par, object, control
     )
@@ -128,6 +131,7 @@ setMethod("elt", "QGLM", function(object,
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- pnames
+  optim$cel <- TRUE
   q <- nrow(l)
   new("ELT",
     optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
@@ -173,6 +177,7 @@ setMethod("elt", "SD", function(object,
     out <- compute_EL("sd", par, getData(object), maxit_l, tol_l, th, w)
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames
+    optim$cel <- FALSE
     cal <- calibrate(calibrate, alpha, out$statistic, 1L, par, object, control)
     return(new("ELT",
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
@@ -197,6 +202,7 @@ setMethod("elt", "SD", function(object,
   out <- compute_EL("sd", par, getData(object), maxit_l, tol_l, th, w)
   optim <- validate_optim(out$optim)
   names(optim$par) <- pnames
+  optim$cel <- FALSE
   new("ELT",
     optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = 1L,

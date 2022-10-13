@@ -68,30 +68,36 @@ setMethod("print", "ELT", function(x,
                                    digits = max(3L, getOption("digits") - 3L),
                                    ...) {
   cat("\n\tEmpirical Likelihood Test\n\n")
+  cat("Hypothesis:", describe_hypothesis(
+    x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))], digits
+  ), sep = "\n")
   method <- switch(x@calibrate,
     "chisq" = "Chi-square",
     "boot" = "Bootstrap",
     "f" = "F"
   )
-  cat("Hypothesis:", describe_hypothesis(
-    x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))], digits
-  ),
-  sep = "\n"
+  cat(paste0(
+    "\nSignificance level: ", format.default(x@alpha, digits = digits, ...),
+    ", Calibration: ", method
+  ), "\n")
+  cat(
+    paste0(
+      "\nStatistic: ", format.default(chisq(x), digits = digits, ...),
+      ", Critical value: ", format.default(critVal(x), digits = digits, ...),
+      "\np-value: ", format.pval(pVal(x), digits = digits)
+    ), "\n"
   )
-  cat("\n")
-  out2 <- character()
-  out2 <- c(
-    out2, paste("Significance level:", x@alpha),
-    paste("Calibration:", method)
-  )
-  cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
-  out3 <- character()
-  out3 <- c(
-    out3, paste("Statistic:", format.default(chisq(x), digits = digits, ...)),
-    paste("Critical value:", format.default(critVal(x), digits = digits, ...))
-  )
-  cat(strwrap(paste(out3, collapse = ", ")), "\n\n")
-  cat("p-value:", format.pval(pVal(x), digits = digits), "\n\n")
+  if (getOptim(x)$cel) {
+    cat(
+      "Constrained EL:",
+      if (conv(x)) "converged" else "not converged", "\n\n"
+    )
+  } else {
+    cat(
+      "EL evaluation:",
+      if (conv(x)) "converged" else "not converged", "\n\n"
+    )
+  }
   invisible(x)
 })
 setMethod("show", "ELT", function(object) print(object))
@@ -176,9 +182,10 @@ setMethod(
       "\nModel:", getMethodEL(x),
       "\n\nNumber of observations:", nobs(x),
       "\nNumber of parameters:", getNumPar(x),
-      "\n\nParameters:\n", format.default(x@par, digits = digits, ...),
+      "\n\nParameters:\n",
+      format.default(getOptim(x)$par, digits = digits, ...),
       "\nLagrange multipliers:\n",
-      format.default(x@lambda, digits = digits, ...),
+      format.default(getOptim(x)$lambda, digits = digits, ...),
       "\nMaximum EL estimates:\n",
       format.default(coef(x), digits = digits, ...), "\n"
     )
@@ -205,6 +212,53 @@ setMethod("show", "SummaryEL", function(object) print(object))
 
 #' @rdname print
 setMethod(
+  "print", "SummaryELT",
+  function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+    cat("\n\tEmpirical Likelihood Test\n\n")
+    cat("Hypothesis:", describe_hypothesis(
+      x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))], digits
+    ), sep = "\n")
+    method <- switch(x@calibrate,
+      "chisq" = "Chi-square",
+      "boot" = "Bootstrap",
+      "f" = "F"
+    )
+    cat(paste0(
+      "\nSignificance level: ", format.default(x@alpha, digits = digits, ...),
+      ", Calibration: ", method
+    ), "\n")
+    cat(
+      "\nParameters:\n", format.default(getOptim(x)$par, digits = digits, ...),
+      "\nLagrange multipliers:\n",
+      format.default(getOptim(x)$lambda, digits = digits, ...), "\n"
+    )
+    cat(
+      paste0(
+        "\nlogL: ", format.default(logL(x), digits = digits, ...),
+        ", logLR: ", format.default(logLR(x), digits = digits, ...),
+        "\nStatistic: ", format.default(chisq(x), digits = digits, ...),
+        ", Critical value: ", format.default(critVal(x), digits = digits, ...),
+        "\np-value: ", format.pval(pVal(x), digits = digits)
+      ), "\n"
+    )
+    if (getOptim(x)$cel) {
+      cat(
+        "Constrained EL:",
+        if (conv(x)) "converged" else "not converged", "\n\n"
+      )
+    } else {
+      cat(
+        "EL evaluation:",
+        if (conv(x)) "converged" else "not converged", "\n\n"
+      )
+    }
+    invisible(x)
+  }
+)
+setMethod("show", "SummaryELT", function(object) print(object))
+
+#' @rdname print
+setMethod(
   "print", "SummaryGLM", function(x,
                                   digits = max(3L, getOption("digits") - 3L),
                                   signif.stars = getOption("show.signif.stars"),
@@ -228,9 +282,10 @@ setMethod(
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
       cat(
-        "\nParameters:\n", format.default(x@par, digits = digits, ...),
+        "\nParameters:\n",
+        format.default(getOptim(x)$par, digits = digits, ...),
         "\nLagrange multipliers:\n",
-        format.default(x@lambda, digits = digits, ...),
+        format.default(getOptim(x)$lambda, digits = digits, ...),
         "\nMaximum EL estimates:\n",
         format.default(coef(x), digits = digits, ...), "\n"
       )
@@ -311,9 +366,10 @@ setMethod(
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
       cat(
-        "\nParameters:\n", format.default(x@par, digits = digits, ...),
+        "\nParameters:\n",
+        format.default(getOptim(x)$par, digits = digits, ...),
         "\nLagrange multipliers:\n",
-        format.default(x@lambda, digits = digits, ...),
+        format.default(getOptim(x)$lambda, digits = digits, ...),
         "\nMaximum EL estimates:\n",
         format.default(coef(x), digits = digits, ...), "\n"
       )

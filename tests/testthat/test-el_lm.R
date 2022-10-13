@@ -86,6 +86,8 @@ test_that("`print()` method.", {
   expect_output(print(summary(fit3)))
   wfit <- el_lm(mpg ~ disp + hp, data = mtcars, weights = gear)
   expect_output(print(wfit))
+  wout <- summary(wfit)
+  expect_output(print(wout))
 })
 
 test_that("`verbose` == TRUE in `el_control()`.", {

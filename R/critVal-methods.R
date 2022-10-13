@@ -7,3 +7,8 @@ setMethod("critVal", "ELT", function(object, ...) {
 setMethod("critVal", "ELMT", function(object, ...) {
   object@cv
 })
+
+#' @rdname critVal
+setMethod("critVal", "SummaryELT", function(object, ...) {
+  object@cv
+})

@@ -2,10 +2,10 @@
 setMethod("summary", "EL", function(object, ...) {
   z <- object
   new("SummaryEL",
-    logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
-    pval = pVal(z), nobs = nobs(z), npar = getNumPar(z), coefficients = coef(z),
-    method = getMethodEL(z), weighted = !is.null(weights(z)),
-    convergence = conv(z), par = getOptim(z)$par, lambda = getOptim(z)$lambda
+    optim = getOptim(z), logl = logL(z), loglr = logLR(z), statistic = chisq(z),
+    df = getDF(z), pval = pVal(z), nobs = nobs(z), npar = getNumPar(z),
+    weighted = !is.null(weights(z)), coefficients = coef(z),
+    method = getMethodEL(z)
   )
 })
 
@@ -21,10 +21,10 @@ setMethod("summary", "LM", function(object, ...) {
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)"))
       ),
       intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
-      terms = z@terms, aliased = is.na(est), weighted = !is.null(weights(z)),
-      convergence = conv(z), logl = logL(z), loglr = logLR(z),
-      statistic = chisq(z), df = getDF(z), pval = pVal(z), nobs = nobs(z),
-      npar = p, coefficients = est, method = getMethodEL(z)
+      terms = z@terms, aliased = is.na(est), optim = getOptim(z),
+      logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
+      pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
+      coefficients = est, method = getMethodEL(z)
     ))
   }
   new("SummaryLM",
@@ -37,11 +37,10 @@ setMethod("summary", "LM", function(object, ...) {
       )
     ),
     intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
-    terms = z@terms, aliased = is.na(est), par = getOptim(z)$par,
-    lambda = getOptim(z)$lambda, weighted = !is.null(weights(z)),
-    convergence = conv(z), logl = logL(z), loglr = logLR(z),
-    statistic = chisq(z), df = getDF(z), pval = pVal(z), nobs = nobs(z),
-    npar = p, coefficients = est, method = getMethodEL(z)
+    terms = z@terms, aliased = is.na(est), optim = getOptim(z), logl = logL(z),
+    loglr = logLR(z), statistic = chisq(z), df = getDF(z), pval = pVal(z),
+    nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
+    coefficients = est, method = getMethodEL(z)
   )
 })
 
@@ -59,10 +58,10 @@ setMethod("summary", "GLM", function(object, ...) {
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)"))
       ),
       intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
-      terms = z@terms, aliased = is.na(est), weighted = !is.null(weights(z)),
-      convergence = conv(z), logl = logL(z), loglr = logLR(z),
-      statistic = chisq(z), df = getDF(z), pval = pVal(z), nobs = nobs(z),
-      npar = p, coefficients = est, method = getMethodEL(z)
+      terms = z@terms, aliased = is.na(est), optim = getOptim(z),
+      logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
+      pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
+      coefficients = est, method = getMethodEL(z)
     ))
   }
   new("SummaryGLM",
@@ -76,11 +75,10 @@ setMethod("summary", "GLM", function(object, ...) {
       )
     ),
     intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
-    terms = z@terms, aliased = is.na(est), par = getOptim(z)$par,
-    lambda = getOptim(z)$lambda, weighted = !is.null(weights(z)),
-    convergence = conv(z), logl = logL(z), loglr = logLR(z),
-    statistic = chisq(z), df = getDF(z), pval = pVal(z), nobs = nobs(z),
-    npar = p, coefficients = est, method = getMethodEL(z)
+    terms = z@terms, aliased = is.na(est), optim = getOptim(z),
+    logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
+    pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
+    coefficients = est, method = getMethodEL(z)
   )
 })
 
@@ -98,10 +96,10 @@ setMethod("summary", "QGLM", function(object, ...) {
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)"))
       ),
       intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
-      terms = z@terms, aliased = is.na(est), weighted = !is.null(weights(z)),
-      convergence = conv(z), logl = logL(z), loglr = logLR(z),
-      statistic = chisq(z), df = getDF(z), pval = pVal(z), nobs = nobs(z),
-      npar = p, coefficients = est, method = getMethodEL(z)
+      terms = z@terms, aliased = is.na(est), optim = getOptim(z),
+      logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
+      pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
+      coefficients = est, method = getMethodEL(z)
     ))
   }
   new("SummaryQGLM",
@@ -115,20 +113,25 @@ setMethod("summary", "QGLM", function(object, ...) {
       )
     ),
     intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
-    terms = z@terms, aliased = is.na(est), par = getOptim(z)$par,
-    lambda = getOptim(z)$lambda, weighted = !is.null(weights(z)),
-    convergence = conv(z), logl = logL(z), loglr = logLR(z),
-    statistic = chisq(z), df = getDF(z), pval = pVal(z), nobs = nobs(z),
-    npar = p, coefficients = est, method = getMethodEL(z)
+    terms = z@terms, aliased = is.na(est), optim = getOptim(z),
+    logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
+    pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
+    coefficients = est, method = getMethodEL(z)
+  )
+})
+
+#' @describeIn summary Summarizes the hypothesis test results.
+setMethod("summary", "ELT", function(object, ...) {
+  z <- object
+  new("SummaryELT",
+    optim = getOptim(z), logl = logL(z), loglr = logLR(z), statistic = chisq(z),
+    df = getDF(z), pval = pVal(z), cv = z@cv, rhs = z@rhs, lhs = z@lhs,
+    alpha = z@alpha, calibrate = z@calibrate
   )
 })
 
 #' @describeIn summary Summarizes the.
-setMethod("summary", "ELT", function(object, ...) {
-  new("SummaryELT")
-})
-
-#' @describeIn summary Summarizes the.
 setMethod("summary", "ELMT", function(object, ...) {
+  z <- object
   new("SummaryELMT")
 })

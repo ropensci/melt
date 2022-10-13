@@ -49,7 +49,7 @@ for display.
 significance tests for coefficients. The estimated dispersion parameter is
 extracted for display.
 
-\item \code{summary(ELT)}: Summarizes the.
+\item \code{summary(ELT)}: Summarizes the hypothesis test results.
 
 \item \code{summary(ELMT)}: Summarizes the.
 
