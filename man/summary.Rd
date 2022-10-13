@@ -36,7 +36,7 @@ Provides summary methods for objects.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{summary(EL)}: Summarizes the.
+\item \code{summary(EL)}: Summarizes the test results of the specified parameters.
 
 \item \code{summary(LM)}: Summarizes the results of the overall model test and the
 significance tests for coefficients.
@@ -55,9 +55,13 @@ extracted for display.
 
 }}
 \examples{
-data("mtcars")
-fit <- el_lm(mpg ~ wt, data = mtcars)
+data("faithful")
+fit <- el_mean(faithful, par = c(3.5, 70))
 summary(fit)
+
+data("mtcars")
+fit2 <- el_lm(mpg ~ wt, data = mtcars)
+summary(fit2)
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{LM}, \linkS4class{GLM},

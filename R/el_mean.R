@@ -36,15 +36,19 @@
 #' @examples
 #' ## Scalar mean
 #' data("precip")
-#' el_mean(precip, 30)
+#' fit <- el_mean(precip, 30)
+#' fit
+#' summary(fit)
 #'
 #' ## Vector mean
 #' data("faithful")
-#' el_mean(faithful, par = c(3.5, 70))
+#' fit2 <- el_mean(faithful, par = c(3.5, 70))
+#' summary(fit2)
 #'
 #' ## Weighted data
 #' w <- rep(c(1, 2), each = nrow(faithful) / 2)
-#' el_mean(faithful, par = c(3.5, 70), weights = w)
+#' fit3 <- el_mean(faithful, par = c(3.5, 70), weights = w)
+#' summary(fit3)
 #' @export
 el_mean <- function(x,
                     par,

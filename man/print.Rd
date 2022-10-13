@@ -10,7 +10,6 @@
 \alias{print,SummaryEL-method}
 \alias{print,SummaryGLM-method}
 \alias{print,SummaryLM-method}
-\alias{print,SummaryQGLM-method}
 \title{Print methods}
 \usage{
 \S4method{print}{EL}(x, digits = max(3L, getOption("digits") - 3L), ...)
@@ -38,13 +37,6 @@
 )
 
 \S4method{print}{SummaryLM}(
-  x,
-  digits = max(3L, getOption("digits") - 3L),
-  signif.stars = getOption("show.signif.stars"),
-  ...
-)
-
-\S4method{print}{SummaryQGLM}(
   x,
   digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"),

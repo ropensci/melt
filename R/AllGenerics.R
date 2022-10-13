@@ -618,9 +618,13 @@ setGeneric("sigTests", function(object, ...) standardGeneric("sigTests"))
 #'   \linkS4class{QGLM}, \linkS4class{ELT}, \linkS4class{ELMT}
 #' @usage NULL
 #' @examples
-#' data("mtcars")
-#' fit <- el_lm(mpg ~ wt, data = mtcars)
+#' data("faithful")
+#' fit <- el_mean(faithful, par = c(3.5, 70))
 #' summary(fit)
+#'
+#' data("mtcars")
+#' fit2 <- el_lm(mpg ~ wt, data = mtcars)
+#' summary(fit2)
 #' @exportMethod summary
 setGeneric("summary", function(object, ...) standardGeneric("summary"))
 
@@ -672,6 +676,9 @@ setMethod("getMethodEL", "EL", function(x) {
 setMethod("getMethodEL", "SummaryEL", function(x) {
   x@method
 })
+setMethod("getMethodEL", "SummaryLM", function(x) {
+  x@method
+})
 
 
 setGeneric("getNumPar", function(x) standardGeneric("getNumPar"))
@@ -679,6 +686,9 @@ setMethod("getNumPar", "EL", function(x) {
   x@npar
 })
 setMethod("getNumPar", "SummaryEL", function(x) {
+  x@npar
+})
+setMethod("getNumPar", "SummaryLM", function(x) {
   x@npar
 })
 

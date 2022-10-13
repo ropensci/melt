@@ -47,7 +47,9 @@ unknown distribution \eqn{P} for \eqn{i = 1, \dots, n}. We assume that
 data("women")
 x <- women$height
 w <- women$weight
-el_sd(x, mean = 65, sd = 5, weights = w)
+fit <- el_sd(x, mean = 65, sd = 5, weights = w)
+fit
+summary(fit)
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{SD}, \code{\link[=el_mean]{el_mean()}}, \code{\link[=elt]{elt()}},

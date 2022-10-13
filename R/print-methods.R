@@ -7,35 +7,21 @@ setMethod("print", "EL", function(x,
   } else {
     cat("\n\tWeighted Empirical Likelihood\n")
   }
-  method <- getMethodEL(x)
-  if (isFALSE(is.na(method))) {
-    cat("\nModel:", method, "\n")
-  }
-  if (length(coef(x)) != 0L) {
-    cat(
-      "\nMaximum EL estimates:\n",
-      format.default(coef(x), digits = digits, ...), "\n"
-    )
-  }
-  cat("\n")
-  out <- character()
-  if (length(chisq(x)) != 0L) {
-    out <- c(
-      out, paste("Chisq:", format.default(chisq(x), digits = digits)),
-      paste("df:", getDF(x)),
-      paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
-    )
-  } else {
-    out <- c("Empty model")
-  }
+  cat(
+    "\nModel:", getMethodEL(x),
+    "\n\nMaximum EL estimates:\n",
+    format.default(coef(x), digits = digits, ...), "\n\n"
+  )
+  out <- c(
+    paste("Chisq:", format.default(chisq(x), digits = digits, ...)),
+    paste("df:", getDF(x)),
+    paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits, ...))
+  )
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-  if (length(chisq(x)) != 0L) {
-    cat(
-      "\nEL evaluation:",
-      if (conv(x)) "converged" else "not converged", "\n"
-    )
-  }
-  cat("\n")
+  cat(
+    "EL evaluation:",
+    if (conv(x)) "converged" else "not converged", "\n\n"
+  )
   invisible(x)
 })
 setMethod("show", "EL", function(object) print(object))
@@ -71,7 +57,7 @@ setMethod("print", "ELMT", function(x,
   )
   cat("\n")
   cat(paste(
-    "Common critical value:", format.default(critVal(x), digits = digits)
+    "Common critical value:", format.default(critVal(x), digits = digits, ...)
   ), "\n\n")
   invisible(x)
 })
@@ -101,8 +87,8 @@ setMethod("print", "ELT", function(x,
   cat(strwrap(paste(out2, collapse = ", ")), "\n\n")
   out3 <- character()
   out3 <- c(
-    out3, paste("Statistic:", format.default(chisq(x), digits = digits)),
-    paste("Critical value:", format.default(critVal(x), digits = digits))
+    out3, paste("Statistic:", format.default(chisq(x), digits = digits, ...)),
+    paste("Critical value:", format.default(critVal(x), digits = digits, ...))
   )
   cat(strwrap(paste(out3, collapse = ", ")), "\n\n")
   cat("p-value:", format.pval(pVal(x), digits = digits), "\n\n")
@@ -139,9 +125,9 @@ setMethod("print", "LM", function(x,
   out <- character()
   if (length(chisq(x)) != 0L) {
     out <- c(
-      out, paste("Chisq:", format.default(chisq(x), digits = digits)),
+      out, paste("Chisq:", format.default(chisq(x), digits = digits, ...)),
       paste("df:", getDF(x)),
-      paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
+      paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits, ...))
     )
   } else {
     out <- c("Empty model")
@@ -150,12 +136,12 @@ setMethod("print", "LM", function(x,
   if (length(chisq(x)) != 0L) {
     if (x@misc$intercept) {
       cat(
-        "\nConstrained EL:",
+        "Constrained EL:",
         if (conv(x)) "converged" else "not converged", "\n"
       )
     } else {
       cat(
-        "\nEL evaluation:",
+        "EL evaluation:",
         if (conv(x)) "converged" else "not converged", "\n"
       )
     }
@@ -187,18 +173,18 @@ setMethod(
       cat("\n\tEmpirical Likelihood\n")
     }
     cat(
-      "\nModel:", getMethodEL(x), "\n",
-      "\nParameters:\n", format.default(x@par, digits = digits, ...),
-      "\n\nLagrange multipliers:\n",
+      "\nModel:", getMethodEL(x),
+      "\n\nNumber of observations:", nobs(x),
+      "\nNumber of parameters:", getNumPar(x),
+      "\n\nParameters:\n", format.default(x@par, digits = digits, ...),
+      "\nLagrange multipliers:\n",
       format.default(x@lambda, digits = digits, ...),
-      "\n\nMaximum EL estimates:\n",
+      "\nMaximum EL estimates:\n",
       format.default(coef(x), digits = digits, ...), "\n"
     )
     cat(
-      "------\nNumber of observations:", nobs(x),
-      "\nNumber of parameters:", getNumPar(x),
       paste0(
-        "\n------\nlogL: ", format.default(logL(x), digits = digits, ...),
+        "\nlogL: ", format.default(logL(x), digits = digits, ...),
         ", logLR: ", format.default(logLR(x), digits = digits, ...)
       ), "\n"
     )
@@ -209,7 +195,7 @@ setMethod(
     )
     cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
     cat(
-      "------\nEL evaluation:",
+      "EL evaluation:",
       if (conv(x)) "converged" else "not converged", "\n\n"
     )
     invisible(x)
@@ -223,13 +209,58 @@ setMethod(
                                   digits = max(3L, getOption("digits") - 3L),
                                   signif.stars = getOption("show.signif.stars"),
                                   ...) {
+    if (x@weighted) {
+      cat("\n\tWeighted Empirical Likelihood\n")
+    } else {
+      cat("\n\tEmpirical Likelihood\n")
+    }
+    cat("\nModel: glm (", x@family$family, " family with ", x@family$link,
+      " link)", "\n",
+      sep = ""
+    )
     cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
       "\n",
       sep = ""
     )
+    if (length(chisq(x)) != 0L) {
+      cat(
+        "\nNumber of observations:", nobs(x),
+        "\nNumber of parameters:", getNumPar(x), "\n"
+      )
+      cat(
+        "\nParameters:\n", format.default(x@par, digits = digits, ...),
+        "\nLagrange multipliers:\n",
+        format.default(x@lambda, digits = digits, ...),
+        "\nMaximum EL estimates:\n",
+        format.default(coef(x), digits = digits, ...), "\n"
+      )
+      cat(paste(
+        "\nlogL:", format.default(logL(x), digits = digits, ...),
+        ", logLR:", format.default(logLR(x), digits = digits, ...)
+      ), "\n")
+      out <- c(
+        paste("Chisq:", format(chisq(x), digits = digits)),
+        paste("df:", getDF(x)),
+        paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
+      )
+      cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
+      if (x@intercept) {
+        cat(
+          "Constrained EL:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      } else {
+        cat(
+          "EL evaluation:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      }
+    } else {
+      cat("\nEmpty model\n")
+    }
     aliased <- x@aliased
     if (length(aliased) == 0L) {
-      cat("\nNo Coefficients\n\n")
+      cat("\nNo Coefficients\n")
     } else {
       cat("\nCoefficients:\n")
       coefs <- sigTests(x)
@@ -244,41 +275,13 @@ setMethod(
         P.values = TRUE, has.Pvalue = TRUE, na.print = "NA", ...
       )
       cat("\nDispersion for ", x@family$family, " family: ",
-        format(x@dispersion), "\n\n",
+        format(x@dispersion), "\n",
         sep = ""
       )
     }
     mess <- naprint(x@na.action)
     if (isTRUE(nzchar(mess))) {
-      cat("  (", mess, ")\n", sep = "", "\n")
-    }
-    out <- character()
-    if (length(chisq(x)) != 0L) {
-      out <- c(
-        out,
-        paste("Chisq:", format(chisq(x), digits = digits)),
-        paste("df:", getDF(x)),
-        paste("Pr(>Chisq):", format.pval(
-          pchisq(chisq(x), getDF(x), lower.tail = FALSE),
-          digits = digits
-        ))
-      )
-    } else {
-      out <- c("Empty model")
-    }
-    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-    if (length(chisq(x)) != 0L) {
-      if (x@intercept) {
-        cat(
-          "\nConstrained EL:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      } else {
-        cat(
-          "\nEL evaluation:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      }
+      cat("  (", mess, ")\n", sep = "")
     }
     cat("\n")
     invisible(x)
@@ -292,13 +295,55 @@ setMethod(
                                  digits = max(3L, getOption("digits") - 3L),
                                  signif.stars = getOption("show.signif.stars"),
                                  ...) {
+    if (x@weighted) {
+      cat("\n\tWeighted Empirical Likelihood\n")
+    } else {
+      cat("\n\tEmpirical Likelihood\n")
+    }
+    cat("\nModel:", getMethodEL(x), "\n")
     cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
       "\n",
       sep = ""
     )
+    if (length(chisq(x)) != 0L) {
+      cat(
+        "\nNumber of observations:", nobs(x),
+        "\nNumber of parameters:", getNumPar(x), "\n"
+      )
+      cat(
+        "\nParameters:\n", format.default(x@par, digits = digits, ...),
+        "\nLagrange multipliers:\n",
+        format.default(x@lambda, digits = digits, ...),
+        "\nMaximum EL estimates:\n",
+        format.default(coef(x), digits = digits, ...), "\n"
+      )
+      cat(paste(
+        "\nlogL:", format.default(logL(x), digits = digits, ...),
+        ", logLR:", format.default(logLR(x), digits = digits, ...)
+      ), "\n")
+      out <- c(
+        paste("Chisq:", format(chisq(x), digits = digits)),
+        paste("df:", getDF(x)),
+        paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
+      )
+      cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
+      if (x@intercept) {
+        cat(
+          "Constrained EL:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      } else {
+        cat(
+          "EL evaluation:",
+          if (conv(x)) "converged" else "not converged", "\n"
+        )
+      }
+    } else {
+      cat("\nEmpty model\n")
+    }
     aliased <- x@aliased
     if (length(aliased) == 0L) {
-      cat("\nNo Coefficients\n\n")
+      cat("\nNo Coefficients\n")
     } else {
       cat("\nCoefficients:\n")
       coefs <- sigTests(x)
@@ -315,101 +360,10 @@ setMethod(
     }
     mess <- naprint(x@na.action)
     if (isTRUE(nzchar(mess))) {
-      cat("  (", mess, ")\n", sep = "", "\n")
-    }
-    out <- character()
-    if (length(chisq(x)) != 0L) {
-      out <- c(
-        out,
-        paste("Chisq:", format(chisq(x), digits = digits)),
-        paste("df:", getDF(x)),
-        paste("Pr(>Chisq):", format.pval(
-          pchisq(chisq(x), getDF(x), lower.tail = FALSE),
-          digits = digits
-        ))
-      )
-    } else {
-      out <- c("Empty model")
-    }
-    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-    if (length(chisq(x)) != 0L) {
-      if (x@intercept) {
-        cat(
-          "\nConstrained EL:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      } else {
-        cat(
-          "\nEL evaluation:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      }
+      cat("  (", mess, ")\n", sep = "")
     }
     cat("\n")
     invisible(x)
   }
 )
 setMethod("show", "SummaryLM", function(object) print(object))
-
-#' @rdname print
-setMethod(
-  "print", "SummaryQGLM",
-  function(x,
-           digits = max(3L, getOption("digits") - 3L),
-           signif.stars = getOption("show.signif.stars"),
-           ...) {
-    cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
-      "\n",
-      sep = ""
-    )
-    aliased <- x@aliased
-    if (length(aliased) == 0L) {
-      cat("\nNo Coefficients\n\n")
-    } else {
-      cat("\nCoefficients:\n")
-      coefs <- sigTests(x)
-      if (any(aliased)) {
-        cn <- names(aliased)
-        coefs <-
-          matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
-        coefs[!aliased, ] <- sigTests(x)
-      }
-      printCoefmat(coefs,
-        digits = digits, signif.stars = signif.stars,
-        P.values = TRUE, has.Pvalue = TRUE, na.print = "NA", ...
-      )
-      cat("\nDispersion estimate for ", x@family$family, " family: ",
-        format(x@dispersion), "\n\n",
-        sep = ""
-      )
-    }
-    mess <- naprint(x@na.action)
-    if (isTRUE(nzchar(mess))) {
-      cat("  (", mess, ")\n", sep = "", "\n")
-    }
-    out <- character()
-    if (length(chisq(x)) != 0L) {
-      out <- c(
-        out,
-        paste("Chisq:", format(chisq(x), digits = digits)),
-        paste("df:", getDF(x)),
-        paste("Pr(>Chisq):", format.pval(
-          pchisq(chisq(x), getDF(x), lower.tail = FALSE),
-          digits = digits
-        ))
-      )
-    } else {
-      out <- c("Empty model")
-    }
-    cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-    if (length(chisq(x)) != 0L) {
-      cat(
-        "\nConstrained EL:",
-        if (conv(x)) "converged" else "not converged", "\n"
-      )
-    }
-    cat("\n")
-    invisible(x)
-  }
-)
-setMethod("show", "SummaryQGLM", function(object) print(object))

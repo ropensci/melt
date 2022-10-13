@@ -32,7 +32,9 @@
 #' data("women")
 #' x <- women$height
 #' w <- women$weight
-#' el_sd(x, mean = 65, sd = 5, weights = w)
+#' fit <- el_sd(x, mean = 65, sd = 5, weights = w)
+#' fit
+#' summary(fit)
 #' @export
 el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
   nm <- names(x)

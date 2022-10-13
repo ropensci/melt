@@ -11,6 +11,15 @@ S4 class for a summary of \linkS4class{EL} objects.
 \section{Slots}{
 
 \describe{
+\item{\code{par}}{A numeric vector of the specified parameters.}
+
+\item{\code{lambda}}{A numeric vector of the Lagrange multipliers of the dual
+problem corresponding to \code{par}.}
+
+\item{\code{weighted}}{A single logical for whether the data are weighted or not.}
+
+\item{\code{convergence}}{A single logical for the convergence status.}
+
 \item{\code{logl}}{A single numeric of the empirical log-likelihood.}
 
 \item{\code{loglr}}{A single numeric of the empirical log-likelihood ratio.}
@@ -31,15 +40,6 @@ estimates of the parameters.}
 
 \item{\code{method}}{A single character for the method dispatch in internal
 functions.}
-
-\item{\code{weighted}}{A single logical for whether the data are weighted or not.}
-
-\item{\code{convergence}}{A single logical for the convergence status.}
-
-\item{\code{par}}{A numeric vector of the specified parameters.}
-
-\item{\code{lambda}}{A numeric vector of the Lagrange multipliers of the dual
-problem corresponding to \code{par}.}
 }}
 
 \examples{

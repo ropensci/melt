@@ -12,3 +12,8 @@ setMethod("logL", "ELT", function(object, ...) {
 setMethod("logL", "SummaryEL", function(object, ...) {
   object@logl
 })
+
+#' @rdname logL
+setMethod("logL", "SummaryLM", function(object, ...) {
+  object@logl
+})

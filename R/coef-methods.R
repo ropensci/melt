@@ -16,3 +16,9 @@ setMethod("coef", "ELMT", function(object, ...) {
 setMethod("coef", "SummaryEL", function(object, ...) {
   object@coefficients
 })
+
+#' @describeIn coef Extracts the numeric vector of the maximum empirical
+#'   likelihood estimates.
+setMethod("coef", "SummaryLM", function(object, ...) {
+  object@coefficients
+})

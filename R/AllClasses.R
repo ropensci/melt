@@ -515,6 +515,11 @@ setClass("SD", contains = "EL")
 #'
 #' S4 class for a summary of \linkS4class{EL} objects.
 #'
+#' @slot par A numeric vector of the specified parameters.
+#' @slot lambda A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
+#' @slot weighted A single logical for whether the data are weighted or not.
+#' @slot convergence A single logical for the convergence status.
 #' @slot logl A single numeric of the empirical log-likelihood.
 #' @slot loglr A single numeric of the empirical log-likelihood ratio.
 #' @slot statistic A single numeric of minus twice the empirical log-likelihood
@@ -527,19 +532,14 @@ setClass("SD", contains = "EL")
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
-#' @slot weighted A single logical for whether the data are weighted or not.
-#' @slot convergence A single logical for the convergence status.
-#' @slot par A numeric vector of the specified parameters.
-#' @slot lambda A numeric vector of the Lagrange multipliers of the dual
-#'   problem corresponding to `par`.
 #' @aliases SummaryEL
 #' @examples
 #' showClass("SummaryEL")
 setClass("SummaryEL", slots = c(
-  logl = "numeric", loglr = "numeric", statistic = "numeric", df = "integer",
-  pval = "numeric", nobs = "integer", npar = "integer",
-  coefficients = "numeric", method = "character", weighted = "logical",
-  convergence = "logical", par = "numeric", lambda = "numeric"
+  par = "numeric", lambda = "numeric", weighted = "logical",
+  convergence = "logical", logl = "numeric", loglr = "numeric",
+  statistic = "numeric", df = "integer", pval = "numeric", nobs = "integer",
+  npar = "integer", coefficients = "numeric", method = "character"
 ))
 
 
@@ -579,13 +579,7 @@ setClass("SummaryELT", slots = c(
 #'
 #' S4 class for a summary of \linkS4class{LM} objects.
 #'
-#' @slot statistic A single numeric of minus twice the (constrained) empirical
-#'   log-likelihood ratio for the overall test.
-#' @slot df A single integer for the degrees of freedom of the statistic.
-#' @slot convergence A single logical for the convergence status of the
-#'   constrained minimization.
 #' @slot sigTests A numeric matrix of the results of significance tests.
-#' @slot weighted A single logical for whether the data are weighted or not.
 #' @slot intercept A single logical for whether the given model has an intercept
 #'   term or not.
 #' @slot na.action Information returned by [`model.frame`] on the special
@@ -594,13 +588,35 @@ setClass("SummaryELT", slots = c(
 #' @slot terms A [`terms`] object used.
 #' @slot aliased A named logical vector showing if the original coefficients are
 #'   aliased.
+#' @slot par A numeric vector of the solution to the (constrained) optimization
+#'   problem.
+#' @slot lambda A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
+#' @slot weighted A single logical for whether the data are weighted or not.
+#' @slot convergence A single logical for the convergence status of the
+#'   constrained minimization.
+#' @slot logl A single numeric of the empirical log-likelihood.
+#' @slot loglr A single numeric of the empirical log-likelihood ratio.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio for the overall test.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A single integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
 #' @aliases SummaryLM
 #' @examples
 #' showClass("SummaryLM")
 setClass("SummaryLM", slots = c(
-  statistic = "numeric", df = "integer", convergence = "logical",
-  sigTests = "matrix", weighted = "logical", intercept = "logical",
-  na.action = "ANY", call = "call", terms = "terms", aliased = "logical"
+  sigTests = "matrix", intercept = "logical", na.action = "ANY", call = "call",
+  terms = "terms", aliased = "logical", par = "numeric", lambda = "numeric",
+  weighted = "logical", convergence = "logical", logl = "numeric",
+  loglr = "numeric", statistic = "numeric", df = "integer", pval = "numeric",
+  nobs = "integer", npar = "integer", coefficients = "numeric",
+  method = "character"
 ))
 
 
@@ -611,13 +627,7 @@ setClass("SummaryLM", slots = c(
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot statistic A single numeric of minus twice the (constrained) empirical
-#'   log-likelihood ratio for the overall test.
-#' @slot df A single integer for the degrees of freedom of the statistic.
-#' @slot convergence A single logical for the convergence status of the
-#'   constrained minimization.
 #' @slot sigTests A numeric matrix of the results of significance tests.
-#' @slot weighted A single logical for whether data are weighted or not.
 #' @slot intercept A single logical for whether the given model has an intercept
 #'   term or not.
 #' @slot na.action Information returned by [`model.frame`] on the special
@@ -626,6 +636,25 @@ setClass("SummaryLM", slots = c(
 #' @slot terms A [`terms`] object used.
 #' @slot aliased A named logical vector showing if the original coefficients are
 #'   aliased.
+#' @slot par A numeric vector of the solution to the (constrained) optimization
+#'   problem.
+#' @slot lambda A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
+#' @slot weighted A single logical for whether the data are weighted or not.
+#' @slot convergence A single logical for the convergence status of the
+#'   constrained minimization.
+#' @slot logl A single numeric of the empirical log-likelihood.
+#' @slot loglr A single numeric of the empirical log-likelihood ratio.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio for the overall test.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A single integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
 #' @aliases SummaryGLM
 #' @examples
 #' showClass("SummaryGLM")
@@ -642,13 +671,7 @@ setClass("SummaryGLM",
 #'
 #' @slot family A [`family`] object used.
 #' @slot dispersion A single numeric for the estimated dispersion parameter.
-#' @slot statistic A single numeric of minus twice the (constrained) empirical
-#'   log-likelihood ratio for the overall test.
-#' @slot df A single integer for the degrees of freedom of the statistic.
-#' @slot convergence A single logical for the convergence status of the
-#'   constrained minimization.
 #' @slot sigTests A numeric matrix of the results of significance tests.
-#' @slot weighted A single logical for whether the data are weighted or not.
 #' @slot intercept A single logical for whether the given model has an intercept
 #'   term or not.
 #' @slot na.action Information returned by [`model.frame`] on the special
@@ -657,6 +680,25 @@ setClass("SummaryGLM",
 #' @slot terms A [`terms`] object used.
 #' @slot aliased A named logical vector showing if the original coefficients are
 #'   aliased.
+#' @slot par A numeric vector of the solution to the (constrained) optimization
+#'   problem.
+#' @slot lambda A numeric vector of the Lagrange multipliers of the dual
+#'   problem corresponding to `par`.
+#' @slot weighted A single logical for whether the data are weighted or not.
+#' @slot convergence A single logical for the convergence status of the
+#'   constrained minimization.
+#' @slot logl A single numeric of the empirical log-likelihood.
+#' @slot loglr A single numeric of the empirical log-likelihood ratio.
+#' @slot statistic A single numeric of minus twice the (constrained) empirical
+#'   log-likelihood ratio for the overall test.
+#' @slot df A single integer for the degrees of freedom of the statistic.
+#' @slot pval A single numeric for the \eqn{p}-value of the statistic.
+#' @slot nobs A single integer for the number of observations.
+#' @slot npar A single integer for the number of parameters.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
 #' @aliases SummaryQGLM
 #' @examples
 #' showClass("SummaryQGLM")
