@@ -54,9 +54,12 @@ test_that("When elt == evaluation.", {
   fit2 <- elt(fit, lhs = c("par"), rhs = 1.2)
   expect_equal(getDF(fit2), 1L)
   expect_output(print(fit2))
+  expect_output(print(summary(fit2)))
   expect_equal(getOptim(fit)$lambda, getOptim(fit2)$lambda)
   wfit <- el_mean(x, par = 1.2, weights = as.numeric(sleep$group))
   wfit2 <- elt(wfit, rhs = 1.2)
+  expect_output(print(wfit2))
+  expect_output(print(summary(wfit2)))
   expect_equal(getOptim(wfit)$lambda, getOptim(wfit2)$lambda)
   fit3 <- el_lm(mpg ~ disp + hp, data = mtcars)
   lhs <- matrix(c(0, 0, 1, 0, 0, 1), nrow = 2)
@@ -94,6 +97,9 @@ test_that("Vector `lhs`.", {
   expect_s4_class(out, "ELT")
   expect_output(show(out))
   expect_output(print(out))
+  out3 <- summary(out2)
+  expect_output(show(out3))
+  expect_output(print(out3))
 })
 
 test_that("Matrix `rhs`.", {
