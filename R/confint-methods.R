@@ -74,3 +74,16 @@ setMethod("confint", "EL", function(object,
   dimnames(ci) <- list(pnames, c("lower", "upper"))
   ci
 })
+
+#' @rdname confint
+setMethod("confint", "ELMT", function(object,
+                                      cv = NULL,
+                                      control = el_control()) {
+  stopifnot(
+    "Each hypothesis must correspond to a linear combination of parameters." =
+      (isTRUE(all(getDF(object) == 1L))),
+    # "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+    # (isFALSE(is.null(getData(object)))),
+    "Invalid `control` specified." = (is(control, "ControlEL"))
+  )
+})

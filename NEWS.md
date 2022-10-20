@@ -1,6 +1,8 @@
-# melt 1.8.0.9000 (development version)
+# melt 1.8.0.9100 (development version)
 ## MINOR IMPROVEMENTS
 * `summary()` is applicable to an object that inherits from `EL`, `ELT`, and `EMLT`.
+
+* `optim` slot in all model or summary objects gains a single logical element `cstr` that shows whether a constrained EL computation is involved or not. 
 
 ## DEPRECATED AND DEFUNCT
 * `logLik()` is deprecated and will be removed in a future release. 

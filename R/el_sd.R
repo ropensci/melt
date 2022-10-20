@@ -64,6 +64,7 @@ el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
   out <- compute_EL("sd", sd, mm, control@maxit_l, control@tol_l, control@th, w)
   optim <- validate_optim(out$optim)
   names(optim$sd) <- names(sd)
+  optim$cstr <- FALSE
   if (control@verbose) {
     message(
       "Convergence ",

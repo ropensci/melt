@@ -7,11 +7,9 @@ setMethod("print", "EL", function(x,
   } else {
     cat("\n\tWeighted Empirical Likelihood\n")
   }
-  cat(
-    "\nModel:", getMethodEL(x),
-    "\n\nMaximum EL estimates:\n",
-    format.default(coef(x), digits = digits, ...), "\n\n"
-  )
+  cat("\nModel:", getMethodEL(x), "\n\nMaximum EL estimates:\n")
+  print.default(coef(x), digits = digits, ...)
+  cat("\n")
   out <- c(
     paste("Chisq:", format.default(chisq(x), digits = digits, ...)),
     paste("df:", getDF(x)),
@@ -87,7 +85,7 @@ setMethod("print", "ELT", function(x,
       "\np-value: ", format.pval(pVal(x), digits = digits)
     ), "\n"
   )
-  if (getOptim(x)$cel) {
+  if (getOptim(x)$cstr) {
     cat(
       "Constrained EL:",
       if (conv(x)) "converged" else "not converged", "\n\n"
@@ -128,10 +126,9 @@ setMethod("print", "LM", function(x,
     print.default(coef(x), digits = digits, ...)
     cat("\n")
   }
-  out <- character()
   if (length(chisq(x)) != 0L) {
     out <- c(
-      out, paste("Chisq:", format.default(chisq(x), digits = digits, ...)),
+      paste("Chisq:", format.default(chisq(x), digits = digits, ...)),
       paste("df:", getDF(x)),
       paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits, ...))
     )
@@ -140,7 +137,7 @@ setMethod("print", "LM", function(x,
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
   if (length(chisq(x)) != 0L) {
-    if (x@misc$intercept) {
+    if (getOptim(x)$cstr) {
       cat(
         "Constrained EL:",
         if (conv(x)) "converged" else "not converged", "\n"
@@ -182,13 +179,13 @@ setMethod(
       "\nModel:", getMethodEL(x),
       "\n\nNumber of observations:", nobs(x),
       "\nNumber of parameters:", getNumPar(x),
-      "\n\nParameters:\n",
-      format.default(getOptim(x)$par, digits = digits, ...),
-      "\nLagrange multipliers:\n",
-      format.default(getOptim(x)$lambda, digits = digits, ...),
-      "\nMaximum EL estimates:\n",
-      format.default(coef(x), digits = digits, ...), "\n"
+      "\n\nParameters:\n"
     )
+    print.default(getOptim(x)$par, digits = digits, ...)
+    cat("\nLagrange multipliers:\n")
+    print.default(getOptim(x)$lambda, digits = digits, ...)
+    cat("\nMaximum EL estimates:\n")
+    print.default(coef(x), digits = digits, ...)
     cat(
       paste0(
         "\nlogL: ", format.default(logL(x), digits = digits, ...),
@@ -227,11 +224,10 @@ setMethod(
       "\nSignificance level: ", format.default(x@alpha, digits = digits, ...),
       ", Calibration: ", method
     ), "\n")
-    cat(
-      "\nParameters:\n", format.default(getOptim(x)$par, digits = digits, ...),
-      "\nLagrange multipliers:\n",
-      format.default(getOptim(x)$lambda, digits = digits, ...), "\n"
-    )
+    cat("\nParameters:\n")
+    print.default(getOptim(x)$par, digits = digits, ...)
+    cat("\nLagrange multipliers:\n")
+    print.default(getOptim(x)$lambda, digits = digits, ...)
     cat(
       paste0(
         "\nlogL: ", format.default(logL(x), digits = digits, ...),
@@ -241,7 +237,7 @@ setMethod(
         "\np-value: ", format.pval(pVal(x), digits = digits)
       ), "\n"
     )
-    if (getOptim(x)$cel) {
+    if (getOptim(x)$cstr) {
       cat(
         "Constrained EL:",
         if (conv(x)) "converged" else "not converged", "\n\n"
@@ -281,14 +277,12 @@ setMethod(
         "\nNumber of observations:", nobs(x),
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
-      cat(
-        "\nParameters:\n",
-        format.default(getOptim(x)$par, digits = digits, ...),
-        "\nLagrange multipliers:\n",
-        format.default(getOptim(x)$lambda, digits = digits, ...),
-        "\nMaximum EL estimates:\n",
-        format.default(coef(x), digits = digits, ...), "\n"
-      )
+      cat("\nParameters:\n")
+      print.default(getOptim(x)$par, digits = digits, ...)
+      cat("\nLagrange multipliers:\n")
+      print.default(getOptim(x)$lambda, digits = digits, ...)
+      cat("\nMaximum EL estimates:\n")
+      print.default(coef(x), digits = digits, ...)
       cat(paste(
         "\nlogL:", format.default(logL(x), digits = digits, ...),
         ", logLR:", format.default(logLR(x), digits = digits, ...)
@@ -299,7 +293,7 @@ setMethod(
         paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
       )
       cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-      if (x@intercept) {
+      if (getOptim(x)$cstr) {
         cat(
           "Constrained EL:",
           if (conv(x)) "converged" else "not converged", "\n"
@@ -365,14 +359,12 @@ setMethod(
         "\nNumber of observations:", nobs(x),
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
-      cat(
-        "\nParameters:\n",
-        format.default(getOptim(x)$par, digits = digits, ...),
-        "\nLagrange multipliers:\n",
-        format.default(getOptim(x)$lambda, digits = digits, ...),
-        "\nMaximum EL estimates:\n",
-        format.default(coef(x), digits = digits, ...), "\n"
-      )
+      cat("\nParameters:\n")
+      print.default(getOptim(x)$par, digits = digits, ...)
+      cat("\nLagrange multipliers:\n")
+      print.default(getOptim(x)$lambda, digits = digits, ...)
+      cat("\nMaximum EL estimates:\n")
+      print.default(coef(x), digits = digits, ...)
       cat(paste(
         "\nlogL:", format.default(logL(x), digits = digits, ...),
         ", logLR:", format.default(logLR(x), digits = digits, ...)
@@ -383,7 +375,7 @@ setMethod(
         paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
       )
       cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-      if (x@intercept) {
+      if (getOptim(x)$cstr) {
         cat(
           "Constrained EL:",
           if (conv(x)) "converged" else "not converged", "\n"

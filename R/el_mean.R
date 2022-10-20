@@ -77,6 +77,7 @@ el_mean <- function(x,
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- names(est)
+  optim$cstr <- FALSE
   if (control@verbose) {
     message(
       "Convergence ",

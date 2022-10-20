@@ -19,7 +19,7 @@ problem.
 problem corresponding to \code{par}.
 \item \code{iterations} A single integer for the number of iterations performed.
 \item \code{convergence} A single logical for the convergence status.
-\item \code{cel} A single logical for whether constrained optimization is performed
+\item \code{cstr} A single logical for whether constrained optimization is performed
 or not.
 }}
 

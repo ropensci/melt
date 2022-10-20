@@ -180,7 +180,7 @@ el_glm <- function(formula,
       ),
       optim = list(
         par = numeric(), lambda = numeric(), iterations = integer(),
-        convergence = logical()
+        convergence = logical(), cstr = logical()
       ), df = 0L, nobs = nrow(x), npar = npar, method = NA_character_
     ))
   } else {
@@ -229,6 +229,7 @@ el_glm <- function(formula,
     )
     optim <- validate_optim(out$optim)
     names(optim$par) <- c(pnames, "phi")
+    optim$cstr <- intercept
   } else {
     class <- "GLM"
     npar <- p
@@ -238,6 +239,7 @@ el_glm <- function(formula,
     )
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames
+    optim$cstr <- intercept
   }
   df <- if (intercept && p > 1L) p - 1L else p
   pval <- pchisq(out$statistic, df = df, lower.tail = FALSE)

@@ -378,7 +378,7 @@ setClass("ELMT",
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#'   * `cel` A single logical for whether constrained optimization is performed
+#'   * `cstr` A single logical for whether constrained optimization is performed
 #'   or not.
 #' @slot logp A numeric vector of the log probabilities of the (constrained)
 #'   empirical likelihood.
