@@ -1,5 +1,5 @@
-#include "utils.h"
 #include "EL.h"
+#include "utils.h"
 #include <RcppEigen.h>
 #ifdef _OPENMP
 #include <omp.h>
@@ -18,8 +18,7 @@ Eigen::MatrixXd compute_confidence_intervals(
     const double tol,
     const double tol_l,
     const Rcpp::Nullable<double> step,
-    const Rcpp::Nullable<double> th,
-    const int nthreads,
+    const Rcpp::Nullable<double> th, const int nthreads,
     const Eigen::Map<Eigen::ArrayXd> &w)
 {
   // parameter length
@@ -28,14 +27,13 @@ Eigen::MatrixXd compute_confidence_intervals(
   const int n = idx.size();
   // matrix of confidence intervals
   Eigen::MatrixXd ci(n, 2);
-
   // step size
   const double gamma = set_step(x.rows(), step);
   // test threshold
   const double test_th = set_threshold(1, th);
-  #ifdef _OPENMP
-  #pragma omp parallel for num_threads(nthreads)
-  #endif
+#ifdef _OPENMP
+#pragma omp parallel for num_threads(nthreads)
+#endif
   for (int i = 0; i < n; ++i)
   {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
@@ -70,7 +68,6 @@ Eigen::MatrixXd compute_confidence_intervals(
       }
     }
     ci(i, 0) = lower_ub;
-
     // upper endpoint
     double upper_lb = par0[idx[i] - 1];
     double upper_ub = par0[idx[i] - 1] + 1.0 / std::log(x.rows());
@@ -92,6 +89,98 @@ Eigen::MatrixXd compute_confidence_intervals(
                     maxit, maxit_l, tol, tol_l, gamma, test_th, w)
                     .nllr >
           cutoff)
+      {
+        upper_ub = (upper_lb + upper_ub) / 2.0;
+      }
+      else
+      {
+        upper_lb = (upper_lb + upper_ub) / 2.0;
+      }
+    }
+    ci(i, 1) = upper_lb;
+  }
+  return ci;
+}
+
+// [[Rcpp::export]]
+Eigen::MatrixXd compute_confidence_intervals_EMLT(
+    const std::string method,
+    const Eigen::Map<Eigen::MatrixXd> &x,
+    const Eigen::Map<Eigen::VectorXd> &par0,
+    const Eigen::Map<Eigen::MatrixXd> &lhs,
+    const Eigen::Map<Eigen::VectorXd> &est,
+    const double cv,
+    const int maxit,
+    const int maxit_l,
+    const double tol,
+    const double tol_l,
+    const Rcpp::Nullable<double> step,
+    const Rcpp::Nullable<double> th,
+    const int nthreads, const Eigen::Map<Eigen::ArrayXd> &w)
+{
+  // number of simultaneous confidence intervals
+  const int q = lhs.rows();
+  // matrix of simultaneous confidence intervals
+  Eigen::MatrixXd ci(q, 2);
+  // step size
+  const double gamma = set_step(x.rows(), step);
+  // test threshold
+  const double test_th = set_threshold(1, th);
+#ifdef _OPENMP
+#pragma omp parallel for num_threads(nthreads)
+#endif
+  for (int i = 0; i < q; ++i)
+  {
+    Eigen::MatrixXd l = lhs.row(i);
+    // lower endpoint
+    double lower_ub = est[i];
+    double lower_lb = est[i] - 1.0 / std::log(x.rows());
+    // lower bound for lower endpoint
+    while (2.0 * CEL(method, par0, x, l, Eigen::Matrix<double, 1, 1>(lower_lb),
+                     maxit, maxit_l, tol, tol_l, gamma, test_th, w)
+                     .nllr <=
+           cv)
+    {
+      lower_ub = lower_lb;
+      lower_lb -= 1.0 / std::log(x.rows());
+    }
+    // approximate lower bound by numerical search
+    while (lower_ub - lower_lb > tol)
+    {
+      if (2.0 * CEL(method, par0, x, l,
+                    Eigen::Matrix<double, 1, 1>((lower_lb + lower_ub) / 2.0),
+                    maxit, maxit_l, tol, tol_l, gamma, test_th, w)
+                    .nllr >
+          cv)
+      {
+        lower_lb = (lower_lb + lower_ub) / 2.0;
+      }
+      else
+      {
+        lower_ub = (lower_lb + lower_ub) / 2.0;
+      }
+    }
+    ci(i, 0) = lower_ub;
+    // upper endpoint
+    double upper_lb = est[i];
+    double upper_ub = est[i] + 1.0 / std::log(x.rows());
+    // upper bound for upper endpoint
+    while (2.0 * CEL(method, par0, x, l, Eigen::Matrix<double, 1, 1>(upper_ub),
+                     maxit, maxit_l, tol, tol_l, gamma, test_th, w)
+                     .nllr <=
+           cv)
+    {
+      upper_lb = upper_ub;
+      upper_ub += 1.0 / std::log(x.rows());
+    }
+    // approximate upper bound by numerical search
+    while (upper_ub - upper_lb > tol)
+    {
+      if (2.0 * CEL(method, par0, x, l,
+                    Eigen::Matrix<double, 1, 1>((upper_lb + upper_ub) / 2.0),
+                    maxit, maxit_l, tol, tol_l, gamma, test_th, w)
+                    .nllr >
+          cv)
       {
         upper_ub = (upper_lb + upper_ub) / 2.0;
       }

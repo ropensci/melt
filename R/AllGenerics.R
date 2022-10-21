@@ -657,20 +657,28 @@ setGeneric("getData", function(x) standardGeneric("getData"))
 setMethod("getData", "EL", function(x) {
   x@data
 })
+setMethod("getData", "ELMT", function(x) {
+  x@data
+})
 
 
 setGeneric("getEstimates", function(x) standardGeneric("getEstimates"))
 setMethod("getEstimates", "EL", function(x) {
   x@coefficients
 })
-
+setMethod("getEstimates", "ELMT", function(x) {
+  x@estimates
+})
 setMethod("getEstimates", "QGLM", function(x) {
-  c(x@coefficients, x@dispersion)
+  c(x@coefficients, setNames(x@dispersion, "phi"))
 })
 
 
 setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
 setMethod("getMethodEL", "EL", function(x) {
+  x@method
+})
+setMethod("getMethodEL", "ELMT", function(x) {
   x@method
 })
 setMethod("getMethodEL", "SummaryEL", function(x) {
@@ -695,5 +703,8 @@ setMethod("getNumPar", "SummaryLM", function(x) {
 
 setGeneric("getWeights", function(x) standardGeneric("getWeights"))
 setMethod("getWeights", "EL", function(x) {
+  x@weights
+})
+setMethod("getWeights", "ELMT", function(x) {
   x@weights
 })

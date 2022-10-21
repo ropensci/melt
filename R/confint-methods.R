@@ -82,8 +82,25 @@ setMethod("confint", "ELMT", function(object,
   stopifnot(
     "Each hypothesis must correspond to a linear combination of parameters." =
       (isTRUE(all(getDF(object) == 1L))),
-    # "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-    # (isFALSE(is.null(getData(object)))),
+    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
+      (isFALSE(is.null(getData(object)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
+  method <- getMethodEL(object)
+  maxit <- control@maxit
+  maxit_l <- control@maxit_l
+  tol <- control@tol
+  tol_l <- control@tol_l
+  step <- control@step
+  th <- control@th
+  nthreads <- control@nthreads
+  w <- getWeights(object)
+  cv <- if (is.null(cv)) object@cv else validate_cv(cv, th)
+  estimates <- unlist(getEstimates(object))
+  ci <- compute_confidence_intervals_EMLT(
+    method, getData(object), coef(object), object@lhs, estimates, cv, maxit,
+    maxit_l, tol, tol_l, step, th, nthreads, w
+  )
+  dimnames(ci) <- list(names(estimates), c("lower", "upper"))
+  ci
 })

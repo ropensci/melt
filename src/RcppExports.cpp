@@ -92,6 +92,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// compute_confidence_intervals_EMLT
+Eigen::MatrixXd compute_confidence_intervals_EMLT(const std::string method, const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& lhs, const Eigen::Map<Eigen::VectorXd>& est, const double cv, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& w);
+RcppExport SEXP _melt_compute_confidence_intervals_EMLT(SEXP methodSEXP, SEXP xSEXP, SEXP par0SEXP, SEXP lhsSEXP, SEXP estSEXP, SEXP cvSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type par0(par0SEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type lhs(lhsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type est(estSEXP);
+    Rcpp::traits::input_parameter< const double >::type cv(cvSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit_l(maxit_lSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol_l(tol_lSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type step(stepSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<double> >::type th(thSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::ArrayXd>& >::type w(wSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_confidence_intervals_EMLT(method, x, par0, lhs, est, cv, maxit, maxit_l, tol, tol_l, step, th, nthreads, w));
+    return rcpp_result_gen;
+END_RCPP
+}
 // compute_confidence_region
 Rcpp::NumericVector compute_confidence_region(const std::string method, const Eigen::Map<Eigen::VectorXd>& par0, const Eigen::Map<Eigen::MatrixXd>& x, const int npar, const double cv, const Rcpp::IntegerVector& idx, const Eigen::Map<Eigen::MatrixXd>& circ, const int maxit, const int maxit_l, const double tol, const double tol_l, const Rcpp::Nullable<double> step, const Rcpp::Nullable<double> th, const int nthreads, const Eigen::Map<Eigen::ArrayXd>& w);
 RcppExport SEXP _melt_compute_confidence_region(SEXP methodSEXP, SEXP par0SEXP, SEXP xSEXP, SEXP nparSEXP, SEXP cvSEXP, SEXP idxSEXP, SEXP circSEXP, SEXP maxitSEXP, SEXP maxit_lSEXP, SEXP tolSEXP, SEXP tol_lSEXP, SEXP stepSEXP, SEXP thSEXP, SEXP nthreadsSEXP, SEXP wSEXP) {
@@ -294,6 +318,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_melt_compute_ELD", (DL_FUNC) &_melt_compute_ELD, 8},
     {"_melt_compute_bootstrap_calibration", (DL_FUNC) &_melt_compute_bootstrap_calibration, 13},
     {"_melt_compute_confidence_intervals", (DL_FUNC) &_melt_compute_confidence_intervals, 13},
+    {"_melt_compute_confidence_intervals_EMLT", (DL_FUNC) &_melt_compute_confidence_intervals_EMLT, 14},
     {"_melt_compute_confidence_region", (DL_FUNC) &_melt_compute_confidence_region, 15},
     {"_melt_compute_generic_EL", (DL_FUNC) &_melt_compute_generic_EL, 5},
     {"_melt_pairwise", (DL_FUNC) &_melt_pairwise, 12},

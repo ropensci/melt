@@ -74,3 +74,33 @@ test_that("Character specification for `parm`.", {
   expect_type(confint(fit, parm = 1), "double")
   expect_type(confint(fit2, parm = "1"), "double")
 })
+
+test_that("`ELMT` objects.", {
+  fit <- el_glm(event ~ mag + dist + accel,
+                family = poisson("log"),
+                data = attenu
+  )
+  lhs <- list(
+    matrix(c(1, 21, 1, 0, 2, 1, 5, 9), nrow = 2),
+    matrix(c(0, 1, 0, -1), nrow = 1)
+  )
+  rhs <- list(c(2, 0), 0)
+  out <- elmt(fit, rhs = rhs, lhs = lhs)
+  expect_error(confint(out))
+  lhs <- list(
+    matrix(c(1, 21, 0, 0), nrow = 1),
+    matrix(c(0, 1, 0, -1), nrow = 1)
+  )
+  rhs <- c(2, 0)
+  out <- elmt(fit, rhs = rhs, lhs = lhs)
+  out@data <- NULL
+  expect_error(confint(out))
+  out <- elmt(fit, rhs = rhs, lhs = lhs)
+  expect_error(confint(out, control = list(maxit = 67)))
+  out2 <- confint(out)
+  expect_type(out2, "double")
+  expect_true(getEstimates(out)[1L] < out2[1L, 2L])
+  expect_true(getEstimates(out)[1L] > out2[1L, 1L])
+  expect_true(getEstimates(out)[2L] < out2[2L, 2L])
+  expect_true(getEstimates(out)[2L] > out2[2L, 1L])
+})

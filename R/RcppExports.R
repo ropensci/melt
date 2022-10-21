@@ -17,6 +17,10 @@ compute_confidence_intervals <- function(method, par0, x, cutoff, idx, maxit, ma
     .Call(`_melt_compute_confidence_intervals`, method, par0, x, cutoff, idx, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
 
+compute_confidence_intervals_EMLT <- function(method, x, par0, lhs, est, cv, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
+    .Call(`_melt_compute_confidence_intervals_EMLT`, method, x, par0, lhs, est, cv, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
+}
+
 compute_confidence_region <- function(method, par0, x, npar, cv, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_compute_confidence_region`, method, par0, x, npar, cv, idx, circ, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }

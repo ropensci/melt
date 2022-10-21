@@ -11,7 +11,7 @@ S4 class for empirical likelihood multiple tests.
 \section{Slots}{
 
 \describe{
-\item{\code{coefficients}}{A list of numeric vectors of the estimates of the linear
+\item{\code{estimates}}{A list of numeric vectors of the estimates of the linear
 hypotheses.}
 
 \item{\code{statistic}}{A numeric vector of minus twice the (constrained) empirical
@@ -31,6 +31,17 @@ statistic.}
 \item{\code{alpha}}{A single numeric for the overall significance level.}
 
 \item{\code{calibrate}}{A single character for the calibration method used.}
+
+\item{\code{weights}}{A numeric vector of the re-scaled weights used for the model
+fitting.}
+
+\item{\code{coefficients}}{A numeric vector of the maximum empirical likelihood
+estimates of the parameters.}
+
+\item{\code{method}}{A single character for the method dispatch in internal
+functions.}
+
+\item{\code{data}}{A numeric matrix of the data for the model fitting.}
 }}
 
 \examples{

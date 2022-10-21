@@ -343,7 +343,7 @@ setClass("ELD", contains = "numeric")
 #'
 #' S4 class for empirical likelihood multiple tests.
 #'
-#' @slot coefficients A list of numeric vectors of the estimates of the linear
+#' @slot estimates A list of numeric vectors of the estimates of the linear
 #'   hypotheses.
 #' @slot statistic A numeric vector of minus twice the (constrained) empirical
 #'   log-likelihood ratios with asymptotic chi-square distributions.
@@ -355,14 +355,22 @@ setClass("ELD", contains = "numeric")
 #' @slot lhs A numeric matrix for the left-hand side of the hypotheses.
 #' @slot alpha A single numeric for the overall significance level.
 #' @slot calibrate A single character for the calibration method used.
+#' @slot weights A numeric vector of the re-scaled weights used for the model
+#'   fitting.
+#' @slot coefficients A numeric vector of the maximum empirical likelihood
+#'   estimates of the parameters.
+#' @slot method A single character for the method dispatch in internal
+#'   functions.
+#' @slot data A numeric matrix of the data for the model fitting.
 #' @aliases ELMT
 #' @examples
 #' showClass("ELMT")
 setClass("ELMT",
   slots = c(
-    coefficients = "list", statistic = "numeric", df = "integer",
+    estimates = "list", statistic = "numeric", df = "integer",
     pval = "numeric", cv = "numeric", rhs = "numeric", lhs = "matrix",
-    alpha = "numeric", calibrate = "character"
+    alpha = "numeric", calibrate = "character", weights = "numeric",
+    coefficients = "numeric", method = "character", data = "ANY"
   )
 )
 

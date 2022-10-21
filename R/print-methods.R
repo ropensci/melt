@@ -37,7 +37,7 @@ setMethod("print", "ELMT", function(x,
   cat("Overall significance level:", x@alpha, "\n\n")
   cat("Calibration:", method, "\n\n")
   cat("Hypotheses:\n")
-  est <- coef(x)
+  est <- getEstimates(x)
   if (isTRUE(all(vapply(est, FUN = length, FUN.VALUE = integer(1L)) == 1L))) {
     out <- cbind(
       Estimate = unlist(est), Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x)

@@ -4,7 +4,6 @@ setMethod("elmt", "EL", function(object,
                                  lhs = NULL,
                                  alpha = 0.05,
                                  control = el_control()) {
-  # p <- if (is(object, "QGLM")) getNumPar(object) - 1L else getNumPar(object)
   if (is(object, "QGLM")) {
     p <- getNumPar(object) - 1L
     pnames <- names(getOptim(object)$par[-getNumPar(object)])
@@ -24,7 +23,7 @@ setMethod("elmt", "EL", function(object,
   l <- if (is(object, "QGLM")) cbind(h$l, 0) else h$l
   qh <- head(h$q, n = length(h$q) - 1L) + 1L
   qt <- tail(h$q, n = length(h$q) - 1L)
-  coefficients <- lapply(seq_along(qh), \(x) {
+  estimates <- lapply(seq_along(qh), \(x) {
     drop(h$l %*% coef(object))[qh[x]:qt[x]]
   })
   alpha <- validate_alpha(alpha)
@@ -41,8 +40,10 @@ setMethod("elmt", "EL", function(object,
     maxit, maxit_l, tol, tol_l, step, th, getWeights(object)
   )
   new("ELMT",
-    coefficients = coefficients, statistic = out$statistic, df = diff(h$q),
+    estimates = estimates, statistic = out$statistic, df = diff(h$q),
     pval = out$pval, cv = out$cv, rhs = h$r, lhs = h$l, alpha = alpha,
-    calibrate = "mvchisq"
+    calibrate = "mvchisq", weights = getWeights(object),
+    coefficients = getEstimates(object), method = method,
+    data = if (control@keep_data) getData(object) else NULL
   )
 })
