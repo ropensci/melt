@@ -15,7 +15,8 @@
 )
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL}.}
+\item{object}{An object that inherits from \linkS4class{EL} or
+\linkS4class{ELMT}.}
 
 \item{parm}{A specification of which parameters are to be given a confidence
 region, either a vector of numbers or a vector of names. It must be a
@@ -56,5 +57,6 @@ Owen A (1990).
 \doi{10.1214/aos/1176347494}.
 }
 \seealso{
-\code{\link[=confint]{confint()}}, \code{\link[=elt]{elt()}}, \code{\link[=plot]{plot()}}, \code{\link[=el_control]{el_control()}}
+\linkS4class{EL}, \linkS4class{ELMT}, \code{\link[=confint]{confint()}}, \code{\link[=elt]{elt()}},
+\code{\link[=plot]{plot()}}, \code{\link[=el_control]{el_control()}}
 }

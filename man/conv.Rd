@@ -23,8 +23,7 @@
 \S4method{conv}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL},
-\linkS4class{SummaryLM}, or \linkS4class{ELT}.}
+\item{object}{An object that contains the convergence status.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -32,7 +31,7 @@
 A single logical.
 }
 \description{
-Extracts convergence status from a model.
+Extracts the convergence status from a model.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -62,5 +61,5 @@ fit <- el_lm(mpg ~ ., data = mtcars)
 conv(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{SummaryLM}
+\linkS4class{CEL}, \linkS4class{EL}, \linkS4class{ELT}
 }

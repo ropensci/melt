@@ -26,8 +26,7 @@
 \S4method{pVal}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL},
-\linkS4class{ELT}, or \linkS4class{ELMT}.}
+\item{object}{An object that contains the \eqn{p}-value.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -36,7 +35,7 @@ The form of the value returned by \code{\link[=pVal]{pVal()}} depends on the cla
 its argument.
 }
 \description{
-Extracts \eqn{p}-value from a model.
+Extracts the \eqn{p}-value from a model.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -61,5 +60,5 @@ fit <- el_mean(precip, par = 40)
 pVal(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT}, \code{\link[=chisq]{chisq()}}
+\linkS4class{EL}, \linkS4class{ELMT}, \linkS4class{ELT}, \code{\link[=chisq]{chisq()}}
 }

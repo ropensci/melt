@@ -20,8 +20,7 @@
 \S4method{logLR}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL} or
-\linkS4class{ELT}.}
+\item{object}{An object that contains the empirical log-likelihood ratio.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -29,7 +28,7 @@
 A single numeric.
 }
 \description{
-Extracts empirical log-likelihood ratio from a model.
+Extracts the empirical log-likelihood ratio from a model.
 }
 \examples{
 data("precip")

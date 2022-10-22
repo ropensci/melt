@@ -17,8 +17,8 @@
 \S4method{coef}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL} or
-\linkS4class{ELMT}.}
+\item{object}{An object that contains the maximum empirical likelihood
+estimates.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -27,7 +27,7 @@ The form of the value returned by \code{\link[=coef]{coef()}} depends on the cla
 its argument.
 }
 \description{
-Extracts maximum empirical likelihood estimates from a model.
+Extracts the maximum empirical likelihood estimates from a model.
 }
 \section{Methods (by class)}{
 \itemize{

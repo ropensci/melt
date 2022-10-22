@@ -26,8 +26,7 @@
 \S4method{chisq}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL},
-\linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.}
+\item{object}{An object that contains the chi-square statistic.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -36,7 +35,7 @@ The form of the value returned by \code{\link[=chisq]{chisq()}} depends on the c
 its argument.
 }
 \description{
-Extracts chi-square statistic from a model.
+Extracts the chi-square statistic from a model.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -62,6 +61,5 @@ fit <- el_mean(precip, par = 40)
 chisq(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
-\linkS4class{SummaryLM}, \code{\link[=pVal]{pVal()}}
+\linkS4class{EL}, \linkS4class{ELMT}, \linkS4class{ELT}, \code{\link[=pVal]{pVal()}}
 }

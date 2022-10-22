@@ -20,8 +20,7 @@
 \S4method{getOptim}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL} or
-\linkS4class{ELT}.}
+\item{object}{An object that contains the optimization results.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -36,7 +35,7 @@ A list with the following optimization results:
 }
 }
 \description{
-Extracts optimization results from a model.
+Extracts the optimization results from a model.
 }
 \examples{
 data("precip")
@@ -44,5 +43,5 @@ fit <- el_mean(precip, par = 40)
 getOptim(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{CEL}, \linkS4class{ELT}, \code{\link[=sigTests]{sigTests()}}
+\linkS4class{EL}, \linkS4class{ELT}, \code{\link[=sigTests]{sigTests()}}
 }

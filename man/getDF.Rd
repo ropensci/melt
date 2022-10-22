@@ -26,14 +26,13 @@
 \S4method{getDF}{SummaryLM}(object)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL},
-\linkS4class{ELT}, \linkS4class{ELMT}, or \linkS4class{SummaryLM}.}
+\item{object}{An object that contains the degrees of freedom.}
 }
 \value{
 An integer vector.
 }
 \description{
-Extracts degrees of freedom from a model.
+Extracts the degrees of freedom from a model.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -58,6 +57,5 @@ fit <- el_mean(faithful, par = c(3.5, 70))
 getDF(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{ELT}, \linkS4class{ELMT},
-\linkS4class{SummaryLM}
+\linkS4class{EL}, \linkS4class{ELMT}, \linkS4class{ELT}
 }

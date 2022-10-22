@@ -34,6 +34,10 @@ setMethod("confreg", "EL", function(object,
           isFALSE(is.null(nm))
       )
       idx <- match(parm, pnames)
+      stopifnot(
+        "`parm` does not match the parameters in `object`." =
+          isFALSE(any(is.na(idx)))
+      )
       est <- est[idx]
       pnames <- pnames[idx]
       stopifnot(

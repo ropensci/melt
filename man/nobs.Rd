@@ -14,7 +14,7 @@
 \S4method{nobs}{SummaryLM}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{EL}.}
+\item{object}{An object that contains the number of observations.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -22,7 +22,7 @@
 A single integer.
 }
 \description{
-Extracts number of observations from a model.
+Extracts the number of observations from a model.
 }
 \examples{
 data("precip")

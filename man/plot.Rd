@@ -14,8 +14,8 @@
 \S4method{plot}{ELD}(x, y, ...)
 }
 \arguments{
-\item{x}{An object that inherits from \linkS4class{EL}, \linkS4class{ELD}, or
-\linkS4class{ConfregEL}.}
+\item{x}{An object that inherits from \linkS4class{ConfregEL},
+\linkS4class{EL}, \linkS4class{ELD}.}
 
 \item{y}{Not used.}
 
@@ -56,6 +56,6 @@ plot(out2)
 plot(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{ConfregEL}, \linkS4class{ELD},
+\linkS4class{ConfregEL}, \linkS4class{EL}, \linkS4class{ELD},
 \code{\link[=confreg]{confreg()}}, \code{\link[=eld]{eld()}}
 }

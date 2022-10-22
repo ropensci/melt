@@ -57,8 +57,8 @@
 \item{digits}{A single integer for the number of significant digits to be
 passed to \code{\link[=format]{format()}}.}
 
-\item{signif.stars}{A single logical. If \code{TRUE}, ‘significance stars’
-are printed for each parameter.}
+\item{signif.stars}{A single logical. If \code{TRUE}, ‘significance stars’ are
+printed for each parameter.}
 }
 \value{
 The argument \code{x} (invisibly).
@@ -72,7 +72,6 @@ fit <- el_mean(precip, par = 40)
 print(fit)
 }
 \seealso{
-\linkS4class{EL}, \linkS4class{SummaryEL}, \linkS4class{ELT},
-\linkS4class{ELMT}, \linkS4class{LM}, \linkS4class{SummaryLM},
-\linkS4class{SummaryGLM}, \linkS4class{SummaryQGLM}
+\linkS4class{EL}, \linkS4class{ELMT}, \linkS4class{ELT},
+\linkS4class{LM}
 }

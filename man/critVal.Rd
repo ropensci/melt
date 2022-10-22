@@ -2,23 +2,22 @@
 % Please edit documentation in R/AllGenerics.R, R/critVal-methods.R
 \name{critVal}
 \alias{critVal}
-\alias{critVal,ELT-method}
 \alias{critVal,ELMT-method}
+\alias{critVal,ELT-method}
 \alias{critVal,SummaryELMT-method}
 \alias{critVal,SummaryELT-method}
 \title{Critical value}
 \usage{
-\S4method{critVal}{ELT}(object, ...)
-
 \S4method{critVal}{ELMT}(object, ...)
+
+\S4method{critVal}{ELT}(object, ...)
 
 \S4method{critVal}{SummaryELMT}(object, ...)
 
 \S4method{critVal}{SummaryELT}(object, ...)
 }
 \arguments{
-\item{object}{An object that inherits from \linkS4class{ELT} or
-\linkS4class{ELMT}.}
+\item{object}{An object that contains the critical value.}
 
 \item{...}{Further arguments passed to methods.}
 }
@@ -26,7 +25,7 @@
 A single numeric.
 }
 \description{
-Extracts critical value from a model.
+Extracts the critical value from a model.
 }
 \examples{
 ## F-calibrated critical value
@@ -36,5 +35,5 @@ elt <- elt(fit, rhs = 34, calibrate = "f")
 critVal(elt)
 }
 \seealso{
-\linkS4class{ELT}, \linkS4class{ELMT}
+\linkS4class{ELMT}, \linkS4class{ELT}
 }

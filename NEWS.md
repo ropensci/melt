@@ -1,4 +1,7 @@
-# melt 1.8.0.9100 (development version)
+# melt 1.9.0
+## NEW FEATURES
+* `confint()` is applicable to an `EMLT` object to produce simultaneous confidence intervals.
+
 ## MINOR IMPROVEMENTS
 * `summary()` is applicable to an object that inherits from `EL`, `ELT`, and `EMLT`.
 
@@ -6,6 +9,9 @@
 
 ## DEPRECATED AND DEFUNCT
 * `logLik()` is deprecated and will be removed in a future release. 
+
+## BUG FIXES
+* `confreg()` checks whether `parm` matches the parameters in `object` when a `character` vector is specified for `parm`.
 
 
 # melt 1.8.0
