@@ -3,7 +3,7 @@
 #' A dataset on the effect of the thiamethoxam application method and plant
 #'   variety on bees.
 #'
-#' @format A data frame with 55 observations and 11 variables:
+#' @format A data frame with 165 observations and 11 variables:
 #' \describe{
 #' \item{trt}{Treatment.}
 #' \item{var}{Variety.}

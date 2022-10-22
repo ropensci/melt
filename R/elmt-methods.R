@@ -41,7 +41,7 @@ setMethod("elmt", "EL", function(object,
   )
   new("ELMT",
     estimates = estimates, statistic = out$statistic, df = diff(h$q),
-    pval = out$pval, cv = out$cv, rhs = h$r, lhs = h$l, alpha = alpha,
+    pval = out$pval, cv = out$cv, rhs = h$r, lhs = l, alpha = alpha,
     calibrate = "mvchisq", weights = getWeights(object),
     coefficients = getEstimates(object), method = method,
     data = if (control@keep_data) getData(object) else NULL

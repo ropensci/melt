@@ -87,6 +87,7 @@ setMethod("confint", "ELMT", function(object,
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
   method <- getMethodEL(object)
+  cv <- if (is.null(cv)) object@cv else validate_cv(cv, th)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
   tol <- control@tol
@@ -95,7 +96,6 @@ setMethod("confint", "ELMT", function(object,
   th <- control@th
   nthreads <- control@nthreads
   w <- getWeights(object)
-  cv <- if (is.null(cv)) object@cv else validate_cv(cv, th)
   estimates <- unlist(getEstimates(object))
   ci <- compute_confidence_intervals_EMLT(
     method, getData(object), coef(object), object@lhs, estimates, cv, maxit,

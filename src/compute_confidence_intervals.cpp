@@ -31,9 +31,9 @@ Eigen::MatrixXd compute_confidence_intervals(
   const double gamma = set_step(x.rows(), step);
   // test threshold
   const double test_th = set_threshold(1, th);
-#ifdef _OPENMP
-#pragma omp parallel for num_threads(nthreads)
-#endif
+  #ifdef _OPENMP
+  #pragma omp parallel for num_threads(nthreads)
+  #endif
   for (int i = 0; i < n; ++i)
   {
     Eigen::MatrixXd lhs = Eigen::MatrixXd::Zero(1, p);
@@ -126,9 +126,9 @@ Eigen::MatrixXd compute_confidence_intervals_EMLT(
   const double gamma = set_step(x.rows(), step);
   // test threshold
   const double test_th = set_threshold(1, th);
-#ifdef _OPENMP
-#pragma omp parallel for num_threads(nthreads)
-#endif
+  #ifdef _OPENMP
+  #pragma omp parallel for num_threads(nthreads)
+  #endif
   for (int i = 0; i < q; ++i)
   {
     Eigen::MatrixXd l = lhs.row(i);

@@ -5,7 +5,7 @@
 \alias{thiamethoxam}
 \title{Thiamethoxam applications in squash crops}
 \format{
-A data frame with 55 observations and 11 variables:
+A data frame with 165 observations and 11 variables:
 \describe{
 \item{trt}{Treatment.}
 \item{var}{Variety.}
