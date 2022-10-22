@@ -18,7 +18,7 @@ variety on bees."><meta property="og:image" content="https://docs.ropensci.org/m
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9200</span>
       </span>
     </div>
 
@@ -73,7 +73,7 @@ variety on bees.</p>
 
     <div id="format">
     <h2>Format</h2>
-    <p>A data frame with 55 observations and 11 variables:</p><dl><dt>trt</dt>
+    <p>A data frame with 165 observations and 11 variables:</p><dl><dt>trt</dt>
 <dd><p>Treatment.</p></dd>
 
 <dt>var</dt>
@@ -121,118 +121,338 @@ Applications in Squash Crops.” <em>PLOS ONE</em>, 17(5), 1--18.
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"thiamethoxam"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">thiamethoxam</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       trt var rep    fruit avg_mass      mass     yield visit foliage      scb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Spray  GZ   1  3.25000 265.3393  2284.660  5537.660  1.00 0.02006 10.12500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Spray  GZ   2  4.25000 310.4869  2312.150  8453.250  2.25 0.01199  5.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Spray  GZ   3  5.00000 240.1425  1795.820  6443.040  3.50 0.02636  3.62500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   Spray  GZ   4  2.50000 181.3359  2781.670  5567.520  4.25 0.07131  3.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   Spray  GZ   5  3.75000 235.2383  2302.770  6906.860  0.75 0.05768  1.87500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   Spray  GZ   6  7.25000 391.5038  2027.860 12633.230  6.50 0.01099  2.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   Spray  GZ   7  8.00000 442.7715  6242.720 17418.230  9.00 0.00198  2.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Spray SPM   1  3.50000 181.9009   987.210  4805.840  5.75 0.00104  5.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   Spray SPM   2  4.75000 298.3934  6801.760 11997.930 11.75 0.00129 22.87500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  Spray SPM   3  6.75000 276.2565  4694.510 11995.360 13.00 0.00333  2.62500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  Spray SPM   4  7.00000 271.9790  1433.700 10879.160 12.75 0.00014  2.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  Spray SPM   5  6.75000 402.3045 14564.780 20852.390 14.25 0.00048  1.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  Spray SPM   6  4.75000 235.5726  1753.863  8567.234 11.75 0.00064  1.50000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14  Spray SPM   7  3.00000 212.9332  2799.690  7190.840 10.00 0.00113  5.37500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 Furrow  GZ   1  5.75000 424.1494 13956.729 19848.309  3.75 0.00430  4.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 Furrow  GZ   2 10.25000 561.5778 15274.470 28797.650  8.25 0.00274  1.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 Furrow  GZ   3 12.25000 512.8685 11708.250 25084.360  6.25 0.00418  2.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 Furrow  GZ   4 10.75000 718.2468 14716.290 34789.520  7.00 0.00161  1.37500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 Furrow  GZ   5 12.50000 724.2871 15498.520 34326.710  8.25 0.00040  2.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 Furrow  GZ   6  7.75000 568.5102 11519.240 22808.510  6.50 0.00186  2.50000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 Furrow  GZ   7  4.50000 229.1179  3900.290  5110.770  7.75 0.00131  1.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 Furrow SPM   1  6.00000 323.4027  4807.740 12296.260  3.75 0.00051       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 Furrow SPM   2  6.50000 361.5754  8255.500 15380.240  9.75 0.00109  2.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 Furrow SPM   3 13.00000 333.9503 15560.070 24311.700  8.00 0.00090  2.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 Furrow SPM   4  5.75000 376.3996  9481.420 17017.200 18.50 0.00041  0.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 Furrow SPM   5  7.00000 344.4121 10080.080 17497.660 14.25 0.00041  1.87500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 Furrow SPM   6  7.00000 344.0429  4323.400 19145.430 17.00 0.00101  0.50000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 Furrow SPM   7  9.25000 376.1967 10414.190 22368.160 23.50 0.00221  1.12500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29   None  GZ   1  8.00000 241.9469  2751.130  6762.540  2.00 0.02440  1.42857</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   None  GZ   2  2.25000 305.4742  9672.890 13146.970  1.75 0.05240  0.37500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31   None  GZ   4  6.00000 493.9329  5887.710 16072.260  7.75 0.05199  0.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32   None  GZ   5  4.75000 408.8976  8804.640 16338.010  6.25 0.02001  3.87500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33   None  GZ   6  2.50000 346.9235  5402.390 13961.640  4.50 0.02683  2.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34   None  GZ   7 10.66667 326.6411  7230.100 10072.720  6.75 0.00246  3.12500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35   None SPM   1  5.75000 187.4518  2032.160  2777.700 10.50 0.01040  0.37500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36   None SPM   2  2.50000 267.2553  3672.120  9086.270  4.75 0.00697  0.12500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37   None SPM   3  5.25000 177.8564  4471.450  7931.380 11.00 0.01225  1.50000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38   None SPM   4  7.25000 236.8101  6152.840  9678.530  8.75 0.00106  1.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39   None SPM   5  4.75000 333.8460 11555.980 16910.440 14.75 0.00229  0.62500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40   None SPM   6  2.50000 401.1302  8836.410 14485.820  9.50 0.00034  1.75000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41   None SPM   7 11.50000 155.2796  1426.310  4981.840 13.25 0.00114  3.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42   Seed  GZ   1  3.50000 240.4407  2322.830  8105.810  8.00 0.00978  5.37500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43   Seed  GZ   2  4.75000 177.1445  2911.880  5353.610  9.25 0.00334  3.87600</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44   Seed  GZ   3  6.25000 275.5670  3815.230  7201.940  5.75 0.01450  2.50000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45   Seed  GZ   4  7.25000 410.1381  9363.800 15924.150  5.75 0.01325  4.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46   Seed  GZ   5  7.00000 363.3837  7600.050 13619.620  9.00 0.01323  1.37500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47   Seed  GZ   6  8.25000 253.8870  5728.910  8847.140  8.00 0.00506  1.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48   Seed  GZ   7  4.00000 629.9551 11189.780 27680.210  8.25 0.00580  5.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49   Seed SPM   1  1.00000 224.1095  4621.860  9094.950  1.75 0.00797  1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50   Seed SPM   2  4.00000 102.2145  2351.730  2908.830  8.25 0.00231  2.37500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51   Seed SPM   3  7.00000 199.8702  3105.580  6408.560  4.50 0.00660  0.62500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52   Seed SPM   4  4.00000 323.7941  6456.040 13900.640  9.00 0.00040  1.25000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53   Seed SPM   5  7.50000 246.6138  2464.400  7454.380 10.75 0.00933  1.12500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54   Seed SPM   6  6.75000 219.4593  5097.980  6918.860 21.25 0.00254  1.62500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55   Seed SPM   7  3.25000 423.6295 16016.320 27053.110 18.50 0.00088  1.50000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    defoliation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        15.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         9.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        15.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        39.38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        30.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6         7.38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        11.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8         1.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9         2.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10        0.50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11        0.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12        2.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13        0.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14        0.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15        2.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16        1.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17        3.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18        0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19        0.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20        0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21        0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22        0.50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23        0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24        0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25        0.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26        0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27        0.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28        0.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29       21.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30       30.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31       48.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32       15.38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33       24.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34        9.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35        4.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36        1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37        0.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38        1.38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39        1.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40        7.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41        1.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42       17.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43       15.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44        8.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45       12.50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46       10.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47       13.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48       20.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49        2.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50        3.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51        3.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52        1.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53        0.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54        2.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55        1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        trt var rep     fruit avg_mass      mass     yield visit foliage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     None  GZ   1  8.000000 241.9469  2751.130  6762.540  2.00 0.02440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     None  GZ   2  2.250000 305.4742  9672.890 13146.970  1.75 0.05240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     None  GZ   4  6.000000 493.9329  5887.710 16072.260  7.75 0.05199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     None  GZ   5  4.750000 408.8976  8804.640 16338.010  6.25 0.02001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     None  GZ   6  2.500000 346.9235  5402.390 13961.640  4.50 0.02683</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     None  GZ   7 10.666667 326.6411  7230.100 10072.720  6.75 0.00246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     None SPM   1  5.750000 187.4518  2032.160  2777.700 10.50 0.01040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     None SPM   2  2.500000 267.2553  3672.120  9086.270  4.75 0.00697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     None SPM   3  5.250000 177.8564  4471.450  7931.380 11.00 0.01225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    None SPM   4  7.250000 236.8101  6152.840  9678.530  8.75 0.00106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    None SPM   5  4.750000 333.8460 11555.980 16910.440 14.75 0.00229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    None SPM   6  2.500000 401.1302  8836.410 14485.820  9.50 0.00034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    None SPM   7 11.500000 155.2796  1426.310  4981.840 13.25 0.00114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    None  GZ   1  8.000000 241.9469  2751.130  6762.540  3.75 0.00430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    None  GZ   2  2.250000 305.4742  9672.890 13146.970  8.25 0.00274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16    None  GZ   3  5.666667 279.2901  7492.270 11809.390  6.25 0.00418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17    None  GZ   4  6.000000 493.9329  5887.710 16072.260  7.00 0.00161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    None  GZ   5  4.750000 408.8976  8804.640 16338.010  8.25 0.00040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    None  GZ   6  2.500000 346.9235  5402.390 13961.640  6.50 0.00186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    None  GZ   7 10.666667 326.6411  7230.100 10072.720  7.75 0.00131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    None SPM   1  5.750000 187.4518  2032.160  2777.700  8.00 0.00978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    None SPM   2  2.500000 267.2553  3672.120  9086.270  9.25 0.00334</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23    None SPM   3  5.250000 177.8564  4471.450  7931.380  5.75 0.01450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24    None SPM   4  7.250000 236.8101  6152.840  9678.530  5.75 0.01325</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25    None SPM   5  4.750000 333.8460 11555.980 16910.440  9.00 0.01323</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26    None SPM   6  2.500000 401.1302  8836.410 14485.820  8.00 0.00506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27    None SPM   7 11.500000 155.2796  1426.310  4981.840  8.25 0.00580</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28    None  GZ   1  8.000000 241.9469  2751.130  6762.540  3.75 0.00430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29    None  GZ   2  2.250000 305.4742  9672.890 13146.970  8.25 0.00274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30    None  GZ   3  5.666667 279.2901  7492.270 11809.390  6.25 0.00418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31    None  GZ   4  6.000000 493.9329  5887.710 16072.260  7.00 0.00161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    None  GZ   5  4.750000 408.8976  8804.640 16338.010  8.25 0.00040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33    None  GZ   6  2.500000 346.9235  5402.390 13961.640  6.50 0.00186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34    None  GZ   7 10.666667 326.6411  7230.100 10072.720  7.75 0.00131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35    None SPM   1  5.750000 187.4518  2032.160  2777.700  8.00 0.00978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36    None SPM   2  2.500000 267.2553  3672.120  9086.270  9.25 0.00334</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37    None SPM   3  5.250000 177.8564  4471.450  7931.380  5.75 0.01450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38    None SPM   4  7.250000 236.8101  6152.840  9678.530  5.75 0.01325</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39    None SPM   5  4.750000 333.8460 11555.980 16910.440  9.00 0.01323</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    None SPM   6  2.500000 401.1302  8836.410 14485.820  8.00 0.00506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41    None SPM   7 11.500000 155.2796  1426.310  4981.840  8.25 0.00580</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   Spray  GZ   1  3.250000 265.3393  2284.660  5537.660  1.00 0.02006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   Spray  GZ   2  4.250000 310.4869  2312.150  8453.250  2.25 0.01199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   Spray  GZ   3  5.000000 240.1425  1795.820  6443.040  3.50 0.02636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   Spray  GZ   4  2.500000 181.3359  2781.670  5567.520  4.25 0.07131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   Spray  GZ   5  3.750000 235.2383  2302.770  6906.860  0.75 0.05768</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   Spray  GZ   6  7.250000 391.5038  2027.860 12633.230  6.50 0.01099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   Spray  GZ   7  8.000000 442.7715  6242.720 17418.230  9.00 0.00198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   Spray SPM   1  3.500000 181.9009   987.210  4805.840  5.75 0.00104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   Spray SPM   2  4.750000 298.3934  6801.760 11997.930 11.75 0.00129</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   Spray SPM   3  6.750000 276.2565  4694.510 11995.360 13.00 0.00333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   Spray SPM   4  7.000000 271.9790  1433.700 10879.160 12.75 0.00014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   Spray SPM   5  6.750000 402.3045 14564.780 20852.390 14.25 0.00048</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   Spray SPM   6  4.750000 235.5726  1753.863  8567.234 11.75 0.00064</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   Spray SPM   7  3.000000 212.9332  2799.690  7190.840 10.00 0.00113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   Spray  GZ   1  3.250000 265.3393  2284.660  5537.660  1.00 0.02006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   Spray  GZ   2  4.250000 310.4869  2312.150  8453.250  2.25 0.01199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   Spray  GZ   3  5.000000 240.1425  1795.820  6443.040  3.50 0.02636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   Spray  GZ   4  2.500000 181.3359  2781.670  5567.520  4.25 0.07131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   Spray  GZ   5  3.750000 235.2383  2302.770  6906.860  0.75 0.05768</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   Spray  GZ   6  7.250000 391.5038  2027.860 12633.230  6.50 0.01099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   Spray  GZ   7  8.000000 442.7715  6242.720 17418.230  9.00 0.00198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   Spray SPM   1  3.500000 181.9009   987.210  4805.840  2.00 0.02440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   Spray SPM   2  4.750000 298.3934  6801.760 11997.930  1.75 0.05240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   Spray SPM   4  7.000000 271.9790  1433.700 10879.160  7.75 0.05199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   Spray SPM   5  6.750000 402.3045 14564.780 20852.390  6.25 0.02001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   Spray SPM   6  4.750000 235.5726  1753.863  8567.234  4.50 0.02683</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   Spray SPM   7  3.000000 212.9332  2799.690  7190.840  6.75 0.00246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   Spray  GZ   1  3.250000 265.3393  2284.660  5537.660  1.00 0.02006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   Spray  GZ   2  4.250000 310.4869  2312.150  8453.250  2.25 0.01199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   Spray  GZ   3  5.000000 240.1425  1795.820  6443.040  3.50 0.02636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   Spray  GZ   4  2.500000 181.3359  2781.670  5567.520  4.25 0.07131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   Spray  GZ   5  3.750000 235.2383  2302.770  6906.860  0.75 0.05768</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   Spray  GZ   6  7.250000 391.5038  2027.860 12633.230  6.50 0.01099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   Spray  GZ   7  8.000000 442.7715  6242.720 17418.230  9.00 0.00198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   Spray SPM   1  3.500000 181.9009   987.210  4805.840  2.00 0.02440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   Spray SPM   2  4.750000 298.3934  6801.760 11997.930  1.75 0.05240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   Spray SPM   4  7.000000 271.9790  1433.700 10879.160  7.75 0.05199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   Spray SPM   5  6.750000 402.3045 14564.780 20852.390  6.25 0.02001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   Spray SPM   6  4.750000 235.5726  1753.863  8567.234  4.50 0.02683</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   Spray SPM   7  3.000000 212.9332  2799.690  7190.840  6.75 0.00246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82  Furrow  GZ   1  5.750000 424.1494 13956.729 19848.309  3.75 0.00430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83  Furrow  GZ   2 10.250000 561.5778 15274.470 28797.650  8.25 0.00274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84  Furrow  GZ   3 12.250000 512.8685 11708.250 25084.360  6.25 0.00418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85  Furrow  GZ   4 10.750000 718.2468 14716.290 34789.520  7.00 0.00161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86  Furrow  GZ   5 12.500000 724.2871 15498.520 34326.710  8.25 0.00040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87  Furrow  GZ   6  7.750000 568.5102 11519.240 22808.510  6.50 0.00186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88  Furrow  GZ   7  4.500000 229.1179  3900.290  5110.770  7.75 0.00131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89  Furrow SPM   1  6.000000 323.4027  4807.740 12296.260  3.75 0.00051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90  Furrow SPM   2  6.500000 361.5754  8255.500 15380.240  9.75 0.00109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91  Furrow SPM   3 13.000000 333.9503 15560.070 24311.700  8.00 0.00090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92  Furrow SPM   4  5.750000 376.3996  9481.420 17017.200 18.50 0.00041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93  Furrow SPM   5  7.000000 344.4121 10080.080 17497.660 14.25 0.00041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94  Furrow SPM   6  7.000000 344.0429  4323.400 19145.430 17.00 0.00101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95  Furrow SPM   7  9.250000 376.1967 10414.190 22368.160 23.50 0.00221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96  Furrow  GZ   1  5.750000 424.1494 13956.729 19848.309  5.75 0.00104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97  Furrow  GZ   2 10.250000 561.5778 15274.470 28797.650 11.75 0.00129</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  Furrow  GZ   3 12.250000 512.8685 11708.250 25084.360 13.00 0.00333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  Furrow  GZ   4 10.750000 718.2468 14716.290 34789.520 12.75 0.00014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 Furrow  GZ   5 12.500000 724.2871 15498.520 34326.710 14.25 0.00048</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101 Furrow  GZ   6  7.750000 568.5102 11519.240 22808.510 11.75 0.00064</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102 Furrow  GZ   7  4.500000 229.1179  3900.290  5110.770 10.00 0.00113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103 Furrow SPM   1  6.000000 323.4027  4807.740 12296.260 10.50 0.01040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104 Furrow SPM   2  6.500000 361.5754  8255.500 15380.240  4.75 0.00697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105 Furrow SPM   3 13.000000 333.9503 15560.070 24311.700 11.00 0.01225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106 Furrow SPM   4  5.750000 376.3996  9481.420 17017.200  8.75 0.00106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107 Furrow SPM   5  7.000000 344.4121 10080.080 17497.660 14.75 0.00229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108 Furrow SPM   6  7.000000 344.0429  4323.400 19145.430  9.50 0.00034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109 Furrow SPM   7  9.250000 376.1967 10414.190 22368.160 13.25 0.00114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110 Furrow  GZ   1  5.750000 424.1494 13956.729 19848.309  5.75 0.00104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111 Furrow  GZ   2 10.250000 561.5778 15274.470 28797.650 11.75 0.00129</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112 Furrow  GZ   3 12.250000 512.8685 11708.250 25084.360 13.00 0.00333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113 Furrow  GZ   4 10.750000 718.2468 14716.290 34789.520 12.75 0.00014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114 Furrow  GZ   5 12.500000 724.2871 15498.520 34326.710 14.25 0.00048</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115 Furrow  GZ   6  7.750000 568.5102 11519.240 22808.510 11.75 0.00064</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116 Furrow  GZ   7  4.500000 229.1179  3900.290  5110.770 10.00 0.00113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117 Furrow SPM   1  6.000000 323.4027  4807.740 12296.260 10.50 0.01040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118 Furrow SPM   2  6.500000 361.5754  8255.500 15380.240  4.75 0.00697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119 Furrow SPM   3 13.000000 333.9503 15560.070 24311.700 11.00 0.01225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120 Furrow SPM   4  5.750000 376.3996  9481.420 17017.200  8.75 0.00106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121 Furrow SPM   5  7.000000 344.4121 10080.080 17497.660 14.75 0.00229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122 Furrow SPM   6  7.000000 344.0429  4323.400 19145.430  9.50 0.00034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123 Furrow SPM   7  9.250000 376.1967 10414.190 22368.160 13.25 0.00114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124   Seed  GZ   1  3.500000 240.4407  2322.830  8105.810  8.00 0.00978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125   Seed  GZ   2  4.750000 177.1445  2911.880  5353.610  9.25 0.00334</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126   Seed  GZ   3  6.250000 275.5670  3815.230  7201.940  5.75 0.01450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127   Seed  GZ   4  7.250000 410.1381  9363.800 15924.150  5.75 0.01325</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128   Seed  GZ   5  7.000000 363.3837  7600.050 13619.620  9.00 0.01323</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129   Seed  GZ   6  8.250000 253.8870  5728.910  8847.140  8.00 0.00506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130   Seed  GZ   7  4.000000 629.9551 11189.780 27680.210  8.25 0.00580</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131   Seed SPM   1  1.000000 224.1095  4621.860  9094.950  1.75 0.00797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132   Seed SPM   2  4.000000 102.2145  2351.730  2908.830  8.25 0.00231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133   Seed SPM   3  7.000000 199.8702  3105.580  6408.560  4.50 0.00660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134   Seed SPM   4  4.000000 323.7941  6456.040 13900.640  9.00 0.00040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135   Seed SPM   5  7.500000 246.6138  2464.400  7454.380 10.75 0.00933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136   Seed SPM   6  6.750000 219.4593  5097.980  6918.860 21.25 0.00254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137   Seed SPM   7  3.250000 423.6295 16016.320 27053.110 18.50 0.00088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138   Seed  GZ   1  3.500000 240.4407  2322.830  8105.810  3.75 0.00051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139   Seed  GZ   2  4.750000 177.1445  2911.880  5353.610  9.75 0.00109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140   Seed  GZ   3  6.250000 275.5670  3815.230  7201.940  8.00 0.00090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141   Seed  GZ   4  7.250000 410.1381  9363.800 15924.150 18.50 0.00041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142   Seed  GZ   5  7.000000 363.3837  7600.050 13619.620 14.25 0.00041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143   Seed  GZ   6  8.250000 253.8870  5728.910  8847.140 17.00 0.00101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144   Seed  GZ   7  4.000000 629.9551 11189.780 27680.210 23.50 0.00221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145   Seed SPM   1  1.000000 224.1095  4621.860  9094.950  1.75 0.00797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146   Seed SPM   2  4.000000 102.2145  2351.730  2908.830  8.25 0.00231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147   Seed SPM   3  7.000000 199.8702  3105.580  6408.560  4.50 0.00660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148   Seed SPM   4  4.000000 323.7941  6456.040 13900.640  9.00 0.00040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149   Seed SPM   5  7.500000 246.6138  2464.400  7454.380 10.75 0.00933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150   Seed SPM   6  6.750000 219.4593  5097.980  6918.860 21.25 0.00254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151   Seed SPM   7  3.250000 423.6295 16016.320 27053.110 18.50 0.00088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152   Seed  GZ   1  3.500000 240.4407  2322.830  8105.810  3.75 0.00051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153   Seed  GZ   2  4.750000 177.1445  2911.880  5353.610  9.75 0.00109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154   Seed  GZ   3  6.250000 275.5670  3815.230  7201.940  8.00 0.00090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155   Seed  GZ   4  7.250000 410.1381  9363.800 15924.150 18.50 0.00041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156   Seed  GZ   5  7.000000 363.3837  7600.050 13619.620 14.25 0.00041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157   Seed  GZ   6  8.250000 253.8870  5728.910  8847.140 17.00 0.00101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158   Seed  GZ   7  4.000000 629.9551 11189.780 27680.210 23.50 0.00221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159   Seed SPM   1  1.000000 224.1095  4621.860  9094.950  1.75 0.00797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160   Seed SPM   2  4.000000 102.2145  2351.730  2908.830  8.25 0.00231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161   Seed SPM   3  7.000000 199.8702  3105.580  6408.560  4.50 0.00660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162   Seed SPM   4  4.000000 323.7941  6456.040 13900.640  9.00 0.00040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163   Seed SPM   5  7.500000 246.6138  2464.400  7454.380 10.75 0.00933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164   Seed SPM   6  6.750000 219.4593  5097.980  6918.860 21.25 0.00254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165   Seed SPM   7  3.250000 423.6295 16016.320 27053.110 18.50 0.00088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          scb defoliation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1.42857       21.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0.37500       30.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0.25000       48.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    3.87500       15.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    2.75000       24.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    3.12500        9.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0.37500        4.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0.12500        1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    1.50000        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   1.25000        1.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0.62500        1.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   1.75000        7.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   3.00000        1.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   4.75000        2.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   1.25000        1.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   2.00000        3.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   1.37500        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   2.00000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   2.50000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   1.25000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   5.37500       17.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   3.87600       15.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   2.50000        8.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   4.00000       12.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   1.37500       10.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   1.25000       13.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   5.00000       20.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   4.75000        2.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   1.25000        1.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   2.00000        3.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   1.37500        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   2.00000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   2.50000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   1.25000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   5.37500       17.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   3.87600       15.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   2.50000        8.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   4.00000       12.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   1.37500       10.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   1.25000       13.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   5.00000       20.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42  10.12500       15.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   5.75000        9.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   3.62500       15.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   3.25000       39.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   1.87500       30.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   2.75000        7.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   2.75000       11.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   5.75000        1.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50  22.87500        2.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   2.62500        0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   2.00000        0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   1.75000        2.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   1.50000        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   5.37500        0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56  10.12500       15.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   5.75000        9.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   3.62500       15.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   3.25000       39.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   1.87500       30.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   2.75000        7.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   2.75000       11.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   1.42857       21.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   0.37500       30.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0.25000       48.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   3.87500       15.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   2.75000       24.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   3.12500        9.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69  10.12500       15.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   5.75000        9.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   3.62500       15.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   3.25000       39.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   1.87500       30.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   2.75000        7.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   2.75000       11.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   1.42857       21.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0.37500       30.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   0.25000       48.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   3.87500       15.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   2.75000       24.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   3.12500        9.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   4.75000        2.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   1.25000        1.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   2.00000        3.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   1.37500        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   2.00000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   2.50000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88   1.25000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89        NA        0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   2.75000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   2.25000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   0.75000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   1.87500        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   0.50000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   1.12500        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   5.75000        1.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97  22.87500        2.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   2.62500        0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99   2.00000        0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  1.75000        2.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  1.50000        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  5.37500        0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  0.37500        4.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0.12500        1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  1.50000        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  1.25000        1.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0.62500        1.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  1.75000        7.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  3.00000        1.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  5.75000        1.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111 22.87500        2.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  2.62500        0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  2.00000        0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  1.75000        2.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115  1.50000        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116  5.37500        0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117  0.37500        4.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118  0.12500        1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119  1.50000        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120  1.25000        1.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0.62500        1.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  1.75000        7.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123  3.00000        1.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124  5.37500       17.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125  3.87600       15.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126  2.50000        8.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127  4.00000       12.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128  1.37500       10.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129  1.25000       13.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130  5.00000       20.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131  1.00000        2.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132  2.37500        3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133  0.62500        3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134  1.25000        1.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135  1.12500        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136  1.62500        2.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137  1.50000        1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138       NA        0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139  2.75000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140  2.25000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141  0.75000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142  1.87500        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143  0.50000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144  1.12500        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145  1.00000        2.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146  2.37500        3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147  0.62500        3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148  1.25000        1.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149  1.12500        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150  1.62500        2.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151  1.50000        1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152       NA        0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153  2.75000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154  2.25000        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155  0.75000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  1.87500        0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157  0.50000        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158  1.12500        0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159  1.00000        2.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160  2.37500        3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161  0.62500        3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162  1.25000        1.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163  1.12500        0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164  1.62500        2.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165  1.50000        1.00</span>
 </code></pre></div>
     </div>
   </div>
