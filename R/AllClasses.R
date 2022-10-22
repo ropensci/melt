@@ -39,6 +39,8 @@
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logp A numeric vector of the log probabilities of the empirical
 #'   likelihood.
 #' @slot logl A single numeric of the empirical log-likelihood.
@@ -111,6 +113,8 @@ setClass("EL",
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logp A numeric vector of the log probabilities of the constrained
 #'   empirical likelihood.
 #' @slot logl A single numeric of the constrained empirical log-likelihood.
@@ -231,6 +235,8 @@ setOldClass("family")
 #'   each parameter.
 #'   * `convergence` A logical vector for the convergence status of each
 #'   parameter.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot call A matched call.
 #' @slot terms A [`terms`] object used.
 #' @slot misc A list of various outputs obtained from the model fitting process.
@@ -386,8 +392,8 @@ setClass("ELMT",
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
-#'   * `cstr` A single logical for whether constrained optimization is performed
-#'   or not.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logp A numeric vector of the log probabilities of the (constrained)
 #'   empirical likelihood.
 #' @slot logl A single numeric of the (constrained) empirical log-likelihood.
@@ -453,6 +459,8 @@ setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
 #'   each parameter.
 #'   * `convergence` A logical vector for the convergence status of each
 #'   parameter.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot call A matched call.
 #' @slot terms A [`terms`] object used.
 #' @slot misc A list of various outputs obtained from the model fitting process.
@@ -498,6 +506,8 @@ setClass("QGLM", contains = "GLM")
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logp A numeric vector of the log probabilities of the empirical
 #'   likelihood.
 #' @slot logl A single numeric of the empirical log-likelihood.
@@ -531,6 +541,8 @@ setClass("SD", contains = "EL")
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logl A single numeric of the empirical log-likelihood.
 #' @slot loglr A single numeric of the empirical log-likelihood ratio.
 #' @slot statistic A single numeric of minus twice the empirical log-likelihood
@@ -581,6 +593,8 @@ setClass("SummaryELMT", slots = c(
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logl A single numeric of the (constrained) empirical log-likelihood.
 #' @slot loglr A single numeric of the (constrained) empirical log-likelihood
 #'   ratio.
@@ -625,6 +639,8 @@ setClass("SummaryELT", slots = c(
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logl A single numeric of the empirical log-likelihood.
 #' @slot loglr A single numeric of the empirical log-likelihood ratio.
 #' @slot statistic A single numeric of minus twice the (constrained) empirical
@@ -673,6 +689,8 @@ setClass("SummaryLM", slots = c(
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logl A single numeric of the empirical log-likelihood.
 #' @slot loglr A single numeric of the empirical log-likelihood ratio.
 #' @slot statistic A single numeric of minus twice the (constrained) empirical
@@ -690,8 +708,7 @@ setClass("SummaryLM", slots = c(
 #' @examples
 #' showClass("SummaryGLM")
 setClass("SummaryGLM",
-  slots = c(family = "family", dispersion = "numeric"),
-  contains = "SummaryLM"
+  slots = c(family = "family", dispersion = "numeric"), contains = "SummaryLM"
 )
 
 
@@ -718,6 +735,8 @@ setClass("SummaryGLM",
 #'   problem corresponding to `par`.
 #'   * `iterations` A single integer for the number of iterations performed.
 #'   * `convergence` A single logical for the convergence status.
+#'   * `cstr` A single logical for whether constrained EL optimization is
+#'   performed or not.
 #' @slot logl A single numeric of the empirical log-likelihood.
 #' @slot loglr A single numeric of the empirical log-likelihood ratio.
 #' @slot statistic A single numeric of minus twice the (constrained) empirical

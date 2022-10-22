@@ -61,5 +61,5 @@ fit <- el_lm(mpg ~ ., data = mtcars)
 conv(fit)
 }
 \seealso{
-\linkS4class{CEL}, \linkS4class{EL}, \linkS4class{ELT}
+\linkS4class{CEL}, \linkS4class{EL}, \linkS4class{ELT}, \code{\link[=getOptim]{getOptim()}}
 }

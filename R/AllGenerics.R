@@ -39,7 +39,8 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'
 #' Computes confidence intervals for one or more parameters in a model.
 #'
-#' @param object An object that inherits from \linkS4class{EL}.
+#' @param object An object that inherits from \linkS4class{EL} or
+#'   \linkS4class{ELMT}.
 #' @param parm A specification of which parameters are to be given confidence
 #'   intervals, either a vector of numbers or a vector of names. If missing, all
 #'   parameters are considered.
@@ -59,7 +60,8 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'   “Empirical Likelihood Ratio Confidence Regions.”
 #'   \emph{The Annals of Statistics}, 18(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
-#' @seealso [confreg()], [elt()], [el_control()]
+#' @seealso \linkS4class{EL}, \linkS4class{ELMT}, [confreg()], [elt()],
+#'   [el_control()]
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -76,8 +78,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' Computes boundary points of a two-dimensional confidence region for model
 #'   parameters.
 #'
-#' @param object An object that inherits from \linkS4class{EL} or
-#'   \linkS4class{ELMT}.
+#' @param object An object that inherits from \linkS4class{EL}.
 #' @param parm A specification of which parameters are to be given a confidence
 #'   region, either a vector of numbers or a vector of names. It must be a
 #'   vector of length two of the form `c(x, y)`. If missing, the first two
@@ -97,8 +98,7 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #'   “Empirical Likelihood Ratio Confidence Regions.”
 #'   \emph{The Annals of Statistics}, 18(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
-#' @seealso \linkS4class{EL}, \linkS4class{ELMT}, [confint()], [elt()],
-#'   [plot()], [el_control()]
+#' @seealso \linkS4class{EL}, [confint()], [elt()], [plot()], [el_control()]
 #' @usage NULL
 #' @examples
 #' data("mtcars")
@@ -123,7 +123,7 @@ setGeneric("confreg", function(object,
 #' @param object An object that contains the convergence status.
 #' @param ... Further arguments passed to methods.
 #' @return A single logical.
-#' @seealso \linkS4class{CEL}, \linkS4class{EL}, \linkS4class{ELT}
+#' @seealso \linkS4class{CEL}, \linkS4class{EL}, \linkS4class{ELT}, [getOptim()]
 #' @usage NULL
 #' @examples
 #' ## Convergence check for the overall model test
@@ -181,7 +181,7 @@ setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
 #'   “Diagnostic Measures for Empirical Likelihood of General Estimating
 #'   Equations.” \emph{Biometrika}, 95(2), 489--507.
 #'   \doi{10.1093/biomet/asm094}.
-#' @seealso \linkS4class{ELD}, [plot()], [el_control()]
+#' @seealso \linkS4class{EL}, \linkS4class{ELD}, [el_control()], [plot()]
 #' @usage NULL
 #' @examples
 #' data("precip")
@@ -230,7 +230,7 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @references Kim E, MacEachern S, Peruggia M (2021).
 #'   “Empirical Likelihood for the Analysis of Experimental Designs.”
 #'   arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
-#' @seealso \linkS4class{ELMT}, [elt()], [el_control()]
+#' @seealso \linkS4class{EL}, \linkS4class{ELMT}, [elt()], [el_control()]
 #' @usage NULL
 #' @examples
 #' ## Bivariate mean (list `rhs` & no `lhs`)
@@ -319,7 +319,7 @@ setGeneric("elmt", function(object,
 #'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
 #'   \emph{Canadian Journal of Statistics}, 23(2), 145--159.
 #'   \doi{10.2307/3315441}.
-#' @seealso \linkS4class{ELT}, [elmt()], [el_control()]
+#' @seealso \linkS4class{EL}, \linkS4class{ELT}, [elmt()], [el_control()]
 #' @usage NULL
 #' @examples
 #' ## F calibration for the mean
@@ -510,8 +510,7 @@ setGeneric("nobs", function(object, ...) standardGeneric("nobs"))
 #'
 #' Provides plot methods for objects.
 #'
-#' @param x An object that inherits from \linkS4class{ConfregEL},
-#'   \linkS4class{EL}, \linkS4class{ELD}.
+#' @param x An object to be plotted.
 #' @param y Not used.
 #' @param ... Further graphical parameters (see [`par`]).
 #' @return No return value, called for side effects.

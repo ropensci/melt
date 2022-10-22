@@ -14,8 +14,7 @@
 \S4method{plot}{ELD}(x, y, ...)
 }
 \arguments{
-\item{x}{An object that inherits from \linkS4class{ConfregEL},
-\linkS4class{EL}, \linkS4class{ELD}.}
+\item{x}{An object to be plotted.}
 
 \item{y}{Not used.}
 

@@ -37,6 +37,8 @@ log-likelihood ratios with asymptotic chi-square distributions.
 each parameter.
 \item \code{convergence} A logical vector for the convergence status of each
 parameter.
+\item \code{cstr} A single logical for whether constrained EL optimization is
+performed or not.
 }}
 
 \item{\code{call}}{A matched call.}

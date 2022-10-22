@@ -18,6 +18,8 @@ S4 class for standard deviation. It inherits from \linkS4class{EL} class.
 problem corresponding to \code{par}.
 \item \code{iterations} A single integer for the number of iterations performed.
 \item \code{convergence} A single logical for the convergence status.
+\item \code{cstr} A single logical for whether constrained EL optimization is
+performed or not.
 }}
 
 \item{\code{logp}}{A numeric vector of the log probabilities of the empirical
