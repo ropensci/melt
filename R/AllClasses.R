@@ -564,9 +564,9 @@ setClass("SummaryEL", slots = c(
 #' @examples
 #' showClass("SummaryELMT")
 setClass("SummaryELMT", slots = c(
-  statistic = "numeric", df = "integer", convergence = "logical",
-  sigTests = "matrix", weighted = "logical", intercept = "logical",
-  na.action = "ANY", call = "call", terms = "terms", aliased = "logical"
+  estimates = "list", statistic = "numeric", df = "integer", pval = "numeric",
+  cv = "numeric", rhs = "numeric", lhs = "matrix", alpha = "numeric",
+  calibrate = "character", coefficients = "numeric", method = "character"
 ))
 
 

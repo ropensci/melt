@@ -6,6 +6,7 @@
 \alias{chisq,ELMT-method}
 \alias{chisq,ELT-method}
 \alias{chisq,SummaryEL-method}
+\alias{chisq,SummaryELMT-method}
 \alias{chisq,SummaryELT-method}
 \alias{chisq,SummaryLM-method}
 \title{Chi-square statistic}
@@ -17,6 +18,8 @@
 \S4method{chisq}{ELT}(object, ...)
 
 \S4method{chisq}{SummaryEL}(object, ...)
+
+\S4method{chisq}{SummaryELMT}(object, ...)
 
 \S4method{chisq}{SummaryELT}(object, ...)
 
@@ -44,6 +47,8 @@ Extracts chi-square statistic from a model.
 \item \code{chisq(ELT)}: Extracts the chi-square statistic.
 
 \item \code{chisq(SummaryEL)}: Extracts the chi-square statistic.
+
+\item \code{chisq(SummaryELMT)}: Extracts the vector of chi-square statistics.
 
 \item \code{chisq(SummaryELT)}: Extracts the chi-square statistic.
 

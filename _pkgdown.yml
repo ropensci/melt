@@ -21,7 +21,6 @@ reference:
     - eld
     - elmt
     - elt
-    - logLik
     - plot
     - print
     - summary
@@ -45,12 +44,12 @@ reference:
     contents:
     - clothianidin
     - thiamethoxam
-    - thiamethoxam2
 
   - title: Miscellaneous
     contents:
     - el_eval
     - el_pairwise
+    - logLik
 
 figures:
   dpi: 300

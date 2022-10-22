@@ -672,7 +672,9 @@ setMethod("getEstimates", "ELMT", function(x) {
 setMethod("getEstimates", "QGLM", function(x) {
   c(x@coefficients, setNames(x@dispersion, "phi"))
 })
-
+setMethod("getEstimates", "SummaryELMT", function(x) {
+  x@estimates
+})
 
 setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
 setMethod("getMethodEL", "EL", function(x) {

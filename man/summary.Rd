@@ -51,7 +51,7 @@ extracted for display.
 
 \item \code{summary(ELT)}: Summarizes the hypothesis test results.
 
-\item \code{summary(ELMT)}: Summarizes the.
+\item \code{summary(ELMT)}: Summarizes the multiple testing results.
 
 }}
 \examples{

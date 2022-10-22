@@ -9,7 +9,10 @@
 #'   passed to [format()].
 #' @return A character vector for symbolic description of a hypothesis.
 #' @noRd
-describe_hypothesis <- function(rhs, lhs, pnames, digits) {
+describe_hypothesis <- function(rhs,
+                                lhs,
+                                pnames,
+                                digits = max(3L, getOption("digits") - 3L)) {
   if (is.null(pnames)) {
     pnames <- if (ncol(lhs) == 1L) "par" else paste0("par", seq_len(ncol(lhs)))
   }

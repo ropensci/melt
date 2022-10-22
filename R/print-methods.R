@@ -27,8 +27,6 @@ setMethod("show", "EL", function(object) print(object))
 #' @rdname print
 setMethod("print", "ELMT", function(x,
                                     digits = max(3L, getOption("digits") - 3L),
-                                    signif.stars =
-                                      getOption("show.signif.stars"),
                                     ...) {
   method <- switch(x@calibrate,
     "mvchisq" = "Multivariate chi-square"
@@ -39,24 +37,16 @@ setMethod("print", "ELMT", function(x,
   cat("Hypotheses:\n")
   est <- getEstimates(x)
   if (isTRUE(all(vapply(est, FUN = length, FUN.VALUE = integer(1L)) == 1L))) {
-    out <- cbind(
-      Estimate = unlist(est), Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x)
-    )
+    out <- cbind(Estimate = unlist(est), Chisq = chisq(x), Df = getDF(x))
     rownames(out) <- describe_hypothesis(x@rhs, x@lhs, colnames(x@lhs), digits)
     ind <- 2L
   } else {
-    out <- cbind(Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x))
+    out <- cbind(Chisq = chisq(x), Df = getDF(x))
     rownames(out) <- seq_along(pVal(x))
     ind <- 1L
   }
-  printCoefmat(out,
-    digits = digits, signif.stars = signif.stars, tst.ind = ind,
-    P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
-  )
+  printCoefmat(out, digits = digits, tst.ind = ind)
   cat("\n")
-  cat(paste(
-    "Common critical value:", format.default(critVal(x), digits = digits, ...)
-  ), "\n\n")
   invisible(x)
 })
 setMethod("show", "ELMT", function(object) print(object))
@@ -179,7 +169,7 @@ setMethod(
       "\nModel:", getMethodEL(x),
       "\n\nNumber of observations:", nobs(x),
       "\nNumber of parameters:", getNumPar(x),
-      "\n\nParameters:\n"
+      "\n\nParameter values:\n"
     )
     print.default(getOptim(x)$par, digits = digits, ...)
     cat("\nLagrange multipliers:\n")
@@ -209,6 +199,47 @@ setMethod("show", "SummaryEL", function(object) print(object))
 
 #' @rdname print
 setMethod(
+  "print", "SummaryELMT",
+  function(x,
+           digits = max(3L, getOption("digits") - 3L),
+           signif.stars = getOption("show.signif.stars"),
+           ...) {
+    method <- switch(x@calibrate,
+      "mvchisq" = "Multivariate chi-square"
+    )
+    cat("\n\tEmpirical Likelihood Multiple Tests\n\n")
+    cat("Overall significance level:", x@alpha, "\n\n")
+    cat("Calibration:", method, "\n\n")
+    cat("Hypotheses:\n")
+    est <- getEstimates(x)
+    if (isTRUE(all(vapply(est, FUN = length, FUN.VALUE = integer(1L)) == 1L))) {
+      out <- cbind(
+        Estimate = unlist(est), Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x)
+      )
+      rownames(out) <- describe_hypothesis(
+        x@rhs, x@lhs, colnames(x@lhs), digits
+      )
+      ind <- 2L
+    } else {
+      out <- cbind(Chisq = chisq(x), Df = getDF(x), p.adj = pVal(x))
+      rownames(out) <- seq_along(pVal(x))
+      ind <- 1L
+    }
+    printCoefmat(out,
+      digits = digits, signif.stars = signif.stars, tst.ind = ind,
+      P.values = TRUE, has.Pvalue = TRUE, eps.Pvalue = 1e-03
+    )
+    cat("\n")
+    cat(paste(
+      "Common critical value:", format.default(critVal(x), digits = digits, ...)
+    ), "\n\n")
+    invisible(x)
+  }
+)
+setMethod("show", "SummaryELMT", function(object) print(object))
+
+#' @rdname print
+setMethod(
   "print", "SummaryELT",
   function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     cat("\n\tEmpirical Likelihood Test\n\n")
@@ -224,7 +255,7 @@ setMethod(
       "\nSignificance level: ", format.default(x@alpha, digits = digits, ...),
       ", Calibration: ", method
     ), "\n")
-    cat("\nParameters:\n")
+    cat("\nParameter values:\n")
     print.default(getOptim(x)$par, digits = digits, ...)
     cat("\nLagrange multipliers:\n")
     print.default(getOptim(x)$lambda, digits = digits, ...)
@@ -277,7 +308,7 @@ setMethod(
         "\nNumber of observations:", nobs(x),
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
-      cat("\nParameters:\n")
+      cat("\nParameter values:\n")
       print.default(getOptim(x)$par, digits = digits, ...)
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)
@@ -359,7 +390,7 @@ setMethod(
         "\nNumber of observations:", nobs(x),
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
-      cat("\nParameters:\n")
+      cat("\nParameter values:\n")
       print.default(getOptim(x)$par, digits = digits, ...)
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)

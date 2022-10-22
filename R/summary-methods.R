@@ -130,8 +130,12 @@ setMethod("summary", "ELT", function(object, ...) {
   )
 })
 
-#' @describeIn summary Summarizes the.
+#' @describeIn summary Summarizes the multiple testing results.
 setMethod("summary", "ELMT", function(object, ...) {
   z <- object
-  new("SummaryELMT")
+  new("SummaryELMT",
+    estimates = getEstimates(z), statistic = chisq(z), df = getDF(z),
+    pval = pVal(z), cv = z@cv, rhs = z@rhs, lhs = z@lhs, alpha = z@alpha,
+    calibrate = z@calibrate, method = getMethodEL(z)
+  )
 })

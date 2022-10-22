@@ -101,6 +101,10 @@ setMethod("confint", "ELMT", function(object,
     method, getData(object), coef(object), object@lhs, estimates, cv, maxit,
     maxit_l, tol, tol_l, step, th, nthreads, w
   )
-  dimnames(ci) <- list(names(estimates), c("lower", "upper"))
+  dimnames(ci) <-
+    list(
+      describe_hypothesis(object@rhs, object@lhs, colnames(object@lhs)),
+      c("lower", "upper")
+    )
   ci
 })
