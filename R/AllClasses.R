@@ -566,7 +566,7 @@ setClass("SummaryEL", slots = c(
 setClass("SummaryELMT", slots = c(
   estimates = "list", statistic = "numeric", df = "integer", pval = "numeric",
   cv = "numeric", rhs = "numeric", lhs = "matrix", alpha = "numeric",
-  calibrate = "character", coefficients = "numeric", method = "character"
+  calibrate = "character"
 ))
 
 

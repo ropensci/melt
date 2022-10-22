@@ -15,7 +15,7 @@ setMethod("summary", "ELMT", function(object, ...) {
   new("SummaryELMT",
     estimates = getEstimates(z), statistic = chisq(z), df = getDF(z),
     pval = pVal(z), cv = z@cv, rhs = z@rhs, lhs = z@lhs, alpha = z@alpha,
-    calibrate = z@calibrate, method = getMethodEL(z)
+    calibrate = z@calibrate
   )
 })
 

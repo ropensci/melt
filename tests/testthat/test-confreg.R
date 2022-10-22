@@ -12,6 +12,7 @@ test_that("Invalid `parm`.", {
   expect_error(confreg(fit, parm = c(1, 2, 3)))
   expect_error(confreg(fit, parm = c(1, 1)))
   expect_error(confreg(fit, parm = c("error", "error2")))
+  expect_error(confreg(fit, parm = c("hp", "hp")))
   expect_error(confreg(fit, parm = c(NaN, NA)))
   names(fit@coefficients) <- NULL
   expect_error(confreg(fit, parm = c("error", "error2")))

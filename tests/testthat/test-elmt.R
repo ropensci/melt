@@ -96,11 +96,20 @@ test_that("`el_glm()` (binomial - logit).", {
     matrix(c(1, 100, 0, 0), nrow = 1),
     matrix(c(0, 1, -1, 0), nrow = 1)
   )
-  elmt(fit, lhs = lhs)
+  out <- elmt(fit, lhs = lhs)
   expect_output(print(fit))
   expect_output(print(summary(fit)))
+  expect_output(print(summary(out)))
+  expect_output(show(summary(out)))
   expect_equal(sum(exp(logProb(fit))), 1)
   expect_equal(sum(exp(logProb(wfit))), 1)
+  lhs2 <- list(
+    matrix(c(1, 100, 0, 0, 0, 2, 1, 1), nrow = 2),
+    matrix(c(0, 1, -1, 0), nrow = 1)
+  )
+  out <- elmt(fit, lhs = lhs2)
+  expect_output(print(summary(out)))
+  expect_output(show(summary(out)))
 })
 
 test_that("`el_glm()` (binomial - probit).", {
