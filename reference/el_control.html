@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9300</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9500</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  keep_data <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">nthreads</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span><span class="va">.Machine</span><span class="op">$</span><span class="va">integer.max</span>, <span class="fl">1L</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  b <span class="op">=</span> <span class="fl">10000L</span>,</span>
 <span>  m <span class="op">=</span> <span class="fl">1000000L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -106,7 +106,8 @@ evaluation. Defaults to <code>1e-06</code>.</p></dd>
 
 <dt>step</dt>
 <dd><p>A single numeric for the step size for projected gradient descent
-method. Defaults to <code>NULL</code> and set to the reciprocal of sample size.</p></dd>
+method. Defaults to <code>NULL</code> and sets the step size to the reciprocal of the
+sample size.</p></dd>
 
 
 <dt>th</dt>
@@ -142,13 +143,14 @@ evaluations or optimizations: <code><a href="confint.html">confint()</a></code>,
 
 <dt>seed</dt>
 <dd><p>A single integer for the seed for random number generation. It
-only applies to <code><a href="elt.html">elt()</a></code> when <code>calibrate</code> is set to <code>"boot"</code>. Defaults to a
-random integer generated from 1 to the maximum integer supported by <span style="R">R</span> on
-the machine, which is determined by <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>. Only one seed is
-needed even when multiple threads are used with <code>nthreads</code>. Each thread is
-given a separate seed to produce a non-overlapping but reproducible
-sequence of random numbers. The Xoshiro256+ pseudo-random number generator
-is used internally to work with OpenMP.</p></dd>
+only applies to <code><a href="elt.html">elt()</a></code> when <code>calibrate</code> is set to <code>"boot"</code>. Defaults to
+<code>NULL</code>. In this case, a seed is set to a random integer generated from 1 to
+the maximum integer supported by <span style="R">R</span> on the machine, which is determined by
+<code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>. Only one seed is needed even when multiple threads are used
+with <code>nthreads</code>. Each thread is given a separate seed to produce a
+non-overlapping but reproducible sequence of random numbers. The
+Xoshiro256+ pseudo-random number generator is used internally to work with
+OpenMP.</p></dd>
 
 
 <dt>b</dt>

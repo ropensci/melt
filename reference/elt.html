@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9300</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9500</span>
       </span>
     </div>
 
@@ -73,7 +73,7 @@
 <span>  lhs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  calibrate <span class="op">=</span> <span class="st">"chisq"</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  control <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -109,7 +109,8 @@ Defaults to <code>"chisq"</code>. See ‘Details’.</p></dd>
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-<code><a href="el_control.html">el_control()</a></code>.</p></dd>
+<code><a href="el_control.html">el_control()</a></code>. Defaults to <code>NULL</code> and inherits the <code>control</code> slot in
+<code>object</code>.</p></dd>
 
 </dl></div>
     <div id="value">

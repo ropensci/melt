@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9300</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9500</span>
       </span>
     </div>
 
@@ -89,7 +89,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model fitting</h1>
-                        <h4 data-toc-skip class="author">Eunseop Kim</h4>
+                        <h4 data-toc-skip class="author">Eunseop
+Kim</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/ropensci/melt/blob/HEAD/vignettes/model.Rmd" class="external-link"><code>vignettes/model.Rmd</code></a></small>
@@ -102,7 +103,9 @@
 <div class="section level2">
 <h2 id="fitting-an-el-object">Fitting an <code>EL</code> object<a class="anchor" aria-label="anchor" href="#fitting-an-el-object"></a>
 </h2>
-<p>The melt package provides several functions to construct an <code>EL</code> object or an object that inherits from <code>EL</code>:</p>
+<p>The melt package provides several functions to construct an
+<code>EL</code> object or an object that inherits from
+<code>EL</code>:</p>
 <ul>
 <li>
 <code><a href="../reference/el_mean.html">el_mean()</a></code> for the mean.</li>
@@ -113,7 +116,8 @@
 <li>
 <code><a href="../reference/el_glm.html">el_glm()</a></code> for generalized linear models.</li>
 </ul>
-<p>We illustrate the usage of <code><a href="../reference/el_mean.html">el_mean()</a></code> with the <code>faithful</code> data set.</p>
+<p>We illustrate the usage of <code><a href="../reference/el_mean.html">el_mean()</a></code> with the
+<code>faithful</code> data set.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"faithful"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">faithful</span><span class="op">)</span></span>
@@ -128,7 +132,8 @@
 <span><span class="co">#&gt;  Mean   :3.488   Mean   :70.9  </span></span>
 <span><span class="co">#&gt;  3rd Qu.:4.454   3rd Qu.:82.0  </span></span>
 <span><span class="co">#&gt;  Max.   :5.100   Max.   :96.0</span></span></code></pre></div>
-<p>Suppose we are interested in evaluating empirical likelihood at (3.5, 70).</p>
+<p>Suppose we are interested in evaluating empirical likelihood at (3.5,
+70).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">faithful</span>, par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
@@ -145,9 +150,9 @@
 <span><span class="co">#&gt;                                                                        </span></span>
 <span><span class="co">#&gt; Name:            df         pval         nobs         npar      weights</span></span>
 <span><span class="co">#&gt; Class:      integer      numeric      integer      integer      numeric</span></span>
-<span><span class="co">#&gt;                                              </span></span>
-<span><span class="co">#&gt; Name:  coefficients       method         data</span></span>
-<span><span class="co">#&gt; Class:      numeric    character          ANY</span></span>
+<span><span class="co">#&gt;                                                           </span></span>
+<span><span class="co">#&gt; Name:  coefficients       method         data      control</span></span>
+<span><span class="co">#&gt; Class:      numeric    character          ANY    ControlEL</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Known Subclasses: </span></span>
 <span><span class="co">#&gt; Class "CEL", directly</span></span>
@@ -155,7 +160,8 @@
 <span><span class="co">#&gt; Class "LM", by class "CEL", distance 2</span></span>
 <span><span class="co">#&gt; Class "GLM", by class "CEL", distance 3</span></span>
 <span><span class="co">#&gt; Class "QGLM", by class "CEL", distance 4</span></span></code></pre></div>
-<p>The <code>faithful</code> data frame is coerced to a numeric matrix. Simple print method shows essential information on <code>fit</code>.</p>
+<p>The <code>faithful</code> data frame is coerced to a numeric matrix.
+Simple print method shows essential information on <code>fit</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -169,8 +175,19 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chisq: 8.483, df: 2, Pr(&gt;Chisq): 0.01439</span></span>
 <span><span class="co">#&gt; EL evaluation: converged</span></span></code></pre></div>
-<p>Note that the maximum empirical likelihood estimates are the same as the sample average. The chi-square value shown corresponds to the minus twice the empirical log-likelihood ratio. It has an asymptotic chi-square distribution of 2 degrees of freedom under the null hypothesis. Hence the <span class="math inline">\(p\)</span>-value here is not exact. The convergence status at the bottom can be used to check the convex hull constraint.</p>
-<p>Weighted data can be handled by supplying the <code>weights</code> argument. For non-<code>NULL</code> <code>weights</code>, weighted empirical likelihood is computed. Any valid <code>weights</code> is re-scaled for internal computation to add up to the total number of observations. For simplicity, we use <code>faithful$waiting</code> as our weight vector.</p>
+<p>Note that the maximum empirical likelihood estimates are the same as
+the sample average. The chi-square value shown corresponds to the minus
+twice the empirical log-likelihood ratio. It has an asymptotic
+chi-square distribution of 2 degrees of freedom under the null
+hypothesis. Hence the <span class="math inline">\(p\)</span>-value here
+is not exact. The convergence status at the bottom can be used to check
+the convex hull constraint.</p>
+<p>Weighted data can be handled by supplying the <code>weights</code>
+argument. For non-<code>NULL</code> <code>weights</code>, weighted
+empirical likelihood is computed. Any valid <code>weights</code> is
+re-scaled for internal computation to add up to the total number of
+observations. For simplicity, we use <code>faithful$waiting</code> as
+our weight vector.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="va">faithful</span><span class="op">$</span><span class="va">waiting</span></span>
 <span><span class="op">(</span><span class="va">wfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">faithful</span>, par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">70</span><span class="op">)</span>, weights <span class="op">=</span> <span class="va">w</span><span class="op">)</span><span class="op">)</span></span>
@@ -185,7 +202,10 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chisq: 25.41, df: 2, Pr(&gt;Chisq): 3.039e-06</span></span>
 <span><span class="co">#&gt; EL evaluation: converged</span></span></code></pre></div>
-<p>We get different results, where the estimates are now the weighted sample average. The chi-square value and the associated <span class="math inline">\(p\)</span>-value are based on the same limit theorem, but care must be taken when interpreting the results since they are largely affected by the limiting behavior of the weights.</p>
+<p>We get different results, where the estimates are now the weighted
+sample average. The chi-square value and the associated <span class="math inline">\(p\)</span>-value are based on the same limit
+theorem, but care must be taken when interpreting the results since they
+are largely affected by the limiting behavior of the weights.</p>
 </div>
   </div>
 

@@ -18,7 +18,7 @@ detection."><meta property="og:image" content="https://docs.ropensci.org/melt/lo
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9300</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.0.9500</span>
       </span>
     </div>
 
@@ -69,10 +69,10 @@ detection.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for EL</span></span>
-<span><span class="fu">eld</span><span class="op">(</span><span class="va">object</span>, control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">eld</span><span class="op">(</span><span class="va">object</span>, control <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for GLM</span></span>
-<span><span class="fu">eld</span><span class="op">(</span><span class="va">object</span>, control <span class="op">=</span> <span class="fu"><a href="el_control.html">el_control</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">eld</span><span class="op">(</span><span class="va">object</span>, control <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -83,7 +83,8 @@ detection.</p>
 
 <dt>control</dt>
 <dd><p>An object of class <a href="ControlEL-class.html">ControlEL</a> constructed by
-<code><a href="el_control.html">el_control()</a></code>.</p></dd>
+<code><a href="el_control.html">el_control()</a></code>. Defaults to <code>NULL</code> and inherits the <code>control</code> slot in
+<code>object</code>.</p></dd>
 
 </dl></div>
     <div id="value">
