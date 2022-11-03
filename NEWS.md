@@ -2,6 +2,8 @@
 ## NEW FEATURES
 * `confint()` is applicable to an `EMLT` object to produce simultaneous confidence intervals.
 
+* All model objects gain `control` slot of `ControlEL` class. All methods that apply to these objects inherit `control` unless it is overwritten by the user explicitly.
+
 ## MINOR IMPROVEMENTS
 * `summary()` is applicable to an object that inherits from `EL`, `ELT`, and `EMLT`.
 

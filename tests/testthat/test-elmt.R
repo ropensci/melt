@@ -35,6 +35,13 @@ test_that("Invalid `alpha`.", {
   expect_error(elmt(fit, rhs = rhs, alpha = 1))
 })
 
+test_that("Invalid `control`.", {
+  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
+  rhs <- c(0, 0, 0)
+  lhs <- rbind(c(1, 33, 0), c(0, 1, -100))
+  expect_error(elmt(fit, rhs = rhs, lhs = lhs, control = list(maxit = 10)))
+})
+
 test_that("Incompatible `rhs` and `lhs`.", {
   fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   rhs <- c(0, 0, 0)

@@ -36,6 +36,7 @@ test_that("`GLM` class.", {
     family = binomial, data = warpbreaks,
     weights = breaks
   )
+  expect_error(eld(fit, control = list(maxit = 10)))
   expect_s4_class(eld(fit), "ELD")
   expect_s4_class(eld(wfit), "ELD")
 })
@@ -49,5 +50,6 @@ test_that("`plot()` method.", {
 })
 
 test_that("Missing `object`.", {
+  expect_error(eld(control = list(maxit = 10)))
   expect_null(eld())
 })

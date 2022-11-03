@@ -263,7 +263,7 @@ setMethod(
       " link)", "\n",
       sep = ""
     )
-    cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
+    cat("\nCall:\n", paste(deparse(x@call, ...), sep = "\n", collapse = "\n"),
       "\n",
       sep = ""
     )
@@ -335,7 +335,7 @@ setMethod(
       cat("\n\tEmpirical Likelihood\n")
     }
     cat("\nModel:", getMethodEL(x), "\n")
-    cat("\nCall:\n", paste(deparse(x@call), sep = "\n", collapse = "\n"),
+    cat("\nCall:\n", paste(deparse(x@call, ...), sep = "\n", collapse = "\n"),
       "\n",
       sep = ""
     )
