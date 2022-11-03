@@ -6,9 +6,9 @@
 \alias{confint,ELMT-method}
 \title{Confidence interval for model parameters}
 \usage{
-\S4method{confint}{EL}(object, parm, level = 0.95, cv = NULL, control = el_control())
+\S4method{confint}{EL}(object, parm, level = 0.95, cv = NULL, control = NULL)
 
-\S4method{confint}{ELMT}(object, cv = NULL, control = el_control())
+\S4method{confint}{ELMT}(object, cv = NULL, control = NULL)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL} or
@@ -26,7 +26,8 @@ empirical likelihood ratio statistic. Defaults to \code{NULL} and set to
 \code{qchisq(level, 1L)}. If non-\code{NULL}, \code{level} is ignored.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+\code{\link[=el_control]{el_control()}}. Defaults to \code{NULL} and inherits the \code{control} slot in
+\code{object}.}
 }
 \value{
 A matrix with columns giving lower and upper confidence limits for

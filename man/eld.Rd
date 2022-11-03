@@ -7,15 +7,16 @@
 \alias{eld,missing-method}
 \title{Empirical likelihood displacement}
 \usage{
-\S4method{eld}{EL}(object, control = el_control())
+\S4method{eld}{EL}(object, control = NULL)
 
-\S4method{eld}{GLM}(object, control = el_control())
+\S4method{eld}{GLM}(object, control = NULL)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+\code{\link[=el_control]{el_control()}}. Defaults to \code{NULL} and inherits the \code{control} slot in
+\code{object}.}
 }
 \value{
 An object of class \linkS4class{ELD}.

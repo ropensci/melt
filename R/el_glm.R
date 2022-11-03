@@ -181,7 +181,8 @@ el_glm <- function(formula,
       optim = list(
         par = numeric(), lambda = numeric(), iterations = integer(),
         convergence = logical(), cstr = logical()
-      ), df = 0L, nobs = nrow(x), npar = npar, method = NA_character_
+      ), df = 0L, nobs = nrow(x), npar = npar, method = NA_character_,
+      control = control
     ))
   } else {
     x <- model.matrix(mt, mf, NULL)
@@ -262,6 +263,7 @@ el_glm <- function(formula,
     optim = optim, logp = setNames(out$logp, names(y)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = df, pval = pval,
     nobs = n, npar = npar, weights = w, coefficients = fit$coefficients,
-    method = method, data = if (control@keep_data) mm else NULL
+    method = method, data = if (control@keep_data) mm else NULL,
+    control = control
   )
 }

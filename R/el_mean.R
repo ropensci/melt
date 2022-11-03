@@ -89,6 +89,6 @@ el_mean <- function(x,
     loglr = out$loglr, statistic = out$statistic, df = p,
     pval = pchisq(out$statistic, df = p, lower.tail = FALSE), nobs = n,
     npar = p, weights = w, coefficients = est, method = "mean",
-    data = if (control@keep_data) mm else NULL
+    data = if (control@keep_data) mm else NULL, control = control
   )
 }

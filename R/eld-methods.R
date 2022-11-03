@@ -1,10 +1,14 @@
 #' @rdname eld
-setMethod("eld", "EL", function(object, control = el_control()) {
+setMethod("eld", "EL", function(object, control = NULL) {
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (isFALSE(is.null(getData(object)))),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+      (isFALSE(is.null(getData(object))))
   )
+  if (is.null(control)) {
+    control <- getControlEL(object)
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   new("ELD", .Data = compute_ELD(
     getMethodEL(object), coef(object), getData(object), control@maxit_l,
     control@tol_l, control@th, control@nthreads, getWeights(object)
@@ -12,12 +16,16 @@ setMethod("eld", "EL", function(object, control = el_control()) {
 })
 
 #' @rdname eld
-setMethod("eld", "GLM", function(object, control = el_control()) {
+setMethod("eld", "GLM", function(object, control = NULL) {
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (isFALSE(is.null(getData(object)))),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+      (isFALSE(is.null(getData(object))))
   )
+  if (is.null(control)) {
+    control <- getControlEL(object)
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   mm <- getData(object)
   n <- nobs(object)
   x <- mm[, -c(1L, 2L)]
@@ -35,15 +43,17 @@ setMethod("eld", "GLM", function(object, control = el_control()) {
       family = object@family, control = glm_control, intercept = intercept,
       singular.ok = FALSE
     ))
-    - 2 * n * logLR(elt(object, rhs = fit$coefficients, control = control))
+    -2 * n * logLR(elt(object, rhs = fit$coefficients, control = control))
   }, numeric(1L)))
 })
 
 #' @rdname eld
 #' @usage NULL
-setMethod("eld", "missing", function(object, control = el_control()) {
-  stopifnot(
-    "Invalid `control` specified." = (is(control, "ControlEL"))
-  )
+setMethod("eld", "missing", function(object, control = NULL) {
+  if (is.null(control)) {
+    control <- el_control()
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   NULL
 })

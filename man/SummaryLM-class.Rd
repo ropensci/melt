@@ -60,6 +60,9 @@ estimates of the parameters.}
 
 \item{\code{method}}{A single character for the method dispatch in internal
 functions.}
+
+\item{\code{control}}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link[=el_control]{el_control()}}.}
 }}
 
 \examples{

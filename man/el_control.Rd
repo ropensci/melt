@@ -14,7 +14,7 @@ el_control(
   verbose = FALSE,
   keep_data = TRUE,
   nthreads,
-  seed = sample.int(.Machine$integer.max, 1L),
+  seed = NULL,
   b = 10000L,
   m = 1000000L
 )
@@ -33,7 +33,8 @@ minimization. Defaults to \code{1e-06}.}
 evaluation. Defaults to \code{1e-06}.}
 
 \item{step}{A single numeric for the step size for projected gradient descent
-method. Defaults to \code{NULL} and set to the reciprocal of sample size.}
+method. Defaults to \code{NULL} and sets the step size to the reciprocal of the
+sample size.}
 
 \item{th}{A single numeric for the threshold for the negative empirical
 log-likelihood ratio. The iteration stops if the value exceeds the
@@ -59,13 +60,14 @@ evaluations or optimizations: \code{\link[=confint]{confint()}}, \code{\link[=co
 \code{\link[=el_glm]{el_glm()}}, \code{\link[=eld]{eld()}}, and \code{\link[=elt]{elt()}}.}
 
 \item{seed}{A single integer for the seed for random number generation. It
-only applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to a
-random integer generated from 1 to the maximum integer supported by \R on
-the machine, which is determined by \code{\link[=set.seed]{set.seed()}}. Only one seed is
-needed even when multiple threads are used with \code{nthreads}. Each thread is
-given a separate seed to produce a non-overlapping but reproducible
-sequence of random numbers. The Xoshiro256+ pseudo-random number generator
-is used internally to work with OpenMP.}
+only applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to
+\code{NULL}. In this case, a seed is set to a random integer generated from 1 to
+the maximum integer supported by \R on the machine, which is determined by
+\code{\link[=set.seed]{set.seed()}}. Only one seed is needed even when multiple threads are used
+with \code{nthreads}. Each thread is given a separate seed to produce a
+non-overlapping but reproducible sequence of random numbers. The
+Xoshiro256+ pseudo-random number generator is used internally to work with
+OpenMP.}
 
 \item{b}{A single integer for the number of bootstrap replicates. It only
 applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to

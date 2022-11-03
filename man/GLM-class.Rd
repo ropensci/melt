@@ -87,6 +87,9 @@ estimates of the parameters.}
 functions.}
 
 \item{\code{data}}{A numeric matrix of the data for the model fitting.}
+
+\item{\code{control}}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link[=el_control]{el_control()}}.}
 }}
 
 \examples{

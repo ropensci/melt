@@ -1,3 +1,42 @@
+#' \linkS4class{ControlEL} class
+#'
+#' S4 class for computational details of empirical likelihood.
+#'
+#' @slot maxit A single integer for the maximum number of iterations for the
+#'   optimization with respect to \eqn{\theta}.
+#' @slot maxit_l A single integer for the maximum number of iterations for the
+#'   optimization with respect to \eqn{\lambda}.
+#' @slot tol A single numeric for the convergence tolerance denoted by
+#'   \eqn{\epsilon}. The iteration stops when
+#'   \deqn{\|P \nabla l(\theta^{(k)})\| < \epsilon.}
+#' @slot tol_l A single numeric for the relative convergence tolerance denoted
+#'   by \eqn{\delta}. The iteration stops when
+#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| <
+#'   \delta\|\lambda^{(k - 1)}\| + \delta^2.}
+#' @slot step A single numeric for the step size \eqn{\gamma} for the projected
+#'   gradient descent method.
+#' @slot th A single numeric for the threshold for the negative empirical
+#'   log-likelihood ratio.
+#' @slot verbose A single logical for whether to print a message on the
+#'   convergence status.
+#' @slot keep_data A single logical for whether to keep the data used for
+#'   fitting model objects.
+#' @slot nthreads A single integer for the number of threads for parallel
+#'   computation via OpenMP (if available).
+#' @slot seed A single integer for the seed for random number generation.
+#' @slot b A single integer for the number of bootstrap replicates.
+#' @slot m A single integer for the number of Monte Carlo samples.
+#' @aliases ControlEL
+#' @examples
+#' showClass("ControlEL")
+setClass("ControlEL",
+  slots = c(
+    maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
+    step = "ANY", th = "ANY", verbose = "logical", keep_data = "logical",
+    nthreads = "integer", seed = "ANY", b = "integer", m = "integer"
+  )
+)
+
 #' \linkS4class{EL} class
 #'
 #' S4 class for empirical likelihood.
@@ -58,6 +97,8 @@
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
 #' @slot data A numeric matrix of the data for the model fitting.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases EL
 #' @references Owen A (2001). \emph{Empirical Likelihood}. Chapman & Hall/CRC.
 #'   \doi{10.1201/9781420036152}.
@@ -72,7 +113,7 @@ setClass("EL",
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
     statistic = "numeric", df = "integer", pval = "numeric", nobs = "integer",
     npar = "integer", weights = "numeric", coefficients = "numeric",
-    method = "character", data = "ANY"
+    method = "character", data = "ANY", control = "ControlEL"
   )
 )
 
@@ -133,6 +174,8 @@ setClass("EL",
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
 #' @slot data A numeric matrix of the data for the model fitting.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases CEL
 #' @references Adimari G, Guolo A (2010).
 #'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
@@ -200,6 +243,8 @@ setOldClass("terms")
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
 #' @slot data A numeric matrix of the data for the model fitting.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases LM
 #' @examples
 #' showClass("LM")
@@ -266,6 +311,8 @@ setOldClass("family")
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
 #' @slot data A numeric matrix of the data for the model fitting.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases GLM
 #' @examples
 #' showClass("GLM")
@@ -293,45 +340,6 @@ setClass("ConfregEL",
     pnames = "character"
   ),
   contains = "matrix"
-)
-
-
-#' \linkS4class{ControlEL} class
-#'
-#' S4 class for computational details of empirical likelihood.
-#'
-#' @slot maxit A single integer for the maximum number of iterations for the
-#'   optimization with respect to \eqn{\theta}.
-#' @slot maxit_l A single integer for the maximum number of iterations for the
-#'   optimization with respect to \eqn{\lambda}.
-#' @slot tol A single numeric for the convergence tolerance denoted by
-#'   \eqn{\epsilon}. The iteration stops when
-#'   \deqn{\|P \nabla l(\theta^{(k)})\| < \epsilon.}
-#' @slot tol_l A single numeric for the relative convergence tolerance denoted
-#'   by \eqn{\delta}. The iteration stops when
-#'   \deqn{\|\lambda^{(k)} - \lambda^{(k - 1)}\| <
-#'   \delta\|\lambda^{(k - 1)}\| + \delta^2.}
-#' @slot step A single numeric for the step size \eqn{\gamma} for the projected
-#'   gradient descent method.
-#' @slot th A single numeric for the threshold for the negative empirical
-#'   log-likelihood ratio.
-#' @slot verbose A single logical for whether to print a message on the
-#'   convergence status.
-#' @slot keep_data A single logical for whether to
-#' @slot nthreads A single integer for the number of threads for parallel
-#'   computation via OpenMP (if available).
-#' @slot seed A single integer for the seed for random number generation.
-#' @slot b A single integer for the number of bootstrap replicates.
-#' @slot m A single integer for the number of Monte Carlo samples.
-#' @aliases ControlEL
-#' @examples
-#' showClass("ControlEL")
-setClass("ControlEL",
-  slots = c(
-    maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
-    step = "ANY", th = "ANY", verbose = "logical", keep_data = "logical",
-    nthreads = "integer", seed = "integer", b = "integer", m = "integer"
-  )
 )
 
 
@@ -368,15 +376,17 @@ setClass("ELD", contains = "numeric")
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
 #' @slot data A numeric matrix of the data for the model fitting.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases ELMT
 #' @examples
 #' showClass("ELMT")
 setClass("ELMT",
   slots = c(
-    estimates = "list", statistic = "numeric", df = "integer",
-    pval = "numeric", cv = "numeric", rhs = "numeric", lhs = "matrix",
-    alpha = "numeric", calibrate = "character", weights = "numeric",
-    coefficients = "numeric", method = "character", data = "ANY"
+    estimates = "list", statistic = "numeric", df = "integer", pval = "numeric",
+    cv = "numeric", rhs = "numeric", lhs = "matrix", alpha = "numeric",
+    calibrate = "character", weights = "numeric", coefficients = "numeric",
+    method = "character", data = "ANY", control = "ControlEL"
   )
 )
 
@@ -410,6 +420,8 @@ setClass("ELMT",
 #' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
 #' @slot alpha A single numeric for the significance level.
 #' @slot calibrate A single character for the calibration method used.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases ELT
 #' @examples
 #' showClass("ELT")
@@ -417,7 +429,8 @@ setClass("ELT",
   slots = c(
     optim = "list", logp = "numeric", logl = "numeric", loglr = "numeric",
     statistic = "numeric", df = "integer", pval = "numeric", cv = "numeric",
-    rhs = "numeric", lhs = "matrix", alpha = "numeric", calibrate = "character"
+    rhs = "numeric", lhs = "matrix", alpha = "numeric", calibrate = "character",
+    control = "ControlEL"
   )
 )
 
@@ -490,6 +503,8 @@ setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
 #' @slot data A numeric matrix of the data for the model fitting.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases QGLM
 #' @examples
 #' showClass("QGLM")
@@ -525,6 +540,8 @@ setClass("QGLM", contains = "GLM")
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
 #' @slot data A numeric matrix of the data for the model fitting.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases SD
 #' @examples
 #' showClass("SD")
@@ -556,13 +573,16 @@ setClass("SD", contains = "EL")
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases SummaryEL
 #' @examples
 #' showClass("SummaryEL")
 setClass("SummaryEL", slots = c(
   optim = "list", logl = "numeric", loglr = "numeric", statistic = "numeric",
   df = "integer", pval = "numeric", nobs = "integer", npar = "integer",
-  weighted = "logical", coefficients = "numeric", method = "character"
+  weighted = "logical", coefficients = "numeric", method = "character",
+  control = "ControlEL"
 ))
 
 
@@ -609,13 +629,16 @@ setClass("SummaryELMT", slots = c(
 #' @slot lhs A numeric matrix for the left-hand side of the hypothesis.
 #' @slot alpha A single numeric for the significance level.
 #' @slot calibrate A single character for the calibration method used.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases SummaryELT
 #' @examples
 #' showClass("SummaryELT")
 setClass("SummaryELT", slots = c(
   optim = "list", logl = "numeric", loglr = "numeric", statistic = "numeric",
   df = "integer", pval = "numeric", cv = "numeric", rhs = "numeric",
-  lhs = "matrix", alpha = "numeric", calibrate = "character"
+  lhs = "matrix", alpha = "numeric", calibrate = "character",
+  control = "ControlEL"
 ))
 
 
@@ -654,6 +677,8 @@ setClass("SummaryELT", slots = c(
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases SummaryLM
 #' @examples
 #' showClass("SummaryLM")
@@ -662,7 +687,7 @@ setClass("SummaryLM", slots = c(
   terms = "terms", aliased = "logical", optim = "list", logl = "numeric",
   loglr = "numeric", statistic = "numeric", df = "integer", pval = "numeric",
   nobs = "integer", npar = "integer", weighted = "logical",
-  coefficients = "numeric", method = "character"
+  coefficients = "numeric", method = "character", control = "ControlEL"
 ))
 
 
@@ -704,6 +729,8 @@ setClass("SummaryLM", slots = c(
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases SummaryGLM
 #' @examples
 #' showClass("SummaryGLM")
@@ -750,6 +777,8 @@ setClass("SummaryGLM",
 #'   estimates of the parameters.
 #' @slot method A single character for the method dispatch in internal
 #'   functions.
+#' @slot control An object of class \linkS4class{ControlEL} constructed by
+#'   [el_control()].
 #' @aliases SummaryQGLM
 #' @examples
 #' showClass("SummaryQGLM")

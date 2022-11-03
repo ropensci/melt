@@ -4,18 +4,22 @@ setMethod("confreg", "EL", function(object,
                                     level = 0.95,
                                     cv = NULL,
                                     npoints = 50L,
-                                    control = el_control()) {
+                                    control = NULL) {
   level <- validate_level(level)
   npoints <- validate_npoints(npoints)
   npar <- getNumPar(object)
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
       isFALSE(is.null(getData(object))),
-    "Invalid `control` specified." = is(control, "ControlEL"),
     "`confreg()` is not applicable to an empty model." = getDF(object) >= 1L,
     "`confreg()` is not applicable to a model with one parameter." =
       npar >= if (is(object, "QGLM")) 3L else 2L
   )
+  if (is.null(control)) {
+    control <- getControlEL(object)
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   est <- coef(object)
   nm <- names(est)
   pnames <- if (is.null(nm)) seq(length(est)) else nm

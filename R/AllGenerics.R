@@ -50,7 +50,8 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'   empirical likelihood ratio statistic. Defaults to `NULL` and set to
 #'   `qchisq(level, 1L)`. If non-`NULL`, `level` is ignored.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   [el_control()].
+#'   [el_control()]. Defaults to `NULL` and inherits the `control` slot in
+#'   `object`.
 #' @return A matrix with columns giving lower and upper confidence limits for
 #'  each parameter. In contrast to other methods that rely on studentization,
 #'  the lower and upper limits obtained from empirical likelihood do not
@@ -92,7 +93,8 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #' @param npoints A single integer for the number of boundary points to compute.
 #'   Defaults to `50`.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   [el_control()].
+#'   [el_control()]. Defaults to `NULL` and inherits the `control` slot in
+#'   `object`.
 #' @return An object of class \linkS4class{ConfregEL}.
 #' @references Owen A (1990).
 #'   “Empirical Likelihood Ratio Confidence Regions.”
@@ -111,7 +113,7 @@ setGeneric("confreg", function(object,
                                level = 0.95,
                                cv = NULL,
                                npoints = 50L,
-                               control = el_control()) {
+                               control = NULL) {
   standardGeneric("confreg")
 })
 
@@ -160,7 +162,8 @@ setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
 #'
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   [el_control()].
+#'   [el_control()]. Defaults to `NULL` and inherits the `control` slot in
+#'   `object`.
 #' @details Let \eqn{L(\theta)} be the empirical log-likelihood function based
 #'   on the full sample with \eqn{n} observations. The maximum empirical
 #'   likelihood estimate is denoted by \eqn{\hat{\theta}}. Consider a reduced
@@ -189,7 +192,7 @@ setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
 #' eld <- eld(fit)
 #' plot(eld)
 #' @exportMethod eld
-setGeneric("eld", function(object, control = el_control()) {
+setGeneric("eld", function(object, control = NULL) {
   standardGeneric("eld")
 })
 
@@ -209,7 +212,8 @@ setGeneric("eld", function(object, control = el_control()) {
 #' @param alpha A single numeric for the overall significance level. Defaults to
 #'   `0.05`.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   [el_control()].
+#'   [el_control()]. Defaults to `NULL` and inherits the `control` slot in
+#'   `object`.
 #' @details [elmt()] tests multiple hypotheses simultaneously. Each hypothesis
 #'   corresponds to the constrained empirical likelihood ratio described in
 #'   \linkS4class{CEL}. `rhs` and `lhs` cannot be both `NULL`. The right-hand
@@ -261,7 +265,7 @@ setGeneric("elmt", function(object,
                             rhs = NULL,
                             lhs = NULL,
                             alpha = 0.05,
-                            control = el_control()) {
+                            control = NULL) {
   standardGeneric("elmt")
 })
 
@@ -284,7 +288,8 @@ setGeneric("elmt", function(object,
 #'   case-insensitive and must be one of `"chisq"`, `"boot"`, or `"f"`.
 #'   Defaults to `"chisq"`. See ‘Details’.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
-#'   [el_control()].
+#'   [el_control()]. Defaults to `NULL` and inherits the `control` slot in
+#'   `object`.
 #' @details [elt()] performs the constrained minimization of \eqn{l(\theta)}
 #'   described in \linkS4class{CEL}. `rhs` and `lhs` cannot be both `NULL`. For
 #'   non-`NULL` `lhs`, it is required that `lhs` have full row rank
@@ -349,7 +354,7 @@ setGeneric("elt", function(object,
                            lhs = NULL,
                            alpha = 0.05,
                            calibrate = "chisq",
-                           control = el_control()) {
+                           control = NULL) {
   standardGeneric("elt")
 })
 
@@ -666,6 +671,7 @@ setMethod("getEstimates", "SummaryELMT", function(x) {
   x@estimates
 })
 
+
 setGeneric("getMethodEL", function(x) standardGeneric("getMethodEL"))
 setMethod("getMethodEL", "EL", function(x) {
   x@method
@@ -699,4 +705,22 @@ setMethod("getWeights", "EL", function(x) {
 })
 setMethod("getWeights", "ELMT", function(x) {
   x@weights
+})
+
+
+setGeneric("getControlEL", function(x) standardGeneric("getControlEL"))
+setMethod("getControlEL", "EL", function(x) {
+  x@control
+})
+setMethod("getControlEL", "ELMT", function(x) {
+  x@control
+})
+setMethod("getControlEL", "ELT", function(x) {
+  x@control
+})
+setMethod("getControlEL", "SummaryELT", function(x) {
+  x@control
+})
+setMethod("getControlEL", "SummaryLM", function(x) {
+  x@control
 })

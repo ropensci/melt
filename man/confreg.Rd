@@ -5,14 +5,7 @@
 \alias{confreg,EL-method}
 \title{Confidence region for model parameters}
 \usage{
-\S4method{confreg}{EL}(
-  object,
-  parm,
-  level = 0.95,
-  cv = NULL,
-  npoints = 50L,
-  control = el_control()
-)
+\S4method{confreg}{EL}(object, parm, level = 0.95, cv = NULL, npoints = 50L, control = NULL)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL}.}
@@ -34,7 +27,8 @@ empirical likelihood ratio statistic. Defaults to NULL and set to
 Defaults to \code{50}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+\code{\link[=el_control]{el_control()}}. Defaults to \code{NULL} and inherits the \code{control} slot in
+\code{object}.}
 }
 \value{
 An object of class \linkS4class{ConfregEL}.

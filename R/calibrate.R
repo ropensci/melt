@@ -21,8 +21,13 @@ calibrate <- function(calibrate, alpha, statistic, p, par, object, control) {
       )
     },
     "boot" = {
+      seed <- if (is.null(control@seed)) {
+        sample.int(.Machine$integer.max, 1L)
+      } else {
+        control@seed
+      }
       compute_bootstrap_calibration(
-        alpha, statistic, control@b, control@seed, control@nthreads,
+        alpha, statistic, control@b, seed, control@nthreads,
         getMethodEL(object), getData(object), par, coef(object),
         control@maxit_l, control@tol_l, control@th, getWeights(object)
       )

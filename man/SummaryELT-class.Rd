@@ -46,6 +46,9 @@ statistic.}
 \item{\code{alpha}}{A single numeric for the significance level.}
 
 \item{\code{calibrate}}{A single character for the calibration method used.}
+
+\item{\code{control}}{An object of class \linkS4class{ControlEL} constructed by
+\code{\link[=el_control]{el_control()}}.}
 }}
 
 \examples{

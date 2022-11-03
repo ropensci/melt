@@ -16,10 +16,7 @@ setMethod("print", "EL", function(x,
     paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits, ...))
   )
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-  cat(
-    "EL evaluation:",
-    if (conv(x)) "converged" else "not converged", "\n\n"
-  )
+  cat(show_convergence(x), "\n\n")
   invisible(x)
 })
 setMethod("show", "EL", function(object) print(object))
@@ -75,17 +72,7 @@ setMethod("print", "ELT", function(x,
       "\np-value: ", format.pval(pVal(x), digits = digits)
     ), "\n"
   )
-  if (getOptim(x)$cstr) {
-    cat(
-      "Constrained EL:",
-      if (conv(x)) "converged" else "not converged", "\n\n"
-    )
-  } else {
-    cat(
-      "EL evaluation:",
-      if (conv(x)) "converged" else "not converged", "\n\n"
-    )
-  }
+  cat(show_convergence(x), "\n\n")
   invisible(x)
 })
 setMethod("show", "ELT", function(object) print(object))
@@ -127,17 +114,7 @@ setMethod("print", "LM", function(x,
   }
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
   if (length(chisq(x)) != 0L) {
-    if (getOptim(x)$cstr) {
-      cat(
-        "Constrained EL:",
-        if (conv(x)) "converged" else "not converged", "\n"
-      )
-    } else {
-      cat(
-        "EL evaluation:",
-        if (conv(x)) "converged" else "not converged", "\n"
-      )
-    }
+    cat(show_convergence(x), "\n")
   }
   cat("\n")
   invisible(x)
@@ -169,7 +146,7 @@ setMethod(
       "\nModel:", getMethodEL(x),
       "\n\nNumber of observations:", nobs(x),
       "\nNumber of parameters:", getNumPar(x),
-      "\n\nParameter values:\n"
+      "\n\nParameter values under the null hypothesis:\n"
     )
     print.default(getOptim(x)$par, digits = digits, ...)
     cat("\nLagrange multipliers:\n")
@@ -188,10 +165,7 @@ setMethod(
       paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits), ...)
     )
     cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-    cat(
-      "EL evaluation:",
-      if (conv(x)) "converged" else "not converged", "\n\n"
-    )
+    cat(show_convergence(x), "\n\n")
     invisible(x)
   }
 )
@@ -255,7 +229,7 @@ setMethod(
       "\nSignificance level: ", format.default(x@alpha, digits = digits, ...),
       ", Calibration: ", method
     ), "\n")
-    cat("\nParameter values:\n")
+    cat("\nParameter values under the null hypothesis:\n")
     print.default(getOptim(x)$par, digits = digits, ...)
     cat("\nLagrange multipliers:\n")
     print.default(getOptim(x)$lambda, digits = digits, ...)
@@ -268,17 +242,7 @@ setMethod(
         "\np-value: ", format.pval(pVal(x), digits = digits)
       ), "\n"
     )
-    if (getOptim(x)$cstr) {
-      cat(
-        "Constrained EL:",
-        if (conv(x)) "converged" else "not converged", "\n\n"
-      )
-    } else {
-      cat(
-        "EL evaluation:",
-        if (conv(x)) "converged" else "not converged", "\n\n"
-      )
-    }
+    cat(show_convergence(x), "\n\n")
     invisible(x)
   }
 )
@@ -308,7 +272,7 @@ setMethod(
         "\nNumber of observations:", nobs(x),
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
-      cat("\nParameter values:\n")
+      cat("\nParameter values under the null hypothesis:\n")
       print.default(getOptim(x)$par, digits = digits, ...)
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)
@@ -324,17 +288,7 @@ setMethod(
         paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
       )
       cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-      if (getOptim(x)$cstr) {
-        cat(
-          "Constrained EL:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      } else {
-        cat(
-          "EL evaluation:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      }
+      cat(show_convergence(x), "\n")
     } else {
       cat("\nEmpty model\n")
     }
@@ -390,7 +344,7 @@ setMethod(
         "\nNumber of observations:", nobs(x),
         "\nNumber of parameters:", getNumPar(x), "\n"
       )
-      cat("\nParameter values:\n")
+      cat("\nParameter values under the null hypothesis:\n")
       print.default(getOptim(x)$par, digits = digits, ...)
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)
@@ -406,17 +360,7 @@ setMethod(
         paste("Pr(>Chisq):", format.pval(pVal(x), digits = digits))
       )
       cat(strwrap(paste(out, collapse = ", ")), sep = "\n\n")
-      if (getOptim(x)$cstr) {
-        cat(
-          "Constrained EL:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      } else {
-        cat(
-          "EL evaluation:",
-          if (conv(x)) "converged" else "not converged", "\n"
-        )
-      }
+      cat(show_convergence(x), "\n")
     } else {
       cat("\nEmpty model\n")
     }

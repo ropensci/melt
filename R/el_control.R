@@ -11,7 +11,8 @@
 #' @param tol_l A single numeric for the relative convergence tolerance for the
 #'   evaluation. Defaults to `1e-06`.
 #' @param step A single numeric for the step size for projected gradient descent
-#'   method. Defaults to `NULL` and set to the reciprocal of sample size.
+#'   method. Defaults to `NULL` and sets the step size to the reciprocal of the
+#'   sample size.
 #' @param th A single numeric for the threshold for the negative empirical
 #'   log-likelihood ratio. The iteration stops if the value exceeds the
 #'   threshold. Defaults to `NULL` and sets the threshold to `200 * d`, where
@@ -32,13 +33,14 @@
 #'   evaluations or optimizations: [confint()], [confreg()], [el_lm()],
 #'   [el_glm()], [eld()], and [elt()].
 #' @param seed A single integer for the seed for random number generation. It
-#'   only applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to a
-#'   random integer generated from 1 to the maximum integer supported by \R on
-#'   the machine, which is determined by [set.seed()]. Only one seed is
-#'   needed even when multiple threads are used with `nthreads`. Each thread is
-#'   given a separate seed to produce a non-overlapping but reproducible
-#'   sequence of random numbers. The Xoshiro256+ pseudo-random number generator
-#'   is used internally to work with OpenMP.
+#'   only applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to
+#'   `NULL`. In this case, a seed is set to a random integer generated from 1 to
+#'   the maximum integer supported by \R on the machine, which is determined by
+#'   [set.seed()]. Only one seed is needed even when multiple threads are used
+#'   with `nthreads`. Each thread is given a separate seed to produce a
+#'   non-overlapping but reproducible sequence of random numbers. The
+#'   Xoshiro256+ pseudo-random number generator is used internally to work with
+#'   OpenMP.
 #' @param b A single integer for the number of bootstrap replicates. It only
 #'   applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to
 #'   `10000`.
@@ -58,7 +60,7 @@ el_control <- function(maxit = 200L,
                        verbose = FALSE,
                        keep_data = TRUE,
                        nthreads,
-                       seed = sample.int(.Machine$integer.max, 1L),
+                       seed = NULL,
                        b = 10000L,
                        m = 1e+06L) {
   maxit <- validate_maxit(maxit)
@@ -79,7 +81,9 @@ el_control <- function(maxit = 200L,
   } else {
     nthreads <- validate_nthreads(nthreads, max_threads)
   }
-  seed <- validate_seed(seed)
+  if (!is.null(seed)) {
+    seed <- validate_seed(seed)
+  }
   b <- validate_b(b)
   m <- validate_m(m)
   new("ControlEL",

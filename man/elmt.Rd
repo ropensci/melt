@@ -5,7 +5,7 @@
 \alias{elmt,EL-method}
 \title{Empirical likelihood multiple tests}
 \usage{
-\S4method{elmt}{EL}(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = el_control())
+\S4method{elmt}{EL}(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = NULL)
 }
 \arguments{
 \item{object}{An object that inherits from \linkS4class{EL}.}
@@ -23,7 +23,8 @@ equal to the number of parameters. Defaults to \code{NULL}. See ‘Details’.}
 \code{0.05}.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+\code{\link[=el_control]{el_control()}}. Defaults to \code{NULL} and inherits the \code{control} slot in
+\code{object}.}
 }
 \value{
 An object of class of \linkS4class{ELMT}.

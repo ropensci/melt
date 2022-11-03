@@ -5,7 +5,7 @@ setMethod("summary", "EL", function(object, ...) {
     optim = getOptim(z), logl = logL(z), loglr = logLR(z), statistic = chisq(z),
     df = getDF(z), pval = pVal(z), nobs = nobs(z), npar = getNumPar(z),
     weighted = !is.null(weights(z)), coefficients = coef(z),
-    method = getMethodEL(z)
+    method = getMethodEL(z), control = object@control
   )
 })
 
@@ -25,7 +25,7 @@ setMethod("summary", "ELT", function(object, ...) {
   new("SummaryELT",
     optim = getOptim(z), logl = logL(z), loglr = logLR(z), statistic = chisq(z),
     df = getDF(z), pval = pVal(z), cv = z@cv, rhs = z@rhs, lhs = z@lhs,
-    alpha = z@alpha, calibrate = z@calibrate
+    alpha = z@alpha, calibrate = z@calibrate, control = object@control
   )
 })
 
@@ -46,7 +46,7 @@ setMethod("summary", "GLM", function(object, ...) {
       terms = z@terms, aliased = is.na(est), optim = getOptim(z),
       logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
       pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-      coefficients = est, method = getMethodEL(z)
+      coefficients = est, method = getMethodEL(z), control = object@control
     ))
   }
   new("SummaryGLM",
@@ -63,7 +63,7 @@ setMethod("summary", "GLM", function(object, ...) {
     terms = z@terms, aliased = is.na(est), optim = getOptim(z),
     logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
     pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-    coefficients = est, method = getMethodEL(z)
+    coefficients = est, method = getMethodEL(z), control = object@control
   )
 })
 
@@ -82,7 +82,7 @@ setMethod("summary", "LM", function(object, ...) {
       terms = z@terms, aliased = is.na(est), optim = getOptim(z),
       logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
       pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-      coefficients = est, method = getMethodEL(z)
+      coefficients = est, method = getMethodEL(z), control = object@control
     ))
   }
   new("SummaryLM",
@@ -98,7 +98,7 @@ setMethod("summary", "LM", function(object, ...) {
     terms = z@terms, aliased = is.na(est), optim = getOptim(z), logl = logL(z),
     loglr = logLR(z), statistic = chisq(z), df = getDF(z), pval = pVal(z),
     nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-    coefficients = est, method = getMethodEL(z)
+    coefficients = est, method = getMethodEL(z), control = object@control
   )
 })
 
@@ -119,7 +119,7 @@ setMethod("summary", "QGLM", function(object, ...) {
       terms = z@terms, aliased = is.na(est), optim = getOptim(z),
       logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
       pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-      coefficients = est, method = getMethodEL(z)
+      coefficients = est, method = getMethodEL(z), control = object@control
     ))
   }
   new("SummaryQGLM",
@@ -136,6 +136,6 @@ setMethod("summary", "QGLM", function(object, ...) {
     terms = z@terms, aliased = is.na(est), optim = getOptim(z),
     logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
     pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-    coefficients = est, method = getMethodEL(z)
+    coefficients = est, method = getMethodEL(z), control = object@control
   )
 })

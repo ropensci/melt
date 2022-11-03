@@ -14,7 +14,7 @@
   lhs = NULL,
   alpha = 0.05,
   calibrate = "chisq",
-  control = el_control()
+  control = NULL
 )
 }
 \arguments{
@@ -37,7 +37,8 @@ case-insensitive and must be one of \code{"chisq"}, \code{"boot"}, or \code{"f"}
 Defaults to \code{"chisq"}. See ‘Details’.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
-\code{\link[=el_control]{el_control()}}.}
+\code{\link[=el_control]{el_control()}}. Defaults to \code{NULL} and inherits the \code{control} slot in
+\code{object}.}
 }
 \value{
 An object of class of \linkS4class{ELT}. If \code{lhs} is non-\code{NULL}, the

@@ -4,13 +4,17 @@ setMethod("elt", "EL", function(object,
                                 lhs = NULL,
                                 alpha = 0.05,
                                 calibrate = "chisq",
-                                control = el_control()) {
+                                control = NULL) {
   stopifnot(
     "`elt()` is not applicable to an empty model." = getDF(object) >= 1L,
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      isFALSE(is.null(getData(object))),
-    "Invalid `control` specified." = is(control, "ControlEL")
+      isFALSE(is.null(getData(object)))
   )
+  if (is.null(control)) {
+    control <- getControlEL(object)
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
   h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
@@ -41,7 +45,7 @@ setMethod("elt", "EL", function(object,
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
       loglr = out$loglr, statistic = out$statistic, df = length(par),
       pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = par, lhs = h$l,
-      alpha = alpha, calibrate = calibrate
+      alpha = alpha, calibrate = calibrate, control = control
     ))
   }
   # Proceed with chi-square calibration for non-NULL `lhs`
@@ -64,7 +68,7 @@ setMethod("elt", "EL", function(object,
     loglr = out$loglr, statistic = out$statistic, df = q,
     pval = pchisq(out$statistic, df = q, lower.tail = FALSE),
     cv = qchisq(1 - alpha, df = q), rhs = h$r, lhs = h$l, alpha = alpha,
-    calibrate = calibrate
+    calibrate = calibrate, control = control
   )
 })
 
@@ -75,13 +79,17 @@ setMethod("elt", "QGLM", function(object,
                                   lhs = NULL,
                                   alpha = 0.05,
                                   calibrate = "chisq",
-                                  control = el_control()) {
+                                  control = NULL) {
   stopifnot(
     "`elt()` is not applicable to an empty model." = getDF(object) >= 1L,
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      isFALSE(is.null(getData(object))),
-    "Invalid `control` specified." = is(control, "ControlEL")
+      isFALSE(is.null(getData(object)))
   )
+  if (is.null(control)) {
+    control <- getControlEL(object)
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   # `npar` includes the dispersion parameter
   onames <- names(logProb(object))
   nm <- names(getOptim(object)$par)
@@ -117,7 +125,7 @@ setMethod("elt", "QGLM", function(object,
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
       loglr = out$loglr, statistic = out$statistic, df = length(par),
       pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = h$r, lhs = h$l,
-      alpha = alpha, calibrate = calibrate
+      alpha = alpha, calibrate = calibrate, control = control
     ))
   }
   stopifnot(
@@ -139,7 +147,7 @@ setMethod("elt", "QGLM", function(object,
     loglr = out$loglr, statistic = out$statistic, df = q,
     pval = pchisq(out$statistic, df = q, lower.tail = FALSE),
     cv = qchisq(1 - alpha, df = q), rhs = h$r, lhs = h$l, alpha = alpha,
-    calibrate = calibrate
+    calibrate = calibrate, control = control
   )
 })
 
@@ -150,13 +158,17 @@ setMethod("elt", "SD", function(object,
                                 lhs = NULL,
                                 alpha = 0.05,
                                 calibrate = "chisq",
-                                control = el_control()) {
+                                control = NULL) {
   stopifnot(
     "`elt()` is not applicable to an empty model." = getDF(object) >= 1L,
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      isFALSE(is.null(getData(object))),
-    "Invalid `control` specified." = is(control, "ControlEL")
+      isFALSE(is.null(getData(object)))
   )
+  if (is.null(control)) {
+    control <- getControlEL(object)
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
   h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
@@ -184,7 +196,7 @@ setMethod("elt", "SD", function(object,
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
       loglr = out$loglr, statistic = out$statistic, df = 1L,
       pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = h$r, lhs = h$l,
-      alpha = alpha, calibrate = calibrate
+      alpha = alpha, calibrate = calibrate, control = control
     ))
   }
   stopifnot(
@@ -209,7 +221,7 @@ setMethod("elt", "SD", function(object,
     loglr = out$loglr, statistic = out$statistic, df = 1L,
     pval = pchisq(out$statistic, df = 1L, lower.tail = FALSE),
     cv = qchisq(1 - alpha, df = 1L), rhs = h$r, lhs = h$l, alpha = alpha,
-    calibrate = calibrate
+    calibrate = calibrate, control = control
   )
 })
 
@@ -220,10 +232,14 @@ setMethod("elt", "missing", function(object,
                                      lhs = NULL,
                                      alpha = 0.05,
                                      calibrate = "chisq",
-                                     control = el_control()) {
+                                     control = NULL) {
   alpha <- validate_alpha(alpha)
   calibrate <- validate_calibrate(calibrate)
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
+  if (is.null(control)) {
+    control <- el_control()
+  } else {
+    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+  }
   alpha <- validate_alpha(alpha)
   NULL
 })
