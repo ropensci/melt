@@ -7,6 +7,8 @@
 ## MINOR IMPROVEMENTS
 * `summary()` is applicable to an object that inherits from `EL`, `ELT`, and `EMLT`.
 
+* A more informative message is printed regarding the convergence status.
+
 * `optim` slot in all model or summary objects gains a single logical element `cstr` that shows whether a constrained EL computation is involved or not. 
 
 ## DEPRECATED AND DEFUNCT

@@ -111,6 +111,7 @@ test_that("Matrix `rhs`.", {
 
 test_that("Missing `object`.", {
   expect_null(elt(rhs = 1))
+  expect_error(elt(control = 1))
 })
 
 test_that("`SD` class.", {

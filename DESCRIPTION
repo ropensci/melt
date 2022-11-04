@@ -1,7 +1,7 @@
 Type: Package
 Package: melt
 Title: Multiple Empirical Likelihood Tests
-Version: 1.8.0.9600
+Version: 1.9.0
 Authors@R: c(
     person("Eunseop", "Kim", , "kim.7302@osu.edu", role = c("aut", "cre")),
     person("Steven", "MacEachern", role = c("ctb", "ths")),
@@ -17,7 +17,7 @@ Description: Performs multiple empirical likelihood tests for linear and
     and 'RcppEigen' interface, with OpenMP for parallel computation.
     Details of the testing procedures are given in Kim, MacEachern, and
     Peruggia (2021) <arxiv:2112.09206>. This work was supported by the
-    U.S. National Science Foundation under Grants No.  SES-1921523 and
+    U.S. National Science Foundation under Grants No. SES-1921523 and
     DMS-2015552.
 License: GPL (>= 2)
 URL: https://docs.ropensci.org/melt/, https://github.com/ropensci/melt
