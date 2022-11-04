@@ -6,13 +6,17 @@
 #' @return A single character vector for the convergence status.
 #' @noRd
 show_convergence <- function(x) {
-  if (getOptim(x)$cstr) {
+  iter <- getOptim(x)$iterations
+  cstr <- getOptim(x)$cstr
+  if (cstr) {
     type <- "Constrained EL:"
     status <- if (conv(x)) {
       "converged"
     } else {
-      if (getOptim(x)$iterations == getControlEL(x)@maxit) {
+      if (iter == getControlEL(x)@maxit) {
         "maximum iterations reached"
+      } else if (iter == 0L) {
+        "initialization failed"
       } else {
         "not converged"
       }
@@ -22,7 +26,7 @@ show_convergence <- function(x) {
     status <- if (conv(x)) {
       "converged"
     } else {
-      if (getOptim(x)$iterations == getControlEL(x)@maxit_l) {
+      if (iter == getControlEL(x)@maxit_l) {
         "maximum iterations reached"
       } else {
         "solver error"
