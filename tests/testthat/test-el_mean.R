@@ -61,9 +61,12 @@ test_that("`verbose` == TRUE in `el_control()`.", {
 
 test_that("`conv()` methods.", {
   fit <- el_mean(precip, par = 60)
-  fit2 <- el_mean(precip, par = 0)
+  fit2 <- el_mean(precip, par = 60, control = el_control(maxit_l = 1))
+  fit3 <- el_mean(precip, par = 0)
   expect_true(conv(fit))
   expect_false(conv(fit2))
+  expect_output(print(fit2))
+  expect_false(conv(fit3))
 })
 
 test_that("Larger `tol_l` decreases iterations for convergence.", {
