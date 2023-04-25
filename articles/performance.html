@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9001</span>
       </span>
     </div>
 
@@ -138,10 +138,10 @@ parameters increases with the number of observations fixed.</p>
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;  n1e2    726.1    856.65    949.445    928.15    990.75   2213.6   100</span></span>
-<span><span class="co">#&gt;  n1e3   1923.5   2282.80   2538.662   2428.25   2674.80   6341.0   100</span></span>
-<span><span class="co">#&gt;  n1e4  18137.2  22840.00  26317.610  26408.15  29264.55  40970.0   100</span></span>
-<span><span class="co">#&gt;  n1e5 319796.4 427270.30 491547.368 474974.10 545273.50 675035.3   100</span></span>
+<span><span class="co">#&gt;  n1e2    631.1    673.80    708.388    702.30    746.10    811.2   100</span></span>
+<span><span class="co">#&gt;  n1e3   1725.5   1952.40   2139.109   2077.75   2229.55   6124.5   100</span></span>
+<span><span class="co">#&gt;  n1e4  15634.6  17734.85  20459.793  21304.70  22414.40  25819.9   100</span></span>
+<span><span class="co">#&gt;  n1e5 299595.4 363389.25 423778.678 404311.70 489905.85 575033.3   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -172,12 +172,12 @@ likelihood at zero vectors of different sizes.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
-<span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr      min       lq       mean    median       uq      max neval</span></span>
-<span><span class="co">#&gt;    p5    969.9   1120.3   1290.080   1227.25   1375.9   3207.7   100</span></span>
-<span><span class="co">#&gt;   p25   3426.3   3938.6   4398.989   4151.25   4477.6   9569.1   100</span></span>
-<span><span class="co">#&gt;  p100  29618.2  34022.7  39874.283  37693.85  42545.5  66173.2   100</span></span>
-<span><span class="co">#&gt;  p400 362575.1 402679.5 446875.131 425593.05 467311.3 725435.4   100</span></span>
+<span><span class="co">#&gt; Unit: milliseconds</span></span>
+<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
+<span><span class="co">#&gt;    p5   1.0380   1.12135   1.161732   1.16725   1.19065   1.3050   100</span></span>
+<span><span class="co">#&gt;   p25   3.8170   3.88515   3.987417   3.94945   4.02870   6.9643   100</span></span>
+<span><span class="co">#&gt;  p100  29.2740  29.61045  35.142204  32.79515  37.76425  58.7585   100</span></span>
+<span><span class="co">#&gt;  p400 334.8761 366.03385 405.051230 370.75140 429.58250 625.9641   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;">
 On average, evaluating empirical likelihood with a 100000×10 or 1000×400
@@ -204,7 +204,7 @@ less than a second.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
