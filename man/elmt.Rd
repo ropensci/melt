@@ -76,9 +76,10 @@ rhs3 <- list(0, c(-6, 1))
 elmt(fit3, rhs = rhs3, lhs = lhs3)
 }
 \references{
-Kim E, MacEachern S, Peruggia M (2021).
+Kim E, MacEachern SN, Peruggia M (2023).
 “Empirical Likelihood for the Analysis of Experimental Designs.”
-arxiv:2112.09206. URL \url{https://arxiv.org/abs/2112.09206}.
+\emph{Journal of Nonparametric Statistics}.
+\doi{10.1080/10485252.2023.2206919}.
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{ELMT}, \code{\link[=elt]{elt()}}, \code{\link[=el_control]{el_control()}}

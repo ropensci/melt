@@ -1,3 +1,5 @@
+# melt 1.9.0.9002 (development version)
+
 # melt 1.9.0
 ## NEW FEATURES
 * `confint()` is applicable to an `EMLT` object to produce simultaneous confidence intervals.

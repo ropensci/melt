@@ -231,9 +231,10 @@ setGeneric("eld", function(object, control = NULL) {
 #'   of the test statistics, the adjusted p-values are estimated by Monte Carlo
 #'   simulation.
 #' @return An object of class of \linkS4class{ELMT}.
-#' @references Kim E, MacEachern S, Peruggia M (2021).
+#' @references Kim E, MacEachern SN, Peruggia M (2023).
 #'   “Empirical Likelihood for the Analysis of Experimental Designs.”
-#'   arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
+#'   \emph{Journal of Nonparametric Statistics}.
+#'   \doi{10.1080/10485252.2023.2206919}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELMT}, [elt()], [el_control()]
 #' @usage NULL
 #' @examples

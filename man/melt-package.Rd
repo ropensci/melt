@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Performs multiple empirical likelihood tests for linear and generalized linear models. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Details of the testing procedures are given in Kim, MacEachern, and Peruggia (2021) \href{https://arxiv.org/abs/2112.09206}{arXiv:2112.09206}. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.
+Performs multiple empirical likelihood tests for linear and generalized linear models. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Details of the testing procedures are given in Kim, MacEachern, and Peruggia (2023) \doi{10.1080/10485252.2023.2206919}. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.
 }
 \references{
 Kim E, MacEachern S, Peruggia M (2021).
