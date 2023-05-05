@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9003</span>
       </span>
     </div>
 
@@ -137,11 +137,11 @@ parameters increases with the number of observations fixed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr      min       lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;  n1e2    583.5    741.5    813.399    814.85    890.35   1107.2   100</span></span>
-<span><span class="co">#&gt;  n1e3   1657.8   2179.9   2506.874   2359.10   2585.70   7138.1   100</span></span>
-<span><span class="co">#&gt;  n1e4  15116.5  21057.7  24099.205  24305.05  27183.35  31765.7   100</span></span>
-<span><span class="co">#&gt;  n1e5 312837.5 407774.1 489745.860 469935.95 563369.75 701264.7   100</span></span>
+<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
+<span><span class="co">#&gt;  n1e2    692.9    821.00    926.145    883.60    985.15   2565.6   100</span></span>
+<span><span class="co">#&gt;  n1e3   1676.8   2186.10   2483.682   2378.30   2673.05   6338.0   100</span></span>
+<span><span class="co">#&gt;  n1e4  16800.3  21003.25  24384.093  25213.65  27122.20  31055.3   100</span></span>
+<span><span class="co">#&gt;  n1e5 311013.2 381087.65 438291.702 420088.25 501868.95 583244.7   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -172,12 +172,12 @@ likelihood at zero vectors of different sizes.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
-<span><span class="co">#&gt; Unit: microseconds</span></span>
+<span><span class="co">#&gt; Unit: milliseconds</span></span>
 <span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;    p5    909.7   1187.80   1304.328   1313.95   1414.85   2220.6   100</span></span>
-<span><span class="co">#&gt;   p25   3517.7   4158.40   4590.601   4669.25   4876.60   6915.2   100</span></span>
-<span><span class="co">#&gt;  p100  28953.7  36137.45  41412.896  39989.35  44983.60  70580.7   100</span></span>
-<span><span class="co">#&gt;  p400 373062.7 424741.00 474318.605 454458.45 493779.75 780950.4   100</span></span>
+<span><span class="co">#&gt;    p5   1.0973   1.22570   1.367731   1.32740   1.44015   2.7136   100</span></span>
+<span><span class="co">#&gt;   p25   3.7659   4.17465   4.476288   4.46145   4.66200   6.1682   100</span></span>
+<span><span class="co">#&gt;  p100  31.7689  35.60835  42.129414  39.61340  45.06800  77.3264   100</span></span>
+<span><span class="co">#&gt;  p400 377.5360 415.27380 464.240630 443.50025 488.07890 720.0453   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;">
 On average, evaluating empirical likelihood with a 100000×10 or 1000×400
