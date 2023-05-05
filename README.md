@@ -38,8 +38,8 @@ The core computational routines are implemented with the
 library and [RcppEigen](https://cran.r-project.org/package=RcppEigen)
 interface, with OpenMP for parallel computation. Details of the testing
 procedures are given in [Kim, MacEachern, and Peruggia
-(2021)](https://arxiv.org/abs/2112.09206). This work was supported by
-the U.S. National Science Foundation under Grants
+(2023)](https://doi.org/10.1080/10485252.2023.2206919). This work was
+supported by the U.S. National Science Foundation under Grants
 No. [SES-1921523](https://nsf.gov/awardsearch/showAward?AWD_ID=1921523)
 and [DMS-2015552](https://nsf.gov/awardsearch/showAward?AWD_ID=2015552).
 
@@ -95,7 +95,6 @@ el_mean(precip, par = 30)
 #> [1] 34.89
 #> 
 #> Chisq: 8.285, df: 1, Pr(>Chisq): 0.003998
-#> 
 #> EL evaluation: converged
 
 
@@ -104,8 +103,30 @@ data("mtcars")
 fit_lm <- el_lm(mpg ~ disp + hp + wt + qsec, data = mtcars)
 summary(fit_lm)
 #> 
+#>  Empirical Likelihood
+#> 
+#> Model: lm 
+#> 
 #> Call:
 #> el_lm(formula = mpg ~ disp + hp + wt + qsec, data = mtcars)
+#> 
+#> Number of observations: 32 
+#> Number of parameters: 5 
+#> 
+#> Parameter values under the null hypothesis:
+#> (Intercept)        disp          hp          wt        qsec 
+#>       29.04        0.00        0.00        0.00        0.00 
+#> 
+#> Lagrange multipliers:
+#> [1] -260.167   -2.365    1.324  -59.781   25.175
+#> 
+#> Maximum EL estimates:
+#> (Intercept)        disp          hp          wt        qsec 
+#>   27.329638    0.002666   -0.018666   -4.609123    0.544160 
+#> 
+#> logL: -327.6 , logLR: -216.7 
+#> Chisq: 433.4, df: 4, Pr(>Chisq): < 2.2e-16
+#> Constrained EL: converged 
 #> 
 #> Coefficients:
 #>              Estimate   Chisq Pr(>Chisq)    
@@ -116,9 +137,6 @@ summary(fit_lm)
 #> qsec         0.544160 440.583    < 2e-16 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> Chisq: 433.4, df: 4, Pr(>Chisq): < 2.2e-16
-#> 
-#> Constrained EL: converged
 cr <- confreg(fit_lm, parm = c("disp", "hp"), npoints = 200)
 plot(cr)
 ```
@@ -130,8 +148,30 @@ data("clothianidin")
 fit2_lm <- el_lm(clo ~ -1 + trt, data = clothianidin)
 summary(fit2_lm)
 #> 
+#>  Empirical Likelihood
+#> 
+#> Model: lm 
+#> 
 #> Call:
 #> el_lm(formula = clo ~ -1 + trt, data = clothianidin)
+#> 
+#> Number of observations: 102 
+#> Number of parameters: 4 
+#> 
+#> Parameter values under the null hypothesis:
+#>     trtNaked trtFungicide       trtLow      trtHigh 
+#>            0            0            0            0 
+#> 
+#> Lagrange multipliers:
+#> [1] -4.116e+06 -7.329e-01 -1.751e+00 -1.418e-01
+#> 
+#> Maximum EL estimates:
+#>     trtNaked trtFungicide       trtLow      trtHigh 
+#>       -4.479       -3.427       -2.800       -1.307 
+#> 
+#> logL: -918.9 , logLR: -447.2 
+#> Chisq: 894.4, df: 4, Pr(>Chisq): < 2.2e-16
+#> EL evaluation: maximum iterations reached 
 #> 
 #> Coefficients:
 #>              Estimate   Chisq Pr(>Chisq)    
@@ -141,9 +181,6 @@ summary(fit2_lm)
 #> trtHigh        -1.307   4.653      0.031 *  
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> Chisq: 894.4, df: 4, Pr(>Chisq): < 2.2e-16
-#> 
-#> EL evaluation: not converged
 confint(fit2_lm)
 #>                  lower      upper
 #> trtNaked     -5.002118 -3.9198229
@@ -160,29 +197,52 @@ fit_glm <- el_glm(visit ~ log(mass) + fruit + foliage + var + trt,
 )
 summary(fit_glm)
 #> 
+#>  Empirical Likelihood
+#> 
+#> Model: glm (quasipoisson family with log link)
+#> 
 #> Call:
 #> el_glm(formula = visit ~ log(mass) + fruit + foliage + var + 
 #>     trt, family = quasipoisson(link = "log"), data = thiamethoxam, 
 #>     control = el_control(maxit = 100, tol = 1e-08, nthreads = 4))
 #> 
+#> Number of observations: 165 
+#> Number of parameters: 8 
+#> 
+#> Parameter values under the null hypothesis:
+#> (Intercept)   log(mass)       fruit     foliage       varGZ    trtSpray 
+#>     -0.1098      0.0000      0.0000      0.0000      0.0000      0.0000 
+#>   trtFurrow     trtSeed         phi 
+#>      0.0000      0.0000      1.4623 
+#> 
+#> Lagrange multipliers:
+#> [1]   1319.19    210.54    -12.99 -24069.07   -318.90   -189.14    -53.35
+#> [8]    262.32   -170.21
+#> 
+#> Maximum EL estimates:
+#> (Intercept)   log(mass)       fruit     foliage       varGZ    trtSpray 
+#>    -0.10977     0.24750     0.04654   -19.40632    -0.25760     0.06724 
+#>   trtFurrow     trtSeed 
+#>    -0.03634     0.34790 
+#> 
+#> logL: -2272 , logLR: -1429 
+#> Chisq: 2859, df: 7, Pr(>Chisq): < 2.2e-16
+#> Constrained EL: initialization failed 
+#> 
 #> Coefficients:
 #>              Estimate   Chisq Pr(>Chisq)    
-#> (Intercept)   0.74032 189.226    < 2e-16 ***
-#> log(mass)     0.16938 401.439    < 2e-16 ***
-#> fruit         0.04043  10.044    0.00153 ** 
-#> foliage     -10.84203   5.805    0.01598 *  
-#> varGZ        -0.60770  37.549   8.92e-10 ***
-#> trtSpray      0.06370   0.505    0.47730    
-#> trtFurrow    -0.04124   0.084    0.77170    
-#> trtSeed       0.14281   1.276    0.25857    
+#> (Intercept)  -0.10977   0.090   0.763757    
+#> log(mass)     0.24750 425.859    < 2e-16 ***
+#> fruit         0.04654  11.584   0.000665 ***
+#> foliage     -19.40632  65.181   6.83e-16 ***
+#> varGZ        -0.25760  17.308   3.18e-05 ***
+#> trtSpray      0.06724   0.860   0.353820    
+#> trtFurrow    -0.03634   0.217   0.641379    
+#> trtSeed       0.34790  19.271   1.13e-05 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Dispersion estimate for quasipoisson family: 1.316692
-#> 
-#> Chisq: 117.2, df: 7, Pr(>Chisq): < 2.2e-16
-#> 
-#> Constrained EL: converged
+#> Dispersion for quasipoisson family: 1.462288
 
 
 ## Test of no treatment effect
@@ -200,9 +260,9 @@ elt(fit2_lm, lhs = contrast)
 #> 
 #> Significance level: 0.05, Calibration: Chi-square 
 #> 
-#> Statistic: 26.6, Critical value: 7.815 
-#> 
-#> p-value: 7.148e-06
+#> Statistic: 26.6, Critical value: 7.815
+#> p-value: 7.148e-06 
+#> Constrained EL: converged
 
 
 ## Multiple testing
@@ -220,12 +280,10 @@ elmt(fit_glm, lhs = contrast2)
 #> Calibration: Multivariate chi-square 
 #> 
 #> Hypotheses:
-#>               Estimate Chisq Df p.adj
-#> trtSpray = 0   0.06370 0.471  1 0.849
-#> trtFurrow = 0 -0.04124 0.078  1 0.987
-#> trtSeed = 0    0.14281 1.276  1 0.558
-#> 
-#> Common critical value: 5.612
+#>               Estimate  Chisq Df
+#> trtSpray = 0   0.06724  0.860  1
+#> trtFurrow = 0 -0.03634  0.217  1
+#> trtSeed = 0    0.34790 19.271  1
 ```
 
 ------------------------------------------------------------------------

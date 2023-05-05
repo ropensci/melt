@@ -12,12 +12,9 @@ on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   pkgcheck:
     runs-on: ubuntu-latest
     steps:
       - uses: ropensci-review-tools/pkgcheck-action@main
-        with:
-          post-to-issue: false

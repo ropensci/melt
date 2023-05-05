@@ -30,9 +30,10 @@
 #' @param abstol A single numeric for the the absolute convergence tolerance for
 #'   optimization. Defaults to `1e-08`.
 #' @return A list with class \code{c("pairwise", "melt")}.
-#' @references Kim E, MacEachern S, Peruggia M (2021).
+#' @references Kim E, MacEachern SN, Peruggia M (2023).
 #'   “Empirical Likelihood for the Analysis of Experimental Designs.”
-#'   arxiv:2112.09206. URL <https://arxiv.org/abs/2112.09206>.
+#'   \emph{Journal of Nonparametric Statistics}.
+#'   \doi{10.1080/10485252.2023.2206919}.
 #' @examples
 #' \dontrun{
 #' # All pairwise comparisons
