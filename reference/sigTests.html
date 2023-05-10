@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9004</span>
       </span>
     </div>
 
@@ -57,7 +57,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Significance tests</h1>
-    <small class="dont-index">Source: <a href="https://github.com/ropensci/melt/blob/HEAD/R/AllGenerics.R" class="external-link"><code>R/AllGenerics.R</code></a>, <a href="https://github.com/ropensci/melt/blob/HEAD/R/sigTests-methods.R" class="external-link"><code>R/sigTests-methods.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/ropensci/melt/blob/HEAD/R/AllGenerics.R" class="external-link"><code>R/AllGenerics.R</code></a>, <a href="https://github.com/ropensci/melt/blob/HEAD/R/deprecated.R" class="external-link"><code>R/deprecated.R</code></a>, <a href="https://github.com/ropensci/melt/blob/HEAD/R/sigTests-methods.R" class="external-link"><code>R/sigTests-methods.R</code></a></small>
     <div class="hidden name"><code>sigTests.Rd</code></div>
     </div>
 
@@ -66,10 +66,10 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for LM</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for SummaryLM</span></span>
 <span><span class="fu">sigTests</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for SummaryLM</span></span>
+<span><span class="co"># S4 method for LM</span></span>
 <span><span class="fu">sigTests</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -94,10 +94,10 @@ class of its argument.</p>
     <div id="methods-by-class-">
     <h2>Methods (by class)</h2>
     
-<ul><li><p><code>sigTests(LM)</code>: Extracts a list with the optimization results of
-significance tests.</p></li>
-<li><p><code>sigTests(SummaryLM)</code>: Extracts a matrix with the results of significance
+<ul><li><p><code>sigTests(SummaryLM)</code>: Extracts a matrix with the results of significance
 tests.</p></li>
+<li><p><code>sigTests(LM)</code>: Extracts a list with the optimization results of
+significance tests.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -128,6 +128,7 @@ tests.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       FALSE        TRUE       FALSE       FALSE        TRUE </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">sigTests</span><span class="op">(</span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`sigTests()` is deprecated for signature 'SummaryLM' in melt v1.9.1.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                Estimate       Chisq   Pr(&gt;Chisq)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) 12.30337416 442.0394887 3.895625e-98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl         -0.11144048   0.2334334 6.289896e-01</span>

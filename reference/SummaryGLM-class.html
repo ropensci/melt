@@ -18,7 +18,7 @@ SummaryLM class."><meta property="og:image" content="https://docs.ropensci.org/m
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9004</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@ SummaryLM class."><meta property="og:image" content="https://docs.ropensci.org/m
 <dd><p>A single numeric for the estimated dispersion parameter.</p></dd>
 
 
-<dt><code>sigTests</code></dt>
+<dt><code>coefficients</code></dt>
 <dd><p>A numeric matrix of the results of significance tests.</p></dd>
 
 
@@ -152,11 +152,6 @@ log-likelihood ratio for the overall test.</p></dd>
 <dd><p>A single logical for whether the data are weighted or not.</p></dd>
 
 
-<dt><code>coefficients</code></dt>
-<dd><p>A numeric vector of the maximum empirical likelihood
-estimates of the parameters.</p></dd>
-
-
 <dt><code>method</code></dt>
 <dd><p>A single character for the method dispatch in internal
 functions.</p></dd>
@@ -176,7 +171,7 @@ functions.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:        family   dispersion     sigTests    intercept    na.action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:        family   dispersion coefficients    intercept    na.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class:       family      numeric       matrix      logical          ANY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Name:          call        terms      aliased        optim         logl</span>
@@ -184,9 +179,9 @@ functions.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Name:         loglr    statistic           df         pval         nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class:      numeric      numeric      integer      numeric      integer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          npar     weighted coefficients       method      control</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      logical      numeric    character    ControlEL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name:          npar     weighted       method      control</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Class:      integer      logical    character    ControlEL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Extends: "SummaryLM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
