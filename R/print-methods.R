@@ -297,12 +297,12 @@ setMethod(
       cat("\nNo Coefficients\n")
     } else {
       cat("\nCoefficients:\n")
-      coefs <- sigTests(x)
+      coefs <- coef(x)
       if (any(aliased)) {
         cn <- names(aliased)
         coefs <-
           matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
-        coefs[!aliased, ] <- sigTests(x)
+        coefs[!aliased, ] <- coef(x)
       }
       printCoefmat(coefs,
         digits = digits, signif.stars = signif.stars,
@@ -369,12 +369,12 @@ setMethod(
       cat("\nNo Coefficients\n")
     } else {
       cat("\nCoefficients:\n")
-      coefs <- sigTests(x)
+      coefs <- coef(x)
       if (any(aliased)) {
         cn <- names(aliased)
         coefs <-
           matrix(NA, length(aliased), 3L, dimnames = list(cn, colnames(coefs)))
-        coefs[!aliased, ] <- sigTests(x)
+        coefs[!aliased, ] <- coef(x)
       }
       printCoefmat(coefs,
         digits = digits, signif.stars = signif.stars,

@@ -39,19 +39,19 @@ setMethod("summary", "GLM", function(object, ...) {
   if (p == 0L) {
     return(new("SummaryGLM",
       family = z@family, dispersion = z@dispersion,
-      sigTests = matrix(NA_real_, 0L, 3L,
+      coefficients = matrix(NA_real_, 0L, 3L,
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)"))
       ),
       intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
       terms = z@terms, aliased = is.na(est), optim = getOptim(z),
       logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
       pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-      coefficients = est, method = getMethodEL(z), control = object@control
+      method = getMethodEL(z), control = object@control
     ))
   }
   new("SummaryGLM",
     family = z@family, dispersion = z@dispersion,
-    sigTests = cbind(
+    coefficients = cbind(
       Estimate = est,
       Chisq = sigTests(z)$statistic,
       `Pr(>Chisq)` = pchisq(sigTests(z)$statistic,
@@ -63,7 +63,7 @@ setMethod("summary", "GLM", function(object, ...) {
     terms = z@terms, aliased = is.na(est), optim = getOptim(z),
     logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
     pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-    coefficients = est, method = getMethodEL(z), control = object@control
+    method = getMethodEL(z), control = object@control
   )
 })
 
@@ -75,18 +75,18 @@ setMethod("summary", "LM", function(object, ...) {
   est <- coef(z)
   if (p == 0L) {
     return(new("SummaryLM",
-      sigTests = matrix(NA_real_, 0L, 3L,
+      coefficients = matrix(NA_real_, 0L, 3L,
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)"))
       ),
       intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
       terms = z@terms, aliased = is.na(est), optim = getOptim(z),
       logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
       pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-      coefficients = est, method = getMethodEL(z), control = object@control
+      method = getMethodEL(z), control = object@control
     ))
   }
   new("SummaryLM",
-    sigTests = cbind(
+    coefficients = cbind(
       Estimate = est,
       Chisq = sigTests(z)$statistic,
       `Pr(>Chisq)` = pchisq(sigTests(z)$statistic,
@@ -98,7 +98,7 @@ setMethod("summary", "LM", function(object, ...) {
     terms = z@terms, aliased = is.na(est), optim = getOptim(z), logl = logL(z),
     loglr = logLR(z), statistic = chisq(z), df = getDF(z), pval = pVal(z),
     nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-    coefficients = est, method = getMethodEL(z), control = object@control
+    method = getMethodEL(z), control = object@control
   )
 })
 
@@ -112,19 +112,19 @@ setMethod("summary", "QGLM", function(object, ...) {
   if (p == 0L) {
     return(new("SummaryQGLM",
       family = z@family, dispersion = z@dispersion,
-      sigTests = matrix(NA_real_, 0L, 3L,
+      coefficients = matrix(NA_real_, 0L, 3L,
         dimnames = list(NULL, c("Estimate", "Chisq", "Pr(>Chisq)"))
       ),
       intercept = z@misc$intercept, na.action = z@misc$na.action, call = z@call,
       terms = z@terms, aliased = is.na(est), optim = getOptim(z),
       logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
       pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-      coefficients = est, method = getMethodEL(z), control = object@control
+      method = getMethodEL(z), control = object@control
     ))
   }
   new("SummaryQGLM",
     family = z@family, dispersion = z@dispersion,
-    sigTests = cbind(
+    coefficients = cbind(
       Estimate = est,
       Chisq = sigTests(z)$statistic,
       `Pr(>Chisq)` = pchisq(sigTests(z)$statistic,
@@ -136,6 +136,6 @@ setMethod("summary", "QGLM", function(object, ...) {
     terms = z@terms, aliased = is.na(est), optim = getOptim(z),
     logl = logL(z), loglr = logLR(z), statistic = chisq(z), df = getDF(z),
     pval = pVal(z), nobs = nobs(z), npar = p, weighted = !is.null(weights(z)),
-    coefficients = est, method = getMethodEL(z), control = object@control
+    method = getMethodEL(z), control = object@control
   )
 })

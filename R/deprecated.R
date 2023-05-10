@@ -203,3 +203,13 @@ setMethod("logLik", "EL", function(object, ...) {
   out <- elt(object, rhs = coef(object))
   new("logLikEL", .Data = logL(out), df = getNumPar(object))
 })
+
+#' @describeIn sigTests Extracts a matrix with the results of significance
+#'   tests.
+setMethod("sigTests", "SummaryLM", function(object, ...) {
+  .Deprecated(
+    msg =
+      "`sigTests()` is deprecated for signature 'SummaryLM' in melt v1.9.1."
+  )
+  object@coefficients
+})

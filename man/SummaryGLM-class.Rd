@@ -16,7 +16,7 @@ S4 class for a summary of \linkS4class{GLM} objects. It inherits from
 
 \item{\code{dispersion}}{A single numeric for the estimated dispersion parameter.}
 
-\item{\code{sigTests}}{A numeric matrix of the results of significance tests.}
+\item{\code{coefficients}}{A numeric matrix of the results of significance tests.}
 
 \item{\code{intercept}}{A single logical for whether the given model has an intercept
 term or not.}
@@ -59,9 +59,6 @@ log-likelihood ratio for the overall test.}
 \item{\code{npar}}{A single integer for the number of parameters.}
 
 \item{\code{weighted}}{A single logical for whether the data are weighted or not.}
-
-\item{\code{coefficients}}{A numeric vector of the maximum empirical likelihood
-estimates of the parameters.}
 
 \item{\code{method}}{A single character for the method dispatch in internal
 functions.}

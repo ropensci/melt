@@ -1,4 +1,7 @@
-# melt 1.9.0.9003 (development version)
+# melt 1.9.0.9004 (development version)
+## DEPRECATED AND DEFUNCT
+* `sigTests()` is deprecated in favor of `coef()` for an object that inherits from `SummaryLM` and will be removed in a future release. 
+
 
 # melt 1.9.0
 ## NEW FEATURES

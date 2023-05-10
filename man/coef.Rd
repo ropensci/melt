@@ -41,8 +41,7 @@ distinct hypothesis.
 \item \code{coef(SummaryEL)}: Extracts the numeric vector of the maximum empirical
 likelihood estimates.
 
-\item \code{coef(SummaryLM)}: Extracts the numeric vector of the maximum empirical
-likelihood estimates.
+\item \code{coef(SummaryLM)}: Extracts a matrix with the results of significance tests.
 
 }}
 \examples{

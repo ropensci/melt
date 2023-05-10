@@ -17,8 +17,7 @@ setMethod("coef", "SummaryEL", function(object, ...) {
   object@coefficients
 })
 
-#' @describeIn coef Extracts the numeric vector of the maximum empirical
-#'   likelihood estimates.
+#' @describeIn coef Extracts a matrix with the results of significance tests.
 setMethod("coef", "SummaryLM", function(object, ...) {
   object@coefficients
 })
