@@ -249,7 +249,8 @@ Eigen::MatrixXd dg0_inv(const std::string method,
              {"poisson_identity", w_poi_identity},
              {"poisson_sqrt", w_poi_sqrt},
              {"quasipoisson_log", w_qpoi_log},
-             {"quasipoisson_identity", w_qpoi_identity}}};
+             {"quasipoisson_identity", w_qpoi_identity},
+             {"quasipoisson_sqrt", w_qpoi_sqrt}}};
   return w_map[method](x, par);
 }
 

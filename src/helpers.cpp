@@ -25,7 +25,8 @@ set_g_fn(const std::string method) {
              {"poisson_identity", g_poi_identity},
              {"poisson_sqrt", g_poi_sqrt},
              {"quasipoisson_log", g_qpoi_log},
-             {"quasipoisson_identity", g_qpoi_identity}}};
+             {"quasipoisson_identity", g_qpoi_identity},
+             {"quasipoisson_sqrt", g_qpoi_sqrt}}};
   return g_map[method];
 }
 

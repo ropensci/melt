@@ -485,6 +485,28 @@ test_that("`el_glm()` (quasipoisson - identity).", {
   expect_s4_class(elmt(wfit, rhs = rhs, lhs = lhs), "ELMT")
 })
 
+test_that("`el_glm()` (quasipoisson - sqrt).", {
+  skip_on_cran()
+  set.seed(1425345)
+  n <- 100
+  p <- 3
+  b <- rnorm(p, mean = 0, sd = .2)
+  x <- matrix(rnorm(n * p), ncol = p)
+  w <- rep(c(1, 2), times = 50)
+  l <- 3 + x %*% as.vector(b)
+  mu <- l^2
+  y <- vapply(mu, FUN = function(x) rpois(1, x), FUN.VALUE = integer(1L))
+  df <- data.frame(y, x)
+  fit <- el_glm(y ~ ., family = quasipoisson("sqrt"), data = df)
+  wfit <- el_glm(y ~ ., family = quasipoisson("sqrt"), data = df, weights = w)
+  lhs <- list(diag(4), c(0, 0, 1, -100))
+  out <- elmt(fit, lhs = lhs)
+  wout <- elmt(wfit, lhs = lhs)
+  expect_output(print(out))
+  expect_s4_class(out, "ELMT")
+  expect_s4_class(wout, "ELMT")
+})
+
 test_that("`el_pairwise()`. Deprecated.", {
   skip_on_cran()
   out1 <- suppressWarnings(el_pairwise(clo ~ trt | blk,
