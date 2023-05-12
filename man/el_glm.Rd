@@ -124,7 +124,7 @@ The available families and link functions are as follows:
 \item \code{gaussian}: \code{"identity"}, \code{"log"}, and \code{"inverse"}.
 \item \code{binomial}: \code{"logit"}, \code{"probit"}, and \code{"log"}.
 \item \code{poisson}: \code{"log"}, \code{"identity"}, and \code{"sqrt"}.
-\item \code{quasipoisson}: \code{"log"} and \code{"identity"}.
+\item \code{quasipoisson}: \code{"log"}, \code{"identity"}, and \code{"sqrt"}.
 }
 }
 \examples{

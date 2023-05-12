@@ -1,4 +1,7 @@
-# melt 1.9.0.9004 (development version)
+# melt 1.9.0.9005 (development version)
+## NEW FEATURES
+* `el_glm()` accepts `quasipoisson` family with `"sqrt"` link function for the argument `family`.
+
 ## DEPRECATED AND DEFUNCT
 * `sigTests()` is deprecated in favor of `coef()` for an object that inherits from `SummaryLM` and will be removed in a future release. 
 

@@ -22,10 +22,6 @@ test_that("Invalid `family`.", {
     family = inverse.gaussian("identity"),
     data = airquality
   ))
-  expect_error(el_glm(carb ~ .,
-    family = quasipoisson("sqrt"),
-    data = mtcars
-  ))
 })
 
 test_that("Invalid `data`.", {

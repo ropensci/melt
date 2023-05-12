@@ -27,7 +27,8 @@ transform_x_fn(const std::string method)
               {"poisson_identity", x0_poi_identity},
               {"poisson_sqrt", x0_poi_sqrt},
               {"quasipoisson_log", x0_poi_log},
-              {"quasipoisson_identity", x0_poi_identity}}};
+              {"quasipoisson_identity", x0_poi_identity},
+              {"quasipoisson_sqrt", x0_poi_sqrt}}};
   return x0_map[method];
 }
 

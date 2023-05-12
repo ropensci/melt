@@ -88,7 +88,7 @@
 #'   * `gaussian`: `"identity"`, `"log"`, and `"inverse"`.
 #'   * `binomial`: `"logit"`, `"probit"`, and `"log"`.
 #'   * `poisson`: `"log"`, `"identity"`, and `"sqrt"`.
-#'   * `quasipoisson`: `"log"` and `"identity"`.
+#'   * `quasipoisson`: `"log"`, `"identity"`, and `"sqrt"`.
 #' @return An object of class of \linkS4class{GLM}.
 #' @references Chen SX, Cui H (2003).
 #'   “An Extended Empirical Likelihood for Generalized Linear Models.”

@@ -276,7 +276,7 @@ validate_family <- function(family) {
       }
     },
     "quasipoisson" = {
-      if (!any(l == c("log", "identity"))) {
+      if (!any(l == c("log", "sqrt", "identity"))) {
         stop(gettextf(
           "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)

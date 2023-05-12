@@ -277,7 +277,7 @@ setMethod(
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)
       cat("\nMaximum EL estimates:\n")
-      print.default(coef(x), digits = digits, ...)
+      print.default(coef(x)[,1L], digits = digits, ...)
       cat(paste(
         "\nlogL:", format.default(logL(x), digits = digits, ...),
         ", logLR:", format.default(logLR(x), digits = digits, ...)
@@ -349,7 +349,7 @@ setMethod(
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)
       cat("\nMaximum EL estimates:\n")
-      print.default(coef(x), digits = digits, ...)
+      print.default(coef(x)[,1L], digits = digits, ...)
       cat(paste(
         "\nlogL:", format.default(logL(x), digits = digits, ...),
         ", logLR:", format.default(logLR(x), digits = digits, ...)

@@ -32,7 +32,7 @@
 #'   \eqn{p}-dimensional parameter and the errors \eqn{\epsilon_i} are
 #'   independent random variables that satisfy
 #'   \eqn{\textrm{E}(\epsilon_i | X_i)} = 0. We assume that the errors have
-#'   finite conditional variance. Then the least square estimator of
+#'   finite conditional variances. Then the least square estimator of
 #'   \eqn{\theta} solves the following estimating equations:
 #'   \deqn{\sum_{i = 1}^n(Y_i - X_i^\top \theta)X_i = 0.}
 #'   Given a value of \eqn{\theta}, let

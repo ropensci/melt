@@ -6,32 +6,27 @@
 #include <string>
 #include <vector>
 
-Eigen::RowVectorXd rmvn(const Eigen::Ref<const Eigen::MatrixXd> &sqrt)
-{
+Eigen::RowVectorXd rmvn(const Eigen::Ref<const Eigen::MatrixXd> &sqrt) {
   Eigen::RowVectorXd u(sqrt.cols());
-  for (int i = 0; i < sqrt.cols(); ++i)
-  {
+  for (int i = 0; i < sqrt.cols(); ++i) {
     u(i) = R::rnorm(0, 1.0);
   }
   return u * sqrt;
 }
 
 Eigen::MatrixXd w_mean(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                       const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                       const Eigen::Ref<const Eigen::VectorXd> &par) {
   return Eigen::MatrixXd::Identity(x.cols(), x.cols());
 }
 
 Eigen::MatrixXd w_lm(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                     const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                     const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
   return static_cast<double>(x.rows()) * (xmat.transpose() * xmat).inverse();
 }
 
 Eigen::MatrixXd w_gauss_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                            const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                            const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd s = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -42,8 +37,7 @@ Eigen::MatrixXd w_gauss_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                                const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                                const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd s = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -55,8 +49,7 @@ Eigen::MatrixXd w_gauss_inverse(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_bin_logit(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                            const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                            const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd s = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -67,8 +60,7 @@ Eigen::MatrixXd w_bin_logit(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_bin_probit(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                             const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                             const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd o = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -90,8 +82,7 @@ Eigen::MatrixXd w_bin_probit(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_bin_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                          const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                          const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd s = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -103,8 +94,7 @@ Eigen::MatrixXd w_bin_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_poi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                          const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                          const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd s = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -114,8 +104,7 @@ Eigen::MatrixXd w_poi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_poi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                               const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                               const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd s = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -125,8 +114,7 @@ Eigen::MatrixXd w_poi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                           const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                           const Eigen::Ref<const Eigen::VectorXd> &par) {
   const Eigen::VectorXd s = x.col(0);
   const Eigen::ArrayXd y = x.col(1);
   const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
@@ -137,8 +125,7 @@ Eigen::MatrixXd w_poi_sqrt(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                           const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                           const Eigen::Ref<const Eigen::VectorXd> &par) {
   const int p = x.cols() - 2;
   const Eigen::VectorXd beta = par.head(p);
   const double phi = par(p);
@@ -170,8 +157,7 @@ Eigen::MatrixXd w_qpoi_log(const Eigen::Ref<const Eigen::MatrixXd> &x,
 }
 
 Eigen::MatrixXd w_qpoi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
-                                const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                                const Eigen::Ref<const Eigen::VectorXd> &par) {
   const int p = x.cols() - 2;
   const Eigen::VectorXd beta = par.head(p);
   const double phi = par(p);
@@ -205,10 +191,49 @@ Eigen::MatrixXd w_qpoi_identity(const Eigen::Ref<const Eigen::MatrixXd> &x,
   return static_cast<double>(x.rows()) * out.inverse();
 }
 
+Eigen::MatrixXd w_qpoi_sqrt(const Eigen::Ref<const Eigen::MatrixXd> &x,
+                            const Eigen::Ref<const Eigen::VectorXd> &par) {
+  const int p = x.cols() - 2;
+  const Eigen::VectorXd beta = par.head(p);
+  const double phi = par(p);
+  const Eigen::VectorXd s = x.col(0);
+  const Eigen::ArrayXd y = x.col(1);
+  const Eigen::MatrixXd xmat = x.rightCols(x.cols() - 2);
+  Eigen::MatrixXd out(p + 1, p + 1);
+  out.topLeftCorner(p, p) =
+      -2.0 * std::pow(phi, -1) *
+      (xmat.transpose() *
+       (xmat.array().colwise() *
+        (y * (DBL_EPSILON + (xmat * par + s).array()).pow(-2) + 1.0))
+           .matrix());
+  out.topRightCorner(p, 1) = -2.0 * std::pow(phi, -2) *
+                             (xmat.array().colwise() *
+                              (inverse(DBL_EPSILON + (xmat * par + s).array()) *
+                               (y - square(y - (xmat * beta + s).array()))))
+                                 .colwise()
+                                 .sum()
+                                 .transpose();
+  out.bottomLeftCorner(1, p) =
+      -2.0 * std::pow(phi, -2) *
+      (xmat.array().colwise() *
+       (inverse(DBL_EPSILON + (xmat * par + s).array()) *
+        (y - square(y - (xmat * beta + s).array())) *
+        ((DBL_EPSILON + (xmat * par + s).array()).pow(-2) *
+             (y - square(y - (xmat * beta + s).array())) +
+         2.0)))
+          .colwise()
+          .sum();
+  out(p, p) = (-2.0 * std::pow(phi, -3) *
+                   (DBL_EPSILON + (xmat * par + s).array()).pow(-2) *
+                   square(y - square(y - (xmat * beta + s).array())) +
+               std::pow(phi, -2))
+                  .sum();
+  return static_cast<double>(x.rows()) * out.inverse();
+}
+
 Eigen::MatrixXd dg0_inv(const std::string method,
                         const Eigen::Ref<const Eigen::MatrixXd> &x,
-                        const Eigen::Ref<const Eigen::VectorXd> &par)
-{
+                        const Eigen::Ref<const Eigen::VectorXd> &par) {
   std::map<std::string, std::function<Eigen::MatrixXd(
                             const Eigen::Ref<const Eigen::MatrixXd> &,
                             const Eigen::Ref<const Eigen::VectorXd> &)>>
@@ -230,8 +255,7 @@ Eigen::MatrixXd dg0_inv(const std::string method,
 
 Eigen::MatrixXd shat(const std::string method,
                      const Eigen::Ref<const Eigen::VectorXd> &par,
-                     const Eigen::Ref<const Eigen::MatrixXd> &x)
-{
+                     const Eigen::Ref<const Eigen::MatrixXd> &x) {
   const std::function<Eigen::MatrixXd(
       const Eigen::Ref<const Eigen::MatrixXd> &,
       const Eigen::Ref<const Eigen::VectorXd> &)>
@@ -241,8 +265,7 @@ Eigen::MatrixXd shat(const std::string method,
 
 Eigen::MatrixXd ahat(const Eigen::Ref<const Eigen::MatrixXd> &j,
                      const Eigen::Ref<const Eigen::MatrixXd> &w,
-                     const Eigen::Ref<const Eigen::MatrixXd> &s)
-{
+                     const Eigen::Ref<const Eigen::MatrixXd> &s) {
   return (j * w).transpose() * (((j * w) * s * (j * w).transpose()).inverse()) *
          (j * w);
 }
