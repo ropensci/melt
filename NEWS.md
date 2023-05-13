@@ -1,4 +1,4 @@
-# melt 1.9.0.9006 (development version)
+# melt 1.9.0.9007 (development version)
 ## NEW FEATURES
 * `el_glm()` accepts `quasipoisson` family with `"sqrt"` link function for the argument `family`.
 

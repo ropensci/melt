@@ -1,7 +1,7 @@
 Type: Package
 Package: melt
 Title: Multiple Empirical Likelihood Tests
-Version: 1.9.0.9006
+Version: 1.9.0.9007
 Authors@R: c(
     person("Eunseop", "Kim", email = "kim.7302@osu.edu", 
             role = c("aut", "cre")),

@@ -18,6 +18,10 @@ test_that("Invalid `family`.", {
     family = poisson(link = make.link("inverse")),
     data = airquality
   ))
+  expect_error(el_glm(Temp ~ Wind,
+    family = quasipoisson(link = make.link("inverse")),
+    data = airquality
+  ))
   expect_error(el_glm(Wind ~ Temp,
     family = inverse.gaussian("identity"),
     data = airquality

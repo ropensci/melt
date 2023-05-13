@@ -83,7 +83,7 @@ EL::set_g_fn(const std::string method)
              {"poisson_sqrt", g_poi_sqrt},
              {"quasipoisson_log", g_qpoi_log},
              {"quasipoisson_identity", g_qpoi_identity},
-             {"quasipoisson_sqrt", g_qpoi_identity}}};
+             {"quasipoisson_sqrt", g_qpoi_sqrt}}};
   return g_map[method];
 }
 
@@ -276,7 +276,7 @@ CEL::set_g_fn(const std::string method)
              {"poisson_sqrt", g_poi_sqrt},
              {"quasipoisson_log", g_qpoi_log},
              {"quasipoisson_identity", g_qpoi_identity},
-             {"quasipoisson_sqrt", g_qpoi_identity}}};
+             {"quasipoisson_sqrt", g_qpoi_sqrt}}};
   return g_map[method];
 }
 
@@ -310,7 +310,7 @@ CEL::set_gr_fn(const std::string method)
            {"poisson_sqrt", gr_nloglr_poi_sqrt},
            {"quasipoisson_log", gr_nloglr_qpoi_log},
            {"quasipoisson_identity", gr_nloglr_qpoi_identity},
-           {"quasipoisson_sqrt", gr_nloglr_qpoi_identity}}};
+           {"quasipoisson_sqrt", gr_nloglr_qpoi_sqrt}}};
   return gr_map[method];
 }
 
