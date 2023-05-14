@@ -49,7 +49,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.0.9008</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>Empirical likelihood enables a nonparametric, likelihood-driven style of inference without relying on assumptions frequently made in parametric models. Empirical likelihood-based tests are asymptotically pivotal and thus avoid explicit studentization. For this reason it is challenging to incorporate empirical likelihood methods directly into other packages that perform inferences for parametric models. The R package <a href="https://cran.r-project.org/package=melt" class="external-link">melt</a> aims to bridge the gap and provide a unified framework for data analysis with empirical likelihood methods. A collection of functions are available to perform multiple empirical likelihood tests and construct confidence intervals for linear and generalized linear models in R. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented with the <a href="https://eigen.tuxfamily.org/index.php?title=Main_Page" class="external-link">Eigen</a> C++ library and <a href="https://cran.r-project.org/package=RcppEigen" class="external-link">RcppEigen</a> interface, with OpenMP for parallel computation. Details of the testing procedures are given in <a href="https://doi.org/10.1080/10485252.2023.2206919" class="external-link">Kim, MacEachern, and Peruggia (2023)</a>. This work was supported by the U.S. National Science Foundation under Grants No. <a href="https://nsf.gov/awardsearch/showAward?AWD_ID=1921523" class="external-link">SES-1921523</a> and <a href="https://nsf.gov/awardsearch/showAward?AWD_ID=2015552" class="external-link">DMS-2015552</a>.</p>
+<p>Empirical likelihood enables a nonparametric, likelihood-driven style of inference without relying on assumptions frequently made in parametric models. Empirical likelihood-based tests are asymptotically pivotal and thus avoid explicit studentization. For this reason it is challenging to incorporate empirical likelihood methods directly into other packages that perform inferences for parametric models. The R package <a href="https://cran.r-project.org/package=melt" class="external-link">melt</a> aims to bridge the gap and provide a unified framework for data analysis with empirical likelihood methods. A collection of functions are available to perform multiple empirical likelihood tests and construct confidence intervals for linear and generalized linear models in R. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented with the <a href="https://eigen.tuxfamily.org/index.php?title=Main_Page" class="external-link">Eigen</a> C++ library and <a href="https://cran.r-project.org/package=RcppEigen" class="external-link">RcppEigen</a> interface, with OpenMP for parallel computation. Details of the testing procedures are given in <a href="https://doi.org/10.1080/10485252.2023.2206919" class="external-link">Kim, MacEachern, and Peruggia (2023)</a>. This work was supported by the U.S. National Science Foundation under Grants No. <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1921523" class="external-link">SES-1921523</a> and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2015552" class="external-link">DMS-2015552</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -113,7 +113,7 @@
 <p>You can install the latest stable release from <a href="https://cran.r-project.org/package=melt" class="external-link">CRAN</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"melt"</span><span class="op">)</span></span></code></pre></div>
-<p>You can install the latest development version from <a href="https://github.com/ropensci/melt" class="external-link">GitHub</a> or <a href="https://ropensci.r-universe.dev/ui#package:melt" class="external-link">R-universe</a>.</p>
+<p>You can install the latest development version from <a href="https://github.com/ropensci/melt" class="external-link">GitHub</a> or <a href="http://ropensci.r-universe.dev/ui/#package:melt" class="external-link">R-universe</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ropensci/melt"</span><span class="op">)</span></span></code></pre></div>
@@ -397,7 +397,7 @@
 <li><a href="https://github.com/ropensci/melt/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/ropensci/melt/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/ropensci/melt?branch=master" class="external-link"><img src="https://codecov.io/gh/ropensci/melt/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://CRAN.R-project.org/package=melt" class="external-link"><img src="https://www.r-pkg.org/badges/version/melt" alt="CRAN status"></a></li>
-<li><a href="https://ropensci.r-universe.dev/ui#package:melt" class="external-link"><img src="https://ropensci.r-universe.dev/badges/melt" alt="runiverse"></a></li>
+<li><a href="http://ropensci.r-universe.dev/ui/#package:melt" class="external-link"><img src="https://ropensci.r-universe.dev/badges/melt" alt="runiverse"></a></li>
 <li><a href="https://github.com/ropensci/software-review/issues/550" class="external-link"><img src="https://badges.ropensci.org/550_status.svg" alt="ropensci review"></a></li>
 </ul>
 </div>
