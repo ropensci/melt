@@ -1,5 +1,4 @@
 ## Test environments
-* local Arch Linux x86_64, R 4.3.0
 * win-builder (devel, release, oldrelease)
 
 ## R CMD check results

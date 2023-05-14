@@ -25,7 +25,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Eunseop Kim \email{kim.7302@osu.edu}
+\strong{Maintainer}: Eunseop Kim \email{markean@pm.me}
 
 Other contributors:
 \itemize{

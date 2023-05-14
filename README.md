@@ -13,7 +13,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 coverage](https://codecov.io/gh/ropensci/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/melt?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
-[![runiverse](https://ropensci.r-universe.dev/badges/melt)](https://ropensci.r-universe.dev/ui#package:melt)
+[![runiverse](https://ropensci.r-universe.dev/badges/melt)](http://ropensci.r-universe.dev/ui/#package:melt)
 [![ropensci
 review](https://badges.ropensci.org/550_status.svg)](https://github.com/ropensci/software-review/issues/550)
 <!-- badges: end -->
@@ -40,8 +40,9 @@ interface, with OpenMP for parallel computation. Details of the testing
 procedures are given in [Kim, MacEachern, and Peruggia
 (2023)](https://doi.org/10.1080/10485252.2023.2206919). This work was
 supported by the U.S. National Science Foundation under Grants
-No. [SES-1921523](https://nsf.gov/awardsearch/showAward?AWD_ID=1921523)
-and [DMS-2015552](https://nsf.gov/awardsearch/showAward?AWD_ID=2015552).
+No. [SES-1921523](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1921523)
+and
+[DMS-2015552](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2015552).
 
 ## Installation
 
@@ -54,7 +55,7 @@ install.packages("melt")
 
 You can install the latest development version from
 [GitHub](https://github.com/ropensci/melt) or
-[R-universe](https://ropensci.r-universe.dev/ui#package:melt).
+[R-universe](http://ropensci.r-universe.dev/ui/#package:melt).
 
 ``` r
 # install.packages("devtools")
