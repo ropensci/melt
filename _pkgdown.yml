@@ -49,7 +49,6 @@ reference:
     contents:
     - el_eval
     - el_pairwise
-    - logLik
 
 figures:
   dpi: 300
