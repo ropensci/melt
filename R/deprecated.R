@@ -188,22 +188,6 @@ print.pairwise <- function(x, ...) {
   cat("\n\n")
 }
 
-#' @rdname logLik
-setMethod("logLik", "EL", function(object, ...) {
-  .Deprecated(
-    msg = "`logLik()` is deprecated in melt v1.8.1. Use `logL()` instead."
-  )
-  if (!missing(...)) {
-    warning("Extra arguments are not supported.")
-  }
-  stopifnot(
-    "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
-      (isFALSE(is.null(getData(object))))
-  )
-  out <- elt(object, rhs = coef(object))
-  new("logLikEL", .Data = logL(out), df = getNumPar(object))
-})
-
 #' @describeIn sigTests Extracts a matrix with the results of significance
 #'   tests.
 setMethod("sigTests", "SummaryLM", function(object, ...) {
