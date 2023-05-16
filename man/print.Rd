@@ -6,7 +6,6 @@
 \alias{print,ELMT-method}
 \alias{print,ELT-method}
 \alias{print,LM-method}
-\alias{print,logLikEL-method}
 \alias{print,SummaryEL-method}
 \alias{print,SummaryELMT-method}
 \alias{print,SummaryELT-method}
@@ -21,8 +20,6 @@
 \S4method{print}{ELT}(x, digits = max(3L, getOption("digits") - 3L), ...)
 
 \S4method{print}{LM}(x, digits = max(3L, getOption("digits") - 3L), ...)
-
-\S4method{print}{logLikEL}(x, digits = getOption("digits"), ...)
 
 \S4method{print}{SummaryEL}(x, digits = max(3L, getOption("digits") - 3L), ...)
 

@@ -122,18 +122,6 @@ setMethod("print", "LM", function(x,
 setMethod("show", "LM", function(object) print(object))
 
 #' @rdname print
-setMethod("print", "logLikEL", function(x, digits = getOption("digits"), ...) {
-  cat("'Empirical log Lik.' ", paste(format(getDataPart(x), digits = digits),
-    collapse = ", "
-  ),
-  " (df=", format(getDF(x)), ")\n",
-  sep = ""
-  )
-  invisible(x)
-})
-setMethod("show", "logLikEL", function(object) print(object))
-
-#' @rdname print
 setMethod(
   "print", "SummaryEL",
   function(x, digits = max(3L, getOption("digits") - 3L), ...) {

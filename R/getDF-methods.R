@@ -14,11 +14,6 @@ setMethod("getDF", "ELT", function(object) {
 })
 
 #' @describeIn getDF Extracts the degrees of freedom.
-setMethod("getDF", "logLikEL", function(object) {
-  object@df
-})
-
-#' @describeIn getDF Extracts the degrees of freedom.
 setMethod("getDF", "SummaryEL", function(object) {
   object@df
 })

@@ -5,7 +5,6 @@
 \alias{getDF,EL-method}
 \alias{getDF,ELMT-method}
 \alias{getDF,ELT-method}
-\alias{getDF,logLikEL-method}
 \alias{getDF,SummaryEL-method}
 \alias{getDF,SummaryELMT-method}
 \alias{getDF,SummaryLM-method}
@@ -16,8 +15,6 @@
 \S4method{getDF}{ELMT}(object)
 
 \S4method{getDF}{ELT}(object)
-
-\S4method{getDF}{logLikEL}(object)
 
 \S4method{getDF}{SummaryEL}(object)
 
@@ -41,8 +38,6 @@ Extracts the degrees of freedom from a model.
 \item \code{getDF(ELMT)}: Extracts the vector of marginal degrees of freedom.
 
 \item \code{getDF(ELT)}: Extracts the (chi-square) degrees of freedom.
-
-\item \code{getDF(logLikEL)}: Extracts the degrees of freedom.
 
 \item \code{getDF(SummaryEL)}: Extracts the degrees of freedom.
 

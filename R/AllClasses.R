@@ -435,18 +435,6 @@ setClass("ELT",
 )
 
 
-#' \linkS4class{logLikEL} class
-#'
-#' S4 class for empirical log-likelihood. It inherits from `"numeric"`.
-#'
-#' @slot df A single integer for the degrees of freedom or the number of
-#'   (estimated) parameters in the model.
-#' @aliases logLikEL
-#' @examples
-#' showClass("logLikEL")
-setClass("logLikEL", slots = c(df = "integer"), contains = "numeric")
-
-
 #' \linkS4class{QGLM} class
 #'
 #' S4 class for generalized linear models with quasi-likelihood methods. It
