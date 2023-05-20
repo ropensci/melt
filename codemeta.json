@@ -4,11 +4,11 @@
   "identifier": "melt",
   "description": "Performs multiple empirical likelihood tests for linear and generalized linear models. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Details of the testing procedures are given in Kim, MacEachern, and Peruggia (2023) <doi:10.1080/10485252.2023.2206919>. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.",
   "name": "melt: Multiple Empirical Likelihood Tests",
-  "relatedLink": "https://docs.ropensci.org/melt/",
+  "relatedLink": ["https://docs.ropensci.org/melt/", "https://CRAN.R-project.org/package=melt"],
   "codeRepository": "https://github.com/ropensci/melt",
   "issueTracker": "https://github.com/ropensci/melt/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "1.9.0.9010",
+  "version": "1.10.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -211,5 +211,15 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "345825.912KB"
+  "fileSize": "345825.495KB",
+  "releaseNotes": "https://github.com/ropensci/melt/blob/master/NEWS.md",
+  "readme": "https://github.com/ropensci/melt/blob/master/README.md",
+  "contIntegration": ["https://github.com/ropensci/melt/actions/workflows/check-standard.yaml", "https://app.codecov.io/gh/ropensci/melt?branch=master"],
+  "developmentStatus": "https://www.repostatus.org/#active",
+  "review": {
+    "@type": "Review",
+    "url": "https://github.com/ropensci/software-review/issues/550",
+    "provider": "https://ropensci.org"
+  },
+  "keywords": ["cran", "r", "r-package", "rstats"]
 }
