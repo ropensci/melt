@@ -530,8 +530,3 @@ test_that("`el_pairwise()`. Deprecated.", {
   ))
   expect_output(print(out3))
 })
-
-test_that("Invalid `formula`. Deprecated.", {
-  fit <- el_lm(mpg ~ 0, data = mtcars)
-  expect_error(suppressWarnings(logLik(fit)))
-})
