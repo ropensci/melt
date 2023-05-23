@@ -211,7 +211,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "345825.495KB",
+  "fileSize": "345824.264KB",
   "releaseNotes": "https://github.com/ropensci/melt/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/melt/blob/master/README.md",
   "contIntegration": ["https://github.com/ropensci/melt/actions/workflows/check-standard.yaml", "https://app.codecov.io/gh/ropensci/melt?branch=master"],
