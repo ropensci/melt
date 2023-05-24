@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0.1</span>
       </span>
     </div>
 
@@ -137,11 +137,11 @@ parameters increases with the number of observations fixed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
-<span><span class="co">#&gt;  n1e2    633.1    689.90    726.129    724.35    768.15    838.4   100</span></span>
-<span><span class="co">#&gt;  n1e3   1763.3   1965.95   2201.130   2095.10   2266.05   6134.7   100</span></span>
-<span><span class="co">#&gt;  n1e4  15935.3  17907.95  20843.425  21030.55  22801.00  27278.9   100</span></span>
-<span><span class="co">#&gt;  n1e5 294424.4 359847.05 419778.376 404949.85 478066.00 558285.1   100</span></span>
+<span><span class="co">#&gt;  expr      min       lq       mean    median        uq      max neval</span></span>
+<span><span class="co">#&gt;  n1e2    530.3    706.2    759.144    766.40    823.60    901.4   100</span></span>
+<span><span class="co">#&gt;  n1e3   1512.6   2086.6   2367.917   2283.00   2477.95   6173.5   100</span></span>
+<span><span class="co">#&gt;  n1e4  15530.5  19466.0  22481.663  22805.45  24928.05  30365.3   100</span></span>
+<span><span class="co">#&gt;  n1e5 313542.3 382719.1 447808.048 432266.80 518000.50 610856.2   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -172,12 +172,12 @@ likelihood at zero vectors of different sizes.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
-<span><span class="co">#&gt; Unit: milliseconds</span></span>
-<span><span class="co">#&gt;  expr      min        lq       mean   median        uq      max neval</span></span>
-<span><span class="co">#&gt;    p5   1.0616   1.14605   1.274075   1.1805   1.20400   4.7287   100</span></span>
-<span><span class="co">#&gt;   p25   3.9425   4.02130   4.152033   4.0938   4.15065   7.2305   100</span></span>
-<span><span class="co">#&gt;  p100  30.8814  31.27695  36.731894  34.4041  38.27715  60.5556   100</span></span>
-<span><span class="co">#&gt;  p400 357.5609 390.74515 430.746959 396.3341 455.11120 652.0753   100</span></span>
+<span><span class="co">#&gt; Unit: microseconds</span></span>
+<span><span class="co">#&gt;  expr      min        lq       mean    median        uq      max neval</span></span>
+<span><span class="co">#&gt;    p5    982.4   1216.25   1391.042   1310.35   1360.70   5234.8   100</span></span>
+<span><span class="co">#&gt;   p25   3748.8   4330.75   4573.474   4576.10   4760.80   7596.5   100</span></span>
+<span><span class="co">#&gt;  p100  31374.2  36316.45  41266.779  39269.55  44369.25  66148.0   100</span></span>
+<span><span class="co">#&gt;  p400 372996.4 428834.70 477025.388 454379.25 494673.75 719787.5   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;">
 On average, evaluating empirical likelihood with a 100000×10 or 1000×400
