@@ -1,7 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# melt - Multiple Empirical Likelihood Tests <a href="https://docs.ropensci.org/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# melt
+
+<a href="https://docs.ropensci.org/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -20,24 +22,15 @@ review](https://badges.ropensci.org/550_status.svg)](https://github.com/ropensci
 
 ## Overview
 
-Empirical likelihood enables a nonparametric, likelihood-driven style of
-inference without relying on assumptions frequently made in parametric
-models. Empirical likelihood-based tests are asymptotically pivotal and
-thus avoid explicit studentization. For this reason it is challenging to
-incorporate empirical likelihood methods directly into other packages
-that perform inferences for parametric models. The R package
-[melt](https://cran.r-project.org/package=melt) aims to bridge the gap
-and provide a unified framework for data analysis with empirical
+melt provides a unified framework for data analysis with empirical
 likelihood methods. A collection of functions are available to perform
 multiple empirical likelihood tests and construct confidence intervals
-for linear and generalized linear models in R. The package offers an
-easy-to-use interface and flexibility in specifying hypotheses and
-calibration methods, extending the framework to simultaneous inferences.
-The core computational routines are implemented with the
-[Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) C++
-library and [RcppEigen](https://cran.r-project.org/package=RcppEigen)
-interface, with OpenMP for parallel computation. Details of the testing
-procedures are given in [Kim, MacEachern, and Peruggia
+for various models in ‘R’. It offers an easy-to-use interface and
+flexibility in specifying hypotheses and calibration methods, extending
+the framework to simultaneous inferences. The core computational
+routines are implemented with the ‘Eigen’ ‘C++’ library and ‘RcppEigen’
+interface, with ‘OpenMP’ for parallel computation. Details of the
+testing procedures are given in [Kim, MacEachern, and Peruggia
 (2023)](https://doi.org/10.1080/10485252.2023.2206919). This work was
 supported by the U.S. National Science Foundation under Grants
 No. [SES-1921523](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1921523)
@@ -46,20 +39,18 @@ and
 
 ## Installation
 
-You can install the latest stable release from
-[CRAN](https://cran.r-project.org/package=melt).
+You can install the latest stable release of melt from CRAN.
 
 ``` r
 install.packages("melt")
 ```
 
-You can install the latest development version from
-[GitHub](https://github.com/ropensci/melt) or
+You can install the development version of melt from GitHub or
 [R-universe](http://ropensci.r-universe.dev/ui/#package:melt).
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("ropensci/melt")
+# install.packages("pak")
+pak::pak("ropensci/melt")
 ```
 
 ``` r
@@ -71,6 +62,7 @@ install.packages("melt", repos = "https://ropensci.r-universe.dev")
 melt provides an intuitive API for performing the most common data
 analysis tasks:
 
+- `el_mean()` computes empirical likelihood for the mean.
 - `el_lm()` fits a linear model with empirical likelihood.
 - `el_glm()` fits a generalized linear model with empirical likelihood.
 - `confint()` computes confidence intervals for model parameters.

@@ -1,0 +1,20 @@
+bibentry(bibtype = "Article",
+  title        = "{melt}: Multiple Empirical Likelihood Tests in {R}",
+  author       = c(person(given = "Eunseop",
+                          family = "Kim",
+                          email = "kim.7302@osu.edu"),
+                   person(given = c("Steven", "N."),
+                          family = "MacEachern",
+                          email = "snm@stat.osu.edu"),
+                   person(given = "Mario",
+                          family = "Peruggia",
+                          email = "peruggia@stat.osu.edu")),
+  journal      = "Journal of Statistical Software",
+  year         = "2024",
+  volume       = "108",
+  number       = "5",
+  pages        = "1--33",
+  doi          = "10.18637/jss.v108.i05",
+  header       = "To cite melt in publications use:"
+)
+

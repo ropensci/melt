@@ -13,6 +13,7 @@ DMS
 Details’
 EL
 Eigen
+Eigen’
 FWER
 Guolo
 Ibrahim
@@ -23,12 +24,15 @@ Lazar
 Neonicotinoid
 Obregon
 OpenMP
+OpenMP’
 PLOS
 Pederson
 Poveda
 Qin
 Raphson
 RcppEigen
+RcppEigen’
+R’
 SES
 SX
 Sinica
@@ -38,7 +42,6 @@ Xoshiro
 Zhang
 Zhao
 Zhu
-arxiv
 clothianidin
 coercible
 doi
@@ -55,3 +58,4 @@ th
 thiamethoxam
 tidyverse
 µg
+’
