@@ -97,26 +97,26 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="melt---multiple-empirical-likelihood-tests-">melt - Multiple Empirical Likelihood Tests <a href="https://docs.ropensci.org/melt/"><img src="reference/figures/logo.png" align="right" height="139"></a>
-<a class="anchor" aria-label="anchor" href="#melt---multiple-empirical-likelihood-tests-"></a>
+<div class="page-header"><h1 id="melt">melt<a class="anchor" aria-label="anchor" href="#melt"></a>
 </h1></div>
+<p><a href="https://docs.ropensci.org/melt/"><img src="reference/figures/logo.png" align="right" height="139"></a></p>
 <!-- badges: start -->
 
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>Empirical likelihood enables a nonparametric, likelihood-driven style of inference without relying on assumptions frequently made in parametric models. Empirical likelihood-based tests are asymptotically pivotal and thus avoid explicit studentization. For this reason it is challenging to incorporate empirical likelihood methods directly into other packages that perform inferences for parametric models. The R package <a href="https://cran.r-project.org/package=melt" class="external-link">melt</a> aims to bridge the gap and provide a unified framework for data analysis with empirical likelihood methods. A collection of functions are available to perform multiple empirical likelihood tests and construct confidence intervals for linear and generalized linear models in R. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented with the <a href="https://eigen.tuxfamily.org/index.php?title=Main_Page" class="external-link">Eigen</a> C++ library and <a href="https://cran.r-project.org/package=RcppEigen" class="external-link">RcppEigen</a> interface, with OpenMP for parallel computation. Details of the testing procedures are given in <a href="https://doi.org/10.1080/10485252.2023.2206919" class="external-link">Kim, MacEachern, and Peruggia (2023)</a>. This work was supported by the U.S. National Science Foundation under Grants No. <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1921523" class="external-link">SES-1921523</a> and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2015552" class="external-link">DMS-2015552</a>.</p>
+<p>melt provides a unified framework for data analysis with empirical likelihood methods. A collection of functions are available to perform multiple empirical likelihood tests and construct confidence intervals for various models in ‘R’. It offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented with the ‘Eigen’ ‘C++’ library and ‘RcppEigen’ interface, with ‘OpenMP’ for parallel computation. Details of the testing procedures are given in <a href="https://doi.org/10.1080/10485252.2023.2206919" class="external-link">Kim, MacEachern, and Peruggia (2023)</a>. This work was supported by the U.S. National Science Foundation under Grants No. <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1921523" class="external-link">SES-1921523</a> and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2015552" class="external-link">DMS-2015552</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the latest stable release from <a href="https://cran.r-project.org/package=melt" class="external-link">CRAN</a>.</p>
+<p>You can install the latest stable release of melt from CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"melt"</span><span class="op">)</span></span></code></pre></div>
-<p>You can install the latest development version from <a href="https://github.com/ropensci/melt" class="external-link">GitHub</a> or <a href="http://ropensci.r-universe.dev/ui/#package:melt" class="external-link">R-universe</a>.</p>
+<p>You can install the development version of melt from GitHub or <a href="http://ropensci.r-universe.dev/ui/#package:melt" class="external-link">R-universe</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ropensci/melt"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ropensci/melt"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"melt"</span>, repos <span class="op">=</span> <span class="st">"https://ropensci.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -125,6 +125,8 @@
 </h2>
 <p>melt provides an intuitive API for performing the most common data analysis tasks:</p>
 <ul>
+<li>
+<code><a href="reference/el_mean.html">el_mean()</a></code> computes empirical likelihood for the mean.</li>
 <li>
 <code><a href="reference/el_lm.html">el_lm()</a></code> fits a linear model with empirical likelihood.</li>
 <li>

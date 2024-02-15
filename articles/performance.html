@@ -137,11 +137,11 @@ parameters increases with the number of observations fixed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min         lq        mean     median          uq        max neval</span></span>
-<span><span class="co">#&gt;  n1e2    447.294    472.962    508.4516    489.588    546.5135    819.248   100</span></span>
-<span><span class="co">#&gt;  n1e3   1117.334   1297.278   1398.9919   1382.077   1475.8670   2286.303   100</span></span>
-<span><span class="co">#&gt;  n1e4  10129.867  11621.940  13694.6736  14026.307  14799.9800  21544.600   100</span></span>
-<span><span class="co">#&gt;  n1e5 169498.843 230814.651 263779.2173 262377.576 298818.9065 367144.916   100</span></span>
+<span><span class="co">#&gt;  expr        min         lq        mean      median         uq        max neval</span></span>
+<span><span class="co">#&gt;  n1e2    417.358    462.707    491.2848    477.9655    517.279    604.627   100</span></span>
+<span><span class="co">#&gt;  n1e3   1051.770   1266.425   1369.4850   1365.7300   1443.581   2103.289   100</span></span>
+<span><span class="co">#&gt;  n1e4   9562.922  11397.130  13366.0708  13641.3775  14498.520  21388.440   100</span></span>
+<span><span class="co">#&gt;  n1e5 160819.720 222245.009 251211.2933 244659.1315 301059.446 348104.451   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -174,10 +174,10 @@ likelihood at zero vectors of different sizes.</p>
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr        min          lq        mean      median         uq        max</span></span>
-<span><span class="co">#&gt;    p5    698.773    753.1645    783.8288    781.2115    812.731    931.507</span></span>
-<span><span class="co">#&gt;   p25   2621.107   2665.2745   2789.9868   2696.6430   2762.546   7459.328</span></span>
-<span><span class="co">#&gt;  p100  21544.400  21844.0735  25646.6813  24068.9620  26713.959  42431.534</span></span>
-<span><span class="co">#&gt;  p400 253743.147 276684.2755 304127.5371 291394.8295 319637.538 457070.493</span></span>
+<span><span class="co">#&gt;    p5    665.630    734.8495    778.0747    771.7735    812.980   1122.582</span></span>
+<span><span class="co">#&gt;   p25   2439.065   2615.0135   2753.5179   2687.3285   2737.021   6926.839</span></span>
+<span><span class="co">#&gt;  p100  20480.558  21684.0410  25312.3843  23693.4960  26651.052  42175.359</span></span>
+<span><span class="co">#&gt;  p400 250878.136 271902.4930 297840.5865 285271.9490 309443.752 448736.563</span></span>
 <span><span class="co">#&gt;  neval</span></span>
 <span><span class="co">#&gt;    100</span></span>
 <span><span class="co">#&gt;    100</span></span>
