@@ -45,14 +45,14 @@ plot(eld)
 }
 \references{
 Lazar NA (2005).
-“Assessing the Effect of Individual Data Points on Inference From Empirical
-Likelihood.”
-\emph{Journal of Computational and Graphical Statistics}, 14(3), 626–642.
-\doi{10.1198/106186005X59568}.
+``Assessing the Effect of Individual Data Points on Inference From
+Empirical Likelihood.''
+\emph{Journal of Computational and Graphical Statistics}, \strong{14}(3),
+626--642. \doi{10.1198/106186005X59568}.
 
 Zhu H, Ibrahim JG, Tang N, Zhang H (2008).
-“Diagnostic Measures for Empirical Likelihood of General Estimating
-Equations.” \emph{Biometrika}, 95(2), 489--507.
+``Diagnostic Measures for Empirical Likelihood of General Estimating
+Equations.'' \emph{Biometrika}, \strong{95}(2), 489--507.
 \doi{10.1093/biomet/asm094}.
 }
 \seealso{

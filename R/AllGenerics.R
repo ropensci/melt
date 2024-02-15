@@ -57,9 +57,10 @@ setGeneric("coef", function(object, ...) standardGeneric("coef"))
 #'  the lower and upper limits obtained from empirical likelihood do not
 #'  correspond to the `(1 - level) / 2` and `1 - (1 - level) / 2` in %,
 #'  respectively.
-#' @references Owen A (1990).
-#'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   \emph{The Annals of Statistics}, 18(1), 90--120.
+#' @references
+#'   Owen A (1990).
+#'   ``Empirical Likelihood Ratio Confidence Regions.''
+#'   \emph{The Annals of Statistics}, **18**(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELMT}, [confreg()], [elt()],
 #'   [el_control()]
@@ -96,9 +97,10 @@ setGeneric("confint", function(object, parm, level = 0.95, ...)
 #'   [el_control()]. Defaults to `NULL` and inherits the `control` slot in
 #'   `object`.
 #' @return An object of class \linkS4class{ConfregEL}.
-#' @references Owen A (1990).
-#'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   \emph{The Annals of Statistics}, 18(1), 90--120.
+#' @references
+#'   Owen A (1990).
+#'   ``Empirical Likelihood Ratio Confidence Regions.''
+#'   \emph{The Annals of Statistics}, **18**(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
 #' @seealso \linkS4class{EL}, [confint()], [elt()], [plot()], [el_control()]
 #' @usage NULL
@@ -175,14 +177,16 @@ setGeneric("critVal", function(object, ...) standardGeneric("critVal"))
 #'   influential point and can be inspected as a possible outlier. `eld`
 #'   computes \eqn{\textrm{ELD}_i } for \eqn{i = 1, \dots, n }.
 #' @return An object of class \linkS4class{ELD}.
-#' @references Lazar NA (2005).
-#'   “Assessing the Effect of Individual Data Points on Inference From Empirical
-#'   Likelihood.”
-#'   \emph{Journal of Computational and Graphical Statistics}, 14(3), 626–642.
-#'   \doi{10.1198/106186005X59568}.
-#' @references Zhu H, Ibrahim JG, Tang N, Zhang H (2008).
-#'   “Diagnostic Measures for Empirical Likelihood of General Estimating
-#'   Equations.” \emph{Biometrika}, 95(2), 489--507.
+#' @references
+#'   Lazar NA (2005).
+#'   ``Assessing the Effect of Individual Data Points on Inference From
+#'   Empirical Likelihood.''
+#'   \emph{Journal of Computational and Graphical Statistics}, **14**(3),
+#'   626--642. \doi{10.1198/106186005X59568}.
+#' @references
+#'   Zhu H, Ibrahim JG, Tang N, Zhang H (2008).
+#'   ``Diagnostic Measures for Empirical Likelihood of General Estimating
+#'   Equations.'' \emph{Biometrika}, **95**(2), 489--507.
 #'   \doi{10.1093/biomet/asm094}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELD}, [el_control()], [plot()]
 #' @usage NULL
@@ -231,9 +235,10 @@ setGeneric("eld", function(object, control = NULL) {
 #'   of the test statistics, the adjusted p-values are estimated by Monte Carlo
 #'   simulation.
 #' @return An object of class of \linkS4class{ELMT}.
-#' @references Kim E, MacEachern SN, Peruggia M (2023).
-#'   “Empirical Likelihood for the Analysis of Experimental Designs.”
-#'   \emph{Journal of Nonparametric Statistics}.
+#' @references
+#'   Kim E, MacEachern SN, Peruggia M (2023).
+#'   ``Empirical likelihood for the analysis of experimental designs.''
+#'   \emph{Journal of Nonparametric Statistics}, **35**(4), 709--732.
 #'   \doi{10.1080/10485252.2023.2206919}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELMT}, [elt()], [el_control()]
 #' @usage NULL
@@ -317,13 +322,15 @@ setGeneric("elmt", function(object,
 #' @return An object of class of \linkS4class{ELT}. If `lhs` is non-`NULL`, the
 #'   `optim` slot corresponds to that of \linkS4class{CEL}. Otherwise, it
 #'   corresponds to that of \linkS4class{EL}.
-#' @references Adimari G, Guolo A (2010).
-#'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-#'   \emph{Statistical Methods & Applications}, 19(4), 463--476.
+#' @references
+#'   Adimari G, Guolo A (2010).
+#'   ``A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.''
+#'   \emph{Statistical Methods & Applications}, **19**(4), 463--476.
 #'   \doi{10.1007/s10260-010-0137-9}.
-#' @references Qin J, Lawless J (1995).
-#'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   \emph{Canadian Journal of Statistics}, 23(2), 145--159.
+#' @references
+#'   Qin J, Lawless J (1995).
+#'   ``Estimating Equations, Empirical Likelihood and Constraints on
+#'   Parameters.'' \emph{Canadian Journal of Statistics}, **23**(2), 145--159.
 #'   \doi{10.2307/3315441}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELT}, [elmt()], [el_control()]
 #' @usage NULL
@@ -405,9 +412,11 @@ setGeneric("getOptim", function(object, ...) standardGeneric("getOptim"))
 #' @param object An object that contains the empirical log-likelihood.
 #' @param ... Further arguments passed to methods.
 #' @return A single numeric.
-#' @references Baggerly KA (1998).
-#'   “Empirical Likelihood as a Goodness-of-Fit Measure.” \emph{Biometrika},
-#'   85(3), 535--547. \doi{10.1093/biomet/asm094}.
+#' @references
+#'   Baggerly KA (1998).
+#'   ``Empirical Likelihood as a Goodness-of-Fit Measure.''
+#'   \emph{Biometrika}, **85**(3), 535--547.
+#'   \doi{10.1093/biomet/85.3.535}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELT}
 #' @usage NULL
 #' @examples
@@ -425,9 +434,11 @@ setGeneric("logL", function(object, ...) standardGeneric("logL"))
 #' @param object An object that contains the empirical log-likelihood ratio.
 #' @param ... Further arguments passed to methods.
 #' @return A single numeric.
-#' @references Baggerly KA (1998).
-#'   “Empirical Likelihood as a Goodness-of-Fit Measure.” \emph{Biometrika},
-#'   85(3), 535--547. \doi{10.1093/biomet/asm094}.
+#' @references
+#'   Baggerly KA (1998).
+#'   ``Empirical Likelihood as a Goodness-of-Fit Measure.''
+#'   \emph{Biometrika}, **85**(3), 535--547.
+#'   \doi{10.1093/biomet/85.3.535}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELT}
 #' @usage NULL
 #' @examples
@@ -594,9 +605,11 @@ setGeneric("summary", function(object, ...) standardGeneric("summary"))
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param ... Further arguments passed to methods.
 #' @return A numeric vector of the re-scaled weights.
-#' @references Glenn N, Zhao Y (2007).
-#'   “Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-#'   \emph{Computational Statistics & Data Analysis}, 51(10), 5130--5141.
+#' @references
+#'   Glenn N, Zhao Y (2007).
+#'   ``Weighted Empirical Likelihood Estimates and Their Robustness
+#'   Properties.''
+#'   \emph{Computational Statistics & Data Analysis}, **51**(10), 5130--5141.
 #'   \doi{10.1016/j.csda.2006.07.032}.
 #' @seealso \linkS4class{EL}
 #' @usage NULL

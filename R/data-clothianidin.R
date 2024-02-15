@@ -17,7 +17,9 @@
 #' @examples
 #' data("clothianidin")
 #' clothianidin
-#' @source Alford A, Krupke CH (2017). “Translocation of the Neonicotinoid Seed
-#'   Treatment Clothianidin in Maize.” \emph{PLOS ONE}, 12(3), 1--19.
+#' @source
+#'   Alford A, Krupke CH (2017).
+#'   ``Translocation of the Neonicotinoid Seed Treatment Clothianidin in
+#'   Maize.'' \emph{PLOS ONE}, **12**(3), 1--19.
 #'   \doi{10.1371/journal.pone.0173836}.
 "clothianidin"

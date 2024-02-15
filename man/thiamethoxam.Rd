@@ -21,9 +21,10 @@ A data frame with 165 observations and 11 variables:
 }
 }
 \source{
-Obregon D, Pederson G, Taylor A, Poveda K (2022). “The Pest Control
-and Pollinator Protection Dilemma: The Case of Thiamethoxam Prophylactic
-Applications in Squash Crops.” \emph{PLOS ONE}, 17(5), 1--18.
+Obregon D, Pederson G, Taylor A, Poveda K (2022).
+``The Pest Control and Pollinator Protection Dilemma: The Case of
+Thiamethoxam Prophylactic Applications in Squash Crops.''
+\emph{PLOS ONE}, \strong{17}(5), 1--18.
 \doi{10.1371/journal.pone.0267984}.
 }
 \usage{

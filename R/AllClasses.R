@@ -100,11 +100,14 @@ setClass("ControlEL",
 #' @slot control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
 #' @aliases EL
-#' @references Owen A (2001). \emph{Empirical Likelihood}. Chapman & Hall/CRC.
+#' @references
+#'   Owen A (2001).
+#'   \emph{Empirical Likelihood}. Chapman & Hall/CRC.
 #'   \doi{10.1201/9781420036152}.
-#' @references Qin J, Lawless J (1994).
-#'   “Empirical Likelihood and General Estimating Equations.”
-#'   \emph{The Annals of Statistics}, 22(1), 300--325.
+#' @references
+#'   Qin J, Lawless J (1994).
+#'   ``Empirical Likelihood and General Estimating Equations.''
+#'   \emph{The Annals of Statistics}, **22**(1), 300--325.
 #'   \doi{10.1214/aos/1176325370}.
 #' @examples
 #' showClass("EL")
@@ -177,13 +180,15 @@ setClass("EL",
 #' @slot control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()].
 #' @aliases CEL
-#' @references Adimari G, Guolo A (2010).
-#'   “A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-#'   \emph{Statistical Methods & Applications}, 19(4), 463--476.
+#' @references
+#'   Adimari G, Guolo A (2010).
+#'   ``A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.''
+#'   \emph{Statistical Methods & Applications}, **19**(4), 463--476.
 #'   \doi{10.1007/s10260-010-0137-9}.
-#' @references Qin J, Lawless J (1995).
-#'   “Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-#'   \emph{Canadian Journal of Statistics}, 23(2), 145--159.
+#' @references
+#'   Qin J, Lawless J (1995).
+#'   ``Estimating Equations, Empirical Likelihood and Constraints on
+#'   Parameters.'' \emph{Canadian Journal of Statistics}, **23**(2), 145--159.
 #'   \doi{10.2307/3315441}.
 #' @examples
 #' showClass("CEL")

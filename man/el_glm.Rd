@@ -137,12 +137,12 @@ summary(fit)
 }
 \references{
 Chen SX, Cui H (2003).
-“An Extended Empirical Likelihood for Generalized Linear Models.”
-\emph{Statistica Sinica}, 13(1), 69--81.
+``An Extended Empirical Likelihood for Generalized Linear Models.''
+\emph{Statistica Sinica}, \strong{13}(1), 69--81.
 
 Kolaczyk ED (1994).
-“Empirical Likelihood for Generalized Linear Models.”
-\emph{Statistica Sinica}, 4(1), 199--218.
+``Empirical Likelihood for Generalized Linear Models.''
+\emph{Statistica Sinica}, \strong{4}(1), 199--218.
 }
 \seealso{
 \linkS4class{EL}, \linkS4class{GLM}, \code{\link[=el_lm]{el_lm()}}, \code{\link[=elt]{elt()}},

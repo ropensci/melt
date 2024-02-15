@@ -89,12 +89,12 @@ showClass("CEL")
 }
 \references{
 Adimari G, Guolo A (2010).
-“A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.”
-\emph{Statistical Methods & Applications}, 19(4), 463--476.
+``A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.''
+\emph{Statistical Methods & Applications}, \strong{19}(4), 463--476.
 \doi{10.1007/s10260-010-0137-9}.
 
 Qin J, Lawless J (1995).
-“Estimating Equations, Empirical Likelihood and Constraints on Parameters.”
-\emph{Canadian Journal of Statistics}, 23(2), 145--159.
+``Estimating Equations, Empirical Likelihood and Constraints on
+Parameters.'' \emph{Canadian Journal of Statistics}, \strong{23}(2), 145--159.
 \doi{10.2307/3315441}.
 }

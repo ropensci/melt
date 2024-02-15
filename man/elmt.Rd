@@ -77,8 +77,8 @@ elmt(fit3, rhs = rhs3, lhs = lhs3)
 }
 \references{
 Kim E, MacEachern SN, Peruggia M (2023).
-“Empirical Likelihood for the Analysis of Experimental Designs.”
-\emph{Journal of Nonparametric Statistics}.
+``Empirical likelihood for the analysis of experimental designs.''
+\emph{Journal of Nonparametric Statistics}, \strong{35}(4), 709--732.
 \doi{10.1080/10485252.2023.2206919}.
 }
 \seealso{

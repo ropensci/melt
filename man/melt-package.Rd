@@ -8,12 +8,13 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Performs multiple empirical likelihood tests for linear and generalized linear models. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Details of the testing procedures are given in Kim, MacEachern, and Peruggia (2023) \doi{10.1080/10485252.2023.2206919}. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.
+Performs multiple empirical likelihood tests for linear and generalized linear models. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' 'C++' library and 'RcppEigen' interface, with 'OpenMP' for parallel computation. Details of the testing procedures are given in Kim, MacEachern, and Peruggia (2023) \doi{10.1080/10485252.2023.2206919}. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.
 }
 \references{
-Kim E, MacEachern S, Peruggia M (2021).
-“Empirical Likelihood for the Analysis of Experimental Designs.”
-arxiv:2112.09206. URL \url{https://arxiv.org/abs/2112.09206}.
+Kim E, MacEachern SN, Peruggia M (2023).
+``Empirical likelihood for the analysis of experimental designs.''
+\emph{Journal of Nonparametric Statistics}, \strong{35}(4), 709--732.
+\doi{10.1080/10485252.2023.2206919}.
 }
 \seealso{
 Useful links:
@@ -25,7 +26,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Eunseop Kim \email{markean@pm.me}
+\strong{Maintainer}: Eunseop Kim \email{markean@pm.me} [copyright holder]
 
 Other contributors:
 \itemize{

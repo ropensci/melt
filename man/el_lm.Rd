@@ -100,8 +100,8 @@ summary(fit2)
 }
 \references{
 Owen A (1991).
-“Empirical Likelihood for Linear Models.”
-\emph{The Annals of Statistics}, 19(4), 1725--1747.
+``Empirical Likelihood for Linear Models.''
+\emph{The Annals of Statistics}, \strong{19}(4), 1725--1747.
 \doi{10.1214/aos/1176348368}.
 }
 \seealso{

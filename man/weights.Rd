@@ -28,8 +28,9 @@ weights(fit)
 }
 \references{
 Glenn N, Zhao Y (2007).
-“Weighted Empirical Likelihood Estimates and Their Robustness Properties.”
-\emph{Computational Statistics & Data Analysis}, 51(10), 5130--5141.
+``Weighted Empirical Likelihood Estimates and Their Robustness
+Properties.''
+\emph{Computational Statistics & Data Analysis}, \strong{51}(10), 5130--5141.
 \doi{10.1016/j.csda.2006.07.032}.
 }
 \seealso{

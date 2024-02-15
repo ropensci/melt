@@ -28,9 +28,10 @@
 #'   [el_mean()] computes the empirical log-likelihood ratio statistic
 #'   \eqn{-2\log R(\theta)}, along with other values in \linkS4class{EL}.
 #' @return An object of class \linkS4class{EL}.
-#' @references Owen A (1990).
-#'   “Empirical Likelihood Ratio Confidence Regions.”
-#'   \emph{The Annals of Statistics}, 18(1), 90--120.
+#' @references
+#'   Owen A (1990).
+#'   ``Empirical Likelihood Ratio Confidence Regions.''
+#'   \emph{The Annals of Statistics}, **18**(1), 90--120.
 #'   \doi{10.1214/aos/1176347494}.
 #' @seealso \linkS4class{EL}, [elt()], [el_eval()], [el_control()]
 #' @examples
