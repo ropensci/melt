@@ -240,6 +240,11 @@ setGeneric("eld", function(object, control = NULL) {
 #'   ``Empirical likelihood for the analysis of experimental designs.''
 #'   \emph{Journal of Nonparametric Statistics}, **35**(4), 709--732.
 #'   \doi{10.1080/10485252.2023.2206919}.
+#' @references
+#'   Kim E, MacEachern SN, Peruggia M (2024).
+#'   ``melt: Multiple Empirical Likelihood Tests in R.''
+#'   \emph{Journal of Statistical Software}, **108**(5), 1--33.
+#'   \doi{10.18637/jss.v108.i05}.
 #' @seealso \linkS4class{EL}, \linkS4class{ELMT}, [elt()], [el_control()]
 #' @usage NULL
 #' @examples
@@ -327,6 +332,11 @@ setGeneric("elmt", function(object,
 #'   ``A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.''
 #'   \emph{Statistical Methods & Applications}, **19**(4), 463--476.
 #'   \doi{10.1007/s10260-010-0137-9}.
+#' @references
+#'   Kim E, MacEachern SN, Peruggia M (2024).
+#'   ``melt: Multiple Empirical Likelihood Tests in R.''
+#'   \emph{Journal of Statistical Software}, **108**(5), 1--33.
+#'   \doi{10.18637/jss.v108.i05}.
 #' @references
 #'   Qin J, Lawless J (1995).
 #'   ``Estimating Equations, Empirical Likelihood and Constraints on

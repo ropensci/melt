@@ -104,6 +104,11 @@ Adimari G, Guolo A (2010).
 \emph{Statistical Methods & Applications}, \strong{19}(4), 463--476.
 \doi{10.1007/s10260-010-0137-9}.
 
+Kim E, MacEachern SN, Peruggia M (2024).
+``melt: Multiple Empirical Likelihood Tests in R.''
+\emph{Journal of Statistical Software}, \strong{108}(5), 1--33.
+\doi{10.18637/jss.v108.i05}.
+
 Qin J, Lawless J (1995).
 ``Estimating Equations, Empirical Likelihood and Constraints on
 Parameters.'' \emph{Canadian Journal of Statistics}, \strong{23}(2), 145--159.

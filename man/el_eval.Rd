@@ -78,8 +78,8 @@ el_eval(g, weights = rep(c(1, 2), each = 50))
 }
 \references{
 Qin J, Lawless J (1994).
-“Empirical Likelihood and General Estimating Equations.”
-\emph{The Annals of Statistics}, 22(1), 300--325.
+``Empirical Likelihood and General Estimating Equations.''
+\emph{The Annals of Statistics}, \strong{22}(1), 300--325.
 \doi{10.1214/aos/1176325370}.
 }
 \seealso{

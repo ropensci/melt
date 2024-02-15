@@ -49,9 +49,10 @@
 #'   * `npar` A single integer for the number of parameters.
 #'   * `weights` A numeric vector of the re-scaled weights used for the model
 #'   fitting.
-#' @references Qin J, Lawless J (1994).
-#'   “Empirical Likelihood and General Estimating Equations.”
-#'   \emph{The Annals of Statistics}, 22(1), 300--325.
+#' @references
+#'   Qin J, Lawless J (1994).
+#'   ``Empirical Likelihood and General Estimating Equations.''
+#'   \emph{The Annals of Statistics}, **22**(1), 300--325.
 #'   \doi{10.1214/aos/1176325370}.
 #' @seealso \linkS4class{EL}, [el_control()]
 #' @examples
