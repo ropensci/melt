@@ -1,3 +1,13 @@
+# melt 1.11.0
+## MINOR IMPROVEMENTS
+* Updated package vignette with the publication in the Journal of Statistical Software.
+
+## DEPRECATED AND DEFUNCT
+* Removed `el_pairwise()` and associated methods.
+
+* Removed `sigTests()` for objects inheriting from `SummaryLM`.
+
+
 # melt 1.10.0
 ## NEW FEATURES
 * `el_glm()` accepts `quasipoisson` family with `"sqrt"` link function for the argument `family`.
