@@ -47,19 +47,31 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../reference/index.html">References</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/model.html">Model fitting</a>
+    </li>
+    <li>
+      <a href="../articles/performance.html">Performance</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="../articles/overview.html">Articles</a>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ropensci/melt" class="external-link">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/ropensci/melt/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -126,10 +138,10 @@ parameters increases with the number of observations fixed.</p>
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr        min         lq        mean      median         uq        max neval</span></span>
-<span><span class="co">#&gt;  n1e2    444.158    468.514    497.5213    483.0955    515.221    614.085   100</span></span>
-<span><span class="co">#&gt;  n1e3   1132.592   1281.710   1385.8849   1367.5300   1466.499   2236.941   100</span></span>
-<span><span class="co">#&gt;  n1e4   9932.179  11416.822  13349.1311  13783.0990  14535.708  19997.145   100</span></span>
-<span><span class="co">#&gt;  n1e5 152803.564 214532.814 245623.5035 238749.0300 282020.966 345326.225   100</span></span>
+<span><span class="co">#&gt;  n1e2    434.330    463.143    490.5472    478.3515    509.890    610.569   100</span></span>
+<span><span class="co">#&gt;  n1e3   1105.110   1286.452   1390.2207   1355.9065   1493.399   2211.942   100</span></span>
+<span><span class="co">#&gt;  n1e4   9966.164  11466.825  13396.3627  13781.6285  14549.405  19977.160   100</span></span>
+<span><span class="co">#&gt;  n1e5 156345.171 217992.675 250626.4397 247530.5675 290515.050 345326.224   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -162,10 +174,10 @@ likelihood at zero vectors of different sizes.</p>
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr        min         lq        mean      median          uq        max</span></span>
-<span><span class="co">#&gt;    p5    699.494    738.572    798.8366    758.1745    804.9505   3305.774</span></span>
-<span><span class="co">#&gt;   p25   2549.674   2609.175   2761.3620   2642.9230   2690.3970   7328.585</span></span>
-<span><span class="co">#&gt;  p100  20510.573  20805.502  24563.5187  22926.8470  25562.8170  40981.971</span></span>
-<span><span class="co">#&gt;  p400 239065.541 260617.985 287555.5324 270261.8465 303015.4810 435525.462</span></span>
+<span><span class="co">#&gt;    p5    690.357    728.909    789.8043    754.6315    797.3265   3447.385</span></span>
+<span><span class="co">#&gt;   p25   2562.455   2600.771   2770.2105   2623.4440   2688.3655   8112.509</span></span>
+<span><span class="co">#&gt;  p100  20570.797  20854.736  24688.6824  23111.5865  25816.6135  41452.853</span></span>
+<span><span class="co">#&gt;  p400 240029.508 262620.239 289711.9626 271122.7750 303588.9815 452560.409</span></span>
 <span><span class="co">#&gt;  neval</span></span>
 <span><span class="co">#&gt;    100</span></span>
 <span><span class="co">#&gt;    100</span></span>
