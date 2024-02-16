@@ -188,13 +188,3 @@ print.pairwise <- function(x, ...) {
   ))
   cat("\n\n")
 }
-
-#' @describeIn sigTests Extracts a matrix with the results of significance
-#'   tests.
-setMethod("sigTests", "SummaryLM", function(object, ...) {
-  .Deprecated(
-    msg =
-      "`sigTests()` is deprecated for signature 'SummaryLM' in melt v1.9.1."
-  )
-  object@coefficients
-})

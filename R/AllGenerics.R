@@ -568,18 +568,16 @@ setGeneric("pVal", function(object, ...) standardGeneric("pVal"))
 #'
 #' Extracts the results of significance tests from a model.
 #'
-#' @param object An object that inherits from \linkS4class{LM} or
-#'   \linkS4class{SummaryLM}.
+#' @param object An object that inherits from \linkS4class{LM}.
 #' @param ... Further arguments passed to methods.
 #' @return The form of the value returned by [sigTests()] depends on the
 #'   class of its argument.
-#' @seealso \linkS4class{LM}, \linkS4class{SummaryLM}, [getOptim()]
+#' @seealso \linkS4class{LM}, [getOptim()]
 #' @usage NULL
 #' @examples
 #' data("mtcars")
 #' fit <- el_lm(mpg ~ ., data = mtcars)
 #' sigTests(fit)
-#' sigTests(summary(fit))
 #' @exportMethod sigTests
 setGeneric("sigTests", function(object, ...) standardGeneric("sigTests"))
 
