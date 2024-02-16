@@ -1,16 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# melt
-
-<a href="https://docs.ropensci.org/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# melt <a href="https://docs.ropensci.org/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/ropensci/melt/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/ropensci/melt/actions/workflows/check-standard.yaml)
+[![R-CMD-check](https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml)
+[![pkgcheck](https://github.com/ropensci/melt/workflows/pkgcheck/badge.svg)](https://github.com/ropensci/melt/actions?query=workflow%3Apkgcheck)
 [![Codecov test
 coverage](https://codecov.io/gh/ropensci/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/melt?branch=master)
 [![CRAN
@@ -18,6 +17,7 @@ status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/p
 [![runiverse](https://ropensci.r-universe.dev/badges/melt)](http://ropensci.r-universe.dev/ui/#package:melt)
 [![ropensci
 review](https://badges.ropensci.org/550_status.svg)](https://github.com/ropensci/software-review/issues/550)
+
 <!-- badges: end -->
 
 ## Overview

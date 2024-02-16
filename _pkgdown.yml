@@ -1,54 +1,46 @@
-url: https://docs.ropensci.org/melt
-
+url: https://ropensci.github.io/melt/
 reference:
-  - title: Functions (Constructors)
-    contents:
-    - el_control
-    - el_glm
-    - el_lm
-    - el_mean
-    - el_sd
-
-  - title: Classes
-    contents:
-    - ends_with("-class")
-
-  - title: Methods
-    contents:
-    - confint
-    - confreg
-    - conv
-    - eld
-    - elmt
-    - elt
-    - plot
-    - print
-    - summary
-
-  - title: Accessors
-    contents:
-    - chisq
-    - coef
-    - critVal
-    - getDF
-    - getOptim
-    - logL
-    - logLR
-    - logProb
-    - nobs
-    - pVal
-    - sigTests
-    - weights
-
-  - title: Data
-    contents:
-    - clothianidin
-    - thiamethoxam
-
-  - title: Miscellaneous
-    contents:
-    - el_eval
-    - el_pairwise
-
+- title: Functions (Constructors)
+  contents:
+  - el_control
+  - el_glm
+  - el_lm
+  - el_mean
+  - el_sd
+- title: Classes
+  contents: ends_with("-class")
+- title: Methods
+  contents:
+  - confint
+  - confreg
+  - conv
+  - eld
+  - elmt
+  - elt
+  - plot
+  - print
+  - summary
+- title: Accessors
+  contents:
+  - chisq
+  - coef
+  - critVal
+  - getDF
+  - getOptim
+  - logL
+  - logLR
+  - logProb
+  - nobs
+  - pVal
+  - sigTests
+  - weights
+- title: Data
+  contents:
+  - clothianidin
+  - thiamethoxam
+- title: Miscellaneous
+  contents:
+  - el_eval
 figures:
   dpi: 300
+

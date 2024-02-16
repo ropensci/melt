@@ -506,27 +506,3 @@ test_that("`el_glm()` (quasipoisson - sqrt).", {
   expect_s4_class(out, "ELMT")
   expect_s4_class(wout, "ELMT")
 })
-
-test_that("`el_pairwise()`. Deprecated.", {
-  skip_on_cran()
-  out1 <- suppressWarnings(el_pairwise(clo ~ trt | blk,
-    data = clothianidin, B = 500
-  ))
-  out2 <- suppressWarnings(el_pairwise(clo ~ trt | blk,
-    data = clothianidin, control = "Naked", method = "NB", B = 500, nthreads = 2
-  ))
-  expect_output(print(out1))
-  expect_output(print(out2))
-  expect_error(suppressWarnings(el_pairwise(clo ~ blk | trt,
-    data = clothianidin, B = 500
-  )))
-  df <- clothianidin[1:25, ]
-  df$blk <- droplevels(df$blk)
-  df$trt <- droplevels(df$trt)
-  out3 <- suppressWarnings(el_pairwise(clo ~ trt | blk, data = df, B = 1))
-  expect_output(print(out3))
-  out4 <- suppressWarnings(el_pairwise(clo ~ trt | blk,
-    data = df, method = "NB", B = 1
-  ))
-  expect_output(print(out3))
-})

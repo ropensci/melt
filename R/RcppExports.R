@@ -29,10 +29,6 @@ compute_generic_EL <- function(g, maxit_l, tol_l, th, w) {
     .Call(`_melt_compute_generic_EL`, g, maxit_l, tol_l, th, w)
 }
 
-pairwise <- function(x, c, control = 0L, k = 1L, level = 0.05, interval = TRUE, method = "AMC", B = 1e+04L, nthreads = 1L, th = 50, maxit = 1e+04L, abstol = 1e-08) {
-    .Call(`_melt_pairwise`, x, c, control, k, level, interval, method, B, nthreads, th, maxit, abstol)
-}
-
 test_GLM <- function(method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w) {
     .Call(`_melt_test_GLM`, method, x, par0, intercept, maxit, maxit_l, tol, tol_l, step, th, nthreads, w)
 }
