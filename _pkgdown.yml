@@ -1,19 +1,29 @@
+title: melt
 url: https://docs.ropensci.org/melt/
 navbar:
-  left:
-  - text: References
-    href: reference/index.html
-  - text: Articles
-    menu:
-    - text: Model
-      href: articles/model.html
-    - text: Performance
-      href: articles/performance.html
-  - text: News
-    href: news/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/ropensci/melt
+  structure:
+    left:
+    - references
+    - articles
+    - news
+    right: github
+  components:
+    references:
+      text: References
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: Model
+        href: articles/model.html
+      - text: Performance
+        href: articles/performance.html
+    news:
+      text: News
+      href: news/index.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/ropensci/MtreeRing
 reference:
 - title: Functions (Constructors)
   contents:
