@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   model: model.html
   performance: performance.html
-last_built: 2024-02-15T04:27Z
+last_built: 2024-02-16T02:03Z
 urls:
   reference: https://docs.ropensci.org/melt/reference
   article: https://docs.ropensci.org/melt/articles
