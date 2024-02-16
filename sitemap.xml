@@ -1,174 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://docs.ropensci.org/melt/404.html</loc>
   </url>
   <url>
-    <loc>/CONTRIBUTING.html</loc>
+    <loc>https://docs.ropensci.org/melt/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://docs.ropensci.org/melt/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://docs.ropensci.org/melt/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/model.html</loc>
+    <loc>https://docs.ropensci.org/melt/articles/model.html</loc>
   </url>
   <url>
-    <loc>/articles/performance.html</loc>
+    <loc>https://docs.ropensci.org/melt/articles/performance.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://docs.ropensci.org/melt/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://docs.ropensci.org/melt/index.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://docs.ropensci.org/melt/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/CEL-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/CEL-class.html</loc>
   </url>
   <url>
-    <loc>/reference/ConfregEL-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/ConfregEL-class.html</loc>
   </url>
   <url>
-    <loc>/reference/ControlEL-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/ControlEL-class.html</loc>
   </url>
   <url>
-    <loc>/reference/EL-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/EL-class.html</loc>
   </url>
   <url>
-    <loc>/reference/ELD-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/ELD-class.html</loc>
   </url>
   <url>
-    <loc>/reference/ELMT-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/ELMT-class.html</loc>
   </url>
   <url>
-    <loc>/reference/ELT-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/ELT-class.html</loc>
   </url>
   <url>
-    <loc>/reference/GLM-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/GLM-class.html</loc>
   </url>
   <url>
-    <loc>/reference/LM-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/LM-class.html</loc>
   </url>
   <url>
-    <loc>/reference/QGLM-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/QGLM-class.html</loc>
   </url>
   <url>
-    <loc>/reference/SD-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/SD-class.html</loc>
   </url>
   <url>
-    <loc>/reference/SummaryEL-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/SummaryEL-class.html</loc>
   </url>
   <url>
-    <loc>/reference/SummaryELMT-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/SummaryELMT-class.html</loc>
   </url>
   <url>
-    <loc>/reference/SummaryELT-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/SummaryELT-class.html</loc>
   </url>
   <url>
-    <loc>/reference/SummaryGLM-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/SummaryGLM-class.html</loc>
   </url>
   <url>
-    <loc>/reference/SummaryLM-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/SummaryLM-class.html</loc>
   </url>
   <url>
-    <loc>/reference/SummaryQGLM-class.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/SummaryQGLM-class.html</loc>
   </url>
   <url>
-    <loc>/reference/chisq.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/chisq.html</loc>
   </url>
   <url>
-    <loc>/reference/clothianidin.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/clothianidin.html</loc>
   </url>
   <url>
-    <loc>/reference/coef.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/coef.html</loc>
   </url>
   <url>
-    <loc>/reference/confint.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/confint.html</loc>
   </url>
   <url>
-    <loc>/reference/confreg.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/confreg.html</loc>
   </url>
   <url>
-    <loc>/reference/conv.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/conv.html</loc>
   </url>
   <url>
-    <loc>/reference/critVal.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/critVal.html</loc>
   </url>
   <url>
-    <loc>/reference/el_control.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/el_control.html</loc>
   </url>
   <url>
-    <loc>/reference/el_eval.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/el_eval.html</loc>
   </url>
   <url>
-    <loc>/reference/el_glm.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/el_glm.html</loc>
   </url>
   <url>
-    <loc>/reference/el_lm.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/el_lm.html</loc>
   </url>
   <url>
-    <loc>/reference/el_mean.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/el_mean.html</loc>
   </url>
   <url>
-    <loc>/reference/el_sd.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/el_sd.html</loc>
   </url>
   <url>
-    <loc>/reference/eld.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/eld.html</loc>
   </url>
   <url>
-    <loc>/reference/elmt.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/elmt.html</loc>
   </url>
   <url>
-    <loc>/reference/elt.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/elt.html</loc>
   </url>
   <url>
-    <loc>/reference/getDF.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/getDF.html</loc>
   </url>
   <url>
-    <loc>/reference/getOptim.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/getOptim.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/logL.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/logL.html</loc>
   </url>
   <url>
-    <loc>/reference/logLR.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/logLR.html</loc>
   </url>
   <url>
-    <loc>/reference/logProb.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/logProb.html</loc>
   </url>
   <url>
-    <loc>/reference/melt-package.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/melt-package.html</loc>
   </url>
   <url>
-    <loc>/reference/nobs.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/nobs.html</loc>
   </url>
   <url>
-    <loc>/reference/pVal.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/pVal.html</loc>
   </url>
   <url>
-    <loc>/reference/plot.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/plot.html</loc>
   </url>
   <url>
-    <loc>/reference/print.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/print.html</loc>
   </url>
   <url>
-    <loc>/reference/sigTests.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/sigTests.html</loc>
   </url>
   <url>
-    <loc>/reference/summary.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/summary.html</loc>
   </url>
   <url>
-    <loc>/reference/thiamethoxam.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/thiamethoxam.html</loc>
   </url>
   <url>
-    <loc>/reference/weights.html</loc>
+    <loc>https://docs.ropensci.org/melt/reference/weights.html</loc>
   </url>
 </urlset>
