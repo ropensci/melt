@@ -1,4 +1,17 @@
-destination: docs/
+url: https://docs.ropensci.org/melt/
+navbar:
+  title: melt
+  type: default
+  left:
+  - text: References
+    href: reference/index.html
+  - text: Articles
+    href: articles/overview.html
+  - text: News
+    href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/ropensci/melt
 reference:
 - title: Functions (Constructors)
   contents:

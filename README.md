@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# melt <a href="https://docs.ropensci.org/melt/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# melt <a href="https://docs.ropensci.org/melt/"><img src="man/figures/logo.png" align="right" height="139" alt="melt website" /></a>
 
 <!-- badges: start -->
 
