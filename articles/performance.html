@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Performance">
 <meta property="og:description" content="melt">
-<meta property="og:image" content="https://docs.ropensci.org/melt/logo.png">
+<meta property="og:image" content="https://ropensci.github.io/melt/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -104,7 +104,7 @@ Kim</h4>
 Intel(R) Core(TM) i7 CPU (1.90GHz). We first load the necessary
 packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/melt/">melt</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/melt/" class="external-link">melt</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/joshuaulrich/microbenchmark/" class="external-link">microbenchmark</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
@@ -137,11 +137,11 @@ parameters increases with the number of observations fixed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min          lq        mean      median          uq        max</span></span>
-<span><span class="co">#&gt;  n1e2    439.440    464.1765    494.0525    481.0325    516.7705    606.312</span></span>
-<span><span class="co">#&gt;  n1e3   1112.897   1300.2715   1402.5348   1369.9470   1480.0170   2245.351</span></span>
-<span><span class="co">#&gt;  n1e4  10007.550  11516.4865  13563.1217  13803.6705  14554.5570  25595.425</span></span>
-<span><span class="co">#&gt;  n1e5 158470.443 221152.3115 250871.5868 243650.6910 286932.7040 377277.584</span></span>
+<span><span class="co">#&gt;  expr        min          lq        mean     median          uq        max</span></span>
+<span><span class="co">#&gt;  n1e2    438.077    465.8985    493.0738    481.573    515.3815    594.720</span></span>
+<span><span class="co">#&gt;  n1e3   1106.384   1276.5105   1376.0709   1353.429   1466.9860   2460.198</span></span>
+<span><span class="co">#&gt;  n1e4   9925.320  11438.6175  13281.9928  13728.292  14416.5865  19851.282</span></span>
+<span><span class="co">#&gt;  n1e5 151120.712 212546.0525 244294.3661 237195.948 281136.4345 344336.299</span></span>
 <span><span class="co">#&gt;  neval</span></span>
 <span><span class="co">#&gt;    100</span></span>
 <span><span class="co">#&gt;    100</span></span>
@@ -178,11 +178,11 @@ likelihood at zero vectors of different sizes.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min         lq        mean      median         uq        max neval</span></span>
-<span><span class="co">#&gt;    p5    705.637    739.270    782.8989    766.1505    801.120   1307.681   100</span></span>
-<span><span class="co">#&gt;   p25   2610.593   2656.383   2786.5350   2689.6905   2733.908   7457.680   100</span></span>
-<span><span class="co">#&gt;  p100  21481.947  21702.659  25525.4179  23906.7830  27432.334  42194.408   100</span></span>
-<span><span class="co">#&gt;  p400 253795.061 275620.695 302197.8675 285253.0690 318079.836 449679.018   100</span></span>
+<span><span class="co">#&gt;  expr        min         lq        mean     median         uq        max neval</span></span>
+<span><span class="co">#&gt;    p5    690.919    726.545    781.1627    751.376    777.340   3248.168   100</span></span>
+<span><span class="co">#&gt;   p25   2547.701   2590.867   2755.7914   2612.863   2656.669   8263.802   100</span></span>
+<span><span class="co">#&gt;  p100  20535.829  20869.315  24776.9702  22950.912  26605.188  42294.457   100</span></span>
+<span><span class="co">#&gt;  p400 239389.850 260882.282 287860.2665 274321.355 302269.282 438071.150   100</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;">
 On average, evaluating empirical likelihood with a 100000×10 or 1000×400
