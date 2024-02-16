@@ -6,6 +6,8 @@
 \alias{melt-package}
 \title{melt: Multiple Empirical Likelihood Tests}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Performs multiple empirical likelihood tests. It offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' 'C++' library and 'RcppEigen' interface, with 'OpenMP' for parallel computation. Details of the testing procedures are provided in Kim, MacEachern, and Peruggia (2023) \doi{10.1080/10485252.2023.2206919}. A companion paper by Kim, MacEachern, and Peruggia (2024) \doi{10.18637/jss.v108.i05} is available for further information. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.
 }
 \references{
