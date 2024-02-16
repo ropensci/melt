@@ -4,7 +4,11 @@ navbar:
   - text: References
     href: reference/index.html
   - text: Articles
-    href: articles/overview.html
+    menu:
+    - text: Model
+      href: articles/model.html
+    - text: Performance
+      href: articles/performance.html
   - text: News
     href: news/index.html
   right:
