@@ -1,174 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ropensci.github.io/melt/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/CONTRIBUTING.html</loc>
+    <loc>/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/LICENSE.html</loc>
+    <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/articles/index.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/articles/model.html</loc>
+    <loc>/articles/model.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/articles/performance.html</loc>
+    <loc>/articles/performance.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/news/index.html</loc>
+    <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/CEL-class.html</loc>
+    <loc>/reference/CEL-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/ConfregEL-class.html</loc>
+    <loc>/reference/ConfregEL-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/ControlEL-class.html</loc>
+    <loc>/reference/ControlEL-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/EL-class.html</loc>
+    <loc>/reference/EL-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/ELD-class.html</loc>
+    <loc>/reference/ELD-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/ELMT-class.html</loc>
+    <loc>/reference/ELMT-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/ELT-class.html</loc>
+    <loc>/reference/ELT-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/GLM-class.html</loc>
+    <loc>/reference/GLM-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/LM-class.html</loc>
+    <loc>/reference/LM-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/QGLM-class.html</loc>
+    <loc>/reference/QGLM-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/SD-class.html</loc>
+    <loc>/reference/SD-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/SummaryEL-class.html</loc>
+    <loc>/reference/SummaryEL-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/SummaryELMT-class.html</loc>
+    <loc>/reference/SummaryELMT-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/SummaryELT-class.html</loc>
+    <loc>/reference/SummaryELT-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/SummaryGLM-class.html</loc>
+    <loc>/reference/SummaryGLM-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/SummaryLM-class.html</loc>
+    <loc>/reference/SummaryLM-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/SummaryQGLM-class.html</loc>
+    <loc>/reference/SummaryQGLM-class.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/chisq.html</loc>
+    <loc>/reference/chisq.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/clothianidin.html</loc>
+    <loc>/reference/clothianidin.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/coef.html</loc>
+    <loc>/reference/coef.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/confint.html</loc>
+    <loc>/reference/confint.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/confreg.html</loc>
+    <loc>/reference/confreg.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/conv.html</loc>
+    <loc>/reference/conv.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/critVal.html</loc>
+    <loc>/reference/critVal.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/el_control.html</loc>
+    <loc>/reference/el_control.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/el_eval.html</loc>
+    <loc>/reference/el_eval.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/el_glm.html</loc>
+    <loc>/reference/el_glm.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/el_lm.html</loc>
+    <loc>/reference/el_lm.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/el_mean.html</loc>
+    <loc>/reference/el_mean.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/el_sd.html</loc>
+    <loc>/reference/el_sd.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/eld.html</loc>
+    <loc>/reference/eld.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/elmt.html</loc>
+    <loc>/reference/elmt.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/elt.html</loc>
+    <loc>/reference/elt.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/getDF.html</loc>
+    <loc>/reference/getDF.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/getOptim.html</loc>
+    <loc>/reference/getOptim.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/index.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/logL.html</loc>
+    <loc>/reference/logL.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/logLR.html</loc>
+    <loc>/reference/logLR.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/logProb.html</loc>
+    <loc>/reference/logProb.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/melt-package.html</loc>
+    <loc>/reference/melt-package.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/nobs.html</loc>
+    <loc>/reference/nobs.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/pVal.html</loc>
+    <loc>/reference/pVal.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/plot.html</loc>
+    <loc>/reference/plot.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/print.html</loc>
+    <loc>/reference/print.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/sigTests.html</loc>
+    <loc>/reference/sigTests.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/summary.html</loc>
+    <loc>/reference/summary.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/thiamethoxam.html</loc>
+    <loc>/reference/thiamethoxam.html</loc>
   </url>
   <url>
-    <loc>https://ropensci.github.io/melt/reference/weights.html</loc>
+    <loc>/reference/weights.html</loc>
   </url>
 </urlset>
