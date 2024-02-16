@@ -1,5 +1,6 @@
 title: melt
 url: https://docs.ropensci.org/melt/
+destination: docs/
 navbar:
   structure:
     left:
