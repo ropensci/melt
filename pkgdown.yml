@@ -5,7 +5,7 @@ articles:
   model: model.html
   performance: performance.html
   usage: usage.html
-last_built: 2024-02-17T04:28Z
+last_built: 2024-02-17T23:50Z
 urls:
   reference: https://docs.ropensci.org/melt/reference
   article: https://docs.ropensci.org/melt/articles
