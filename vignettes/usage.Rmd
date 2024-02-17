@@ -1,0 +1,236 @@
+---
+title: "Using melt"
+author: Eunseop Kim
+bibliography: references.bib
+link-citations: true
+output: 
+  rmarkdown::html_vignette:
+vignette: >
+  %\VignetteIndexEntry{Using melt}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dpi = 300,
+  fig.width = 7,
+  fig.height = 5,
+  fig.align = "center",
+  out.width = "100%"
+)
+```
+```{r, echo=FALSE}
+library(melt, warn.conflicts = FALSE)
+```
+
+This vignette demonstrates the basic usage of the melt package, including 
+replication code from a paper by @kim2024melt published in the *Journal of 
+Statistical Software*. For more details on the 
+package and its applications, readers are encouraged to refer to the paper.
+
+
+## Model building
+
+For a simple illustration of building a model, we apply `el_mean()` to the 
+synthetic classification problem data `synth.tr` from the MASS package. The 
+`synth.tr` object is a `data.frame` with 250 rows and three columns. We select 
+two columns `xs` and `ys`, the \(x\) and \(y\) coordinates, to build an `EL` 
+model with two-dimensional mean parameter.
+
+```{r, message=FALSE}
+library(MASS)
+library(dplyr)
+data("synth.tr", package = "MASS")
+data <- dplyr::select(synth.tr, c(xs, ys))
+```
+
+We specify `c(0, 0.5)` as `par` in `el_mean()` and build an `EL` object with the 
+`data`.
+
+```{r}
+fit_mean <- el_mean(data, par = c(0, 0.5))
+```
+
+The `data` object is implicitly coerced into a `matrix` since `el_mean()` takes 
+a numeric matrix as an input for the data. Basic `print()` and `show()` methods 
+display relevant information about an `EL` object.
+
+```{r}
+fit_mean
+```
+
+The asymptotic chi-square statistic is displayed, along with the associated
+degrees of freedom and the \(p\) value.
+
+Next, we consider an infeasible parameter value `c(1, 0.5)` outside the convex 
+hull of the data to show how `el_control()` interacts with the model fitting
+functions through `control` argument. The evaluation algorithm continues until 
+the iteration reaches `maxit_l` or the negative empirical log-likelihood ratio 
+exceeds `th`. Setting a large `th` for the infeasible value, we observe that the
+algorithm hits the `maxit` with each element of `lambda` diverging quickly.
+
+```{r}
+ctrl <- el_control(maxit_l = 50, th = 10000)
+fit2_mean <- el_mean(data, par = c(1, 0.5), control = ctrl)
+logL(fit2_mean)
+logLR(fit2_mean)
+getOptim(fit2_mean)
+```
+
+In addition, melt contains another function `el_eval()` to perform the EL 
+evaluation for other general estimating functions.
+
+```{r}
+mu <- 0
+sigma <- 1
+set.seed(123526)
+x <- rnorm(100)
+g <- matrix(c(x - mu, (x - mu)^2 - sigma^2), ncol = 2)
+fit_eval <- el_eval(g)
+fit_eval$pval
+```
+
+
+## Linear regression analysis
+
+A similar process applies to the other model fitting functions, except that
+`el_lm()` and `el_glm()` require a formula object for model specification. We 
+illustrate the use of `el_lm()` for regression analysis with the crime rates 
+data `UScrime` available in MASS. Here we update the control parameters for 
+significance tests of the coefficients.
+
+```{r}
+data("UScrime", package = "MASS")
+ctrl <- el_control(maxit = 1000, nthreads = 2)
+(fit_lm <- el_lm(y ~ Pop + Ineq, data = UScrime, control = ctrl))
+```
+
+The `print()` method also applies and shows the MELE, the overall model test
+result, and the convergence status. The estimates are obtained from `lm.fit()`.
+The hypothesis for the overall test is that all the parameters except the 
+intercept are zero. The convergence status shows that a constrained optimization 
+is performed in testing the hypothesis. The EL evaluation applies to the test 
+and the convergence status if the model does not include an intercept.
+The large chi-square value above implies that the data do not support the
+hypothesis, regardless of the convergence. 
+
+**Note that failure to converge does not necessarily indicate unreliable test 
+results. Most commonly, the algorithm fails to converge if the additional 
+constraint imposed by a hypothesis is incompatible with the convex hull 
+constraint.** The control parameters affect the test results as well. The 
+`summary()` method reports more details, such as the results of significance 
+tests, where each test involves solving a constrained EL problem.
+
+```{r}
+summary(fit_lm)
+```
+
+These tests are all asymptotically pivotal without explicit studentization.
+As a result, the output does not have standard errors.
+
+By iteratively solving constrained EL problems for a grid of parameter values,
+confidence intervals for the parameters can be calculated with `confint()`.
+The chi-square calibration is the default, but the user can specify a critical
+value `cv()` optionally. Below we calculate asymptotic 95% confidence intervals.
+
+```{r}
+confint(fit_lm)
+```
+
+Similarly, we obtain confidence regions for two parameters with `confreg()`.
+
+
+## Hypothesis testing
+
+Now we consider `elt()` for hypothesis testing, where the arguments `rhs` and 
+`lhs` define a linear hypothesis. Either one or the other must be provided. The 
+argument `lhs` takes a numeric `matrix` or a `vector`. Alternatively, a 
+character `vector` can be supplied to symbolically specify a hypothesis, which 
+is convenient when there are many variables. When `lhs` is `NULL`, it performs 
+the EL evaluation at `rhs` When `rhs` is `NULL`, on the other hand, `rhs` is set 
+to the zero vector automatically, and the EL optimization is performed with 
+`lhs`. Technically, `elt()` can reproduce the test results from `fit_mean()`.
+Note the equivalence between the optimization results.
+
+```{r}
+elt_mean <- elt(fit_mean, rhs = c(0, 0.5))
+all.equal(getOptim(elt_mean), getOptim(fit_mean))
+elt_lm <- elt(fit_lm, lhs = c("Pop", "Ineq"))
+all.equal(getOptim(elt_lm), getOptim(fit_lm))
+```
+
+In addition to specifying an arbitrary linear hypothesis through `rhs` and 
+`lhs`, extra arguments `alpha` and `calibrate` expand options for testing. The 
+argument `alpha` controls the significance level determining the critical value, 
+and `calibrate` chooses the calibration method. We apply the \({F}\) and 
+bootstrap calibrations to `fit_mean()` at a significance level of 0.05. The 
+number of threads is increased to four with 100000 bootstrap replicates in 
+`el_control()`.
+
+```{r}
+ctrl <- el_control(
+  maxit = 10000, tol = 1e-04, nthreads = 4, b = 100000, step = 1e-05
+)
+(elt_mean_f <- elt(fit_mean,
+  rhs = c(0, 0.5), calibrate = "F", control = ctrl
+))
+(elt_mean_boot <- elt(fit_mean,
+  rhs = c(0, 0.5), calibrate = "boot", control = ctrl
+))
+```
+
+
+## Multiple testing
+
+We illustrate performing multiple comparisons and constructing simultaneous 
+confidence intervals with the `thiamethoxam` data, a `data.frame` with 165 
+observations and 11 variables. We fit a quasi-Poisson regression model with a 
+log link function using `el_glm()` to obtain a `QGLM` model object.
+
+```{r}
+data("thiamethoxam")
+fit_glm <- el_glm(visit ~ trt + var + fruit + defoliation,
+  family = quasipoisson(link = "log"), data = thiamethoxam,
+  control = ctrl
+)
+print(summary(fit_glm), width.cutoff = 50)
+```
+
+We assess the significance of `trt` by testing whether the coefficients are all 
+zero. The output of `summary()` reports a small \({p}\) value with a different 
+solution from the overall model test.
+
+```{r}
+elt_glm <- elt(fit_glm, lhs = c("trtSpray", "trtFurrow", "trtSeed"))
+summary(elt_glm)
+```
+
+Finally, we extend the framework to multiple testing with `elmt()`, which can be directly applied to the fitted model object. Its syntax is similar to `elt()`, 
+where `rhs` and `lhs` now specify multiple hypotheses. For general hypotheses 
+involving separate matrices, `elmt()` accepts `list` objects for `rhs` and 
+`lhs`. The `elmt()` function employs a multivariate chi-square calibration 
+technique based on Monte Carlo simulations to determine the common critical 
+value. Details of multiple testing procedures are provided in @kim2023empirical.
+Continuing on the previous test result, we perform comparisons with the control 
+with the overall significance level at 0.05.
+
+```{r}
+elmt_glm <- elmt(fit_glm, lhs = list("trtSpray", "trtFurrow", "trtSeed"))
+summary(elmt_glm)
+```
+
+Note the use of a `list` for `lhs` by `elmt()`. While a character `vector` `lhs` 
+acts as a single hypothesis for `elt()`, elements of `lhs` in `elmt()` define 
+distinct hypotheses for convenience. The `Df` column shows the marginal 
+chi-square degrees of freedom for each hypothesis. For an object of class 
+`ELMT`, `confint()` uses the common critical value computed by `elmt()`.
+
+```{r}
+confint(elmt_glm)
+```
+
+
+## References

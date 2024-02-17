@@ -11,18 +11,20 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   dpi = 300
 )
 ```
-```{r setup, echo=FALSE}
+```{r, echo=FALSE}
 library(melt, warn.conflicts = FALSE)
 ```
+
 ## Fitting an `EL` object
-The melt package provides several functions to construct an `EL` object or an object that inherits from `EL`:
+The melt package provides several functions to construct an `EL` object or an 
+object that inherits from `EL`:
 
 * `el_mean()` for the mean.
 * `el_sd()` for the standard deviation.
@@ -30,34 +32,46 @@ The melt package provides several functions to construct an `EL` object or an ob
 * `el_glm()` for generalized linear models.
 
 We illustrate the usage of `el_mean()` with the `faithful` data set. 
-```{r, eval = TRUE}
+
+```{r, eval=TRUE}
 data("faithful")
 str(faithful)
 summary(faithful)
 ```
-Suppose we are interested in evaluating empirical likelihood at (3.5, 70).
+
+Suppose we are interested in evaluating empirical likelihood at `c(3.5, 70)`.
+
 ```{r}
 fit <- el_mean(faithful, par = c(3.5, 70))
 class(fit)
 showClass("EL")
 ```
-The `faithful` data frame is coerced to a numeric matrix. Simple print method shows essential information on `fit`. 
+
+The `faithful` data frame is coerced to a numeric matrix. Simple print method 
+shows essential information on `fit`. 
+
 ```{r}
 fit
 ```
-Note that the maximum empirical likelihood estimates are the same as the sample average. 
-The chi-square value shown corresponds to the minus twice the empirical log-likelihood ratio. 
-It has an asymptotic chi-square distribution of 2 degrees of freedom under the null hypothesis. 
-Hence the $p$-value here is not exact. 
-The convergence status at the bottom can be used to check the convex hull constraint. 
 
-Weighted data can be handled by supplying the `weights` argument. 
-For non-`NULL` `weights`, weighted empirical likelihood is computed. 
-Any valid `weights` is re-scaled for internal computation to add up to the total number of observations. 
-For simplicity, we use `faithful$waiting` as our weight vector.
+Note that the maximum empirical likelihood estimates are the same as the sample 
+average. The chi-square value shown corresponds to the minus twice the empirical
+log-likelihood ratio. It has an asymptotic chi-square distribution of 2 degrees 
+of freedom under the null hypothesis. Hence the $p$-value here is not exact. The
+convergence status at the bottom can be used to check the convex hull 
+constraint. 
+
+Weighted data can be handled by supplying the `weights` argument. For non-`NULL`
+`weights`, weighted empirical likelihood is computed. Any valid `weights` is 
+re-scaled for internal computation to add up to the total number of 
+observations. For simplicity, we use `faithful$waiting` as our weight vector.
+
 ```{r}
 w <- faithful$waiting
 (wfit <- el_mean(faithful, par = c(3.5, 70), weights = w))
 ```
-We get different results, where the estimates are now the weighted sample average. 
-The chi-square value and the associated $p$-value are based on the same limit theorem, but care must be taken when interpreting the results since they are largely affected by the limiting behavior of the weights.
+
+We get different results, where the estimates are now the weighted sample 
+average. The chi-square value and the associated $p$-value are based on the same 
+limit theorem, but care must be taken when interpreting the results since they 
+are largely affected by the limiting behavior of the weights.

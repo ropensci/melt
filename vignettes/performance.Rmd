@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-```{r, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -18,21 +18,31 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-All the tests were done on an Arch Linux x86_64 machine with an Intel(R) Core(TM) i7 CPU (1.90GHz).
-We first load the necessary packages.
-```{r setup}
-library(melt)
-library(microbenchmark)
-library(ggplot2)
+```{r, echo=FALSE}
+library(melt, warn.conflicts = FALSE)
 ```
 
-## Empirical likelihood computation
-We show the performance of computing empirical likelihood with `el_mean()`.
-We test the computation speed with simulated data sets in two different settings: 1) the number of observations increases with the number of parameters fixed, and 2) the number of parameters increases with the number of observations fixed. 
+All the tests were done on an Arch Linux x86_64 machine with an Intel(R) 
+Core(TM) i7 CPU (1.90GHz).
 
-### Increasing the number of observations
-We fix the number of parameters at $p = 10$, and simulate the parameter value and $n \times p$ matrices using `rnorm()`. In order to ensure convergence with a large $n$, we set a large threshold value using `el_control()`.
+
+## Empirical likelihood computation
+
+We show the performance of computing empirical likelihood with `el_mean()`. We 
+test the computation speed with simulated data sets in two different settings: 
+1) the number of observations increases with the number of parameters fixed, 
+and 2) the number of parameters increases with the number of observations fixed. 
+
+
+## Increasing the number of observations
+
+We fix the number of parameters at \(p = 10\), and simulate the parameter value 
+and \(n \times p\) matrices using `rnorm()`. In order to ensure convergence with 
+a large \(n\), we set a large threshold value using `el_control()`.
+
 ```{r}
+library(ggplot2)
+library(microbenchmark)
 set.seed(3175775)
 p <- 10
 par <- rnorm(p, sd = 0.1)
@@ -46,13 +56,17 @@ result <- microbenchmark(
 ```
 
 Below are the results:
+
 ```{r message=FALSE}
 result
 autoplot(result)
 ```
 
-### Increasing the number of parameters
-This time we fix the number of observations at $n = 1000$, and evaluate empirical likelihood at zero vectors of different sizes.
+
+## Increasing the number of parameters\
+
+This time we fix the number of observations at \(n = 1000\), and evaluate 
+empirical likelihood at zero vectors of different sizes.
 ```{r}
 n <- 1000
 result2 <- microbenchmark(
@@ -79,5 +93,7 @@ result2 <- microbenchmark(
 result2
 autoplot(result2)
 ```
-On average, evaluating empirical likelihood with a 100000×10 or 1000×400 matrix at a parameter value satisfying the convex hull constraint takes less than a second.
 
+On average, evaluating empirical likelihood with a 100000×10 or 1000×400 matrix 
+at a parameter value satisfying the convex hull constraint takes less than a 
+second.
