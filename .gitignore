@@ -11,5 +11,6 @@ data-raw
 ignore
 inst/doc
 docs
-renv/
+renv
 renv.lock
+revdep

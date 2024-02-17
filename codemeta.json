@@ -2,19 +2,19 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "melt",
-  "description": "Performs multiple empirical likelihood tests for linear and generalized linear models. The package offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' C++ library and 'RcppEigen' interface, with OpenMP for parallel computation. Details of the testing procedures are given in Kim, MacEachern, and Peruggia (2023) <doi:10.1080/10485252.2023.2206919>. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.",
+  "description": "Performs multiple empirical likelihood tests. It offers an easy-to-use interface and flexibility in specifying hypotheses and calibration methods, extending the framework to simultaneous inferences. The core computational routines are implemented using the 'Eigen' 'C++' library and 'RcppEigen' interface, with 'OpenMP' for parallel computation. Details of the testing procedures are provided in Kim, MacEachern, and Peruggia (2023) <doi:10.1080/10485252.2023.2206919>. A companion paper by Kim, MacEachern, and Peruggia (2024) <doi:10.18637/jss.v108.i05> is available for further information. This work was supported by the U.S. National Science Foundation under Grants No. SES-1921523 and DMS-2015552.",
   "name": "melt: Multiple Empirical Likelihood Tests",
-  "relatedLink": "https://docs.ropensci.org/melt/",
+  "relatedLink": ["https://docs.ropensci.org/melt/", "https://CRAN.R-project.org/package=melt"],
   "codeRepository": "https://github.com/ropensci/melt",
   "issueTracker": "https://github.com/ropensci/melt/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "1.10.0.1",
+  "version": "1.11.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.3.0 (2023-04-21)",
+  "runtimePlatform": "R version 4.3.2 (2023-10-31)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -51,6 +51,14 @@
       "familyName": "Peruggia"
     }
   ],
+  "copyrightHolder": [
+    {
+      "@type": "Person",
+      "givenName": "Eunseop",
+      "familyName": "Kim",
+      "email": "markean@pm.me"
+    }
+  ],
   "maintainer": [
     {
       "@type": "Person",
@@ -71,6 +79,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=covr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "dplyr",
+      "name": "dplyr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
     {
       "@type": "SoftwareApplication",
@@ -98,6 +118,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "MASS",
+      "name": "MASS",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=MASS"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "microbenchmark",
       "name": "microbenchmark",
       "provider": {
@@ -107,18 +139,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=microbenchmark"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "R.rsp",
-      "name": "R.rsp",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=R.rsp"
     },
     {
       "@type": "SoftwareApplication",
@@ -211,5 +231,56 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "345824.266KB"
+  "fileSize": "305536.842KB",
+  "citation": [
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Eunseop",
+          "familyName": "Kim",
+          "email": "kim.7302@osu.edu"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Steven", "N."],
+          "familyName": "MacEachern",
+          "email": "snm@stat.osu.edu"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Mario",
+          "familyName": "Peruggia",
+          "email": "peruggia@stat.osu.edu"
+        }
+      ],
+      "name": "{melt}: Multiple Empirical Likelihood Tests in {R}",
+      "identifier": "10.18637/jss.v108.i05",
+      "pagination": "1--33",
+      "@id": "https://doi.org/10.18637/jss.v108.i05",
+      "sameAs": "https://doi.org/10.18637/jss.v108.i05",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "issueNumber": "5",
+        "datePublished": "2024",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "108",
+          "name": "Journal of Statistical Software"
+        }
+      }
+    }
+  ],
+  "releaseNotes": "https://github.com/ropensci/melt/blob/master/NEWS.md",
+  "readme": "https://github.com/ropensci/melt/blob/main/README.md",
+  "contIntegration": ["https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml", "https://github.com/ropensci/melt/actions?query=workflow%3Apkgcheck", "https://app.codecov.io/gh/ropensci/melt?branch=master"],
+  "developmentStatus": "https://www.repostatus.org/#active",
+  "review": {
+    "@type": "Review",
+    "url": "https://github.com/ropensci/software-review/issues/550",
+    "provider": "https://ropensci.org"
+  },
+  "keywords": ["cran", "r", "r-package", "rstats"]
 }
