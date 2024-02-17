@@ -62,6 +62,9 @@
     <li>
       <a href="../articles/performance.html">Performance</a>
     </li>
+    <li>
+      <a href="../articles/usage.html">Using melt</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -132,8 +135,8 @@ Kim</h4>
 <span><span class="co">#&gt;  Mean   :3.488   Mean   :70.9  </span></span>
 <span><span class="co">#&gt;  3rd Qu.:4.454   3rd Qu.:82.0  </span></span>
 <span><span class="co">#&gt;  Max.   :5.100   Max.   :96.0</span></span></code></pre></div>
-<p>Suppose we are interested in evaluating empirical likelihood at (3.5,
-70).</p>
+<p>Suppose we are interested in evaluating empirical likelihood at
+<code>c(3.5, 70)</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">faithful</span>, par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
