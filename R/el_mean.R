@@ -55,15 +55,12 @@ el_mean <- function(x,
                     par,
                     weights = NULL,
                     control = el_control()) {
-  x <- as.matrix(x, rownames.force = TRUE) |>
-    assert_matrix(
-      mode = "numeric",
-      any.missing = FALSE,
-      all.missing = FALSE,
-      min.rows = 2L,
-      min.cols = 1L
-    ) |>
-    assert_numeric(finite = TRUE)
+  x <- as.matrix(x, rownames.force = TRUE)
+  assert_matrix(x,
+    mode = "numeric", any.missing = FALSE, all.missing = FALSE, min.rows = 2L,
+    min.cols = 1L
+  )
+  assert_numeric(x, finite = TRUE)
   stopifnot(
     "`x` must must have larger number of rows than columns." =
       nrow(x) > ncol(x),

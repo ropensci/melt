@@ -1,25 +1,43 @@
-#' Validate `weights`
+#' Validate `calibrate`
 #'
-#' Validate `weights` in [el_eval()], [el_glm()], [el_lm()], and [el_mean()].
+#' Validate `calibrate` in [elt()].
 #'
-#' @param weights An optional numeric vector.
-#' @param nw A single integer.
-#' @return A numeric vector.
+#' @param calibrate A single character.
+#' @return A single character.
 #' @noRd
-validate_weights <- function(weights, n) {
-  if (is.null(weights)) {
-    return(numeric(length = 0L))
+validate_calibrate <- function(calibrate) {
+  assert_string(calibrate)
+  table <- c("chisq", "boot", "f")
+  calibrate <- table[pmatch(tolower(calibrate), table = table)]
+  if (isTRUE(is.na(calibrate))) {
+    stop(gettextf(
+      "`calibrate` must be one of %s, %s, or %s.",
+      dQuote("chisq"), dQuote("boot"), dQuote("f")
+    ), domain = NA)
   }
-  stopifnot(
-    "`weights` must be a finite numeric vector." =
-      isTRUE(is.numeric(weights) && all(is.finite(weights))),
-    "`weights` must be all positive." = all(weights > 0)
-  )
-  if (length(weights) != n) {
-    stop(gettextf("Length of `weights` must be %d.", n, domain = NA))
+  calibrate
+}
+
+#' Validate `cv`
+#'
+#' Validate `cv` in [confint()] and [confreg()].
+#'
+#' @param cv A single numeric.
+#' @param th A single numeric.
+#' @return A single numeric.
+#' @noRd
+validate_cv <- function(cv, th) {
+  assert_number(cv, lower = .Machine$double.eps, finite = TRUE)
+  if (is.null(th)) {
+    if (cv > 400) {
+      stop("`cv` is too large compared to `th`.")
+    }
+  } else {
+    if (cv > 2 * th) {
+      stop("`cv` is too large compared to `th`.")
+    }
   }
-  weights <- (n / sum(weights)) * weights
-  weights
+  cv
 }
 
 #' Validate `family`
@@ -34,7 +52,7 @@ validate_family <- function(family) {
   l <- family$link
   switch(f,
     "gaussian" = {
-      if (!any(l == c("identity", "log", "inverse"))) {
+      if (isFALSE(any(l == c("identity", "log", "inverse")))) {
         stop(gettextf(
           "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)
@@ -42,7 +60,7 @@ validate_family <- function(family) {
       }
     },
     "binomial" = {
-      if (!any(l == c("logit", "probit", "log"))) {
+      if (isFALSE(any(l == c("logit", "probit", "log")))) {
         stop(gettextf(
           "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)
@@ -50,7 +68,7 @@ validate_family <- function(family) {
       }
     },
     "poisson" = {
-      if (!any(l == c("log", "identity", "sqrt"))) {
+      if (isFALSE(any(l == c("log", "identity", "sqrt")))) {
         stop(gettextf(
           "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)
@@ -58,7 +76,7 @@ validate_family <- function(family) {
       }
     },
     "quasipoisson" = {
-      if (!any(l == c("log", "sqrt", "identity"))) {
+      if (isFALSE(any(l == c("log", "sqrt", "identity")))) {
         stop(gettextf(
           "`el_glm()` does not support %s family with %s link.",
           sQuote(f), sQuote(l)
@@ -70,6 +88,48 @@ validate_family <- function(family) {
     )
   )
   paste(f, l, sep = "_")
+}
+
+#' Validate `rhs` and `lhs`
+#'
+#' Validate `rhs` and `lhs` in [elmt()].
+#'
+#' @param rhs A numeric vector (column matrix) or a list of numeric vectors.
+#' @param lhs A numeric matrix or a list of numeric matrices.
+#' @param p A single integer.
+#' @param pnames An optional character vector.
+#' @return A list.
+#' @noRd
+validate_hypotheses <- function(rhs, lhs, p, pnames) {
+  if (isTRUE(is.null(rhs) && is.null(lhs))) {
+    stop("either `rhs` or `lhs` must be provided.")
+  } else if (is.null(lhs)) {
+    rhs <- validate_rhses(rhs, p)
+    lhs <- matrix(rep(diag(1, nrow = p, ncol = p), attr(rhs, "m")),
+      ncol = p,
+      byrow = TRUE
+    )
+    q <- attr(rhs, "q")
+    m <- attr(rhs, "m")
+  } else if (is.null(rhs)) {
+    lhs <- validate_lhses(lhs, p, pnames)
+    rhs <- rep(0, nrow(lhs))
+    q <- attr(lhs, "q")
+    m <- attr(lhs, "m")
+  } else {
+    rhs <- validate_rhses(rhs, p)
+    lhs <- validate_lhses(lhs, p, pnames)
+    q <- attr(lhs, "q")
+    m <- attr(lhs, "m")
+    stopifnot(
+      "`rhs` and `lhs` have incompatible dimensions." =
+        isTRUE(all.equal(attr(rhs, "q"), q)) && attr(rhs, "m") == m
+    )
+  }
+  stopifnot(
+    "`rhs` and `lhs` have incompatible dimensions." = length(rhs) == nrow(lhs)
+  )
+  list(r = rhs, l = lhs, q = q, m = m)
 }
 
 #' Validate `rhs` and `lhs`
@@ -96,55 +156,6 @@ validate_hypothesis <- function(rhs, lhs, p, pnames) {
     rhs <- validate_rhs(rhs, nrow(lhs))
   }
   list(l = lhs, r = rhs)
-}
-
-#' Validate `rhs`
-#'
-#' Validate `rhs` in [elt()].
-#'
-#' @param rhs A numeric vector or a column matrix.
-#' @param p A single integer.
-#' @return A numeric vector.
-#' @noRd
-validate_rhs <- function(rhs, p) {
-  UseMethod("validate_rhs", rhs)
-}
-
-#' Validate `rhs`
-#'
-#' Validate `rhs` in [elt()].
-#'
-#' @param rhs A numeric vector.
-#' @param p A single integer.
-#' @return A numeric vector.
-#' @noRd
-validate_rhs.numeric <- function(rhs, p) {
-  stopifnot("`rhs` must be a finite numeric vector." = all(is.finite(rhs)))
-  if (length(rhs) != p) {
-    stop(gettextf("Length of `rhs` must be %d.", p, domain = NA))
-  }
-  rhs
-}
-
-#' Validate `rhs`
-#'
-#' Validate `rhs` in [elt()].
-#'
-#' @param rhs A numeric matrix.
-#' @param p A single integer.
-#' @return A numeric vector.
-#' @noRd
-validate_rhs.matrix <- function(rhs, p) {
-  stopifnot(
-    "`rhs` must be a finite numeric vector." =
-      ncol(rhs) == 1L && all(is.finite(rhs))
-  )
-  if (nrow(rhs) != p) {
-    stop(gettextf("Length of `rhs` must be %d.", p, domain = NA))
-  }
-  attr(rhs, "dim") <- NULL
-  message("`rhs` is converted to a vector.")
-  rhs
 }
 
 #' Validate `lhs`
@@ -220,83 +231,169 @@ validate_lhs.character <- function(lhs, p, pnames) {
 #'
 #' Validate `lhs` in [elt()].
 #'
-#' @param lhs A numeric vector.
+#' @param lhs A numeric matrix.
 #' @param p A single integer.
-#' @param pnames An optional character vector.
 #' @return A numeric matrix.
 #' @noRd
-validate_lhs.numeric <- function(lhs, p, pnames) {
-  stopifnot(
-    "`lhs` must be a finite numeric vector." = all(is.finite(lhs)),
-    "`lhs` must have full row rank." = get_rank(lhs) == 1L
+validate_lhs.matrix <- function(lhs, p, pnames) {
+  assert_matrix(lhs,
+    mode = "numeric", any.missing = FALSE, all.missing = FALSE, min.rows = 1L,
+    ncols = p
   )
-  if (length(lhs) != p) {
-    stop(gettextf("Length of `lhs` must be %d.", p, domain = NA))
-  }
-  matrix(lhs, nrow = 1L)
+  assert_numeric(lhs, finite = TRUE)
+  stopifnot(
+    "`lhs` must have full row rank." =
+      isTRUE(nrow(lhs) <= p && get_rank(lhs) == nrow(lhs))
+  )
+  lhs
 }
 
 #' Validate `lhs`
 #'
 #' Validate `lhs` in [elt()].
 #'
-#' @param lhs A numeric matrix.
+#' @param lhs A numeric vector.
 #' @param p A single integer.
+#' @param pnames An optional character vector.
 #' @return A numeric matrix.
 #' @noRd
-validate_lhs.matrix <- function(lhs, p, pnames) {
-  q <- nrow(lhs)
-  stopifnot(
-    "`lhs` must be a finite numeric matrix." = all(is.finite(lhs)),
-    "`lhs` must have full row rank." =
-      isTRUE(q >= 1L && q <= p && get_rank(lhs) == q)
+validate_lhs.numeric <- function(lhs, p, pnames) {
+  assert_numeric(lhs,
+    finite = TRUE, any.missing = FALSE, all.missing = FALSE, len = p,
+    typed.missing = TRUE
   )
-  if (ncol(lhs) != p) {
-    stop(gettextf("`lhs` must have %d columns.", p, domain = NA))
-  }
-  lhs
+  stopifnot(
+    "`lhs` must have full row rank." = get_rank(lhs) == 1L
+  )
+  matrix(lhs, nrow = 1L)
 }
 
-#' Validate `rhs` and `lhs`
+#' Validate `lhs`
 #'
-#' Validate `rhs` and `lhs` in [elmt()].
+#' Validate `lhs` in [elmt()].
 #'
-#' @param rhs A numeric vector (column matrix) or a list of numeric vectors.
 #' @param lhs A numeric matrix or a list of numeric matrices.
 #' @param p A single integer.
 #' @param pnames An optional character vector.
+#' @return A numeric matrix.
+#' @noRd
+validate_lhses <- function(lhs, p, pnames) {
+  UseMethod("validate_lhses", lhs)
+}
+
+#' Validate `lhs`
+#'
+#' Validate `lhs` in [elmt()].
+#'
+#' @param lhs A list of numeric matrices.
+#' @param p A single integer.
+#' @param pnames An optional character vector.
+#' @return A numeric matrix.
+#' @noRd
+validate_lhses.list <- function(lhs, p, pnames) {
+  m <- length(lhs)
+  stopifnot(
+    "`lhs` must specify multiple hypotheses." = m >= 2L,
+    "Invalid `lhs` specified." = all(vapply(lhs, FUN = \(x) {
+      isTRUE(is.matrix(x) || is.character(x) || is.numeric(x))
+    }, FUN.VALUE = TRUE))
+  )
+  lhs <- lapply(lhs, \(x) {
+    validate_lhs(x, p, pnames)
+  })
+  out <- do.call(rbind, lhs)
+  attr(out, "q") <- c(0L, cumsum(vapply(lhs, FUN = nrow, FUN.VALUE = 1L)))
+  attr(out, "m") <- m
+  out
+}
+
+#' Validate `lhs`
+#'
+#' Validate `lhs` in [elmt()].
+#'
+#' @param lhs A numeric matrix.
+#' @param p A single integer.
+#' @param pnames An optional character vector.
+#' @return A numeric matrix.
+#' @noRd
+validate_lhses.matrix <- function(lhs, p, pnames) {
+  assert_matrix(lhs,
+    mode = "numeric", any.missing = FALSE, all.missing = FALSE, min.rows = 2L,
+    ncols = p
+  )
+  assert_numeric(lhs, finite = TRUE)
+  m <- nrow(lhs)
+  stopifnot(
+    "Every row of `lhs` must be a nonzero vector." =
+      all(apply(lhs, 1L, get_rank))
+  )
+  attr(lhs, "q") <- c(0L, cumsum(rep(1L, m)))
+  attr(lhs, "m") <- m
+  lhs
+}
+
+#' Validate `optim`
+#'
+#' Validate `optim` in model objects.
+#'
+#' @param optim A list of optimization results.
 #' @return A list.
 #' @noRd
-validate_hypotheses <- function(rhs, lhs, p, pnames) {
-  if (isTRUE(is.null(rhs) && is.null(lhs))) {
-    stop("either `rhs` or `lhs` must be provided.")
-  } else if (is.null(lhs)) {
-    rhs <- validate_rhses(rhs, p)
-    lhs <- matrix(rep(diag(1, nrow = p, ncol = p), attr(rhs, "m")),
-      ncol = p,
-      byrow = TRUE
-    )
-    q <- attr(rhs, "q")
-    m <- attr(rhs, "m")
-  } else if (is.null(rhs)) {
-    lhs <- validate_lhses(lhs, p, pnames)
-    rhs <- rep(0, nrow(lhs))
-    q <- attr(lhs, "q")
-    m <- attr(lhs, "m")
-  } else {
-    rhs <- validate_rhses(rhs, p)
-    lhs <- validate_lhses(lhs, p, pnames)
-    q <- attr(lhs, "q")
-    m <- attr(lhs, "m")
-    stopifnot(
-      "`rhs` and `lhs` have incompatible dimensions." =
-        isTRUE(all.equal(attr(rhs, "q"), q)) && attr(rhs, "m") == m
-    )
-  }
+validate_optim <- function(optim) {
   stopifnot(
-    "`rhs` and `lhs` have incompatible dimensions." = length(rhs) == nrow(lhs)
+    "NaN/Inf occured during the computation." =
+      test_numeric(optim$lambda,
+        finite = TRUE, any.missing = FALSE, all.missing = FALSE,
+        typed.missing = TRUE
+      )
   )
-  list(r = rhs, l = lhs, q = q, m = m)
+  optim
+}
+
+#' Validate `rhs`
+#'
+#' Validate `rhs` in [elt()].
+#'
+#' @param rhs A numeric vector or a column matrix.
+#' @param p A single integer.
+#' @return A numeric vector.
+#' @noRd
+validate_rhs <- function(rhs, p) {
+  UseMethod("validate_rhs", rhs)
+}
+
+#' Validate `rhs`
+#'
+#' Validate `rhs` in [elt()].
+#'
+#' @param rhs A numeric matrix.
+#' @param p A single integer.
+#' @return A numeric vector.
+#' @noRd
+validate_rhs.matrix <- function(rhs, p) {
+  assert_matrix(rhs,
+    mode = "numeric", any.missing = FALSE, all.missing = FALSE, nrows = p,
+    ncols = 1L
+  )
+  assert_numeric(rhs, finite = TRUE)
+  attr(rhs, "dim") <- NULL
+  message("`rhs` is converted to a vector.")
+  rhs
+}
+
+#' Validate `rhs`
+#'
+#' Validate `rhs` in [elt()].
+#'
+#' @param rhs A numeric vector.
+#' @param p A single integer.
+#' @return A numeric vector.
+#' @noRd
+validate_rhs.numeric <- function(rhs, p) {
+  assert_numeric(rhs,
+    finite = TRUE, any.missing = FALSE, all.missing = FALSE, len = p,
+    typed.missing = TRUE
+  )
 }
 
 #' Validate `rhs`
@@ -345,10 +442,11 @@ validate_rhses.list <- function(rhs, p) {
 #' @return A numeric vector.
 #' @noRd
 validate_rhses.matrix <- function(rhs, p) {
-  stopifnot(
-    "`rhs` must be a finite numeric vector." =
-      isTRUE((ncol(rhs) == 1L) && all(is.finite(rhs)))
+  assert_matrix(rhs,
+    mode = "numeric", any.missing = FALSE, all.missing = FALSE, min.rows = 1L,
+    ncols = 1L
   )
+  assert_numeric(rhs, finite = TRUE)
   attr(rhs, "dim") <- NULL
   m <- length(rhs)
   attr(rhs, "q") <- c(0L, cumsum(rep(1L, m)))
@@ -365,8 +463,9 @@ validate_rhses.matrix <- function(rhs, p) {
 #' @return A numeric vector.
 #' @noRd
 validate_rhses.numeric <- function(rhs, p) {
-  stopifnot(
-    "`rhs` must be a finite numeric vector." = all(is.finite(rhs))
+  assert_numeric(rhs,
+    finite = TRUE, any.missing = FALSE, all.missing = FALSE,
+    typed.missing = TRUE
   )
   m <- length(rhs)
   attr(rhs, "q") <- c(0L, cumsum(rep(1L, m)))
@@ -374,192 +473,23 @@ validate_rhses.numeric <- function(rhs, p) {
   rhs
 }
 
-#' Validate `lhs`
+#' Validate `weights`
 #'
-#' Validate `lhs` in [elmt()].
+#' Validate `weights` in [el_eval()], [el_glm()], [el_lm()], [el_mean()], and
+#' [el_sd()].
 #'
-#' @param lhs A numeric matrix or a list of numeric matrices.
-#' @param p A single integer.
-#' @param pnames An optional character vector.
-#' @return A numeric matrix.
+#' @param weights An optional numeric vector.
+#' @param nw A single integer.
+#' @return A numeric vector.
 #' @noRd
-validate_lhses <- function(lhs, p, pnames) {
-  UseMethod("validate_lhses", lhs)
-}
-
-#' Validate `lhs`
-#'
-#' Validate `lhs` in [elmt()].
-#'
-#' @param lhs A numeric matrix.
-#' @param p A single integer.
-#' @param pnames An optional character vector.
-#' @return A numeric matrix.
-#' @noRd
-validate_lhses.matrix <- function(lhs, p, pnames) {
-  m <- nrow(lhs)
-  stopifnot(
-    "`lhs` must specify multiple hypotheses." = m >= 2L,
-    "`lhs` must be a finite numeric matrix." =
-      isTRUE(is.numeric(lhs) && all(is.finite(lhs))),
-    "Every row of `lhs` must be a nonzero vector." =
-      all(apply(lhs, 1L, get_rank))
-  )
-  if (ncol(lhs) != p) {
-    stop(gettextf("`lhs` must have %d columns.", p, domain = NA))
+validate_weights <- function(weights, n) {
+  if (is.null(weights)) {
+    return(numeric(length = 0L))
   }
-  attr(lhs, "q") <- c(0L, cumsum(rep(1L, m)))
-  attr(lhs, "m") <- m
-  lhs
-}
-
-#' Validate `lhs`
-#'
-#' Validate `lhs` in [elmt()].
-#'
-#' @param lhs A list of numeric matrices.
-#' @param p A single integer.
-#' @param pnames An optional character vector.
-#' @return A numeric matrix.
-#' @noRd
-validate_lhses.list <- function(lhs, p, pnames) {
-  m <- length(lhs)
-  stopifnot(
-    "`lhs` must specify multiple hypotheses." = m >= 2L,
-    "Invalid `lhs` specified." = all(vapply(lhs, FUN = \(x) {
-      isTRUE(is.matrix(x) || is.character(x) || is.numeric(x))
-    }, FUN.VALUE = TRUE))
+  assert_numeric(weights,
+    lower = 0, finite = TRUE, any.missing = FALSE, all.missing = FALSE, len = n,
+    typed.missing = TRUE
   )
-  lhs <- lapply(lhs, \(x) {
-    validate_lhs(x, p, pnames)
-  })
-  out <- do.call(rbind, lhs)
-  attr(out, "q") <- c(0L, cumsum(vapply(lhs, FUN = nrow, FUN.VALUE = 1L)))
-  attr(out, "m") <- m
-  out
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#' Validate `calibrate`
-#'
-#' Validate `calibrate` in [elt()].
-#'
-#' @param calibrate A single character.
-#' @return A single character.
-#' @noRd
-validate_calibrate <- function(calibrate) {
-  # stopifnot(
-  #   "`calibrate` must be a single character." =
-  #     isTRUE(is.character(calibrate) && length(calibrate) == 1L)
-  # )
-  assert_string(calibrate)
-  table <- c("chisq", "boot", "f")
-  calibrate <- table[pmatch(tolower(calibrate), table = table)]
-  if (isTRUE(is.na(calibrate))) {
-    stop(gettextf(
-      "`calibrate` must be one of %s, %s, or %s.",
-      dQuote("chisq"), dQuote("boot"), dQuote("f")
-    ), domain = NA)
-  }
-  calibrate
-}
-
-#' Validate `cv`
-#'
-#' Validate `cv` in [confint()] and [confreg()].
-#'
-#' @param cv A single numeric.
-#' @param th A single numeric.
-#' @return A single numeric.
-#' @noRd
-validate_cv <- function(cv, th) {
-  assert_number(cv, lower = .Machine$double.eps, finite = TRUE)
-  if (is.null(th)) {
-    if (cv > 400) {
-      stop("`cv` is too large compared to `th`.")
-    }
-  } else {
-    if (cv > 2 * th) {
-      stop("`cv` is too large compared to `th`.")
-    }
-  }
-  cv
-}
-
-#' Validate `optim`
-#'
-#' Validate `optim` in model objects.
-#'
-#' @param optim A list of optimization results.
-#' @return A list.
-#' @noRd
-validate_optim <- function(optim) {
-  stopifnot(
-    "NaN/Inf occured during the computation." =
-      test_numeric(optim$lambda,
-        finite = TRUE,
-        any.missing = FALSE,
-        all.missing = FALSE,
-        typed.missing = TRUE
-      )
-  )
-  optim
+  weights <- (n / sum(weights)) * weights
+  weights
 }

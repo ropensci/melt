@@ -1,5 +1,10 @@
 *.aux
-*.log
-*.tex
 *.html
+*.log
+*.png
 *.R
+*.RData
+*.rdb
+*.rdx
+*.tex
+__packages
