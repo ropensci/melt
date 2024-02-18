@@ -72,33 +72,6 @@ validate_family <- function(family) {
   paste(f, l, sep = "_")
 }
 
-#' Validate `calibrate`
-#'
-#' Validate `calibrate` in [elt()].
-#'
-#' @param calibrate A single character.
-#' @return A single character.
-#' @noRd
-validate_calibrate <- function(calibrate) {
-  stopifnot(
-    "`calibrate` must be a single character." =
-      isTRUE(is.character(calibrate) && length(calibrate) == 1L)
-  )
-  table <- c("chisq", "boot", "f")
-  calibrate <- table[pmatch(tolower(calibrate), table = table)]
-  if (isTRUE(is.na(calibrate))) {
-    stop(gettextf(
-      "`calibrate` must be one of %s, %s, or %s.",
-      dQuote("chisq"), dQuote("boot"), dQuote("f")
-    ), domain = NA)
-  }
-  calibrate
-}
-
-
-
-
-
 #' Validate `rhs` and `lhs`
 #'
 #' Validate `rhs` and `lhs` in [elt()].
@@ -483,20 +456,70 @@ validate_lhses.list <- function(lhs, p, pnames) {
 
 
 
-#' Validate `alpha`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' Validate `calibrate`
 #'
-#' Validate `alpha` in [elt()] and [elmt()].
+#' Validate `calibrate` in [elt()].
 #'
-#' @param alpha A single numeric.
-#' @return A single numeric.
+#' @param calibrate A single character.
+#' @return A single character.
 #' @noRd
-validate_alpha <- function(alpha) {
-  stopifnot(
-    "`alpha` must be a finite single numeric." =
-      isTRUE(is.numeric(alpha) && length(alpha) == 1L && is.finite(alpha)),
-    "`alpha` must be between 0 and 1." = isTRUE(alpha > 0 && alpha < 1)
-  )
-  alpha
+validate_calibrate <- function(calibrate) {
+  # stopifnot(
+  #   "`calibrate` must be a single character." =
+  #     isTRUE(is.character(calibrate) && length(calibrate) == 1L)
+  # )
+  assert_string(calibrate)
+  table <- c("chisq", "boot", "f")
+  calibrate <- table[pmatch(tolower(calibrate), table = table)]
+  if (isTRUE(is.na(calibrate))) {
+    stop(gettextf(
+      "`calibrate` must be one of %s, %s, or %s.",
+      dQuote("chisq"), dQuote("boot"), dQuote("f")
+    ), domain = NA)
+  }
+  calibrate
 }
 
 #' Validate `cv`
@@ -540,7 +563,3 @@ validate_optim <- function(optim) {
   )
   optim
 }
-
-
-
-

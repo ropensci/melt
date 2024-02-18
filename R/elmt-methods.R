@@ -30,7 +30,7 @@ setMethod("elmt", "EL", function(object,
   estimates <- lapply(seq_along(qh), \(x) {
     drop(h$l %*% coef(object))[qh[x]:qt[x]]
   })
-  alpha <- validate_alpha(alpha)
+  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l

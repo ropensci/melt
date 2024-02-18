@@ -29,12 +29,6 @@ test_that("Invalid `lhs`.", {
   )))
 })
 
-test_that("Invalid `alpha`.", {
-  fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
-  rhs <- list(c(0, 0, 0), c(1, 1, 1))
-  expect_error(elmt(fit, rhs = rhs, alpha = 1))
-})
-
 test_that("Invalid `control`.", {
   fit <- el_lm(mpg ~ cyl + disp, data = mtcars)
   rhs <- c(0, 0, 0)
