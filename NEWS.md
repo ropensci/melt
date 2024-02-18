@@ -1,3 +1,5 @@
+# melt (development version)
+
 # melt 1.11.0
 ## MINOR IMPROVEMENTS
 * Updated package vignette with the publication in the Journal of Statistical Software.
