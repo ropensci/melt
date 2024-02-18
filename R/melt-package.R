@@ -1,4 +1,7 @@
 ## usethis namespace: start
+#' @importFrom checkmate assert_int
+#' @importFrom checkmate assert_logical
+#' @importFrom checkmate assert_number
 #' @importFrom Rcpp sourceCpp
 #' @useDynLib melt, .registration = TRUE
 ## usethis namespace: end

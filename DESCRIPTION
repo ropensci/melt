@@ -27,6 +27,7 @@ BugReports: https://github.com/ropensci/melt/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    checkmate,
     graphics,
     methods,
     Rcpp,
