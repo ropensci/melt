@@ -1,24 +1,3 @@
-#' Validate `x`
-#'
-#' Validate `x` in [el_mean()].
-#'
-#' @param x A numeric matrix, or an object that can be coerced to a numeric
-#'   matrix.
-#' @return A numeric matrix.
-#' @noRd
-validate_x <- function(x) {
-  x <- as.matrix(x, rownames.force = TRUE)
-  stopifnot(
-    "`x` must have at least two observations." = (nrow(x) >= 2L),
-    "`x` must must have larger number of rows than columns." =
-      nrow(x) > ncol(x),
-    "`x` must be a finite numeric matrix." =
-      isTRUE(is.numeric(x) && all(is.finite(x))),
-    "`x` must have full column rank." = get_rank(x) == ncol(x)
-  )
-  x
-}
-
 #' Validate `weights`
 #'
 #' Validate `weights` in [el_eval()], [el_glm()], [el_lm()], and [el_mean()].
@@ -93,22 +72,6 @@ validate_family <- function(family) {
   paste(f, l, sep = "_")
 }
 
-#' Validate `alpha`
-#'
-#' Validate `alpha` in [elt()].
-#'
-#' @param alpha A single numeric.
-#' @return A single numeric.
-#' @noRd
-validate_alpha <- function(alpha) {
-  stopifnot(
-    "`alpha` must be a finite single numeric." =
-      isTRUE(is.numeric(alpha) && length(alpha) == 1L && is.finite(alpha)),
-    "`alpha` must be between 0 and 1." = isTRUE(alpha > 0 && alpha < 1)
-  )
-  alpha
-}
-
 #' Validate `calibrate`
 #'
 #' Validate `calibrate` in [elt()].
@@ -132,63 +95,9 @@ validate_calibrate <- function(calibrate) {
   calibrate
 }
 
-#' Validate `level`
-#'
-#' Validate `level` in [confint()] and [confreg()].
-#'
-#' @param level A single numeric.
-#' @return A single numeric.
-#' @noRd
-validate_level <- function(level) {
-  stopifnot(
-    "`level` must be a finite single numeric." =
-      isTRUE(is.numeric(level) && length(level) == 1L && is.finite(level)),
-    "`level` must be between 0 and 1." = isTRUE(level >= 0 && level <= 1)
-  )
-  level
-}
 
-#' Validate `cv`
-#'
-#' Validate `cv` in [confint()] and [confreg()].
-#'
-#' @param cv A single numeric.
-#' @param th A single numeric.
-#' @return A single numeric.
-#' @noRd
-validate_cv <- function(cv, th) {
-  stopifnot(
-    "`cv` must be a finite single numeric." =
-      isTRUE(is.numeric(cv) && length(cv) == 1L && is.finite(cv)),
-    "`cv` is too small." = (cv >= .Machine$double.eps)
-  )
-  if (is.null(th)) {
-    if (cv > 400) {
-      stop("`cv` is too large compared to `th`.")
-    }
-  } else {
-    if (cv > 2 * th) {
-      stop("`cv` is too large compared to `th`.")
-    }
-  }
-  cv
-}
 
-#' Validate `npoints`
-#'
-#' Validate `npoints` in [confreg()].
-#'
-#' @param npoints A single integer.
-#' @return A single integer.
-#' @noRd
-validate_npoints <- function(npoints) {
-  npoints <- tryCatch(as.integer(npoints), warning = \(x) NA, error = \(x) NA)
-  stopifnot(
-    "`npoints` must be a finite single integer." = isTRUE(!is.na(npoints)),
-    "`npoints` must be a positive single integer." = npoints > 0L
-  )
-  npoints
-}
+
 
 #' Validate `rhs` and `lhs`
 #'
@@ -557,6 +466,61 @@ validate_lhses.list <- function(lhs, p, pnames) {
   out
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' Validate `alpha`
+#'
+#' Validate `alpha` in [elt()] and [elmt()].
+#'
+#' @param alpha A single numeric.
+#' @return A single numeric.
+#' @noRd
+validate_alpha <- function(alpha) {
+  stopifnot(
+    "`alpha` must be a finite single numeric." =
+      isTRUE(is.numeric(alpha) && length(alpha) == 1L && is.finite(alpha)),
+    "`alpha` must be between 0 and 1." = isTRUE(alpha > 0 && alpha < 1)
+  )
+  alpha
+}
+
+#' Validate `cv`
+#'
+#' Validate `cv` in [confint()] and [confreg()].
+#'
+#' @param cv A single numeric.
+#' @param th A single numeric.
+#' @return A single numeric.
+#' @noRd
+validate_cv <- function(cv, th) {
+  assert_number(cv, lower = .Machine$double.eps, finite = TRUE)
+  if (is.null(th)) {
+    if (cv > 400) {
+      stop("`cv` is too large compared to `th`.")
+    }
+  } else {
+    if (cv > 2 * th) {
+      stop("`cv` is too large compared to `th`.")
+    }
+  }
+  cv
+}
+
 #' Validate `optim`
 #'
 #' Validate `optim` in model objects.
@@ -567,7 +531,16 @@ validate_lhses.list <- function(lhs, p, pnames) {
 validate_optim <- function(optim) {
   stopifnot(
     "NaN/Inf occured during the computation." =
-      isTRUE(is.numeric(optim$lambda) && all(is.finite(optim$lambda)))
+      test_numeric(optim$lambda,
+        finite = TRUE,
+        any.missing = FALSE,
+        all.missing = FALSE,
+        typed.missing = TRUE
+      )
   )
   optim
 }
+
+
+
+

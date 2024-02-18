@@ -5,8 +5,8 @@ setMethod("confreg", "EL", function(object,
                                     cv = NULL,
                                     npoints = 50L,
                                     control = NULL) {
-  level <- validate_level(level)
-  npoints <- validate_npoints(npoints)
+  level <- assert_number(level, lower = 0, upper = 1, finite = TRUE)
+  npoints <- assert_int(npoints, lower = 1, coerce = TRUE)
   npar <- getNumPar(object)
   stopifnot(
     "`object` has no `data`. Fit the model with `keep_data == TRUE`." =
