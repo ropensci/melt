@@ -37,7 +37,7 @@ jobs:
       - name: Install additional LaTeX packages
         run: |
           tlmgr update --self
-          tlmgr install ae algorithm2e mathtools pgf thumbpdf
+          tlmgr install ae algorithm2e ifoddpage mathtools pgf thumbpdf
           tlmgr list --only-installed
 
       - uses: r-lib/actions/setup-pandoc@v2
