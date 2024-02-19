@@ -15,9 +15,7 @@ options(
   continue = "   ", # JSS: prompt = "R> ", continue = "+  ",
   useFancyQuotes = FALSE
 )
-knitr::opts_chunk$set(cache = TRUE, engine = "R", message = FALSE
-  # dev = "pdf",
-)
+knitr::opts_chunk$set(cache = TRUE, message = FALSE)
 @
 
 \author{Eunseop Kim\\The Ohio State University
