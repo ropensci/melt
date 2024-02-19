@@ -37,7 +37,7 @@ jobs:
       - name: Install additional LaTeX packages
         run: |
           tlmgr update --self
-          tlmgr install ae mathtools orcidlink
+          tlmgr install ae mathtools orcidlink pgf
           tlmgr list --only-installed
 
       - uses: r-lib/actions/setup-pandoc@v2
