@@ -1,6 +1,7 @@
 *.aux
 *.html
 *.log
+*.pdf
 *.png
 *.R
 *.RData
