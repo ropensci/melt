@@ -1225,7 +1225,7 @@ R> plot(cr, cex = 1.5, cex.axis = 1.5, cex.lab = 1.5, lwd = 2, tck = -0.01)
 
 \begin{figure}[t!]
 \centering
-\includegraphics{jss4834-confreg_plot}
+% \includegraphics{jss4834-confreg_plot}
 \caption{\label{fig:confreg} Scatter plot of the boundary points for asymptotic
   \({95\%}\) confidence region of \code{Pop} and \code{Ineq} in \code{fit\_lm}.
 At the center of the plot is the MELE \(\hat{\theta}\).}
@@ -1269,7 +1269,7 @@ R> all.equal(which.max(eld), which.max(cd), check.attributes = FALSE)
 %
 \begin{figure}[t!]
 \centering
-\includegraphics{jss4834-eld_plot}
+% \includegraphics{jss4834-eld_plot}
 \caption{\label{fig:eld} Scatter plot of empirical likelihood displacement
   versus observation index in \code{fit\_lm}.
 The 4th observation has the largest value.}
@@ -1584,7 +1584,7 @@ visits than Golden Zucchini (\code{GZ}).
 %
 \begin{figure}[t!]
 \centering
-\includegraphics{jss4834-ridgeline_plot}
+% \includegraphics{jss4834-ridgeline_plot}
 \caption{\label{fig:ridgeline_plot} Ridgeline plot showing the densities of the
   number of bee visits (\code{visit}), grouped by the application methods
   (\code{trt}) and plant varieties(\code{var}).
