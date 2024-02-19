@@ -3,6 +3,7 @@
 *.blg
 *.html
 *.log
+*.out
 *.pdf
 *.png
 *.R
@@ -10,4 +11,5 @@
 *.rdb
 *.rdx
 *.tex
+*.tpt
 __packages
