@@ -35,6 +35,7 @@ Imports:
     utils
 Suggests: 
     car,
+    carData,
     covr,
     dplyr,
     ggplot2,
