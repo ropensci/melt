@@ -34,12 +34,15 @@ Imports:
     stats,
     utils
 Suggests: 
+    car,
     covr,
     dplyr,
     ggplot2,
+    ggridges,
     knitr,
     MASS,
     microbenchmark,
+    multcomp,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0),
