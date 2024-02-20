@@ -36,8 +36,6 @@ jobs:
           # Install full prebuilt version
           TINYTEX_INSTALLER: TinyTeX
 
-      - run: tlmgr --version
-
       - name: Install additional LaTeX packages
         run: |
           tlmgr update --self
