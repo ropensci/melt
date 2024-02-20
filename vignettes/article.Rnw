@@ -1,3 +1,5 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{melt: Multiple Empirical Likelihood Tests in R}
 \documentclass[nojss]{jss}
 \usepackage{amsmath,amssymb,bm,mathtools,booktabs,thumbpdf,lmodern}
 
