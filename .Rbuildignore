@@ -21,3 +21,4 @@
 ^revdep$
 ^doc$
 ^Meta$
+^vignettes\.cls$
