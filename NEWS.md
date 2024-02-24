@@ -1,6 +1,8 @@
-# melt (development version)
-## BUG FIXES
-* For objects inheriting from `ELMT`, the `th` element from the `control` argument is properly set in `confint()` when the `cv` argument is not `NULL`.
+# melt 1.11.1
+## MINOR IMPROVEMENTS
+* Some function arguments now utilize the checkmate package for validation.
+
+* The package vignette has been updated.
 
 
 # melt 1.11.0

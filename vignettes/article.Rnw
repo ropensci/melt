@@ -2,20 +2,13 @@
 %\VignetteIndexEntry{melt: Multiple Empirical Likelihood Tests in R}
 \documentclass[nojss]{jss}
 \usepackage{amsmath,amssymb,bm,mathtools,booktabs,thumbpdf,lmodern}
-
 \usepackage[linesnumbered, ruled, vlined]{algorithm2e}
 
 \newcommand{\class}[1]{`\code{#1}'}
 \newcommand{\fct}[1]{\code{#1()}}
 <<preliminaries, cache=FALSE, echo=FALSE, include=FALSE, message=FALSE>>=
 pkgVersion <- packageVersion("melt")
-options(
-  width = 70, str = strOptions(strict.width = "cut"),
-  ## prefer empty continuation for reader's cut'n'paste:
-  continue = "   ", # JSS: prompt = "R> ", continue = "+  ",
-  useFancyQuotes = FALSE
-)
-knitr::opts_chunk$set(cache = TRUE, message = FALSE)
+knitr::opts_chunk$set(message = FALSE)
 @
 
 \author{Eunseop Kim\\The Ohio State University

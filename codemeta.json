@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/ropensci/melt",
   "issueTracker": "https://github.com/ropensci/melt/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -70,6 +70,30 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "car",
+      "name": "car",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=car"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "carData",
+      "name": "carData",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=carData"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
       "provider": {
@@ -106,6 +130,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "ggridges",
+      "name": "ggridges",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggridges"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
       "provider": {
@@ -139,6 +175,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=microbenchmark"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "multcomp",
+      "name": "multcomp",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=multcomp"
     },
     {
       "@type": "SoftwareApplication",
@@ -199,15 +247,27 @@
     },
     "2": {
       "@type": "SoftwareApplication",
+      "identifier": "checkmate",
+      "name": "checkmate",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=checkmate"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
       "identifier": "graphics",
       "name": "graphics"
     },
-    "3": {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "methods",
       "name": "methods"
     },
-    "4": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "Rcpp",
       "name": "Rcpp",
@@ -219,19 +279,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=Rcpp"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
-  "fileSize": "305536.842KB",
+  "fileSize": "300759.396KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -274,13 +334,11 @@
     }
   ],
   "releaseNotes": "https://github.com/ropensci/melt/blob/master/NEWS.md",
-  "readme": "https://github.com/ropensci/melt/blob/main/README.md",
   "contIntegration": ["https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml", "https://github.com/ropensci/melt/actions?query=workflow%3Apkgcheck", "https://app.codecov.io/gh/ropensci/melt?branch=master"],
   "developmentStatus": "https://www.repostatus.org/#active",
   "review": {
     "@type": "Review",
     "url": "https://github.com/ropensci/software-review/issues/550",
     "provider": "https://ropensci.org"
-  },
-  "keywords": ["cran", "r", "r-package", "rstats"]
+  }
 }

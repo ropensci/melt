@@ -5,7 +5,7 @@
 0 errors  | 0 warnings  | 1 note 
 
 ❯ checking installed package size ... NOTE
-    installed size is 125.4Mb
+    installed size is 125.8Mb
     sub-directories of 1Mb or more:
       libs  124.0Mb
 
@@ -15,6 +15,3 @@ We checked 2 reverse dependencies (0 from CRAN + 2 from Bioconductor), comparing
 
  * We saw 0 new problems
  * We failed to check 0 packages
-
-## DOI
-The DOI in the CITATION is for a new JSS publication that will be registered after publication on CRAN.
