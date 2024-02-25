@@ -1,0 +1,1495 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{melt: Multiple Empirical Likelihood Tests in R}
+\documentclass[nojss]{jss}
+\usepackage{amsmath,amssymb,bm,mathtools,booktabs,thumbpdf,lmodern}
+\usepackage[linesnumbered, ruled, vlined]{algorithm2e}
+
+\newcommand{\class}[1]{`\code{#1}'}
+\newcommand{\fct}[1]{\code{#1()}}
+<<preliminaries, cache=FALSE, echo=FALSE, include=FALSE, message=FALSE>>=
+pkgVersion <- packageVersion("melt")
+knitr::opts_chunk$set(message = FALSE)
+@
+
+\author{Eunseop Kim\\The Ohio State University
+   \And Steven N. MacEachern\\The Ohio State University
+   \And Mario Peruggia\\The Ohio State University}
+\Plainauthor{Eunseop Kim, Steven N. MacEachern, Mario Peruggia}
+
+\title{\pkg{melt}: Multiple Empirical Likelihood Tests in \proglang{R}}
+\Plaintitle{melt: Multiple Empirical Likelihood Tests in R}
+
+\Abstract{
+  Empirical likelihood enables a nonparametric, likelihood-driven style of
+  inference without relying on assumptions frequently made in parametric models.
+  Empirical likelihood-based tests are asymptotically pivotal and thus avoid
+  explicit studentization. This paper presents the \proglang{R} package
+  \pkg{melt} that provides a unified framework for data analysis with empirical
+  likelihood methods. A collection of functions are available to perform
+  multiple empirical likelihood tests for linear and generalized linear models
+  in \proglang{R}. The package \pkg{melt} offers an easy-to-use interface and
+  flexibility in specifying hypotheses and calibration methods, extending the
+  framework to simultaneous inferences. Hypothesis testing uses a projected
+  gradient algorithm to solve constrained empirical likelihood optimization
+  problems. The core computational routines are implemented in \proglang{C++},
+  with \pkg{OpenMP} for parallel computation.
+}
+
+\Keywords{empirical likelihood, generalized linear models, hypothesis testing,
+optimization, \proglang{R}}
+\Plainkeywords{empirical likelihood, generalized linear models,
+hypothesis testing, optimization, R}
+
+\Address{
+  Eunseop Kim, Steven N. MacEachern, Mario Peruggia\\
+  Department of Statistics\\
+  The Ohio State University\\
+  1958 Neil Ave.\\
+  Columbus, OH 43210, United States of America\\
+  E-mail: \email{kim.7302@osu.edu}, \email{snm@stat.osu.edu},
+  \email{peruggia@stat.osu.edu}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{quote}
+This vignette corresponds to version \Sexpr{pkgVersion} of \pkg{melt}, which is
+based on a paper published in the \textit{Journal of Statistical Software}
+available at \url{https://www.jstatsoft.org/article/view/v108i05}. For
+citations, please refer to \citet{kim2024melt}, as suggested by
+\code{citation("melt")}.
+\end{quote}
+
+\section{Introduction}\label{sec:intro}
+The likelihood is an essential component of statistical inference. In a
+nonparametric or semiparametric setting, where the quantity of interest is
+finite-dimensional, the maximum likelihood approach is not applicable since the
+underlying data-generating distribution is left unspecified. A popular approach
+in this context is the method of moments or the two-step generalized method of
+moments \citep[GMM,][]{hansen1982large} where only partial information is
+specified by moment conditions. Various one-step alternatives to GMM have been
+proposed over the last decades in the statistics and econometrics literature
+\citep[see, e.g.,][]{efron1981nonparametric, imbens1997one, newey2004higher}.
+
+One such alternative is empirical likelihood \citep[EL,][]{owen1988empirical,
+owen1990empirical, qin1994empirical}. EL defines a likelihood function by
+profiling a nonparametric likelihood subject to the moment restrictions. While
+it is nonparametric in nature, some desirable properties of parametric
+likelihood apply to EL. Most notably, the EL ratio functions have limiting
+chi-square distributions under certain conditions. Without explicit
+studentization, confidence regions for the parameters can be constructed in much
+the same way as with a parametric likelihood. As the name suggests, however, the
+empirical distribution of the data determines the shape of the confidence
+region. Also, coverage accuracy of the confidence region can further be improved
+in principle, since EL is Bartlett-correctable \citep{diciccio1991empirical}. In
+terms of estimation, the standard expansion argument
+\citep[e.g.,][]{yuan1998asymptotics, jacod2018review} establishes the
+consistency and asymptotic normality of the maximum empirical likelihood
+estimator (MELE). Moreover, \citet{newey2004higher} showed that the MELE
+generally has a smaller bias than its competitors and achieves higher-order
+efficiency after bias correction. EL methods have been extended to other areas,
+including linear models \citep{owen1991empirical}, generalized linear models
+\citep{kolaczyk1994empirical, xi2003extended}, survival analysis
+\citep{li2005empirical}, time series models \citep{kitamura1997empirical,
+nordman2014review}, and high-dimensional data analysis \citep{chen2009effects,
+hjort2009extending}. For an overview of EL and its applications, see
+\citet{owen2001empirical} and \citet{chen2009review}.
+
+In the \proglang{R} language \citep{R}, some software packages implementing EL
+and related methods are available from the Comprehensive \proglang{R} Archive
+Network (CRAN). The \pkg{emplik} package \citep{emplik} provides a wide range of
+functions for analyzing censored and truncated data with EL. Confidence
+intervals for a one-dimensional parameter can also be constructed. Other
+examples and applications of the package can be found in
+\citet{zhou2015empirical}. The \pkg{emplik2} package \citep{emplik2} is an
+extension for the two sample problems. Both packages cover the methods for the
+mean with uncensored data, which is the simplest case in terms of computation.
+In addition, the \pkg{EL} package \citep{EL} performs EL tests for the
+difference between two sample means and the difference between two smoothed
+Huber estimators. The \pkg{elhmc} package \citep{elhmc} contains a single
+function \fct{ELHMC} for Hamiltonian Monte Carlo sampling in Bayesian EL
+computation \citep{chaudhuri2017hamiltonian}. The \pkg{ELCIC} package
+\citep{ELCIC} develops an EL-based consistent information criterion in a model
+selection framework. In a broader context of GMM and generalized empirical
+likelihood \citep{smith1997alternative}, a few packages can be used for
+estimation with EL. The \pkg{gmm} package \citep{gmm} provides flexibility in
+specifying moment conditions. Other than GMM and EL, continuous updating
+\citep{hansen1996finite} and several estimation methods that belong to the
+family of generalized empirical likelihood are available. The \pkg{gmm} package
+has been superseded by the \pkg{momentfit} package \citep{momentfit}, which adds
+exponential tilting \citep{kitamura1997information} estimation and methods for
+constructing two-dimensional confidence regions.
+
+This paper presents the \proglang{R} package \pkg{melt} \citep{melt} that
+performs multiple empirical likelihood tests for regression analysis. The
+primary focus of the package is on linear and generalized linear models, perhaps
+most commonly used with the \fct{lm} and \fct{glm} functions in \proglang{R}.
+The package considers only just-identified models where the number of moment
+conditions equals the number of parameters. Typical linear models specified by
+\code{formula} objects in \proglang{R} are just-identified. In this case, the
+MELE is identical to the maximum likelihood estimator, and the estimate is
+easily obtained using \fct{lm.fit} or \fct{glm.fit} in the \pkg{stats} package.
+The fitted model then serves as a basis for testing hypotheses, which is a core
+component of the package. EL-based tests do not involve standard errors and
+\fct{vcov} methods since they are asymptotically pivotal and thus avoid explicit
+studentization. For this reason it is challenging to incorporate EL methods
+directly into other packages that perform inferences for parametric models using
+\fct{vcov}. We aim to bridge the gap and provide an easy-to-use interface that
+enables applying the methods to tasks routinely accomplished in \proglang{R}.
+Standard tests performed by \fct{summary.lm} and \fct{summary.glm} methods, such
+as significance tests of the coefficients and an overall \(F\)~test or a
+chi-square test, are available. Furthermore, in line with \fct{lht} in the
+\pkg{car} package \citep{car} or \fct{glht} in the \pkg{multcomp} package
+\citep{multcomp}, the user can specify linear hypotheses to be tested. Multiple
+testing procedures are provided to control the family-wise error rate.
+Constructing confidence intervals and detecting outliers in a fitted model can
+also be done, adding more options for data analysis. Note that all the tests and
+methods rely on EL and its asymptotic properties. Although conceptually
+advantageous over parametric methods, this can lead to poor finite sample
+performance. Therefore, several calibration techniques are implemented in
+\pkg{melt} to mitigate this drawback of EL.
+
+The rest of the paper is organized as follows. Section~\ref{sec:background}
+describes EL methods and computational aspects of testing hypotheses with EL.
+Section~\ref{sec:overview} provides an overview of the \pkg{melt} package.
+Section~\ref{sec:usage} shows the basic usage of \pkg{melt} with implementation
+details. Section~\ref{sec:example} presents an application to pest control
+experiments. We conclude with a summary and directions for future development in
+Section~\ref{sec:conclusion}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Background}\label{sec:background}
+\subsection{Empirical likelihood framework}\label{sec:2.1}
+We describe a general framework for EL formulation. Suppose we observe
+independent and identically distributed (i.i.d.)~\({p}\)-dimensional random
+variables \({X_1, \dots, X_n}\) from a distribution \({P}\). Consider a
+parameter \({\theta \equiv \theta(P)} \in {\Theta}\) and an estimating function
+\({g(X_i, \theta)}\) that takes its values in \({\mathbb{R}^p}\) and satisfies
+the following moment condition:
+%
+\begin{equation}\label{eq:moment}
+\E[g(X_i, \theta)] = 0,
+\end{equation}
+%
+where the expectation is taken with respect to \({P}\). Without further
+information on \({P}\), we restrict our attention to a family of multinomial
+distributions supported on the data. The nonparametric likelihood is given by
+%
+\begin{equation*}
+L(P) = \prod_{i = 1}^n P(\{X_i\}) = \prod_{i = 1}^n p_i,
+\end{equation*}
+%
+and the empirical distribution \(P_n\) maximizes \(L\) with \(L(P_n) = n^{-n}\).
+Then the (profile) EL ratio function is defined as
+%
+\begin{equation}\label{eq:problem}
+R(\theta) = \max_{p_i}
+\left\{
+\prod_{i = 1}^n np_i : \sum_{i = 1}^n p_i g(X_i, \theta) = 0,\ p_i \geq 0,\
+  \sum_{i = 1}^n p_i = 1
+\right\},
+\end{equation}
+%
+with \({L(\theta)} = {\prod_{i = 1}^n p_i}\) denoting the corresponding EL
+function. Ties in the data do not affect the EL formulation both computationally
+and theoretically. We can assign probability weight \({p_i}\) to each
+observation as if there are no ties and still obtain the same EL ratio value
+\citep[Section 2.3]{owen2001empirical}. The profiling removes all the nuisance
+parameters, the \({p_i}\)s attached to the data, yielding a \({p}\)-dimensional
+subfamily indexed by \({\theta}\). Note that the data determine the multinomial
+distributions; thus, the reduction to a subfamily does not correspond to a
+parametric model. See \citet{diciccio1990nonparametric} for a detailed
+discussion of how the reduction connects to the notion of least favorable
+families \citep{stein1956efficient}.
+
+We maximize \(\prod_{i = 1}^n n p_i\), or equivalently \({\sum_{i = 1}^n \log(n
+p_i)}\), subject to the constraints in Equation~\ref{eq:problem}. Implicit
+within these constraints is a condition known as the ``convex hull constraint'',
+stipulating that the convex hull of the points \(\{g(X_i, \theta)\}_{i = 1}^n\)
+must contain the zero vector. Failure to meet this constraint renders the
+problem infeasible, forcing some \(p_i\)s to be negative to satisfy the
+condition \({{\sum_{i = 1}^n p_i g(X_i, \theta)} = {0}}\). When the constraint
+is met, the problem admits a unique interior solution since the objective
+function is concave and the feasible set is convex. Using the method of Lagrange
+multipliers, we write
+%
+\begin{equation*}
+\mathcal{L}(p_1, \dots, p_n, \lambda, \gamma) =
+\sum_{i = 1}^n \log(n p_i) - n \lambda^\top \sum_{i = 1}^n p_i g(X_i, \theta) +
+  \gamma \left(\sum_{i = 1}^n p_i - 1\right),
+\end{equation*}
+%
+where \(\lambda\) and \(\gamma\) are the multipliers. Differentiating
+\({\mathcal{L}}\) with respect to its arguments and setting the derivatives to
+zero gives \(\gamma = -n\). Then the solution is given by
+%
+\begin{equation}\label{eq:pi}
+p_i = \frac{1}{n}\frac{1}{1 + \lambda^\top g(X_i, \theta)},
+\end{equation}
+%
+where \({\lambda} \equiv {\lambda(\theta)}\) satisfies
+%
+\begin{equation}\label{eq:lambda}
+\frac{1}{n}\sum_{i = 1}^n \frac{g(X_i, \theta)}{1 + \lambda^\top g(X_i, \theta)}
+  = 0.
+\end{equation}
+%
+Instead of solving the nonlinear Equation~\ref{eq:lambda}, we solve the dual
+problem with respect to \(\lambda\). Substituting the expression for \(p_i\) in
+Equation~\ref{eq:pi} into \({\sum_{i = 1}^n \log(n p_i)}\) gives
+%
+\begin{equation}\label{eq:max}
+\log \left(R(\theta)\right) = -\sum_{i = 1}^n \log\left(1 + \lambda^\top g(X_i,
+  \theta)\right) \eqqcolon r(\lambda).
+\end{equation}
+%
+Now consider minimizing \(r(\lambda)\) subject to \({1 + \lambda^\top g(X_i,
+\theta)} \geq {1 / n}\) for \({i} = {1, \dots, n}\) with \({\theta}\) fixed.
+This is a convex optimization problem, where the constraints correspond to the
+condition that \({0 \leq p_i \leq 1}\) for all \(i\). Next, we remove the
+constraints by employing a pseudo logarithm function \citep{owen1990empirical}
+%
+\begin{equation}\label{eq:plog}
+\log_\star(x) =
+\begin{cases}
+\log(x), & \textnormal{if } x \geq 1 / n,\\
+-n^2 x^2 / 2 + 2 n x - \log(n) - 3 / 2,  & \textnormal{if } x < 1 / n.
+\end{cases}
+\end{equation}
+%
+Minimizing \({r_\star(\lambda)} = {-\sum_{i = 1}^n\log_\star(1 + \lambda^\top
+g(X_i, \theta))}\) without the constraints does not affect the solution and the
+Newton-Raphson method can be applied to find it. If the convex hull constraint
+is violated, the algorithm does not converge with \({\Vert \lambda \Vert}\)
+increasing as the iteration proceeds. Hence, it can be computationally more
+efficient to minimize \(r_\star(\lambda)\) first to get \(\log(R(\theta))\) and
+indirectly check the convex hull constraint by observing \(\lambda\) and
+\(p_i\)s. Note that EL is maximized when \({\lambda} = {0}\) and
+\({p_i} = {1 / n}\) for all \(i\). It follows from Equation~\ref{eq:lambda} that
+\(\hat{\theta}\), the MELE, is obtained by solving the estimating equations
+\({\sum_{i = 1}^n g(X_i, \theta)} = {0}\). The existence, uniqueness, and
+asymptotic properties of \(\hat{\theta}\) are well established in the
+literature.
+
+Assume that there exists a true parameter value \({\theta_0} \in {\Theta}\) that
+is the unique solution to the moment condition in Equation~\ref{eq:moment}.
+Similar to the parametric likelihood method, define minus twice the empirical
+log-likelihood ratio function as \({l(\theta)} = {-2\log(R(\theta))}\). Under
+regularity conditions, it is known that a nonparametric version of Wilks'
+theorem holds. That is, \({l(\theta_0)} \to_d {\chi^2_p}\ \textnormal{as}\ {n}
+\to {\infty}\), where \({\chi^2_p}\) is the chi-square distribution with \(p\)
+degrees of freedom. See, e.g.,~\citet{qin1994empirical} for proof and the
+treatment of more general cases, including the over-identified ones. For a level
+\({\alpha} \in {(0, 1)}\), let \({\chi^2_{p, \alpha}}\) be the
+\({100 (1 - \alpha)\%}\)th percentile of \({\chi^2_p}\). Since
+\({P(l(\theta_0) \leq \chi^2_{p, \alpha})} \to {1 - \alpha}\), an asymptotic
+\({100 (1 - \alpha)\%}\) confidence region for \({\theta}\) can be obtained as
+%
+\begin{equation}\label{eq:cr}
+\left\{\theta : l(\theta) \leq \chi^2_{p, \alpha}\right\}.
+\end{equation}
+%
+Often the chi-square calibration is unsatisfactory due to slow convergence,
+especially when \({n}\) is small. We review other calibration methods that
+address this issue. First, consider EL for the mean with
+\({g(X_i, \theta)} = {X_i - \theta}\) and \({\theta_0} = {\E[X_i]}\). The MELE
+is the sample average \({\bar{X}}\) since
+\({\sum_{i = 1}^n (X_i - \bar{X})} = {0}\). It can be shown that
+\({l(\theta_0)} = {n(\bar{X} - \theta_0)^\top V^{-1}
+(\bar{X} - \theta_0)} + {o_P(1)}\),
+where \({V} = {n^{-1}\sum_{i = 1}^n (X_i - \theta_0) (X_i - \theta_0)^\top}\).
+Let \({S} = {(n - 1)^{-1}\sum_{i = 1}^n (X_i - \bar{X}) (X_i - \bar{X})^\top}\)
+and define a Hotelling's \(T\) squared statistic as \({T^2} = {n(\bar{X} -
+\theta_0)^\top S^{-1} (\bar{X} - \theta_0)}\). It follows that
+%
+\begin{equation*}
+{n(\bar{X} - \theta_0)^\top V^{-1} (\bar{X} - \theta_0)} = {n T^2 / (T^2 + n -
+  1)} = {T^2 + O_P(n^{-1})}.
+\end{equation*}
+%
+This suggests that we can use \(p (n - 1) F_{p, n - p, \alpha} / (n - p)\) in
+place of \({\chi^2_{p, \alpha}}\), where \({F_{p, n - p}}\) is a \({F}\)
+distribution with \({p}\) and \({n - p}\) degrees of freedom. The \({F}\)
+calibration yields a larger critical value than the chi-square calibration,
+which leads to a better coverage probability of the confidence region in
+Equation~\ref{eq:cr}. Next, a more generally applicable calibration method is
+the Bartlett correction. Based on the Edgeworth expansion, it requires
+Cram\'er's condition and the existence of finite higher moments of
+\({g(X_i, \theta)}\). The correction is given by a scale multiple of
+\({\chi^2_{p, \alpha}}\) as \({(1 + a / n) \chi^2_{p, \alpha}}\) with an unknown
+constant \({a}\). In practice, the Bartlett correction involves getting a
+consistent estimate \({\hat{a}}\) with plug-in sample moments. The coverage
+error of the Bartlett corrected confidence region is reduced from
+\({O(n^{-1})}\) to \({O(n^{-2})}\) \citep{diciccio1991empirical}, which is
+unattainable by the \({F}\) calibration. Another effective calibration method is
+the bootstrap. Let \({\widetilde{\mathcal{X}}_n} = {\{\widetilde{X}_1, \dots,
+\widetilde{X}_n\}}\) denote the null-transformed data such that
+\({\E_{P_n}[g(\widetilde{X}_i, \theta)]} = {n^{-1}\sum_{i = 1}^n
+g(\widetilde{X}_i, \theta)} = {0}\), so Equation~\ref{eq:moment} holds for
+\({\widetilde{\mathcal{X}}_n}\) with \({P_n}\). Define a bootstrap sample
+\({\widetilde{\mathcal{X}}_n^*} =
+{\{\widetilde{X}_1^*, \dots, \widetilde{X}_n^*\}}\) as i.i.d.~observations from
+\({\widetilde{\mathcal{X}}_n}\). We can compute the bootstrap EL ratio
+\({l^*(\theta)}\) with \({\widetilde{\mathcal{X}}_n^*}\) in the same way as
+before. The critical value, the \({100 (1 - \alpha)\%}\)th percentile of the
+distribution of \({l^*(\theta)}\), can be approximated using a large number, say
+\({B}\), of bootstrap samples. As an example, we may set
+\({\widetilde{X}_i} = {X_i - \bar{X} + \theta}\) when
+\({g(X_i, \theta)} = {X_i - \theta}\). This is equivalent to computing
+\({l^*(\bar{X})}\) with a bootstrap sample from the observed data directly. The
+\({O(n^{-2})}\) coverage error can also be achieved by the bootstrap calibration
+\citep{hall1990methodology}.
+
+Although EL does not require full model specification, it is not entirely free
+of misspecification concerns. Developing diagnostic measures for EL is still an
+open problem, and we briefly introduce the technique of empirical likelihood
+displacement \citep[ELD,][]{lazar2005assessing}. Much like the concept of
+likelihood displacement \citep{cook1986assessment}, ELD can be used to detect
+influential observations or outliers. With the MELE \({\hat{\theta}}\) from the
+complete data, consider reduced data with the \({i}\)th observation deleted and
+the corresponding MELE estimate \({\hat{\theta}_{(i)}}\), Then ELD is defined as
+%
+\begin{equation}\label{eq:eld}
+\textnormal{ELD}_i = 2\left(L(\hat{\theta}) - L(\hat{\theta}_{(i)})\right),
+\end{equation}
+%
+where \({\hat{\theta}_{(i)}}\) is plugged into the original EL function
+\({L(\theta)}\). If \({\textnormal{ELD}_i}\) is large, the \({i}\)th observation
+is an influential point and can be inspected as a possible outlier. See
+\citet{zhu2008diagnostic} for other diagnostic measures for EL.
+
+
+\subsection{Empirical likelihood for linear models}\label{sec:2.2}
+We now turn our attention to linear models, which are the main focus of
+\pkg{melt}.
+Suppose we have independent observations \({\{(Y_i, X_i)\}_{i = 1}^n}\), where
+\({Y_i}\) is the univariate response  and \({X_i}\) is the \({p}\)-dimensional
+vector of covariates (including the intercept, if any).
+For illustrative purposes, we consider \({X_i}\) fixed and do not explicitly
+distinguish between random and fixed designs.
+See \citet{kitamura2004empirical} for formal methods for models with conditional
+moment restrictions.
+For standard linear regression models, assume that
+%
+\begin{equation*}
+\E[Y_i] = \mu_i,\quad \VAR[Y_i] = \sigma^2_i,\quad i = 1, \dots, n,
+\end{equation*}
+%
+where \({\mu_i} = {X_i^\top \theta_0}\) for some true value \({\theta_0} \in
+{\mathbb{R}^p}\).
+Since \({\theta_0}\) minimizes \({\E[(Y_i - X_i^\top \theta)^2]}\), we have the
+following moment conditions
+%
+\begin{equation*}
+\E[(Y_i - X_i^\top \theta)X_i] = 0,\quad i = 1, \dots, n,
+\end{equation*}
+%
+and the estimating equations
+%
+\begin{equation*}
+\sum_{i = 1}^n (Y_i - X_i^\top \theta)X_i = 0.
+\end{equation*}
+%
+Let \({Z_i} = (Y_i, X_i)\) and \({g(Z_i, \theta)} = {(Y_i - X_i^\top
+\theta)X_i}\).
+The \({g(Z_i, \theta)}\)s are independent with the mean \({(\mu_i - X_i^\top
+\theta)X_i}\) and variance \({\sigma^2_i X_i X_i^\top}\).
+Following the steps in Section~\ref{sec:2.1}, we can compute the EL ratio
+function
+%
+\begin{equation}\label{eq:problem2}
+R(\theta) = \max_{p_i}
+\left\{
+\prod_{i = 1}^n np_i : \sum_{i = 1}^n p_i g(Z_i, \theta) = 0,\ p_i \geq 0,\
+  \sum_{i = 1}^n p_i = 1
+\right\}.
+\end{equation}
+%
+Under mild moment conditions it follows that \({l(\theta_0)} \to_d {\chi^2_p}\).
+Note also from Equation~\ref{eq:problem2} that the least square estimator
+\({\hat{\theta}}\) is the MELE of \({\theta}\), with \({L(\hat{\theta})} =
+{n^{-n}}\) and \({R(\hat{\theta})} = {1}\).
+
+Next, generalized linear models assume that
+%
+\begin{equation*}
+\E[Y_i] = \mu_i,\quad G(\mu_i) = X_i^\top \theta,\quad \VAR[Y_i] = \phi
+  V(\mu_i),\quad i = 1, \dots, n,
+\end{equation*}
+%
+where \({G}\) and \({V}\) are known link and variance functions, respectively,
+and \({\phi}\) is an optional dispersion parameter.
+EL for generalized linear models builds upon quasi-likelihood methods
+\citep{wedderburn1974quasi}.
+The log quasi-likelihood for \({Y_i}\) is given by
+%
+\begin{equation*}
+Q(Y_i, \mu_i) = \int_{Y_i}^{\mu_i} \frac{Y_i - t}{\phi V(t)} dt.
+\end{equation*}
+%
+Differentiating \({Q(Y_i, \mu_i)}\) with respect to \({\theta}\) yields the
+quasi-score
+%
+\begin{equation*}
+\frac{H^\prime(X_i^\top \theta) \left(Y_i - H(X_i^\top \theta)\right)}{\phi
+  V\left(H(X_i^\top \theta)\right)}X_i
+\eqqcolon
+g_1(Z_i, \theta),
+\end{equation*}
+%
+where \({H}\) denotes the inverse link function.
+From \({\E[g_1(Z_i, \theta_0)]} = {0}\) for \({i} = {1, \dots, n}\), we get the
+estimating equations
+%
+\begin{equation*}
+\sum_{i = 1}^n g_1(Z_i, \theta)  = 0.
+\end{equation*}
+%
+Then the EL ratio function can be derived as in Equation~\ref{eq:problem2} with
+the same asymptotic properties.
+It can be seen that the MELE of \({\theta}\) is the same as the quasi-maximum
+likelihood estimator.
+When overdispersion is present with unknown \({\phi}\), we introduce another
+estimating function based on the squared residuals.
+Let \({\eta} = {(\theta, \phi)}\) and
+%
+\begin{equation*}
+g_2(Z_i, \eta) =
+\frac{\left(Y_i - H(X_i^\top \theta)\right)^2}{\phi^2 V\left(H(X_i^\top
+  \theta)\right)}
+- \frac{1}{\phi},
+\end{equation*}
+%
+where \({\E[g_2(Z_i, \eta_0)]} = {0}\) for some \({\eta_0} = {(\theta_0,
+\phi_0)}\).
+Then the MELE of \({\phi}\) is
+%
+\begin{equation}\label{eq:phi}
+\hat{\phi} = \frac{1}{n}\sum_{i = 1}^n \frac{\left(Y_i - H(X_i^\top
+  \hat{\theta})\right)^2}{V\left(H(X_i^\top \hat{\theta})\right)}.
+\end{equation}
+%
+We compute the EL ratio function with this additional constraint as
+%
+\begin{equation*}
+R(\eta) = \max_{p_i}
+\left\{
+\prod_{i = 1}^n np_i : \sum_{i = 1}^n p_i g_1(Z_i, \eta) = 0,\ \sum_{i = 1}^n
+  p_i g_2(Z_i, \eta) = 0,\ p_i \geq 0,\ \sum_{i = 1}^n p_i = 1
+\right\}.
+\end{equation*}
+%
+The computation is straightforward since the number of parameters equals the
+number of constraints on the estimating functions.
+Confidence regions for \({\theta}\) can be constructed by applying a calibration
+method to \({l(\theta)}\).
+One advantage of using EL for linear models is that the confidence regions have
+data-driven shapes and orientations.
+%
+\SetKwComment{Comment}{/* }{ */}
+\begin{algorithm}[t!]
+\caption{Constrained empirical likelihood optimization using the projected
+  gradient descent.}\label{alg:pgd}
+\KwData{\(X_1, \dots, X_n\).}
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\SetKw{break}{break}
+\Input{\({\theta_{0}} \in {\Theta_n \cap \mathcal{H}}\),
+\({\lambda_{0}} = {\lambda(\theta_{0})}\), \({m}\) (outer layer maximum number
+  of iterations), \({\epsilon}\) (outer layer convergence tolerance), \({m_l}\)
+  (inner layer maximum number of iterations), \({\epsilon_l}\) (inner layer
+  convergence tolerance), and \({P}\).}
+\Output{Optimal \({\theta}\) that minimizes \({l(\theta)}\) subject to the
+  constraint \({\mathcal{H}}\) and the corresponding \({\lambda}\).}
+\({\theta} \gets {\theta_{0}}\)\tcp*{Assume that the initial value satisfies the
+  constraints}
+\({\lambda} \gets {\lambda_{0}}\)\;
+\For(\tcp*[h]{Outer layer}){\({i} \leftarrow {1}\) \KwTo \({m}\)}{
+  \({\theta_{\textnormal{temp}} \gets {\theta}}\)\;
+  \({\lambda_{\textnormal{temp}} \gets {\lambda}}\)\;
+  \({\gamma} \gets {2}\)\;
+  \While{\({l(\theta_{\textnormal{temp}})} \geq {l(\theta)}\)}{
+    \({\gamma} \gets {\gamma / 2}\)\;
+    \({\Delta} \gets {-\gamma P\nabla l(\theta)}\)\;
+    \({\theta_{\textnormal{temp}}} \gets {\theta + \gamma\Delta}\)\;
+    \({\lambda_{\textnormal{temp}}} \gets {0}\)\;
+    \For(\tcp*[h]{Inner layer}){\({j} \leftarrow {1}\) \KwTo \({m_l}\)}{
+      \({\Delta_l} \gets
+      {-\left(\nabla^2r_\star(\lambda_{\textnormal{temp}})\right)^{-1}
+      \nabla r_\star(\lambda_{\textnormal{temp}})}
+      \)\;
+      \({\gamma_l} \gets {1}\)\;
+      \While{\({r_\star(\lambda_{\textnormal{temp}} + \gamma_l\Delta_l)} >
+      {r_\star(\lambda_{\textnormal{temp}})}\)}{
+        \({\gamma_l} \gets {\gamma_l / 2}\)\;
+      }
+      \({\delta_l} \gets {\Vert\lambda_{\textnormal{temp}}\Vert}\)\;
+      \({\lambda_{\textnormal{temp}}} \gets
+      {\lambda_{\textnormal{temp}} + \gamma_l\Delta_l}\)\;
+      \eIf{\({\Vert\gamma_l\Delta_l\Vert} <
+      {\epsilon_l\delta_l} + {\epsilon_l^2}\)}{
+        \break{}\;
+      }{
+        \({j} \gets {j + 1}\)\;
+      }
+    }
+  }
+  \({\delta} \gets {\Vert\theta_{\textnormal{temp}}\Vert}\)\;
+  \({\theta} \gets {\theta_{\textnormal{temp}}}\)\;
+  \({\lambda} \gets {\lambda_{\textnormal{temp}}}\)\;
+  \eIf{\({\Vert P\nabla l(\theta)\Vert} < {\epsilon}
+  {\ \bf{or}\ }
+  {\Vert\gamma\Delta\Vert} < {\epsilon\delta} + {\epsilon^2}\)%\)
+  }{
+    \break{}\;
+  }{
+  \({i} \gets {i + 1}\)\;
+  }
+}
+\KwRet{\({\theta}\) \textnormal{and} \({\lambda}\)}\;
+\end{algorithm}
+
+
+\subsection{Hypothesis testing with empirical likelihood}\label{sec:2.3}
+As seen in Section~\ref{sec:2.2}, it is easy to compute the MELE and evaluate
+the EL ratio function at a given value for linear models.
+Conducting significance tests, or hypothesis testing in general, is often the
+main interest when using a linear model.
+The EL method can be naturally extended to testing hypotheses by imposing
+appropriate constraints on the parameter space \({\Theta}\)
+\citep{qin1995estimating, adimari2010note}.
+Consider a null hypothesis \({\mathcal{H}}\) corresponding to a nonempty subset
+of \({\Theta}\) through a smooth \({q}\)-dimensional function \({h}\) such that
+\({\mathcal{H}} = {\{\theta \in \Theta : h(\theta) = 0\}}\).
+With additional conditions on \({\mathcal{H}}\) and \({h}\), it can be shown
+that
+%
+\begin{equation}\label{eq:constraint}
+\inf_{\theta: h(\theta) = 0} l(\theta) \to_d \chi^2_q
+\end{equation}
+%
+under the null that \({\theta_0} \in {\mathcal{H}}\). In practice, computing the
+solution in Equation~\ref{eq:constraint} is a nontrivial task.
+Recall that the convex hull constraint restricts the domain of \({l(\theta)}\)
+to \({\Theta_n} \coloneqq \left\{\theta \in \Theta: 0 \in
+\textnormal{Conv}_n(\theta) \right\}\),
+where \({\textnormal{Conv}_n(\theta)}\) denotes the convex hull of \({\{g(Z_i,
+\theta)\}_{i = 1}^n}\) with an estimating function \({g}\).
+Except for a few cases, both \({l(\theta)}\) and \({\Theta_n}\) are non-convex
+in \({\theta}\), and fully identifying \({\Theta_n}\) can be even more
+challenging than the constrained minimization problem itself.
+Given that the solution can only be obtained numerically by an iterative
+process, it is essential to monitor the entire solution path in \({\Theta_n \cap
+\mathcal{H}}\).
+Another difficulty is in the nested optimization structure.
+The Lagrange multiplier \({\lambda}\) needs to be updated for each update of
+\({\theta}\), which amounts to solving an inner layer of optimization in
+Equation~\ref{eq:max} at every step.
+It is clear that no single method can be applied to all estimating functions and
+hypotheses.
+\citet{tang2014nested} proposed a nested coordinate
+descent algorithm for general constrained EL problems, where the outer layer is
+optimized with respect to \({\theta}\) with \({\lambda}\) fixed.
+After some algebra, we obtain for \({\theta} \in {\Theta_n}\) the gradient of
+the EL ratio function
+%
+\begin{equation}\label{eq:gradient}
+\nabla \log\left( R(\theta) \right) = -\frac{1}{n}\sum_{i = 1}^n \frac{1}{1 +
+  \lambda^\top g(Z_i, \theta)} \partial_\theta g(Z_i, \theta) \lambda,
+\end{equation}
+%
+where \({\partial_\theta g(Z_i, \theta)}\) represents the Jacobian matrix of
+\({g(Z_i, \theta)}\).
+Observe that the expression does not involve any derivatives with respect to
+\({\lambda}\).
+In order to reduce the computational complexity, we focus only on linear
+hypotheses of the form
+%
+\begin{equation}\label{eq:linear hypothesis}
+\mathcal{H} = \{\theta \in \Theta: L \theta = r\},
+\end{equation}
+%
+where \({L}\) is a \({q} \times {p}\) matrix and \({r}\) is a
+\({q}\)-dimensional vector.
+We use the projected gradient descent approach to obtain a local minimum of
+\({l(\theta)}\) in Equation~\ref{eq:constraint}.
+The projected gradient of \({l(\theta)}\) can be computed from
+Equation~\ref{eq:gradient} with the orthogonal projector matrix \({P} = {I_p -
+L^\top(LL^\top)^{-1}L}\), where \({I_p}\) denotes the \({p} \times {p}\)
+identity matrix.
+Then it would take a relatively small number of iterations for convergence,
+reducing the required number of inner layer updates of \({\lambda}\). The pseudo
+code is shown in Algorithm~\ref{alg:pgd}.
+
+Controlling the type 1 error rate is necessary when testing multiple hypotheses
+simultaneously. Recently there has been interest in multiplicity-adjusted test
+procedures for Wald-type test statistics that asymptotically have a multivariate
+chi-square distribution under the global null hypothesis
+\citep{dickhaus2015survey, dickhaus2019simultaneous}. \citet{kim2023empirical}
+proposed single-step multiple testing procedures for EL that asymptotically
+control the family-wise error rate with Monte Carlo simulations or bootstrap.
+\citet{wang2018f} applied the \({F}\)-calibrated EL statistics to the
+Benjamini--Hochberg procedure \citep{benjamini1995controlling} to control the
+false discovery rate.
+
+
+\section[Overview of melt]{Overview of \pkg{melt}}\label{sec:overview}
+The latest stable release of \pkg{melt} is available from the CRAN at
+\url{https://CRAN.R-project.org/package=melt}. The development version, hosted
+by the rOpenSci, is on {GitHub} at \url{https://github.com/ropensci/melt}.
+Computational tasks are implemented in parallel using \pkg{OpenMP}
+\citep{dagum1998openmp} API in \proglang{C++} with the \pkg{Rcpp} \citep{Rcpp}
+and \pkg{RcppEigen} \citep{RcppEigen} packages to interface with \proglang{R}.
+Depending on the platform, the package can be compiled from source with support
+for \pkg{OpenMP}. The overall design of \pkg{melt} adopts the functional
+object-oriented programming approach \citep{chambers2014object} with
+\proglang{S}4 classes and methods. Every function in the package is either a
+wrapper that creates a single instance of an object or a method that can be
+applied to a class object. The workflow of the package consists of three
+steps: (1) Fitting a model, (2) examining and diagnosing the fitted model, and
+(3) testing hypotheses with the model. Four functions are available to build a
+model object whose names start with the prefix \code{el_}, which stands for
+empirical likelihood. A summary of the functions is provided below.
+%
+\begin{itemize}
+\item \fct{el\_mean}: Creates an \class{EL} object for the mean.
+\item \fct{el\_sd}: Creates a \class{SD} object for the standard deviation.
+\item \fct{el\_lm}: Creates an \class{LM} object for the linear model.
+\item \fct{el\_glm}: Creates a \class{GLM} object for the generalized linear
+  model. It does not support grouped data.
+\end{itemize}
+%
+For univariate data, \fct{el\_mean} corresponds to \fct{t.test} in the
+\pkg{stats} package. The \fct{el\_lm} and \fct{el\_glm} functions correspond to
+\fct{lm} and \fct{glm}, respectively.
+
+All model objects inherit from class \class{EL}, and a description of the slots
+in \class{EL} is given in Table~\ref{tab:EL}. Notably, the slot \code{optim} is
+a \class{list} with the following four components that summarize the
+optimization results:
+
+\pagebreak
+
+\begin{itemize}
+\item \code{par}: A numeric vector for the user-supplied parameter value
+  \(\theta\) where EL is evaluated.
+\item \code{lambda}: A numeric vector for the Lagrange multiplier \(\lambda\).
+\item \code{iterations}: A single integer for the number of iterations
+  performed.
+\item \code{convergence}: A single logical for the convergence status.
+It is either \code{TRUE} or \code{FALSE}.
+\end{itemize}
+%
+\begin{table}[t!]
+\centering
+\begin{tabular}{llp{7cm}l}
+\toprule
+Slot                & Class            & Description & Accessor\\
+\midrule
+\code{optim}        & \class{list}      & Optimization results. &
+  \fct{getOptim}\\
+\code{logp}         & \class{numeric}   & Log probabilities of empirical
+  likelihood. & \fct{logProb}\\
+\code{logl}         & \class{numeric}   & Empirical log-likelihood. &
+  \fct{logL}\\
+\code{loglr}        & \class{numeric}   & Empirical log-likelihood ratio. &
+  \fct{logLR}\\
+\code{statistic}    & \class{numeric}   & Minus twice the empirical
+  log-likelihood ratio. & \fct{chisq}\\
+\code{df}           & \class{integer}   & Degrees of freedom associated with
+  the \code{statistic}. & \fct{getDF}\\
+\code{pval}         & \class{numeric}   & \(p\)~value of the \code{statistic}.
+  & \fct{pVal}\\
+\code{nobs}         & \class{integer}   & Number of observations. &
+  \fct{nobs}\\
+\code{weights}      & \class{numeric}   & Re-scaled weights used for model
+  fitting. & \fct{weights}\\
+\code{coefficients} & \class{numeric}   & MELE of the parameters. &
+  \fct{coef}\\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:EL}
+A description of some of the slots in an \class{EL} object.
+A full explanation of the class and slots can be found in the documentation of
+  \code{EL-class} in the package.}
+\end{table}
+%
+Note that \code{par} is fixed in the evaluation of EL and should not be confused
+with the MELE, which is stored in the \code{coefficients} slot. The optimization
+is performed with respect to \code{lambda}, so \code{iterations} and
+\code{convergence} need to be understood in terms of \code{lambda}. Here we make
+a distinction between EL evaluation and EL optimization. The EL optimization
+refers to the constrained EL problem discussed in Section~\ref{sec:2.3} and
+corresponds to another class \class{CEL} that directly extends \class{EL}. The
+\code{optim} slot in a \class{CEL} object has the same components. However, the
+optimization results are now interpreted in terms of \code{par}, the solution to
+the constrained problem. The \class{LM} and \class{GLM} classes contain
+\class{CEL}, meaning that a constrained optimization is performed initially when
+\fct{el\_lm} or \fct{el\_glm} is called. In order to avoid confusion, the
+\class{CEL} class only distinguishes EL optimization from EL evaluation, and the
+user does not directly interact with a \class{CEL} object. Instead, the
+\code{optim} slot of every model object contains a single logical \code{cstr}
+that indicates whether EL optimization is performed or not. Once \code{par} is
+obtained through evaluation or optimization, it uniquely determines
+\code{lambda} and, in turn, \code{logl} and \code{loglr}. Then \code{statistic}
+is equivalent to \code{-2 * loglr} and has an asymptotic chi-square distribution
+under the null hypothesis, with the associated \code{df} and \code{pval}. All
+four model fitting functions above accept an optional argument \code{weights}
+for weighted data. A vector of weights is then re-scaled internally for
+numerical stability in the computation of weighted EL \citep{glenn2007weighted}.
+Although \fct{weights} and \fct{coef} can extract \code{weights} and
+\code{coefficients}, these slots are mainly stored for subsequent analyses and
+methods.
+
+In the next step, the following methods can be applied to an object that
+inherits from \class{EL} to evaluate the model fit or compute summary
+statistics:
+%
+\begin{itemize}
+\item \fct{conv}: Extracts convergence status from a model.
+The distinction between the EL evaluation and EL optimization applies here as
+    well.
+It can be used to check the convex hull constraint indirectly.
+\item \fct{confint}: Computes confidence intervals for model parameters.
+\item \fct{confreg}: Computes a two-dimensional confidence region for model
+  parameters.
+It returns an object of class \class{ConfregEL} where a subsequent \fct{plot}
+    method is applicable.
+\item \fct{eld}: Computes empirical likelihood displacement in
+  Equation~\ref{eq:eld} for model diagnostics and outlier detection. It returns
+    an object of class \class{ELD} where a subsequent \fct{plot} method is
+    applicable.
+\end{itemize}
+
+Lastly, we introduce the two main functions of \pkg{melt} that perform
+hypothesis testing.
+These generic methods take an \class{EL} object with other arguments that
+specify the problem in Equation~\ref{eq:constraint}.
+%
+\begin{itemize}
+\item \fct{elt}: Tests a linear hypothesis with EL. It returns an object of
+  class \class{ELT} that contains the test statistic, the critical value, and
+    the level of the test.
+Several calibration options discussed in Section~\ref{sec:2.2} are available,
+    and the \(p\)~value is computed by the calibration method chosen.
+\item \fct{elmt}: Tests multiple linear hypotheses simultaneously with EL.
+Each test can be considered as one instance of \fct{elt}, where the marginal
+    test statistic has an asymptotic chi-square distribution under the
+    corresponding null hypothesis.
+It returns an object of class \class{ELMT} with slots similar to those in
+    \class{ELT}.
+\end{itemize}
+An \class{ELT} object also has the \code{optim} slot, which does not necessarily
+correspond to the EL optimization. The user can supply an arbitrary parameter
+value to test, reducing the problem to the EL evaluation. The \fct{elmt}
+function applies the single-step multiple testing procedure of
+\citet{kim2023empirical}. The multiplicity-adjusted critical value and
+\({p}\)~values are estimated by Monte Carlo simulation. All model objects that
+inherit from \class{EL}, \class{ELT}, and \class{ELMT} support \fct{print} and
+\fct{summary} methods.
+
+Note that every step of the workflow involves possibly multiple EL evaluations
+or optimizations. Hence, it is necessary to flexibly control the details of the
+execution and computation at hand. All model fitting functions and most methods
+accept an optional argument \code{control}, which allows the user to specify the
+control parameters. Only an object of class \class{ControlEL} can be supplied as
+\code{control} to ensure validity and avoid unexpected errors. Some of the slots
+in \class{ControlEL} are described in Table~\ref{tab:ControlEL}. This
+\class{ControlEL} object is stored in every model object, so any subsequent
+method can use those parameters unless the user overwrites them with new values.
+\begin{table}[t!]
+\centering
+\begin{tabular}{llp{9.5cm}}
+\toprule
+Slot                & Class               & Description\\
+\midrule
+\code{maxit}        & \class{integer}   & Maximum number of iterations for the
+  EL optimization.\\
+\code{maxit_l}      & \class{integer}   & Maximum number of iterations for the
+  EL evaluation.\\
+\code{tol}          & \class{numeric}   & Convergence tolerance for the EL
+  optimization.\\
+\code{tol_l}        & \class{numeric}   & Convergence tolerance for the EL
+  evaluation.\\
+\code{step}         & \class{numeric}   & Step size for projected gradient
+  descent method in the EL optimization.\\
+\code{th}           & \class{numeric}   & Threshold for the negative empirical
+  log-likelihood ratio. The iteration stops if the value exceeds the
+  threshold.\\
+\code{nthreads}     & \code{integer}    & Number of threads for parallel
+  computation.\\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:ControlEL}
+A description of some of the slots in an \class{ControlEL} object.
+A full explanation of the class and slots can be found in the documentation of
+  \code{ControlEL-class} or \fct{el\_control} in the package.}
+\end{table}
+Another wrapper, \fct{el\_control}, is available to construct a
+\class{ControlEL} object and specify the parameters.
+The default values are shown below.
+\begin{Code}
+el_control(maxit = 200L, maxit_l = 25L, tol = 1e-06, tol_l = 1e-06,
+  step = NULL, th = NULL, verbose = FALSE, keep_data = TRUE, nthreads,
+  seed = NULL, b = 10000L, m = 1000000L)
+\end{Code}
+Specifically, \code{nthreads} specifies the number of threads for parallel
+computation via \pkg{OpenMP} (if available). By default, it is set to half the
+available threads and affects the following functions: \fct{confint},
+\fct{confreg}, \fct{el\_lm}, \fct{el\_glm}, \fct{eld}, and \fct{elt}. For better
+performance, it is generally recommended in most platforms to limit the number
+of threads to the number of physical cores. The argument \code{seed} sets the
+seed for random number generation. It defaults to a random integer generated
+from \({1}\) to the maximum integer supported by \proglang{R} on the machine,
+which is determined by \fct{set.seed}. For fast parallel random number
+generation and compatibility with \pkg{OpenMP}, the Xoshiro256+ pseudo-random
+number generator (period \({2^{256}} - {1}\)) of \citet{blackman2021scrambled}
+is used internally with the \pkg{dqrng} package \citep{dqrng}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Usage}\label{sec:usage}
+\subsection{Model building}\label{sec:4.1}
+For a simple illustration of building a model, we apply \fct{el\_mean} to the
+synthetic classification problem data \code{synth.tr} from the \pkg{MASS}
+package \citep{MASS}. The \code{synth.tr} object is a \class{data.frame} with
+250 rows and three columns. We select two columns \code{xs} and \code{ys}, the
+\(x\) and \(y\) coordinates, to build an EL model with two-dimensional mean
+parameter. The resulting \class{data.frame} is denoted by \code{data}. The
+\pkg{dplyr} package \citep{dplyr} and the \pkg{ggplot2} package \citep{ggplot2}
+are used to aid data manipulation and visualization.
+%
+<<data>>=
+library("melt")
+library("MASS")
+library("dplyr")
+library("ggplot2")
+data("synth.tr", package = "MASS")
+data <- dplyr::select(synth.tr, c(xs, ys))
+@
+
+With the focus on \code{xs} and \code{ys}, we first visualize the domain of the
+EL function with the convex hull constraint in Figure~\ref{fig:hull}.
+%
+\begin{figure}[t!]
+\centering
+<<hull-plot, echo=FALSE, fig.width=7, fig.height=5>>=
+ggplot(data, aes(xs, ys)) +
+  geom_point() +
+  geom_polygon(
+    data = slice(data, chull(xs, ys)), alpha = 0.3, colour = "black"
+  ) +
+  xlim(-1.5, 1.1) +
+  ylim(-0.4, 1.3) +
+  theme(
+    axis.text = element_text(size = 12, color = "black"),
+    axis.title = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.border = element_rect(fill = NA, linewidth = 1),
+    panel.grid = element_blank()
+  )
+@
+\caption{\label{fig:hull} Scatter plot of \code{ys} versus \code{xs} in the
+  \code{synth.tr}.
+The convex hull of the observations is shaded in gray.}
+\end{figure}
+%
+Any parameter value inside the convex hull leads to proper EL evaluation.
+We specify \code{c(0, 0.5)} as \code{par} in \fct{el\_mean} and build an
+\class{EL} object with the \code{data}.
+%
+<<fit-code>>=
+fit_mean <- el_mean(data, par = c(0, 0.5))
+@
+%
+The \code{data} object is implicitly coerced into a \class{matrix} since
+\fct{el\_mean} takes a numeric \class{matrix} as an input for the data. Basic
+\fct{print} and \fct{show} methods display relevant information about an
+\class{EL} object.
+%
+<<fit-print>>=
+fit_mean
+@
+%
+The asymptotic chi-square statistic is displayed, along with the associated
+degrees of freedom and the \(p\)~value.
+The \fct{coef} method extracts the MELE, which can be easily computed in this
+case by using \code{colMeans(data)}.
+We note that the MELE is computed independently of the \code{par} specified by
+the user.
+Knowing the MELE makes it straightforward for the user to build a model with any
+valid \code{par} when the user is more interested in a subsequent application of
+\fct{elt} or \fct{elmt} to the fitted \class{EL} object.
+We can also specify an arbitrary \code{weight} in \fct{el\_mean} for weighted EL
+evaluation.
+Then the MELE is the weighted average of the observations.
+The re-scaled weights returned by \fct{weights} add up to the total number of
+observations.
+
+Next, we consider an infeasible parameter value \code{c(1, 0.5)} outside the
+convex hull to show how \fct{el\_control} interacts with the model fitting
+functions through \code{control} argument.
+By employing the pseudo logarithm function in Equation~\ref{eq:plog}, the
+evaluation algorithm continues until the iteration reaches \code{maxit_l} or the
+negative empirical log-likelihood ratio exceeds \code{th}.
+Setting a large \code{th} for the infeasible value, we observe that the
+algorithm hits the \code{maxit} with each element of \code{lambda} diverging
+quickly.
+%
+<<fit2>>=
+ctrl <- el_control(maxit_l = 50, th = 10000)
+fit2_mean <- el_mean(data, par = c(1, 0.5), control = ctrl)
+logL(fit2_mean)
+logLR(fit2_mean)
+getOptim(fit2_mean)
+@
+%
+We generate a surface plot of the empirical log-likelihood ratio on the grid of
+Figure~\ref{fig:hull}.
+The boundary of the convex hull separates the feasible region from the
+infeasible region in Figure~\ref{fig:surface}.
+%
+\begin{figure}[t!]
+\centering
+<<surface-plot, echo=FALSE, fig.width=10, fig.height=7.5>>=
+xs <- seq(-1.5, 1.1, length.out = 60)
+ys <- seq(-0.4, 1.3, length.out = 40)
+ctrl <- el_control(th = 400)
+z <- matrix(NA_real_, nrow = length(xs), ncol = length(ys))
+for (i in seq_len(length(xs))) {
+  for (j in seq_len(length(ys))) {
+    z[i, j] <- logLR(el_mean(data, par = c(xs[i], ys[j]), control = ctrl))
+  }
+}
+par(mar = c(1, 0, 0, 0))
+persp(xs, ys, z,
+  xlab = "xs", ylab = "ys", zlab = "logLR", theta = 315, phi = 25, d = 5,
+  ticktype = "detailed", cex.axis = 1.2, cex.lab = 1.2, lwd = 2
+)
+@
+\caption{\label{fig:surface} Surface plot of empirical log-likelihood ratio
+  obtained from \code{synth.tr} with \fct{el\_mean}. The argument \code{th} is
+  set to \code{400}.}
+\end{figure}
+
+A similar process applies to the other model fitting functions, except that
+\fct{el\_lm} and \fct{el\_glm} require a \class{formula} object for model
+specification.
+In addition, \pkg{melt} contains another function \fct{el\_eval} to perform the
+EL evaluation for other general estimating functions.
+For example, consider the mean and standard deviation denoted by \({\theta} =
+{(\mu, \sigma)}\).
+For a given value of \({\theta}\), we evaluate the estimating function \({g(X_i,
+\theta)} = {(X_i - \mu, (X_i - \mu)^2 - \sigma^2)}\) with the available data
+\({X_1, \dots, X_n}\).
+The \fct{el\_eval} function takes a \class{matrix} argument \code{g}, where each
+row corresponds to \({g(X_i, \theta)}\).
+%
+<<fit-eval>>=
+mu <- 0
+sigma <- 1
+set.seed(123526)
+x <- rnorm(100)
+g <- matrix(c(x - mu, (x - mu)^2 - sigma^2), ncol = 2)
+fit_eval <- el_eval(g)
+fit_eval$pval
+@
+%
+Although the user can supply a custom \code{g}, \fct{el\_eval} is not the main
+function of the package. The \fct{el\_eval} function returns a \class{list} with
+the same components as in an \class{EL} object, but no other methods are
+applicable further. The scope is also limited to just-identified estimating
+functions. For more flexible and over-identified estimating functions, it is
+recommended to use other packages, e.g.,~\pkg{gmm} or \pkg{momentfit}.
+
+
+\subsection{Linear regression analysis}\label{sec:4.2}
+We illustrate the use of \fct{el\_lm} for regression analysis with the crime
+rates data \code{UScrime} available in \pkg{MASS}. Here we update the control
+parameters for significance tests of the coefficients.
+%
+<<el-lm-fit>>=
+data("UScrime", package = "MASS")
+ctrl <- el_control(maxit = 1000, nthreads = 2)
+(fit_lm <- el_lm(y ~ Pop + Ineq, data = UScrime, control = ctrl))
+@
+%
+The \fct{print} method also applies and shows the MELE, the overall model test
+result, and the convergence status. The estimates are obtained from
+\fct{lm.fit}. The hypothesis for the overall test is that all the parameters
+except the intercept are \({0}\). The convergence status shows that a
+constrained optimization is performed in testing the hypothesis. The EL
+evaluation applies to the test and the convergence status if the model does not
+include an intercept. The \fct{conv} method can be used to extract the
+convergence status. It is designed to return a single logical, which can be
+helpful in a control flow where the convergence status decides the course of
+action. The large chi-square value above implies that the data do not support
+the hypothesis, regardless of the convergence. Note that failure to converge
+does not necessarily indicate unreliable test results. Most commonly, the
+algorithm fails to converge if the additional constraint imposed by a hypothesis
+is incompatible with the convex hull constraint. The control parameters affect
+the test results as well. The \fct{summary} method reports more details, such as
+the results of significance tests, where each test involves solving a
+constrained EL problem.
+%
+<<el-lm-summary>>=
+summary(fit_lm)
+@
+%
+These tests are all asymptotically pivotal without explicit studentization. As a
+result, the output does not have standard errors.
+
+By iteratively solving constrained EL problems for a grid of parameter values,
+confidence intervals for the parameters can be calculated with \fct{confint}.
+The chi-square calibration is the default, but the user can specify a critical
+value \code{cv} optionally. Below we calculate asymptotic \({95\%}\) confidence
+intervals.
+%
+<<el-lm-confint>>=
+confint(fit_lm)
+@
+%
+Without standard errors and \fct{vcov} methods, the \code{lower} and
+\code{upper} confidence limits do not necessarily correspond to \({2.5}\) and
+\({97.5}\) percentiles, respectively. Similarly, we obtain confidence regions
+for two parameters with \fct{confreg}. Starting from the MELE, it computes the
+boundary points of a confidence region in full circle. An optional argument
+\code{npoints} controls the number of boundary points. The return value is a
+\class{ConfregEL} object containing a matrix whose rows consist of the points,
+and the \fct{plot} method visualizes the confidence region
+(Figure~\ref{fig:confreg}).
+%
+<<confreg, eval=FALSE>>=
+cr <- confreg(fit_lm, parm = c("Pop", "Ineq"), npoints = 200)
+plot(cr, cex = 1.5, cex.axis = 1.5, cex.lab = 1.5, lwd = 2, tck = -0.01)
+@
+%
+\begin{figure}[t!]
+\centering
+<<confreg-plot, echo=FALSE, fig.width=10, fig.height=7.5>>=
+cr <- confreg(fit_lm, parm = c("Pop", "Ineq"), npoints = 200)
+plot(cr, cex = 1.5, cex.axis = 1.5, cex.lab = 1.5, lwd = 2, tck = -0.01)
+axis(1, lwd.ticks = 2, labels = FALSE, tck = -0.01)
+axis(2, lwd.ticks = 2, labels = FALSE, tck = -0.01)
+box(lwd = 2)
+@
+\caption{\label{fig:confreg} Scatter plot of the boundary points for asymptotic
+  \({95\%}\) confidence region of \code{Pop} and \code{Ineq} in \code{fit\_lm}.
+At the center of the plot is the MELE \(\hat{\theta}\).}
+\end{figure}
+
+Finally, we apply \fct{eld} to detect influential observations and outliers.
+Aside from the model object, \fct{eld} only accepts the control parameters. By
+the leave-one-out method of ELD, an \class{ELD} object inherits from the base
+type \class{numeric}, with the length equal to the number of observations in the
+data. Figure~\ref{fig:eld} shows the ELD values from the \fct{plot} method.
+%
+<<eld, eval=FALSE>>=
+eld <- eld(fit_lm)
+summary(eld)
+plot(eld,
+  cex = 1.5, cex.axis = 1.5, cex.lab = 1.5, lwd = 2, pch = 19, tck = -0.01
+)
+@
+<<eld2, echo=FALSE>>=
+eld <- eld(fit_lm)
+summary(eld)
+@
+%
+The code below shows that the observation with the largest ELD also has the
+largest Cook's distance from the same linear model fitted by \fct{lm}.
+%
+<<cooks-distance>>=
+fit2_lm <- lm(y ~ Pop + Ineq, data = UScrime)
+cd <- cooks.distance(fit2_lm)
+all.equal(which.max(eld), which.max(cd), check.attributes = FALSE)
+@
+%
+\begin{figure}[t!]
+\centering
+<<eld-plot, echo=FALSE, fig.width=10, fig.height=7.5>>=
+plot(eld,
+  cex = 1.5, cex.axis = 1.5, cex.lab = 1.5, lwd = 2, pch = 19, tck = -0.01
+)
+axis(1, lwd.ticks = 2, labels = FALSE, tck = -0.01)
+axis(2, lwd.ticks = 2, labels = FALSE, tck = -0.01)
+box(lwd = 2)
+@
+\caption{\label{fig:eld} Scatter plot of empirical likelihood displacement
+  versus observation index in \code{fit\_lm}.
+The 4th observation has the largest value.}
+\end{figure}
+
+
+\subsection{Hypothesis testing}\label{sec:4.3}
+Now we consider \fct{elt} for hypothesis testing, with the function prototype
+given below.
+\begin{Code}
+elt(object, rhs = NULL, lhs = NULL, alpha = 0.05, calibrate = "chisq",
+  control = NULL)
+\end{Code}
+The arguments \code{rhs} and \code{lhs} define a linear hypothesis and
+correspond to \({r}\) and \({L}\) in Equation~\ref{eq:linear hypothesis},
+respectively. Therefore, either one or the other must be provided. The argument
+\code{lhs} takes a numeric matrix or a vector. Alternatively, a character vector
+can be supplied to symbolically specify a hypothesis, which is convenient when
+there are many variables. When \code{lhs} is \code{NULL}, it performs the EL
+evaluation at \({\theta} = {r}\) by setting \({L} = {I_p}\), where \({I_p}\) is
+the identity matrix of order \({p}\). When \code{rhs} is \code{NULL}, on the
+other hand, \({r}\) is set to the zero vector automatically, and the EL
+optimization is performed with \(L\). Technically, \fct{elt} can reproduce the
+test results from \code{fit\_mean} in Section~\ref{sec:4.1} and \code{fit\_lm}
+in Section~\ref{sec:4.2}. Note the equivalence between the optimization results.
+%
+<<elt>>=
+elt_mean <- elt(fit_mean, rhs = c(0, 0.5))
+all.equal(getOptim(elt_mean), getOptim(fit_mean))
+elt_lm <- elt(fit_lm, lhs = c("Pop", "Ineq"))
+all.equal(getOptim(elt_lm), getOptim(fit_lm))
+@
+%
+In addition to specifying an arbitrary linear hypothesis through \code{rhs} and
+\code{lhs}, extra arguments \code{alpha} and \code{calibrate} expand options for
+testing. The argument \code{alpha} controls the significance level determining
+the critical value, and \code{calibrate} chooses the calibration method. The
+\fct{critVal} method extracts the critical value from an \class{ELT} object.
+%
+<<critVal>>=
+critVal(elt_mean)
+@
+%
+We apply the \({F}\) and bootstrap calibrations to \code{fit_mean} at a
+significance level of \({0.05}\). The number of threads is increased to four
+with \({100000}\) bootstrap replicates in \fct{el\_control}.
+%
+<<elt-f-boot>>=
+ctrl <- el_control(
+  maxit = 10000, tol = 1e-04, nthreads = 4, b = 100000, step = 1e-05
+)
+(elt_mean_f <- elt(fit_mean,
+  rhs = c(0, 0.5), calibrate = "F", control = ctrl
+))
+(elt_mean_boot <- elt(fit_mean,
+  rhs = c(0, 0.5), calibrate = "boot", control = ctrl
+))
+@
+%
+The above output shows that the \({F}\) and bootstrap calibrations tend to
+produce slightly larger critical values than the chi-square calibration. These
+values can be used as the \code{cv} argument in \fct{confint} and \fct{confreg},
+improving coverage probabilities when the sample size is small.
+
+Next, we compare \fct{elt} with \fct{lht} in \pkg{car} that computes an
+asymptotic chi-square statistic from Wald tests. The two functions have similar
+syntax with comparable outputs. For illustration, we fit a logistic regression
+model to the U.S.~women's labor-force participation data \code{Mroz} from the
+\pkg{carData} package \citep{carData} with \fct{el\_glm} and \fct{glm}. We
+include all variables of \code{carData} in the model with the binary response
+variable \code{lfp}, which stands for labor-force participation. See the
+documentation of \code{carData} for a detailed description of the variables.
+%
+<<glm>>=
+library("car")
+data("Mroz", package = "carData")
+fit_glm <- el_glm(lfp ~ .,
+  family = binomial(link = "logit"), data = Mroz, control = ctrl
+)
+fit2_glm <- glm(lfp ~ ., family = binomial(link = "logit"), data = Mroz)
+@
+%
+Asymptotic \({95\%}\) confidence intervals from \fct{confint} can be compared
+with the ones from \fct{confint.glm} in the \pkg{MASS} package.
+%
+<<glm-confint>>=
+matrix(c(confint(fit_glm), confint(fit2_glm)),
+  ncol = 4, dimnames = list(
+    c(names(coef(fit2_glm))),
+    c("EL_lower", "EL_upper", "MASS_2.5%", "MASS_97.5%")
+  )
+)
+@
+%
+We employ \fct{coef} to extract only the results of significance tests from the
+output of \fct{summary}.
+%
+<<glm-summary>>=
+coef(summary(fit_glm))
+@
+%
+Based on the estimates and \({p}\)~values above, we test two hypotheses that
+involve different classes of \code{lhs}: 1) \code{wc} \({=}\) \code{hc} and 2)
+\code{k5} \({=}\) \({-1.5}\) and \code{k618} \({=}\) \({0}\). Wald tests are
+performed by specifying \code{test = "Chisq"} in \fct{lht}.
+%
+<<comparison>>=
+lhs <- c(0, 0, 0, 0, 1, -1, 0, 0)
+elt_glm <- elt(fit_glm, lhs = lhs)
+lht_glm <- lht(fit2_glm, hypothesis.matrix = lhs, test = "Chisq")
+lhs2 <- rbind(
+  c(0, 1, 0, 0, 0, 0, 0, 0),
+  c(0, 0, 1, 0, 0, 0, 0, 0)
+)
+rhs2 <- c(-1.5, 0)
+elt2_glm <- elt(fit_glm, rhs = rhs2, lhs = lhs2)
+lht2_glm <- lht(fit2_glm,
+  hypothesis.matrix = lhs2, rhs = rhs2, test = "Chisq"
+)
+@
+%
+For comparison, we extract the chi-square statistics and \({p}\)~values using
+\fct{chisq} and \fct{pVal}. The results are presented below.
+%
+<<comparison2>>=
+matrix(
+  c(
+    chisq(elt_glm), pVal(elt_glm),
+    lht_glm$Chisq[2], lht_glm$`Pr(>Chisq)`[2]
+  ),
+  nrow = 2, byrow = TRUE,
+  dimnames = list(c("EL", "Wald"), c("Chisq", "Pr(>Chisq)"))
+)
+matrix(
+  c(
+    chisq(elt2_glm), pVal(elt2_glm),
+    lht2_glm$Chisq[2], lht2_glm$`Pr(>Chisq)`[2]
+  ),
+  nrow = 2, byrow = TRUE,
+  dimnames = list(c("EL", "Wald"), c("Chisq", "Pr(>Chisq)"))
+)
+@
+%
+The two tests provide similar results with a sample size of 753, which is not
+surprising given the asymptotic equivalence between these tests \citep[see][and
+references therein]{qin1995estimating}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\section{Case study}\label{sec:example}
+This section presents a more in-depth data analysis using EL with an internal
+dataset of \pkg{melt}, \code{thiamethoxam}, from \citet{obregon2022pest}.
+Thiamethoxam is a widely used neonicotinoid pesticide that translocates through
+plants, leaving residues in crops. Since pesticides can also affect non-target
+organisms such as pollinators, it is important to maintain a balance between
+pest management and pollinator protection to maximize crop yield.
+\citet{obregon2022pest} aimed to test how different application methods of
+thiamethoxam and plant variety impact pest control, bee visits, yield, and
+pesticide residues in flowers of squash crops. Squash crops rely on bee
+pollination to yield fruits \citep{knapp2019cucurbits}, and the striped cucumber
+beetle is the major pest for squash crops \citep{haber2021striped}.
+\citet{obregon2022pest} conducted a field experiment with two varieties that
+differ in their attractiveness to striped cucumber beetles: (1) Golden Zucchini
+(preferred by the beetle) and (2) Success PM straightneck summer squash (not
+preferred by the beetle). Also, the following four thiamethoxam application
+methods were used: (1) In-furrow application after sowing, (2) foliar spray
+application three weeks after sowing, (3) seed treatment, and (4) no
+insecticides. Specifically, a quasi-Poisson regression model with a log link
+function was fit to examine the effects of plant variety and thiamethoxam
+application methods on the number of bee visits. The statistical significance of
+each variable was also tested, followed by Tukey's honest significant difference
+post hoc tests with the \pkg{agricolae} package \citep{agricolae} for pairwise
+comparisons among the plant varieties and the application methods.
+
+Following the original approach of \citet{obregon2022pest}, our goal is to
+conduct relevant tests with EL, focusing on performing multiple comparisons and
+constructing simultaneous confidence intervals. First, \code{thiamethoxam} is a
+\class{data.frame} with 165 observations and 11 variables. A summary of
+\code{thiamethoxam} is provided below.
+%
+<<thiamethoxam>>=
+data("thiamethoxam")
+summary(thiamethoxam)
+@
+%
+The variables \code{trt} and \code{var} are \class{factor} variables for the
+application methods and the plant varieties, respectively. The \code{visit}
+variable denotes the number of bee visits per plot. The ridgeline plot in
+Figure~\ref{fig:ridgeline_plot} created by the \pkg{ggridges} package
+\citep{ggridges} shows distinct distributions of \code{visit} by \code{trt} and
+\code{var}. Note that the ranges of \code{visit} differ by \code{trt}. The seed
+treatment (\code{Seed}) records the largest number of visits among the methods
+compared to no treatment (\code{None}). As for the variety, Success PM
+(\code{SPM}) tends to have a larger number of visits than Golden Zucchini
+(\code{GZ}). Considering \code{visit} as our response variable, we also include
+\code{fruit} (average number of fruits per plant) and \code{defoliation}
+(percentage defoliation) in our model as numeric variables. Particularly,
+\citet{obregon2022pest} conducted a path analysis with the \pkg{piecewiseSEM}
+package \citep{lefcheck2016piecewisesem}, showing that the percentage
+defoliation significantly reduces the number of visits.
+%
+\begin{figure}[t!]
+\centering
+<<ridgeline-plot, echo=FALSE, fig.width=7, fig.height=5>>=
+library("ggridges")
+ggplot(thiamethoxam, aes(
+  x = visit, y = trt, fill = var, linetype = var, color = var
+)) +
+  geom_density_ridges2(
+    alpha = 0.5, scale = 0.9, bandwidth = 1.5, rel_min_height = 0.01,
+    jittered_points = TRUE, point_shape = "|", point_size = 3,
+    position = position_points_jitter(width = 0.05, height = 0)
+  ) +
+  theme(
+    axis.text = element_text(size = 12, color = "black"),
+    axis.title = element_text(size = 12),
+    panel.background = element_blank(),
+    panel.border = element_rect(fill = NA, linewidth = 1),
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    legend.text = element_text(size = 10, color = "black"),
+    legend.background = element_rect(fill = alpha("white", 0)),
+    legend.margin = margin(t = 0),
+    legend.key = element_rect(fill = alpha("white", 1)),
+  ) +
+  labs(
+    x = "Number of bee visits", y = "Treatment",
+    colour = "", linetype = "", fill = ""
+  ) +
+  scale_linetype_manual(
+    breaks = c("GZ", "SPM"),
+    values = c("solid", "dashed")
+  ) +
+  scale_colour_manual(
+    breaks = c("GZ", "SPM"),
+    values = c("red", "blue")
+  ) +
+  scale_fill_manual(
+    breaks = c("GZ", "SPM"),
+    values = c("red", "blue")
+  )
+@
+\caption{\label{fig:ridgeline_plot} Ridgeline plot showing the densities of the
+  number of bee visits (\code{visit}), grouped by the application methods
+  (\code{trt}) and plant varieties(\code{var}).
+Solid red and dashed blue lines correspond to Golden Zucchini (\code{GZ}) and
+  Success PM (\code{SPM}), respectively.
+Rugs show jittered data points.}
+\end{figure}
+
+Next, we fit a quasi-Poisson regression model with a log link function using
+\fct{el\_glm} to obtain a \class{QGLM} model object.
+%
+<<quasi-poisson>>=
+fit3_glm <- el_glm(visit ~ trt + var + fruit + defoliation,
+  family = quasipoisson(link = "log"), data = thiamethoxam,
+  control = ctrl
+)
+print(summary(fit3_glm), width.cutoff = 50)
+@
+%
+The dispersion estimate corresponds to \({\hat{\phi}}\) in
+Equation~\ref{eq:phi}. This estimate is smaller than the one obtained from
+\fct{summary} when applied to a \class{glm} object because the denominator in
+Equation~\ref{eq:phi} is \({n}\) instead of \({n - p}\). The solution to the
+constrained EL problem also includes \code{phi}, which is not part of the
+overall model constraint. Both \code{fruit} and \code{defoliation} are
+significant, although the estimates are smaller than other variables. With only
+the level \code{Seed} being significant in \code{trt}, we assess the
+significance of  \code{trt} by testing whether the coefficients are all zero.
+The output of \fct{summary} reports a small \({p}\)~value with a different
+solution from the overall model test.
+%
+<<test-all-zero>>=
+elt2_glm <- elt(fit3_glm, lhs = c("trtSpray", "trtFurrow", "trtSeed"))
+summary(elt2_glm)
+@
+
+Finally, we extend the hypothesis testing framework of Section~\ref{sec:4.3} to
+multiple testing with \fct{elmt}, which can be directly applied to the fitted
+model object. Its syntax is similar to \fct{elt}, where \code{rhs} and
+\code{lhs} now specify multiple hypotheses.
+\begin{Code}
+elmt(object, rhs = NULL, lhs = NULL, alpha = 0.05, control = NULL)
+\end{Code}
+For general hypotheses involving separate matrices, \fct{elmt} accepts
+\class{list} objects for \code{rhs} and \code{lhs}. The corresponding elements
+of \code{rhs} and \code{lhs} together form a hypothesis, as in
+Equation~\ref{eq:linear hypothesis}. The \fct{elmt} function employs a
+multivariate chi-square calibration technique based on Monte Carlo simulations
+to determine the common critical value. Details of multiple testing procedures
+are given in \citet{kim2023empirical}. Continuing on the previous test result,
+we perform comparisons with the control, which is our primary interest. We set
+the overall significance level at \({0.05}\).
+%
+<<comparisons-with-control>>=
+elmt_glm <- elmt(fit3_glm, lhs = list("trtSpray", "trtFurrow", "trtSeed"))
+summary(elmt_glm)
+@
+%
+Note the use of a \class{list} for \code{lhs} by \fct{elmt}. While a character
+vector \code{lhs} acts as a single hypothesis for \fct{elt}, elements of
+\code{lhs} in \fct{elmt} define distinct hypotheses for convenience. The
+\code{Df} column shows the marginal chi-square degrees of freedom for each
+hypothesis.
+
+Further, we compare the result with the output of \fct{glht} in \pkg{multcomp},
+which relies on (asymptotic) multivariate normal and \({t}\)~distributions for
+simultaneous tests.
+%
+<<multcomp>>=
+library("multcomp")
+fit4_glm <- glm(visit ~ trt + var + fruit + defoliation,
+  family = quasipoisson(link = "log"), data = thiamethoxam,
+)
+fit4_glm$call <- NULL
+glht_glm <- glht(fit4_glm,
+  linfct = mcp(trt = c("Spray = 0", "Furrow = 0", "Seed = 0"))
+)
+summary(glht_glm)
+@
+\vspace*{-0.1cm}
+%
+For the hypothesis \code{Seed} vs. \code{None}, the adjusted \({p}\)~values are
+\({0.00243}\) for \fct{elmt} and \({0.00563}\) for \fct{glht}. Both procedures
+reject this hypothesis at the overall level of \({0.05}\) and conclude that only
+the seed treatment is significantly different from the control. Since each
+hypothesis conforms to a linear combination of the parameters, \fct{confint} can
+be applied to produce asymptotic \({95\%}\) simultaneous confidence intervals.
+For an object of class \class{ELMT}, \fct{confint} uses the common critical
+value computed by \fct{elmt}. Below we give the intervals from the two
+procedures.
+\vspace*{-0.1cm}
+%
+<<sci>>=
+confint(elmt_glm)
+glht_sci <- confint(glht_glm)$confint
+attributes(glht_sci)[c("calpha", "conf.level")] <- NULL
+glht_sci
+@
+
+
+\section{Conclusion}\label{sec:conclusion}
+Empirical likelihood enables a likelihood-driven style of inference without the
+restrictive distributional assumptions of parametric models. Perhaps more
+importantly, while being nonparametric, empirical likelihood retains some
+desirable properties of parametric likelihood. In many ways, it is an attractive
+and natural approach to estimation and hypothesis testing, but its use has been
+limited due to computational difficulties compared to other methods. The
+\proglang{R} package \pkg{melt} aims to bridge the gap and provide a unified
+framework for data analysis with empirical likelihood methods. The package is
+developed to conduct statistical inference routinely made in \proglang{R} with
+empirical likelihood. Mainly, hypothesis testing is available for various models
+with smooth estimating functions. Examples in this paper demonstrate the
+functionality of \pkg{melt}. We provide more examples and details on the package
+website \url{https://docs.ropensci.org/melt/}. Future work will focus on
+expanding the scope to additional estimating functions and models. The package
+structure and its adoption of \proglang{S}4 classes and methods are designed for
+extensibility. Optimization algorithms tailored to specific models can also be
+added in the process.
+
+
+\section*{Acknowledgments}
+We thank Pierre Chausse and Alex Stringer for their comments and suggestions on
+the package during the rOpenSci review process.
+This work was supported by the U.S.~National Science Foundation under Grants
+No.~SES-1921523 and DMS-2015552.
+
+
+\bibliography{references.bib}
+
+\end{document}

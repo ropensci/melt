@@ -39,7 +39,7 @@ setMethod("confint", "EL", function(object,
   }
   # Number of rows of the confidence interval matrix
   p <- length(idx)
-  level <- validate_level(level)
+  level <- assert_number(level, lower = 0, upper = 1, finite = TRUE)
   if (isTRUE(all.equal(level, 0))) {
     ci <- matrix(rep(est[idx], 2L), ncol = 2L)
     colnames(ci) <- c("lower", "upper")
@@ -95,13 +95,13 @@ setMethod("confint", "ELMT", function(object,
     stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
   }
   method <- getMethodEL(object)
-  cv <- if (is.null(cv)) object@cv else validate_cv(cv, th)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
   tol <- control@tol
   tol_l <- control@tol_l
   step <- control@step
   th <- control@th
+  cv <- if (is.null(cv)) object@cv else validate_cv(cv, th)
   nthreads <- control@nthreads
   w <- getWeights(object)
   estimates <- unlist(getEstimates(object))

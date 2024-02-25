@@ -5,8 +5,6 @@
 ^README\.Rmd$
 ^LICENSE\.md$
 ^cran-comments\.md$
-^\.vscode$
-^\.VSCodeCounter$
 ^ignore$
 ^data-raw$
 ^CRAN-RELEASE$
@@ -19,3 +17,7 @@
 ^docs$
 ^pkgdown$
 ^revdep$
+^doc$
+^Meta$
+^vignettes/cache$
+^vignettes/figure$

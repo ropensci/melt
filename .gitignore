@@ -14,3 +14,5 @@ docs
 renv
 renv.lock
 revdep
+/doc/
+/Meta/

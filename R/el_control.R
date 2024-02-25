@@ -63,29 +63,37 @@ el_control <- function(maxit = 200L,
                        seed = NULL,
                        b = 10000L,
                        m = 1e+06L) {
-  maxit <- validate_maxit(maxit)
-  maxit_l <- validate_maxit_l(maxit_l)
-  tol <- validate_tol(tol)
-  tol_l <- validate_tol_l(tol_l)
-  if (!is.null(step)) {
-    step <- validate_step(step)
+  maxit <- assert_int(maxit, lower = 1L, coerce = TRUE)
+  maxit_l <- assert_int(maxit_l, lower = 1L, coerce = TRUE)
+  tol <- assert_number(tol, lower = .Machine$double.eps, finite = TRUE)
+  tol_l <- assert_number(tol_l, lower = .Machine$double.eps, finite = TRUE)
+  if (isFALSE(is.null(step))) {
+    step <- assert_number(step, lower = .Machine$double.eps, finite = TRUE)
   }
-  if (!is.null(th)) {
-    th <- validate_th(th)
+  if (isFALSE(is.null(th))) {
+    th <- assert_number(th, lower = .Machine$double.eps, finite = TRUE)
   }
-  verbose <- validate_verbose(verbose)
-  keep_data <- validate_keep_data(keep_data)
+  verbose <- assert_logical(verbose,
+    any.missing = FALSE, all.missing = FALSE, len = 1L, typed.missing = TRUE
+  )
+  keep_data <- assert_logical(keep_data,
+    any.missing = FALSE, all.missing = FALSE, len = 1L, typed.missing = TRUE
+  )
   max_threads <- get_max_threads()
   if (missing(nthreads)) {
     nthreads <- as.integer(max(1L, max_threads / 2L))
   } else {
-    nthreads <- validate_nthreads(nthreads, max_threads)
+    nthreads <- assert_int(nthreads, lower = 1L, coerce = TRUE)
+    if (nthreads > max_threads) {
+      warning("`nthreads` is set to the maximum number of threads available.")
+      nthreads <- max_threads
+    }
   }
-  if (!is.null(seed)) {
-    seed <- validate_seed(seed)
+  if (isFALSE(is.null(seed))) {
+    seed <- assert_int(seed, coerce = TRUE)
   }
-  b <- validate_b(b)
-  m <- validate_m(m)
+  b <- assert_int(b, lower = 1L, coerce = TRUE)
+  m <- assert_int(m, lower = 1L, coerce = TRUE)
   new("ControlEL",
     maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
     th = th, verbose = verbose, keep_data = keep_data, nthreads = nthreads,

@@ -55,26 +55,36 @@ el_mean <- function(x,
                     par,
                     weights = NULL,
                     control = el_control()) {
-  mm <- validate_x(x)
+  x <- as.matrix(x, rownames.force = TRUE)
+  assert_matrix(x,
+    mode = "numeric", any.missing = FALSE, all.missing = FALSE, min.rows = 2L,
+    min.cols = 1L
+  )
+  assert_numeric(x, finite = TRUE)
+  stopifnot(
+    "`x` must must have larger number of rows than columns." =
+      nrow(x) > ncol(x),
+    "`x` must have full column rank." = get_rank(x) == ncol(x)
+  )
   stopifnot(
     "`par` must be a finite numeric vector." =
       (isTRUE(is.numeric(par) && all(is.finite(par)))),
     "Invalid `control` specified." = (is(control, "ControlEL"))
   )
-  n <- nrow(mm)
-  p <- ncol(mm)
+  n <- nrow(x)
+  p <- ncol(x)
   if (length(par) != p) {
     stop(gettextf("Length of `par` must be %d.", p, domain = NA))
   }
   w <- validate_weights(weights, n)
   if (length(w) == 0L) {
-    est <- colMeans(mm)
+    est <- colMeans(x)
   } else {
-    est <- colSums(mm * w) / n
-    names(w) <- rownames(mm)
+    est <- colSums(x * w) / n
+    names(w) <- rownames(x)
   }
   out <- compute_EL(
-    "mean", par, mm, control@maxit_l, control@tol_l, control@th, w
+    "mean", par, x, control@maxit_l, control@tol_l, control@th, w
   )
   optim <- validate_optim(out$optim)
   names(optim$par) <- names(est)
@@ -86,10 +96,10 @@ el_mean <- function(x,
     )
   }
   new("EL",
-    optim = optim, logp = setNames(out$logp, rownames(mm)), logl = out$logl,
+    optim = optim, logp = setNames(out$logp, rownames(x)), logl = out$logl,
     loglr = out$loglr, statistic = out$statistic, df = p,
     pval = pchisq(out$statistic, df = p, lower.tail = FALSE), nobs = n,
     npar = p, weights = w, coefficients = est, method = "mean",
-    data = if (control@keep_data) mm else NULL, control = control
+    data = if (control@keep_data) x else NULL, control = control
   )
 }

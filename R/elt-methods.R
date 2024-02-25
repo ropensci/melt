@@ -18,7 +18,7 @@ setMethod("elt", "EL", function(object,
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
   h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
-  alpha <- validate_alpha(alpha)
+  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -95,7 +95,7 @@ setMethod("elt", "QGLM", function(object,
   nm <- names(getOptim(object)$par)
   pnames <- nm[-getNumPar(object)]
   h <- validate_hypothesis(rhs, lhs, getNumPar(object) - 1L, pnames)
-  alpha <- validate_alpha(alpha)
+  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
   calibrate <- validate_calibrate(calibrate)
   method <- getMethodEL(object)
   maxit <- control@maxit
@@ -172,7 +172,7 @@ setMethod("elt", "SD", function(object,
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
   h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
-  alpha <- validate_alpha(alpha)
+  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
   calibrate <- validate_calibrate(calibrate)
   maxit_l <- control@maxit_l
   tol_l <- control@tol_l
@@ -233,13 +233,12 @@ setMethod("elt", "missing", function(object,
                                      alpha = 0.05,
                                      calibrate = "chisq",
                                      control = NULL) {
-  alpha <- validate_alpha(alpha)
+  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
   calibrate <- validate_calibrate(calibrate)
   if (is.null(control)) {
     control <- el_control()
   } else {
     stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
   }
-  alpha <- validate_alpha(alpha)
   NULL
 })

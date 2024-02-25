@@ -77,8 +77,8 @@ test_that("Character specification for `parm`.", {
 
 test_that("`ELMT` objects.", {
   fit <- el_glm(event ~ mag + dist + accel,
-                family = poisson("log"),
-                data = attenu
+    family = poisson("log"),
+    data = attenu
   )
   lhs <- list(
     matrix(c(1, 21, 1, 0, 2, 1, 5, 9), nrow = 2),

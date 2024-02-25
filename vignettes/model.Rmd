@@ -12,11 +12,7 @@ vignette: >
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  dpi = 300
-)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", dpi = 300)
 ```
 ```{r, echo=FALSE}
 library(melt, warn.conflicts = FALSE)

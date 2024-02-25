@@ -13,13 +13,8 @@ vignette: >
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  dpi = 300,
-  fig.width = 7,
-  fig.height = 5,
-  fig.align = "center",
-  out.width = "100%"
+  collapse = TRUE, comment = "#>", dpi = 300, fig.width = 7, fig.height = 5,
+  fig.align = "center", out.width = "100%"
 )
 ```
 ```{r, echo=FALSE}
@@ -150,9 +145,9 @@ Now we consider `elt()` for hypothesis testing, where the arguments `rhs` and
 argument `lhs` takes a numeric `matrix` or a `vector`. Alternatively, a 
 character `vector` can be supplied to symbolically specify a hypothesis, which 
 is convenient when there are many variables. When `lhs` is `NULL`, it performs 
-the EL evaluation at `rhs` When `rhs` is `NULL`, on the other hand, `rhs` is set 
-to the zero vector automatically, and the EL optimization is performed with 
-`lhs`. Technically, `elt()` can reproduce the test results from `fit_mean()`.
+the EL evaluation at `rhs`. When `rhs` is `NULL`, on the other hand, `rhs` is 
+set to the zero vector automatically, and the EL optimization is performed with 
+`lhs`. Technically, `elt()` can reproduce the test results from `fit_mean`.
 Note the equivalence between the optimization results.
 
 ```{r}
@@ -166,7 +161,7 @@ In addition to specifying an arbitrary linear hypothesis through `rhs` and
 `lhs`, extra arguments `alpha` and `calibrate` expand options for testing. The 
 argument `alpha` controls the significance level determining the critical value, 
 and `calibrate` chooses the calibration method. We apply the \({F}\) and 
-bootstrap calibrations to `fit_mean()` at a significance level of 0.05. The 
+bootstrap calibrations to `fit_mean` at a significance level of 0.05. The 
 number of threads is increased to four with 100000 bootstrap replicates in 
 `el_control()`.
 

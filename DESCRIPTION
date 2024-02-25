@@ -1,7 +1,7 @@
 Type: Package
 Package: melt
 Title: Multiple Empirical Likelihood Tests
-Version: 1.11.0.9000
+Version: 1.11.1
 Authors@R: c(
     person("Eunseop", "Kim", , "markean@pm.me", role = c("aut", "cph", "cre")),
     person("Steven", "MacEachern", role = c("ctb", "ths")),
@@ -27,18 +27,23 @@ BugReports: https://github.com/ropensci/melt/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    checkmate,
     graphics,
     methods,
     Rcpp,
     stats,
     utils
 Suggests: 
+    car,
+    carData,
     covr,
     dplyr,
     ggplot2,
+    ggridges,
     knitr,
     MASS,
     microbenchmark,
+    multcomp,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0),
