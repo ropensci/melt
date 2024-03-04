@@ -135,11 +135,11 @@ parameters increases with the number of observations fixed.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min         lq        mean     median          uq        max neval</span></span>
-<span><span class="co">#&gt;  n1e2    453.146    483.112    514.8933    501.551    552.1905    640.956   100</span></span>
-<span><span class="co">#&gt;  n1e3   1203.937   1413.097   1523.2106   1496.332   1621.8115   2371.165   100</span></span>
-<span><span class="co">#&gt;  n1e4  11037.908  12591.157  14803.9590  15407.447  16402.0785  20673.369   100</span></span>
-<span><span class="co">#&gt;  n1e5 177179.116 237177.635 278710.9902 266198.958 330316.0015 438996.167   100</span></span>
+<span><span class="co">#&gt;  expr        min         lq        mean     median         uq        max neval</span></span>
+<span><span class="co">#&gt;  n1e2    467.582    489.038    524.3728    504.557    563.743    757.444   100</span></span>
+<span><span class="co">#&gt;  n1e3   1220.799   1395.135   1514.1428   1481.796   1587.559   2772.025   100</span></span>
+<span><span class="co">#&gt;  n1e4  10817.236  12488.065  14707.0953  15291.008  16141.311  20382.143   100</span></span>
+<span><span class="co">#&gt;  n1e5 176005.811 240196.804 281264.8626 272049.312 334042.047 422254.733   100</span></span>
 <span><span class="co">#&gt;  cld</span></span>
 <span><span class="co">#&gt;  a  </span></span>
 <span><span class="co">#&gt;  a  </span></span>
@@ -176,16 +176,16 @@ likelihood at zero vectors of different sizes.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min          lq        mean     median          uq        max</span></span>
-<span><span class="co">#&gt;    p5    739.209    777.8215    810.9557    803.680    838.1845    899.278</span></span>
-<span><span class="co">#&gt;   p25   2913.978   2946.2230   3064.2300   2970.644   3032.2735   5942.980</span></span>
-<span><span class="co">#&gt;  p100  23014.969  25564.2155  27696.6702  25968.319  30600.0830  48140.495</span></span>
-<span><span class="co">#&gt;  p400 259926.893 283683.4195 317094.7403 304682.071 340205.1605 455844.226</span></span>
-<span><span class="co">#&gt;  neval cld</span></span>
-<span><span class="co">#&gt;    100 a  </span></span>
-<span><span class="co">#&gt;    100 a  </span></span>
-<span><span class="co">#&gt;    100  b </span></span>
-<span><span class="co">#&gt;    100   c</span></span>
+<span><span class="co">#&gt;  expr        min         lq        mean     median          uq        max neval</span></span>
+<span><span class="co">#&gt;    p5    733.028    782.661    826.3242    808.204    880.1635    962.557   100</span></span>
+<span><span class="co">#&gt;   p25   2851.143   2907.273   3001.1740   2956.560   3019.6630   5888.965   100</span></span>
+<span><span class="co">#&gt;  p100  22956.259  25578.580  27752.9197  26050.481  30625.7930  45871.321   100</span></span>
+<span><span class="co">#&gt;  p400 259904.048 285530.291 320401.1408 308712.441 340454.6290 452284.228   100</span></span>
+<span><span class="co">#&gt;  cld</span></span>
+<span><span class="co">#&gt;  a  </span></span>
+<span><span class="co">#&gt;  a  </span></span>
+<span><span class="co">#&gt;   b </span></span>
+<span><span class="co">#&gt;    c</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>On average, evaluating empirical likelihood with a 100000×10 or
