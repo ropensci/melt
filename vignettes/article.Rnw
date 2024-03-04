@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{melt: Multiple Empirical Likelihood Tests in R}
+%\VignetteIndexEntry{melt: Multiple Empirical Likelihood Tests}
 \documentclass[nojss]{jss}
 \usepackage{amsmath,amssymb,bm,mathtools,booktabs,thumbpdf,lmodern}
 \usepackage[linesnumbered, ruled, vlined]{algorithm2e}
@@ -670,9 +670,7 @@ All model objects inherit from class \class{EL}, and a description of the slots
 in \class{EL} is given in Table~\ref{tab:EL}. Notably, the slot \code{optim} is
 a \class{list} with the following four components that summarize the
 optimization results:
-
-\pagebreak
-
+%
 \begin{itemize}
 \item \code{par}: A numeric vector for the user-supplied parameter value
   \(\theta\) where EL is evaluated.
@@ -1269,7 +1267,6 @@ references therein]{qin1995estimating}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
 \section{Case study}\label{sec:example}
 This section presents a more in-depth data analysis using EL with an internal
 dataset of \pkg{melt}, \code{thiamethoxam}, from \citet{obregon2022pest}.
@@ -1442,7 +1439,6 @@ glht_glm <- glht(fit4_glm,
 )
 summary(glht_glm)
 @
-\vspace*{-0.1cm}
 %
 For the hypothesis \code{Seed} vs. \code{None}, the adjusted \({p}\)~values are
 \({0.00243}\) for \fct{elmt} and \({0.00563}\) for \fct{glht}. Both procedures
@@ -1453,7 +1449,6 @@ be applied to produce asymptotic \({95\%}\) simultaneous confidence intervals.
 For an object of class \class{ELMT}, \fct{confint} uses the common critical
 value computed by \fct{elmt}. Below we give the intervals from the two
 procedures.
-\vspace*{-0.1cm}
 %
 <<sci>>=
 confint(elmt_glm)

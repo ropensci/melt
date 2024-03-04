@@ -1,5 +1,5 @@
 ## Test environments
-* local Arch Linux x86_64, R 4.3.2  
+* local Arch Linux x86_64, R 4.3.3
 
 ## R CMD check results
 0 errors  | 0 warnings  | 1 note 
