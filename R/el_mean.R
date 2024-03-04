@@ -55,6 +55,7 @@ el_mean <- function(x,
                     par,
                     weights = NULL,
                     control = el_control()) {
+  assert_class(control, "ControlEL")
   x <- as.matrix(x, rownames.force = TRUE)
   assert_matrix(x,
     mode = "numeric", any.missing = FALSE, all.missing = FALSE, min.rows = 2L,
@@ -68,8 +69,7 @@ el_mean <- function(x,
   )
   stopifnot(
     "`par` must be a finite numeric vector." =
-      (isTRUE(is.numeric(par) && all(is.finite(par)))),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+      (isTRUE(is.numeric(par) && all(is.finite(par))))
   )
   n <- nrow(x)
   p <- ncol(x)

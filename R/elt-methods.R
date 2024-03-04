@@ -13,7 +13,7 @@ setMethod("elt", "EL", function(object,
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
@@ -88,7 +88,7 @@ setMethod("elt", "QGLM", function(object,
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   # `npar` includes the dispersion parameter
   onames <- names(logProb(object))
@@ -167,7 +167,7 @@ setMethod("elt", "SD", function(object,
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
@@ -238,7 +238,7 @@ setMethod("elt", "missing", function(object,
   if (is.null(control)) {
     control <- el_control()
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   NULL
 })

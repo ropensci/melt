@@ -37,6 +37,7 @@
 #' summary(fit)
 #' @export
 el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
+  assert_class(control, "ControlEL")
   nm <- names(x)
   x <- as.vector(x, mode = "numeric")
   stopifnot(
@@ -46,8 +47,7 @@ el_sd <- function(x, mean, sd, weights = NULL, control = el_control()) {
       (isTRUE(is.numeric(mean) && length(mean) == 1L && is.finite(mean))),
     "`sd` must be a finite single numeric." =
       (isTRUE(is.numeric(sd) && length(sd) == 1L && is.finite(sd))),
-    "`sd` must be a positive single numeric." = (sd >= .Machine$double.eps),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+    "`sd` must be a positive single numeric." = (sd >= .Machine$double.eps)
   )
   n <- length(x)
   mm <- (x - mean)^2L

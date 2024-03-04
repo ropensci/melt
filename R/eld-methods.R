@@ -7,7 +7,7 @@ setMethod("eld", "EL", function(object, control = NULL) {
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   new("ELD", .Data = compute_ELD(
     getMethodEL(object), coef(object), getData(object), control@maxit_l,
@@ -24,7 +24,7 @@ setMethod("eld", "GLM", function(object, control = NULL) {
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   mm <- getData(object)
   n <- nobs(object)
@@ -53,7 +53,7 @@ setMethod("eld", "missing", function(object, control = NULL) {
   if (is.null(control)) {
     control <- el_control()
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   NULL
 })

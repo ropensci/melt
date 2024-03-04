@@ -119,7 +119,7 @@ el_glm <- function(formula,
                    offset,
                    control = el_control(),
                    ...) {
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
+  assert_class(control, "ControlEL")
   cl <- match.call()
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())

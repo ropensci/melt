@@ -85,7 +85,7 @@ el_lm <- function(formula,
                   offset,
                   control = el_control(),
                   ...) {
-  stopifnot("Invalid `control` specified." = (is(control, "ControlEL")))
+  assert_class(control, "ControlEL")
   cl <- match.call()
   if (missing(data)) {
     data <- environment(formula)
@@ -141,7 +141,7 @@ el_lm <- function(formula,
   }
   pnames <- names(fit$coefficients)
   intercept <- as.logical(attr(mt, "intercept"))
-  s <- if (is.null(offset)) rep.int(0, length(y)) else offset
+  s <- if (is.null(offset)) rep.int(0L, length(y)) else offset
   mm <- cbind(s, y, x)
   n <- nrow(mm)
   p <- ncol(x)

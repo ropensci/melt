@@ -17,7 +17,7 @@ setMethod("confint", "EL", function(object,
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   est <- coef(object)
   # Index for tracking the parameters
@@ -92,7 +92,7 @@ setMethod("confint", "ELMT", function(object,
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   method <- getMethodEL(object)
   maxit <- control@maxit

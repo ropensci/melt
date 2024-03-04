@@ -18,7 +18,7 @@ setMethod("confreg", "EL", function(object,
   if (is.null(control)) {
     control <- getControlEL(object)
   } else {
-    stopifnot("Invalid `control` specified." = is(control, "ControlEL"))
+    assert_class(control, "ControlEL")
   }
   est <- coef(object)
   nm <- names(est)

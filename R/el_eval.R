@@ -64,6 +64,7 @@
 #' el_eval(g, weights = rep(c(1, 2), each = 50))
 #' @export
 el_eval <- function(g, weights = NULL, control = el_control()) {
+  assert_class(control, "ControlEL")
   mm <- as.matrix(g, rownames.force = TRUE)
   nm <- rownames(mm)
   n <- nrow(mm)
@@ -72,8 +73,7 @@ el_eval <- function(g, weights = NULL, control = el_control()) {
     "`g` must have at least two observations." = (n >= 2L),
     "`g` must be a finite numeric matrix." =
       (isTRUE(is.numeric(mm) && all(is.finite(mm)))),
-    "`g` must have full column rank." = (isTRUE(n > p && get_rank(mm) == p)),
-    "Invalid `control` specified." = (is(control, "ControlEL"))
+    "`g` must have full column rank." = (isTRUE(n > p && get_rank(mm) == p))
   )
   w <- validate_weights(weights, n)
   names(w) <- if (length(w) != 0L) nm else NULL
