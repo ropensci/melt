@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.1.9000</span>
       </span>
     </div>
 
@@ -61,9 +61,6 @@
     </li>
     <li>
       <a href="../articles/performance.html">Performance</a>
-    </li>
-    <li>
-      <a href="../articles/usage.html">Using melt</a>
     </li>
   </ul>
 </li>
@@ -138,11 +135,11 @@ parameters increases with the number of observations fixed.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min         lq        mean     median         uq        max neval</span></span>
-<span><span class="co">#&gt;  n1e2    446.664    482.571    512.4949    497.159    542.568    643.762   100</span></span>
-<span><span class="co">#&gt;  n1e3   1171.027   1390.261   1491.2507   1459.806   1577.290   2459.683   100</span></span>
-<span><span class="co">#&gt;  n1e4  10737.740  12304.661  14457.4315  15132.146  15932.215  20172.968   100</span></span>
-<span><span class="co">#&gt;  n1e5 171374.593 230541.569 268131.0119 260453.694 317580.541 408646.797   100</span></span>
+<span><span class="co">#&gt;  expr        min         lq        mean     median          uq        max neval</span></span>
+<span><span class="co">#&gt;  n1e2    453.146    483.112    514.8933    501.551    552.1905    640.956   100</span></span>
+<span><span class="co">#&gt;  n1e3   1203.937   1413.097   1523.2106   1496.332   1621.8115   2371.165   100</span></span>
+<span><span class="co">#&gt;  n1e4  11037.908  12591.157  14803.9590  15407.447  16402.0785  20673.369   100</span></span>
+<span><span class="co">#&gt;  n1e5 177179.116 237177.635 278710.9902 266198.958 330316.0015 438996.167   100</span></span>
 <span><span class="co">#&gt;  cld</span></span>
 <span><span class="co">#&gt;  a  </span></span>
 <span><span class="co">#&gt;  a  </span></span>
@@ -179,16 +176,16 @@ likelihood at zero vectors of different sizes.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min         lq        mean     median         uq        max neval</span></span>
-<span><span class="co">#&gt;    p5    730.654    766.867    794.9612    791.258    814.471    903.847   100</span></span>
-<span><span class="co">#&gt;   p25   2848.479   2871.898   2943.7225   2895.407   2936.519   5806.192   100</span></span>
-<span><span class="co">#&gt;  p100  22704.335  25184.742  27288.7251  25404.452  30243.778  45160.267   100</span></span>
-<span><span class="co">#&gt;  p400 257415.636 281546.776 314181.8479 303135.708 331852.459 439733.414   100</span></span>
-<span><span class="co">#&gt;  cld</span></span>
-<span><span class="co">#&gt;  a  </span></span>
-<span><span class="co">#&gt;  a  </span></span>
-<span><span class="co">#&gt;   b </span></span>
-<span><span class="co">#&gt;    c</span></span>
+<span><span class="co">#&gt;  expr        min          lq        mean     median          uq        max</span></span>
+<span><span class="co">#&gt;    p5    739.209    777.8215    810.9557    803.680    838.1845    899.278</span></span>
+<span><span class="co">#&gt;   p25   2913.978   2946.2230   3064.2300   2970.644   3032.2735   5942.980</span></span>
+<span><span class="co">#&gt;  p100  23014.969  25564.2155  27696.6702  25968.319  30600.0830  48140.495</span></span>
+<span><span class="co">#&gt;  p400 259926.893 283683.4195 317094.7403 304682.071 340205.1605 455844.226</span></span>
+<span><span class="co">#&gt;  neval cld</span></span>
+<span><span class="co">#&gt;    100 a  </span></span>
+<span><span class="co">#&gt;    100 a  </span></span>
+<span><span class="co">#&gt;    100  b </span></span>
+<span><span class="co">#&gt;    100   c</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>On average, evaluating empirical likelihood with a 100000×10 or
