@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ropensci/melt",
   "issueTracker": "https://github.com/ropensci/melt/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.3.2 (2023-10-31)",
+  "runtimePlatform": "R version 4.3.3 (2024-02-29)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -291,7 +291,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "300759.396KB",
+  "fileSize": "300699.916KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",

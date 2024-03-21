@@ -5,9 +5,9 @@
 0 errors  | 0 warnings  | 1 note 
 
 ❯ checking installed package size ... NOTE
-    installed size is 125.8Mb
+    installed size is 155.1Mb
     sub-directories of 1Mb or more:
-      libs  124.0Mb
+      libs  153.5Mb
 
 ## revdepcheck results
 
