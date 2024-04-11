@@ -14,7 +14,7 @@
 #' @noRd
 calibrate <- function(calibrate, alpha, statistic, p, par, object, control) {
   switch(calibrate,
-    "chisq" = {
+    "ael" = {
       c(
         cv = qchisq(1 - alpha, df = p),
         pval = pchisq(statistic, df = p, lower.tail = FALSE)
@@ -30,6 +30,12 @@ calibrate <- function(calibrate, alpha, statistic, p, par, object, control) {
         alpha, statistic, control@b, seed, control@nthreads,
         getMethodEL(object), getData(object), par, coef(object),
         control@maxit_l, control@tol_l, control@th, getWeights(object)
+      )
+    },
+    "chisq" = {
+      c(
+        cv = qchisq(1 - alpha, df = p),
+        pval = pchisq(statistic, df = p, lower.tail = FALSE)
       )
     },
     "f" = {

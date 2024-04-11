@@ -15,6 +15,7 @@ el_control(
   keep_data = TRUE,
   nthreads,
   seed = NULL,
+  an = NULL,
   b = 10000L,
   m = 1000000L
 )
@@ -68,6 +69,10 @@ with \code{nthreads}. Each thread is given a separate seed to produce a
 non-overlapping but reproducible sequence of random numbers. The
 Xoshiro256+ pseudo-random number generator is used internally to work with
 OpenMP.}
+
+\item{an}{A single numeric representing the scaling factor for adjusted
+empirical likelihood calibration. It only applies to \code{\link[=elt]{elt()}} when
+\code{calibrate} is set to \code{"ael"}. Defaults to \code{NULL}.}
 
 \item{b}{A single integer for the number of bootstrap replicates. It only
 applies to \code{\link[=elt]{elt()}} when \code{calibrate} is set to \code{"boot"}. Defaults to

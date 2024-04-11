@@ -24,6 +24,8 @@
 #' @slot nthreads A single integer for the number of threads for parallel
 #'   computation via OpenMP (if available).
 #' @slot seed A single integer for the seed for random number generation.
+#' @slot an A single numeric representing the scaling factor for adjusted
+#'   empirical likelihood calibration.
 #' @slot b A single integer for the number of bootstrap replicates.
 #' @slot m A single integer for the number of Monte Carlo samples.
 #' @aliases ControlEL
@@ -33,7 +35,7 @@ setClass("ControlEL",
   slots = c(
     maxit = "integer", maxit_l = "integer", tol = "numeric", tol_l = "numeric",
     step = "ANY", th = "ANY", verbose = "logical", keep_data = "logical",
-    nthreads = "integer", seed = "ANY", b = "integer", m = "integer"
+    nthreads = "integer", seed = "ANY", an = "ANY", b = "integer", m = "integer"
   )
 )
 

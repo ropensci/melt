@@ -57,8 +57,9 @@ setMethod("print", "ELT", function(x,
     x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))], digits
   ), sep = "\n")
   method <- switch(x@calibrate,
-    "chisq" = "Chi-square",
+    "ael" = "Adjusted EL",
     "boot" = "Bootstrap",
+    "chisq" = "Chi-square",
     "f" = "F"
   )
   cat(paste0(
@@ -209,8 +210,9 @@ setMethod(
       x@rhs, x@lhs, names(getOptim(x)$par)[seq_len(ncol(x@lhs))], digits
     ), sep = "\n")
     method <- switch(x@calibrate,
-      "chisq" = "Chi-square",
+      "ael" = "Adjusted EL",
       "boot" = "Bootstrap",
+      "chisq" = "Chi-square",
       "f" = "F"
     )
     cat(paste0(
@@ -265,7 +267,7 @@ setMethod(
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)
       cat("\nMaximum EL estimates:\n")
-      print.default(coef(x)[,1L], digits = digits, ...)
+      print.default(coef(x)[, 1L], digits = digits, ...)
       cat(paste(
         "\nlogL:", format.default(logL(x), digits = digits, ...),
         ", logLR:", format.default(logLR(x), digits = digits, ...)
@@ -337,7 +339,7 @@ setMethod(
       cat("\nLagrange multipliers:\n")
       print.default(getOptim(x)$lambda, digits = digits, ...)
       cat("\nMaximum EL estimates:\n")
-      print.default(coef(x)[,1L], digits = digits, ...)
+      print.default(coef(x)[, 1L], digits = digits, ...)
       cat(paste(
         "\nlogL:", format.default(logL(x), digits = digits, ...),
         ", logLR:", format.default(logLR(x), digits = digits, ...)

@@ -1,23 +1,3 @@
-#' Validate `calibrate`
-#'
-#' Validate `calibrate` in [elt()].
-#'
-#' @param calibrate A single character.
-#' @return A single character.
-#' @noRd
-validate_calibrate <- function(calibrate) {
-  assert_string(calibrate)
-  table <- c("chisq", "boot", "f")
-  calibrate <- table[pmatch(tolower(calibrate), table = table)]
-  if (isTRUE(is.na(calibrate))) {
-    stop(gettextf(
-      "`calibrate` must be one of %s, %s, or %s.",
-      dQuote("chisq"), dQuote("boot"), dQuote("f")
-    ), domain = NA)
-  }
-  calibrate
-}
-
 #' Validate `cv`
 #'
 #' Validate `cv` in [confint()] and [confreg()].
