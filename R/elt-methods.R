@@ -45,7 +45,7 @@ setMethod("elt", "EL", function(object,
       pg <- -an * colMeans(g)
       g <- rbind(g, pg)
       out <- compute_generic_EL(g, maxit_l, tol_l, th, w)
-      out$optim$par <- par
+      out$optim <- c(par = list(par), out$optim)
     }
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames
@@ -139,7 +139,7 @@ setMethod("elt", "QGLM", function(object,
       pg <- -an * colMeans(g)
       g <- rbind(g, pg)
       out <- compute_generic_EL(g, maxit_l, tol_l, th, w)
-      out$optim$par <- par
+      out$optim <- c(par = list(par), out$optim)
     }
     optim <- validate_optim(out$optim)
     names(optim$par) <- nm
@@ -226,7 +226,7 @@ setMethod("elt", "SD", function(object,
       pg <- -an * colMeans(g)
       g <- rbind(g, pg)
       out <- compute_generic_EL(g, maxit_l, tol_l, th, w)
-      out$optim$par <- par
+      out$optim <- c(par = list(par), out$optim)
     }
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames
