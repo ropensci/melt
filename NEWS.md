@@ -1,3 +1,11 @@
+# melt 1.11.3
+## NEW FEATURES
+* New `"ael"` option has been added in the `calibrate` argument of `elt()` for adjusted empirical likelihood calibration.
+
+## MINOR IMPROVEMENTS
+* The package vignette has been updated.
+
+
 # melt 1.11.2
 ## MINOR IMPROVEMENTS
 * The package vignette has been updated.
