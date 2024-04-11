@@ -283,7 +283,7 @@ setGeneric("elmt", function(object,
 
 #' Empirical likelihood test
 #'
-#' Tests a linear hypothesis with various calibration methods.
+#' Tests a linear hypothesis with various calibration options.
 #'
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param rhs A numeric vector or a column matrix for the right-hand side of

@@ -72,6 +72,9 @@ test_that("When elt == evaluation.", {
   rhs <- c(0, 0)
   wfit4 <- elt(wfit3, rhs = rhs, lhs = lhs)
   expect_equal(getOptim(wfit3)$lambda, getOptim(wfit4)$lambda)
+  expect_error(elt(fit, lhs = c("par"), rhs = 10, calibrate = "ael"))
+  out <- elt(fit, rhs = 10, calibrate = "ael")
+  expect_s4_class(out, "ELT")
 })
 
 test_that("`conv()` method and calibration.", {
@@ -81,8 +84,8 @@ test_that("`conv()` method and calibration.", {
 
 test_that("Probabilities add up to 1.", {
   fit <- el_mean(precip, par = 60)
-  elt <- elt(fit, rhs = 65)
-  expect_equal(sum(exp(logProb(elt))), 1, tolerance = 1e-07)
+  out <- elt(fit, rhs = 65)
+  expect_equal(sum(exp(logProb(out))), 1, tolerance = 1e-07)
 })
 
 test_that("Vector `lhs`.", {
@@ -130,11 +133,14 @@ test_that("`SD` class.", {
   expect_error(elt(fit, rhs = -1))
   expect_error(elt(fit, rhs = rhs, lhs = lhs, calibrate = "boot"))
   expect_error(elt(fit, rhs = rhs, lhs = lhs, calibrate = "f"))
+  expect_error(elt(fit, rhs = -1, lhs = 1, calibrate = "ael"))
   expect_error(elt(fit, rhs = -1, lhs = 1, calibrate = "f"))
   out <- elt(fit, rhs = 1)
   out2 <- elt(fit, rhs = 1, lhs = 2)
+  out3 <- elt(fit, rhs = 1, calibrate = "ael")
   expect_s4_class(out, "ELT")
   expect_s4_class(out2, "ELT")
+  expect_s4_class(out3, "ELT")
 })
 
 test_that("`QGLM` class.", {
@@ -142,7 +148,9 @@ test_that("`QGLM` class.", {
     family = quasipoisson("log"), data = mtcars
   )
   out <- elt(fit, rhs = coef(fit))
-  expect_s4_class(out, "ELT")
   out2 <- elt(fit, lhs = c("mpg + cyl"))
+  out3 <- elt(fit, rhs = c(11, 0, 7), calibrate = "ael")
+  expect_s4_class(out, "ELT")
   expect_s4_class(out2, "ELT")
+  expect_s4_class(out3, "ELT")
 })

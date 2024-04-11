@@ -11,7 +11,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml)
 [![pkgcheck](https://github.com/ropensci/melt/workflows/pkgcheck/badge.svg)](https://github.com/ropensci/melt/actions?query=workflow%3Apkgcheck)
 [![Codecov test
-coverage](https://codecov.io/gh/ropensci/melt/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/melt?branch=master)
+coverage](https://codecov.io/gh/ropensci/melt/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropensci/melt?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/melt)](https://CRAN.R-project.org/package=melt)
 [![runiverse](https://ropensci.r-universe.dev/badges/melt)](http://ropensci.r-universe.dev/ui/#package:melt)
@@ -69,7 +69,7 @@ analysis tasks:
 - `el_glm()` fits a generalized linear model with empirical likelihood.
 - `confint()` computes confidence intervals for model parameters.
 - `confreg()` computes confidence region for model parameters.
-- `elt()` tests a linear hypothesis.
+- `elt()` tests a hypothesis with various calibration options.
 - `elmt()` performs multiple testing simultaneously.
 
 ## Usage
@@ -226,13 +226,13 @@ summary(fit_glm)
 #> 
 #> Coefficients:
 #>              Estimate   Chisq Pr(>Chisq)    
-#> (Intercept)  -0.10977   0.090   0.763757    
+#> (Intercept)  -0.10977   0.090      0.764    
 #> log(mass)     0.24750 425.859    < 2e-16 ***
-#> fruit         0.04654  11.584   0.000665 ***
+#> fruit         0.04654  29.024   7.15e-08 ***
 #> foliage     -19.40632  65.181   6.83e-16 ***
 #> varGZ        -0.25760  17.308   3.18e-05 ***
-#> trtSpray      0.06724   0.860   0.353820    
-#> trtFurrow    -0.03634   0.217   0.641379    
+#> trtSpray      0.06724   0.860      0.354    
+#> trtFurrow    -0.03634   0.217      0.641    
 #> trtSeed       0.34790  19.271   1.13e-05 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1

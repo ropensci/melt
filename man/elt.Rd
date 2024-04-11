@@ -46,7 +46,7 @@ An object of class of \linkS4class{ELT}. If \code{lhs} is non-\code{NULL}, the
 corresponds to that of \linkS4class{EL}.
 }
 \description{
-Tests a linear hypothesis with various calibration methods.
+Tests a linear hypothesis with various calibration options.
 }
 \details{
 \code{\link[=elt]{elt()}} performs the constrained minimization of \eqn{l(\theta)}
