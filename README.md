@@ -80,7 +80,7 @@ set.seed(971112)
 
 ## Test for the mean
 data("precip")
-el_mean(precip, par = 30)
+(fit <- el_mean(precip, par = 30))
 #> 
 #>  Empirical Likelihood
 #> 
@@ -90,6 +90,51 @@ el_mean(precip, par = 30)
 #> [1] 34.89
 #> 
 #> Chisq: 8.285, df: 1, Pr(>Chisq): 0.003998
+#> EL evaluation: converged
+
+
+## Adjusted empirical likelihood calibration
+elt(fit, rhs = 30, calibrate = "ael")
+#> 
+#>  Empirical Likelihood Test
+#> 
+#> Hypothesis:
+#> par = 30
+#> 
+#> Significance level: 0.05, Calibration: Adjusted EL 
+#> 
+#> Statistic: 7.744, Critical value: 3.841
+#> p-value: 0.005389 
+#> EL evaluation: converged
+
+
+## Bootstrap calibration
+elt(fit, rhs = 30, calibrate = "boot")
+#> 
+#>  Empirical Likelihood Test
+#> 
+#> Hypothesis:
+#> par = 30
+#> 
+#> Significance level: 0.05, Calibration: Bootstrap 
+#> 
+#> Statistic: 8.285, Critical value: 3.84
+#> p-value: 0.0041 
+#> EL evaluation: converged
+
+
+## F calibration
+elt(fit, rhs = 30, calibrate = "f")
+#> 
+#>  Empirical Likelihood Test
+#> 
+#> Hypothesis:
+#> par = 30
+#> 
+#> Significance level: 0.05, Calibration: F 
+#> 
+#> Statistic: 8.285, Critical value: 3.98
+#> p-value: 0.005318 
 #> EL evaluation: converged
 
 

@@ -78,7 +78,19 @@ set.seed(971112)
 
 ## Test for the mean
 data("precip")
-el_mean(precip, par = 30)
+(fit <- el_mean(precip, par = 30))
+
+
+## Adjusted empirical likelihood calibration
+elt(fit, rhs = 30, calibrate = "ael")
+
+
+## Bootstrap calibration
+elt(fit, rhs = 30, calibrate = "boot")
+
+
+## F calibration
+elt(fit, rhs = 30, calibrate = "f")
 
 
 ## Linear model
