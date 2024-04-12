@@ -43,6 +43,9 @@ computation via OpenMP (if available).}
 
 \item{\code{seed}}{A single integer for the seed for random number generation.}
 
+\item{\code{an}}{A single numeric representing the scaling factor for adjusted
+empirical likelihood calibration.}
+
 \item{\code{b}}{A single integer for the number of bootstrap replicates.}
 
 \item{\code{m}}{A single integer for the number of Monte Carlo samples.}

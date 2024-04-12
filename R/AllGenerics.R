@@ -283,7 +283,7 @@ setGeneric("elmt", function(object,
 
 #' Empirical likelihood test
 #'
-#' Tests a linear hypothesis.
+#' Tests a linear hypothesis with various calibration options.
 #'
 #' @param object An object that inherits from \linkS4class{EL}.
 #' @param rhs A numeric vector or a column matrix for the right-hand side of
@@ -295,9 +295,9 @@ setGeneric("elmt", function(object,
 #'   of parameters. Or a character vector with a symbolic description of the
 #'   hypothesis is allowed. Defaults to `NULL`. See ‘Details’.
 #' @param alpha A single numeric for the significance level. Defaults to `0.05`.
-#' @param calibrate A single character for the calibration method. It is
-#'   case-insensitive and must be one of `"chisq"`, `"boot"`, or `"f"`.
-#'   Defaults to `"chisq"`. See ‘Details’.
+#' @param calibrate A single character representing the calibration method. It
+#'   is case-insensitive and must be one of `"ael"`, `"boot"`, `"chisq"`, or
+#'   `"f"`. Defaults to `"chisq"`. See ‘Details’.
 #' @param control An object of class \linkS4class{ControlEL} constructed by
 #'   [el_control()]. Defaults to `NULL` and inherits the `control` slot in
 #'   `object`.
@@ -318,12 +318,13 @@ setGeneric("elmt", function(object,
 #'   1. If `lhs` is `NULL`, \eqn{L} is set to the identity matrix and the
 #'   problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
 #'
-#'   `calibrate` specifies the calibration method used. Three methods are
-#'   available: `"chisq"` (chi-square calibration), `"boot"` (bootstrap
-#'   calibration), and `"f"` (\eqn{F} calibration). `"boot"` is applicable only
-#'   when `lhs` is `NULL`. The `nthreads`, `seed`, and `B` slots in `control`
-#'   apply to the bootstrap procedure. `"f"` is applicable only to the mean
-#'   parameter when `lhs` is `NULL`.
+#'   `calibrate` specifies the calibration method used. Four methods are
+#'   available: `"ael"` (adjusted empirical likelihood calibration), `"boot"`
+#'   (bootstrap calibration), `"chisq"` (chi-square calibration), and `"f"`
+#'   (\eqn{F} calibration). When `lhs` is not `NULL`, only `"chisq"` is
+#'   available. `"f"` is applicable only to the mean parameter. The `an` slot in
+#'   `control` applies specifically to `"ael"`, while the `nthreads`, `seed`,
+#'   and `B` slots apply to `"boot"`.
 #' @return An object of class of \linkS4class{ELT}. If `lhs` is non-`NULL`, the
 #'   `optim` slot corresponds to that of \linkS4class{CEL}. Otherwise, it
 #'   corresponds to that of \linkS4class{EL}.
@@ -332,6 +333,11 @@ setGeneric("elmt", function(object,
 #'   ``A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.''
 #'   \emph{Statistical Methods & Applications}, **19**(4), 463--476.
 #'   \doi{10.1007/s10260-010-0137-9}.
+#' @references
+#'   Chen J, Variyath AM, Abraham B (2008).
+#'   ``Adjusted Empirical Likelihood and Its Properties.''
+#'   \emph{Journal of Computational and Graphical Statistics}, **17**(2),
+#'   426--443.
 #' @references
 #'   Kim E, MacEachern SN, Peruggia M (2024).
 #'   ``melt: Multiple Empirical Likelihood Tests in R.''
@@ -345,9 +351,15 @@ setGeneric("elmt", function(object,
 #' @seealso \linkS4class{EL}, \linkS4class{ELT}, [elmt()], [el_control()]
 #' @usage NULL
 #' @examples
-#' ## F calibration for the mean
+#' ## Adjusted empirical likelihood calibration
 #' data("precip")
 #' fit <- el_mean(precip, 32)
+#' elt(fit, rhs = 100, calibrate = "ael")
+#'
+#' ## Bootstrap calibration
+#' elt(fit, rhs = 32, calibrate = "boot")
+#'
+#' ## F calibration
 #' elt(fit, rhs = 32, calibrate = "f")
 #'
 #' ## Test of no treatment effect

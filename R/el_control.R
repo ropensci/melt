@@ -41,6 +41,9 @@
 #'   non-overlapping but reproducible sequence of random numbers. The
 #'   Xoshiro256+ pseudo-random number generator is used internally to work with
 #'   OpenMP.
+#' @param an A single numeric representing the scaling factor for adjusted
+#'   empirical likelihood calibration. It only applies to [elt()] when
+#'   `calibrate` is set to `"ael"`. Defaults to `NULL`.
 #' @param b A single integer for the number of bootstrap replicates. It only
 #'   applies to [elt()] when `calibrate` is set to `"boot"`. Defaults to
 #'   `10000`.
@@ -61,6 +64,7 @@ el_control <- function(maxit = 200L,
                        keep_data = TRUE,
                        nthreads,
                        seed = NULL,
+                       an = NULL,
                        b = 10000L,
                        m = 1e+06L) {
   maxit <- assert_int(maxit, lower = 1L, coerce = TRUE)
@@ -92,11 +96,14 @@ el_control <- function(maxit = 200L,
   if (isFALSE(is.null(seed))) {
     seed <- assert_int(seed, coerce = TRUE)
   }
+  if (isFALSE(is.null(an))) {
+    an <- assert_number(an, lower = .Machine$double.eps, finite = TRUE)
+  }
   b <- assert_int(b, lower = 1L, coerce = TRUE)
   m <- assert_int(m, lower = 1L, coerce = TRUE)
   new("ControlEL",
     maxit = maxit, maxit_l = maxit_l, tol = tol, tol_l = tol_l, step = step,
     th = th, verbose = verbose, keep_data = keep_data, nthreads = nthreads,
-    seed = seed, b = b, m = m
+    seed = seed, an = an, b = b, m = m
   )
 }

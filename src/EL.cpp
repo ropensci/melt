@@ -18,17 +18,18 @@ EL::EL(const std::string method,
        const double tol_l,
        const double th,
        const Eigen::Ref<const Eigen::ArrayXd> &wt)
-    : par{par0},
-      l{Eigen::VectorXd::Zero(par0.size())},
-      mele_fn{set_mele_fn(method)},
-      w{wt},
-      maxit_l{maxit_l},
+    : maxit_l{maxit_l},
       tol_l{tol_l},
       th{th},
       n{static_cast<int>(x.rows())},
-      g_fn{EL::set_g_fn(method)}
+      g_fn{EL::set_g_fn(method)},
+      par{par0},
+      l{Eigen::VectorXd::Zero(par0.size())},
+      mele_fn{set_mele_fn(method)},
+      w{wt},
+      g{g_fn(x, par)}
 {
-  set_el(g_fn(x, par), wt);
+  set_el(g, wt);
 }
 
 EL::EL(const Eigen::Ref<const Eigen::MatrixXd> &g,
@@ -36,15 +37,16 @@ EL::EL(const Eigen::Ref<const Eigen::MatrixXd> &g,
        const double tol_l,
        const double th,
        const Eigen::Ref<const Eigen::ArrayXd> &wt)
-    : par{},
-      l{Eigen::VectorXd::Zero(g.cols())},
-      mele_fn{},
-      w{wt},
-      maxit_l{maxit_l},
+    : maxit_l{maxit_l},
       tol_l{tol_l},
       th{th},
       n{static_cast<int>(g.rows())},
-      g_fn{}
+      g_fn{},
+      par{},
+      l{Eigen::VectorXd::Zero(g.cols())},
+      mele_fn{},
+      w{wt},
+      g{g}
 {
   set_el(g, wt);
 }

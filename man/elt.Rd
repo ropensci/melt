@@ -32,9 +32,9 @@ hypothesis is allowed. Defaults to \code{NULL}. See ‘Details’.}
 
 \item{alpha}{A single numeric for the significance level. Defaults to \code{0.05}.}
 
-\item{calibrate}{A single character for the calibration method. It is
-case-insensitive and must be one of \code{"chisq"}, \code{"boot"}, or \code{"f"}.
-Defaults to \code{"chisq"}. See ‘Details’.}
+\item{calibrate}{A single character representing the calibration method. It
+is case-insensitive and must be one of \code{"ael"}, \code{"boot"}, \code{"chisq"}, or
+\code{"f"}. Defaults to \code{"chisq"}. See ‘Details’.}
 
 \item{control}{An object of class \linkS4class{ControlEL} constructed by
 \code{\link[=el_control]{el_control()}}. Defaults to \code{NULL} and inherits the \code{control} slot in
@@ -46,7 +46,7 @@ An object of class of \linkS4class{ELT}. If \code{lhs} is non-\code{NULL}, the
 corresponds to that of \linkS4class{EL}.
 }
 \description{
-Tests a linear hypothesis.
+Tests a linear hypothesis with various calibration options.
 }
 \details{
 \code{\link[=elt]{elt()}} performs the constrained minimization of \eqn{l(\theta)}
@@ -68,17 +68,24 @@ is performed with the right-hand side \eqn{r} and the left-hand side
 problem reduces to evaluating at \eqn{r} as \eqn{l(r)}.
 }
 
-\code{calibrate} specifies the calibration method used. Three methods are
-available: \code{"chisq"} (chi-square calibration), \code{"boot"} (bootstrap
-calibration), and \code{"f"} (\eqn{F} calibration). \code{"boot"} is applicable only
-when \code{lhs} is \code{NULL}. The \code{nthreads}, \code{seed}, and \code{B} slots in \code{control}
-apply to the bootstrap procedure. \code{"f"} is applicable only to the mean
-parameter when \code{lhs} is \code{NULL}.
+\code{calibrate} specifies the calibration method used. Four methods are
+available: \code{"ael"} (adjusted empirical likelihood calibration), \code{"boot"}
+(bootstrap calibration), \code{"chisq"} (chi-square calibration), and \code{"f"}
+(\eqn{F} calibration). When \code{lhs} is not \code{NULL}, only \code{"chisq"} is
+available. \code{"f"} is applicable only to the mean parameter. The \code{an} slot in
+\code{control} applies specifically to \code{"ael"}, while the \code{nthreads}, \code{seed},
+and \code{B} slots apply to \code{"boot"}.
 }
 \examples{
-## F calibration for the mean
+## Adjusted empirical likelihood calibration
 data("precip")
 fit <- el_mean(precip, 32)
+elt(fit, rhs = 100, calibrate = "ael")
+
+## Bootstrap calibration
+elt(fit, rhs = 32, calibrate = "boot")
+
+## F calibration
 elt(fit, rhs = 32, calibrate = "f")
 
 ## Test of no treatment effect
@@ -103,6 +110,11 @@ Adimari G, Guolo A (2010).
 ``A Note on the Asymptotic Behaviour of Empirical Likelihood Statistics.''
 \emph{Statistical Methods & Applications}, \strong{19}(4), 463--476.
 \doi{10.1007/s10260-010-0137-9}.
+
+Chen J, Variyath AM, Abraham B (2008).
+``Adjusted Empirical Likelihood and Its Properties.''
+\emph{Journal of Computational and Graphical Statistics}, \strong{17}(2),
+426--443.
 
 Kim E, MacEachern SN, Peruggia M (2024).
 ``melt: Multiple Empirical Likelihood Tests in R.''

@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/ropensci/melt",
   "issueTracker": "https://github.com/ropensci/melt/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -291,7 +291,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "300699.916KB",
+  "fileSize": "367508.966KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -334,7 +334,7 @@
     }
   ],
   "releaseNotes": "https://github.com/ropensci/melt/blob/master/NEWS.md",
-  "contIntegration": ["https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml", "https://github.com/ropensci/melt/actions?query=workflow%3Apkgcheck", "https://app.codecov.io/gh/ropensci/melt?branch=master"],
+  "contIntegration": ["https://github.com/ropensci/melt/actions/workflows/R-CMD-check.yaml", "https://github.com/ropensci/melt/actions?query=workflow%3Apkgcheck", "https://app.codecov.io/gh/ropensci/melt?branch=main"],
   "developmentStatus": "https://www.repostatus.org/#active",
   "review": {
     "@type": "Review",

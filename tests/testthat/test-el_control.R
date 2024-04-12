@@ -16,4 +16,5 @@ test_that("Invalid `control`.", {
   expect_error(el_control(nthreads = c(10, 20)))
   expect_error(el_control(nthreads = 0))
   expect_warning(el_control(nthreads = .Machine$integer.max))
+  expect_error(el_control(an = 0))
 })

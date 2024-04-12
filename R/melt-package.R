@@ -1,4 +1,5 @@
 ## usethis namespace: start
+#' @importFrom checkmate assert_choice
 #' @importFrom checkmate assert_class
 #' @importFrom checkmate assert_int
 #' @importFrom checkmate assert_logical

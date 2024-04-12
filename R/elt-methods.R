@@ -18,8 +18,8 @@ setMethod("elt", "EL", function(object,
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
   h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
-  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
-  calibrate <- validate_calibrate(calibrate)
+  assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
+  calibrate <- assert_choice(tolower(calibrate), c("ael", "boot", "chisq", "f"))
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
@@ -27,6 +27,7 @@ setMethod("elt", "EL", function(object,
   tol_l <- control@tol_l
   step <- control@step
   th <- control@th
+  an <- control@an
   w <- getWeights(object)
   if (is.null(lhs)) {
     stopifnot(
@@ -35,6 +36,17 @@ setMethod("elt", "EL", function(object,
     )
     par <- h$r
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
+    if (isTRUE(calibrate == "ael")) {
+      if (is.null(an)) {
+        n <- nobs(object)
+        an <- log(n) / 2
+      }
+      g <- out$g
+      pg <- -an * colMeans(g)
+      g <- rbind(g, pg)
+      out <- compute_generic_EL(g, maxit_l, tol_l, th, w)
+      out$optim <- c(par = list(par), out$optim)
+    }
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames
     optim$cstr <- FALSE
@@ -50,9 +62,11 @@ setMethod("elt", "EL", function(object,
   }
   # Proceed with chi-square calibration for non-NULL `lhs`
   stopifnot(
-    "Bootstrap calibration is applicable only when `lhs` is NULL." =
+    "AEL calibration is applicable only when `lhs` is `NULL`." =
+      (calibrate != "ael"),
+    "Bootstrap calibration is applicable only when `lhs` is `NULL`." =
       (calibrate != "boot"),
-    "F calibration is applicable only when `lhs` is NULL." =
+    "F calibration is applicable only when `lhs` is `NULL`." =
       (calibrate != "f")
   )
   out <- test_hypothesis(
@@ -95,8 +109,8 @@ setMethod("elt", "QGLM", function(object,
   nm <- names(getOptim(object)$par)
   pnames <- nm[-getNumPar(object)]
   h <- validate_hypothesis(rhs, lhs, getNumPar(object) - 1L, pnames)
-  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
-  calibrate <- validate_calibrate(calibrate)
+  assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
+  assert_choice(tolower(calibrate), c("ael", "boot", "chisq", "f"))
   method <- getMethodEL(object)
   maxit <- control@maxit
   maxit_l <- control@maxit_l
@@ -104,6 +118,7 @@ setMethod("elt", "QGLM", function(object,
   tol_l <- control@tol_l
   step <- control@step
   th <- control@th
+  an <- control@an
   w <- getWeights(object)
   if (is.null(lhs)) {
     stopifnot(
@@ -115,6 +130,17 @@ setMethod("elt", "QGLM", function(object,
       par <- c(h$r, object@dispersion)
     }
     out <- compute_EL(method, par, getData(object), maxit_l, tol_l, th, w)
+    if (isTRUE(calibrate == "ael")) {
+      if (is.null(an)) {
+        n <- nobs(object)
+        an <- log(n) / 2
+      }
+      g <- out$g
+      pg <- -an * colMeans(g)
+      g <- rbind(g, pg)
+      out <- compute_generic_EL(g, maxit_l, tol_l, th, w)
+      out$optim <- c(par = list(par), out$optim)
+    }
     optim <- validate_optim(out$optim)
     names(optim$par) <- nm
     optim$cstr <- TRUE
@@ -124,12 +150,14 @@ setMethod("elt", "QGLM", function(object,
     return(new("ELT",
       optim = optim, logp = setNames(out$logp, onames), logl = out$logl,
       loglr = out$loglr, statistic = out$statistic, df = length(par),
-      pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = h$r, lhs = h$l,
+      pval = unname(cal["pval"]), cv = unname(cal["cv"]), rhs = par, lhs = h$l,
       alpha = alpha, calibrate = calibrate, control = control
     ))
   }
   stopifnot(
-    "Bootstrap calibration is applicable only when `lhs` is NULL." =
+    "AEL calibration is applicable only when `lhs` is `NULL`." =
+      (calibrate != "ael"),
+    "Bootstrap calibration is applicable only when `lhs` is `NULL`." =
       (calibrate != "boot"),
     "F calibration is applicable only to the mean." = (calibrate != "f")
   )
@@ -172,11 +200,12 @@ setMethod("elt", "SD", function(object,
   onames <- names(logProb(object))
   pnames <- names(getOptim(object)$par)
   h <- validate_hypothesis(rhs, lhs, getNumPar(object), pnames)
-  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
-  calibrate <- validate_calibrate(calibrate)
+  assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
+  assert_choice(tolower(calibrate), c("ael", "boot", "chisq", "f"))
   maxit_l <- control@maxit_l
   tol_l <- control@tol_l
   th <- control@th
+  an <- control@an
   w <- getWeights(object)
   if (is.null(lhs)) {
     par <- h$r
@@ -188,6 +217,17 @@ setMethod("elt", "SD", function(object,
         (par >= .Machine$double.eps)
     )
     out <- compute_EL("sd", par, getData(object), maxit_l, tol_l, th, w)
+    if (isTRUE(calibrate == "ael")) {
+      if (is.null(an)) {
+        n <- nobs(object)
+        an <- log(n) / 2
+      }
+      g <- out$g
+      pg <- -an * colMeans(g)
+      g <- rbind(g, pg)
+      out <- compute_generic_EL(g, maxit_l, tol_l, th, w)
+      out$optim <- c(par = list(par), out$optim)
+    }
     optim <- validate_optim(out$optim)
     names(optim$par) <- pnames
     optim$cstr <- FALSE
@@ -200,6 +240,8 @@ setMethod("elt", "SD", function(object,
     ))
   }
   stopifnot(
+    "AEL calibration is applicable only when `lhs` is `NULL`." =
+      (calibrate != "ael"),
     "Bootstrap calibration is applicable only when `lhs` is `NULL`." =
       (calibrate != "boot"),
     "F calibration is applicable only when `lhs` is `NULL`." =
@@ -233,8 +275,8 @@ setMethod("elt", "missing", function(object,
                                      alpha = 0.05,
                                      calibrate = "chisq",
                                      control = NULL) {
-  alpha <- assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
-  calibrate <- validate_calibrate(calibrate)
+  assert_number(alpha, lower = 0, upper = 1, finite = TRUE)
+  assert_choice(tolower(calibrate), c("ael", "boot", "chisq", "f"))
   if (is.null(control)) {
     control <- el_control()
   } else {

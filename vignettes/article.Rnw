@@ -769,16 +769,16 @@ specify the problem in Equation~\ref{eq:constraint}.
 %
 \begin{itemize}
 \item \fct{elt}: Tests a linear hypothesis with EL. It returns an object of
-  class \class{ELT} that contains the test statistic, the critical value, and
-    the level of the test.
-Several calibration options discussed in Section~\ref{sec:2.2} are available,
-    and the \(p\)~value is computed by the calibration method chosen.
+class \class{ELT} that contains the test statistic, the critical value, and the
+level of the test. Various calibration options are available, including some of
+those discussed in Section~\ref{sec:2.2} and the adjusted empirical likelihood
+calibration method proposed by \citet{chen2008adjusted}. The \(p\)~value is
+computed based on the chosen calibration method.
 \item \fct{elmt}: Tests multiple linear hypotheses simultaneously with EL.
 Each test can be considered as one instance of \fct{elt}, where the marginal
-    test statistic has an asymptotic chi-square distribution under the
-    corresponding null hypothesis.
-It returns an object of class \class{ELMT} with slots similar to those in
-    \class{ELT}.
+test statistic has an asymptotic chi-square distribution under the corresponding
+null hypothesis. It returns an object of class \class{ELMT} with slots similar
+to those in \class{ELT}.
 \end{itemize}
 An \class{ELT} object also has the \code{optim} slot, which does not necessarily
 correspond to the EL optimization. The user can supply an arbitrary parameter
@@ -832,7 +832,7 @@ The default values are shown below.
 \begin{Code}
 el_control(maxit = 200L, maxit_l = 25L, tol = 1e-06, tol_l = 1e-06,
   step = NULL, th = NULL, verbose = FALSE, keep_data = TRUE, nthreads,
-  seed = NULL, b = 10000L, m = 1000000L)
+  seed = NULL, an = NULL, b = 10000L, m = 1000000L)
 \end{Code}
 Specifically, \code{nthreads} specifies the number of threads for parallel
 computation via \pkg{OpenMP} (if available). By default, it is set to half the

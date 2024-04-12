@@ -7,6 +7,18 @@
 
 class EL
 {
+private:
+  // members
+  const int maxit_l;  // maximum number of iterations
+  const double tol_l; // relative convergence tolerance
+  const double th;    // threshold value for negative log-likelihood ratio
+  const int n;        // sample size
+  // estimating function
+  const std::function<Eigen::MatrixXd(
+      const Eigen::Ref<const Eigen::MatrixXd> &,
+      const Eigen::Ref<const Eigen::VectorXd> &)>
+    g_fn;
+
 public:
   // members
   const Eigen::VectorXd par; // parameter value specified
@@ -18,6 +30,7 @@ public:
   int iter{0};            // iterations performed in optimization
   bool conv{false};       // convergence status
   const Eigen::ArrayXd w; // weights
+  const Eigen::MatrixXd g;
 
   // constructors
   EL(const std::string method,
@@ -50,17 +63,7 @@ public:
   // log-likelihood
   double loglik() const;
 
-private:
-  // members
-  const int maxit_l;  // maximum number of iterations
-  const double tol_l; // relative convergence tolerance
-  const double th;    // threshold value for negative log-likelihood ratio
-  const int n;        // sample size
-  // estimating function
-  const std::function<Eigen::MatrixXd(
-      const Eigen::Ref<const Eigen::MatrixXd> &,
-      const Eigen::Ref<const Eigen::VectorXd> &)>
-      g_fn;
+
 };
 
 class CEL
