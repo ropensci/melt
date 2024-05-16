@@ -109,17 +109,15 @@ In addition, the \pkg{EL} package \citep{EL} performs EL tests for the
 difference between two sample means and the difference between two smoothed
 Huber estimators. The \pkg{elhmc} package \citep{elhmc} contains a single
 function \fct{ELHMC} for Hamiltonian Monte Carlo sampling in Bayesian EL
-computation \citep{chaudhuri2017hamiltonian}. The \pkg{ELCIC} package
-\citep{ELCIC} develops an EL-based consistent information criterion in a model
-selection framework. In a broader context of GMM and generalized empirical
-likelihood \citep{smith1997alternative}, a few packages can be used for
-estimation with EL. The \pkg{gmm} package \citep{gmm} provides flexibility in
-specifying moment conditions. Other than GMM and EL, continuous updating
-\citep{hansen1996finite} and several estimation methods that belong to the
-family of generalized empirical likelihood are available. The \pkg{gmm} package
-has been superseded by the \pkg{momentfit} package \citep{momentfit}, which adds
-exponential tilting \citep{kitamura1997information} estimation and methods for
-constructing two-dimensional confidence regions.
+computation \citep{chaudhuri2017hamiltonian}. In a broader context of GMM and
+generalized empirical likelihood \citep{smith1997alternative}, a few packages
+can be used for estimation with EL. The \pkg{gmm} package \citep{gmm} provides
+flexibility in specifying moment conditions. Other than GMM and EL, continuous
+updating \citep{hansen1996finite} and several estimation methods that belong to
+the family of generalized empirical likelihood are available. The \pkg{gmm}
+package has been superseded by the \pkg{momentfit} package \citep{momentfit},
+which adds exponential tilting \citep{kitamura1997information} estimation and
+methods for constructing two-dimensional confidence regions.
 
 This paper presents the \proglang{R} package \pkg{melt} \citep{melt} that
 performs multiple empirical likelihood tests for regression analysis. The
@@ -843,7 +841,7 @@ of threads to the number of physical cores. The argument \code{seed} sets the
 seed for random number generation. It defaults to a random integer generated
 from \({1}\) to the maximum integer supported by \proglang{R} on the machine,
 which is determined by \fct{set.seed}. For fast parallel random number
-generation and compatibility with \pkg{OpenMP}, the Xoshiro256+ pseudo-random
+generation and compatibility with \pkg{OpenMP}, the Xoshiro256++ pseudo-random
 number generator (period \({2^{256}} - {1}\)) of \citet{blackman2021scrambled}
 is used internally with the \pkg{dqrng} package \citep{dqrng}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%

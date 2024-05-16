@@ -1,3 +1,8 @@
+# melt 1.11.4
+## MINOR IMPROVEMENTS
+* The internal pseudo-random number generator has been switched from Xoshiro256+ to Xoshiro256++ with the release of the new dqrng package.
+
+
 # melt 1.11.3
 ## NEW FEATURES
 * New `"ael"` option has been added in the `calibrate` argument of `elt()` for adjusted empirical likelihood calibration.

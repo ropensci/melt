@@ -41,7 +41,7 @@ Rcpp::NumericVector compute_bootstrap_calibration(
       x0_fn = transform_x_fn(method);
   const Eigen::MatrixXd g0 = g_fn(x0_fn(x, par, est), par);
   // initialize seed
-  dqrng::xoshiro256plus gen(seed);
+  dqrng::xoshiro256plusplus gen(seed);
   // discrete uniform distribution
   boost::random::uniform_int_distribution<> u(0, g0.rows() - 1);
   // bootstrap statistics
@@ -52,7 +52,7 @@ Rcpp::NumericVector compute_bootstrap_calibration(
   {
   #endif
     // make thread local copy of gen
-    dqrng::xoshiro256plus lgen(gen);
+    dqrng::xoshiro256plusplus lgen(gen);
     #ifdef _OPENMP
     // advance gen by 1 ... nthreads jumps
     lgen.jump(omp_get_thread_num() + 1);
