@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">melt</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.4</span>
       </span>
     </div>
 
@@ -123,8 +123,9 @@ Kim</h4>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">faithful</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'data.frame':    272 obs. of  2 variables:</span></span>
 <span><span class="co">#&gt;  $ eruptions: num  3.6 1.8 3.33 2.28 4.53 ...</span></span>
-<span><span class="co">#&gt;  $ waiting  : num  79 54 74 62 85 55 88 85 51 85 ...</span></span>
-<span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span><span class="va">faithful</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  $ waiting  : num  79 54 74 62 85 55 88 85 51 85 ...</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span><span class="va">faithful</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    eruptions        waiting    </span></span>
 <span><span class="co">#&gt;  Min.   :1.600   Min.   :43.0  </span></span>
 <span><span class="co">#&gt;  1st Qu.:2.163   1st Qu.:58.0  </span></span>
@@ -134,13 +135,14 @@ Kim</h4>
 <span><span class="co">#&gt;  Max.   :5.100   Max.   :96.0</span></span></code></pre></div>
 <p>Suppose we are interested in evaluating empirical likelihood at
 <code>c(3.5, 70)</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">faithful</span>, par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "EL"</span></span>
 <span><span class="co">#&gt; attr(,"package")</span></span>
-<span><span class="co">#&gt; [1] "melt"</span></span>
-<span><span class="fu">showClass</span><span class="op">(</span><span class="st">"EL"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "melt"</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">showClass</span><span class="op">(</span><span class="st">"EL"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Class "EL" [package "melt"]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slots:</span></span>
@@ -162,7 +164,7 @@ Kim</h4>
 <span><span class="co">#&gt; Class "QGLM", by class "CEL", distance 4</span></span></code></pre></div>
 <p>The <code>faithful</code> data frame is coerced to a numeric matrix.
 Simple print method shows essential information on <code>fit</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Empirical Likelihood</span></span>
@@ -188,7 +190,7 @@ empirical likelihood is computed. Any valid <code>weights</code> is
 re-scaled for internal computation to add up to the total number of
 observations. For simplicity, we use <code>faithful$waiting</code> as
 our weight vector.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="va">faithful</span><span class="op">$</span><span class="va">waiting</span></span>
 <span><span class="op">(</span><span class="va">wfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/el_mean.html">el_mean</a></span><span class="op">(</span><span class="va">faithful</span>, par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.5</span>, <span class="fl">70</span><span class="op">)</span>, weights <span class="op">=</span> <span class="va">w</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -226,7 +228,7 @@ are largely affected by the limiting behavior of the weights.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
