@@ -135,11 +135,11 @@ parameters increases with the number of observations fixed.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min          lq        mean      median          uq        max</span></span>
-<span><span class="co">#&gt;  n1e2    445.590    478.9385    514.0117    491.8165    545.4515    695.006</span></span>
-<span><span class="co">#&gt;  n1e3   1150.565   1341.5970   2360.7902   1437.1850   1585.7915  79018.060</span></span>
-<span><span class="co">#&gt;  n1e4  10553.537  12733.1665  14367.9631  14694.7935  15664.4915  19003.672</span></span>
-<span><span class="co">#&gt;  n1e5 175689.796 220210.0140 265176.8030 251798.7170 313141.9220 382097.385</span></span>
+<span><span class="co">#&gt;  expr        min          lq        mean      median         uq        max</span></span>
+<span><span class="co">#&gt;  n1e2    443.547    480.9065    518.9974    496.8265    548.883    825.529</span></span>
+<span><span class="co">#&gt;  n1e3   1168.178   1353.5780   2327.9855   1434.4295   1602.052  73838.491</span></span>
+<span><span class="co">#&gt;  n1e4  10433.479  12794.9310  14352.7309  14663.9095  15456.943  21782.395</span></span>
+<span><span class="co">#&gt;  n1e5 169461.720 223962.9690 265156.7597 252638.8225 316444.171 410333.021</span></span>
 <span><span class="co">#&gt;  neval cld</span></span>
 <span><span class="co">#&gt;    100 a  </span></span>
 <span><span class="co">#&gt;    100 a  </span></span>
@@ -177,16 +177,16 @@ likelihood at zero vectors of different sizes.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;  expr        min          lq       mean     median          uq        max neval</span></span>
-<span><span class="co">#&gt;    p5    719.762    773.2415    814.771    805.787    857.9445    946.976   100</span></span>
-<span><span class="co">#&gt;   p25   2709.753   2755.9585   2908.258   2795.111   2864.8365   5919.948   100</span></span>
-<span><span class="co">#&gt;  p100  21725.146  24061.2180  26328.957  25086.484  28829.5030  42613.884   100</span></span>
-<span><span class="co">#&gt;  p400 255578.479 280438.6610 313378.066 300120.047 336373.7975 437127.890   100</span></span>
-<span><span class="co">#&gt;  cld</span></span>
-<span><span class="co">#&gt;  a  </span></span>
-<span><span class="co">#&gt;  a  </span></span>
-<span><span class="co">#&gt;   b </span></span>
-<span><span class="co">#&gt;    c</span></span></code></pre></div>
+<span><span class="co">#&gt;  expr        min          lq        mean     median          uq        max</span></span>
+<span><span class="co">#&gt;    p5    715.554    767.4505    832.0326    791.751    829.6165   3910.269</span></span>
+<span><span class="co">#&gt;   p25   2715.402   2759.6440   2895.7267   2801.678   2860.2215   6707.533</span></span>
+<span><span class="co">#&gt;  p100  21704.880  24065.2350  26217.4337  25080.387  28799.2440  45835.691</span></span>
+<span><span class="co">#&gt;  p400 253630.477 278978.2515 312110.3298 298370.866 339284.6875 459820.159</span></span>
+<span><span class="co">#&gt;  neval cld</span></span>
+<span><span class="co">#&gt;    100 a  </span></span>
+<span><span class="co">#&gt;    100 a  </span></span>
+<span><span class="co">#&gt;    100  b </span></span>
+<span><span class="co">#&gt;    100   c</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="performance_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
